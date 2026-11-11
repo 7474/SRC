@@ -34,14 +34,14 @@
     - Linux: `SRCSharpAvalonia-linux-x64.zip`
     - macOS: `SRCSharpAvalonia-osx-arm64.zip`（Apple シリコン）・`SRCSharpAvalonia-osx-x64.zip`（Intel）。署名していないため、初回は Finder で右クリック→「開く」で起動する。
 1. 実行ファイルを構築済みの SRC フォルダにコピーし（実行ファイルを置いたフォルダを SRC のフォルダとして使う）、`SRCSharpAvalonia <シナリオ（.eve）>` を実行する。引数を省くとファイルを選ぶダイアログが開く。
-    - ソースから動かすときは、[.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) を入れて `dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <シナリオ（.eve）>` を実行する。
+    - ソースから動かすときは、[.NET 11 SDK](https://dotnet.microsoft.com/download/dotnet/11.0) を入れて `dotnet run --project SRC.Sharp/SRCSharpAvalonia -- <シナリオ（.eve）>` を実行する。
     - MIDI を鳴らすには SoundFont（.sf2）が要る（[SoundFont](./docs/gui/avalonia.md#soundfont)）。
 
 ### SRC#Form
 
 維持の階層です（[上記](#使う)）。
 
-1. Windows（x64）に [.NET 10 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/10.0) の x64 版を入れる。
+1. Windows（x64）に [.NET 11 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/11.0) の x64 版を入れる。
     - 配布している実行ファイルは x64 版だけ。Arm の Windows でも x64 のエミュレーションで動くはずだが、ランタイムも x64 版が要る（[Arm ベースの Windows PC](https://learn.microsoft.com/dotnet/core/install/windows#arm-based-windows-pcs)）。
 1. [Releases](https://github.com/7474/SRC/releases) から `SRCSharpForm.zip` を取る。または `SRC.Sharp/SRCSharpForm` をビルドし、実行ファイル（`SRCSharpForm.exe`）と付随する DLL を得る。
 1. 構築済みの SRC フォルダに、実行ファイルをコピーする。
@@ -81,13 +81,13 @@
 | [SRCCore](./SRC.Sharp/SRCCore) | SRC のコア（データ・イベント・式・戦闘など） | .NET Standard 2.1 |
 | [SRCRender](./SRC.Sharp/SRCRender) | SkiaSharp による画面の描画と、UI フレームワークに依存しない GUI の実装 | .NET Standard 2.1 |
 | [SRCSound](./SRC.Sharp/SRCSound) | OpenAL による音声の再生（WAV・MP3・MIDI） | .NET Standard 2.1 |
-| [SRCSharpAvalonia](./SRC.Sharp/SRCSharpAvalonia) | SRC#Avalonia（Windows・macOS・Linux） | .NET 10 |
-| [SRCSharpWeb](./SRC.Sharp/SRCSharpWeb) | SRC#Web（Blazor WebAssembly、[ドキュメント](./docs/gui/web.md)） | .NET 10 |
-| [SRCSharpForm](./SRC.Sharp/SRCSharpForm) | SRC#Form（Windows Forms、Windows） | .NET 10 |
-| [SRCDataViewer](./SRC.Sharp/SRCDataViewer) | データビューア（Blazor WebAssembly） | .NET 10 |
-| [SRCDataLinter](./SRC.Sharp/SRCDataLinter) | SRC のデータのバリデータ | .NET 10 |
-| [SRCPlay](./SRC.Sharp/SRCPlay)・[SRCAuthoring](./SRC.Sharp/SRCAuthoring)・[SRCDebugAdapter](./SRC.Sharp/SRCDebugAdapter) | 自動プレイ・Language Server・デバッガの部品 | .NET 10 |
-| [SRCSharpTools](./SRC.Sharp/SRCSharpTools) | 作成支援ツール `srcsharp`（.NET tool） | .NET 10 |
+| [SRCSharpAvalonia](./SRC.Sharp/SRCSharpAvalonia) | SRC#Avalonia（Windows・macOS・Linux） | .NET 11 |
+| [SRCSharpWeb](./SRC.Sharp/SRCSharpWeb) | SRC#Web（Blazor WebAssembly、[ドキュメント](./docs/gui/web.md)） | .NET 11 |
+| [SRCSharpForm](./SRC.Sharp/SRCSharpForm) | SRC#Form（Windows Forms、Windows） | .NET 11 |
+| [SRCDataViewer](./SRC.Sharp/SRCDataViewer) | データビューア（Blazor WebAssembly） | .NET 11 |
+| [SRCDataLinter](./SRC.Sharp/SRCDataLinter) | SRC のデータのバリデータ | .NET 11 |
+| [SRCPlay](./SRC.Sharp/SRCPlay)・[SRCAuthoring](./SRC.Sharp/SRCAuthoring)・[SRCDebugAdapter](./SRC.Sharp/SRCDebugAdapter) | 自動プレイ・Language Server・デバッガの部品 | .NET 11 |
+| [SRCSharpTools](./SRC.Sharp/SRCSharpTools) | 作成支援ツール `srcsharp`（.NET tool） | .NET 11 |
 | [SRCSharpVSCode](./SRC.Sharp/SRCSharpVSCode) | VS Code 拡張 | VS Code |
 
 バージョンは、アプリが `3.x.x`、ライブラリ・ツールが `0.x.x` です。元の SRC と区別するため、アプリはメジャーを 3 にしています（[バージョンの管理](./docs/versioning.md)）。

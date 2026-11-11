@@ -86,7 +86,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props
@@ -145,7 +145,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props
@@ -215,7 +215,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props
@@ -286,7 +286,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
@@ -345,7 +345,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
@@ -402,7 +402,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
@@ -459,7 +459,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props
 
@@ -528,7 +528,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props
@@ -613,7 +613,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 11.0.x
         # NuGet のパッケージをキャッシュする。版はすべて Directory.Packages.props にある（Central Package Management）
         cache: true
         cache-dependency-path: SRC.Sharp/Directory.Packages.props

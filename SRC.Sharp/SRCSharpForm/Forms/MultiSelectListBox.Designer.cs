@@ -34,143 +34,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        private Button _cmdResume;
-
-        public Button cmdResume
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _cmdResume;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_cmdResume != null)
-                {
-                    _cmdResume.Click -= cmdResume_Click;
-                }
-
-                _cmdResume = value;
-                if (_cmdResume != null)
-                {
-                    _cmdResume.Click += cmdResume_Click;
-                }
-            }
-        }
-
-        private Button _cmdSort;
-
-        public Button cmdSort
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _cmdSort;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_cmdSort != null)
-                {
-                    _cmdSort.Click -= cmdSort_Click;
-                }
-
-                _cmdSort = value;
-                if (_cmdSort != null)
-                {
-                    _cmdSort.Click += cmdSort_Click;
-                }
-            }
-        }
-
-        private Button _cmdSelectAll2;
-
-        public Button cmdSelectAll2
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _cmdSelectAll2;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_cmdSelectAll2 != null)
-                {
-                    _cmdSelectAll2.Click -= cmdSelectAll2_Click;
-                }
-
-                _cmdSelectAll2 = value;
-                if (_cmdSelectAll2 != null)
-                {
-                    _cmdSelectAll2.Click += cmdSelectAll2_Click;
-                }
-            }
-        }
-
-        private Button _cmdSelectAll;
-
-        public Button cmdSelectAll
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _cmdSelectAll;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_cmdSelectAll != null)
-                {
-                    _cmdSelectAll.Click -= cmdSelectAll_Click;
-                }
-
-                _cmdSelectAll = value;
-                if (_cmdSelectAll != null)
-                {
-                    _cmdSelectAll.Click += cmdSelectAll_Click;
-                }
-            }
-        }
-
-        private Button _cmdFinish;
-
-        public Button cmdFinish
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _cmdFinish;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_cmdFinish != null)
-                {
-                    _cmdFinish.Click -= cmdFinish_Click;
-                }
-
-                _cmdFinish = value;
-                if (_cmdFinish != null)
-                {
-                    _cmdFinish.Click += cmdFinish_Click;
-                }
-            }
-        }
-
-        private ListBox _lstItems;
-
-        public Label lblNumber;
-        public Label lblCaption;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -344,5 +207,17 @@ namespace SRCSharpForm
             this.ResumeLayout(false);
 
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        private Button _cmdResume;
+        private Button _cmdSort;
+        private Button _cmdSelectAll2;
+        private Button _cmdSelectAll;
+        private Button _cmdFinish;
+        private ListBox _lstItems;
+        public Label lblNumber;
+        public Label lblCaption;
     }
 }

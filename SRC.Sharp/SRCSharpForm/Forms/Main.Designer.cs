@@ -26,18 +26,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        public ContextMenuStrip mnuUnitCommand;
-        public ContextMenuStrip mnuMapCommand;
-        public PictureBox picFace;
-        public PictureBox picNeautral;
-        public PictureBox picEnemy;
-        public PictureBox picUnit;
-        public PictureBox picPilotStatus;
-        public PictureBox picUnitStatus;
-        public PictureBox picMain;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -249,6 +237,19 @@ namespace SRCSharpForm
             this.ResumeLayout(false);
 
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        public ContextMenuStrip mnuUnitCommand;
+        public ContextMenuStrip mnuMapCommand;
+        public PictureBox picFace;
+        public PictureBox picNeautral;
+        public PictureBox picEnemy;
+        public PictureBox picUnit;
+        public PictureBox picPilotStatus;
+        public PictureBox picUnitStatus;
+        public PictureBox picMain;
 
         public SrcHScrollBar HScrollBar;
         public SrcVScrollBar VScrollBar;

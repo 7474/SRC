@@ -25,14 +25,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        public PictureBox Image1;
-        public Label labOrgAuthor;
-        public Label labVersion;
-        public GroupBox Frame1;
-        public Label labLicense;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -183,6 +175,15 @@ namespace SRCSharpForm
             this.ResumeLayout(false);
 
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        public PictureBox Image1;
+        public Label labOrgAuthor;
+        public Label labVersion;
+        public GroupBox Frame1;
+        public Label labLicense;
 
         private Label labAuthor;
         private Label labTitle;

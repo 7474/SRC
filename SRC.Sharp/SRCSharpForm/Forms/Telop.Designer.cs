@@ -26,10 +26,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        public Label Label1;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -80,5 +76,10 @@ namespace SRCSharpForm
             ResumeLayout(false);
             PerformLayout();
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        public Label Label1;
     }
 }

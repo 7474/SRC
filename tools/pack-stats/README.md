@@ -19,7 +19,7 @@ dotnet build tools/pack-stats -c Release
 ```
 
 ```bash
-dotnet tools/pack-stats/bin/Release/net10.0/PackStats.dll bands ../SRC-Data/GSCデータパック/拡張 > bands-ext.md
+dotnet tools/pack-stats/bin/Release/net11.0/PackStats.dll bands ../SRC-Data/GSCデータパック/拡張 > bands-ext.md
 ```
 
 標準出力に Markdown、標準エラーに読み込めないファイルを出す。同じ SRC-Data・同じ引数なら同じ結果になる（ファイルの読み込み順を固定している）。
@@ -74,7 +74,7 @@ PackStats <コマンド> <パックのフォルダ> [引数]
 ## 作品の評価（check）
 
 ```bash
-dotnet tools/pack-stats/bin/Release/net10.0/PackStats.dll check ../SRC-Data/GSCデータパック/拡張 ../SRC-Data/Sharp/Data/幼女戦記 > check.md
+dotnet tools/pack-stats/bin/Release/net11.0/PackStats.dll check ../SRC-Data/GSCデータパック/拡張 ../SRC-Data/Sharp/Data/幼女戦記 > check.md
 ```
 
 作品のフォルダに `sp.txt` が無ければ、パックの `System/sp.txt` を先に読む。出力は次の節と、指摘の一覧。

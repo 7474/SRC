@@ -151,7 +151,7 @@ SRC#Form・SRC#Avalonia の設定ダイアログ（元の SRC の設定変更の
 | `SRCCore/Logging/LogCategories.cs`・`LoggerExtensions.cs` | カテゴリ名、元の SRC の形のログをテンプレートで出す拡張メソッド |
 | `SRCCore/Logging/DelegateLoggerProvider.cs` | ログを関数に渡す `ILoggerProvider`（DAP・LSP が使う） |
 | `SRCCore/SRC.cs` | カテゴリごとの `ILogger`。`SRC()` の既定は `NullLoggerFactory`（ログを出すかどうかはホストが決める） |
-| `SRCLogging`（net10.0、Serilog） | `LogHost`: デスクトップ用の構成（ファイル・デバッガ・stderr、設定の反映、起動のログ）。SRC#Form・SRC#Avalonia・`srcsharp` が使う |
+| `SRCLogging`（net11.0、Serilog） | `LogHost`: デスクトップ用の構成（ファイル・デバッガ・stderr、設定の反映、起動のログ）。SRC#Form・SRC#Avalonia・`srcsharp` が使う |
 | SRCDebugAdapter・SRCAuthoring | DAP の `output` イベント・LSP の `window/logMessage` に送る |
 | `SRCSharpWeb/WebLogging.cs` | SRC#Web のレベルの判定と、URL・設定画面・`srcs.json` の反映 |
 

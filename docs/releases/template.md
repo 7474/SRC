@@ -8,7 +8,7 @@ SRC# {app} です。アプリは `{app}`、ライブラリ・ツールと VS Cod
 |---|---|
 | ブラウザ | **SRC#Web** https://src.koudenpa.net/ ・ https://7474.github.io/SRC/web/ 。自分のサイトに置くための `SRCSharpWeb.zip` も添付しています（[外部のサイトに置く](https://github.com/7474/SRC/blob/master/docs/gui/web-hosting.md)） |
 | Windows・macOS・Linux | **SRC#Avalonia** `SRCSharpAvalonia-<OS>.zip` |
-| Windows（x64） | **SRC#Form** `SRCSharpForm.zip`（[.NET 10 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/10.0) の x64 版が必要） |
+| Windows（x64） | **SRC#Form** `SRCSharpForm.zip`（[.NET 11 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/11.0) の x64 版が必要） |
 | データを見る | **データビューア** https://7474.github.io/SRC/ ・ https://srcv.7474.jp/ |
 
 ## 動きが変わる点

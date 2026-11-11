@@ -13,6 +13,14 @@
     <SrcSharpLibraryVersion>0.$(SrcSharpVersionMinor).$(SrcSharpVersionPatch)</SrcSharpLibraryVersion>
   </PropertyGroup>
   <!--
+    アプリ・ツール・テストのターゲットフレームワーク（ライブラリの SRCCore・SRCRender・SRCSound は netstandard2.1 のまま）。
+    .NET のメジャーを上げるときは、ここの既定値と Directory.Packages.props の版をそろえて変える（docs/dotnet-upgrade.md）。
+    次の .NET を試すときは -p:SrcSharpTargetFramework=net12.0 のように付ける
+  -->
+  <PropertyGroup>
+    <SrcSharpTargetFramework Condition="'$(SrcSharpTargetFramework)' == ''">net11.0</SrcSharpTargetFramework>
+  </PropertyGroup>
+  <!--
     NuGet のパッケージ（SRCCore・SRCDataLinter・SRCSharpTools）のライセンスと出典。
     ソースは GPL Ver.3 またはそれ以降（各ファイルの先頭・LICENSE）で、VS Code 拡張（package.json の license）と同じ
   -->
