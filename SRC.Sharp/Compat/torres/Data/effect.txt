@@ -1,0 +1,34 @@
+# トレス島試験記録 特殊効果データ
+# 戦闘アニメの表示をオフにしたときに使われる効果音とシステムメッセージ。
+
+汎用
+攻撃無効化, cp_guard.wav
+シールド防御, cp_guard.wav
+
+試作機トビウオ
+ヒレブレード, cp_slash.wav
+ヒレブレード(命中), cp_slash.wav
+アクアライフル, cp_shot.wav
+クロスストライク, 3;cp_charge.wav;cp_slash.wav
+クロスストライク(命中), cp_explode.wav
+クロスストライク(解説), $(ユニット)とイワガネが、左右から同時に斬りかかった！
+
+試作機トビウオ(滑空形態)
+滑空突撃, cp_dash.wav
+
+試作機イワガネ
+イワガネハンマー(命中), cp_bite.wav
+ロックキャノン, cp_shot.wav
+
+合体機ミカヅチ
+雷鳴陣, cp_beam.wav
+雷鳴陣(命中), cp_explode.wav
+
+学舎艦ヤマセ
+主砲, cp_beam.wav
+散弾砲, 2;cp_shot.wav;2;cp_shot.wav;2;cp_shot.wav
+
+錆蟲
+酸弾, cp_shot.wav
+錆散布, cp_shot.wav
+錆散布(命中), cp_explode.wav

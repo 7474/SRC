@@ -1,0 +1,11 @@
+# 互換性の検証用のシナリオ（#1549）。テキストはリポジトリでも取り出したフォルダでも UTF-8・LF にそろえる
+# （SRC# は UTF-8 で読む。元の SRC に渡すときは export_sjis.py で Shift_JIS・CRLF に変換する）
+*.eve text eol=lf
+*.txt text eol=lf
+*.map text eol=lf
+*.play text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.bmp binary
+*.wav binary
+*.mid binary
