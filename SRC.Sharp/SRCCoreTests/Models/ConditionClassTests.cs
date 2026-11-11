@@ -10,10 +10,10 @@ namespace SRCCore.Models.Tests
     public class ConditionClassTests
     {
         [TestMethod]
-        public void Condition_DefaultName_IsNull()
+        public void Condition_DefaultName_IsEmpty()
         {
             var cond = new Condition();
-            Assert.IsNull(cond.Name);
+            Assert.AreEqual("", cond.Name);
         }
 
         [TestMethod]
@@ -52,10 +52,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Condition_DefaultStrData_IsNull()
+        public void Condition_DefaultStrData_IsEmpty()
         {
             var cond = new Condition();
-            Assert.IsNull(cond.StrData);
+            Assert.AreEqual("", cond.StrData);
         }
 
         [TestMethod]

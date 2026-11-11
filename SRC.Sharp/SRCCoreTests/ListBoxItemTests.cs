@@ -18,10 +18,10 @@ namespace SRCCore.Tests
         public void DefaultConstructor_DefaultValues()
         {
             var item = new ListBoxItem();
-            Assert.IsNull(item.Text);
-            Assert.IsNull(item.ListItemID);
+            Assert.AreEqual("", item.Text);
+            Assert.AreEqual("", item.ListItemID);
             Assert.IsFalse(item.ListItemFlag);
-            Assert.IsNull(item.ListItemComment);
+            Assert.AreEqual("", item.ListItemComment);
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace SRCCore.Tests
         public void GenericListBoxItem_DefaultConstructor_DefaultValues()
         {
             var item = new ListBoxItem<int>();
-            Assert.IsNull(item.Text);
+            Assert.AreEqual("", item.Text);
             Assert.AreEqual(0, item.ListItemObject);
         }
 

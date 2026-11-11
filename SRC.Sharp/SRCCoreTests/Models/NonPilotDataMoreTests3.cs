@@ -7,10 +7,10 @@ namespace SRCCore.Models.Tests
     public class NonPilotDataMoreTests3
     {
         [TestMethod]
-        public void Name_DefaultIsNull()
+        public void Name_DefaultIsEmpty()
         {
             var npd = new NonPilotData();
-            Assert.IsNull(npd.Name);
+            Assert.AreEqual("", npd.Name);
         }
 
         [TestMethod]
@@ -30,10 +30,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Nickname_DefaultIsNull()
+        public void Nickname_DefaultIsEmpty()
         {
             var npd = new NonPilotData();
-            Assert.IsNull(npd.Nickname0);
+            Assert.AreEqual("", npd.Nickname0);
         }
 
         [TestMethod]
@@ -53,10 +53,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Bitmap_DefaultIsNull_WhenNotMissing()
+        public void Bitmap_DefaultIsEmpty_WhenNotMissing()
         {
             var npd = new NonPilotData();
-            Assert.IsNull(npd.Bitmap);
+            Assert.AreEqual("", npd.Bitmap);
         }
 
         [TestMethod]

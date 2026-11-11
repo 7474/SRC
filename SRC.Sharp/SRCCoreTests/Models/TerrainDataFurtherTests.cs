@@ -45,7 +45,7 @@ namespace SRCCore.Models.Tests
         public void DefaultValues_AreDefault()
         {
             var td = new TerrainData();
-            Assert.IsNull(td.Name);
+            Assert.AreEqual("", td.Name);
             Assert.AreEqual(0, td.MoveCost);
             Assert.AreEqual(0, td.HitMod);
             Assert.AreEqual(0, td.DamageMod);

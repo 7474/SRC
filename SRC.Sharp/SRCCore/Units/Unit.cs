@@ -106,6 +106,7 @@ namespace SRCCore.Units
         }
 
         // データ
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "VB の Data（オブジェクトの参照。初めは Nothing）を名前で持つ。null は Nothing に当たる")]
         [JsonProperty]
         public string UnitName { get; set; }
         // データ
@@ -113,7 +114,7 @@ namespace SRCCore.Units
 
         // 識別用ＩＤ
         [JsonProperty]
-        public string ID;
+        public string ID = "";
 
         // Ｘ座標
         [JsonProperty]
@@ -124,7 +125,7 @@ namespace SRCCore.Units
 
         // ユニットの場所（地上、水上、水中、空中、地中、宇宙）
         [JsonProperty]
-        public string Area;
+        public string Area = "";
 
         // 使用済み行動数
         [JsonProperty]
@@ -132,7 +133,7 @@ namespace SRCCore.Units
 
         // 思考モード
         [JsonProperty]
-        private string strMode;
+        private string strMode = "";
 
         // ステータス
         // 出撃：マップ上に出撃
@@ -144,7 +145,7 @@ namespace SRCCore.Units
         // 旧形態：分離ユニットが合体前に取っていた形態
         // 離脱：Leaveコマンドにより戦線を離脱。Organizeコマンドでも表示されない
         [JsonProperty]
-        public string Status;
+        public string Status = "";
 
         // ユニットに対して使用されているスペシャルパワー
         [JsonProperty]
@@ -166,10 +167,10 @@ namespace SRCCore.Units
 
         // ユニット名称
         [JsonProperty]
-        private string strName;
+        private string strName = "";
         // 陣営
         [JsonProperty]
-        private string strParty;
+        private string strParty = "";
         // ユニットランク
         [JsonProperty]
         private int intRank;
@@ -237,15 +238,15 @@ namespace SRCCore.Units
         public int AdditionalFeaturesNum;
 
         // 地形適応
-        private string strAdaption;
+        private string strAdaption = "";
 
         // 攻撃への耐性
-        public string strAbsorb;
-        public string strImmune;
-        public string strResist;
-        public string strWeakness;
-        public string strEffective;
-        public string strSpecialEffectImmune;
+        public string strAbsorb = "";
+        public string strImmune = "";
+        public string strResist = "";
+        public string strWeakness = "";
+        public string strEffective = "";
+        public string strSpecialEffectImmune = "";
 
         // 武器データ
         [JsonProperty]
@@ -272,6 +273,7 @@ namespace SRCCore.Units
         // 召喚主
         public Unit Summoner;
         // 破壊前の召喚主ID（SP祈りによる復活時にSummoner関係を再構築するため）
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "SRC# で足した、破壊前の召喚主（オブジェクトの参照）の ID。null は召喚主が無いことを表す")]
         [JsonProperty]
         public string PreviousSummonerId;
 
@@ -284,6 +286,7 @@ namespace SRCCore.Units
         // 追加サポート
         public Pilot pltAdditionalSupport;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "SRC# のセーブデータの形。MasterId などは VB のオブジェクトの参照（Nothing は null）を ID で持つ")]
         [JsonObject(MemberSerialization.OptOut)]
         public class SaveData
         {

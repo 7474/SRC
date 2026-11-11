@@ -9,11 +9,11 @@ namespace SRCCore.Models
     public class SkillData : ILevelElement
     {
         // 名称
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         // レベル (レベル指定のない能力の場合はDEFAULT_LEVEL)
         public double Level { get; set; }
         // データ
-        public string StrData { get; set; }
+        public string StrData { get; set; } = "";
         // 習得レベル
         public int NecessaryLevel { get; set; }
 

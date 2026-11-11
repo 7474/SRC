@@ -15,15 +15,15 @@ namespace SRCCore.Models
     public class FeatureData : ILevelElement
     {
         // 名称
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         // レベル (レベル指定のない能力の場合はDEFAULT_LEVEL)
         public double Level { get; set; }
         // データ
-        public string StrData { get; set; }
+        public string StrData { get; set; } = "";
         // 必要技能
-        public string NecessarySkill;
+        public string NecessarySkill = "";
         // 必要条件
-        public string NecessaryCondition;
+        public string NecessaryCondition = "";
 
         public bool HasLevel => Level != Constants.DEFAULT_LEVEL;
 

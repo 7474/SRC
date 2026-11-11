@@ -12,7 +12,7 @@ namespace SRCCore.Models
     public class WeaponData
     {
         // 武器名
-        public string Name;
+        public string Name = "";
         // 攻撃力
         public int Power;
         // 最小射程
@@ -28,15 +28,15 @@ namespace SRCCore.Models
         // 必要気力
         public int NecessaryMorale;
         // 地形適応
-        public string Adaption;
+        public string Adaption = "";
         // ＣＴ率
         public int Critical;
         // 属性
-        public string Class;
+        public string Class = "";
         // 必要技能
-        public string NecessarySkill;
+        public string NecessarySkill = "";
         // 必要条件
-        public string NecessaryCondition;
+        public string NecessaryCondition = "";
 
         private SRC SRC;
         private Expressions.Expression Expression => SRC.Expression;

@@ -39,7 +39,6 @@ namespace SRCCore.Units
         {
             var caption = src.Commands.AbilityCommandCaption;
             if (lb_mode == "一覧" || is_item
-                || caption == null
                 || caption == src.Expression.Term("アビリティ", Unit))
             {
                 return null;

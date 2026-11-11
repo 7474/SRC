@@ -29,12 +29,12 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void SpecialPowerEffect_DefaultValues_AreNull()
+        public void SpecialPowerEffect_DefaultValues_AreEmpty()
         {
             var eff = new SpecialPowerEffect();
-            Assert.IsNull(eff.strEffectType);
+            Assert.AreEqual("", eff.strEffectType);
             Assert.AreEqual(0d, eff.dblEffectLevel);
-            Assert.IsNull(eff.strEffectData);
+            Assert.AreEqual("", eff.strEffectData);
         }
 
         // ──────────────────────────────────────────────

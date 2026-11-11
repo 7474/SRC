@@ -35,7 +35,7 @@ namespace SRCCore.Models.Tests
         {
             var src = new SRC { GUI = new MockGUI() };
             var sp = new SpecialPowerData(src);
-            Assert.IsNull(sp.Name);
+            Assert.AreEqual("", sp.Name);
             Assert.AreEqual(0, sp.SPConsumption);
         }
 
@@ -56,7 +56,7 @@ namespace SRCCore.Models.Tests
         {
             var src = new SRC { GUI = new MockGUI() };
             var ab = new AbilityData(src);
-            Assert.IsNull(ab.Name);
+            Assert.AreEqual("", ab.Name);
         }
 
         // ──────────────────────────────────────────────
@@ -88,7 +88,7 @@ namespace SRCCore.Models.Tests
         public void SkillData_DefaultValues_AreExpected()
         {
             var sk = new SkillData();
-            Assert.IsNull(sk.Name);
+            Assert.AreEqual("", sk.Name);
             Assert.AreEqual(0d, sk.Level);
             Assert.AreEqual(0, sk.NecessaryLevel);
         }

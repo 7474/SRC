@@ -39,9 +39,9 @@ namespace SRCCore.Models.Tests
         public void DefaultValues_AreCorrect()
         {
             var sd = new SkillData();
-            Assert.IsNull(sd.Name);
+            Assert.AreEqual("", sd.Name);
             Assert.AreEqual(0, sd.NecessaryLevel);
-            Assert.IsNull(sd.StrData);
+            Assert.AreEqual("", sd.StrData);
         }
 
         [TestMethod]

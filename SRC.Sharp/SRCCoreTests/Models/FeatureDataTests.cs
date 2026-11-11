@@ -156,17 +156,17 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void NecessarySkill_DefaultIsNull()
+        public void NecessarySkill_DefaultIsEmpty()
         {
             var fd = new FeatureData();
-            Assert.IsNull(fd.NecessarySkill);
+            Assert.AreEqual("", fd.NecessarySkill);
         }
 
         [TestMethod]
-        public void NecessaryCondition_DefaultIsNull()
+        public void NecessaryCondition_DefaultIsEmpty()
         {
             var fd = new FeatureData();
-            Assert.IsNull(fd.NecessaryCondition);
+            Assert.AreEqual("", fd.NecessaryCondition);
         }
     }
 }

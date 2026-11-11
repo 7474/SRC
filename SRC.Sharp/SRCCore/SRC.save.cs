@@ -21,6 +21,7 @@ namespace SRCCore
         Quik,
         Restart,
     }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "SRC# のセーブデータ（JSON）の形で、VB の変数ではない")]
     public class SRCSaveData
     {
         public string Version { get; set; }
@@ -37,6 +38,7 @@ namespace SRCCore
         public Items.Items IList { get; set; }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "SRC# のセーブデータ（JSON）の形で、VB の変数ではない")]
     public class SRCSuspendData : SRCSaveData
     {
         public string ScenarioFileName { get; set; }

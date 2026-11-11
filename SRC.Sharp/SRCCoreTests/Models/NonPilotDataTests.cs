@@ -21,10 +21,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Name_DefaultIsNull()
+        public void Name_DefaultIsEmpty()
         {
             var npd = new NonPilotData();
-            Assert.IsNull(npd.Name);
+            Assert.AreEqual("", npd.Name);
         }
 
         // ──────────────────────────────────────────────
@@ -48,10 +48,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Nickname_DefaultIsNull()
+        public void Nickname_DefaultIsEmpty()
         {
             var npd = new NonPilotData();
-            Assert.IsNull(npd.Nickname);
+            Assert.AreEqual("", npd.Nickname);
         }
 
         // ──────────────────────────────────────────────
@@ -75,10 +75,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Bitmap_DefaultIsNull()
+        public void Bitmap_DefaultIsEmpty()
         {
             var npd = new NonPilotData();
-            Assert.IsNull(npd.Bitmap);
+            Assert.AreEqual("", npd.Bitmap);
         }
 
         // ──────────────────────────────────────────────
@@ -158,10 +158,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Nickname0_ReturnsNullWhenNicknameNeverSet()
+        public void Nickname0_ReturnsEmptyWhenNicknameNeverSet()
         {
             var npd = new NonPilotData();
-            Assert.IsNull(npd.Nickname0);
+            Assert.AreEqual("", npd.Nickname0);
         }
     }
 }

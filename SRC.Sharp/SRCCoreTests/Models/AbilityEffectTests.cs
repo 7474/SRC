@@ -68,10 +68,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void DefaultData_IsNull()
+        public void DefaultData_IsEmpty()
         {
             var effect = new AbilityEffect { Name = "回復" };
-            Assert.IsNull(effect.Data);
+            Assert.AreEqual("", effect.Data);
         }
 
         [TestMethod]

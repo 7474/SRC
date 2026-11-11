@@ -86,7 +86,7 @@ namespace SRCCore.Events
         public IList<string> ForEachSet;
 
         // Rideコマンド用パイロット搭乗履歴
-        public string LastUnitName;
+        public string LastUnitName = "";
         public IList<string> LastPilotID = new List<string>();
 
         // Wait開始時刻
@@ -109,7 +109,7 @@ namespace SRCCore.Events
         // オブジェクトの背景描画方法
         public FillStyle ObjFillStyle;
         // オブジェクトの描画方法
-        public string ObjDrawOption;
+        public string ObjDrawOption = "";
 
         public ObjectDrawSetting GetObjectDrawSetting()
         {
@@ -171,6 +171,6 @@ namespace SRCCore.Events
         // オブジェクトの背景描画方法
         public FillStyle ObjFillStyle;
         // オブジェクトの描画方法
-        public string ObjDrawOption;
+        public string ObjDrawOption = "";
     }
 }

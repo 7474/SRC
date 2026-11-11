@@ -14,17 +14,17 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Constructor_DefaultBitmap_IsNull()
+        public void Constructor_DefaultBitmap_IsEmpty()
         {
             var td = new TerrainData();
-            Assert.IsNull(td.Bitmap);
+            Assert.AreEqual("", td.Bitmap);
         }
 
         [TestMethod]
-        public void Constructor_DefaultClass_IsNull()
+        public void Constructor_DefaultClass_IsEmpty()
         {
             var td = new TerrainData();
-            Assert.IsNull(td.Class);
+            Assert.AreEqual("", td.Class);
         }
 
         [TestMethod]
@@ -184,9 +184,9 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void EmptyTerrain_Name_IsNull()
+        public void EmptyTerrain_Name_IsEmpty()
         {
-            Assert.IsNull(TerrainData.EmptyTerrain.Name);
+            Assert.AreEqual("", TerrainData.EmptyTerrain.Name);
         }
 
         [TestMethod]

@@ -43,12 +43,12 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void DefaultValues_AreNull()
+        public void DefaultValues_AreEmpty()
         {
             var effect = new AbilityEffect();
-            Assert.IsNull(effect.Name);
+            Assert.AreEqual("", effect.Name);
             Assert.AreEqual(0d, effect.Level);
-            Assert.IsNull(effect.Data);
+            Assert.AreEqual("", effect.Data);
         }
 
         [TestMethod]

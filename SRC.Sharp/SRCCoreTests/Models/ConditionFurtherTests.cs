@@ -46,11 +46,11 @@ namespace SRCCore.Models.Tests
         public void DefaultValues_AreDefault()
         {
             var c = new Condition();
-            Assert.IsNull(c.Name);
+            Assert.AreEqual("", c.Name);
             Assert.AreEqual(0, c.Lifetime);
             // Level のデフォルト値は0（DEFAULT_LEVELではない）
             Assert.AreEqual(0d, c.Level, 1e-10);
-            Assert.IsNull(c.StrData);
+            Assert.AreEqual("", c.StrData);
         }
 
         [TestMethod]

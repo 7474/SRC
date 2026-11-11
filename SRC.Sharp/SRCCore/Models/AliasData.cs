@@ -13,7 +13,7 @@ namespace SRCCore.Models
     public class AliasDataElement
     {
         // エリアスの種類
-        public string strAliasType;
+        public string strAliasType = "";
         // エリアスのレベル
         public double dblAliasLevel;
         // エリアスのレベルが＋修正値かどうか
@@ -21,18 +21,18 @@ namespace SRCCore.Models
         // エリアスのレベルが×修正値かどうか
         public bool blnAliasLevelIsMultMod;
         // エリアスのデータ
-        public string strAliasData;
+        public string strAliasData = "";
         // エリアスの必要技能
-        public string strAliasNecessarySkill;
+        public string strAliasNecessarySkill = "";
         // エリアスの必要条件
-        public string strAliasNecessaryCondition;
+        public string strAliasNecessaryCondition = "";
     }
 
     // エリアスデータのクラス
     public class AliasDataType
     {
         // 名称
-        public string Name;
+        public string Name = "";
         public IList<AliasDataElement> Elements = new List<AliasDataElement>();
 
         // エリアスの個数

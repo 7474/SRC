@@ -7,7 +7,7 @@ namespace SRCCore.Commands
     public partial class Command
     {
         // 現在のコマンドの進行状況
-        public string CommandState;
+        public string CommandState = "";
 
         // クリック待ちモード
         public bool WaitClickMode;
@@ -41,7 +41,8 @@ namespace SRCCore.Commands
         // ユニットコマンドのメニューの「アビリティ」コマンドの表示
         // （元の SRC の MainForm.mnuUnitCommandItem(AbilityCmdID).Caption）。
         // アビリティが 1 つのときはアビリティ名そのものになり、そのときはアビリティを一覧を出さずに選ぶ。
-        public string AbilityCommandCaption;
+        // 初めはフォーム（Main.frm）に書いてある「アビリティ」
+        public string AbilityCommandCaption = "アビリティ";
 
         // 援護を使うかどうか
         public bool UseSupportAttack;
@@ -66,9 +67,9 @@ namespace SRCCore.Commands
         // 移動前のユニットの情報
         private int PrevUnitX;
         private int PrevUnitY;
-        private string PrevUnitArea;
+        private string PrevUnitArea = "";
         private int PrevUnitEN;
-        private string PrevCommand;
+        private string PrevCommand = "";
 
         // 移動したユニットの情報
         public Unit MovedUnit;

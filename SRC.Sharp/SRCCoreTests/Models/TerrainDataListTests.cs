@@ -80,10 +80,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void EmptyTerrain_NameIsNull()
+        public void EmptyTerrain_NameIsEmpty()
         {
-            // EmptyTerrain はデフォルトインスタンスなので Name は null
-            Assert.IsNull(TerrainData.EmptyTerrain.Name);
+            // EmptyTerrain はデフォルトインスタンスなので Name は VB の String と同じ空文字列
+            Assert.AreEqual("", TerrainData.EmptyTerrain.Name);
         }
     }
 }

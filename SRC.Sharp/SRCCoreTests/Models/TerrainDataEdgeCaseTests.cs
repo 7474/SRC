@@ -21,10 +21,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void TerrainData_DefaultName_IsNull()
+        public void TerrainData_DefaultName_IsEmpty()
         {
             var td = new TerrainData();
-            Assert.IsNull(td.Name);
+            Assert.AreEqual("", td.Name);
         }
 
         [TestMethod]

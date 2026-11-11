@@ -38,7 +38,7 @@ namespace SRCCore.Models
     {
         // データのパイロット名
         // 戦闘アニメデータ及び特殊効果データの場合はユニット名またはユニットクラス
-        public string Name;
+        public string Name = "";
 
         public IList<MessageDataItem> Items { get; } = new List<MessageDataItem>();
 
