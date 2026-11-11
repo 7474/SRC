@@ -67,6 +67,9 @@ namespace SRCCore.Units
             return false;
         }
 
+        // 影響下にあるスペシャルパワー（VB: colSpecialPowerInEffect）
+        public System.Collections.Generic.IList<Condition> SpecialPowersInEffect => colSpecialPowerInEffect.List;
+
         // 影響下にあるスペシャルパワーの総数
         public int CountSpecialPower()
         {

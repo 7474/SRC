@@ -2,8 +2,9 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 koudenpa
 """
-実機との比較のプローブ（probe/・probe-bounds/・probe-errors/。#1550）と、画面と音の見比べのシナリオ（screens/。#1553）を、
-元の SRC（VB5 の Src.exe）に渡す形に書き出し、Windows で流した結果を期待値（probe-expected/・screens-expected/）として取り込む。
+実機との比較のプローブ（probe/・probe-bounds/・probe-errors/。#1550）と、画面と音の見比べのシナリオ（screens/。#1553）と、
+セーブデータの見本を作るシナリオ（torres/ と savedata/。#1577）を、元の SRC（VB5 の Src.exe）に渡す形に書き出し、
+Windows で流した結果を期待値（probe-expected/・screens-expected/・savedata-expected/）として取り込む。
 手順は PROBE.md（見比べの場面は SCREENS.md）。
 
   python3 probe_pack.py export [出力先] [--zip]   出力先の既定は ./out/probe-pack（中身は消してから書く）
@@ -22,6 +23,9 @@ import: シナリオが書いた out_<イベント>.txt（Shift_JIS）と、エ�
         （どちらのファイルも無いケースは、流していないものとして飛ばす）。
         見比べ: screens-shots/<ID>.png（Src.exe のスクリーンショット）と screens-sounds.txt（聞いたことのメモ）を
         screens-expected/ に、screens-form-shots/<ID>.png と screens-form-shots/sounds.txt（SRC#Form）を screens-form/ に写す。
+        セーブデータ: torres\\suspend.src（中断データ）・torres\\clear.src（クリアデータ）を、そのまま（Shift_JIS のまま）
+        savedata-expected/ に写す。名前を変えずに保存したもの（savedataを中断.src・savedataまでクリア.src）も同じ名前で写す。
+export の補足: savedata/*.eve は torres のデータを使うので、書き出した torres\\ に置く（torres\\savedata.eve）。
 """
 import os
 import shutil
@@ -33,8 +37,16 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, HERE)
 from export_sjis import BINARY_EXTENSIONS, TEXT_EXTENSIONS, convert  # noqa: E402
 
-FOLDERS = ["probe", "probe-bounds", "probe-errors", "screens"]
+FOLDERS = ["probe", "probe-bounds", "probe-errors", "screens", "torres"]
+# torres のデータを使うので、書き出した torres/ に置くイベント（セーブデータの見本を作る。#1577）
+SAVEDATA = "savedata"
 EXPECTED = os.path.join(HERE, "probe-expected")
+SAVEDATA_EXPECTED = os.path.join(HERE, "savedata-expected")
+# 持ち帰るセーブデータの見本（torres\ の中の名前 → savedata-expected/ の名前）。名前を変えずに保存したものも受け付ける
+SAVEDATA_SAMPLES = [
+    (["suspend.src", "savedataを中断.src"], "suspend.src"),
+    (["clear.src", "savedataまでクリア.src"], "clear.src"),
+]
 SCREENS_EXPECTED = os.path.join(HERE, "screens-expected")
 SCREENS_FORM = os.path.join(HERE, "screens-form")
 # SRC# のテストだけで使うので、元の SRC には渡さないファイル
@@ -74,6 +86,16 @@ def collect():
                     files.append((rel, None))
                 else:
                     errors.append(f"{rel}: 扱いの決まっていない種類のファイル")
+    for name in sorted(os.listdir(os.path.join(HERE, SAVEDATA))):
+        rel = os.path.join(SAVEDATA, name)
+        if not name.isascii():
+            errors.append(f"{rel}: ファイル名に ASCII でない文字がある")
+        if os.path.splitext(name)[1].lower() != ".eve":
+            errors.append(f"{rel}: 扱いの決まっていない種類のファイル")
+            continue
+        data, problems = convert(os.path.join(HERE, rel))
+        errors += [f"{rel}: {p}" for p in problems]
+        files.append((os.path.join("torres", name), data))
     return errors, files
 
 
@@ -96,7 +118,7 @@ def export(argv):
             with open(out, "wb") as f:
                 f.write(data)
     for name, data in [("run_probe.bat", make_batch()), ("run_screens.bat", make_screens_batch()),
-                       ("capture_screens.ps1", make_capture_script())]:
+                       ("run_savedata.bat", make_savedata_batch()), ("capture_screens.ps1", make_capture_script())]:
         with open(os.path.join(dest, name), "wb") as f:
             f.write(data)
         files.append((name, data))
@@ -136,8 +158,35 @@ def make_batch():
     lines.append("echo プローブは終わり。続けて、画面と音の見比べ（#1553）を始める（PROBE.md の手順 5）")
     lines.append("pause")
     lines += screens_batch_lines()
-    lines.append("echo 終わり。このフォルダ（out_*.txt・errors_*.txt・screens-shots・screens-sounds.txt）をまとめて持ち帰る")
+    lines.append("echo 見比べは終わり。続けて、セーブデータの見本（#1577）を作る（PROBE.md の手順 6）")
     lines.append("pause")
+    lines += savedata_batch_lines()
+    lines.append("echo 終わり。このフォルダ（out_*.txt・errors_*.txt・screens-shots・screens-sounds.txt・torres\\suspend.src・torres\\clear.src）をまとめて持ち帰る")
+    lines.append("pause")
+    return ("\r\n".join(lines) + "\r\n").encode("cp932")
+
+
+def savedata_batch_lines():
+    """Src.exe に torres\\savedata.eve を 2 回開かせ、中断データとクリアデータの見本を作る（SRC_EXE は呼ぶ側で決める）"""
+    return [
+        "rem セーブデータの見本（#1577）。手順は SRC.Sharp/Compat/PROBE.md の手順 6",
+        "echo [1/2] 1 ターン目の味方フェイズで、マップのコマンド「中断」。torres\\suspend.src の名前で保存する",
+        "start \"\" /wait \"%SRC_EXE%\" \"%~dp0torres\\savedata.eve\"",
+        "pause",
+        "echo [2/2] 1 ターン目の味方フェイズで、マップのコマンド「ターン終了」。インターミッションの「データセーブ」で torres\\clear.src の名前で保存し、「終了」で終える",
+        "start \"\" /wait \"%SRC_EXE%\" \"%~dp0torres\\savedata.eve\"",
+        "pause",
+    ]
+
+
+def make_savedata_batch():
+    """セーブデータの見本だけを作るバッチファイル（Shift_JIS・CRLF）"""
+    lines = [
+        "@echo off",
+        "rem セーブデータの見本（#1577）だけを作る。手順は SRC.Sharp/Compat/PROBE.md",
+        "rem 次の行の SRC_EXE を、Src.exe（Ver.2.2.33）の場所に直してから実行する",
+        "set SRC_EXE=C:\\SRC\\Src.exe",
+    ] + savedata_batch_lines()
     return ("\r\n".join(lines) + "\r\n").encode("cp932")
 
 
@@ -233,7 +282,21 @@ def import_results(argv):
         print(f"取り込んだ: {folder}/{eve}")
     print(f"{count} ケースを {EXPECTED} に取り込んだ")
     import_screens(source)
+    import_savedata(source)
     return 0
+
+
+def import_savedata(source):
+    """セーブデータの見本（torres\\suspend.src・clear.src）を、Shift_JIS のまま savedata-expected/ に写す"""
+    for names, dest_name in SAVEDATA_SAMPLES:
+        found = [n for n in names if os.path.exists(os.path.join(source, "torres", n))]
+        if not found:
+            print(f"飛ばした（見本が無い）: torres/{names[0]}")
+            continue
+        os.makedirs(SAVEDATA_EXPECTED, exist_ok=True)
+        dest = os.path.join(SAVEDATA_EXPECTED, dest_name)
+        shutil.copyfile(os.path.join(source, "torres", found[0]), dest)
+        print(f"取り込んだ: torres/{found[0]} → {dest}")
 
 
 def import_screens(source):

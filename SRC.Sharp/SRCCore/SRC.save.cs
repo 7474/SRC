@@ -66,7 +66,8 @@ namespace SRCCore
 
     public partial class SRC
     {
-        // セーブデータの形式は JSON で、元の SRC（SRC.bas の SaveData・LoadData・DumpData・RestoreData）の形式には合わせない。
+        // セーブデータは JSON で書き、元の SRC（SRC.bas の SaveData・LoadData・DumpData・RestoreData）の形式では書かない。
+        // 読むときは、JSON のほかに元の SRC の形式も読む（SRC.save.vb.cs。#1577）。
         // 保存・読み込みの前後の処理（データの読み込み・イベントデータの読み込み・リンクとパラメータの復元・画面の更新）は
         // 元の SRC と同じ順に行う
 
@@ -109,8 +110,16 @@ namespace SRCCore
         {
             try
             {
+                var bytes = ReadAllBytes(stream);
+                if (VbSaveDataReader.IsVbSaveData(bytes))
+                {
+                    // 元の SRC の形式（#1577）
+                    LoadVbData(VbSaveDataReader.FromBytes(bytes));
+                    return;
+                }
+
                 // 元の SRC は版（SaveDataVersion）で古い形式を読み替える。SRC# の JSON はまだ版で読み方を変えないので、版は見ない
-                var data = JsonConvert.DeserializeObject<SRCSaveData>((new StreamReader(stream).ReadToEnd()));
+                var data = JsonConvert.DeserializeObject<SRCSaveData>(ReadJson(bytes));
                 GUI.SetLoadImageSize((data.Titles.Count * 2 + 5));
                 Titles = data.Titles;
 
@@ -157,6 +166,12 @@ namespace SRCCore
                 // 追加されたシステム側イベントデータの読み込み
                 Event.LoadEventData("", load_mode: "");
                 GUI.DisplayLoadingProgress();
+            }
+            catch (SaveDataTerminateException ex)
+            {
+                // 元の SRC はメッセージを出してから End で終わる（「ロード中にエラーが発生しました」は出さない）
+                LogError(ex);
+                TerminateSRC();
             }
             catch (Exception ex)
             {
@@ -269,6 +284,15 @@ namespace SRCCore
             {
                 return FileSystem.ToAbsolutePath(ScenarioPath, path);
             }
+            return FindInScenarioFolder(path) ?? path;
+        }
+
+        /// <summary>
+        /// 別のフォルダの絶対パスを、先頭から区切りを 1 つずつ外して、いまのシナリオのフォルダで探す（長く一致するものを先に）。
+        /// 見つからなければ null
+        /// </summary>
+        private string FindInScenarioFolder(string path)
+        {
             var parts = FileSystem.NormalizePath(path).Split('\\', StringSplitOptions.RemoveEmptyEntries);
             for (var i = 0; i < parts.Length; i++)
             {
@@ -278,7 +302,90 @@ namespace SRCCore
                     return candidate;
                 }
             }
-            return path;
+            return null;
+        }
+
+        /// <summary>
+        /// SRC# の JSON の中断データを読み、ユニットなどのリンクとパラメータまでを戻す（VB: RestoreData の PList.UpdateSupportMod の前まで）。
+        /// </summary>
+        private RestoredSuspendData RestoreJsonData(byte[] bytes, bool quick_load)
+        {
+            // 元の SRC は版（SaveDataVersion）で古い形式を読み替える。SRC# の JSON はまだ版で読み方を変えないので、版は見ない
+            var data = JsonConvert.DeserializeObject<SRCSuspendData>(ReadJson(bytes));
+            var savedScenarioFileName = ResolveSavedPath(data.ScenarioFileName);
+            var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, savedScenarioFileName);
+            if (scenario_file_is_different)
+            {
+                // ウィンドウのタイトルを設定（セーブデータ側のシナリオ名）
+                GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(PathResolver.ToNative(savedScenarioFileName));
+            }
+            ScenarioFileName = savedScenarioFileName;
+            Titles = data.Titles;
+
+            // 使用するデータをロード
+            if (!quick_load)
+            {
+                GUI.SetLoadImageSize(data.Titles.Count * 2 + 5);
+                foreach (var title in Titles)
+                {
+                    IncludeData(title);
+                }
+
+                // ローカルデータの読みこみ
+                LoadLocalData();
+                Event.LoadEventData(ScenarioFileName, "リストア");
+                GUI.DisplayLoadingProgress();
+            }
+            else
+            {
+                if (scenario_file_is_different)
+                {
+                    Event.LoadEventData(ScenarioFileName, "リストア");
+                }
+            }
+
+            // 変数とユニットなどはイベントデータを読み込んだ後で戻す（元の SRC の RestoreEventData・PList.Restore など）。
+            // イベントデータの読み込みが定義した変数（DebugMode の Option(デバッグ)）は、元の SRC と同じくセーブデータの変数で置き換わる
+            Turn = data.Turn;
+            TotalTurn = data.TotalTurn;
+            Money = data.Money;
+            Event.GlobalVariableList = data.GlobalVariableList;
+            Event.LocalVariableList = data.LocalVariableList;
+            Event.Restore(data);
+            PList = data.PList;
+            UList = data.UList;
+            IList = data.IList;
+            PList.Restore(this);
+            UList.Restore(this);
+            IList.Restore(this);
+            Map.Restore(data);
+            // マップの表示位置は SetMapSize によるリセットの後で復元する（VB: RestoreMapData）
+            GUI.MapX = data.MapX;
+            GUI.MapY = data.MapY;
+
+            // 中断データのリンクとパラメータを戻す（VB: RestoreData の RestoreLinkInfo・RestoreParameter・UpdateSupportMod）
+            // ユニットのステータスを更新してアビリティの残り使用回数を戻す（VB: Unit.RestoreLinkInfo）
+            UList.Items.ToList().ForEach(x => x.RestoreLinkInfo());
+            PList.Items.ToList().ForEach(x => x.Update());
+            // ＳＰ・気力・霊力は最大値が特殊能力で変わるので、特殊能力を設定した後に設定し直す（VB: PList.RestoreParameter）
+            // ユニットのＨＰ・ＥＮは JSON の値をそのまま使う（VB: UList.RestoreParameter）
+            PList.Items.ToList().ForEach(x => x.RestoreParameter());
+
+            // BGMファイルを相対パスまたはファイル名で検索
+            var bgmFile = !string.IsNullOrEmpty(data.BGMFileName)
+                ? Sound.SearchMidiFile("(" + data.BGMFileName + ")")
+                    ?? Sound.SearchMidiFile("(" + Path.GetFileName(data.BGMFileName) + ")")
+                : null;
+            return new RestoredSuspendData
+            {
+                BGMFile = bgmFile,
+                RepeatMode = data.RepeatMode,
+                KeepBGM = data.KeepBGM,
+                BossBGM = data.BossBGM,
+                HasRandomSeries = true,
+                RndSeed = data.RndSeed,
+                RndIndex = data.RndIndex,
+            };
         }
 
         public void RestoreData(string fname, SRCSaveKind saveKind)
@@ -312,84 +419,25 @@ namespace SRCCore
                     GUI.OpenNowLoadingForm();
                 }
 
-                // 元の SRC は版（SaveDataVersion）で古い形式を読み替える。SRC# の JSON はまだ版で読み方を変えないので、版は見ない
-                var data = JsonConvert.DeserializeObject<SRCSuspendData>((new StreamReader(stream).ReadToEnd()));
-                var savedScenarioFileName = ResolveSavedPath(data.ScenarioFileName);
-                var scenario_file_is_different = !FileSystem.RelativePathEuqals(ScenarioPath, ScenarioFileName, savedScenarioFileName);
-                if (scenario_file_is_different)
-                {
-                    // ウィンドウのタイトルを設定（セーブデータ側のシナリオ名）
-                    GUI.MainFormText = "SRC# - " + Path.GetFileNameWithoutExtension(PathResolver.ToNative(savedScenarioFileName));
-                }
-                ScenarioFileName = savedScenarioFileName;
-                Titles = data.Titles;
+                var bytes = ReadAllBytes(stream);
+                var restored = VbSaveDataReader.IsVbSaveData(bytes)
+                    // 元の SRC の形式（#1577）
+                    ? RestoreVbData(VbSaveDataReader.FromBytes(bytes), quick_load)
+                    : RestoreJsonData(bytes, quick_load);
 
-                // 使用するデータをロード
-                if (!quick_load)
-                {
-                    GUI.SetLoadImageSize(data.Titles.Count * 2 + 5);
-                    foreach (var title in Titles)
-                    {
-                        IncludeData(title);
-                    }
-
-                    // ローカルデータの読みこみ
-                    LoadLocalData();
-                    Event.LoadEventData(ScenarioFileName, "リストア");
-                    GUI.DisplayLoadingProgress();
-                }
-                else
-                {
-                    if (scenario_file_is_different)
-                    {
-                        Event.LoadEventData(ScenarioFileName, "リストア");
-                    }
-                }
-
-                // 変数とユニットなどはイベントデータを読み込んだ後で戻す（元の SRC の RestoreEventData・PList.Restore など）。
-                // イベントデータの読み込みが定義した変数（DebugMode の Option(デバッグ)）は、元の SRC と同じくセーブデータの変数で置き換わる
-                Turn = data.Turn;
-                TotalTurn = data.TotalTurn;
-                Money = data.Money;
-                Event.GlobalVariableList = data.GlobalVariableList;
-                Event.LocalVariableList = data.LocalVariableList;
-                Event.Restore(data);
-                PList = data.PList;
-                UList = data.UList;
-                IList = data.IList;
-                PList.Restore(this);
-                UList.Restore(this);
-                IList.Restore(this);
-                Map.Restore(data);
-                // マップの表示位置は SetMapSize によるリセットの後で復元する（VB: RestoreMapData）
-                GUI.MapX = data.MapX;
-                GUI.MapY = data.MapY;
-
-                // 中断データのリンクとパラメータを戻す（VB: RestoreData の RestoreLinkInfo・RestoreParameter・UpdateSupportMod）
-                // ユニットのステータスを更新してアビリティの残り使用回数を戻す（VB: Unit.RestoreLinkInfo）
-                UList.Items.ToList().ForEach(x => x.RestoreLinkInfo());
-                PList.Items.ToList().ForEach(x => x.Update());
-                // ＳＰ・気力・霊力は最大値が特殊能力で変わるので、特殊能力を設定した後に設定し直す（VB: PList.RestoreParameter）
-                // ユニットのＨＰ・ＥＮは JSON の値をそのまま使う（VB: UList.RestoreParameter）
-                PList.Items.ToList().ForEach(x => x.RestoreParameter());
                 // 支援効果による修正値はセーブしないので、パラメータを戻した後に計算し直す（VB: RestoreData の PList.UpdateSupportMod）
                 PList.UpdateSupportMod();
 
                 // ＢＧＭ関連の設定を復元
-                // BGMファイルを相対パスまたはファイル名で検索
-                var bgmFile = !string.IsNullOrEmpty(data.BGMFileName)
-                    ? Sound.SearchMidiFile("(" + data.BGMFileName + ")")
-                        ?? Sound.SearchMidiFile("(" + Path.GetFileName(data.BGMFileName) + ")")
-                    : null;
-                if (!string.IsNullOrEmpty(bgmFile))
+                if (!string.IsNullOrEmpty(restored.BGMFile))
                 {
                     // BGMが必ず切り替わる状態で変更してから関連設定を復元する
                     Sound.KeepBGM = false;
                     Sound.BossBGM = false;
-                    Sound.ChangeBGM(bgmFile);
-                    Sound.RepeatMode = data.RepeatMode;
-                    Sound.KeepBGM = data.KeepBGM;
-                    Sound.BossBGM = data.BossBGM;
+                    Sound.ChangeBGM(restored.BGMFile);
+                    Sound.RepeatMode = restored.RepeatMode;
+                    Sound.KeepBGM = restored.KeepBGM;
+                    Sound.BossBGM = restored.BossBGM;
                 }
                 else
                 {
@@ -397,12 +445,12 @@ namespace SRCCore
                     Sound.StopBGM();
                 }
 
-                // 乱数系列を復元
-                if (!Expression.IsOptionDefined("デバッグ") && !Expression.IsOptionDefined("乱数系列非保存"))
+                // 乱数系列を復元（元の SRC の形式で、乱数系列を書いていない古いものは戻さない）
+                if (restored.HasRandomSeries && !Expression.IsOptionDefined("デバッグ") && !Expression.IsOptionDefined("乱数系列非保存"))
                 {
-                    GeneralLib.RndSeed = data.RndSeed;
+                    GeneralLib.RndSeed = restored.RndSeed;
                     GeneralLib.RndReset();
-                    GeneralLib.RndIndex = data.RndIndex;
+                    GeneralLib.RndIndex = restored.RndIndex;
                 }
 
                 if (!quick_load)
@@ -410,10 +458,10 @@ namespace SRCCore
                     GUI.DisplayLoadingProgress();
                 }
 
-                // 元の SRC はここでセーブファイルを 2 回読み直し（イベントデータは SkipEventData で読み飛ばす）、
+                // 元の SRC はＢＧＭと乱数系列を戻してから、セーブファイルを 2 回読み直し（イベントデータは SkipEventData で読み飛ばす）、
                 // リンク（PList・IList・UList の RestoreLinkInfo）とパラメータ（RestoreParameter）を戻してから PList.UpdateSupportMod を呼ぶ。
-                // SRC# は上の Unit.RestoreLinkInfo・Pilot.RestoreParameter・PList.UpdateSupportMod で同じことをする。
-                // アイテムのユニットは JSON の UnitId で引くので IList の分は要らない
+                // SRC# は上の RestoreJsonData（JSON）・RestoreVbData（元の SRC の形式）と PList.UpdateSupportMod で、ＢＧＭより先に同じことをする。
+                // JSON から読むときは、アイテムのユニットは JSON の UnitId で引くので IList の分は要らない
 
                 // 背景書き換え
                 // 元の SRC はマップがロードに伴って変化したとき（または背景に書き込みがあったとき）だけ背景を書き直す。
@@ -494,12 +542,50 @@ namespace SRCCore
                     IsLastSaveDataQuikSaveStream = true;
                 }
             }
+            catch (SaveDataTerminateException ex)
+            {
+                // 元の SRC はメッセージを出してから End で終わる（「ロード中にエラーが発生しました」は出さない）
+                LogError(ex);
+                TerminateSRC();
+            }
             catch (Exception ex)
             {
                 LogError(ex);
                 GUI.ErrorMessage("ロード中にエラーが発生しました");
                 TerminateSRC();
             }
+        }
+
+        private static byte[] ReadAllBytes(Stream stream)
+        {
+            using (var ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                return ms.ToArray();
+            }
+        }
+
+        // SRC# の JSON は UTF-8（BOM があれば除く）
+        private static string ReadJson(byte[] bytes)
+        {
+            using (var reader = new StreamReader(new MemoryStream(bytes)))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        /// <summary>中断データから読み、読んだ後の共通の処理（ＢＧＭ・乱数系列）に渡す値</summary>
+        private sealed class RestoredSuspendData
+        {
+            /// <summary>見つけたＢＧＭのファイル（見つからなければ空か null）</summary>
+            public string BGMFile { get; set; } = "";
+            public bool RepeatMode { get; set; }
+            public bool KeepBGM { get; set; }
+            public bool BossBGM { get; set; }
+            /// <summary>乱数系列を持っているか（元の SRC の古い形式は持たない）</summary>
+            public bool HasRandomSeries { get; set; }
+            public int RndSeed { get; set; }
+            public int RndIndex { get; set; }
         }
     }
 }

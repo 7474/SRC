@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace SRCCore.Items
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Items
+    public partial class Items
     {
         // アイテムＩＤ作成用カウンタ
         [JsonProperty]
