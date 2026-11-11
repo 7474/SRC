@@ -14,6 +14,7 @@ SRC#（`SRC.Sharp`）は、元の SRC（VB5。`SRC/SRC_20121125`）を C# に移
 | [issue-breakdown.md](./issue-breakdown.md) | Epic ごとの Issue の分解（2026-02） |
 | [coverage-porting-bugs.md](./coverage-porting-bugs.md) | カバレッジを上げる過程で見つけた移植の不具合と、その修正（2026-10） |
 | [vb-map/](./vb-map/README.md) | VB 版の手続きと C# の対応表と、突き合わせの進み具合。SRCCore の TODO・XXX・コメントアウトされたコードの一覧（[todo.md](./vb-map/todo.md)）（2026-11〜。7474/SRC#1498） |
+| [vb-savedata.md](./vb-savedata.md) | 元の SRC のセーブデータ（クリアデータ・中断データ）の形式と、版による読み替え（2026-11。7474/SRC#1577） |
 | [../conversion-log.md](../conversion-log.md) | VB から C# に変換したときに使ったツール |
 
 ## 状態
