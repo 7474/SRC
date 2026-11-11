@@ -152,3 +152,5 @@ SRC# は、読み込みの入口（`SRC.save.cs` の `LoadData`・`RestoreData`�
 - 新ＧＵＩのモード（`LoadGlobalVariables` の `SetNewGUIMode`）は、SRC# が新ＧＵＩに対応していないので見ない
 - クリアデータのつながりを戻すとき（`LoadLinkInfo`）、パイロットの名前に「(」が無い・ユニットのＩＤに「:」が無いと、元の SRC は `Left$` の長さが負になって実行時エラーで読み込みを打ち切る。SRC# の `Strings.Left` は空文字列を返すので、その 2 か所はエラーにして同じく打ち切る
 - 書き出しは SRC# の JSON だけ（元の SRC の形式では書かない）
+
+テストは `SRCCoreTests` の `VbSaveDataTests`（元の SRC のコードから組み立てた見本。版の違いも）と、`SRCRenderTests` の `CompatSaveDataTests`（検証用のシナリオの各話の中断を元の SRC の形式で書いて再開し、続きを進める。実機で作った見本 `SRC.Sharp/Compat/savedata-expected/` があれば、それも読んで SRC# の状態と比べる）。実機で見本を作る手順は [PROBE.md](../../../SRC.Sharp/Compat/PROBE.md) の手順 6。テストの見本は `SRCCore/TestLib/VbSaveDataWriter.cs`（元の SRC の書き出しの手続きを写したもの。ゲームは使わない）で書く。
