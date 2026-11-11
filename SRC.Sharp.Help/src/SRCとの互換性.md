@@ -158,6 +158,7 @@ ShowImage・ClearImage コマンドは、元の SRC と同じく動きます。
 - ChangeTerrain コマンドで地形を変えたマスのレイヤーの画像を消さずに描き直します（元の SRC は表示から消えました。コードから読んだもの）（[ChangeTerrainコマンド](ChangeTerrainコマンド.md)）。
 - ステージの途中で SaveData コマンドでセーブしたデータを読み込んだとき、味方以外・破棄されたパイロットを読み込みません（元の SRC は味方として読み込み直します。コードから読んだもの）（[SaveDataコマンド](SaveDataコマンド.md)）。
 - ChangeLayer・SetWindowFrameWidth コマンドの引数の誤りのメッセージは、そのコマンドの名前で出します（元の SRC は別のコマンドの名前を出します）。
+- RankUp コマンドで、最大ＨＰ・最大ＥＮが 0 のユニットのランクを変えると、ＨＰ・ＥＮの割合を 100% として扱います（元の SRC は 0 での割り算になります。コードから読んだもの）（[RankUpコマンド](RankUpコマンド.md)）。
 - Open コマンドで開いたファイルは、SRCCompatibilityMode の設定によって UTF-8 で読み書きできます（[Openコマンド](Openコマンド.md)）。
 
 ### イベント・変数・関数
