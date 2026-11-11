@@ -81,7 +81,7 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Expression.bas](Expression_bas.md) | 25 | 0 | 18 | 7 | 0 | 0 | 0 |
 | [FileDialog.bas](FileDialog_bas.md) | 2 | 0 | 0 | 0 | 0 | 2 | 0 |
 | [Flash.bas](Flash_bas.md) | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
-| [GUI.bas](GUI_bas.md) | 71 | 0 | 35 | 26 | 2 | 8 | 0 |
+| [GUI.bas](GUI_bas.md) | 71 | 0 | 35 | 28 | 0 | 8 | 0 |
 | [GeneralLib.bas](GeneralLib_bas.md) | 33 | 0 | 15 | 14 | 0 | 4 | 0 |
 | [Graphics.bas](Graphics_bas.md) | 25 | 0 | 7 | 9 | 0 | 9 | 0 |
 | [Help.bas](Help_bas.md) | 7 | 0 | 3 | 4 | 0 | 0 | 0 |
@@ -102,7 +102,7 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [MultiSelectListBox.frm](MultiSelectListBox_frm.md) | 10 | 0 | 8 | 2 | 0 | 0 | 0 |
 | [NonPilotData.cls](NonPilotData_cls.md) | 6 | 0 | 5 | 1 | 0 | 0 | 0 |
 | [NonPilotDataList.cls](NonPilotDataList_cls.md) | 9 | 0 | 7 | 1 | 0 | 1 | 0 |
-| [NowLoading.frm](NowLoading_frm.md) | 1 | 0 | 0 | 0 | 1 | 0 | 0 |
+| [NowLoading.frm](NowLoading_frm.md) | 1 | 0 | 0 | 1 | 0 | 0 | 0 |
 | [Pilot.cls](Pilot_cls.md) | 67 | 0 | 52 | 11 | 0 | 4 | 0 |
 | [PilotData.cls](PilotData_cls.md) | 36 | 0 | 30 | 5 | 0 | 1 | 0 |
 | [PilotDataList.cls](PilotDataList_cls.md) | 9 | 0 | 7 | 1 | 0 | 1 | 0 |
@@ -113,7 +113,7 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [SpecialPowerData.cls](SpecialPowerData_cls.md) | 13 | 0 | 9 | 4 | 0 | 0 | 0 |
 | [SpecialPowerDataList.cls](SpecialPowerDataList_cls.md) | 7 | 0 | 5 | 1 | 0 | 1 | 0 |
 | [Status.bas](Status_bas.md) | 7 | 0 | 2 | 3 | 0 | 2 | 0 |
-| [Susie.bas](Susie_bas.md) | 1 | 0 | 0 | 0 | 1 | 0 | 0 |
+| [Susie.bas](Susie_bas.md) | 1 | 0 | 0 | 1 | 0 | 0 | 0 |
 | [TerrainData.cls](TerrainData_cls.md) | 11 | 0 | 8 | 2 | 0 | 1 | 0 |
 | [TerrainDataList.cls](TerrainDataList_cls.md) | 16 | 0 | 11 | 4 | 0 | 1 | 0 |
 | [Title.frm](Title_frm.md) | 1 | 0 | 0 | 0 | 0 | 1 | 0 |
@@ -124,4 +124,4 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Units.cls](Units_cls.md) | 25 | 0 | 15 | 1 | 0 | 9 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 0 | 0 | 0 | 0 | 1 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 0 | 2 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 0 | 854 | 329 | 5 | 145 | 0 |
+| 計 | 1333 | 0 | 854 | 333 | 1 | 145 | 0 |
