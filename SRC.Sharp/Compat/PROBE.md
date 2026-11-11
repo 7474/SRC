@@ -6,7 +6,7 @@
 - SRC# では `SRCRenderTests` の `CompatProbeTests` が同じシナリオを流す（CI で毎回）。実機の出力（期待値）が `probe-expected/` にあれば比べ、無ければ SRC# の出力を書き出すだけで成功する
 - Src.exe を動かすのは手作業なので、1 回の実行（下の「[Windows で流す手順](#windows-で流す手順)」）で必要な値をすべて取れるようにしている。画面と音の見比べ（#1553。[SCREENS.md](SCREENS.md)）のスクリーンショットも、同じ作業の続きで撮る
 
-**未確認**：このシナリオはまだ元の SRC で流していない。元の SRC（`SRC/SRC_20121125` の `CmdData.cls`・`Expression.bas`）にあるコマンドと関数だけを使い、書式をそのソースに合わせて書いたが、元の SRC で動くかは確かめていない。
+2026-11-12 に、日本語版の Windows 11 で元の SRC（Ver.2.2.33）に流し、出力を `probe-expected/` に置いた（環境は `probe-expected/environment.txt`）。12 のケースとも最後まで流れ、Src.exe は落ちなかった。画面と音の見比べ（#1553）はまだ撮っていない。
 
 ## 置き場所と構成
 
@@ -81,6 +81,19 @@
    - 画面と音：`dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatScreensTests"` の後に `python3 SRC.Sharp/Compat/screens_report.py` で並べた一覧（`SRC.Sharp/Compat/out/screens-report/index.html`）を作る（CI の `compat-screens` の成果物にも出る）。配置・色・文字・大きさの違いと、音の違いを [SCREENS.md の「見比べた結果」](SCREENS.md#見比べた結果) に書き、直すか互換性の一覧に載せる
 
 出力に足りない項目があれば、シナリオに足して、もう一度だけ流す（#1550 の「必要なもの」）。
+
+### 自動で流す（プローブだけ）
+
+手順 4 は、書き出したフォルダの `run_probe_auto.ps1` で自動で流せる。12 のケースを順に Src.exe で開き、エラーのフォーム（タイトルが「エラー」）が出たら文字の欄を読み取って `errors_<イベント>.txt` に書き、フォームを閉じて続ける（手で OK を押すのと同じく、イベントは次のラベルへ進む）。Src.exe が自分で終わるのを待つので、その間は Src.exe の画面に触れない。
+
+```bat
+powershell -NoProfile -ExecutionPolicy Bypass -File run_probe_auto.ps1 -SrcExe C:\SRC\Src.exe
+```
+
+- PowerShell の `Start-Process` で Src.exe を開くと、コマンドラインの末尾に空白が付く。元の SRC の `Main` は `Mid$(Command$(), 2, Len(Command$()) - 2)` で前後の `"` を外すので、末尾の `"` が残って `.eve` と判定できず、ファイルの選択ダイアログになる。`run_probe_auto.ps1` は `ProcessStartInfo` で開く
+- 取り込み（`import`）は、エラーのダイアログの 1 行目のファイル名からフォルダを除く（流した場所をリポジトリに残さない）
+
+流すたびに変わる値（`関数.Font.色` など。`known-differences.txt`）があるので、違いを調べるときは 2 回以上流して見比べる。
 
 
 ## SRC# で流す
@@ -186,33 +199,45 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 
 出力の項目: `到達`・`ユニット.前`・`ユニット.誤り`・`ユニット.後`（読めたか）・`ユニット.誤り.<情報>`・`パイロット.*`・`終了`。
 
-## SRC# の出力と、元の SRC のコードから読んだ値の違い
+## 実機で確かめた結果（2026-11-12）
 
-実機で流す前に、SRC# の出力と元の SRC のコードを見比べて、違いそうだと分かったもの（推定。実機の出力で確かめる）。
+元の SRC の実機の出力（`probe-expected/`）と SRC# を比べて分かった違いと、その扱い。SRC# を実機に合わせたもののほか、わざと残した違い・比べても意味の無いものは `probe-expected/known-differences.txt` に理由を書いた。
 
-| 項目 | SRC# | 元の SRC のコードから読んだ値 |
+| 項目 | 元の SRC の実機 | 扱い |
 |---|---|---|
-| `日付.DiffTime.*` | 秒の差（75・86400・-75） | `Second(d2 - d1)`（差の秒の桁だけ。15・0・15） |
-| `Format.*`（名前の付いた書式・日付の書式文字） | #1564 の後で、VB5 の `Format$` の資料と日本語版の Windows の地域の設定から読んだ値に直した（`SRCCore/VB/VbFormat.cs`）。下の「SRC# の Format の推定」の表の値を実機で確かめる | 同じ |
-| `VB5.実行時エラー.*` | #1564 の後で、元の SRC と同じく「`<エラー>`」にした（`Chr(-1)`・`LSet(-1)` は値を書く） | VB の関数の引数の誤り（エラー 5）で「イベントデータが不正です」 |
-| `VB5.あふれ.\のLong`・`\のLongの上限+1` | #1564 の後で、`Mod` と同じく「`<エラー>`」にした | `\` は両辺を Long に丸める。エラー 6 か、桁が落ちるか（`OverflowCheck=-1`）は実機で確かめる |
-| `VB5.数値.08`（`(1)`）・`04`（`&H10`）・`09`（`￥100`）・`11`（`1-`）の `.加算` | 0 | `StrToDbl` は `IsNumeric` が真なら `CDbl` で読む（-1・16・100・-1。#1545） |
-| `probe-errors/data-numeric` | `&H1000` を誤り（最大ＨＰの設定が間違っています。）にする | `IsNumeric` が真なので `CLng` で 4096 と読む |
+| `VB5.数値.*`（`&H10`・`&HFFFF`・`&O17`・`(1)`・`￥100`・`\100`・`1-`） | 数値として読む（16・65535・15・-1・100・100・-1）。`&H`・`&O` は符号なし。`IsNumeric("(1)")` は SRC の `IsNumber` が `(` を除くので 0 | 合わせた（`Conversions.TryParseVbNumber`） |
+| `probe-errors/data-numeric` | `&H1000` を 4096 と読み、ダイアログを出さない | 合わせた（同上） |
+| `VB5.数値.26.Int`・`Format.0.負の0` | `-0` は「0」。`Format(-0.4,"0")` も「0」 | 合わせた（`FormatNum`・`VbFormat`） |
+| `VB5.浮動小数点.*`（`10 ^ 400`・`1e308 * 10`・`(-8) ^ 0.5`・`Sqr(-1)`） | エラー（イベントデータが不正です） | 合わせた（`VBMath.Checked`） |
+| `VB5.あふれ.RankUp`・`IncreaseMorale` | エラー（Integer のあふれ） | 合わせた（`VBMath.CInt`） |
+| `VB5.範囲外.Incr`・`.Ride`・`.UnSet` | どれも「イベントデータが不正です」。Src.exe は落ちない | 合わせた（引数の無いコマンドの引数を読むとエラー。`CmdData.GetArgRaw`） |
+| `probe-errors/eve-unknown` のダイアログ | エラーの行を、書いたとおり（`Call` を付けずに）出す | 合わせた（`Event.DisplayEventErrorMessage`） |
+| `関数.LeftB.半端` | 途中で切れた 2 バイト文字は「・」 | 合わせた（`Strings` の Shift_JIS の変換） |
+| `Format.*` | 下の表 | 合わせた（`VbFormat`） |
+| `日付.DiffTime.*` | 15・0・15（秒の桁だけ。コードから読んだとおり） | わざと残した違い（ヘルプの SRCとの互換性） |
+| `関数.InStrRevB` | 5（バイトの位置は 4） | わざと残した違い（同上） |
+| `システム変数.セーブデータファイル名` | `.src` | わざと残した違い（セーブファイルに互換性は無い） |
+| `VB5.実行時エラー.Chr(-1)` | 0xFF の 1 バイト | 比べない（Shift_JIS の文字でない） |
+| `関数.Font.色` | 流すたびに `#000000` と `#FFFFFF` が入れ替わる | 比べない |
 
-### SRC# の Format の推定（#1564）
+`VB5.実行時エラー.*` の推定（`Chr(-1)` だけエラーにならない。`String(3,"")` はエラー）は、実機と同じだった。`\`・`Mod` の Long のあふれも、`\` と `Mod` の両方がエラーで、SRC#（#1564 の後）と同じだった。`VB5.SelectCase.*`・`VB5.ForEach.*` も、SRC# と同じだった。
 
-`Format` の資料（[Format 関数](https://learn.microsoft.com/ja-jp/office/vba/language/reference/user-interface-help/format-function-visual-basic-for-applications)）で決まらず、SRC#（`SRCCore/VB/VbFormat.cs`）が推定で書いている値。実機の値が違えば、`VbFormat.cs` と `SRCCoreTests/Expressions/FormatVbMatchTests.cs` を直す。
+### Format（#1564 の推定と実機）
 
-| 項目 | SRC# の値 | 推定の根拠 |
+| 項目 | #1564 の推定 | 元の SRC の実機 |
 |---|---|---|
-| `Format.Currency`・`Format.Currency.負` | `\1,235`・`-\1,235` | 日本の地域の設定（通貨の小数部 0 桁・負の数は記号の前に `-`）。通貨記号は Shift_JIS の 0x5C（円記号の字形）で書き出され、`probe_pack.py import` で `\` になる |
-| `Format.Medium Date` | `12/11/25` | 資料は「ホスト アプリケーションの言語バージョンで適切な中間の長さ」とだけ書く。日本語版は `yy/mm/dd` と読んだ |
-| `Format.Medium Time`・`Format.時刻.AMPM` | `01:04 午後`・`1 午後` | 資料は「12 時間の書式と AM/PM」。日本の地域の設定の午前・午後の文字列を、時刻の後ろに付けると読んだ |
-| `Format.Yes/No`・`True/False`・`On/Off` | `No,Yes`・`False,True`・`Off,On` | 日本語版でも英語の文言と読んだ |
-| `Format.General Number` | `1234.5` | 桁区切りなし。`CStr` と同じ 15 桁の書き方と読んだ |
-| `Format.日付.ggge`・`gge`・`ge`・`ee`・`令和` | `平成24年`・`平24`・`H24`・`24`・`令和1年` | 日本語版の書式文字（年号・和暦の年）。令和を知っているか（ランタイムが Windows の暦の情報を使うか）は実機で確かめる |
-| `Format.日付.aaaa`・`ddd`・`dddd` | `日曜日`・`日`・`日曜日` | 日本語版の書式文字 `aaa`・`aaaa` と、地域の設定の曜日の名前 |
-| `Format.日付.mmm`・`mmmm` | `11`・`11月` | 日本の地域の設定の月の省略名（数字だけ）と名前 |
-| `Format.日付.q y w ww` | `4 330 1 48` | 週は日曜日から、1 月 1 日を含む週を第 1 週とする（Format の既定） |
-| `Format.空の書式.文字列` | `01.50` | 書式が空なら、文字列の引数をそのまま返す |
-| `Format.書式の種類.0d`・`No.0`・`Level 0` | `12d`・`0o.0`・`L33v33l 0` | 最初の書式文字で書式の種類（数値・日付・文字列）が決まり、後のほかの種類の書式文字は文字のまま。`n`・`e` は日付の書式文字なので、`No.0`・`Level 0` は日付の書式（5 は 1900/01/04 0:00。e は明治 33 年の 33）になると読んだ（OLE Automation の `VarFormat` の実装として Wine の varformat.c を参考にした） |
+| `Format.Currency`・`.負` | `\1,235`・`-\1,235` | 同じ |
+| `Format.Medium Date` | `12/11/25` | `12-11-25` |
+| `Format.Medium Time`・`Format.時刻.AMPM` | `01:04 午後`・`1 午後` | 同じ |
+| `Format.Long Time`・`General Date`（時刻）・`日付.c`・`時刻.ttttt` | `13:04:05` | `13:04:05 `（終わりに空白） |
+| `Format.Yes/No`・`True/False`・`On/Off` | 英語 | 同じ |
+| `Format.General Number` | `1234.5` | 同じ |
+| `Format.日付.ggge`・`gge`・`ge`・`ee` | `平成24年`・`平24`・`H24`・`24` | 同じ |
+| `Format.日付.令和` | `令和1年` | `平成31年`（VB5 のランタイムは令和を知らない） |
+| `Format.日付.aaa`・`aaaa` | `日`・`日曜日` | 同じ |
+| `Format.日付.ddd`・`dddd` | `日`・`日曜日` | `Sun`・`Sunday` |
+| `Format.日付.mmm`・`mmmm` | `11`・`11月` | `Nov`・`November` |
+| `Format.日付.q y w ww` | `4 330 1 48` | 同じ |
+| `Format.空の書式.文字列` | `01.50` | `1.5`（数値の文字列は数値として書く） |
+| `Format.書式の種類.0d` | `12d` | 同じ |
+| `Format.書式の種類.No.0`・`Level 0` | `0o.0`・`L33v33l 0` | エラー（日付の書式の中の `0`） |

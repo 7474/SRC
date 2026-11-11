@@ -449,12 +449,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            str_result = GeneralLib.FormatNum(lnum + rnum);
+                            str_result = GeneralLib.FormatNum(VBMath.Checked(lnum + rnum));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            num_result = lnum + rnum;
+                            num_result = VBMath.Checked(lnum + rnum);
                         }
 
                         break;
@@ -483,12 +483,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            str_result = GeneralLib.FormatNum(lnum - rnum);
+                            str_result = GeneralLib.FormatNum(VBMath.Checked(lnum - rnum));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            num_result = lnum - rnum;
+                            num_result = VBMath.Checked(lnum - rnum);
                         }
 
                         break;
@@ -517,12 +517,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            str_result = GeneralLib.FormatNum(lnum * rnum);
+                            str_result = GeneralLib.FormatNum(VBMath.Checked(lnum * rnum));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            num_result = lnum * rnum;
+                            num_result = VBMath.Checked(lnum * rnum);
                         }
 
                         break;
@@ -550,7 +550,7 @@ namespace SRCCore.Expressions
 
                         if (rnum != 0d)
                         {
-                            num_result = lnum / rnum;
+                            num_result = VBMath.Checked(lnum / rnum);
                         }
                         else
                         {
@@ -670,12 +670,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            str_result = GeneralLib.FormatNum(Math.Pow(lnum, rnum));
+                            str_result = GeneralLib.FormatNum(VBMath.Checked(Math.Pow(lnum, rnum)));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            num_result = Math.Pow(lnum, rnum);
+                            num_result = VBMath.Checked(Math.Pow(lnum, rnum));
                         }
 
                         break;

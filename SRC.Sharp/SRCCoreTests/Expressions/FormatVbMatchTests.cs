@@ -47,13 +47,13 @@ namespace SRCCore.Expressions.Tests
 
         // 名前の付いた日付・時刻の書式（日本語版の Windows の地域の設定）
         [TestMethod]
-        [DataRow("Format(\"2012/11/25 13:04:05\",\"General Date\")", "2012/11/25 13:04:05")]
+        [DataRow("Format(\"2012/11/25 13:04:05\",\"General Date\")", "2012/11/25 13:04:05 ")]   // 時刻の終わりに空白（元の SRC の実機。#1550）
         [DataRow("Format(\"2012/11/25\",\"General Date\")", "2012/11/25")]
-        [DataRow("Format(\"13:04:05\",\"General Date\")", "13:04:05")]
+        [DataRow("Format(\"13:04:05\",\"General Date\")", "13:04:05 ")]
         [DataRow("Format(\"2012/11/25\",\"Long Date\")", "2012年11月25日")]
         [DataRow("Format(\"2012/11/25\",\"Short Date\")", "2012/11/25")]
-        [DataRow("Format(\"2012/11/25\",\"Medium Date\")", "12/11/25")]
-        [DataRow("Format(\"13:04:05\",\"Long Time\")", "13:04:05")]
+        [DataRow("Format(\"2012/11/25\",\"Medium Date\")", "12-11-25")]
+        [DataRow("Format(\"13:04:05\",\"Long Time\")", "13:04:05 ")]
         [DataRow("Format(\"13:04:05\",\"Medium Time\")", "01:04 午後")]
         [DataRow("Format(\"13:04:05\",\"Short Time\")", "13:04")]
         [DataRow("Format(41238,\"Long Date\")", "2012年11月25日")]   // 数値は日付のシリアル値
@@ -71,12 +71,12 @@ namespace SRCCore.Expressions.Tests
         [DataRow("YYYY-MM-DD", "2012-11-25")]       // 書式文字の大文字・小文字は区別しない
         [DataRow("aaa", "日")]
         [DataRow("aaaa", "日曜日")]
-        [DataRow("ddd", "日")]
-        [DataRow("dddd", "日曜日")]
+        [DataRow("ddd", "Sun")]                      // ddd・dddd・mmm・mmmm は英語（元の SRC の実機。#1550）
+        [DataRow("dddd", "Sunday")]
         [DataRow("ddddd", "2012/11/25")]
         [DataRow("dddddd", "2012年11月25日")]
-        [DataRow("mmm", "11")]
-        [DataRow("mmmm", "11月")]
+        [DataRow("mmm", "Nov")]
+        [DataRow("mmmm", "November")]
         [DataRow("ggge年", "平成24年")]
         [DataRow("gge", "平24")]
         [DataRow("ge", "H24")]
@@ -92,8 +92,8 @@ namespace SRCCore.Expressions.Tests
         [DataRow("hh:nn am/pm", "01:04 pm")]
         [DataRow("h A/P", "1 P")]
         [DataRow("h AMPM", "1 午後")]
-        [DataRow("ttttt", "13:04:05")]
-        [DataRow("c", "2012/11/25 13:04:05")]
+        [DataRow("ttttt", "13:04:05 ")]
+        [DataRow("c", "2012/11/25 13:04:05 ")]
         [DataRow("\"y\"yyyy", "y2012")]             // 引用符の中は文字のまま
         [DataRow("\\yyyyy", "y2012")]               // \ の次の 1 文字は文字のまま
         public void UserDefinedDateFormat(string format, string expected)
@@ -104,9 +104,10 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void DateFormat_Reiwa()
+        public void DateFormat_NoReiwa()
         {
-            Assert.AreEqual("令和1年5月1日", Create().GetValueAsString("Format(\"2019/05/01\",\"ggge年m月d日\")"));
+            // VB5 のランタイムは令和を知らない（元の SRC の実機。#1550）
+            Assert.AreEqual("平成31年5月1日", Create().GetValueAsString("Format(\"2019/05/01\",\"ggge年m月d日\")"));
             Assert.AreEqual("平成31年4月30日", Create().GetValueAsString("Format(\"2019/04/30\",\"ggge年m月d日\")"));
         }
 
@@ -132,10 +133,27 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void EmptyFormat_ReturnsStringAsIs()
+        public void EmptyFormat_WritesNumberAsNumber()
         {
-            // 書式が空なら、文字列の引数をそのまま返す
-            Assert.AreEqual("01.50", Create().GetValueAsString("Format(\"01.50\",\"\")"));
+            // 書式が空なら、数値の文字列は数値として書き、ほかの文字列はそのまま返す（元の SRC の実機。#1550）
+            Assert.AreEqual("1.5", Create().GetValueAsString("Format(\"01.50\",\"\")"));
+            Assert.AreEqual("abc", Create().GetValueAsString("Format(\"abc\",\"\")"));
+        }
+
+        [TestMethod]
+        public void DateFormat_NumberPlaceholder_IsError()
+        {
+            // 日付の書式の中の 0・# はエラー（元の SRC の実機で Format(5,"No.0") は実行時エラー。#1550）
+            Assert.ThrowsExactly<System.ArgumentException>(() => SRCCore.VB.VbFormat.Format("5", "No.0"));
+            Assert.ThrowsExactly<System.ArgumentException>(() => SRCCore.VB.VbFormat.Format("5", "Level 0"));
+        }
+
+        [TestMethod]
+        public void NumberFormat_NegativeRoundedToZero_HasNoSign()
+        {
+            // 負の数が丸めて 0 になるときは「-」を付けない（元の SRC の実機。#1550）
+            Assert.AreEqual("0", Create().GetValueAsString("Format(-0.4,\"0\")"));
+            Assert.AreEqual("-1", Create().GetValueAsString("Format(-0.6,\"0\")"));
         }
 
         [TestMethod]
