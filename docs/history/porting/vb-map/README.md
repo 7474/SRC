@@ -6,6 +6,7 @@ VB 版（`SRC/SRC_20121125`）の手続き（Function・Sub・Property）を、C
 - CI（`port-map-check`）の `python3 tools/vb_port_map.py --check` で、VB のすべての手続きが表にあり、状態の書き方が正しいか、[TODO・コメントアウトの一覧](todo.md)に「未確認」が無いかを確かめる
 - 対象は `SRC/SRC_20121125` の `*.bas`・`*.cls`・`*.frm` のすべての手続き。選んで外した手続きは無い（手続きの外にあるものは下の「表に載っていないもの」）
 - 「C#」の候補は名前だけで選んでいる。`（見つからない）` は名前の違う C# に移したか、移していないもの。突き合わせのときに直す
+- 「一致」の 50 件を抜き取って読み直した結果は [resample-1556.md](resample-1556.md)（7474/SRC#1556。食い違いは 2 件で、打ち切った）
 
 ## 突き合わせの手順
 
@@ -71,14 +72,14 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [BattleConfigDataList.cls](BattleConfigDataList_cls.md) | 7 | 0 | 6 | 0 | 0 | 1 | 0 |
 | [COM.bas](COM_bas.md) | 18 | 0 | 7 | 11 | 0 | 0 | 0 |
 | [CmdData.cls](CmdData_cls.md) | 195 | 0 | 139 | 50 | 1 | 5 | 0 |
-| [Command.bas](Command_bas.md) | 52 | 0 | 29 | 23 | 0 | 0 | 0 |
+| [Command.bas](Command_bas.md) | 52 | 0 | 28 | 24 | 0 | 0 | 0 |
 | [Configuration.frm](Configuration_frm.md) | 7 | 0 | 4 | 3 | 0 | 0 | 0 |
 | [Dialog.cls](Dialog_cls.md) | 7 | 0 | 4 | 1 | 0 | 2 | 0 |
 | [DialogData.cls](DialogData_cls.md) | 7 | 0 | 4 | 1 | 0 | 2 | 0 |
 | [DialogDataList.cls](DialogDataList_cls.md) | 7 | 0 | 5 | 1 | 0 | 1 | 0 |
 | [Effect.bas](Effect_bas.md) | 23 | 0 | 21 | 2 | 0 | 0 | 0 |
 | [Event.bas](Event_bas.md) | 31 | 0 | 15 | 9 | 0 | 7 | 0 |
-| [Expression.bas](Expression_bas.md) | 25 | 0 | 18 | 7 | 0 | 0 | 0 |
+| [Expression.bas](Expression_bas.md) | 25 | 0 | 17 | 8 | 0 | 0 | 0 |
 | [FileDialog.bas](FileDialog_bas.md) | 2 | 0 | 0 | 0 | 0 | 2 | 0 |
 | [Flash.bas](Flash_bas.md) | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
 | [GUI.bas](GUI_bas.md) | 71 | 0 | 35 | 28 | 0 | 8 | 0 |
@@ -124,4 +125,4 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Units.cls](Units_cls.md) | 25 | 0 | 15 | 1 | 0 | 9 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 0 | 0 | 0 | 0 | 1 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 0 | 2 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 0 | 854 | 333 | 1 | 145 | 0 |
+| 計 | 1333 | 0 | 852 | 335 | 1 | 145 | 0 |
