@@ -6,6 +6,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <Version>$(SrcSharpLibraryVersion)</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- .NET のコード分析（netstandard では既定で無効）。グローバリゼーションの規則を .editorconfig でエラーにしている -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>

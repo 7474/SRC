@@ -317,7 +317,7 @@ namespace SRCCore
                     }
 
                     buf = buf + " " + buf2;
-                    if (buf.ToLower().EndsWith(".mid"))
+                    if (buf.ToLowerInvariant().EndsWith(".mid", StringComparison.Ordinal))
                     {
                         break;
                     }

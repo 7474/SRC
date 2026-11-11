@@ -52,7 +52,7 @@ namespace SRCCore.Expressions.Tests
         public void Cos_Pi_ReturnsMinusOne()
         {
             var exp = Create();
-            var pi = Math.PI.ToString("R");
+            var pi = Math.PI.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
             Assert.AreEqual(-1d, exp.GetValueAsDouble($"Cos({pi})"), 1e-10);
         }
 
@@ -71,7 +71,7 @@ namespace SRCCore.Expressions.Tests
         public void Sin_PiOver2_ReturnsOne()
         {
             var exp = Create();
-            var piOver2 = (Math.PI / 2).ToString("R");
+            var piOver2 = (Math.PI / 2).ToString("R", System.Globalization.CultureInfo.InvariantCulture);
             Assert.AreEqual(1d, exp.GetValueAsDouble($"Sin({piOver2})"), 1e-10);
         }
 
@@ -90,7 +90,7 @@ namespace SRCCore.Expressions.Tests
         public void Tan_PiOver4_ReturnsOne()
         {
             var exp = Create();
-            var piOver4 = (Math.PI / 4).ToString("R");
+            var piOver4 = (Math.PI / 4).ToString("R", System.Globalization.CultureInfo.InvariantCulture);
             Assert.AreEqual(1d, exp.GetValueAsDouble($"Tan({piOver4})"), 1e-10);
         }
 

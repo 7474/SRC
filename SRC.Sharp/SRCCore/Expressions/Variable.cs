@@ -100,7 +100,7 @@ namespace SRCCore.Expressions
             }
             finally
             {
-                SRC.ExpressionLog.TraceWithCaller("<", etype.ToString().Substring(0, 1), var_name, str_result, num_result.ToString());
+                SRC.ExpressionLog.TraceWithCaller("<", etype.ToString().Substring(0, 1), var_name, str_result, num_result.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -804,7 +804,7 @@ namespace SRCCore.Expressions
         // 変数の値を設定
         public void SetVariable(string var_name, ValueType etype, string str_value, double num_value)
         {
-            SRC.ExpressionLog.TraceWithCaller(">", etype.ToString().Substring(0, 1), var_name, str_value, num_value.ToString());
+            SRC.ExpressionLog.TraceWithCaller(">", etype.ToString().Substring(0, 1), var_name, str_value, num_value.ToString(CultureInfo.InvariantCulture));
 
             VarData new_var;
             string vname = var_name;

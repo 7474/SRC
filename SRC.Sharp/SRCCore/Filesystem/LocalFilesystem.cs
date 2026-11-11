@@ -31,7 +31,7 @@ namespace SRCCore.Filesystem
         public bool PathEquals(string a, string b)
         {
             // 先頭の `\` は PathCombine で取り除いてから比べる
-            return NormalizePath(PathCombine(a)).ToLower() == NormalizePath(PathCombine(b)).ToLower();
+            return NormalizePath(PathCombine(a)).ToLowerInvariant() == NormalizePath(PathCombine(b)).ToLowerInvariant();
         }
 
         public bool FileExists(params string[] paths)
@@ -211,7 +211,7 @@ namespace SRCCore.Filesystem
 
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
         {
-            return ToRelativePath(scenarioPath, a).ToLower() == ToRelativePath(scenarioPath, b).ToLower();
+            return ToRelativePath(scenarioPath, a).ToLowerInvariant() == ToRelativePath(scenarioPath, b).ToLowerInvariant();
         }
 
         public bool IsAbsolutePath(string path)
@@ -335,7 +335,7 @@ namespace SRCCore.Filesystem
         public LocalFileSystemPath(string basePath)
         {
             var tmpBasePath = basePath.Replace("\\", "/");
-            if (!tmpBasePath.EndsWith("/"))
+            if (!tmpBasePath.EndsWith("/", StringComparison.Ordinal))
             {
                 tmpBasePath += "/";
             }
@@ -344,7 +344,7 @@ namespace SRCCore.Filesystem
 
         public bool MatchRoot(string entryName)
         {
-            return entryName.Replace("\\", "/").StartsWith(BasePath);
+            return entryName.Replace("\\", "/").StartsWith(BasePath, StringComparison.Ordinal);
         }
 
         public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions)
@@ -375,7 +375,7 @@ namespace SRCCore.Filesystem
         {
             var archivePath = entryName.Replace("\\", "/");
             var isAbsolute = Path.IsPathRooted(entryName);
-            if (isAbsolute && !archivePath.StartsWith(BasePath))
+            if (isAbsolute && !archivePath.StartsWith(BasePath, StringComparison.Ordinal))
             {
                 return null;
             }
@@ -471,7 +471,7 @@ namespace SRCCore.Filesystem
         public LocalFileSystemArchive(string basePath, ZipArchive archive, string root)
         {
             var tmpBasePath = basePath.Replace("\\", "/");
-            if (!tmpBasePath.EndsWith("/"))
+            if (!tmpBasePath.EndsWith("/", StringComparison.Ordinal))
             {
                 tmpBasePath += "/";
             }
@@ -490,7 +490,7 @@ namespace SRCCore.Filesystem
         }
         public bool MatchRoot(string entryName)
         {
-            return entryName.Replace("\\", "/").StartsWith(BasePath);
+            return entryName.Replace("\\", "/").StartsWith(BasePath, StringComparison.Ordinal);
         }
 
         private void WaitForEntryMap()
@@ -507,7 +507,7 @@ namespace SRCCore.Filesystem
             var archivePath = entryName.Replace("\\", "/");
             if (Path.IsPathRooted(entryName))
             {
-                if (!archivePath.StartsWith(BasePath))
+                if (!archivePath.StartsWith(BasePath, StringComparison.Ordinal))
                 {
                     return null;
                 }
@@ -546,7 +546,7 @@ namespace SRCCore.Filesystem
             }
             var regBase = Regex.Escape(Path.Combine(entryPath, searchPattern).Replace("\\", "/"))
                     .Replace(@"\*", "[^/]*").Replace(@"\?", ".");
-            var dirRegex = new Regex("^" + regBase + (regBase.EndsWith("/") ? "" : "/") + "$", RegexOptions.IgnoreCase);
+            var dirRegex = new Regex("^" + regBase + (regBase.EndsWith("/", StringComparison.Ordinal) ? "" : "/") + "$", RegexOptions.IgnoreCase);
             var fileRegex = new Regex("^" + regBase + "$", RegexOptions.IgnoreCase);
 
             // zip の中の名前（Root を除いたもの）を basePath のパスにする
@@ -567,7 +567,7 @@ namespace SRCCore.Filesystem
             if (enumerationOptions.HasFlag(EntryOption.File))
             {
                 files = names
-                    .Where(x => !x.EndsWith("/") && fileRegex.IsMatch(x))
+                    .Where(x => !x.EndsWith("/", StringComparison.Ordinal) && fileRegex.IsMatch(x))
                     .Select(ToPath)
                     .ToList();
             }

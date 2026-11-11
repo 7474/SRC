@@ -1,6 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Lib;
 using SRCCore.Logging;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.Expressions.Functions
@@ -139,7 +140,7 @@ namespace SRCCore.Expressions.Functions
                    etype.ToString().Substring(0, 1),
                    @params[1] + "(" + string.Join(",", Enumerable.Range(2, pcount - 1).Select(x => @params[x])) + ")",
                    str_result,
-                   num_result.ToString()
+                   num_result.ToString(SrcCulture.Japanese)
                 );
             }
 

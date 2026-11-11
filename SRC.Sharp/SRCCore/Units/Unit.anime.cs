@@ -377,7 +377,7 @@ namespace SRCCore.Units
                                 // カットインの表示
                                 if (wait_time > 0)
                                 {
-                                    animepart = (wait_time / 100d) + ";" + animepart;
+                                    animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                                     wait_time = 0;
                                     need_refresh = false;
                                 }
@@ -409,7 +409,7 @@ namespace SRCCore.Units
                                 // 画面処理コマンド
                                 if (wait_time > 0)
                                 {
-                                    animepart = (wait_time / 100d) + ";" + animepart;
+                                    animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                                     wait_time = 0;
                                     need_refresh = false;
                                 }
@@ -553,7 +553,7 @@ namespace SRCCore.Units
                         {
                             if (wait_time > 0)
                             {
-                                animepart = (wait_time / 100d) + ";" + animepart;
+                                animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                                 wait_time = 0;
                             }
 

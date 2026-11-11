@@ -1,4 +1,5 @@
 using SRCCore.Logging;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.Expressions.Functions
@@ -20,7 +21,7 @@ namespace SRCCore.Expressions.Functions
                res.ToString().Substring(0, 1),
                GetType().Name + "(" + string.Join(",", Enumerable.Range(1, pcount).Select(x => @params[x])) + ")",
                str_result,
-               num_result.ToString()
+               num_result.ToString(SrcCulture.Japanese)
             );
             return res;
         }

@@ -134,7 +134,7 @@ namespace SRCCore.Expressions
             new Term(),
             new WindowWidth(),
             new WindowHeight(),
-        }.ToDictionary(x => x.Name.ToLower());
+        }.ToDictionary(x => x.Name.ToLowerInvariant());
 
         // 式を関数呼び出しとして構文解析し、実行
         public ValueType CallFunction(string expr, ValueType etype, out string str_result, out double num_result)
@@ -332,7 +332,7 @@ namespace SRCCore.Expressions
             if (!isUserFunc)
             {
                 IFunction systemFunc;
-                if (systemFunctionMap.TryGetValue(fname.ToLower(), out systemFunc))
+                if (systemFunctionMap.TryGetValue(fname.ToLowerInvariant(), out systemFunc))
                 {
                     // 元の SRC: システム関数の Case はどれも Exit Function で抜ける。
                     // UndefinedType を返したときも、ユーザー定義関数は探さずにそのまま返す（EvalTerm が GetVariable に回す）
@@ -472,7 +472,7 @@ namespace SRCCore.Expressions
                     etype.ToString().Substring(0, 1),
                     fname + "(" + string.Join(",", Enumerable.Range(1, pcount).Select(x => @params[x])) + ")",
                     str_result,
-                    num_result.ToString()
+                    num_result.ToString(SrcCulture.Japanese)
                     );
             }
         }

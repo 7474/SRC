@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Drawing;
+using System.Globalization;
 
 namespace SRCCore.Extensions.Tests
 {
@@ -32,7 +33,19 @@ namespace SRCCore.Extensions.Tests
         [DataRow("128,255,0,0")]
         public void FromHexString_SameAsColorTranslator(string str)
         {
-            var expected = ColorTranslator.FromHtml(str);
+            // ColorTranslator は実行する環境のリストの区切り（ドイツ語では「;」）で「255,0,0」を分ける。
+            // SRC# は日本語の設定（「,」）に固定しているので、比べる側も「,」の設定で求める（7474/SRC#1554）
+            var culture = CultureInfo.CurrentCulture;
+            Color expected;
+            try
+            {
+                CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+                expected = ColorTranslator.FromHtml(str);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = culture;
+            }
             var actual = ColorExtension.FromHexString(str);
             Assert.AreEqual(expected, actual);
         }

@@ -662,7 +662,7 @@ namespace SRCCore.Units
                 case "Ｓ防御":
                 case "切り払い":
                     {
-                        SkillLevelRet = MainPilot().SkillLevel(sname, 1.ToString());
+                        SkillLevelRet = MainPilot().SkillLevel(sname, "1");
                         break;
                     }
 

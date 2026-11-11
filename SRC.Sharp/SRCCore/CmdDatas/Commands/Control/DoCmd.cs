@@ -18,7 +18,7 @@ namespace SRCCore.CmdDatas.Commands
                     return EventData.NextID;
 
                 case 3:
-                    switch (GetArg(2)?.ToLower() ?? "")
+                    switch (GetArg(2)?.ToLowerInvariant() ?? "")
                     {
                         case "while":
                             if (GetArgAsLong(3) != 0)

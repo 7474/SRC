@@ -25,7 +25,7 @@ namespace SRCCore.Units
                 {
                     // 元の SRC（StartFixCommand・TryFix）と同じく先頭から順に見て、「!名称」が修理装置の名称と違うか、
                     // 名称が修理装置と同じものが 1 つでもあれば修理できない（「!」を複数書くと、どの修理装置でも修理できない）
-                    if (fname.StartsWith("!") && fname != "!" + fixFname)
+                    if (fname.StartsWith("!", StringComparison.Ordinal) && fname != "!" + fixFname)
                     {
                         canFix = false;
                         break;

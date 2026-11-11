@@ -9,6 +9,7 @@ using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -264,9 +265,9 @@ namespace SRCCore.Maps
             // マップ画像のファイル名を作成
             var fnames = new string[]
             {
-                SRC.FileSystem.PathCombine("Bitmap", "Map", tbmpname, string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
-                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
-                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
+                SRC.FileSystem.PathCombine("Bitmap", "Map", tbmpname, string.Format(CultureInfo.InvariantCulture, "{0}{1:0000}.bmp", tbmpname, tbitmap)),
+                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format(CultureInfo.InvariantCulture, "{0}{1:0000}.bmp", tbmpname, tbitmap)),
+                SRC.FileSystem.PathCombine("Bitmap", "Map", string.Format(CultureInfo.InvariantCulture, "{0}{1}.bmp", tbmpname, tbitmap)),
             };
             // ビットマップを探す。元の SRC と同じく、フォルダ（シナリオのフォルダ、ExtDataPath、ExtDataPath2、SRC のフォルダ）ごとに
             // 「Bitmap\Map\"ビットマップ名"」「Bitmap\Map」の順に探す
@@ -355,7 +356,7 @@ namespace SRCCore.Maps
                         // 3行目がマップサイズ
                         buf = reader.GetLine();
                         var mapWH = buf.Split(',');
-                        SetMapSize(int.Parse(mapWH[0]), int.Parse(mapWH[1]));
+                        SetMapSize(int.Parse(mapWH[0], CultureInfo.InvariantCulture), int.Parse(mapWH[1], CultureInfo.InvariantCulture));
                     }
 
                     // マップデータを読み込み
@@ -373,8 +374,8 @@ namespace SRCCore.Maps
                             }
                             var cell = MapData[x, y];
                             var cellTrrainBitmapNo = buf.Split(',');
-                            cell.TerrainType = int.Parse(cellTrrainBitmapNo[0]);
-                            cell.BitmapNo = int.Parse(cellTrrainBitmapNo[1]);
+                            cell.TerrainType = int.Parse(cellTrrainBitmapNo[0], CultureInfo.InvariantCulture);
+                            cell.BitmapNo = int.Parse(cellTrrainBitmapNo[1], CultureInfo.InvariantCulture);
                             if (SRC.TDList.IsDefined(cell.TerrainType))
                             {
                                 cell.UnderTerrain = SRC.TDList.Item(cell.TerrainType);
@@ -402,8 +403,8 @@ namespace SRCCore.Maps
                                 {
                                     buf = reader.GetLine();
                                     var layerData = buf.Split(',');
-                                    var layerType = int.Parse(layerData[0]);
-                                    var layerBitmapNo = int.Parse(layerData[1]);
+                                    var layerType = int.Parse(layerData[0], CultureInfo.InvariantCulture);
+                                    var layerBitmapNo = int.Parse(layerData[1], CultureInfo.InvariantCulture);
                                     var cell = MapData[x, y];
                                     cell.LayerType = layerType;
                                     cell.LayerBitmapNo = layerBitmapNo;

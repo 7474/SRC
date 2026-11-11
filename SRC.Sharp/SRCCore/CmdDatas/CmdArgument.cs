@@ -24,7 +24,7 @@ namespace SRCCore.CmdDatas
 
         public override string ToString()
         {
-            return $"{strArg}({lngArg}L)({dblArg}d)";
+            return string.Format(VB.SrcCulture.Japanese, "{0}({1}L)({2}d)", strArg, lngArg, dblArg);
         }
     }
 }

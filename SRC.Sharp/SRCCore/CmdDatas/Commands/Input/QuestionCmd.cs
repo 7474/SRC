@@ -34,7 +34,7 @@ namespace SRCCore.CmdDatas.Commands
                     answerList.Add(new ListBoxItem
                     {
                         Text = buf,
-                        ListItemID = (eventId - EventData.ID).ToString(),
+                        ListItemID = (eventId - EventData.ID).ToString(SrcCulture.Japanese),
                         ListItemFlag = false,
                     });
                 }

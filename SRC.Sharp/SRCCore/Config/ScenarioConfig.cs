@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SRCCore.Filesystem;
 using SRCCore.VB;
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -294,7 +295,7 @@ namespace SRCCore.Config
             if (v.Origin == Origin.Ini)
             {
                 var line = iniLines[v.IniLine];
-                var cr = line.EndsWith("\r") ? "\r" : "";
+                var cr = line.EndsWith("\r", StringComparison.Ordinal) ? "\r" : "";
                 var indent = line.Substring(0, line.Length - line.TrimStart().Length);
                 iniLines[v.IniLine] = indent + v.IniName + "=" + iniValue + cr;
                 // 同じ行を指す項目（[Option] の項目とプロパティ）もそろえる
@@ -312,7 +313,7 @@ namespace SRCCore.Config
                         v.JsonValue.Value = ComposedConfig.TryParseBool(value, out var b) ? b : (object)value;
                         break;
                     case JTokenType.Integer:
-                        v.JsonValue.Value = long.TryParse(value, out var n) ? n : (object)value;
+                        v.JsonValue.Value = long.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var n) ? n : (object)value;
                         break;
                     default:
                         v.JsonValue.Value = value;
@@ -355,15 +356,15 @@ namespace SRCCore.Config
             {
                 case nameof(ISystemConfig.ImageBufferSize):
                     // 元の SRC は 5 枚未満を 5 枚にする
-                    return int.TryParse(value, out var num) ? Math.Max(5, num).ToString() : value;
+                    return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var num) ? Math.Max(5, num).ToString(CultureInfo.InvariantCulture) : value;
                 case nameof(ISystemConfig.MaxImageBufferByteSize):
                     // 元の SRC は MB で指定し、1 MB 未満を 1 MB にする
-                    return double.TryParse(value, out var mb) ? VBMath.CLng(Math.Max(1d, mb) * 1024 * 1024).ToString() : value;
+                    return double.TryParse(value, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var mb) ? VBMath.CLng(Math.Max(1d, mb) * 1024 * 1024).ToString(CultureInfo.InvariantCulture) : value;
                 case nameof(LocalFileConfig.SoundVolume):
-                    return int.TryParse(value, out var volume) ? Math.Max(0, Math.Min(100, volume)).ToString() : value;
+                    return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var volume) ? Math.Max(0, Math.Min(100, volume)).ToString(CultureInfo.InvariantCulture) : value;
                 case nameof(ISystemConfig.MessageWait):
                     // 元の SRC は上限（手動送り）を超えたら上限にする
-                    return int.TryParse(value, out var wait) ? MessageSpeeds.Normalize(wait).ToString() : value;
+                    return int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var wait) ? MessageSpeeds.Normalize(wait).ToString(CultureInfo.InvariantCulture) : value;
                 default:
                     return ComposedConfig.TryParseBool(value, out var b) ? (b ? "true" : "false") : value;
             }
@@ -379,7 +380,7 @@ namespace SRCCore.Config
                 case nameof(ISystemConfig.MessageWait):
                     return value;
                 case nameof(ISystemConfig.MaxImageBufferByteSize):
-                    return long.TryParse(value, out var bytes) ? (bytes / 1024 / 1024).ToString() : value;
+                    return long.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var bytes) ? (bytes / 1024 / 1024).ToString(CultureInfo.InvariantCulture) : value;
                 default:
                     return ComposedConfig.TryParseBool(value, out var b) ? (b ? "On" : "Off") : value;
             }

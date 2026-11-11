@@ -123,7 +123,7 @@ namespace SRCCore.Pilots
                 {
                     results.Add(first);
                 }
-                results.AddRange(Items.Where(x => x.ID.StartsWith(gid + ":")));
+                results.AddRange(Items.Where(x => x.ID.StartsWith(gid + ":", StringComparison.Ordinal)));
             }
             return results;
         }

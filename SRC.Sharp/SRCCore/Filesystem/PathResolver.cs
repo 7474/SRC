@@ -95,7 +95,7 @@ namespace SRCCore.Filesystem
                 }
                 current = Path.Combine(current, actual);
             }
-            if (string.IsNullOrEmpty(root) && current.StartsWith("./"))
+            if (string.IsNullOrEmpty(root) && current.StartsWith("./", StringComparison.Ordinal))
             {
                 current = current.Substring(2);
             }

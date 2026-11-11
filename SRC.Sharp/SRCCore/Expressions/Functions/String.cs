@@ -69,11 +69,11 @@ namespace SRCCore.Expressions.Functions
         {
             if (format.IndexOf('<') >= 0)
             {
-                return value.ToLower();
+                return value.ToLowerInvariant();
             }
             if (format.IndexOf('>') >= 0)
             {
-                return value.ToUpper();
+                return value.ToUpperInvariant();
             }
             return value;
         }

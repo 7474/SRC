@@ -17,7 +17,7 @@ namespace SRCCore.CmdDatas.Commands
                     break;
 
                 case 3:
-                    switch (GetArg(2)?.ToLower() ?? "")
+                    switch (GetArg(2)?.ToLowerInvariant() ?? "")
                     {
                         case "while":
                             if (GetArgAsLong(3) == 0)

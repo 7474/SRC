@@ -297,7 +297,7 @@ namespace SRCCore
 
                     // ターンイベント
                     Event.IsUnitCenter = false;
-                    Event.HandleEvent("ターン", Turn.ToString(), "味方");
+                    Event.HandleEvent("ターン", Turn.ToString(SrcCulture.Japanese), "味方");
                     if (IsScenarioFinished)
                     {
                         GUI.UnlockGUI();
@@ -476,7 +476,7 @@ namespace SRCCore
                 }
 
                 // ターンイベント
-                Event.HandleEvent("ターン", Turn.ToString(), uparty);
+                Event.HandleEvent("ターン", Turn.ToString(SrcCulture.Japanese), uparty);
                 if (IsScenarioFinished)
                 {
                     GUI.UnlockGUI();

@@ -9,6 +9,7 @@ using SRCCore.Pilots;
 using SRCCore.VB;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace SRCCore.Units
 {
@@ -683,22 +684,22 @@ namespace SRCCore.Units
         private string SubstituteMessageVariables(string msg, string wname)
         {
             // ユニット名 / 機体
-            if (msg.IndexOf("$(ユニット)") >= 0 || msg.IndexOf("$(機体)") >= 0)
+            if (msg.IndexOf("$(ユニット)", StringComparison.Ordinal) >= 0 || msg.IndexOf("$(機体)", StringComparison.Ordinal) >= 0)
             {
                 var buf = Nickname;
                 if (buf.IndexOf('(') >= 0)
                 {
                     buf = buf.Substring(0, buf.IndexOf('('));
                 }
-                if (buf.IndexOf("専用") >= 0)
+                if (buf.IndexOf("専用", StringComparison.Ordinal) >= 0)
                 {
-                    buf = buf.Substring(buf.IndexOf("専用") + 2);
+                    buf = buf.Substring(buf.IndexOf("専用", StringComparison.Ordinal) + 2);
                 }
                 msg = msg.Replace("$(ユニット)", buf).Replace("$(機体)", buf);
             }
 
             // パイロット名
-            if (msg.IndexOf("$(パイロット)") >= 0)
+            if (msg.IndexOf("$(パイロット)", StringComparison.Ordinal) >= 0)
             {
                 var buf = MainPilot().get_Nickname(false);
                 if (buf.IndexOf('(') >= 0)
@@ -709,7 +710,7 @@ namespace SRCCore.Units
             }
 
             // 武器名
-            if (msg.IndexOf("$(武器)") >= 0)
+            if (msg.IndexOf("$(武器)", StringComparison.Ordinal) >= 0)
             {
                 var buf = wname;
                 Expression.ReplaceSubExpression(ref buf);
@@ -729,7 +730,7 @@ namespace SRCCore.Units
             }
 
             // 損傷率
-            if (msg.IndexOf("$(損傷率)") >= 0)
+            if (msg.IndexOf("$(損傷率)", StringComparison.Ordinal) >= 0)
             {
                 msg = msg.Replace("$(損傷率)", SrcFormatter.Format(100 * (MaxHP - HP) / MaxHP));
             }
@@ -751,22 +752,22 @@ namespace SRCCore.Units
             if (t is object)
             {
                 // 相手ユニット名 / 相手機体
-                if (msg.IndexOf("$(相手ユニット)") >= 0 || msg.IndexOf("$(相手機体)") >= 0)
+                if (msg.IndexOf("$(相手ユニット)", StringComparison.Ordinal) >= 0 || msg.IndexOf("$(相手機体)", StringComparison.Ordinal) >= 0)
                 {
                     var buf = t.Nickname;
                     if (buf.IndexOf('(') >= 0)
                     {
                         buf = buf.Substring(0, buf.IndexOf('('));
                     }
-                    if (buf.IndexOf("専用") >= 0)
+                    if (buf.IndexOf("専用", StringComparison.Ordinal) >= 0)
                     {
-                        buf = buf.Substring(buf.IndexOf("専用") + 2);
+                        buf = buf.Substring(buf.IndexOf("専用", StringComparison.Ordinal) + 2);
                     }
                     msg = msg.Replace("$(相手ユニット)", buf).Replace("$(相手機体)", buf);
                 }
 
                 // 相手パイロット名
-                if (msg.IndexOf("$(相手パイロット)") >= 0)
+                if (msg.IndexOf("$(相手パイロット)", StringComparison.Ordinal) >= 0)
                 {
                     var buf = t.MainPilot().get_Nickname(false);
                     if (buf.IndexOf('(') >= 0)
@@ -777,7 +778,7 @@ namespace SRCCore.Units
                 }
 
                 // 相手武器名
-                if (msg.IndexOf("$(相手武器)") >= 0)
+                if (msg.IndexOf("$(相手武器)", StringComparison.Ordinal) >= 0)
                 {
                     string buf;
                     if (1 <= tw && tw <= t.CountWeapon())
@@ -800,7 +801,7 @@ namespace SRCCore.Units
                 }
 
                 // 相手損傷率
-                if (msg.IndexOf("$(相手損傷率)") >= 0)
+                if (msg.IndexOf("$(相手損傷率)", StringComparison.Ordinal) >= 0)
                 {
                     msg = msg.Replace("$(相手損傷率)", SrcFormatter.Format(100 * (t.MaxHP - t.HP) / t.MaxHP));
                 }
