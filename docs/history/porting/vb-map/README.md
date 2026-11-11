@@ -71,14 +71,14 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [BattleConfigDataList.cls](BattleConfigDataList_cls.md) | 7 | 0 | 6 | 0 | 0 | 1 | 0 |
 | [COM.bas](COM_bas.md) | 18 | 0 | 7 | 11 | 0 | 0 | 0 |
 | [CmdData.cls](CmdData_cls.md) | 195 | 0 | 139 | 50 | 1 | 5 | 0 |
-| [Command.bas](Command_bas.md) | 52 | 0 | 29 | 23 | 0 | 0 | 0 |
+| [Command.bas](Command_bas.md) | 52 | 0 | 28 | 24 | 0 | 0 | 0 |
 | [Configuration.frm](Configuration_frm.md) | 7 | 0 | 4 | 3 | 0 | 0 | 0 |
 | [Dialog.cls](Dialog_cls.md) | 7 | 0 | 4 | 1 | 0 | 2 | 0 |
 | [DialogData.cls](DialogData_cls.md) | 7 | 0 | 4 | 1 | 0 | 2 | 0 |
 | [DialogDataList.cls](DialogDataList_cls.md) | 7 | 0 | 5 | 1 | 0 | 1 | 0 |
 | [Effect.bas](Effect_bas.md) | 23 | 0 | 21 | 2 | 0 | 0 | 0 |
 | [Event.bas](Event_bas.md) | 31 | 0 | 15 | 9 | 0 | 7 | 0 |
-| [Expression.bas](Expression_bas.md) | 25 | 0 | 18 | 7 | 0 | 0 | 0 |
+| [Expression.bas](Expression_bas.md) | 25 | 0 | 17 | 8 | 0 | 0 | 0 |
 | [FileDialog.bas](FileDialog_bas.md) | 2 | 0 | 0 | 0 | 0 | 2 | 0 |
 | [Flash.bas](Flash_bas.md) | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
 | [GUI.bas](GUI_bas.md) | 71 | 0 | 35 | 28 | 0 | 8 | 0 |
@@ -124,4 +124,4 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Units.cls](Units_cls.md) | 25 | 0 | 15 | 1 | 0 | 9 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 0 | 0 | 0 | 0 | 1 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 0 | 2 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 0 | 854 | 333 | 1 | 145 | 0 |
+| 計 | 1333 | 0 | 852 | 335 | 1 | 145 | 0 |

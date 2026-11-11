@@ -1417,6 +1417,7 @@ namespace SRCCore.Expressions
         }
 
         // 項を評価
+        // 「"…"」「`…`」「(…」の項を数値として求められたときは、VB と同じく StrToDbl（数値に読めなければ 0。NaN・無限大も 0）で数値にする（7474/SRC#1556）
         public ValueType EvalTerm(string expr, ValueType etype, out string str_result, out double num_result)
         {
             ValueType EvalTermRet = ValueType.UndefinedType;
@@ -1462,7 +1463,7 @@ namespace SRCCore.Expressions
 
                         if (etype != ValueType.StringType)
                         {
-                            num_result = Conversions.ToDouble(str_result);
+                            num_result = GeneralLib.StrToDbl(str_result);
                         }
 
                         EvalTermRet = ValueType.StringType;
@@ -1489,7 +1490,7 @@ namespace SRCCore.Expressions
                             str_result = expr;
                             if (etype != ValueType.StringType)
                             {
-                                num_result = Conversions.ToDouble(str_result);
+                                num_result = GeneralLib.StrToDbl(str_result);
                             }
 
                             EvalTermRet = ValueType.StringType;
@@ -1544,7 +1545,7 @@ namespace SRCCore.Expressions
 
                         if (etype != ValueType.StringType)
                         {
-                            num_result = Conversions.ToDouble(str_result);
+                            num_result = GeneralLib.StrToDbl(str_result);
                         }
 
                         EvalTermRet = ValueType.StringType;

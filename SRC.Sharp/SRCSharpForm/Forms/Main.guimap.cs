@@ -671,12 +671,15 @@ namespace SRCSharpForm
                     }
                 }
 
-                // 見やすいように背景を設定
-                g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
+                // VB（GlobalMapCommand）と同じく、画面を灰色（&HC0C0C0）で塗る
+                using (var back = new SolidBrush(Color.FromArgb(0xC0, 0xC0, 0xC0)))
+                {
+                    g.FillRectangle(back, 0, 0, MainPWidth, MainPHeight);
+                }
 
-                // マップ全体を縮小して描画
+                // マップ全体を mwidth × mheight に縮小して画面の中央に描画（VB: StretchBlt の位置は (MainPWidth - mwidth) \ 2）
                 g.DrawImage(buf,
-                    new Rectangle((MapPWidth - mwidth) / 2, (MapPHeight - mheight) / 2, mheight, mwidth),
+                    new Rectangle((MainPWidth - mwidth) / 2, (MainPHeight - mheight) / 2, mwidth, mheight),
                     new Rectangle(0, 0, buf.Width, buf.Height),
                     GraphicsUnit.Pixel);
             }

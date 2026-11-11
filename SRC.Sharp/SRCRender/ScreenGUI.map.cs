@@ -793,7 +793,8 @@ namespace SRCRender
                     using (var canvas = new SKCanvas(displayBuffer))
                     using (var image = SKImage.FromBitmap(whole))
                     {
-                        canvas.Clear(SKColors.Black);
+                        // VB（GlobalMapCommand）と同じく、画面を灰色（&HC0C0C0）で塗ってから中央に縮小したマップを描く
+                        canvas.Clear(new SKColor(0xC0, 0xC0, 0xC0));
                         canvas.DrawImage(image,
                             SKRect.Create(0, 0, whole.Width, whole.Height),
                             SKRect.Create((MainPWidth - mwidth) / 2, (MainPHeight - mheight) / 2, mwidth, mheight),
