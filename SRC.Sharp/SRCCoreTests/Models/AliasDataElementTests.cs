@@ -14,16 +14,16 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void DefaultValues_AreNull_OrZero_OrFalse()
+        public void DefaultValues_AreEmpty_OrZero_OrFalse()
         {
             var elem = new AliasDataElement();
-            Assert.IsNull(elem.strAliasType);
+            Assert.AreEqual("", elem.strAliasType);
             Assert.AreEqual(0d, elem.dblAliasLevel);
             Assert.IsFalse(elem.blnAliasLevelIsPlusMod);
             Assert.IsFalse(elem.blnAliasLevelIsMultMod);
-            Assert.IsNull(elem.strAliasData);
-            Assert.IsNull(elem.strAliasNecessarySkill);
-            Assert.IsNull(elem.strAliasNecessaryCondition);
+            Assert.AreEqual("", elem.strAliasData);
+            Assert.AreEqual("", elem.strAliasNecessarySkill);
+            Assert.AreEqual("", elem.strAliasNecessaryCondition);
         }
 
         // ──────────────────────────────────────────────

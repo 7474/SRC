@@ -19,14 +19,16 @@ namespace SRCCore.Items
     {
         // 識別子
         [JsonProperty]
-        public string ID;
+        public string ID = "";
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "VB の Data（オブジェクトの参照。初めは Nothing）を名前で持つ。null は Nothing に当たる")]
         [JsonProperty]
         public string ItemName { get; set; }
         // アイテムデータへのポインタ
         public ItemData Data { get => SRC.IDList.Item(ItemName); set { ItemName = value?.Name; } }
         public IList<AbilityData> Abilities => Data.Abilities;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "VB の Unit（オブジェクトの参照。装備していなければ Nothing）を ID で持つ。null は Nothing に当たる")]
         [JsonProperty]
         public string UnitId { get; set; }
         // アイテムを装備しているユニット

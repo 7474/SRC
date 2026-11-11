@@ -25,7 +25,7 @@ namespace SRCCore.Models
     // ダイアログのクラス
     public class Dialog : ISituationItem
     {
-        public string Situation { get; set; }
+        public string Situation { get; set; } = "";
         private IList<DialogItem> dialogs = new List<DialogItem>();
         private SRC SRC;
 

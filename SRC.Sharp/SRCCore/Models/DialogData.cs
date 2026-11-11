@@ -12,7 +12,7 @@ namespace SRCCore.Models
     public class DialogData
     {
         // パイロット一覧
-        public string Name;
+        public string Name = "";
 
         // ダイアログ一覧
         private IList<Dialog> Dialoges = new List<Dialog>();

@@ -9,13 +9,13 @@ namespace SRCCore.Models
     public class Condition
     {
         // 名称
-        public string Name;
+        public string Name = "";
         // 有効期間。負数は無期限（VB の Unit.AddCondition で Lifetime = -1 にする）
         public int Lifetime;
         // レベル
         public double Level;
         // データ
-        public string StrData;
+        public string StrData = "";
 
         public bool IsEnable => Lifetime != 0;
     }

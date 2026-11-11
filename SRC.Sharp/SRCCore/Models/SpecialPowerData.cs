@@ -18,28 +18,28 @@ namespace SRCCore.Models
     public class SpecialPowerData
     {
         // スペシャルパワー名
-        public string Name;
+        public string Name = "";
         // スペシャルパワー名の読み仮名
-        public string KanaName;
+        public string KanaName = "";
         // スペシャルパワー名の短縮形
-        public string ShortName;
+        public string ShortName = "";
         // 消費ＳＰ
         public int SPConsumption;
         // 対象
-        public string TargetType;
+        public string TargetType = "";
         // 効果時間
-        public string Duration;
+        public string Duration = "";
         // 適用条件
-        public string NecessaryCondition;
+        public string NecessaryCondition = "";
         // アニメ
-        public string Animation;
+        public string Animation = "";
 
         // 効果
         private IList<SpecialPowerEffect> effects = new List<SpecialPowerEffect>();
         public IList<SpecialPowerEffect> Effects => effects;
 
         // 解説
-        public string Comment;
+        public string Comment = "";
 
         private SRC SRC;
         private Commands.Command Commands => SRC.Commands;

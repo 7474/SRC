@@ -13,13 +13,13 @@ namespace SRCCore.Models
     public class PilotData : IUnitDataElements
     {
         // 名称
-        public string Name;
+        public string Name = "";
         // 性別
-        public string Sex;
+        public string Sex = "";
         // クラス
-        public string Class;
+        public string Class = "";
         // 地形適応
-        public string Adaption;
+        public string Adaption = "";
         // 経験値
         public int ExpValue;
         // 格闘
@@ -35,19 +35,19 @@ namespace SRCCore.Models
         // 技量
         public int Technique;
         // 性格
-        public string Personality;
+        public string Personality = "";
         // ＳＰ
         public int SP;
         // ＭＩＤＩ
-        public string BGM;
+        public string BGM = "";
 
         // 愛称
-        private string proNickname;
+        private string proNickname = "";
         // 読み仮名
-        private string proKanaName;
+        private string proKanaName = "";
 
         // ビットマップ名
-        private string proBitmap;
+        private string proBitmap = "";
         // ビットマップが存在するか
         public bool IsBitmapMissing;
 
@@ -170,8 +170,8 @@ namespace SRCCore.Models
         }
 
 
-        private string last_sname;
-        private string last_sdata;
+        private string last_sname = "";
+        private string last_sdata = "";
         // 特殊能力を追加
         public void AddSkill(string sname, double slevel, string sdata, int lv)
         {

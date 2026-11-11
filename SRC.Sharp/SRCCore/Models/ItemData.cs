@@ -12,11 +12,11 @@ namespace SRCCore.Models
     public class ItemData : IUnitDataElements
     {
         // 名称
-        public string Name;
+        public string Name = "";
         // クラス
-        public string Class;
+        public string Class = "";
         // 装備個所
-        public string Part;
+        public string Part = "";
         // ＨＰ修正値
         public int HP;
         // ＥＮ修正値
@@ -28,12 +28,12 @@ namespace SRCCore.Models
         // 移動力修正値
         public int Speed;
         // 解説
-        public string Comment;
+        public string Comment = "";
 
         // 愛称
-        private string proNickname;
+        private string proNickname = "";
         // 読み仮名
-        private string proKanaName;
+        private string proKanaName = "";
 
         // ユニットに付加するデータ
         // 特殊能力

@@ -58,6 +58,7 @@ namespace SRCCore.Pilots
             Plana = plana;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "VB の Data（オブジェクトの参照。初めは Nothing）を名前で持つ。null は Nothing に当たる")]
         [JsonProperty]
         public string PilotName { get; set; }
         // パイロットデータへのポインタ
@@ -65,10 +66,11 @@ namespace SRCCore.Pilots
 
         // 識別用ＩＤ
         [JsonProperty]
-        public string ID;
+        public string ID = "";
         // 所属陣営
         [JsonProperty]
-        public string Party;
+        public string Party = "";
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "VB の Unit（オブジェクトの参照。未搭乗は Nothing）を ID で持つ。null は Nothing に当たる")]
         [JsonProperty]
         public string UnitId { get; set; }
         // XXX こうしてるところシリアライズの時だけID解決のほうがいいかな。
@@ -120,7 +122,7 @@ namespace SRCCore.Pilots
         public int Dodge;
         public int Technique;
         public int Intuition;
-        public string Adaption;
+        public string Adaption = "";
 
         // 能力値の基本値
         public int InfightBase;

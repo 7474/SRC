@@ -16,11 +16,11 @@ namespace SRCCore.Models
         // 識別番号
         public int ID = -1;
         // 名称
-        public string Name;
+        public string Name = "";
         // ビットマップ名
-        public string Bitmap;
+        public string Bitmap = "";
         // 地形タイプ
-        public string Class;
+        public string Class = "";
         // 移動コスト
         public int MoveCost;
         // 命中修正

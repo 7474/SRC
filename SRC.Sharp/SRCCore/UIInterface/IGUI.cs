@@ -365,6 +365,7 @@ namespace SRCCore
         Status,
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "SRC# で足した描画の引数。作る側が必ずフォント名を入れる")]
     public class DrawFontOption
     {
         public string FontFamily { get; set; }
@@ -377,6 +378,7 @@ namespace SRCCore
     /// <summary>
     /// 文字列描画に使用中のフォント情報。
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "SRC# で足した描画の状態。作る側が必ずフォント名を入れる")]
     public class PaintFont
     {
         public string Name { get; set; }
@@ -436,14 +438,14 @@ namespace SRCCore
         }
 
         // 表示するテキスト
-        public string Text { get; set; }
+        public string Text { get; set; } = "";
 
         // 選択でき『ない』かどうか
         public bool ListItemFlag { get; set; }
         // フォーカス時に表示するコメント
-        public string ListItemComment { get; set; }
+        public string ListItemComment { get; set; } = "";
         // リスト表示の呼び出し側での識別用ID
-        public string ListItemID { get; set; }
+        public string ListItemID { get; set; } = "";
 
         public string TextWithFlag => (ListItemFlag ? "×" : "  ") + Text;
     }
@@ -466,8 +468,8 @@ namespace SRCCore
         // 選択でき『ない』かどうかを処理するか
         public bool HasFlag { get; set; }
 
-        public string lb_caption;
-        public string lb_info;
+        public string lb_caption = "";
+        public string lb_info = "";
         public string lb_mode = "";
     }
 }

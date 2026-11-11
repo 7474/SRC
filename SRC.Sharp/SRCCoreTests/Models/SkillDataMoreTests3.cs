@@ -14,7 +14,7 @@ namespace SRCCore.Models.Tests
         public void SkillData_DefaultName_IsNullOrEmpty()
         {
             var skill = new SkillData();
-            Assert.IsNull(skill.Name);
+            Assert.AreEqual("", skill.Name);
         }
 
         [TestMethod]

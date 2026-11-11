@@ -15,7 +15,7 @@ namespace SRCCore.Models
     public class AbilityData
     {
         // 名称
-        public string Name;
+        public string Name = "";
         // 使用可能回数
         public int Stock;
         // ＥＮ消費量

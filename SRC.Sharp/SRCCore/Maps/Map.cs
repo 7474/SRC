@@ -102,7 +102,7 @@ namespace SRCCore.Maps
         public const int MAX_TERRAIN_DATA_NUM = 2000;
 
         // マップファイル名
-        public string MapFileName;
+        public string MapFileName = "";
 
         // セーブデータ（中断・クイックセーブ・リスタート）には、シナリオのフォルダからの相対パスで持つ（#1375、VB: DumpMapData）。
         // 読むときは Restore でいまのシナリオのフォルダで解く
@@ -123,7 +123,7 @@ namespace SRCCore.Maps
 
         // マップの描画モード
         [JsonProperty]
-        public string MapDrawMode;
+        public string MapDrawMode = "";
         // フィルタ色
         [JsonProperty]
         public Color MapDrawFilterColor = Color.Black;

@@ -21,7 +21,7 @@ namespace SRCCore.Events
         public int AsterNum;
 
         // ラベル全体
-        private string StrData;
+        private string StrData = "";
         // ラベルの個数
         private int intParaNum;
         // ラベルの各パラメータ

@@ -18,10 +18,10 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Condition_Name_NullByDefault()
+        public void Condition_Name_EmptyByDefault()
         {
             var c = new Condition();
-            Assert.IsNull(c.Name);
+            Assert.AreEqual("", c.Name);
         }
 
         [TestMethod]
@@ -39,10 +39,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Condition_StrData_NullByDefault()
+        public void Condition_StrData_EmptyByDefault()
         {
             var c = new Condition();
-            Assert.IsNull(c.StrData);
+            Assert.AreEqual("", c.StrData);
         }
 
         [TestMethod]

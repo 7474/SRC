@@ -35,7 +35,7 @@ namespace SRCCore.Units
         private double dblBulletRate;
 
         // 更新後ステータス
-        private string strWeaponClass;
+        private string strWeaponClass = "";
         private int lngWeaponPower;
         private int intWeaponMaxRange;
         private int intWeaponPrecision;
@@ -107,7 +107,7 @@ namespace SRCCore.Units
         }
 
         [JsonProperty]
-        public string Name { get; private set; }
+        public string Name { get; private set; } = "";
 
         // 武器の愛称
         public string WeaponNickname()

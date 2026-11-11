@@ -16,10 +16,10 @@ namespace SRCCore.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void BGMFileName_DefaultIsNull()
+        public void BGMFileName_DefaultIsEmpty()
         {
             var src = CreateSrc();
-            Assert.IsNull(src.Sound.BGMFileName);
+            Assert.AreEqual("", src.Sound.BGMFileName);
         }
 
         [TestMethod]

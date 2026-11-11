@@ -19,11 +19,11 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Name_DefaultIsNull()
+        public void Name_DefaultIsEmpty()
         {
             var src = CreateSRC();
             var md = new MessageData(src);
-            Assert.IsNull(md.Name);
+            Assert.AreEqual("", md.Name);
         }
 
         [TestMethod]

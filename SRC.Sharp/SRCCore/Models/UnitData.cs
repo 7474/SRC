@@ -14,27 +14,27 @@ namespace SRCCore.Models
     public class UnitData : IUnitDataElements
     {
         // 名称
-        public string Name;
+        public string Name = "";
         // 識別子
         public int ID;
         // クラス
-        public string Class;
+        public string Class = "";
         // パイロット数 (マイナスの場合は括弧つきの指定)
         public int PilotNum;
         // アイテム数
         public int ItemNum;
         // 地形適応
-        public string Adaption;
+        public string Adaption = "";
         // ＨＰ
         public int HP;
         // ＥＮ
         public int EN;
         // 移動タイプ
-        public string Transportation;
+        public string Transportation = "";
         // 移動力
         public int Speed;
         // サイズ
-        public string Size;
+        public string Size = "";
         // 装甲
         public int Armor;
         // 運動性
@@ -45,12 +45,12 @@ namespace SRCCore.Models
         public int ExpValue;
 
         // 愛称
-        private string proNickname;
+        private string proNickname = "";
         // 読み仮名
-        private string proKanaName;
+        private string proKanaName = "";
 
         // ビットマップ名
-        private string proBitmap;
+        private string proBitmap = "";
         // ビットマップが存在するか
         public bool IsBitmapMissing;
 

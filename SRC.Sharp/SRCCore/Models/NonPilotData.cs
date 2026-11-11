@@ -11,7 +11,7 @@ namespace SRCCore.Models
     public class NonPilotData
     {
         // 名称
-        public string Name;
+        public string Name = "";
 
         private SRC SRC;
 
@@ -25,10 +25,10 @@ namespace SRCCore.Models
         }
 
         // 愛称
-        private string strNickname;
+        private string strNickname = "";
 
         // ビットマップ名
-        private string proBitmap;
+        private string proBitmap = "";
         // ビットマップが存在するか
         public bool IsBitmapMissing;
 

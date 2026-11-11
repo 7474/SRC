@@ -17,10 +17,10 @@ namespace SRCCore.Commands.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void CommandState_DefaultIsNull()
+        public void CommandState_DefaultIsEmpty()
         {
             var src = CreateSrc();
-            Assert.IsNull(src.Commands.CommandState);
+            Assert.AreEqual("", src.Commands.CommandState);
         }
 
         [TestMethod]

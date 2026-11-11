@@ -18,10 +18,10 @@ namespace SRCCore.CmdDatas.Commands
     public abstract class AIfCmd : CmdData
     {
         public IfCmdType IfCmdType { get; protected set; }
-        public string Expr { get; protected set; }
+        public string Expr { get; protected set; } = "";
         // Exprの項の数、0なら単に式として評価するべきExpr。
         public int ExprTermCount { get; protected set; }
-        public string GoToLabel { get; protected set; }
+        public string GoToLabel { get; protected set; } = "";
 
         public AIfCmd(SRC src, CmdType name, EventDataLine eventData) : base(src, name, eventData)
         {

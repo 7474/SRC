@@ -9,9 +9,9 @@ namespace SRCCore.Models
     // アビリティの効果のクラス
     public class AbilityEffect
     {
-        public string Name;
+        public string Name = "";
         public double Level;
-        public string Data;
+        public string Data = "";
 
         // 効果の種類
         public string EffectType => Name;

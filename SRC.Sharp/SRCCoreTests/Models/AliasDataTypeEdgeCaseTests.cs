@@ -14,10 +14,10 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void AliasDataType_DefaultName_IsNull()
+        public void AliasDataType_DefaultName_IsEmpty()
         {
             var ad = new AliasDataType();
-            Assert.IsNull(ad.Name);
+            Assert.AreEqual("", ad.Name);
         }
 
         [TestMethod]
@@ -97,13 +97,13 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void AliasDataElement_AllFieldsNull_WhenCreatedEmpty()
+        public void AliasDataElement_AllFieldsEmpty_WhenCreatedEmpty()
         {
             var elem = new AliasDataElement();
-            Assert.IsNull(elem.strAliasType);
-            Assert.IsNull(elem.strAliasData);
-            Assert.IsNull(elem.strAliasNecessarySkill);
-            Assert.IsNull(elem.strAliasNecessaryCondition);
+            Assert.AreEqual("", elem.strAliasType);
+            Assert.AreEqual("", elem.strAliasData);
+            Assert.AreEqual("", elem.strAliasNecessarySkill);
+            Assert.AreEqual("", elem.strAliasNecessaryCondition);
         }
 
         [TestMethod]

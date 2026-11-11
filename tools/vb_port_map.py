@@ -2,7 +2,8 @@
 """VB 版の手続きと C# のメソッドの対応表（docs/history/porting/vb-map/）を作る・確かめる（7474/SRC#1498）。
 
   python3 tools/vb_port_map.py          # 対応表を作る（手で書いた「C#」「状態」「メモ」は残す）
-  python3 tools/vb_port_map.py --check  # 対応表に VB のすべての手続きがあり、状態の書き方が正しいかを確かめる（CI）
+  python3 tools/vb_port_map.py --check  # 対応表に VB のすべての手続きがあり、状態の書き方が正しいか、
+                                        # SRCCore の TODO・XXX・コメントアウトされたコードに「未確認」が無いかを確かめる（CI）
   python3 tools/vb_port_map.py --stats  # 状態ごとの数を出す
 
 VB 版（SRC/SRC_20121125、UTF-8）の Function・Sub・Property を取り出し、同じ名前の C# のメソッド・プロパティ・クラスを
@@ -198,7 +199,7 @@ def write_readme(vb):
         "VB 版（`SRC/SRC_20121125`）の手続き（Function・Sub・Property）を、C# の対応するメソッドと 1 つずつ突き合わせるための表（7474/SRC#1498）。",
         "",
         "- 表は `python3 tools/vb_port_map.py` で作る。作り直しても、手で書いた「C#」「状態」「メモ」は残る。行番号は VB 版の行",
-        "- CI（`port-map-check`）の `python3 tools/vb_port_map.py --check` で、VB のすべての手続きが表にあり、状態の書き方が正しいかを確かめる",
+        "- CI（`port-map-check`）の `python3 tools/vb_port_map.py --check` で、VB のすべての手続きが表にあり、状態の書き方が正しいか、[TODO・コメントアウトの一覧](todo.md)に「未確認」が無いかを確かめる",
         "- 対象は `SRC/SRC_20121125` の `*.bas`・`*.cls`・`*.frm` のすべての手続き。選んで外した手続きは無い（手続きの外にあるものは下の「表に載っていないもの」）",
         "- 「C#」の候補は名前だけで選んでいる。`（見つからない）` は名前の違う C# に移したか、移していないもの。突き合わせのときに直す",
         "",
@@ -292,8 +293,9 @@ TODO_RE = re.compile(r"//\s*(TODO|XXX|FIXME)\b(.*)")
 COMMENTED_CODE_RE = re.compile(r"^\s*//\s*(?:(?:If|ElseIf|Else|End If|Select Case|Case|End Select|For|Next|Do|Loop|With|End With|Exit|Call|Set|Dim|GoTo)\b|.*[;{}]\s*$)")
 
 
-def write_todo():
-    """SRCCore の TODO・XXX・コメントアウトされたコードの一覧（todo.md）。手で書いた「状態」「メモ」は、ファイルと本文が同じ行に残す"""
+def build_todo():
+    """SRCCore の TODO・XXX・コメントアウトされたコードの一覧（todo.md）の行と、状態が「未確認」の行の場所を返す。
+    手で書いた「状態」「メモ」は、ファイルと本文が同じ行に残す"""
     path = OUT_DIR / "todo.md"
     old = {}
     # 同じファイルに同じ本文の行が複数あるときは、場所（ファイルと行）が同じ行の状態とメモを先に使う
@@ -336,10 +338,12 @@ def write_todo():
         "",
         "- 種類: `TODO`・`XXX`・`FIXME` はコメント、`コード` はコメントアウトされたコード（続いた行は 1 つにまとめ、最初の行と行数を書く）",
         "- 状態: `未確認`・`直した`（PR の番号）・`SRC#で不要`（理由）・`Issue`（番号）",
+        "- 「未確認」の行があると CI（`port-map-check`）が落ちる。TODO・XXX・コメントアウトされたコードを足したら、直すか、この表に状態とメモを書く（7474/SRC#1555）",
         "",
         "| 場所 | 種類 | 本文 | 状態 | メモ |",
         "|---|---|---|---|---|",
     ]
+    unchecked = []
     for r in rows:
         rel, i, kind, text = r[0], r[1], r[2], r[3]
         text = text.replace("|", "\\|")
@@ -348,8 +352,22 @@ def write_todo():
         where = f"`{rel}:{i}`" + (f"（{r[4]} 行）" if kind == "コード" and r[4] > 1 else "")
         state, memo = old_at.get((where, text)) or old.get((f"`{rel}", text), ("未確認", ""))
         lines.append(f"| {where} | {kind} | {text} | {state} | {memo} |")
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return len(rows)
+        if state.startswith("未確認"):
+            unchecked.append(f"{where} {kind} {text}")
+    return lines, unchecked
+
+
+def write_todo():
+    lines, _ = build_todo()
+    (OUT_DIR / "todo.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return sum(1 for line in lines if line.startswith("| `"))
+
+
+def check_todo():
+    """SRCCore の新しい TODO・XXX・コメントアウトされたコード（todo.md で「未確認」のもの）を見つける（7474/SRC#1555）"""
+    _, unchecked = build_todo()
+    path = (OUT_DIR / "todo.md").relative_to(ROOT)
+    return [f"{path}: {u} の状態が「未確認」です。直すか、todo.md に状態とメモを書きます" for u in unchecked]
 
 
 def main():
@@ -359,13 +377,13 @@ def main():
     args = parser.parse_args()
     vb = read_vb()
     if args.check:
-        errors = check(vb)
+        errors = check(vb) + check_todo()
         for e in errors:
             print(e)
         if errors:
             print("python3 tools/vb_port_map.py で表を作り直し、状態を直してください")
             return 1
-        print(f"OK: {sum(len(p) for p in vb.values())} の手続きが対応表にあります")
+        print(f"OK: {sum(len(p) for p in vb.values())} の手続きが対応表にあり、TODO・コメントアウトに「未確認」はありません")
         return 0
     if args.stats:
         total, _ = stats(vb)

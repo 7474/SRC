@@ -98,11 +98,11 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void PilotData_DefaultValues_NameIsNull()
+        public void PilotData_DefaultValues_NameIsEmpty()
         {
             var src = CreateSRC();
             var pd = new PilotData(src);
-            Assert.IsNull(pd.Name);
+            Assert.AreEqual("", pd.Name);
         }
 
         // ──────────────────────────────────────────────
@@ -120,7 +120,7 @@ namespace SRCCore.Models.Tests
         public void FeatureData_DefaultValues_AreExpected()
         {
             var fd = new FeatureData();
-            Assert.IsNull(fd.Name);
+            Assert.AreEqual("", fd.Name);
         }
 
         // ──────────────────────────────────────────────
@@ -140,7 +140,7 @@ namespace SRCCore.Models.Tests
         {
             var src = CreateSRC();
             var ud = new UnitData(src);
-            Assert.IsNull(ud.Name);
+            Assert.AreEqual("", ud.Name);
         }
 
         // ──────────────────────────────────────────────

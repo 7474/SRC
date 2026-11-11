@@ -14,13 +14,13 @@ namespace SRCCore.Expressions
     {
         // 名称
         [JsonProperty]
-        public string Name { get; private set; }
+        public string Name { get; private set; } = "";
         // 型
         [JsonProperty]
         public ValueType VariableType { get; private set; }
         // 文字列値
         [JsonProperty]
-        public string StringValue { get; private set; }
+        public string StringValue { get; private set; } = "";
         // 数値
         [JsonProperty]
         public double NumericValue { get; private set; }

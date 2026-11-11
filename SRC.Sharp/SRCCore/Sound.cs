@@ -27,7 +27,7 @@ namespace SRCCore
         }
 
         // 現在再生されているＢＧＭのファイル名
-        public string BGMFileName;
+        public string BGMFileName = "";
         // ＢＧＭをリピート再生する？
         public bool RepeatMode;
         // 戦闘時にもＢＧＭを変更しない？

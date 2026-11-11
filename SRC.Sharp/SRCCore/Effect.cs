@@ -15,10 +15,10 @@ namespace SRCCore
     public class Effect
     {
         // 構えている武器の種類
-        private string WeaponInHand;
+        private string WeaponInHand = "";
 
         // 攻撃手段の種類
-        private string CurrentWeaponType;
+        private string CurrentWeaponType = "";
 
         private SRC SRC { get; }
         private IGUI GUI => SRC.GUI;
