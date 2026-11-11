@@ -1,0 +1,311 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SRCCore;
+using SRCCore.Expressions;
+using SRCCore.Filesystem;
+using SRCCore.TestLib;
+using SRCPlay;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace SRCRender.Tests
+{
+    /// <summary>
+    /// 元の SRC（VB5）のセーブデータ（中断データ・クリアデータ）を、検証用のシナリオ「トレス島試験記録」（SRC.Sharp/Compat/torres）で読む（#1577）。
+    /// <list type="bullet">
+    /// <item>各話の PlayScript（Compat/torres-ep02.play〜torres-ep08.play）の「中断」のところで、元の SRC の形式（VbSaveDataWriter。元の SRC の DumpData を写したもの）で
+    /// 中断データを書き、そのファイル（.src）から再開して、中断の前と同じ状態になり、PlayScript の続き（再開の後の expect）が通ることを確かめる</item>
+    /// <item>見本を作るシナリオ（Compat/savedata/savedata.eve）を流し、元の SRC の形式のもの
+    /// （実機で作った見本 Compat/savedata-expected/suspend.src・clear.src があればそれ、無ければ VbSaveDataWriter で書いたもの）を読んで、
+    /// 中断データは SRC# の JSON の中断データから読んだ状態と、クリアデータはデータセーブしたときの状態と同じになることを確かめる。
+    /// 実機の見本の作り方は Compat/PROBE.md</item>
+    /// </list>
+    /// </summary>
+    [TestClass]
+    public class CompatSaveDataTests
+    {
+        private const string StopMarker = "# ここから最後まで自動で進める";
+
+        private static string SharpDirectory => Path.GetDirectoryName(E2ECorpusTests.CorpusDirectory);
+        private static string CompatDirectory => Path.Combine(SharpDirectory, "Compat");
+        private static string ExpectedDirectory => Path.Combine(CompatDirectory, "savedata-expected");
+
+        /// <summary>中断の後に再開のイベントが足す変数（中断の前と比べない）</summary>
+        private static readonly string[] ResumeVariables = { "再開記録" };
+
+        [TestMethod]
+        [DataRow("torres-ep02.play", "ep02.eve")]
+        [DataRow("torres-ep03.play", "ep03.eve")]
+        [DataRow("torres-ep04.play", "ep04.eve")]
+        [DataRow("torres-ep05.play", "ep05.eve")]
+        [DataRow("torres-ep06.play", "ep06.eve")]
+        [DataRow("torres-ep07.play", "ep07.eve")]
+        [DataRow("torres-ep08.play", "ep08.eve")]
+        public void Episode_SuspendInOriginalFormat_Resumes(string playFile, string eveFile)
+        {
+            var lines = File.ReadAllLines(Path.Combine(CompatDirectory, playFile))
+                .TakeWhile(x => !x.StartsWith(StopMarker, StringComparison.Ordinal))
+                .ToList();
+            var resume = lines.FindIndex(x => x.Trim() == "resume");
+            Assert.IsTrue(resume > 0, $"{playFile} に resume の行が無い");
+            var savefile = lines.FindLastIndex(resume, x => x.Trim().StartsWith("savefile ", StringComparison.Ordinal));
+            Assert.IsTrue(savefile > 0, $"{playFile} の resume の前に savefile の行が無い");
+
+            Run(eveFile, (runner, script, scenario) =>
+            {
+                // 中断データ（JSON）を書いて SRC が終わるまで。
+                // 保存のダイアログに答えるところ（DumpData の直前）で、同じ状態を元の SRC の形式でも書く
+                script.Run(lines.Take(savefile + 1));
+                var captured = CaptureOnSave(runner, src => new VbSaveDataWriter().DumpData(src).ToBytes());
+                script.Run(lines.Take(resume).Skip(savefile + 1));
+                Assert.IsTrue(runner.IsFinished);
+                Assert.IsNotNull(captured.Bytes, "中断データの保存のダイアログが出なかった");
+
+                var expected = captured.Digest;
+                var file = Path.Combine(scenario, Path.GetFileNameWithoutExtension(eveFile) + "を中断.src");
+                File.WriteAllBytes(file, captured.Bytes);
+
+                // 起動し直して .src から再開する（元の SRC と同じく中身で中断データと分かる）。
+                // 再開のイベントのメッセージで止まったところで、中断の前と比べる
+                runner.Restart(file);
+                runner.WaitFor(s => s.Message.Visible && s.Message.Waiting, "再開のメッセージ");
+                AssertSameState(expected, Digest(runner.Session.SRC, ResumeVariables), "中断の前と、元の SRC の形式から再開した後");
+
+                // PlayScript の続き（再開の後の expect と手順）
+                script.Run(lines.Skip(resume + 1).Append("expect error none"));
+            });
+        }
+
+        [TestMethod]
+        public void SaveDataScenario_OriginalSamples_ReadLikeJson()
+        {
+            Run("savedata.eve", (runner, script, scenario) =>
+            {
+                // 1 ターン目の味方フェイズで中断する（JSON の中断データ）。保存のダイアログに答えるところで元の SRC の形式でも書く
+                script.Run(new[]
+                {
+                    "auto 60",
+                    "expect eval 見本のターン = 1",
+                    "savefile suspend.srcq",
+                });
+                var suspended = CaptureOnSave(runner, src => new VbSaveDataWriter().DumpData(src).ToBytes());
+                script.Run(new[]
+                {
+                    "cell 1 1 right",
+                    "menu 中断",
+                    "wait dialog",
+                    "dialog OK",
+                    "wait finished",
+                });
+                var suspendSample = SampleOrWrite("suspend.src", scenario, () => suspended.Bytes);
+
+                // 起動し直し、ターン終了 → 2 ターン目に Continue → インターミッションのデータセーブ（JSON のクリアデータ）
+                runner.Restart(Path.Combine(scenario, "savedata.eve"));
+                script.Run(new[]
+                {
+                    "holdlist コマンド",
+                    "auto 60",
+                    "cell 1 1 right",
+                    "menu ターン終了",
+                    "wait dialog",
+                    "dialog OK",
+                    "auto 60",
+                    "wait list コマンド",
+                    "savefile clear.srcs",
+                    "list データセーブ",
+                    "wait list コマンド",
+                });
+                // データセーブは保存のダイアログの後で UList.Update（追加パイロットを消す）をしてから書くので、書いた後の状態から作る
+                var clearSample = SampleOrWrite("clear.src", scenario, () => new VbSaveDataWriter().SaveData(runner.Session.SRC).ToBytes());
+                var saved = Digest(runner.Session.SRC, clear: true);
+
+                // 同じシナリオのフォルダで、JSON と元の SRC の形式を新しく読んで比べる
+                var json = LoadHeadless(scenario, src => src.RestoreData(Path.Combine(scenario, "suspend.srcq"), SRCSaveKind.Suspend));
+                var original = LoadHeadless(scenario, src => src.RestoreData(suspendSample, SRCSaveKind.Suspend));
+                AssertSameState(Digest(json), Digest(original), "中断データ（JSON と元の SRC の形式）");
+                Assert.AreEqual("局所の値", original.Event.LocalVariableList["見本の局所"].StringValue);
+                Assert.IsTrue(original.Event.colEventLabelList.List.Any(x => x.Data == "ターン 1 味方" && !x.Enable));
+
+                // クリアデータは、データセーブしたときの状態と比べる。
+                // SRC# の JSON の LoadData は読んだ後で PList・UList・IList の Update をする（元の SRC の LoadData はしない）ので、
+                // 一時的な他形態が消えるなど、JSON から読んだ状態とは比べられない
+                original = LoadHeadless(scenario, src => src.LoadData(File.OpenRead(clearSample)));
+                AssertSameState(saved, Digest(original, clear: true), "クリアデータ（データセーブしたときと、元の SRC の形式から読んだ後）");
+                Assert.AreEqual("savedata.eve", original.Expression.GetValueAsString("次ステージ"));
+            });
+        }
+
+        private sealed class Captured
+        {
+            public byte[] Bytes;
+            public List<string> Digest;
+        }
+
+        /// <summary>
+        /// 次に保存のダイアログに答えるとき（SRC が DumpData・SaveData で書く直前。ゲームのスレッド）に、そのときの状態を write で書き、状態の行を控える。
+        /// 中断の後の SRC は ExitGame でイベントのデータ（ローカル変数・ラベル）を消すので、書いた後の状態からは作らない
+        /// </summary>
+        private static Captured CaptureOnSave(ScreenScenarioRunner runner, Func<SRC, byte[]> write)
+        {
+            var captured = new Captured();
+            var inner = runner.SaveFileHandler;
+            runner.SaveFileHandler = request =>
+            {
+                if (captured.Bytes == null)
+                {
+                    captured.Bytes = write(runner.Session.SRC);
+                    captured.Digest = Digest(runner.Session.SRC, ResumeVariables);
+                }
+                return inner(request);
+            };
+            return captured;
+        }
+
+        /// <summary>実機で作った見本があればシナリオのフォルダに写し、無ければ元の SRC の形式で書いたものを置く</summary>
+        private static string SampleOrWrite(string name, string scenario, Func<byte[]> write)
+        {
+            var path = Path.Combine(scenario, name);
+            var expected = Path.Combine(ExpectedDirectory, name);
+            if (File.Exists(expected))
+            {
+                File.Copy(expected, path, true);
+            }
+            else
+            {
+                File.WriteAllBytes(path, write());
+            }
+            return path;
+        }
+
+        /// <summary>torres と見本を作るシナリオを写したフォルダで eve を始め、action を行う</summary>
+        private static void Run(string eveFile, Action<ScreenScenarioRunner, PlayScript, string> action)
+        {
+            var app = Path.Combine(Path.GetTempPath(), "srcs-basic-data-" + Guid.NewGuid());
+            var scenario = Path.Combine(Path.GetTempPath(), "srcs-torres-" + Guid.NewGuid());
+            try
+            {
+                E2ECorpusTests.CopyDirectory(Path.Combine(SharpDirectory, "Content", "basic-data"), app);
+                E2ECorpusTests.CopyDirectory(Path.Combine(CompatDirectory, "torres"), scenario);
+                foreach (var file in Directory.GetFiles(Path.Combine(CompatDirectory, "savedata"), "*.eve"))
+                {
+                    File.Copy(file, Path.Combine(scenario, Path.GetFileName(file)));
+                }
+                using (var runner = new ScreenScenarioRunner(app))
+                {
+                    var script = new PlayScript(runner)
+                    {
+                        SnapshotDirectory = Path.Combine(AppContext.BaseDirectory, "TestResults", "e2e", "compat-savedata-" + Path.GetFileNameWithoutExtension(eveFile)),
+                    };
+                    runner.Start(Path.Combine(scenario, eveFile));
+                    try
+                    {
+                        action(runner, script, scenario);
+                    }
+                    catch (PlayScriptException ex)
+                    {
+                        Assert.Fail(ex.Message + Environment.NewLine
+                            + string.Join(Environment.NewLine, script.TraceLog.Skip(Math.Max(0, script.TraceLog.Count - 40)))
+                            + Environment.NewLine + runner.Error);
+                    }
+                }
+            }
+            finally
+            {
+                foreach (var dir in new[] { app, scenario })
+                {
+                    if (Directory.Exists(dir))
+                    {
+                        Directory.Delete(dir, true);
+                    }
+                }
+            }
+        }
+
+        /// <summary>画面の無い SRC で、シナリオのフォルダのセーブデータを読む</summary>
+        private static SRC LoadHeadless(string scenario, Action<SRC> load)
+        {
+            var src = new SRC();
+            var gui = new HeadlessGUI();
+            gui.Install(src);
+            src.SystemConfig.AppPath = scenario;
+            src.ScenarioPath = scenario + Path.DirectorySeparatorChar;
+            var fs = new LocalFileSystem();
+            fs.AddPath(scenario);
+            src.FileSystem = fs;
+            src.Event.InitEventData();
+            src.ALDList.Load(Path.Combine(scenario, "Data", "System", "alias.txt"));
+            src.SPDList.Load(Path.Combine(scenario, "Data", "System", "sp.txt"));
+            src.TDList.Load(Path.Combine(scenario, "Data", "System", "terrain.txt"));
+            load(src);
+            Assert.IsFalse(gui.IsTerminated, string.Join("\n", gui.CallsOf(nameof(IGUI.ErrorMessage)).Select(x => x.Args[0])));
+            return src;
+        }
+
+        private static void AssertSameState(IList<string> expected, IList<string> actual, string what)
+        {
+            var missing = expected.Except(actual).ToList();
+            var extra = actual.Except(expected).ToList();
+            Assert.IsTrue(missing.Count == 0 && extra.Count == 0,
+                $"{what}で状態が違う\n期待: \n  {string.Join("\n  ", missing)}\n実際: \n  {string.Join("\n  ", extra)}");
+        }
+
+        /// <summary>
+        /// セーブデータで戻す状態（ユニット・パイロット・アイテム・資金・ターン・変数・マップ・イベントラベル）を行にする。
+        /// 元の SRC は数値の変数も文字列で書くので、変数は文字列にして比べる。追加パイロットは元の SRC も書かないので比べない。
+        /// clear はクリアデータ（ターン・ローカル変数・イベントラベル・マップ・ユニットの位置と場所を書かない）
+        /// </summary>
+        internal static List<string> Digest(SRC src, string[] ignoredVariables = null, bool clear = false)
+        {
+            ignoredVariables = ignoredVariables ?? new string[0];
+            var lines = new List<string>
+            {
+                (clear ? "" : $"ターン {src.Turn} ") + $"総ターン {src.TotalTurn} 資金 {src.Money}",
+                "作品 " + string.Join(";", src.Titles ?? new List<string>()),
+            };
+            string Value(VarData v) => v.VariableType == SRCCore.Expressions.ValueType.StringType ? v.StringValue : SRCCore.VB.SrcFormatter.Format(v.NumericValue);
+            lines.AddRange(src.Event.GlobalVariableList.List.Where(x => !ignoredVariables.Contains(x.Name)).Select(x => $"グローバル変数 {x.Name} = {Value(x)}"));
+            if (!clear)
+            {
+                lines.AddRange(src.Event.LocalVariableList.List.Where(x => !ignoredVariables.Contains(x.Name)).Select(x => $"ローカル変数 {x.Name} = {Value(x)}"));
+                lines.Add("無効なラベル " + string.Join(";", src.Event.colEventLabelList.List.Where(x => !x.Enable).Select(x => x.Data)));
+            }
+
+            string Ids<T>(IEnumerable<T> items, Func<T, string> id) => "[" + string.Join(",", items.Select(id)) + "]";
+            foreach (var p in src.PList.Items.Where(x => !x.IsAdditionalPilot))
+            {
+                lines.Add($"パイロット {p.ID} {p.Name} {p.Party} Lv{p.Level} Exp{p.Exp} SP{p.SP} 気力{p.Morale} 霊力{p.Plana} 生存{p.Alive} 離脱{p.Away} 追加サポート{p.IsAdditionalSupport} ユニット{p.Unit?.ID}");
+            }
+            foreach (var u in src.UList.Items)
+            {
+                var place = clear ? "" : $" ({u.x},{u.y}) {u.Area}";
+                lines.Add($"ユニット {u.ID} {u.Name} {u.Party0} ランク{u.Rank} ボス{u.BossRank}{place} 行動{u.UsedAction} {u.Mode} {u.Status}"
+                    + $" HP{u.HP}/{u.MaxHP} EN{u.EN}/{u.MaxEN}"
+                    + $" パイロット{Ids(u.Pilots, x => x.ID)} サポート{Ids(u.Supports, x => x.ID)} 他形態{Ids(u.OtherForms, x => x.ID)}"
+                    + $" 格納{Ids(u.UnitOnBoards, x => x.ID)} 召喚{Ids(u.Servants, x => x.ID)} アイテム{Ids(u.ItemList, x => x.ID)}"
+                    + $" 状態{Ids(u.Conditions, x => x.Name + ":" + x.Lifetime)} ＳＰ{Ids(u.SpecialPowersInEffect, x => x.Name)}"
+                    + $" 残弾{Ids(Enumerable.Range(1, u.CountWeapon()), i => u.Weapon(i).Bullet().ToString())}"
+                    + $" 回数{Ids(Enumerable.Range(1, u.CountAbility()), i => u.Ability(i).Stock().ToString())}"
+                    + $" 主{u.Master?.ID} 召喚主{u.Summoner?.ID}");
+            }
+            // アイテムを装備しているユニットは、ユニットの行（アイテム）で比べる。
+            // 元の SRC の Unit.RestoreLinkInfo は装備したアイテムの Unit を設定し直す（AddItem0）が、
+            // SRC# で合体したユニットのアイテムは、中断の前に Item.Unit が空のことがある（第二話のミカヅチ）
+            foreach (var it in src.IList.List)
+            {
+                lines.Add($"アイテム {it.ID} {it.Name} 存在{it.Exist}");
+            }
+            if (clear)
+            {
+                return lines;
+            }
+            var map = src.Map;
+            lines.Add($"マップ {Path.GetFileName(map.MapFileName ?? "")} {map.MapWidth}x{map.MapHeight} {map.MapDrawMode} {map.MapDrawIsMapOnly}");
+            if (map.MapData != null)
+            {
+                lines.Add("地形 " + string.Join(";", map.MapData.All.Select(c => $"{c.TerrainType},{c.BitmapNo},{c.LayerType},{c.LayerBitmapNo},{(int)c.BoxType}")));
+            }
+            return lines;
+        }
+    }
+}
