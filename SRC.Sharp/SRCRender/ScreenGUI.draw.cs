@@ -169,9 +169,11 @@ namespace SRCRender
                 || brightCount > 0 || darkCount > 0 || hrev || vrev || angle != 0;
             var whiteTransparent = transparent && bgColor.ToArgb() == Color.White.ToArgb();
             var useCachedTransparent = whiteTransparent && !edited;
-            var image = LoadPicture(fname, target, useCachedTransparent);
-            if (image == null)
+            var image = LoadPicture(fname, target, useCachedTransparent, out var loadResult);
+            // 元の SRC（Susie.bas の LoadPicture2）は .bmp・.jpg・.gif・.png 以外を読まない
+            if (image == null || !IsSupportedPictureFile(loadResult.Path))
             {
+                ReportPictureError(fname, loadResult);
                 return false;
             }
 
@@ -398,8 +400,9 @@ namespace SRCRender
         /// 描画する画像を取得する。black.bmp / white.bmp や陣営枠は特別扱いする。
         /// 返す画像はキャッシュと共有するため変更しないこと。
         /// </summary>
-        private SKBitmap LoadPicture(string fname, SKBitmap target, bool whiteTransparent)
+        private SKBitmap LoadPicture(string fname, SKBitmap target, bool whiteTransparent, out ImageLoadResult result)
         {
+            result = default;
             switch (Strings.LCase(fname) ?? "")
             {
                 case "black.bmp":
@@ -418,7 +421,55 @@ namespace SRCRender
                 case @"anime\common\effect_tile(neutral).bmp":
                     return UnitFrames.Neutral;
             }
-            return whiteTransparent ? Images.GetTransparent(fname) : Images.Get(fname);
+            return whiteTransparent ? Images.GetTransparent(fname, out result) : Images.Get(fname, out result);
+        }
+
+        /// <summary>
+        /// 元の SRC（Susie.bas の LoadPicture2）が読む形式か。ファイル名の末尾 4 文字（大文字・小文字を区別しない）で決める。
+        /// 見つからなかった画像・特別扱いする画像（パスが無い）は対象外として true を返す。
+        /// </summary>
+        internal static bool IsSupportedPictureFile(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return true;
+            }
+            switch (Strings.LCase(Strings.Right(path, 4)) ?? "")
+            {
+                case ".bmp":
+                case ".jpg":
+                case ".gif":
+                case ".png":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // エラーのメッセージを出した画像の名前。元の SRC は読めなかった画像も PicBuf に名前を残すので、同じ画像のメッセージは 1 度だけ出る
+        private readonly HashSet<string> reportedPictureErrors = new HashSet<string>(StringComparer.Ordinal);
+
+        /// <summary>
+        /// 画像を読めなかったときのメッセージ（元の SRC の Susie.bas の LoadPicture2 と同じ文言）。
+        /// 見つからない画像は、元の SRC と同じく何も出さない。
+        /// DrawPicture はゲームスレッドで呼ばれ、描画のロック（renderLock）を持たずにここへ来るため、
+        /// ErrorMessage がダイアログを閉じるまでゲームスレッドで待っても UI の処理は止まらない。
+        /// </summary>
+        private void ReportPictureError(string fname, ImageLoadResult result)
+        {
+            if (string.IsNullOrEmpty(result.Path) || !reportedPictureErrors.Add(fname))
+            {
+                return;
+            }
+            const string crlf = "\r\n";
+            if (!IsSupportedPictureFile(result.Path))
+            {
+                ErrorMessage(string.Format(Resources.Strings.PictureFormatNotSupported, crlf, result.Path));
+            }
+            else
+            {
+                ErrorMessage(string.Format(Resources.Strings.PictureLoadError, crlf, result.Path));
+            }
         }
 
         private readonly System.Collections.Generic.Dictionary<(int, int, uint), SKBitmap> solidImages

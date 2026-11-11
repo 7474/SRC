@@ -114,4 +114,10 @@
   <data name="ConfigMessageSpeedInstant" xml:space="preserve">
     <value>神之领域</value>
   </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>读取图像文件{0}{1}{0}时发生错误。{0}请确认图像文件是否已损坏。</value>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>图像文件{0}{1}{0}的图像格式不受支持。</value>
+  </data>
 </root>

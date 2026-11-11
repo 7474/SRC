@@ -15,6 +15,8 @@ namespace SRCRender.Resources
         public static string DataErrorLine => Rm.GetString(nameof(DataErrorLine));
         public static string DataErrorInvalidData => Rm.GetString(nameof(DataErrorInvalidData));
         public static string DataErrorInvalid => Rm.GetString(nameof(DataErrorInvalid));
+        public static string PictureLoadError => Rm.GetString(nameof(PictureLoadError));
+        public static string PictureFormatNotSupported => Rm.GetString(nameof(PictureFormatNotSupported));
         public static string Cancel => Rm.GetString(nameof(Cancel));
         public static string InputDefaultValue => Rm.GetString(nameof(InputDefaultValue));
         public static string SaveDialogTitle => Rm.GetString(nameof(SaveDialogTitle));

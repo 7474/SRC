@@ -32,6 +32,7 @@ namespace SRCRender
             public (bool Transparent, string Name) Key;
             public SKBitmap Bitmap;
             public long Bytes;
+            public ImageLoadResult Result;
         }
 
         public ImageCache(SRC src, long capacityBytes = DefaultCapacityBytes)
@@ -72,11 +73,22 @@ namespace SRCRender
         /// </summary>
         public SKBitmap Get(string name)
         {
+            return Get(name, out _);
+        }
+
+        /// <summary>
+        /// 画像を取得する。見つからない、または読み込めない場合は null で、その理由を result に返す。
+        /// </summary>
+        public SKBitmap Get(string name, out ImageLoadResult result)
+        {
             if (string.IsNullOrEmpty(name))
             {
+                result = ImageLoadResult.NotFound;
                 return null;
             }
-            return GetOrAdd((false, name), () => Load(name));
+            var entry = GetOrAdd((false, name), () => Load(name));
+            result = entry.Result;
+            return entry.Bitmap;
         }
 
         /// <summary>
@@ -84,14 +96,29 @@ namespace SRCRender
         /// </summary>
         public SKBitmap GetTransparent(string name)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return null;
-            }
-            return GetOrAdd((true, name), () => MakeTransparent(Get(name), SKColors.White));
+            return GetTransparent(name, out _);
         }
 
-        private SKBitmap GetOrAdd((bool Transparent, string Name) key, Func<SKBitmap> load)
+        /// <summary>
+        /// 白を透過色とした画像を取得する。見つからない、または読み込めない場合は null で、その理由を result に返す。
+        /// </summary>
+        public SKBitmap GetTransparent(string name, out ImageLoadResult result)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                result = ImageLoadResult.NotFound;
+                return null;
+            }
+            var entry = GetOrAdd((true, name), () =>
+            {
+                var bitmap = Get(name, out var original);
+                return (MakeTransparent(bitmap, SKColors.White), original);
+            });
+            result = entry.Result;
+            return entry.Bitmap;
+        }
+
+        private Entry GetOrAdd((bool Transparent, string Name) key, Func<(SKBitmap Bitmap, ImageLoadResult Result)> load)
         {
             lock (sync)
             {
@@ -99,22 +126,23 @@ namespace SRCRender
                 {
                     recent.Remove(node);
                     recent.AddFirst(node);
-                    return node.Value.Bitmap;
+                    return node.Value;
                 }
             }
             // 読み込み（デコード）はロックの外で行う。同時に同じ画像を読んだ場合は先に登録したものを使う
-            var bitmap = load();
+            var (bitmap, result) = load();
             lock (sync)
             {
                 if (entries.TryGetValue(key, out var node))
                 {
-                    return node.Value.Bitmap;
+                    return node.Value;
                 }
                 var entry = new Entry
                 {
                     Key = key,
                     Bitmap = bitmap,
                     Bytes = bitmap == null ? 0 : (long)bitmap.RowBytes * bitmap.Height,
+                    Result = result,
                 };
                 entries[key] = recent.AddFirst(entry);
                 cachedBytes += entry.Bytes;
@@ -126,32 +154,37 @@ namespace SRCRender
                     entries.Remove(last.Value.Key);
                     cachedBytes -= last.Value.Bytes;
                 }
-                return bitmap;
+                return entry;
             }
         }
 
-        private SKBitmap Load(string name)
+        private (SKBitmap, ImageLoadResult) Load(string name)
         {
+            string path = null;
             try
             {
                 // 元の SRC と同じ順番で探す（フォルダごとに、ファイル名の候補を順に探す）
-                var path = BitmapSearch.FindPicture(src, name);
+                path = BitmapSearch.FindPicture(src, name);
                 if (string.IsNullOrEmpty(path))
                 {
-                    return null;
+                    return (null, ImageLoadResult.NotFound);
                 }
                 using (var stream = src.FileSystem.Open(path))
                 using (var memory = new MemoryStream())
                 {
                     stream.CopyTo(memory);
                     memory.Position = 0;
-                    return SKBitmap.Decode(memory);
+                    // 壊れたファイル・Skia が読めない形式は null になる
+                    var bitmap = SKBitmap.Decode(memory);
+                    return bitmap == null
+                        ? (null, ImageLoadResult.DecodeFailed(path))
+                        : (bitmap, ImageLoadResult.Loaded(path));
                 }
             }
             catch (Exception ex)
             {
                 src.LogError(ex);
-                return null;
+                return (null, string.IsNullOrEmpty(path) ? ImageLoadResult.NotFound : ImageLoadResult.DecodeFailed(path));
             }
         }
 
@@ -159,5 +192,35 @@ namespace SRCRender
         {
             return bitmap == null ? null : ImageFilters.MakeTransparent(bitmap, transparentColor);
         }
+    }
+
+    /// <summary>画像の読み込みの結果</summary>
+    public enum ImageLoadStatus
+    {
+        /// <summary>読み込めた</summary>
+        Loaded,
+        /// <summary>ファイルが見つからない</summary>
+        NotFound,
+        /// <summary>ファイルはあるが、読み込めない（壊れている・読めない形式）</summary>
+        DecodeFailed,
+    }
+
+    /// <summary>
+    /// 画像の読み込みの結果と、見つかったファイルのパス（元の SRC の DrawPicture の pfname に当たる。見つからなければ null）。
+    /// </summary>
+    public readonly struct ImageLoadResult
+    {
+        private ImageLoadResult(ImageLoadStatus status, string path)
+        {
+            Status = status;
+            Path = path;
+        }
+
+        public ImageLoadStatus Status { get; }
+        public string Path { get; }
+
+        public static ImageLoadResult NotFound => new ImageLoadResult(ImageLoadStatus.NotFound, null);
+        public static ImageLoadResult Loaded(string path) => new ImageLoadResult(ImageLoadStatus.Loaded, path);
+        public static ImageLoadResult DecodeFailed(string path) => new ImageLoadResult(ImageLoadStatus.DecodeFailed, path);
     }
 }

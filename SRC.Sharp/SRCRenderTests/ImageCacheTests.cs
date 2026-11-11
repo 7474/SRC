@@ -141,5 +141,30 @@ namespace SRCRender.Tests
             Assert.IsNull(cache.GetTransparent(PathOf("missing")));
             Assert.AreEqual(0, cache.CachedBytes);
         }
+
+        [TestMethod]
+        public void 読み込みの結果を区別して返す()
+        {
+            File.WriteAllText(Path.Combine(dir, "broken.png"), "not a picture");
+            var cache = new ImageCache(src);
+
+            Assert.IsNotNull(cache.Get(PathOf("a"), out var loaded));
+            Assert.AreEqual(ImageLoadStatus.Loaded, loaded.Status);
+            Assert.AreEqual(PathOf("a"), loaded.Path);
+
+            Assert.IsNull(cache.Get(PathOf("missing"), out var missing));
+            Assert.AreEqual(ImageLoadStatus.NotFound, missing.Status);
+            Assert.IsNull(missing.Path);
+
+            // 壊れた画像は見つかったパスと共に返す。キャッシュから返すときも同じ
+            foreach (var _ in new[] { 1, 2 })
+            {
+                Assert.IsNull(cache.Get(PathOf("broken"), out var broken));
+                Assert.AreEqual(ImageLoadStatus.DecodeFailed, broken.Status);
+                Assert.AreEqual(PathOf("broken"), broken.Path);
+                Assert.IsNull(cache.GetTransparent(PathOf("broken"), out var brokenTransparent));
+                Assert.AreEqual(ImageLoadStatus.DecodeFailed, brokenTransparent.Status);
+            }
+        }
     }
 }

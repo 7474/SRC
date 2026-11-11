@@ -91,6 +91,8 @@ namespace SRCRender
         public void ClearImageCache()
         {
             images = null;
+            // 読み直した画像が読めなければ、もう一度メッセージを出す
+            reportedPictureErrors.Clear();
         }
         private Map Map => src.Map;
         // WinForms 版から移植したコードとの互換のため
@@ -1307,24 +1309,46 @@ namespace SRCRender
             Present();
         }
 
+        // frmNowLoading の Size・Value。元の SRC は表示する前に SetLoadImageSize を呼んでも（フォームが読み込まれて）値が残る
+        private NowLoadingState nowLoading;
+
         public void OpenNowLoadingForm()
         {
-            State.Splash = "Now Loading...";
+            nowLoading = nowLoading ?? new NowLoadingState();
+            State.NowLoading = nowLoading;
             Present();
         }
 
         public void CloseNowLoadingForm()
         {
-            State.Splash = null;
+            // Unload frmNowLoading で Size・Value も消える
+            nowLoading = null;
+            State.NowLoading = null;
             Present();
         }
 
+        /// <summary>
+        /// バーを 1 段階進める（元の SRC の frmNowLoading.Progress と DoEvents）。
+        /// SRC# は「Now Loading ...」を表示していないときも呼ぶ（SRC.IncludeData）ため、表示していなければ何もしない
+        /// （元の SRC は表示しているときだけ呼ぶ）
+        /// </summary>
         public void DisplayLoadingProgress()
         {
+            var state = State.NowLoading;
+            if (state == null)
+            {
+                return;
+            }
+            state.Value++;
+            Present();
+            DoEvents();
         }
 
         public void SetLoadImageSize(int new_size)
         {
+            nowLoading = nowLoading ?? new NowLoadingState();
+            nowLoading.Value = 0;
+            nowLoading.Size = new_size;
         }
 
         public void ChangeDisplaySize(int w, int h)

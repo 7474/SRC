@@ -114,4 +114,10 @@
   <data name="ConfigMessageSpeedInstant" xml:space="preserve">
     <value>신의 영역</value>
   </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>이미지 파일{0}{1}{0}을(를) 읽는 중 오류가 발생했습니다.{0}이미지 파일이 손상되지 않았는지 확인하십시오.</value>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>이미지 파일{0}{1}{0}의 이미지 형식은 지원되지 않습니다.</value>
+  </data>
 </root>

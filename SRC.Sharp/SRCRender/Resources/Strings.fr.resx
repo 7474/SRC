@@ -114,4 +114,10 @@
   <data name="ConfigMessageSpeedInstant" xml:space="preserve">
     <value>Instantanée</value>
   </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>Une erreur s'est produite lors du chargement du fichier image{0}{1}{0}Vérifiez que le fichier image n'est pas endommagé.</value>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>Le format du fichier image{0}{1}{0}n'est pas pris en charge.</value>
+  </data>
 </root>

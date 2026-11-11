@@ -117,4 +117,12 @@
   <data name="ConfigMessageSpeedInstant" xml:space="preserve">
     <value>神の領域</value>
   </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>画像ファイル{0}{1}{0}の読み込み中にエラーが発生しました。{0}画像ファイルが壊れていないか確認して下さい。</value>
+    <comment>{0}: 改行, {1}: 画像ファイルのパス（元の SRC の Susie.bas の LoadPicture2）</comment>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>画像ファイル{0}{1}{0}の画像フォーマットはサポートされていません。</value>
+    <comment>{0}: 改行, {1}: 画像ファイルのパス（元の SRC の Susie.bas の LoadPicture2）</comment>
+  </data>
 </root>

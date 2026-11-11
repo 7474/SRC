@@ -32,7 +32,6 @@ namespace SRCRender
         private readonly SKTypeface typeface;
         private readonly SKFont font;
         private readonly SKFont boldFont;
-        private readonly SKFont largeFont;
 
         /// <summary>
         /// 既定で使うフォント。SRC のリストは等幅（ＭＳ 明朝）で桁を空白で揃えるため等幅フォントにする。
@@ -45,7 +44,6 @@ namespace SRCRender
             this.typeface = typeface ?? ResolveTypeface();
             font = new SKFont(this.typeface, 16);
             boldFont = new SKFont(this.typeface, 16) { Embolden = true };
-            largeFont = new SKFont(this.typeface, 28) { Embolden = true };
         }
 
         /// <summary>描画に使っているフォント</summary>
@@ -60,7 +58,6 @@ namespace SRCRender
         {
             font.Dispose();
             boldFont.Dispose();
-            largeFont.Dispose();
         }
 
         public SKSize MeasureText(string text)
@@ -104,10 +101,10 @@ namespace SRCRender
                     DrawMapCursor(canvas, cursor);
                 }
             }
-            if (!string.IsNullOrEmpty(state.Splash))
+            if (state.NowLoading != null)
             {
                 // 元の SRC の frmNowLoading は画面の中央。メインウィンドウを表示していればマップの中央に出す
-                DrawCenteredText(canvas, state.MainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height), state.Splash, largeFont);
+                DrawNowLoading(canvas, state.MainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height), state.NowLoading);
             }
             if (state.Title != null)
             {
@@ -1023,6 +1020,79 @@ namespace SRCRender
             }
         }
 
+        // NowLoading.frm（SRC#Form の Forms/NowLoading.Designer.cs）の配置。ClientWidth 3210・ClientHeight 1320（Twip）
+        private static readonly SKSizeI NowLoadingClientSize = new SKSizeI(214, 88);
+        // Label1: Left 360・Top 240（Twip）
+        private static readonly SKPointI NowLoadingLabelOrigin = new SKPointI(24, 16);
+        // picBar: Left 240・Top 840・Width 2745・Height 195（Twip）。3D の枠（2 ピクセル）の内側が ScaleWidth 179・ScaleHeight 9
+        private static readonly SKRectI NowLoadingBar = SKRectI.Create(16, 56, 183, 13);
+        // picBar の FillColor &H00800000&（BGR）
+        private static readonly SKColor NowLoadingBarColor = new SKColor(0x00, 0x00, 0x80);
+
+        /// <summary>
+        /// 「Now Loading ...」の画面（元の SRC の NowLoading.frm）。灰色のダイアログに「Now Loading ...」と進み具合のバーを描く。
+        /// バーは Progress と同じく picBar.Line (0, 0)-(ScaleWidth * Value \ Size, ScaleHeight), , BF で塗る（両端を含む）。
+        /// </summary>
+        private static void DrawNowLoading(SKCanvas canvas, SKRectI area, NowLoadingState loading)
+        {
+            var outerHeight = NowLoadingClientSize.Height + Compat.Form.TitleBarHeight;
+            var box = SKRect.Create(area.Left + (area.Width - NowLoadingClientSize.Width) / 2, area.Top + (area.Height - outerHeight) / 2, NowLoadingClientSize.Width, outerHeight);
+            using (var paint = new SKPaint { IsAntialias = false })
+            {
+                // 枠とタイトルバー（Caption "SRC"。リストボックスなどのウィンドウと同じ描き方）
+                paint.Color = FormGray;
+                canvas.DrawRect(box, paint);
+                paint.Color = WindowsHighlight;
+                canvas.DrawRect(box.Left + 1, box.Top + 1, box.Width - 2, Compat.Form.TitleBarHeight - 2, paint);
+                DrawBevel(canvas, box, raised: true, paint);
+                using (var titleFont = ListTitleFont.ToSKFont())
+                {
+                    paint.Color = SKColors.White;
+                    paint.IsAntialias = true;
+                    canvas.DrawText("SRC", box.Left + 6, box.Top + (Compat.Form.TitleBarHeight - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                    paint.IsAntialias = false;
+                }
+
+                var left = box.Left;
+                var top = box.Top + Compat.Form.TitleBarHeight;
+
+                // Label1: Times New Roman 18 ポイントの太字。Times New Roman は SRCRender の環境（ブラウザ・Linux）に無く、
+                // 日本語の字形が無い書体は SkiaFonts が選ばない（Times New Roman を指定するとゴシック体になる）。
+                // そのため、どの環境にもある明朝体の代替フォント（SerifFamily。Noto Serif CJK JP・BIZ UDP明朝）の太字で、同じセリフ体にする。
+                // 代替フォントの英字は Times New Roman より幅が広い（Noto Serif CJK JP で 190 ピクセル）ので、
+                // Times New Roman の幅（Times New Roman と字の幅が同じ Liberation Serif の太字で測って 162 ピクセル）まで横を縮める
+                using (var font = Compat.SkiaFonts.Create(Compat.SkiaFonts.SerifFamily, 18f * 96f / 72f, bold: true, italic: false))
+                {
+                    const string text = "Now Loading ...";
+                    const float timesNewRomanWidth = 162f;
+                    var measured = font.MeasureText(text);
+                    if (measured > timesNewRomanWidth)
+                    {
+                        font.ScaleX = timesNewRomanWidth / measured;
+                    }
+                    paint.Color = SKColors.Black;
+                    paint.IsAntialias = true;
+                    canvas.DrawText(text, left +NowLoadingLabelOrigin.X, top + NowLoadingLabelOrigin.Y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    paint.IsAntialias = false;
+                }
+
+                // picBar: 白地に、済んだ数の割合だけ塗る（総数を超えても枠の内側まで）
+                var bar = SKRect.Create(left + NowLoadingBar.Left, top + NowLoadingBar.Top, NowLoadingBar.Width, NowLoadingBar.Height);
+                var client = SKRect.Create(bar.Left + 2, bar.Top + 2, bar.Width - 4, bar.Height - 4);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(client, paint);
+                if (loading.Value > 0 && loading.Size > 0)
+                {
+                    var scaleWidth = (int)client.Width;
+                    var x2 = (long)scaleWidth * loading.Value / loading.Size;
+                    var width = (int)Math.Min(scaleWidth, x2 + 1);
+                    paint.Color = NowLoadingBarColor;
+                    canvas.DrawRect(client.Left, client.Top, width, client.Height, paint);
+                }
+                DrawSunkenEdge(canvas, bar, paint);
+            }
+        }
+
         private static void DrawPanel(SKCanvas canvas, SKRect box, SKPaint paint)
         {
             paint.Style = SKPaintStyle.Fill;
@@ -1033,14 +1103,6 @@ namespace SRCRender
             paint.Color = PanelBorderColor;
             canvas.DrawRoundRect(box, 6, 6, paint);
             paint.StrokeWidth = 1;
-        }
-
-        private static void DrawCenteredText(SKCanvas canvas, SKRectI area, string text, SKFont textFont)
-        {
-            using (var paint = new SKPaint { Color = TextColor })
-            {
-                canvas.DrawText(text, area.MidX, area.MidY, SKTextAlign.Center, textFont, paint);
-            }
         }
 
         #endregion
