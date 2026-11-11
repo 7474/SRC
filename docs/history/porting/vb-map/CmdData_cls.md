@@ -165,17 +165,17 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecSetRelationCmd | 11150 | 61 | `SRCCore/CmdDatas/Commands/Pilot/SetRelationCmd.cs` SetRelationCmd | 一致 |  |
 | Function ExecSetSkillCmd | 11212 | 150 | `SRCCore/CmdDatas/Commands/Pilot/SetSkillCmd.cs` SetSkillCmd | 一致 |  |
 | Function ExecSetStatusCmd | 11363 | 37 | `SRCCore/CmdDatas/Commands/Unit/SetStatusCmd.cs` SetStatusCmd | 一致 |  |
-| Function ExecSetStatusStringColor | 11402 | 68 | `SRCCore/CmdDatas/Commands/Other/SetStatusStringColorCmd.cs` SetStatusStringColorCmd | 違いあり | 変数の保存は同じだが、ステータスウィンドウの文字色に効かない（#1520） |
+| Function ExecSetStatusStringColor | 11402 | 68 | `SRCCore/CmdDatas/Commands/Other/SetStatusStringColorCmd.cs` SetStatusStringColorCmd | 一致 | 変数の保存は同じ。VB で色が効くのは新ＧＵＩのときだけで、SRC# は新ＧＵＩに対応しない（#1520 は #1537 で閉じた） |
 | Function ExecSetStockCmd | 11472 | 43 | `SRCCore/CmdDatas/Commands/Unit/SetStockCmd.cs` SetStockCmd | 一致 |  |
-| Function ExecSetWindowColor | 11516 | 76 | `SRCCore/CmdDatas/Commands/Other/SetWindowColorCmd.cs` SetWindowColorCmd | 違いあり | 変数の保存は同じだが、ステータスウィンドウの枠と背景の色に効かない（#1520） |
-| Function ExecSetWindowFrameWidth | 11593 | 19 | `SRCCore/CmdDatas/Commands/Other/SetWindowFrameWidthCmd.cs` SetWindowFrameWidthCmd | 違いあり | 枠の幅に効かない（#1520）。VB の引数エラーの文言「SetWindowColorコマンドの…」の書き誤りは再現しない |
+| Function ExecSetWindowColor | 11516 | 76 | `SRCCore/CmdDatas/Commands/Other/SetWindowColorCmd.cs` SetWindowColorCmd | 一致 | 変数の保存は同じ。VB で色が効くのは新ＧＵＩのときだけで、SRC# は新ＧＵＩに対応しない（#1520 は #1537 で閉じた） |
+| Function ExecSetWindowFrameWidth | 11593 | 19 | `SRCCore/CmdDatas/Commands/Other/SetWindowFrameWidthCmd.cs` SetWindowFrameWidthCmd | 一致 | 変数の保存は同じ。VB で枠の幅が効くのは新ＧＵＩのときだけで、SRC# は新ＧＵＩに対応しない（#1520 は #1537 で閉じた）。VB の引数エラーの文言「SetWindowColorコマンドの…」の書き誤りは再現しない |
 | Function ExecShowCmd | 11614 | 15 | `SRCCore/CmdDatas/Commands/Screan/ShowCmd.cs` ShowCmd | 一致 |  |
 | Function ExecShowImageCmd | 11631 | 32 | `SRCCore/CmdDatas/Commands/Screan/ShowImageCmd.cs` ShowImageCmd | 一致 | 実装済み（ヘルプの「未実装」を直した）。引数 1・3 個のとき VB は範囲外の引数を読む（範囲チェックなしで値が定まらない） |
 | Function ExecShowUnitStatusCmd | 11664 | 25 | `SRCCore/CmdDatas/Commands/Unit/ShowUnitStatusCmd.cs` ShowUnitStatusCmd | 一致 |  |
 | Function ExecSkipCmd | 11690 | 21 | `SRCCore/CmdDatas/Commands/Control/SkipCmd.cs` SkipCmd | 一致 |  |
 | Function ExecSortCmd | 11712 | 239 | `SRCCore/CmdDatas/Commands/Variable/SortCmd.cs` SortCmd | 修正済み | VB と同じ交換ソート（同じ値の順）。文字の比較は vbTextCompare 相当、全角の数字も数値として読む、配列名の前方一致は大文字・小文字を区別する |
 | Function ExecSpecialPowerCmd | 11952 | 90 | `SRCCore/CmdDatas/Commands/Unit/SpecialPowerCmd.cs` SpecialPowerCmd | 一致 |  |
-| Function ExecSplitCmd | 12043 | 49 | `SRCCore/CmdDatas/Commands/Unit/SplitCmd.cs` SplitCmd | 違いあり | 退避した選択も分離後の 1 番機に書き換えるので、RestoreSelections の後の選択が VB と違う（#1521） |
+| Function ExecSplitCmd | 12043 | 49 | `SRCCore/CmdDatas/Commands/Unit/SplitCmd.cs` SplitCmd | 修正済み | #1521（#1528）。VB の ExecSplitCmd と同じく今の選択だけを書き換え、退避した選択は書き換えない |
 | Function ExecStartBGMCmd | 12093 | 39 | `SRCCore/CmdDatas/Commands/Sound/StartBGMCmd.cs` StartBGMCmd<br>`SRCCore/CmdDatas/Commands/Sound/ABGMCmd.cs` ABGMCmd | 一致 | ファイル名を VB と同じく ListTail(…, 2)・ListLength で読む（#1534 で直した） |
 | Function ExecStopBGMCmd | 12133 | 9 | `SRCCore/CmdDatas/Commands/Sound/StopBGMCmd.cs` StopBGMCmd | 一致 |  |
 | Function ExecStopSummoningCmd | 12143 | 18 | `SRCCore/CmdDatas/Commands/Unit/StopSummoningCmd.cs` StopSummoningCmd | 一致 |  |

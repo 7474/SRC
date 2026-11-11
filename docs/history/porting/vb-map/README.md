@@ -70,7 +70,7 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [BattleConfigData.cls](BattleConfigData_cls.md) | 2 | 0 | 1 | 1 | 0 | 0 | 0 |
 | [BattleConfigDataList.cls](BattleConfigDataList_cls.md) | 7 | 0 | 6 | 0 | 0 | 1 | 0 |
 | [COM.bas](COM_bas.md) | 18 | 0 | 7 | 11 | 0 | 0 | 0 |
-| [CmdData.cls](CmdData_cls.md) | 195 | 0 | 136 | 48 | 6 | 5 | 0 |
+| [CmdData.cls](CmdData_cls.md) | 195 | 0 | 139 | 49 | 2 | 5 | 0 |
 | [Command.bas](Command_bas.md) | 52 | 0 | 29 | 23 | 0 | 0 | 0 |
 | [Configuration.frm](Configuration_frm.md) | 7 | 0 | 4 | 3 | 0 | 0 | 0 |
 | [Dialog.cls](Dialog_cls.md) | 7 | 0 | 4 | 1 | 0 | 2 | 0 |
@@ -124,4 +124,4 @@ UnroundedFP=0       ' 浮動小数点の途中の結果を丸める（丸めな�
 | [Units.cls](Units_cls.md) | 25 | 0 | 15 | 1 | 0 | 9 | 0 |
 | [VBMP3.bas](VBMP3_bas.md) | 1 | 0 | 0 | 0 | 0 | 1 | 0 |
 | [WeaponData.cls](WeaponData_cls.md) | 2 | 0 | 2 | 0 | 0 | 0 | 0 |
-| 計 | 1333 | 0 | 851 | 327 | 10 | 145 | 0 |
+| 計 | 1333 | 0 | 854 | 328 | 6 | 145 | 0 |
