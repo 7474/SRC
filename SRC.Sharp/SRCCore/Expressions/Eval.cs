@@ -592,7 +592,8 @@ namespace SRCCore.Expressions
 
                         if (rnum != 0d)
                         {
-                            num_result = VBMath.IntDiv(lnum, VBMath.CLng(rnum));
+                            // VB の \ は、割る前に両辺を Long に丸める（Mod と同じ）。Long に収まらなければエラー（あふれ）
+                            num_result = VBMath.CLng(lnum) / VBMath.CLng(rnum);
                         }
                         else
                         {
