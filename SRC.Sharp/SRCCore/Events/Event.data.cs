@@ -1125,7 +1125,58 @@ namespace SRCCore.Events
             }
         }
 
-        // シナリオ開始後の動的なファイル読み込み
+        // シナリオ開始後に読み込んだ行（firstLineId 以降）だけのラベルを登録し、構文解析する
+        // （VB: CmdData.cls ExecLoadCmd の「ラベルの登録」「イベントデータの構文解析」）。
+        // 前からある行の EventCmd は作り直さないので、実行中のコマンドとイベントの続きに影響しない。
+        // VB と同じく、ラベルの末尾の全角文字と制御構造の書式はチェックしない。
+        // 複数行に分割されたコマンドの結合は、LoadEventData と同じく SrcEveReader がファイルごとに行う
+        public void RegisterAndParseAddedEventData(int firstLineId)
+        {
+            // ラベルの登録
+            // VB の AddLabel は登録済みかを見ない。SRC# の AddLabel は登録済みの行を飛ばすが、新しい行は登録されていないので同じになる
+            registeringNormalLabelIds = new LabelIdIndex(colNormalLabelList);
+            registeringEventLabelIds = new LabelIdIndex(colEventLabelList);
+            registeringSysNormalLabelIds = new LabelIdIndex(colSysNormalLabelList);
+            // LabelData のエラー表示に使う行（RegisterLabel と同じ）
+            var num = CurrentLineNum;
+            try
+            {
+                for (var i = firstLineId; i < EventData.Count; i++)
+                {
+                    var line = EventData[i];
+                    if (Strings.Right(line.Data, 1) == ":")
+                    {
+                        CurrentLineNum = line.ID;
+                        AddLabel(Strings.Left(line.Data, Strings.Len(line.Data) - 1), line.ID);
+                    }
+                }
+            }
+            finally
+            {
+                CurrentLineNum = num;
+                registeringNormalLabelIds = null;
+                registeringEventLabelIds = null;
+                registeringSysNormalLabelIds = null;
+            }
+
+            // イベントデータの構文解析
+            // VB は Parse の戻り値を見ない
+            var parser = new CmdParser();
+            for (var i = firstLineId; i < EventData.Count; i++)
+            {
+                var command = parser.Parse(SRC, EventData[i]);
+                if (i < EventCmd.Count)
+                {
+                    EventCmd[i] = command;
+                }
+                else
+                {
+                    EventCmd.Add(command);
+                }
+            }
+        }
+
+        // シナリオ開始後の動的なファイル読み込み（Require コマンド）
         public void LoadDynamic(string fname)
         {
             // 既に読み込まれている場合はスキップ

@@ -107,7 +107,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecLevelUpCmd | 7234 | 65 | `SRCCore/CmdDatas/Commands/Pilot/LevelUpCmd.cs` LevelUpCmd | 一致 |  |
 | Function ExecLineCmd | 7300 | 119 | `SRCCore/CmdDatas/Commands/Screan/LineCmd.cs` LineCmd | 一致 | 色の「#RGB」も受け付ける（SRC# の利便性） |
 | Function ExecLineReadCmd | 7420 | 13 | `SRCCore/CmdDatas/Commands/File/LineReadCmd.cs` LineReadCmd | 一致 | VB の Line Input # は CR・CRLF だけで区切るが、C# の ReadLine は LF だけの行でも区切る（UTF-8 のファイルを扱う SRC# の利便性として残す） |
-| Function ExecLoadCmd | 7434 | 114 | `SRCCore/CmdDatas/Commands/Other/LoadCmd.cs` LoadCmd | 違いあり | 読み込みの順序・範囲と構文解析が違う（#1518） |
+| Function ExecLoadCmd | 7434 | 114 | `SRCCore/CmdDatas/Commands/Other/LoadCmd.cs` LoadCmd | 修正済み | タイトルごとに IncludeData と include.eve を交互に読み、include.eve は EventFileNames を見ずに読む。読み直すローカルデータを VB と同じ範囲にした（effect・animation・ext_animation と AddDefaultAnimation をやめた）。新しい行だけのラベルを登録して構文解析する（Event.RegisterAndParseAddedEventData。前からある行の EventCmd は作り直さず、制御構造と全角ラベルはチェックしない）。「_」の行の結合は LoadEventData と同じく SrcEveReader がファイルごとに行う（#1518） |
 | Function ExecLocalCmd | 7549 | 96 | `SRCCore/CmdDatas/Commands/Control/LocalCmd.cs` LocalCmd | 一致 |  |
 | Function ExecMakePilotListCmd | 7646 | 260 | `SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs` MakePilotListCmd | 修正済み | 並べ替えを VB と同じ選択ソートに（同じ値の並び）。名称は vbTextCompare と同じ比較。追加パイロットはユニットの FeatureData("追加パイロット") の名前で判断。能力値は並べ替えのときの値を表示 |
 | Function ExecMakeUnitListCmd | 7907 | 5 | `SRCCore/CmdDatas/Commands/Other/MakeUnitListCmd.cs` MakeUnitListCmd | 一致 | 本体は Event.MakeUnitList（Event.bas の行で見る） |
