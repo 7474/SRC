@@ -1,0 +1,124 @@
+# 「トレス島試験記録」を第一話から最後（いまは第二話）まで自動でプレイする（srcsharp play の PlayScript。#1549）
+#   srcsharp play Compat/torres/ep01.eve --script Compat/torres.play --app-path Content/basic-data --skip-wait
+# 第一話の初めの 2 ターンは、通したい機能（合体技・使い切りのアイテム・マップ攻撃・スペシャルパワー）を
+# マスとメニューの操作で決まった手順で行い、結果を expect eval で確かめる。そのあとは turns で最後まで自動で進める
+# （turns は話の区切りで止まらないので、第二話は自動で進める。第二話の決まった手順は torres-ep02.play で、第二話から単体で始めて確かめる）。
+# 命中とダメージは乱数で変わるので、確かめるのは乱数に左右されない値（行動数・ＥＮ・アイテムの数・形態・イベントの記録）だけにする。
+
+# インターミッションは「次のステージへ」だけを選ぶ
+choose コマンド 次のステージへ
+# 負けたときはやり直さずに終える（テストを失敗させる）
+choose 試験は失敗した あきらめる
+
+#===============================================================
+# 第一話「試験場の朝」1 ターン目（試験）
+#===============================================================
+auto 60
+expect message 試験の手順を説明します
+expect eval CountItem(ノア) = 3
+expect eval HP(ゴロウ) = 5400
+
+# スペシャルパワー（味方に掛ける）：ノアの手当てで、傷んだヤマセを直す（最大ＨＰ 9000 の 30%）
+cell 5 6
+menu スペシャルパワー
+wait list スペシャルパワー
+list 手当て
+stall 600
+auto 3
+stall 5
+cell 3 13
+auto 30
+expect eval HP(ゴロウ) = 8100
+
+# 使い切りのアイテム：カスミの「スパークボム」で標的Ａを撃つ。同じ名前の武器を持つアイテムが 2 つあり、
+# 先に装備したアイテム「スパークボム」のほうが無くなる（元の SRC の Unit.Attack は武器の番号からアイテムを探す）
+cell 5 6
+menu 攻撃
+wait list
+list スパークボム
+cell 8 6
+auto 60
+expect eval CountItem(ノア) = 2
+expect eval Item(ノア, 1) = 試作スパークボム
+expect eval IsEquiped(ノア, スパークボム) = 0
+
+# スペシャルパワー（自分に掛ける）：カイの烈火。次の攻撃で消える
+cell 6 6
+menu スペシャルパワー
+wait list スペシャルパワー
+list 烈火
+auto 30
+expect eval SpecialPower(カイ, 烈火) = 1
+
+# 合体技：トビウオのクロスストライクで標的Ｂを撃つ。パートナーのイワガネも行動済みになり、ＥＮを 20 使う
+cell 6 6
+menu 攻撃
+wait list
+list クロスストライク
+cell 7 6
+auto 60
+expect eval SpecialPower(カイ, 烈火) = 0
+expect eval Action(カイ) = 0
+expect eval Action(ダイチ) = 0
+expect eval EN(ダイチ) = 100
+# 攻撃のラベル（常時のラベルと、同じ文字列の 2 つのラベル）
+expect message 最初の一撃、いくぞ！
+expect eval 攻撃総数 = 1
+expect eval 攻撃記録 = 0
+
+# マップ攻撃：ヤマセの散弾砲（扇型）で、南の標的Ｃを 2 つまとめて撃つ
+cell 3 13
+menu 攻撃
+wait list
+list 散弾砲
+cell 5 13
+auto 60
+expect eval Action(ゴロウ) = 0
+
+cell 1 1 right
+menu ターン終了
+auto 60
+
+#===============================================================
+# 第一話 2 ターン目
+#===============================================================
+expect eval ターン数 = 2
+# 1 ターン目の敵のフェイズに現れた錆蟲ボマーが、敵の思考でマップ攻撃（錆散布）を使った
+expect message 試験場の地下に反応
+expect eval 敵マップ攻撃 = 1
+expect message 錆蟲の群れが接近
+# イベントの SpecialPower（全味方の鼓舞）と IncreaseMorale で、カイの気力は 120 以上
+expect eval Morale(カイ) >= 120
+# 使い切りのアイテムの 2 つめ（同じ名前の武器）で予備の標的を撃つ。2 つとも無くなる
+cell 5 6
+menu 攻撃
+wait list
+list スパークボム
+cell 5 9
+auto 60
+expect eval CountItem(ノア) = 1
+expect eval Item(ノア, 1) = 携行修理キット
+# 予備の標的の隣にいる錆蟲衛兵が、味方の攻撃に対して援護防御（サポートガード）をする
+expect message ガガッ！（錆蟲衛兵が仲間をかばった）
+turns 1
+auto 60
+
+#===============================================================
+# 第一話 3 ターン目以降
+#===============================================================
+# スペシャルパワーの自動発動：気力 120 以上のカイに、ターンの初めに集心が掛かる
+expect eval ターン数 = 3
+expect eval SpecialPower(カイ, 集心) = 1
+# ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+# 全滅 敵 → Continue → エピローグ → インターミッション → 第二話 → GameClear まで自動で進める
+turns 60
+expect message 試験は合格
+expect message 錆蟲の巣は、東の錆の原の奥にあ
+expect message 合体、ミカヅチ！
+expect message 巣が……崩れていく！
+expect eval 撃破記録 = 撃破総数 - 1
+expect eval 攻撃記録 = 攻撃総数 - 1
+expect eval 試験記録 = "第一話の試験;第二話の調査;"
+expect finished
+expect error none
+
