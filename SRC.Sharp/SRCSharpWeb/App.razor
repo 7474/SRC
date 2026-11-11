@@ -1854,6 +1854,12 @@ else
         session.Game.UnhandledException += (s, e) =>
         {
             WebLogging.Log.LogCritical(e.Exception, "ゲームの実行中の例外");
+            // データ・イベントファイルの誤りで読み込みを打ち切ったとき（元の SRC と同じく、誤りのダイアログを出して終了した後）は、
+            // 終了のために投げ直した例外なので、エラーの報告には送らない（誤りのダイアログは ErrorShown で送っている）
+            if (host.Terminated || e.Exception is SRCCore.Exceptions.InvalidSrcDataException)
+            {
+                return;
+            }
             host.ReportError(e.Exception.GetType().FullName, e.Exception.Message, e.Exception.ToString());
         };
         // イベントエラーなど、ゲームが出すエラーのダイアログも送る（シナリオの行は errorreport.js が添える）
