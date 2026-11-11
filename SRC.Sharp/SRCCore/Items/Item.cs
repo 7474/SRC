@@ -15,7 +15,7 @@ namespace SRCCore.Items
 {
     // 作成されたアイテムのクラス
     [JsonObject(MemberSerialization.OptIn)]
-    public class Item
+    public partial class Item
     {
         // 識別子
         [JsonProperty]
