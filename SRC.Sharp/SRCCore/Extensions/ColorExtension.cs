@@ -1,3 +1,4 @@
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +11,7 @@ namespace SRCCore.Extensions
         // VB の Hex 関数と同様に英大文字の16進表記にする
         public static string ToHexString(this Color color)
         {
-            return string.Format("#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B);
+            return string.Format(CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2}", color.R, color.G, color.B);
         }
 
         /// <summary>
@@ -127,7 +128,8 @@ namespace SRCCore.Extensions
                 return named;
             }
 
-            var culture = CultureInfo.CurrentCulture;
+            // 区切り（ColorConverter はリストの区切り）は、実行する環境の言語によらず日本語の設定の「,」にする
+            var culture = SrcCulture.Japanese;
             var sep = culture.TextInfo.ListSeparator[0];
             if (text.IndexOf(sep) < 0)
             {
@@ -136,8 +138,8 @@ namespace SRCCore.Extensions
                     return Color.FromName(text.Substring(1, text.Length - 2));
                 }
                 else if ((text.Length == 7 && text[0] == '#')
-                    || (text.Length == 8 && (text.StartsWith("0x") || text.StartsWith("0X")))
-                    || (text.Length == 8 && (text.StartsWith("&h") || text.StartsWith("&H"))))
+                    || (text.Length == 8 && (text.StartsWith("0x", StringComparison.Ordinal) || text.StartsWith("0X", StringComparison.Ordinal)))
+                    || (text.Length == 8 && (text.StartsWith("&h", StringComparison.Ordinal) || text.StartsWith("&H", StringComparison.Ordinal))))
                 {
                     return PossibleKnownColor(Color.FromArgb(unchecked((int)(0xFF000000 | (uint)IntFromString(text, culture)))));
                 }
@@ -178,7 +180,7 @@ namespace SRCCore.Extensions
         private static int IntFromString(string text, CultureInfo culture)
         {
             text = text.Trim();
-            if (text.StartsWith("#"))
+            if (text.StartsWith("#", StringComparison.Ordinal))
             {
                 return Convert.ToInt32(text.Substring(1), 16);
             }

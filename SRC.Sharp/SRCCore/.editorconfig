@@ -1,0 +1,21 @@
+# SRCCore だけに付ける規則（SRC.Sharp/.editorconfig に重ねる）
+
+[*.cs]
+# 実行する環境の言語の設定に左右される処理をエラーにする（7474/SRC#1554）。
+# 元の SRC は日本語版の Windows で動く前提。直し方:
+# - 元の SRC が Binary で比べる文字列（InStr・=・Like など）は StringComparison.Ordinal
+# - vbTextCompare の比較は SrcCollection<V>.KeyComparer（VB の Collection のキーと同じ比較）
+# - 数値と日付の書式（CStr・CDbl・Format・CDate など）は SrcCulture.Japanese（ja-JP。無ければ InvariantCulture）
+# - 設定ファイル・マップのデータ・ファイル名・ログなど、プログラムが読み書きする値は CultureInfo.InvariantCulture
+# - 大文字・小文字の変換（LCase・UCase）は ToLowerInvariant・ToUpperInvariant（日本語の設定と同じ結果。トルコ語の ı・İ にしない）
+# CA1304: CultureInfo を指定する
+dotnet_diagnostic.CA1304.severity = error
+# CA1305: IFormatProvider を指定する
+dotnet_diagnostic.CA1305.severity = error
+# CA1309: 序数の StringComparison を使う
+dotnet_diagnostic.CA1309.severity = error
+# CA1310: 正確さのために StringComparison を指定する（既定でカルチャに依存する比較）
+dotnet_diagnostic.CA1310.severity = error
+# CA1311: ToUpper・ToLower にカルチャを指定するか、インバリアントの版を使う
+dotnet_diagnostic.CA1311.severity = error
+# CA1307（既定で序数の比較も含め、StringComparison を指定する）は件数が多いため、まだ付けていない

@@ -294,7 +294,7 @@ namespace SRCCore.Expressions.Tests
         public void Tan_PiOver4_ReturnsApproximatelyOne()
         {
             var exp = Create();
-            var piOver4 = (Math.PI / 4).ToString("R");
+            var piOver4 = (Math.PI / 4).ToString("R", System.Globalization.CultureInfo.InvariantCulture);
             Assert.AreEqual(1d, exp.GetValueAsDouble($"Tan({piOver4})"), 1e-10);
         }
 

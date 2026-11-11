@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 
 using SRCCore.VB;
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -652,7 +653,7 @@ namespace SRCCore.Lib
         {
             // VB版は IsNumeric なら CLng で変換し、エラー（オーバーフロー）時は0を返す
             expr = Conversions.NumericText(expr);
-            if (int.TryParse(expr, out var ret))
+            if (int.TryParse(expr, NumberStyles.Integer, SrcCulture.Japanese, out var ret))
             {
                 return ret;
             }
@@ -760,11 +761,11 @@ namespace SRCCore.Lib
             string FormatNumRet = default;
             if (n % 1 == 0d)
             {
-                FormatNumRet = n.ToString("0");
+                FormatNumRet = n.ToString("0", SrcCulture.Japanese);
             }
             else
             {
-                FormatNumRet = n.ToString("0.#######################################################################");
+                FormatNumRet = n.ToString("0.#######################################################################", SrcCulture.Japanese);
             }
 
             return FormatNumRet;

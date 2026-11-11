@@ -58,11 +58,11 @@ namespace SRCCore.Config
             for (var i = 0; i < lines.Count; i++)
             {
                 var line = lines[i].Trim().TrimStart('﻿');
-                if (line.Length == 0 || line.StartsWith(";"))
+                if (line.Length == 0 || line.StartsWith(";", StringComparison.Ordinal))
                 {
                     continue;
                 }
-                if (line.StartsWith("[") && line.EndsWith("]"))
+                if (line.StartsWith("[", StringComparison.Ordinal) && line.EndsWith("]", StringComparison.Ordinal))
                 {
                     section = line.Substring(1, line.Length - 2).Trim();
                     continue;

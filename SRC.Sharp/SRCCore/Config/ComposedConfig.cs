@@ -1,3 +1,4 @@
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using SRCCore.Filesystem;
@@ -40,10 +41,10 @@ namespace SRCCore.Config
         /// <summary>音量（0～100）。シナリオで決めていなければアプリの設定（アプリの設定が音量を持たなければ 50）</summary>
         public int SoundVolume
         {
-            get => TryGetProperty(nameof(SoundVolume), out var v) && int.TryParse(v, out var volume)
+            get => TryGetProperty(nameof(SoundVolume), out var v) && int.TryParse(v, NumberStyles.Integer, CultureInfo.InvariantCulture, out var volume)
                 ? Math.Max(0, Math.Min(100, volume))
                 : (Base as LocalFileConfig)?.SoundVolume ?? 50;
-            set => SetProperty(nameof(SoundVolume), value.ToString(), () =>
+            set => SetProperty(nameof(SoundVolume), value.ToString(CultureInfo.InvariantCulture), () =>
             {
                 if (Base is LocalFileConfig local)
                 {
@@ -66,9 +67,9 @@ namespace SRCCore.Config
         public bool WeaponAnimation { get => GetBool(nameof(WeaponAnimation), Base.WeaponAnimation); set => SetBool(nameof(WeaponAnimation), value, () => Base.WeaponAnimation = value); }
         public bool ExtendedAnimation { get => GetBool(nameof(ExtendedAnimation), Base.ExtendedAnimation); set => SetBool(nameof(ExtendedAnimation), value, () => Base.ExtendedAnimation = value); }
         public bool MoveAnimation { get => GetBool(nameof(MoveAnimation), Base.MoveAnimation); set => SetBool(nameof(MoveAnimation), value, () => Base.MoveAnimation = value); }
-        public int MessageWait { get => GetInt(nameof(MessageWait), Base.MessageWait); set => SetProperty(nameof(MessageWait), value.ToString(), () => Base.MessageWait = value); }
-        public int ImageBufferSize { get => GetInt(nameof(ImageBufferSize), Base.ImageBufferSize); set => SetProperty(nameof(ImageBufferSize), value.ToString(), () => Base.ImageBufferSize = value); }
-        public int MaxImageBufferByteSize { get => GetInt(nameof(MaxImageBufferByteSize), Base.MaxImageBufferByteSize); set => SetProperty(nameof(MaxImageBufferByteSize), value.ToString(), () => Base.MaxImageBufferByteSize = value); }
+        public int MessageWait { get => GetInt(nameof(MessageWait), Base.MessageWait); set => SetProperty(nameof(MessageWait), value.ToString(CultureInfo.InvariantCulture), () => Base.MessageWait = value); }
+        public int ImageBufferSize { get => GetInt(nameof(ImageBufferSize), Base.ImageBufferSize); set => SetProperty(nameof(ImageBufferSize), value.ToString(CultureInfo.InvariantCulture), () => Base.ImageBufferSize = value); }
+        public int MaxImageBufferByteSize { get => GetInt(nameof(MaxImageBufferByteSize), Base.MaxImageBufferByteSize); set => SetProperty(nameof(MaxImageBufferByteSize), value.ToString(CultureInfo.InvariantCulture), () => Base.MaxImageBufferByteSize = value); }
         public bool KeepStretchedImage { get => GetBool(nameof(KeepStretchedImage), Base.KeepStretchedImage); set => SetBool(nameof(KeepStretchedImage), value, () => Base.KeepStretchedImage = value); }
 
         // Option セクションの項目。シナリオの [Option] AutoDefense も GetItem を通して効く
@@ -140,7 +141,7 @@ namespace SRCCore.Config
 
         private int GetInt(string name, int fallback)
         {
-            return TryGetProperty(name, out var v) && int.TryParse(v, out var i) ? i : fallback;
+            return TryGetProperty(name, out var v) && int.TryParse(v, NumberStyles.Integer, CultureInfo.InvariantCulture, out var i) ? i : fallback;
         }
 
         private void SetBool(string name, bool value, Action setBase)
@@ -179,7 +180,7 @@ namespace SRCCore.Config
         public static bool TryParseCompatibilityMode(string value, out SRCCompatibilityMode mode)
         {
             value = (value ?? "").Trim();
-            if (int.TryParse(value, out var n) && Enum.IsDefined(typeof(SRCCompatibilityMode), n))
+            if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var n) && Enum.IsDefined(typeof(SRCCompatibilityMode), n))
             {
                 mode = (SRCCompatibilityMode)n;
                 return true;

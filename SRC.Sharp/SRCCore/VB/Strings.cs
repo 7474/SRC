@@ -113,15 +113,16 @@ namespace SRCCore.VB
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.lcase?view=net-5.0
+        // 日本語の地域の設定と同じ結果にする（トルコ語の設定でも LCase("I") は "i"。7474/SRC#1554）
         public static string LCase(string Value)
         {
-            return Value.ToLower();
+            return Value.ToLowerInvariant();
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.lcase?view=net-5.0
         public static char LCase(char Value)
         {
-            return Value.ToString().ToLower()[0];
+            return Value.ToString().ToLowerInvariant()[0];
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.left?view=net-5.0

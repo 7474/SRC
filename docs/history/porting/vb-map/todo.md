@@ -14,10 +14,10 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Config/LocalFileConfig.cs:10` | TODO | TODO 項目の説明を設定ファイルに書けるようにする | SRC#で不要 | SRC# の設定ファイル（JSON）の機能の希望で、VB の ReadIni・WriteIni との違いではない（#1498 の GeneralLib の項目で確かめた） |
 | `SRCCore/Config/LocalFileConfig.cs:11` | XXX | XXX 説明をどこでエントリーするか？　別にJSONでなくてもいい。 | SRC#で不要 | 同上 |
 | `SRCCore/Config/LocalFileConfig.cs:30` | XXX | XXX Configの余地ないしConfigのプロパティではないかもな。 | SRC#で不要 | 設計の覚え書きで、動作に関係しない |
-| `SRCCore/Maps/Map.cs:37` | XXX | XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう | SRC#で不要 | JSON の Map から復元する形で動いている。RestoreMapData と突き合わせ済み |
-| `SRCCore/Maps/Map.cs:115` | XXX | XXX | SRC#で不要 | IsStatusView は VB の `MapFileName = ""` の判定をまとめたもの |
-| `SRCCore/Maps/Map.cs:466` | XXX | XXX MapのGUIインタフェースと実装に追い出す | SRC#で不要 | GUIMap.SetMapSize に移してある |
-| `SRCCore/Maps/Map.cs:476` | XXX | XXX 1というよりは0にしたいが0長配列は作れない | SRC#で不要 | VB の ClearMap も MapWidth・MapHeight を 1 にする |
+| `SRCCore/Maps/Map.cs:38` | XXX | XXX シリアライズから復元するのか保存用データクラス作るのかはっきりしたほうがよさそう | SRC#で不要 | JSON の Map から復元する形で動いている。RestoreMapData と突き合わせ済み |
+| `SRCCore/Maps/Map.cs:116` | XXX | XXX | SRC#で不要 | IsStatusView は VB の `MapFileName = ""` の判定をまとめたもの |
+| `SRCCore/Maps/Map.cs:467` | XXX | XXX MapのGUIインタフェースと実装に追い出す | SRC#で不要 | GUIMap.SetMapSize に移してある |
+| `SRCCore/Maps/Map.cs:477` | XXX | XXX 1というよりは0にしたいが0長配列は作れない | SRC#で不要 | VB の ClearMap も MapWidth・MapHeight を 1 にする |
 | `SRCCore/Models/PilotData.cs:495` | XXX | XXX Readonlyにするとか | SRC#で不要 | SRC# で足した DefinedSpecialPowers の設計のメモ。VB に当たるコードは無い |
 | `SRCCore/Models/PilotData.cs:688` | XXX | XXX 例外処理要らんの？ | SRC#で不要 | VB の Feature にもエラーの処理は無く、無ければ実行時エラーになる |
 | `SRCCore/Pilots/Pilot.cs:76` | XXX | XXX こうしてるところシリアライズの時だけID解決のほうがいいかな。 | SRC#で不要 | Unit を UnitId から引くという SRC# の保存の設計についての覚え書き。VB の動作とは関係しない |
@@ -30,4 +30,4 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Units/UnitWeapon.cs:162` | XXX | XXX この辺の参照考えると UnitWeapon として切り出したのイマイチだったかもなぁ。 | SRC#で不要 | 設計の感想で、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:3968` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:4288` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
-| `SRCCore/VB/Information.cs:23` | XXX | XXX VB の IsNumeric は &H・&O・括弧（(1)）・通貨記号も数値とみなすが、ここでは読まない。decimal.TryParse は実行する環境の言語の書式で読む | Issue | #1545。指数表記は #1534 で直した。&H・&O・括弧の負の数・通貨記号と、実行環境の言語の書式が残る |
+| `SRCCore/VB/Information.cs:25` | XXX | XXX VB の IsNumeric は &H・&O・括弧（(1)）・通貨記号も数値とみなすが、ここでは読まない（7474/SRC#1545）。 | Issue | #1545。指数表記は #1534 で、読み方の固定は #1554 で直した。&H・&O・括弧の負の数・通貨記号が残る |

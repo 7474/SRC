@@ -20,14 +20,14 @@ namespace SRCCore.CmdDatas.Commands
                 case 3:
                     {
                         u = GetArgAsUnit(2, true);
-                        num = GetArgAsLong(3).ToString();
+                        num = GetArgAsLong(3).ToString(SrcCulture.Japanese);
                         break;
                     }
 
                 case 2:
                     {
                         u = Event.SelectedUnitForEvent;
-                        num = GetArgAsLong(2).ToString();
+                        num = GetArgAsLong(2).ToString(SrcCulture.Japanese);
                         break;
                     }
 

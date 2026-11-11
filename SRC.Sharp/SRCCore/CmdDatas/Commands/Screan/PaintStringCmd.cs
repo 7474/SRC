@@ -2,6 +2,7 @@ using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -119,7 +120,7 @@ namespace SRCCore.CmdDatas.Commands
         // 元の SRC の IsExpr（先頭が「$」か「(」）
         private static bool IsExpr(string term)
         {
-            return term.StartsWith("$") || term.StartsWith("(");
+            return term.StartsWith("$", StringComparison.Ordinal) || term.StartsWith("(", StringComparison.Ordinal);
         }
 
         // 座標指定があることが確定する項か（「-」・数値・式）

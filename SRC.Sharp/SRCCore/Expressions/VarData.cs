@@ -5,6 +5,7 @@
 
 using Newtonsoft.Json;
 using SRCCore.Lib;
+using SRCCore.VB;
 
 namespace SRCCore.Expressions
 {
@@ -27,7 +28,7 @@ namespace SRCCore.Expressions
 
         public override string ToString()
         {
-            return $"{Name}:{StringValue}({NumericValue})";
+            return Name + ":" + StringValue + "(" + SrcFormatter.Format(NumericValue) + ")";
         }
 
         public VarData()

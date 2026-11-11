@@ -101,7 +101,7 @@ namespace SRCCore.TestLib
                     // false を返して Environment.Exit させない
                     return false;
                 }
-                if (!name.StartsWith("get_"))
+                if (!name.StartsWith("get_", StringComparison.Ordinal))
                 {
                     calls.Add(new HeadlessGUICall(interfaceType.Name, name, (object[])args.Clone(), Thread.CurrentThread));
                 }
@@ -109,12 +109,12 @@ namespace SRCCore.TestLib
                 if (handler == null && method.IsSpecialName)
                 {
                     var key = interfaceType.Name + "." + name.Substring(4);
-                    if (name.StartsWith("set_"))
+                    if (name.StartsWith("set_", StringComparison.Ordinal))
                     {
                         properties[key] = args[0];
                         return null;
                     }
-                    if (name.StartsWith("get_") && properties.TryGetValue(key, out var value))
+                    if (name.StartsWith("get_", StringComparison.Ordinal) && properties.TryGetValue(key, out var value))
                     {
                         return value;
                     }

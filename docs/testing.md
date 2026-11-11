@@ -48,6 +48,20 @@
 SRC_GOLDEN_UPDATE=1 dotnet test SRC.Sharp/SRCCoreTests --filter FullyQualifiedName~Golden
 ```
 
+## 実行する環境の言語
+
+元の SRC は日本語版の Windows で動く前提で、SRC# の数値と日付の書式は日本語（`SRCCore/VB/SrcCulture.cs`）に固定している。`test-srccore-linux` は、`SRCCoreTests` を日本語以外の言語（小数点が「,」のドイツ語・I の小文字が ı のトルコ語）でも流す（#1554）。言語は環境変数 `SRC_TEST_CULTURE` で切り替える（`SRCCoreTests/TestCulture.cs`）。
+
+```sh
+SRC_TEST_CULTURE=de-DE dotnet test SRC.Sharp/SRCCoreTests
+SRC_TEST_CULTURE=tr-TR dotnet test SRC.Sharp/SRCCoreTests
+```
+
+- 無いカルチャの名前（`xx-XX`）を渡すと、すべてのテストが失敗する（気づかずに既定の言語で流さないため）
+- Linux・macOS では `LANG=de_DE.UTF-8` でも切り替わる。.NET は ICU のデータでカルチャを作るので、OS にそのロケールを入れていなくてよい。ただし ICU に無い名前（`LANG=xx_XX.UTF-8`）でも失敗せず、名前だけのカルチャ（書式はインバリアントと同じ）で流れる。Windows では環境変数で言語を変えられないので、`SRC_TEST_CULTURE` を使う
+- テストの中で数値を式の文字列に埋め込むときは、`ToString(CultureInfo.InvariantCulture)` で書く（ドイツ語では `Math.PI.ToString()` が「3,14…」になる）
+- ICU の無い環境（`DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1`）は対象にしていない。`SrcCollection` のキーの比較（ひらがな・カタカナ、全角・半角を区別しない）と日本語の日付の読み方が働かない
+
 ## セーブデータの版をまたぐ互換
 
 `SRCRenderTests/SaveCompatibilityTests.cs` が、出した版ごとのセーブ（`SRC.Sharp/E2E/saves/v<版>/` のクイックセーブ・データセーブ・リスタート）のすべてから再開し、最後まで進められることを確かめる（#1357）。セーブはコーパス `save-compat` で作る。

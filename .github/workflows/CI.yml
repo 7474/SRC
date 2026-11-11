@@ -99,6 +99,13 @@ jobs:
     - name: Test SRCCore
       run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --verbosity normal
 
+    # 実行する環境の言語に左右されないこと（#1554）。小数点が「,」のドイツ語と、I の小文字が ı のトルコ語でも通す。
+    # 言語は SRC_TEST_CULTURE（SRCCoreTests/TestCulture.cs）で切り替える。無いカルチャの名前ならテストが失敗する
+    - name: Test SRCCore (de-DE, tr-TR)
+      run: |
+        SRC_TEST_CULTURE=de-DE dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build
+        SRC_TEST_CULTURE=tr-TR dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build
+
     - name: Test SRCRender (E2E / VRT)
       run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal
 

@@ -50,14 +50,14 @@ namespace SRCCore.Events
                     {
                         is_num[2] = true;
                     }
-                    lnum[2] = GeneralLib.StrToLng(litem[2]).ToString();
+                    lnum[2] = GeneralLib.StrToLng(litem[2]).ToString(SrcCulture.Japanese);
                     break;
 
                 case "損傷率":
                     ltype = LabelType.DamageEventLabel;
                     is_unit[2] = true;
                     is_num[3] = true;
-                    lnum[3] = GeneralLib.StrToLng(litem[3]).ToString();
+                    lnum[3] = GeneralLib.StrToLng(litem[3]).ToString(SrcCulture.Japanese);
                     break;
 
                 case "破壊":
@@ -104,8 +104,8 @@ namespace SRCCore.Events
                     {
                         is_num[3] = true;
                         is_num[4] = true;
-                        lnum[3] = GeneralLib.StrToLng(litem[3]).ToString();
-                        lnum[4] = GeneralLib.StrToLng(litem[4]).ToString();
+                        lnum[3] = GeneralLib.StrToLng(litem[3]).ToString(SrcCulture.Japanese);
+                        lnum[4] = GeneralLib.StrToLng(litem[4]).ToString(SrcCulture.Japanese);
                     }
                     break;
 

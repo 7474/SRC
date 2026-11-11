@@ -4,6 +4,7 @@
 // 再頒布または改変することができます。
 using SRCCore.Lib;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace SRCCore.Filesystem
@@ -70,7 +71,7 @@ namespace SRCCore.Filesystem
             {
                 yield return new[] { Bitmap(fname) };
 
-                if (name.Length >= 4 && name.Substring(0, 4).ToLower() == @"map\")
+                if (name.Length >= 4 && name.Substring(0, 4).ToLowerInvariant() == @"map\")
                 {
                     var t = name.Substring(4);
                     if (!t.Contains(@"\"))
@@ -198,7 +199,7 @@ namespace SRCCore.Filesystem
         private static string FourFiguresName(string name, int i)
         {
             var tnum = name.Substring(i, name.Length - i - 4);
-            return name.Substring(0, i) + GeneralLib.StrToLng(tnum).ToString("0000") + ".bmp";
+            return name.Substring(0, i) + GeneralLib.StrToLng(tnum).ToString("0000", CultureInfo.InvariantCulture) + ".bmp";
         }
     }
 }

@@ -347,19 +347,19 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
-                            str_result = u.ExpValue.ToString();
+                            str_result = u.ExpValue.ToString(SrcCulture.Japanese);
                         }
                         else if (ud != null)
                         {
-                            str_result = ud.ExpValue.ToString();
+                            str_result = ud.ExpValue.ToString(SrcCulture.Japanese);
                         }
                         else if (p != null)
                         {
-                            str_result = p.ExpValue.ToString();
+                            str_result = p.ExpValue.ToString(SrcCulture.Japanese);
                         }
                         else if (pd != null)
                         {
-                            str_result = pd.ExpValue.ToString();
+                            str_result = pd.ExpValue.ToString(SrcCulture.Japanese);
                         }
 
                         break;
@@ -916,11 +916,11 @@ namespace SRCCore.Expressions.Functions
                         }
                         else if (p != null)
                         {
-                            str_result = p.CountSkill().ToString();
+                            str_result = p.CountSkill().ToString(SrcCulture.Japanese);
                         }
                         else if (pd != null)
                         {
-                            str_result = GeneralLib.LLength(pd.Skill(100)).ToString();
+                            str_result = GeneralLib.LLength(pd.Skill(100)).ToString(SrcCulture.Japanese);
                         }
                         else if (it != null)
                         {
@@ -1542,11 +1542,11 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
-                            str_result = u.Value.ToString();
+                            str_result = u.Value.ToString(SrcCulture.Japanese);
                         }
                         else if (ud != null)
                         {
-                            str_result = ud.Value.ToString();
+                            str_result = ud.Value.ToString(SrcCulture.Japanese);
                         }
 
                         break;
@@ -1782,7 +1782,7 @@ namespace SRCCore.Expressions.Functions
 
                                 case "属性レベル":
                                     {
-                                        str_result = uw.WeaponLevel(@params[idx + 1]).ToString();
+                                        str_result = uw.WeaponLevel(@params[idx + 1]).ToString(SrcCulture.Japanese);
                                         break;
                                     }
 
@@ -2035,7 +2035,7 @@ namespace SRCCore.Expressions.Functions
 
                                 case "属性レベル":
                                     {
-                                        str_result = ua.AbilityLevel(@params[idx + 1]).ToString();
+                                        str_result = ua.AbilityLevel(@params[idx + 1]).ToString(SrcCulture.Japanese);
                                         break;
                                     }
 
@@ -2797,9 +2797,9 @@ namespace SRCCore.Expressions.Functions
             switch (MapImageFileTypeOf(map, cell))
             {
                 case Maps.MapImageFileType.SeparateDirMapImageFileType:
-                    return bmp + "\\" + bmp + no.ToString("0000") + ".bmp";
+                    return bmp + "\\" + bmp + no.ToString("0000", CultureInfo.InvariantCulture) + ".bmp";
                 case Maps.MapImageFileType.FourFiguresMapImageFileType:
-                    return bmp + no.ToString("0000") + ".bmp";
+                    return bmp + no.ToString("0000", CultureInfo.InvariantCulture) + ".bmp";
                 default:
                     return bmp + no + ".bmp";
             }
@@ -2825,7 +2825,7 @@ namespace SRCCore.Expressions.Functions
 
         private static Maps.MapImageFileType MapImageFileTypeOfPath(string path, string bmp, int no)
         {
-            var fourFigures = bmp + no.ToString("0000") + ".bmp";
+            var fourFigures = bmp + no.ToString("0000", CultureInfo.InvariantCulture) + ".bmp";
             var fileName = Path.GetFileName(path);
             if (!string.Equals(fileName, fourFigures, StringComparison.OrdinalIgnoreCase))
             {

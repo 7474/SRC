@@ -7,9 +7,10 @@ namespace SRCCore.VB
     // VBの Microsoft.VisualBasic.Conversions のうちSRCで使用していたものの仮実装。
     public static class Conversions
     {
+        // VB の CStr と同じく、数値は日本語の地域の設定（SrcCulture。小数点は「.」）で書く。実行する環境の言語によらない
         public static string ToString(object Value)
         {
-            return Value?.ToString() ?? "";
+            return Convert.ToString(Value, SrcCulture.Japanese) ?? "";
         }
 
         // 数値の文字列として読む前に、VB（OLE Automation の VarParseNumFromStr）と同じく全角の英数字・記号・空白を半角にし、前後の空白を除く。
@@ -49,10 +50,11 @@ namespace SRCCore.VB
             return text;
         }
 
+        // 数値の文字列は、実行する環境の言語によらず日本語の地域の設定（SrcCulture。小数点は「.」、桁区切りは「,」）で読む（7474/SRC#1545）
         public static int ToInteger(string Value)
         {
             Value = NumericText(Value);
-            if (int.TryParse(Value, out int ret))
+            if (int.TryParse(Value, NumberStyles.Integer, SrcCulture.Japanese, out int ret))
             {
                 return ret;
             }
@@ -111,7 +113,7 @@ namespace SRCCore.VB
             {
                 return exp;
             }
-            if (double.TryParse(Value, out double ret))
+            if (double.TryParse(Value, NumberStyles.Float | NumberStyles.AllowThousands, SrcCulture.Japanese, out double ret))
             {
                 return ret;
             }
@@ -126,7 +128,7 @@ namespace SRCCore.VB
         public static bool TryToDateTime(string value, out DateTime dateTime)
         {
             const DateTimeStyles styles = DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.NoCurrentDateDefault;
-            if (!DateTime.TryParse(value, DateCulture, styles, out dateTime)
+            if (!DateTime.TryParse(value, SrcCulture.Japanese, styles, out dateTime)
                 && !DateTime.TryParse(value, CultureInfo.InvariantCulture, styles, out dateTime))
             {
                 return false;
@@ -140,21 +142,6 @@ namespace SRCCore.VB
 
         // VB の日付の 0（CDate(0)）
         private static readonly DateTime VBDateZero = new DateTime(1899, 12, 30);
-
-        private static readonly CultureInfo DateCulture = GetDateCulture();
-
-        private static CultureInfo GetDateCulture()
-        {
-            try
-            {
-                return CultureInfo.GetCultureInfo("ja-JP");
-            }
-            catch (CultureNotFoundException)
-            {
-                // カルチャのデータが無い環境（InvariantGlobalization）
-                return CultureInfo.InvariantCulture;
-            }
-        }
 
         // VB の Now（日付の関数・DiffTime・変数 Now が使う）。IsDate・CDate の代わりと並べて置く
         public static DateTime GetNow()

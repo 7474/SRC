@@ -2647,7 +2647,7 @@ namespace SRCCore
                 // 元の SRC は InStr(ScenarioFileName, "\ユニットステータス表示.eve") で調べる。
                 // SRC# はどの OS でも取れるよう、区切りを / と \ の両方とみなしてファイル名を取り出す
                 var fname = SRC.ScenarioFileName ?? "";
-                fname = fname.Substring(Math.Max(fname.LastIndexOf('/'), fname.LastIndexOf('\\')) + 1).ToLower();
+                fname = fname.Substring(Math.Max(fname.LastIndexOf('/'), fname.LastIndexOf('\\')) + 1).ToLowerInvariant();
                 if (fname == "ユニットステータス表示.eve"
                     || fname == "パイロットステータス表示.eve"
                     || SRC.IsSubStage)
