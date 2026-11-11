@@ -9,7 +9,6 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | 場所 | 種類 | 本文 | 状態 | メモ |
 |---|---|---|---|---|
 | `SRCCore/CmdDatas/Commands/Control/DoCmd.cs:17` | コード | Do - Loop While | SRC#で不要 | 分岐の説明のコメントで、VB のコードの残りではない |
-| `SRCCore/CmdDatas/Commands/Other/LoadCmd.cs:35` | XXX | XXX 読み込み順序の解決がシナリオ読み込み時と大分食い違っているはず | Issue | #1518 |
 | `SRCCore/Commands/Command.attack.cs:302` | XXX | XXX COMの攻撃と同じところは切り出しておきたい。。。 | SRC#で不要 | 作り直しの希望で、動作の違いではない（VB も COM と同じ処理を重ねて書いている） |
 | `SRCCore/Config/LocalFileConfig.cs:10` | TODO | TODO 項目の説明を設定ファイルに書けるようにする | SRC#で不要 | SRC# の設定ファイル（JSON）の機能の希望で、VB の ReadIni・WriteIni との違いではない（#1498 の GeneralLib の項目で確かめた） |
 | `SRCCore/Config/LocalFileConfig.cs:11` | XXX | XXX 説明をどこでエントリーするか？　別にJSONでなくてもいい。 | SRC#で不要 | 同上 |
