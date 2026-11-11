@@ -99,7 +99,7 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 |---|---|
 | `<イベント>.txt` | SRC# の出力（UTF-8） |
 | `<イベント>.errors.txt` | SRC# が出したエラーのダイアログ（期待値の `.errors.txt` と同じ形。1 行目のファイル名はフォルダを除く） |
-| `<イベント>.dataerrors.txt` | SRC# がダイアログに出さずに集めたデータの誤り（`SRC.DataErrors`）と、読み込みを打ち切った例外 |
+| `<イベント>.dataerrors.txt` | SRC# が集めたデータの誤り（`SRC.DataErrors`）と、読み込みを打ち切った例外（どちらも元の SRC と同じくダイアログにも出し、`.errors.txt` に入る。#1550） |
 | `<イベント>.diff.txt` | 期待値との違い（期待値があるとき） |
 
 期待値が無くても、`probe/probe.eve` と `probe-bounds/*.eve` は SRC# で最後（「終了」）まで進むことを確かめる。
@@ -198,7 +198,6 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 | `VB5.あふれ.\のLong`・`\のLongの上限+1` | #1564 の後で、`Mod` と同じく「`<エラー>`」にした | `\` は両辺を Long に丸める。エラー 6 か、桁が落ちるか（`OverflowCheck=-1`）は実機で確かめる |
 | `VB5.数値.08`（`(1)`）・`04`（`&H10`）・`09`（`￥100`）・`11`（`1-`）の `.加算` | 0 | `StrToDbl` は `IsNumeric` が真なら `CDbl` で読む（-1・16・100・-1。#1545） |
 | `probe-errors/data-numeric` | `&H1000` を誤り（最大ＨＰの設定が間違っています。）にする | `IsNumeric` が真なので `CLng` で 4096 と読む |
-| `probe-errors/*` のエラーのダイアログ | データの誤りをダイアログに出さない（`SRC.DataErrors` に集める。打ち切る誤りは例外で終わる） | `DataErrorMessage` でダイアログを出す |
 
 ### SRC# の Format の推定（#1564）
 
