@@ -74,6 +74,127 @@ MAPS = {
         ".BB.............rr..",
         "....................",
     ],
+    # 第三話「霧の水路」22×18。防壁の切れ目 (11,5) の向こうにＺＯＣの錆蟲。浅瀬の帯（9 行目）、深い水路（17・18 列目）
+    "ep03": [
+        "BB........#.....~ww~rr",
+        "BB........#.....~ww~rr",
+        "..........#.....~ww~rr",
+        "..ff......#.....~ww~rr",
+        "..ff............~ww~rr",
+        "..........#.....~ww~rr",
+        "..........#.....~ww~rr",
+        "...........f....~ww~rr",
+        "...~~~~.........~ww~rr",
+        "...~~~~.....^^..~ww~rr",
+        "............^^..~ww~rr",
+        "..ff............~ww~rr",
+        "..ff....========bbbb=r",
+        "................~ww~rr",
+        "......ff........~ww~rr",
+        "......ff........~ww~rr",
+        "................~ww~rr",
+        "................~ww~rr",
+    ],
+    # 第四話「空の回廊」22×18。空（空の地形）で分かれた 3 つの台地。地上のユニットは 15 行目の橋か、ジャンプで渡る
+    "ep04": [
+        "......kkk.....kk.rrrrr",
+        "......kkk.....kk.rrrrr",
+        "......k#k.....kk..rrrr",
+        "......k#k..ff.kk..rrrr",
+        "..ff..k#k..ff.kk......",
+        "..ff..kkk.....kk......",
+        "......kkk.....||......",
+        "......|||.....kk...^^.",
+        "......kkk.....kk...^^.",
+        "......kkk.....kk......",
+        "......kkk.....kk..ff..",
+        "BB....kkk..^^.kk..ff..",
+        "BB....kkk..^^.kk......",
+        "......kkk.....kk......",
+        "======bbb=====bb======",
+        "......kkk.....kk......",
+        "..ss..kkk.....kk..rrrr",
+        "..ss..kkk.....kk..rrrr",
+    ],
+    # 第五話「地下坑道」22×18。坑道（陸）と床（屋内）。地中に潜れるのは坑道（陸）だけ
+    "ep05": [
+        "tttttttttt###FFFFFFFFF",
+        "tttttttttt###FFFFFFFFF",
+        "tt^^tttttt###FFFFFFFFF",
+        "tt^^tttttttttFFFFF##FF",
+        "tttttttttttttFFFFF##FF",
+        "tttttt##ttttFFFFFFFFFF",
+        "tttttt##ttttFFFFFFFFFF",
+        "FFFFFFFFFFFFFFFF##FFFF",
+        "FFFFFFFFFFFFFFFF##FFFF",
+        "FFFFFFFFFFFFFFFFFFFFFF",
+        "tttttt##ttttFFFFFFFFFF",
+        "tttttt##ttttFFFFF##FFF",
+        "tttttttttttttFFFF##FFF",
+        "tttttttttttttFFFFFFFFF",
+        "tttttttttt###FFFFFFFFF",
+        "tttttttttt###FFFFFFFFF",
+        "tttttttttt###FFFFFFFFF",
+        "tttttttttt###FFFFFFFFF",
+    ],
+    # 第六話「月の裏」20×16。月面と宇宙と暗礁
+    "ep06": [
+        "mmmmmmSSSSSSSSSSSSSS",
+        "mmmmmmSSSSSdddSSSSSS",
+        "mmmmmmSSSSSdddSSSSSS",
+        "mmmmmmmSSSSSSSSSSSSS",
+        "mmmmmmmSSSSSSSSddSSS",
+        "mmmmmmmmSSSSSSSddSSS",
+        "mmmmmmmmSSSSSSSSSSSS",
+        "mmmmmmmmSSSSSSSSSSSS",
+        "mmmmmmmmSSSSdSSSSSSS",
+        "mmmmmmmSSSSSddSSSSSS",
+        "mmmmmmmSSSSSSSSSSSSS",
+        "mmmmmmSSSSSSSSSSddSS",
+        "mmmmmmSSSSSSSSSSddSS",
+        "mmmmmSSSSSSSSSSSSSSS",
+        "mmmmmSSSSdddSSSSSSSS",
+        "mmmmmSSSSSSSSSSSSSSS",
+    ],
+    # 第七話「錆の母」22×18。これまでの地形を全部使う
+    "ep07": [
+        "BB..ff....ww||rrrrrrrr",
+        "BB..ff....ww||rrrrrrrr",
+        "..........ww..rrrrrrrr",
+        "..==......~~..rr..rrrr",
+        "..=..^^...~~..rr..rrrr",
+        "..=..^^...~~..rrrrrrrr",
+        "..=.......~~..rrrrrrrr",
+        "..========bb==rrrrrrrr",
+        "..=.......~~..rrrrrrrr",
+        "..=..ff...~~..rrrrrrrr",
+        "..=..ff...ww||rrrrrrrr",
+        "..........ww||rrFFFFrr",
+        ".ss.......ww||rrFFFFrr",
+        ".ss.......ww||rrFFFFrr",
+        "..........ww||rrrrrrrr",
+        "..tt......ww||rrrrrrrr",
+        "..tt......ww||rrrrrrrr",
+        "..........ww||rrrrrrrr",
+    ],
+    # 第八話「試験の終わり」16×15。学舎の試験場（第一話と同じ並び）
+    "ep08": [
+        "....ff......^^^^",
+        ".BB.ff..........",
+        ".BB....=====....",
+        ".......=...=....",
+        "..ff...=...=...f",
+        "..ff...=...=...f",
+        "=======b========",
+        "......~~~.......",
+        ".....~~w~~......",
+        "......~~~.......",
+        "..f.........f...",
+        "..f...==========",
+        ".........ff.....",
+        ".BB......ff.....",
+        ".BB.............",
+    ],
     # 第二話「錆の巣」22×18。深い水路と断崖の向こうに錆の巣。橋か浅瀬を渡るか、飛んで越える
     "ep02": [
         "BB..ff....ww||rrrrrrrr",
@@ -117,6 +238,14 @@ FONT = {
     "W": ["10001", "10001", "10001", "10101", "10101", "11011", "10001"],
     "Y": ["10001", "10001", "01010", "00100", "00100", "00100", "00100"],
     "X": ["10001", "10001", "01010", "00100", "01010", "10001", "10001"],
+    "E": ["11111", "10000", "10000", "11110", "10000", "10000", "11111"],
+    "F": ["11111", "10000", "10000", "11110", "10000", "10000", "10000"],
+    "L": ["10000", "10000", "10000", "10000", "10000", "10000", "11111"],
+    "O": ["01110", "10001", "10001", "10001", "10001", "10001", "01110"],
+    "P": ["11110", "10001", "10001", "11110", "10000", "10000", "10000"],
+    "U": ["10001", "10001", "10001", "10001", "10001", "10001", "01110"],
+    "V": ["10001", "10001", "10001", "10001", "01010", "01010", "00100"],
+    "Z": ["11111", "00001", "00010", "00100", "01000", "10000", "11111"],
 }
 
 
@@ -262,6 +391,18 @@ UNITS = [
     ("cp_u_chrome", RED, "star", "C"),
     ("cp_u_nest", RED, "nest", "N"),
     ("cp_u_target", RED, "target", "X"),
+    ("cp_u_float", RED, "boat", "F"),
+    ("cp_u_diver", RED, "fish", "D"),
+    ("cp_u_wall", RED, "block", "Z"),
+    ("cp_u_shell", RED, "shell", "S"),
+    ("cp_u_shell_f", RED, "bug", "E"),
+    ("cp_u_kasumi_h", BLUE, "star", "K"),
+    ("cp_u_hibari_d", BLUE, "bird", "D"),
+    ("cp_u_drone", BLUE, "hexagon", "D"),
+    ("cp_u_specimen", RED, "target", "P"),
+    ("cp_u_stinger", RED, "arrow", "S"),
+    ("cp_u_moon", RED, "hexagon", "L"),
+    ("cp_u_mother", RED, "nest", "M"),
 ]
 
 
@@ -302,6 +443,13 @@ def unit(color, shape, letter):
     elif shape == "nest":
         d.ellipse([1, 4, 30, 30], fill=color, outline=EDGE)
         d.ellipse([10, 1, 22, 12], fill=color, outline=EDGE)
+    elif shape == "boat":
+        d.polygon([(2, 14), (30, 14), (24, 26), (8, 26)], fill=color, outline=EDGE)
+        d.line([(16, 2), (16, 14)], fill=EDGE, width=2)
+    elif shape == "shell":
+        d.pieslice([2, 4, 30, 40], 180, 360, fill=color, outline=EDGE)
+        for x in (9, 16, 23):
+            d.line([(x, 8), (16, 22)], fill=EDGE, width=1)
     elif shape == "target":
         for r, c in ((14, color), (10, (240, 220, 200)), (6, color)):
             d.ellipse([16 - r, 16 - r, 16 + r, 16 + r], fill=c, outline=EDGE)
@@ -324,6 +472,10 @@ FACES = [
     ("cp_rust", (130, 60, 40), None, "X", "machine"),
     ("cp_guard", (110, 70, 50), None, "G", "machine"),
     ("cp_chrome", (60, 60, 70), None, "C", "machine"),
+    ("cp_noa_res", (230, 150, 200), (250, 240, 210), "N", "smile"),
+    ("cp_daichi_rage", (170, 70, 40), (30, 30, 30), "D", "angry"),
+    ("cp_drone", (60, 90, 120), None, "D", "machine"),
+    ("cp_mother", (150, 40, 60), None, "M", "machine"),
 ]
 
 

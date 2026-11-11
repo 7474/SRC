@@ -1,12 +1,11 @@
-# 「トレス島試験記録」を第一話から最後（いまは第二話）まで自動でプレイする（srcsharp play の PlayScript。#1549）
+# 「トレス島試験記録」を第一話から最後（第八話のゲームクリア）まで自動でプレイする（srcsharp play の PlayScript。#1549）
 #   srcsharp play Compat/torres/ep01.eve --script Compat/torres.play --app-path Content/basic-data --skip-wait
-# 第一話の初めの 2 ターンは、通したい機能（合体技・使い切りのアイテム・マップ攻撃・スペシャルパワー）を
-# マスとメニューの操作で決まった手順で行い、結果を expect eval で確かめる。そのあとは turns で最後まで自動で進める
-# （turns は話の区切りで止まらないので、第二話は自動で進める。第二話の決まった手順は torres-ep02.play で、第二話から単体で始めて確かめる）。
+# 第一話の初めの 2 ターンは、通したい機能（合体技・使い切りのアイテム・マップ攻撃・スペシャルパワー・セーブからの再開）を
+# マスとメニューの操作で決まった手順で行い、結果を expect eval で確かめる。そのあとは turns で各話を自動で進め、
+# インターミッションでは holdlist で止めて、乗り換え・機体改造・換装を決まった手順で行う。
+# 第二話〜第八話の初めの決まった手順は torres-ep02.play〜torres-ep08.play で、その話から単体で始めて確かめる。
 # 命中とダメージは乱数で変わるので、確かめるのは乱数に左右されない値（行動数・ＥＮ・アイテムの数・形態・イベントの記録）だけにする。
 
-# インターミッションは「次のステージへ」だけを選ぶ
-choose コマンド 次のステージへ
 # 負けたときはやり直さずに終える（テストを失敗させる）
 choose 試験は失敗した あきらめる
 
@@ -100,6 +99,46 @@ expect eval CountItem(ノア) = 1
 expect eval Item(ノア, 1) = 携行修理キット
 # 予備の標的の隣にいる錆蟲衛兵が、味方の攻撃に対して援護防御（サポートガード）をする
 expect message ガガッ！（錆蟲衛兵が仲間をかばった）
+
+# セーブ：クイックセーブして、カイが集心を使ったあとでクイックロードすると、使う前に戻る。
+# 同じマップのクイックロードでは、再開のイベントは起きない（元の SRC の RestoreData は、マップが変わったときだけ起こす）
+cell 1 1 right
+menu クイックセーブ
+auto 30
+expect eval SpecialPower(カイ, 集心) = 0
+cell 6 6
+menu スペシャルパワー
+wait list スペシャルパワー
+list 集心
+auto 30
+expect eval SpecialPower(カイ, 集心) = 1
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval SpecialPower(カイ, 集心) = 0
+expect eval 再開記録 = 0
+expect eval CountItem(ノア) = 1
+expect eval ターン数 = 2
+# 中断：中断データ（ep01を中断.srcq）を書いて SRC を終え、起動し直して中断データから再開する。
+# マップが変わる（何も無いところから読む）ので、再開のイベントが起きる
+savefile default
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+wait finished
+resume
+auto 60
+expect message 記録を読み込みました。試験を再開します。（ターン2）
+expect eval 再開記録 = 1
+expect eval ターン数 = 2
+expect eval CountItem(ノア) = 1
+expect eval Item(ノア, 1) = 携行修理キット
+expect eval Morale(カイ) >= 120
+expect eval 敵マップ攻撃 = 1
+expect eval 攻撃総数 = 1
 turns 1
 auto 60
 
@@ -110,15 +149,136 @@ auto 60
 expect eval ターン数 = 3
 expect eval SpecialPower(カイ, 集心) = 1
 # ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
-# 全滅 敵 → Continue → エピローグ → インターミッション → 第二話 → GameClear まで自動で進める
+# 全滅 敵 → Continue → エピローグ → インターミッション（第二話の前）。
+# インターミッションのコマンドのリストでは止まり、手順で選ぶ（holdlist は list で選ぶと解けるので、次のインターミッションの前にもう一度 holdlist）
+holdlist コマンド
 turns 60
 expect message 試験は合格
+expect eval 試験記録 = "第一話の試験;"
+
+#===============================================================
+# 第二話の前のインターミッション → 第二話「錆の巣」
+#===============================================================
+list 次のステージへ
+dialog OK
+holdlist コマンド
+turns 60
 expect message 錆蟲の巣は、東の錆の原の奥にあ
 expect message 合体、ミカヅチ！
 expect message 巣が……崩れていく！
+expect eval 試験記録 = "第一話の試験;第二話の調査;"
+# 第二話の終わりに千草リンが加わり、Option 乗り換え でインターミッションに「乗り換え」が出る
+expect eval Unit(リン) = 試作機ヒバリ
+
+#===============================================================
+# 第三話の前のインターミッション：乗り換え（リンをトビウオのサポートに乗せる） → 第三話「霧の水路」
+#===============================================================
+list 乗り換え
+wait list
+list リン
+wait list 乗り換え先選択
+list トビウオ
+# 乗り換えのパイロットの一覧に戻るので、キャンセルしてコマンドのリストに戻る
+wait list
+key Escape
+wait list コマンド
+expect eval Unit(リン) = 試作機トビウオ
+expect eval CountPilot(カイ) = 2
+list 次のステージへ
+dialog OK
+holdlist コマンド
+turns 60
+expect message 測量、完了です
+expect eval 試験記録 = "第一話の試験;第二話の調査;第三話の測量;"
+
+#===============================================================
+# 第四話の前のインターミッション：機体改造（トビウオを 1 段階）・乗り換え（リンをヒバリに戻す） → 第四話「空の回廊」
+#===============================================================
+expect eval Info(ユニット, 試作機トビウオ, ランク) = 0
+list 機体改造
+wait list
+list トビウオ
+wait dialog
+dialog OK
+wait list
+key Escape
+wait list コマンド
+expect eval Info(ユニット, 試作機トビウオ, ランク) = 1
+list 乗り換え
+wait list
+# パイロットの一覧で、カイの行も「トビウオ (リン)」と出るので、サポートの印（*）の付いたリンの行を選ぶ
+list *リン
+wait list 乗り換え先選択
+list ヒバリ
+wait list
+key Escape
+wait list コマンド
+expect eval Unit(リン) = 試作機ヒバリ
+expect eval CountPilot(カイ) = 1
+list 次のステージへ
+dialog OK
+holdlist コマンド
+turns 60
+expect message 回廊、制圧！
+expect eval 試験記録 = "第一話の試験;第二話の調査;第三話の測量;第四話の飛行;"
+
+#===============================================================
+# 第五話の前のインターミッション：換装（ヒバリを地底装備にする） → 第五話「地下坑道」
+#===============================================================
+list 換装
+wait list
+list ヒバリ
+wait list
+list 地底
+wait list
+key Escape
+wait list コマンド
+# 換装した形態にだけある追加サポート（測量ドローン）が乗る
+expect eval Unit(リン) = 試作機ヒバリ(地底装備)
+expect eval Unit(測量ドローン) = 試作機ヒバリ(地底装備)
+list 次のステージへ
+dialog OK
+holdlist コマンド
+turns 60
+expect message 母ハ、月ノ裏ニ
+expect eval 試験記録 = "第一話の試験;第二話の調査;第三話の測量;第四話の飛行;第五話の坑道;"
+
+#===============================================================
+# 第六話「月の裏」（Load moon）
+#===============================================================
+list 次のステージへ
+dialog OK
+holdlist コマンド
+turns 60
+expect message 暗礁の陰から
+expect eval 月データ後 = 月面錆蟲
+expect eval 増援記録 = 月面錆蟲
+expect message 月の錆蟲、全部落とした
+expect eval 試験記録 = "第一話の試験;第二話の調査;第三話の測量;第四話の飛行;第五話の坑道;第六話の月面;"
+
+#===============================================================
+# 第七話の前のインターミッション：クリアデータの引き継ぎ（話をまたいだ変数・改造・固定したアイテム・換装） → 第七話「錆の母」
+#===============================================================
+expect eval Info(ユニット, 試作機トビウオ, ランク) = 1
+expect eval IsEquiped(カイ, 学舎の徽章) = 1
+expect eval Unit(リン) = 試作機ヒバリ(地底装備)
+list 次のステージへ
+dialog OK
+holdlist コマンド
+turns 60
+expect message 錆の母が……静かになった
+expect eval 試験記録 = "第一話の試験;第二話の調査;第三話の測量;第四話の飛行;第五話の坑道;第六話の月面;第七話の決戦;"
+
+#===============================================================
+# 第八話「試験の終わり」 → ゲームクリア
+#===============================================================
+list 次のステージへ
+dialog OK
+turns 30
+expect message 全員、合格よ
+expect message トレス島試験記録　おわり
 expect eval 撃破記録 = 撃破総数 - 1
 expect eval 攻撃記録 = 攻撃総数 - 1
-expect eval 試験記録 = "第一話の試験;第二話の調査;"
+expect eval 試験記録 = "第一話の試験;第二話の調査;第三話の測量;第四話の飛行;第五話の坑道;第六話の月面;第七話の決戦;第八話の卒業;"
 expect finished
 expect error none
-

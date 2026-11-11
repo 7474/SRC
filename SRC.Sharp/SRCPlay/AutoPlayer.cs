@@ -108,6 +108,12 @@ namespace SRCPlay
 
         public IList<SequenceRule> SequenceRules { get; } = new List<SequenceRule>();
 
+        /// <summary>
+        /// 真を返すリストは選ばずに、そのまま戻る（Run は true を返す）。
+        /// PlayScript の holdlist（インターミッションのコマンドのリストで止めて、スクリプトで選ぶ）に使う
+        /// </summary>
+        public Func<ListState, bool> HoldList { get; set; }
+
         /// <summary>リストで項目を選んだときの通知（見出し, 選んだ項目）</summary>
         public Action<string, string> ListChosen { get; set; }
 
@@ -257,6 +263,10 @@ namespace SRCPlay
                     Snapshot("dialog");
                     gui.KeyPressed(ScreenKey.Enter);
                     acted = WaitChange(() => runner.State.Dialog != dialog);
+                }
+                else if (state.List != null && gui.IsWaitingList && HoldList != null && HoldList(state.List))
+                {
+                    return true;
                 }
                 else if (state.List != null && gui.IsWaitingList)
                 {

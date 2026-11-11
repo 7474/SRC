@@ -68,6 +68,62 @@ namespace SRCRender.Tests
             }
         }
 
+        /// <summary>
+        /// PlayScript の savefile・wait finished・resume で、マップのコマンド「中断」で中断データを書いて SRC を終え、
+        /// 起動し直して中断データから再開する（互換性の検証用のシナリオで、各話に中断からの再開を入れるため。#1549）
+        /// </summary>
+        [TestMethod]
+        public void PlayScript_SuspendAndResume_RestoresVariables()
+        {
+            var source = Path.Combine(E2ECorpusTests.CorpusDirectory, "unit-cmd-map");
+            using (var workspace = new ScenarioWorkspace())
+            {
+                var scenario = Path.Combine(Path.GetTempPath(), "srcs-scenario-" + Guid.NewGuid());
+                try
+                {
+                    Copy(source, scenario);
+                    using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+                    {
+                        var script = new PlayScript(runner);
+                        runner.Start(Path.Combine(scenario, "test.eve"));
+                        try
+                        {
+                            script.Run(new[]
+                            {
+                                "auto 60",
+                                "set 中断の印 7",
+                                "savefile default",
+                                "cell 1 1 right",
+                                "menu 中断",
+                                "wait dialog",
+                                "dialog OK",
+                                "wait finished",
+                                "expect finished",
+                                "resume",
+                                "auto 60",
+                                "expect eval 中断の印 = 7",
+                                "expect eval Party(隊長) = 味方",
+                                "expect error none",
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Assert.Fail(ex.Message + Environment.NewLine
+                                + string.Join(Environment.NewLine, script.TraceLog.Skip(Math.Max(0, script.TraceLog.Count - 20)))
+                                + Environment.NewLine + runner.Error);
+                        }
+                        Assert.IsFalse(runner.IsFinished, "再開した後は、シナリオが続いている");
+                    }
+                    // 中断のダイアログが初めに示す名前（シナリオのファイル名 + 「を中断」）で書かれる
+                    Assert.IsTrue(File.Exists(Path.Combine(scenario, "testを中断.srcq")));
+                }
+                finally
+                {
+                    Directory.Delete(scenario, true);
+                }
+            }
+        }
+
         private static void Copy(string from, string to)
         {
             Directory.CreateDirectory(to);

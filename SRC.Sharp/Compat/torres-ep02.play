@@ -1,5 +1,5 @@
 # 「トレス島試験記録」の第二話を単体で始めて、形態（変形・合体・分離）・マップ攻撃（識）・母艦の格納と発進・
-# 使い切りのアビリティを決まった手順で確かめ、最後まで自動で進める（srcsharp play の PlayScript。#1549）
+# 使い切りのアビリティを決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める（srcsharp play の PlayScript。#1549）
 #   srcsharp play Compat/torres/ep02.eve --script Compat/torres-ep02.play --app-path Content/basic-data --skip-wait
 # 第一話のデータが無いので、ep02.eve の「単体で始めたときの部隊」が部隊を作る。
 
@@ -35,6 +35,25 @@ expect eval CountPilot(カイ) = 2
 # ヤマセは無傷（最大ＨＰ 9000）、カスミは格納庫で傷んで 1800（最大ＨＰ 3000 の 60%）
 expect eval HP(ゴロウ) = 9000
 expect eval HP(ノア) = 1800
+# 中断：合体したミカヅチ（パイロット 2 人）と、発進したカスミがいる状態で中断データを書き、起動し直して再開する
+savefile default
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+wait finished
+resume
+auto 60
+expect message 記録を読み込みました。試験を再開します。（ターン2）
+expect eval 再開記録 = 1
+expect eval ターン数 = 2
+expect eval Status(ノア) = "出撃"
+expect eval Unit(カイ) = 合体機ミカヅチ
+expect eval CountPilot(カイ) = 2
+expect eval HP(ゴロウ) = 9000
+expect eval HP(ノア) = 1800
+expect eval 作戦 = "正面"
+expect eval 変形記録 = 1
 # マップ攻撃（Ｍ全・識）：範囲に入っている味方のヤマセとカスミは巻き込まない
 cell 4 12
 menu 攻撃
@@ -63,7 +82,27 @@ auto 60
 # 第二話 3 ターン目以降
 #===============================================================
 expect eval ターン数 = 3
+# クイックセーブしてから分離し、クイックロードすると合体した形態に戻る（同じマップなので再開のイベントは起きない）
+cell 1 1 right
+menu クイックセーブ
+auto 30
 # 分離：ミカヅチをトビウオとイワガネに戻す（確認のダイアログで OK）
+cell 4 12
+menu 分離
+wait dialog
+dialog OK
+auto 30
+expect eval Unit(カイ) = 試作機トビウオ
+expect eval Unit(ダイチ) = 試作機イワガネ
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval Unit(カイ) = 合体機ミカヅチ
+expect eval CountPilot(カイ) = 2
+expect eval 再開記録 = 1
+# もう一度分離する
 cell 4 12
 menu 分離
 wait dialog
@@ -73,8 +112,11 @@ expect eval Unit(カイ) = 試作機トビウオ
 expect eval Unit(ダイチ) = 試作機イワガネ
 expect eval Status(ダイチ) = "出撃"
 # ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+# 話の終わりまで自動で進め、次のインターミッションのコマンドのリストで止まる（次の話は、その話の PlayScript で単体で始めて確かめる）
+holdlist コマンド
 turns 30
 expect message 巣が……崩れていく！
 expect eval 試験記録 = "第一話の試験（省略）;第二話の調査;"
-expect finished
+# 第二話の終わりに千草リンが加わる
+expect eval Unit(リン) = 試作機ヒバリ
 expect error none
