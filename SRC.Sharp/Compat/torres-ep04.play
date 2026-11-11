@@ -1,5 +1,5 @@
 # 「トレス島試験記録」の第四話を単体で始めて、空中・テレポート・ジャンプ・ハイパーモードとノーマルモード・追加パイロット・
-# 暴走時パイロット・必要技能（女性・!女性）、中断とクイックセーブからの再開を決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める
+# 暴走時パイロット・必要技能（女性・!女性）・エリアス（ＥＮ回復の別名）、中断とクイックセーブからの再開を決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める
 # （srcsharp play の PlayScript。#1549）
 #   srcsharp play Compat/torres/ep04.eve --script Compat/torres-ep04.play --app-path Content/basic-data --skip-wait
 
@@ -15,6 +15,12 @@ expect eval Unit(リン) = 試作機ヒバリ
 # 必要技能：ＥＮ回復（女性）は働き、ＨＰ回復（!女性）は働かない
 expect eval IsAvailable(リン, ＥＮ回復) = 1
 expect eval IsAvailable(リン, ＨＰ回復) = 0
+# エリアス：ヤマセの「整備灯」（alias.txt でＥＮ回復Lv1 に付けた別名）。スタートで最大ＥＮ 260 の 50% に減らしてある
+expect eval IsAvailable(ゴロウ, ＥＮ回復) = 1
+expect eval Info(ユニット, UnitID(ゴロウ), 特殊能力名称, ＥＮ回復) = 整備灯
+# Info の特殊能力所有は、エリアスの名前を元の能力（ＥＮ回復）に読み替える（元の SRC の Expression.bas の EvalInfoFunc）
+expect eval Info(ユニット, UnitID(ゴロウ), 特殊能力所有, 整備灯) = 1
+expect eval EN(ゴロウ) = 130
 
 # テレポート（Lv1・ＥＮ30）：移動力 6 + 1 = 7 マス先の (11,3) へ、防壁と空を越えて跳ぶ
 cell 4 3
@@ -58,6 +64,9 @@ auto 60
 #===============================================================
 expect eval ターン数 = 2
 expect message クロムが回廊の向こうで見ています
+# エリアスの能力の発動：ターンの初めに、ＥＮの自然回復 5 と、整備灯（ＥＮ回復Lv1）の最大ＥＮの 10%（26）で 161 になる
+# （元の SRC の Unit.Recover。ヤマセのいる草原には地形の回復が無く、1 ターン目のヤマセは動かず、敵の攻撃も届かない）
+expect eval EN(ゴロウ) = 161
 expect eval Unit(白瀬ノア) = 試作機カスミ(共鳴)
 # 中断：ハイパーモードの形態（追加パイロット）のまま中断し、起動し直して再開する
 savefile default
