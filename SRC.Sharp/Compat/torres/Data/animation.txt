@@ -1,0 +1,27 @@
+# トレス島試験記録 戦闘アニメデータ
+# 汎用戦闘アニメ（SRC 本体の Lib\汎用戦闘アニメ）が無くても動くように、効果音・ディレイ・メッセージ・カットインだけを使う。
+# 戦闘アニメの表示がオンのときに使われる。オフのときは effect.txt が使われる。
+
+試作機トビウオ
+ヒレブレード(準備), cp_charge.wav
+ヒレブレード(命中), cp_slash.wav
+クロスストライク(準備), 3;cp_charge.wav
+クロスストライク(攻撃), cp_cut_cross.bmp 128 64 176 208 透過;5;cp_slash.wav
+クロスストライク(命中), cp_explode.wav
+クロスストライク(解説), $(ユニット)の背後から、イワガネが回り込んだ！
+変形(試作機トビウオ(滑空形態)), cp_transform.wav
+
+合体機ミカヅチ
+雷鳴陣(準備), cp_charge.wav
+雷鳴陣(攻撃), 『放電、開始！』;cp_beam.wav
+雷鳴陣(命中), cp_explode.wav
+合体, cp_transform.wav
+分離, cp_transform.wav
+
+試作機カスミ
+応急修理, cp_repair.wav
+応急修理(解説), $(ユニット)は修理用のアームを伸ばした。
+
+錆蟲
+錆の顎(命中), cp_bite.wav
+破壊, cp_explode.wav

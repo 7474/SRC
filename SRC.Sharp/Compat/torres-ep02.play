@@ -1,0 +1,80 @@
+# 「トレス島試験記録」の第二話を単体で始めて、形態（変形・合体・分離）・マップ攻撃（識）・母艦の格納と発進・
+# 使い切りのアビリティを決まった手順で確かめ、最後まで自動で進める（srcsharp play の PlayScript。#1549）
+#   srcsharp play Compat/torres/ep02.eve --script Compat/torres-ep02.play --app-path Content/basic-data --skip-wait
+# 第一話のデータが無いので、ep02.eve の「単体で始めたときの部隊」が部隊を作る。
+
+choose 試験は失敗した あきらめる
+
+#===============================================================
+# 第二話「錆の巣」1 ターン目
+#===============================================================
+auto 60
+expect eval 作戦 = "正面"
+expect eval Status(ノア) = "格納"
+# 変形：トビウオを滑空形態にする（変形先が 1 つなのでリストは出ない。行動は終わらない）
+cell 4 12
+menu 変形
+auto 30
+expect eval Unit(カイ) = 試作機トビウオ(滑空形態)
+expect eval 変形記録 = 1
+expect eval Action(カイ) = 1
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第二話 2 ターン目
+#===============================================================
+expect eval ターン数 = 2
+# 発進（Launch）と、イベントの合体（Combine）
+expect eval Status(ノア) = "出撃"
+expect eval Unit(カイ) = 合体機ミカヅチ
+expect eval CountPilot(カイ) = 2
+# ヤマセは無傷（最大ＨＰ 9000）、カスミは格納庫で傷んで 1800（最大ＨＰ 3000 の 60%）
+expect eval HP(ゴロウ) = 9000
+expect eval HP(ノア) = 1800
+# マップ攻撃（Ｍ全・識）：範囲に入っている味方のヤマセとカスミは巻き込まない
+cell 4 12
+menu 攻撃
+wait list
+list 雷鳴陣
+cell 4 14
+auto 60
+expect eval 使用記録 = 1
+expect eval HP(ゴロウ) = 9000
+expect eval HP(ノア) = 1800
+expect eval Action(カイ) = 0
+# 使い切りのアビリティ：携行修理キット（マップのコマンド「アイテム」）。使うとアイテムが無くなる
+cell 3 12
+menu アイテム
+wait list
+list 修理キット
+auto 30
+expect eval CountItem(ノア) = 0
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第二話 3 ターン目以降
+#===============================================================
+expect eval ターン数 = 3
+# 分離：ミカヅチをトビウオとイワガネに戻す（確認のダイアログで OK）
+cell 4 12
+menu 分離
+wait dialog
+dialog OK
+auto 30
+expect eval Unit(カイ) = 試作機トビウオ
+expect eval Unit(ダイチ) = 試作機イワガネ
+expect eval Status(ダイチ) = "出撃"
+# ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+turns 30
+expect message 巣が……崩れていく！
+expect eval 試験記録 = "第一話の試験（省略）;第二話の調査;"
+expect finished
+expect error none
