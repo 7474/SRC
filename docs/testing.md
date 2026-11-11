@@ -14,7 +14,7 @@
 | 層 | 保証すること | 保証しないこと | プロジェクト | CI のジョブ |
 |---|---|---|---|---|
 | ユニット | 関数・式・イベントコマンド・データ読み込みの仕様。速く、待ちや時刻に依存しない | 画面・入力・スレッドの待ち合わせ | `SRCCoreTests`・`SRCAuthoringTests`・`SRCSoundTests`・`SRCSharpWebTests`（SRC#Web のうちブラウザに依存しない処理。セーブの同期・zip の展開・カタログの読み取り） | `test-srccore-linux`・`test-tools-linux`・`test-web`（`SRCCoreTests` は `build-and-test-srcs` でも） |
-| シナリオ E2E | コーパス（`SRC.Sharp/E2E/`）を入力スクリプトでプレイしたときの挙動。イベントコマンドの網羅 | フロントエンドごとの見た目・入力の仕組み | `SRCRenderTests`（`E2ECorpusTests`・画面のシナリオのテスト） | `test-srccore-linux` |
+| シナリオ E2E | コーパス（`SRC.Sharp/E2E/`）を入力スクリプトでプレイしたときの挙動。イベントコマンドの網羅 | フロントエンドごとの見た目・入力の仕組み | `SRCRenderTests`（`E2ECorpusTests`・画面のシナリオのテスト）・`tools/compat_play.py`（互換性の検証用のシナリオ `SRC.Sharp/Compat/*.play` を最初から最後まで） | `test-srccore-linux`・`test-compat-scenario` |
 | VRT | `SRCRender` が描いた画面が基準画像と一致すること | フロントエンドの部品（ボタン・メニュー）の見た目 | `SRCRenderTests`（`Baselines/`） | `test-srccore-linux` |
 | フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless。起動の引数と `--smoke` の終了コード・効果音の再生の呼び出しも）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint）・`SRCSharpVSCode/test`（VS Code の中で拡張が有効になり、コマンドと言語が登録されること。`xvfb-run -a npm test`） | `test-tools-linux`・`test-web`・`test-lint` |
 | 配布物 | 配る形でビルド・発行でき、最低限動くこと（`srcsharp` の各コマンドの終了コードと出力は、ユニットの `SRCAuthoringTests` の `CliTests` が確かめる）。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
@@ -39,6 +39,7 @@
 | 敵の思考のうち、回復アビリティ（マップ型を含む）・マップ兵器・変形・スペシャルパワーを使うもの（`COM.TryHealing` / `TryMapHealing` / `TryMapAttack` / `TryMoveTransform` / `TrySpecialPower`）。傷ついた仲間・並んだ味方・遠い敵を置き、オプション「敵ユニットスペシャルパワー使用」で敵 6 体を 5 回ずつ動かし、行動ごとのメッセージ（何を誰に使ったか）と全ユニットの状態を記録する | `SRCCoreTests/Golden/ComTacticsGoldenTests.cs` | `SRCCoreTests/Golden/ComTactics/expected.txt`（データは同じフォルダの `Data/`） |
 | スペシャルパワーとアビリティの効果（`SpecialPowerData.Apply`・`Unit.ExecuteAbility`・`Unit.ExecuteMapAbility`）。basic-data の sp.txt と、効果の種類・適用条件の足りない分を足した sp.txt のスペシャルパワーを 1 つずつ対象の種類に合わせて使い、使ったあとと効果が切れたあとの HP・EN・気力・SP・霊力・行動数・弾数・効いているスペシャルパワー・特殊状態を記録する。回復・補給・状態・付加・強化・変身・召喚・合体技などのアビリティと、範囲の形ごとのマップアビリティも使って記録する | `SRCCoreTests/Golden/SpecialPowerGoldenTests.cs` | `SRCCoreTests/Golden/SpecialPower/expected.txt`（データは同じフォルダの `Data/`） |
 | 戦闘の演出の選び方。武器の名前と属性（3,300 通り）ごとに、準備・攻撃・命中で呼ぶ戦闘アニメ（名前と引数）と、戦闘アニメをオフにしたときの効果音（`Effect` の `PrepareWeaponAnimation`・`AttackAnimation`・`HitAnimation`・`AttackSound`・`HitSound` など）を記録する | `SRCCoreTests/Golden/EffectGoldenTests.cs` | `SRCCoreTests/Golden/Effect/expected.txt`（武器は同じフォルダの `weapons.txt`） |
+| 互換性の検証用のシナリオ（`SRC.Sharp/Compat/`）の各話の終わりの状態。乱数の種を固定して `Compat/*.play` を最初から最後まで自動でプレイし、各話の終わりの資金・ユニットとパイロットの一覧・グローバル変数・イベントのエラーを記録する。同じ種で 2 回流して同じになることも確かめる（#1551） | `tools/compat_play.py`（CI の `test-compat-scenario`） | `SRC.Sharp/Compat/golden/<*.play の名前>.txt` |
 
 表のデータ（`Data/` のユニット・パイロット）はテストごとに分ける。`Battle/Data` を変えると `Com/expected.txt` まで変わるため、新しい組み合わせは別のフォルダに足す。
 
@@ -47,6 +48,8 @@
 ```sh
 SRC_GOLDEN_UPDATE=1 dotnet test SRC.Sharp/SRCCoreTests --filter FullyQualifiedName~Golden
 ```
+
+互換性の検証用のシナリオのゴールデンは `SRC_GOLDEN_UPDATE=1 python3 tools/compat_play.py` で作り直す（流し方は `SRC.Sharp/Compat/README.md`）。
 
 ## 実行する環境の言語
 
@@ -85,11 +88,12 @@ flowchart LR
   changes -->|コードの変更あり| lint[test-lint<br/>SRCLintWeb の Playwright]
   changes -->|SRC#Web・発行の設定を変えた PR| aot[test-web-aot<br/>SRC#Web の AOT 版の Playwright]
   changes -->|コードの変更あり| viewer[test-viewer<br/>データビューアの Playwright]
+  changes -->|コードの変更あり| compat[test-compat-scenario<br/>検証用のシナリオの lint・通しのプレイ・ゴールデン]
   changes -->|コードの変更あり| docker[docker-srcdatalinter]
   changes -->|コードの変更あり| win[build-and-test-srcs<br/>Windows 固有]
   changes -->|ヘルプの変更あり| help[build-help]
   PR -->|常に| release[release-check<br/>版・CHANGELOG・リリースの案内]
-  core & tools & web & aot & viewer & lint & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
+  core & tools & web & aot & viewer & lint & compat & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
   PR -->|待たない| coverage[coverage<br/>計測・変えた行・Mackerel は push のみ]
 ```
 
