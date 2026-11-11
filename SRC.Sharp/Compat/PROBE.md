@@ -4,7 +4,7 @@
 
 - シナリオは、確かめたい動作を並べ、結果を `Open`・`Print`・`Close` で 1 つのファイルに「項目名<TAB>値」の行で書き出す。乱数に左右されない値だけを書く
 - SRC# では `SRCRenderTests` の `CompatProbeTests` が同じシナリオを流す（CI で毎回）。実機の出力（期待値）が `probe-expected/` にあれば比べ、無ければ SRC# の出力を書き出すだけで成功する
-- Src.exe を動かすのは手作業なので、1 回の実行（下の「[Windows で流す手順](#windows-で流す手順)」）で必要な値をすべて取れるようにしている
+- Src.exe を動かすのは手作業なので、1 回の実行（下の「[Windows で流す手順](#windows-で流す手順)」）で必要な値をすべて取れるようにしている。画面と音の見比べ（#1553。[SCREENS.md](SCREENS.md)）のスクリーンショットも、同じ作業の続きで撮る
 
 **未確認**：このシナリオはまだ元の SRC で流していない。元の SRC（`SRC/SRC_20121125` の `CmdData.cls`・`Expression.bas`）にあるコマンドと関数だけを使い、書式をそのソースに合わせて書いたが、元の SRC で動くかは確かめていない。
 
@@ -18,7 +18,7 @@
 | `probe-bounds/incr.eve`・`unset.eve`・`ride.eve` | 範囲外の引数の参照（#1511）。引数の無い `Incr`・`UnSet`・`Ride`。Src.exe ごと落ちるかもしれないので、コマンドごとにイベントファイルを分けた。`out_incr.txt` などに書き出す |
 | `probe-errors/<ケース>/probe.eve` | データの読み込みのエラー。ケースごとに誤ったデータ（またはイベントファイル）を置き、元の SRC が出すメッセージと、読み込みを打ち切るか続けるかを見る。続ければ `out_probe.txt` に、どのデータが読めたかと値を書き出す |
 | `probe-expected/` | 実機の出力（期待値）を置く。`probe_pack.py import` で取り込む。`known-differences.txt` に理由のある違いを書く |
-| `probe_pack.py` | 元の SRC に渡す形（Shift_JIS・CRLF。`export_sjis.py` と同じ変換）に書き出す（`export`）。Windows から持ち帰った結果を `probe-expected/` に取り込む（`import`） |
+| `probe_pack.py` | 元の SRC に渡す形（Shift_JIS・CRLF。`export_sjis.py` と同じ変換）に書き出す（`export`）。Windows から持ち帰った結果を `probe-expected/` に取り込む（`import`）。画面と音の見比べ（`screens/`。#1553。[SCREENS.md](SCREENS.md)）も一緒に書き出し、スクリーンショットと音のメモを `screens-expected/`・`screens-form/` に取り込む |
 
 `probe/` は `Data` を持つので、CI の `test-compat-scenario`（`tools/compat_play.py`）が `srcsharp lint` と SRCDataLinter に掛ける。`probe-bounds/`・`probe-errors/` は誤りをわざと入れているので、`Data` を直下に置かず、lint に掛からないようにしている。
 
@@ -38,7 +38,7 @@
 
 ## Windows で流す手順
 
-1 回で済むように、手順を 1 つにまとめた。日本語版の Windows で、元の SRC（Ver.2.2.33 の Src.exe）を使う。
+1 回で済むように、#1550 のプローブと、#1553 の画面と音の見比べ（[SCREENS.md](SCREENS.md)）の手順を 1 つにまとめた。日本語版の Windows で、元の SRC（Ver.2.2.33 の Src.exe）を使う。見比べには、スピーカー（BGM の MIDI と効果音を聞く）と、30 分ほどの時間が要る。
 
 1. **書き出す**（Python 3 があればどの OS でもよい。リポジトリのルートで）
 
@@ -46,26 +46,42 @@
    python3 SRC.Sharp/Compat/probe_pack.py export --zip
    ```
 
-   `SRC.Sharp/Compat/out/probe-pack/`（と `SRC.Sharp/Compat/out/probe-pack.zip`。`out/` は git に入らない）ができる。中身は `probe/`・`probe-bounds/`・`probe-errors/` と、すべてのケースを順に開く `run_probe.bat`。テキストは Shift_JIS・CRLF になっている
+   `SRC.Sharp/Compat/out/probe-pack/`（と `SRC.Sharp/Compat/out/probe-pack.zip`。`out/` は git に入らない）ができる。中身は `probe/`・`probe-bounds/`・`probe-errors/`・`screens/` と、すべてのケースを順に開いてから見比べを始める `run_probe.bat`、見比べだけを始める `run_screens.bat`、場面ごとに画面を撮る `capture_screens.ps1`。テキストは Shift_JIS・CRLF になっている
 2. **Windows に写す**。`probe-pack.zip` を写して展開する。場所はどこでもよい（例: `C:\probe-pack`。SRC 本体のフォルダの下でなくてよい）。シナリオが `out_*.txt` などを書くので、書き込めるフォルダにする
-3. **SRC 本体を確かめる**。Src.exe のフォルダに `Data\System\terrain.txt` があること（元の SRC は本体の地形データが無いと起動しない。中身はどの版の汎用データのものでもよい。プローブは 1000 番台の自前の地形だけを使う）。汎用データ・汎用戦闘アニメ・効果音集は要らない。Src.exe がすでに起動していたら終わらせる（2 つは起動できない）
-4. **流す**。`run_probe.bat` をメモ帳で開き、`set SRC_EXE=C:\SRC\Src.exe` を Src.exe の場所に直して保存し、ダブルクリックで実行する。12 のケースを順に Src.exe で開く（`start /wait "" Src.exe "<フォルダ>\<イベント>.eve"`。元の SRC は起動の引数に渡したイベントファイルを開き、そのフォルダをシナリオのフォルダにする。`SRC.bas` の `Main`）。1 つ終わるたびに「続行するには何かキーを押してください」で止まる
+3. **SRC 本体を確かめる**。Src.exe のフォルダに `Data\System\terrain.txt` があること（元の SRC は本体の地形データが無いと起動しない。中身はどの版の汎用データのものでもよい。プローブと見比べは 1000 番台の自前の地形だけを使う）。汎用データ・汎用戦闘アニメ・効果音集は要らない（見比べの場面 31 は本体の `Lib\ユニットステータス表示.eve` を使う。本体にあるかを控える）。Src.exe がすでに起動していたら終わらせる（2 つは起動できない）。画面の拡大率（DPI）は 100% にしておく（スクリーンショットの大きさが変わらないように）
+4. **プローブを流す**。`run_probe.bat` をメモ帳で開き、`set SRC_EXE=C:\SRC\Src.exe` を Src.exe の場所に直して保存し、ダブルクリックで実行する。12 のケースを順に Src.exe で開く（`start /wait "" Src.exe "<フォルダ>\<イベント>.eve"`。元の SRC は起動の引数に渡したイベントファイルを開き、そのフォルダをシナリオのフォルダにする。`SRC.bas` の `Main`）。1 つ終わるたびに「続行するには何かキーを押してください」で止まる
    - `probe\probe.eve`：エラーのダイアログが出たら OK を押す（書き写さなくてよい）。戦闘のメッセージはクリックで進める。最後に Src.exe が自分で終わる
    - `probe-bounds\*.eve`・`probe-errors\*\probe.eve`：エラーのダイアログが出たら、ダイアログの文言を選んで（ダイアログの文字の欄をクリックして Ctrl+A、Ctrl+C）、同じフォルダの `errors_<イベント>.txt`（例: `probe-bounds\errors_incr.txt`・`probe-errors\unit-hp-text\errors_probe.txt`）に貼り付けてから OK を押す。ダイアログが 2 つ以上出たら、間に `----` だけの行を入れて続けて貼る。ダイアログが出なければ、ファイルを作らなくてよい
    - Src.exe が落ちた（「問題が発生したため、Src.exe を終了します」などが出た）ら、その文言も `errors_<イベント>.txt` に貼り、最後の行に `（Src.exe が落ちた）` と書く
    - 読み込みのエラーで Src.exe が自分で終わったときは、`out_*.txt` ができない。それも結果なので、そのまま次へ進む
    - 手で 1 つずつ流すときは、コマンドプロンプトで `"C:\SRC\Src.exe" "C:\probe-pack\probe\probe.eve"` のように開く（Src.exe のファイルを開くダイアログで選んでもよい）
-5. **回収する**。`C:\probe-pack` のフォルダをまとめて zip にして持ち帰る（要るのは各フォルダの `out_*.txt` と `errors_*.txt`）。あわせて、Windows の版・Src.exe の版（タイトル画面かバージョン情報）・流した日を控える
-6. **リポジトリに置く**。持ち帰った zip を展開し、リポジトリのルートで
+5. **画面と音の見比べ**（#1553）。プローブが終わると、`run_probe.bat` が続けて `capture_screens.ps1` を動かす（見比べだけをやり直すときは `run_screens.bat`。`SRC_EXE` を同じく直す）。Src.exe が `screens\screens.eve` を開き、PowerShell のウィンドウに場面の ID・名前・操作が 1 つずつ出る
+   - 画面と PowerShell のウィンドウが重ならないように並べる。場面ごとに、示した操作（Src.exe のクリック・右クリック・メニューの選択）でその場面を出し、**PowerShell のウィンドウをクリックして Enter** を押す。スクリプトが Src.exe のウィンドウを前に出し、ウィンドウの範囲を `screens-shots\<ID>.png` に保存する。撮れた画像を見て、よければ Enter、撮り直すなら `r`
+   - 前半（場面 01〜16）は、場面の名前のメッセージをクリックで閉じると場面が出て止まる。撮ってから Src.exe をクリックすると次の場面へ進む（撮る前に Src.exe をクリックしないこと）。場面 04〜07 はメッセージそのものを撮る。場面 06 で「クリティカル」と出たら（1%）、撮り終えてから最初からやり直す（`-From 06-battle-damage` は、Src.exe をもう一度開いてその場面まで進めてから）
+   - 音の場面（`snd-1` など）は、聞いたこと（鳴ったか・切り替わったか・繰り返すか）を書いて Enter。`screens-sounds.txt` に残る。何が鳴るはずかは [SCREENS.md の音の一覧](SCREENS.md#音の一覧)。場面 23（武器の一覧）で BGM が変わるか、その後のコマンドで戻るかも、次の音の場面のメモに書く
+   - 後半（場面 20〜29）は、メニューや一覧を出して撮る。戻るときは右クリック（メニューが残ったら、メニューの外をクリックして閉じる）。最後にマップコマンドの「ターン終了」で、インターミッション（場面 30〜32）へ進む
+   - 途中で止めたら、`powershell -ExecutionPolicy Bypass -File capture_screens.ps1 -From <場面の ID>` で続きから撮れる（`-SrcExe` を付けなければ Src.exe を起動しない）
+6. **SRC#Form の画面**（Windows で SRC#Form を動かせるとき）。SRC#Form の `Src.ini` 相当の設定はシナリオの `screens\Src.ini` から読むので、同じ設定になる。
+
+   ```bat
+   powershell -NoProfile -ExecutionPolicy Bypass -File capture_screens.ps1 -SrcExe <SRCSharpForm.exe の場所> -ProcessName SRCSharpForm -OutDir screens-form-shots
+   ```
+
+   で、同じ手順で `screens-form-shots\<ID>.png` と `screens-form-shots\sounds.txt` を作る（SRC#Form は Shift_JIS のシナリオも読める）
+7. **回収する**。`C:\probe-pack` のフォルダをまとめて zip にして持ち帰る（要るのは各フォルダの `out_*.txt`・`errors_*.txt` と、`screens-shots\`・`screens-sounds.txt`・`screens-form-shots\`）。あわせて、Windows の版・画面の拡大率・Src.exe の版（タイトル画面かバージョン情報）・本体の `Lib` と `Midi`・`Sound` の有無・流した日を控える
+8. **リポジトリに置く**。持ち帰った zip を展開し、リポジトリのルートで
 
    ```sh
    python3 SRC.Sharp/Compat/probe_pack.py import <展開したフォルダ>/probe-pack
    ```
 
-   を実行すると、`SRC.Sharp/Compat/probe-expected/<フォルダ>/<イベント>.txt`（出力）と `<イベント>.errors.txt`（エラーのダイアログ）が UTF-8・LF でできる。控えた Windows の版・Src.exe の版・流した日は `probe-expected/environment.txt` に書く。これらをコミットする（PR に載せる）
-7. **比べる**。`dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatProbeTests"`。違う項目が出たら、直すか、理由を `probe-expected/known-differences.txt` と [SRCとの互換性](../../SRC.Sharp.Help/src/SRCとの互換性.md) に書く。VB5 のランタイムの 4 つの動作は、対応表（`docs/history/porting/vb-map/`）の説明の「推定」を「VB5 の実機で確かめた」に書き換える
+   を実行すると、`SRC.Sharp/Compat/probe-expected/<フォルダ>/<イベント>.txt`（出力）と `<イベント>.errors.txt`（エラーのダイアログ）が UTF-8・LF で、`screens-expected/<ID>.png`・`screens-expected/sounds.txt`（Src.exe）と `screens-form/<ID>.png`・`screens-form/sounds.txt`（SRC#Form）ができる。控えた環境は `probe-expected/environment.txt` と `screens-expected/environment.txt` に書く。これらをコミットする（PR に載せる）
+9. **比べる**。
+   - プローブ：`dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatProbeTests"`。違う項目が出たら、直すか、理由を `probe-expected/known-differences.txt` と [SRCとの互換性](../../SRC.Sharp.Help/src/SRCとの互換性.md) に書く。VB5 のランタイムの 4 つの動作は、対応表（`docs/history/porting/vb-map/`）の説明の「推定」を「VB5 の実機で確かめた」に書き換える
+   - 画面と音：`dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatScreensTests"` の後に `python3 SRC.Sharp/Compat/screens_report.py` で並べた一覧（`SRC.Sharp/Compat/out/screens-report/index.html`）を作る（CI の `compat-screens` の成果物にも出る）。配置・色・文字・大きさの違いと、音の違いを [SCREENS.md の「見比べた結果」](SCREENS.md#見比べた結果) に書き、直すか互換性の一覧に載せる
 
 出力に足りない項目があれば、シナリオに足して、もう一度だけ流す（#1550 の「必要なもの」）。
+
 
 ## SRC# で流す
 

@@ -119,6 +119,20 @@ jobs:
           SRC.Sharp/SRCRenderTests/bin/**/TestResults/e2e/
         if-no-files-found: ignore
 
+    # 画面と音の見比べ（#1553）。実機（Compat/screens-expected）・SRC#（CompatScreensTests）・SRC#Form（Compat/screens-form）の
+    # 画像を場面ごとに並べた一覧を作る。画像は比べない（人が見る）。手順は SRC.Sharp/Compat/SCREENS.md
+    - name: Compat screens report
+      if: always()
+      run: python3 SRC.Sharp/Compat/screens_report.py --out compat-screens-report
+
+    - name: Upload compat screens report
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: compat-screens
+        path: compat-screens-report/
+        if-no-files-found: ignore
+
   # SRC#Avalonia・作成支援ツール・SRCSound
   test-tools-linux:
     needs: changes
