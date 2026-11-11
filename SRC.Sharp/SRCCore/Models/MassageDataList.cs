@@ -64,10 +64,9 @@ namespace SRCCore.Models
         // メッセージデータをファイルからロード
         public void Load(string fname, bool isEffect)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
-            {
-                Load(fname, isEffect, stream);
-            }
+            // 元の SRC の Load の ErrorHandler（開けない・打ち切る誤りのダイアログと TerminateSRC）。
+            // MessageDataList.cls は打ち切る誤りの原因（err_msg）を出さない（DataErrorMessage "", ...）が、VB の不具合として合わせず原因を出す
+            SRC.LoadDataFile(fname, stream => Load(fname, isEffect, stream));
         }
 
         // 特殊効果データor戦闘アニメデータのファイル名か？

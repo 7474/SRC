@@ -10,4 +10,4 @@ VB 版の `SRC/SRC_20121125/DialogDataList.cls` の手続きと、C# の対応�
 | Sub Delete | 48 | 3 | `SRCCore/Models/DialogDataList.cs` DialogDataList.Delete | 一致 |  |
 | Function Item | 53 | 9 | `SRCCore/Models/DialogDataList.cs` DialogDataList.Item | 一致 | 無ければ null |
 | Function IsDefined | 64 | 11 | `SRCCore/Models/DialogDataList.cs` DialogDataList.IsDefined | 一致 |  |
-| Sub Load | 77 | 101 | `SRCCore/Models/DialogDataList.cs` DialogDataList.Load | 修正済み | (1) シチュエーションの行がファイルの最後にあるとき、VB はメッセージの無いダイアログとして登録するが、C# は登録していなかった (2) 末尾に空行が続くと名前が空のダイアログデータを作っていた (3) パイロット名の一覧の要素が 0 個なら、原因を書かないデータエラーで打ち切る（#1498）。パイロット名の一覧は LNormalize で作る（LIndex を空白でつないで Trim するのと同じ） |
+| Sub Load | 77 | 101 | `SRCCore/Models/DialogDataList.cs` DialogDataList.Load | 修正済み | (1) シチュエーションの行がファイルの最後にあるとき、VB はメッセージの無いダイアログとして登録するが、C# は登録していなかった (2) 末尾に空行が続くと名前が空のダイアログデータを作っていた (3) パイロット名の一覧の要素が 0 個なら、原因を書かないデータエラーで打ち切る（#1498）。パイロット名の一覧は LNormalize で作る（LIndex を空白でつないで Trim するのと同じ）。ErrorHandler（開けないときの「fname が開けません。」、打ち切る誤りの DataErrorMessage と TerminateSRC）は SRC.LoadDataFile が受け持つ。ゲームとして実行するとき（SRC.ShowDataErrorDialogs）だけダイアログを出して終了し、続ける誤りも SRC.AddDataError でダイアログに出す（#1550） |

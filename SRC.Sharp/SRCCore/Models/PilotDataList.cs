@@ -121,10 +121,8 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
-            {
-                Load(fname, stream);
-            }
+            // 元の SRC の Load の ErrorHandler（開けない・打ち切る誤りのダイアログと TerminateSRC）。PilotDataList.cls だけ「が開けません」に「。」が無い
+            SRC.LoadDataFile(fname, stream => Load(fname, stream), openErrorMessage: "が開けません");
         }
 
         public void Load(string fname, Stream stream)

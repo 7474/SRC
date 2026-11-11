@@ -54,6 +54,8 @@ namespace SRCSharpForm
             SRC.SystemConfig = config;
             SRC.FileSystem = fileSystem;
             SRC.Sound.Player = soundPlayer;
+            // ゲームとして実行するので、元の SRC と同じくデータの誤りをダイアログに出し、読み込みを打ち切る誤りでは終了する
+            SRC.ShowDataErrorDialogs = true;
 
             // XXX ファイルシステムへのエントリー追加はお試し中
             try

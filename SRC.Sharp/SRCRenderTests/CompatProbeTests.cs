@@ -78,7 +78,8 @@ namespace SRCRender.Tests
                 File.Delete(outputPath);
             }
             File.WriteAllText(Path.Combine(resultDirectory, name + ".errors.txt"), FormatErrors(errors), new UTF8Encoding(false));
-            // SRC# はデータの誤りをダイアログに出さず SRC.DataErrors に集める（読み込みを打ち切る誤りは例外にする）。見比べるために別に書き出す
+            // データの誤りは元の SRC と同じくダイアログにも出す（errors に入る。読み込みを打ち切る誤りはダイアログの後に終了する。#1550）。
+            // SRC# が集めた誤り（SRC.DataErrors）と打ち切りの例外も、見比べるために別に書き出す
             File.WriteAllText(Path.Combine(resultDirectory, name + ".dataerrors.txt"), string.Join("\n", dataErrors) + (dataErrors.Count > 0 ? "\n" : ""), new UTF8Encoding(false));
 
             // 期待値が無くても確かめること: 主なプローブと範囲外の引数のシナリオは、SRC# では最後まで進む
