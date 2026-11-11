@@ -6,6 +6,9 @@
 *.play text eol=lf
 *.md text eol=lf
 *.py text eol=lf
+*.ini text eol=lf
+*.ps1 text eol=lf
+*.png binary
 *.bmp binary
 *.wav binary
 *.mid binary

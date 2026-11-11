@@ -1,0 +1,265 @@
+# 画面と音の見比べ（#1553）を SRC# で進め、場面ごとに画面を撮る PlayScript。SRCRenderTests の CompatScreensTests が流す。
+# snapshot の名前は場面の ID（../screens-scenes.txt と同じ。並べた一覧の画像の名前になる）。
+# 元の SRC で人が行う操作（../SCREENS.md）と同じ操作をする。Compat/*.play ではないので、tools/compat_play.py は流さない。
+#
+#   srcsharp play Compat/screens/screens.eve --script Compat/screens/screens.play --app-path Content/basic-data
+
+#---------------------------------------------------------------
+# プロローグ
+#---------------------------------------------------------------
+wait message 画面と音の見比べ
+key Enter
+
+#---------------------------------------------------------------
+# スタートのイベントで出す場面
+#---------------------------------------------------------------
+wait message 場面 01
+key Enter
+wait click
+snapshot 01-map
+click 8 8
+
+wait message 場面 02
+key Enter
+wait click
+snapshot 02-status-unit
+click 8 8
+
+wait message 場面 03
+key Enter
+wait click
+snapshot 03-status-enemy
+click 8 8
+
+wait message 場面 04
+snapshot 04-message
+key Enter
+
+wait message 場面 05
+key Enter
+# 戦闘中のメッセージは時間で進む（Src.ini でメッセージスピードを「手動送り」にしているので、クリックまで止まっている）
+wait battle 必中ハンマー、いくよ
+snapshot 05-battle-attack
+click 8 8
+wait battle 攻撃をかけた
+click 8 8
+wait battle ダメージ
+snapshot 06-battle-damage
+click 8 8
+
+wait message 場面 07
+key Enter
+wait battle を使った
+click 8 8
+wait battle 回復した
+snapshot 07-battle-ability
+click 8 8
+
+wait message 場面 08
+key Enter
+wait click
+snapshot 08-paint-string
+click 8 8
+
+wait message 場面 09
+key Enter
+wait click
+snapshot 09-paint-shapes
+click 8 8
+
+wait message 場面 10
+key Enter
+wait click
+snapshot 10-paint-picture
+click 8 8
+
+wait message 場面 11
+key Enter
+wait click
+snapshot 11-filter-night
+click 8 8
+
+wait message 場面 12
+key Enter
+wait click
+snapshot 12-filter-sunset
+click 8 8
+
+wait message 場面 13
+key Enter
+wait click
+snapshot 13-filter-sepia
+click 8 8
+
+wait message 場面 14
+key Enter
+wait click
+snapshot 14-filter-monotone
+click 8 8
+
+wait message 場面 15
+key Enter
+wait click
+snapshot 15-filter-water
+click 8 8
+
+wait message 場面 16
+key Enter
+wait click
+snapshot 16-filter-color
+click 8 8
+
+# 音の場面（画面は撮るが、並べた一覧には音の記録だけを出す）
+wait message 音 1
+key Enter
+wait click
+snapshot snd-1
+click 8 8
+
+wait message 音 2
+key Enter
+wait click
+snapshot snd-2
+click 8 8
+
+wait message 音 3
+key Enter
+wait click
+snapshot snd-3
+click 8 8
+
+wait message 音 4
+key Enter
+wait click
+snapshot snd-4
+click 8 8
+
+wait message 音 5
+key Enter
+wait click
+snapshot snd-5
+click 8 8
+
+wait message イベントの場面はここまで
+key Enter
+
+#---------------------------------------------------------------
+# 1 ターン目の味方フェイズ：手で操作して出す場面
+#---------------------------------------------------------------
+wait message 手で操作して出す
+key Enter
+wait ready
+snapshot snd-6
+
+# 20 マップコマンドのメニュー（ユニットのいないマスをクリック）
+cell 8 12 right
+wait menu
+snapshot 20-map-menu
+key Escape
+wait ready
+
+# 21 ユニットコマンドのメニュー（見本機アオをクリック）
+cell 6 7
+wait menu
+snapshot 21-unit-menu
+
+# 22 移動範囲（「移動」を選ぶ。右クリックで戻る）
+menu 移動
+snapshot 22-move-range
+# 右クリックで移動をやめると、ユニットコマンドのメニューに戻る。メニューを閉じる
+cell 6 7 right
+wait menu
+key Escape
+wait ready
+
+# 23 武器の一覧（「攻撃」を選ぶ。見本員ミナの BGM に切り替わる）
+cell 6 7
+menu 攻撃
+wait list
+snapshot 23-weapon-list
+
+# 24 攻撃の範囲（見本ライフルを選ぶ。右クリックで戻る）
+list 見本ライフル
+snapshot 24-attack-range
+# 右クリックで攻撃をやめると、ユニットコマンドのメニューに戻る。メニューを閉じる
+cell 6 7 right
+wait menu
+key Escape
+wait ready
+
+# 25 アビリティの一覧
+cell 6 7
+menu アビリティ
+wait list
+snapshot 25-ability-list
+key Escape
+wait ready
+
+# 26 特殊能力の一覧
+cell 6 7
+menu 特殊能力一覧
+wait list
+snapshot 26-feature-list
+key Escape
+wait ready
+
+# 27 スペシャルパワーの一覧
+cell 6 7
+menu スペシャルパワー
+wait list
+snapshot 27-sp-list
+key Escape
+wait ready
+
+# 28・29 敵のユニットのメニューと武装一覧
+cell 10 6
+wait menu
+snapshot 28-enemy-menu
+menu 武装一覧
+wait list
+snapshot 29-enemy-weapons
+key Escape
+wait ready
+
+# ターン終了（行動していないユニットがあるので確かめのダイアログが出る）
+cell 8 12 right
+menu ターン終了
+wait dialog
+dialog OK
+
+#---------------------------------------------------------------
+# 敵のフェイズの初め → インターミッション
+#---------------------------------------------------------------
+wait message 敵のフェイズの BGM
+snapshot snd-7
+key Enter
+# ステージの終わりの経験値（Continue）
+wait message 経験値
+key Enter
+
+# 30 インターミッションのコマンド
+wait list コマンド
+snapshot 30-intermission
+
+# 31 ユニットステータス（ユニットの一覧。右クリックのメニューで戻る）
+list ユニットステータス
+wait ready
+snapshot 31-intermission-units
+cell 15 15 right
+menu インターミッションに戻る
+wait list コマンド
+
+# 32 機体改造（ユニット選択のリスト）
+list 機体改造
+wait list ユニット選択
+snapshot 32-intermission-upgrade
+key Escape
+wait list コマンド
+
+list 次のステージへ
+dialog OK
+wait message ここで終わりです
+snapshot snd-8
+key Enter
+wait finished
+expect error none

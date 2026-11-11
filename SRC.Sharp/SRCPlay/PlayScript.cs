@@ -17,6 +17,8 @@ namespace SRCPlay
     ///   auto [秒]              メッセージ・ダイアログ・リスト等を自動で進め、マップで操作を受け付ける状態になるまで待つ
     ///   wait ready [秒]        マップで操作を受け付ける状態になるまで待つ（自動では進めない）
     ///   wait message [文字列]  メッセージ（指定があればその文字列を含むもの）が出るまで待つ
+    ///   wait battle 文字列     その文字列を含む戦闘中のメッセージ（クリックを待たずに時間で進むもの）が出るまで待つ
+    ///                          （メッセージスピードが「手動送り」なら、出たまま click で進むまで止まっている）
     ///   wait list [文字列]     リスト（指定があれば見出しにその文字列を含むもの）が出るまで待つ
     ///   wait menu|dialog|click 各状態になるまで待つ
     ///   wait finished [秒]     シナリオ（SRC）が終わるまで待つ（中断の後の resume の前に使う）
@@ -675,6 +677,18 @@ namespace SRCPlay
                     ok = WaitUntil(() => runner.State.Message.Visible && runner.State.Message.Waiting
                         && (text == null || string.Join("", runner.State.Message.Lines).Contains(text)), DefaultTimeout);
                     break;
+                case "battle":
+                    // 戦闘中のメッセージ（DisplayBattleMessage）はクリックの待ちの状態にならない。表示した行で見る
+                    ok = WaitUntil(() => runner.State.Message.Visible
+                        && string.Join("", runner.State.Message.Lines.ToList()).Contains(text ?? ""), DefaultTimeout);
+                    if (ok)
+                    {
+                        // 行を書いた後、クリックの受け付けを始める（IsFormClicked を戻す）前に click すると取りこぼす。
+                        // ゲームスレッドが待ちのループ（DoEvents）に 2 回入るまで待ってから進める
+                        SettleGame();
+                        SettleGame();
+                    }
+                    break;
                 case "list":
                     ok = WaitUntil(() => runner.State.List != null && GUI.IsWaitingList
                         && (text == null || (runner.State.List.Caption ?? "").Contains(text) || (runner.State.List.Info ?? "").Contains(text)), DefaultTimeout);
@@ -705,6 +719,20 @@ namespace SRCPlay
         #endregion
 
         #region 操作
+
+        /// <summary>ゲームスレッドが UI から渡した処理を 1 回こなすまで待つ（待ちのループの DoEvents に入ったことを確かめる）</summary>
+        private void SettleGame()
+        {
+            if (runner.IsFinished)
+            {
+                return;
+            }
+            using (var done = new ManualResetEventSlim())
+            {
+                runner.Session.Game.Post(done.Set);
+                done.Wait(TimeSpan.FromSeconds(2));
+            }
+        }
 
         public void Snapshot(string name)
         {

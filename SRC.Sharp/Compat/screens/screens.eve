@@ -1,0 +1,274 @@
+# 画面と音の見比べ（#1553）「screens.eve」
+#
+# 元の SRC（VB5 の Src.exe）と SRC# で、主な画面を決まった状態で出し、スクリーンショットを並べて見比べるためのシナリオ。
+# 場面の一覧・実機での操作・音の一覧は ../SCREENS.md（場面の ID は ../screens-scenes.txt）。
+#
+# - 前半（スタートのイベント）は、場面ごとに「場面の名前」のメッセージを出し、クリックで閉じると場面を出して
+#   Wait Click で止まる。スクリーンショットを取ってからクリックすると次の場面へ進む
+# - 後半（1 ターン目の味方フェイズ）は、人がユニットとマスをクリックして、メニュー・一覧・移動範囲を出す
+# - ターンを終えると、敵のフェイズの初めにインターミッションへ進む（敵は動かない）。インターミッションの画面を取り、
+#   「次のステージへ」で screens_end.eve に進んで終わる
+#
+# 乱数に左右されないようにしている: 戦闘は必ず当たりクリティカルの出ない武器（必中ハンマー）で、反撃しない標的を
+# Attack で撃つ。アニメ・自動のカーソル移動は Src.ini で切り、メッセージは手動送りにしている。
+# 元の SRC でも動くように、元の SRC（SRC/SRC_20121125 の CmdData.cls）にあるコマンドだけを使う。
+
+#===============================================================
+# プロローグ
+#===============================================================
+プロローグ:
+RenameBGM Briefing cp_briefing.mid
+RenameBGM Intermission cp_intermission.mid
+RenameBGM Map1 cp_map.mid
+RenameBGM Map2 cp_enemy.mid
+StartBGM cp_briefing.mid
+Talk システム
+画面と音の見比べのシナリオです。場面の名前を出してから、場面を出して止まります。
+End
+Exit
+
+#===============================================================
+# スタート：イベントで出す場面
+#===============================================================
+スタート:
+Create 味方 見本機アオ 0 見本員ミナ 10 6 7
+Create 味方 見本機ミドリ 0 見本員トウマ 5 5 7
+Create 敵 見本標的 0 見本制御(ザコ) 1 7 7 標的
+Create 敵 見本敵機 0 見本制御(ザコ) 3 10 6 敵機
+Equip ミナ 見本フレーム
+# ミドリは傷んでいる（場面 07 で回復する）
+RecoverHP トウマ -40
+Center 8 8
+Redraw
+
+# 01 マップ（ユニット・地形）
+Talk システム
+場面 01：マップ（ユニット・地形）
+End
+Wait Click
+
+# 02 ステータスウィンドウ（味方のユニット・パイロット）
+Talk システム
+場面 02：ステータスウィンドウ（味方）
+End
+ShowUnitStatus ミナ
+Wait Click
+
+# 03 ステータスウィンドウ（敵のユニット・パイロット）
+Talk システム
+場面 03：ステータスウィンドウ（敵）
+End
+ShowUnitStatus 敵機
+Wait Click
+ShowUnitStatus 終了
+
+# 04 メッセージウィンドウ（顔の絵つき。このメッセージでスクリーンショットを取る）
+Talk 管理官
+場面 04：メッセージウィンドウ。顔の絵と名前を出し、長い文はウィンドウの幅で折り返す。
+End
+
+# 05・06 戦闘のメッセージウィンドウ
+Talk システム
+場面 05・06：戦闘のメッセージウィンドウ（ミナの台詞と、ダメージ）
+End
+Attack ミナ 必中ハンマー 標的 無抵抗
+
+# 07 戦闘のメッセージウィンドウ（アビリティ。回復の量は乱数に左右されない）
+Talk システム
+場面 07：戦闘のメッセージウィンドウ（アビリティで回復）
+End
+UseAbility ミナ 応急処置 トウマ
+
+# 08 描画のコマンド：PaintString（フォント・大きさ・色・中央寄せ）
+Talk システム
+場面 08：PaintString
+End
+Font
+PaintString 16 16 "Font（既定）ＭＳ Ｐ明朝 16pt Bold 白"
+Font 12pt Ｐゴシック Regular #FFFF00
+PaintString 16 56 "Ｐゴシック 12pt Regular 黄 ABCabc0123"
+Font 20pt 明朝 Bold #00FFFF
+PaintString 16 96 "明朝 20pt Bold 水色"
+Font 14pt ゴシック Italic #FF8000
+PaintString 16 136 "ゴシック 14pt Italic 橙"
+Font 24pt Ｐ明朝 Regular #FFFFFF
+PaintString - 200 "中央寄せ（Ｘ が -）"
+Font 16pt Ｐゴシック Bold #FF80FF
+PaintString 16 260 "1 行目（座標の指定あり）"
+PaintString "2 行目（座標の指定なし。前の行の下に続く）"
+Font
+Refresh
+Wait Click
+ClearPicture
+Redraw
+
+# 09 描画のコマンド：Line・Circle・Oval・Arc・Polygon・PSet（色・線の太さ・塗りつぶし）
+Talk システム
+場面 09：Line・Circle・Oval・Arc・Polygon・PSet
+End
+Color #FFFF00
+DrawWidth 1
+Line 16 16 216 16
+DrawWidth 3
+Line 16 32 216 72
+Line 240 16 320 72 #00FF00 B
+Line 344 16 464 72 #FF0000 BF
+FillStyle 塗りつぶし
+FillColor #0000FF
+Line 16 96 136 176 #FFFFFF B
+FillStyle 横線
+FillColor #00FFFF
+Line 160 96 280 176 #FFFFFF B
+FillStyle 網かけ
+FillColor #FF00FF
+Line 304 96 424 176 #FFFFFF B
+FillStyle 透明
+Color #FFFFFF
+DrawWidth 2
+Circle 80 256 56
+FillStyle 塗りつぶし
+FillColor #008000
+Circle 216 256 56 #FFFF00
+Oval 360 256 80 0.5 #FF8000
+FillStyle 透明
+Arc 80 400 56 0 270 #00FFFF
+Polygon 176 352 296 352 336 456 160 440 #FF80FF
+DrawWidth 1
+PSet 400 400 #FFFFFF
+PSet 410 400 #FF0000
+PSet 420 400 #00FF00
+PSet 430 400 #0000FF
+DrawWidth 5
+PSet 400 430 #FFFF00
+DrawWidth 1
+FillStyle 透明
+Color #FFFFFF
+Refresh
+Wait Click
+ClearPicture
+Redraw
+
+# 10 描画のコマンド：PaintPicture（顔・ユニット・拡大・反転・色のオプション）と Cls
+Talk システム
+場面 10：Cls と PaintPicture
+End
+Cls #202040
+PaintPicture 見本員ミナ 16 16
+PaintPicture 見本員ミナ 96 16 128 128
+PaintPicture 見本員ミナ 240 16 64 64 左右反転
+PaintPicture 見本員ミナ 320 16 64 64 白黒
+PaintPicture 見本員ミナ 400 16 64 64 セピア
+PaintPicture 見本機アオ 16 176
+PaintPicture 見本機アオ 64 176 64 64
+PaintPicture 見本機アオ 144 176 64 64 透過
+PaintPicture 見本機アオ 224 176 64 64 透過 上下反転
+PaintPicture 見本機アオ 304 176 64 64 透過 シルエット
+PaintPicture 見本機アオ 384 176 64 64 透過 ネガポジ反転
+PaintPicture 見本員トウマ 16 272 64 64 夕焼け
+PaintPicture 見本員トウマ 96 272 64 64 水中
+PaintPicture 見本員トウマ 176 272 64 64 明
+PaintPicture 見本員トウマ 256 272 64 64 暗
+PaintPicture 見本員トウマ 336 272 64 64 右回転 90
+Refresh
+Wait Click
+ClearPicture
+Redraw
+
+# 11〜16 フィルタ（マップの背景とユニットの画像の色を変える）
+Talk システム
+場面 11：Night
+End
+Night
+Wait Click
+Noon
+
+Talk システム
+場面 12：Sunset
+End
+Sunset
+Wait Click
+Noon
+
+Talk システム
+場面 13：Sepia
+End
+Sepia
+Wait Click
+Noon
+
+Talk システム
+場面 14：Monotone
+End
+Monotone
+Wait Click
+Noon
+
+Talk システム
+場面 15：Water
+End
+Water
+Wait Click
+Noon
+
+Talk システム
+場面 16：ColorFilter（#FF0000・50%）
+End
+ColorFilter #FF0000 50%
+Wait Click
+Noon
+
+#---------------------------------------------------------------
+# 音の場面（耳で確かめる。スクリーンショットは要らない）
+#---------------------------------------------------------------
+Talk システム
+音 1：StartBGM cp_map.mid（切り替わって繰り返す）
+End
+StartBGM cp_map.mid
+Wait Click
+
+Talk システム
+音 2：もう一度 StartBGM cp_map.mid（やり直さずに続く）
+End
+StartBGM cp_map.mid
+Wait Click
+
+Talk システム
+音 3：PlaySound cp_levelup.wav（1 回鳴る。BGM は続く）
+End
+PlaySound cp_levelup.wav
+Wait Click
+
+Talk システム
+音 4：PlayMIDI cp_boss.mid（切り替わり、繰り返さない）
+End
+PlayMIDI cp_boss.mid
+Wait Click
+
+Talk システム
+音 5：StopBGM（BGM が止まる）
+End
+StopBGM
+Wait Click
+
+Talk システム
+イベントの場面はここまで。味方のフェイズの BGM は cp_map.mid（Map1）。
+End
+Exit
+
+#===============================================================
+# 1 ターン目の味方フェイズ：人が操作して出す場面
+#===============================================================
+ターン 1 味方:
+Talk システム
+場面 20〜29 は、手で操作して出す（手順は SCREENS.md）。終わったら「ターン終了」。
+End
+Exit
+
+#===============================================================
+# 敵のフェイズの初め：インターミッションへ
+#===============================================================
+ターン 1 敵:
+Talk システム
+敵のフェイズの BGM は cp_enemy.mid（Map2）。次はインターミッション（場面 30〜32）。
+End
+Continue screens_end.eve

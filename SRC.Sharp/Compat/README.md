@@ -29,6 +29,7 @@
 | `torres.play` | 第一話から最後（第八話のゲームクリア）まで自動でプレイする手順（`srcsharp play` の PlayScript）。インターミッションでは乗り換え・機体改造・換装を決まった手順で行う |
 | `torres-ep02.play`〜`torres-ep08.play` | その話を単体で始めて、初めのターンを決まった手順で進めて確かめ、話の終わり（次のインターミッション。第八話はゲームクリア）まで自動で進める PlayScript |
 | `probe/`・`probe-bounds/`・`probe-errors/`・`probe-expected/`・`probe_pack.py` | 実機との比較のプローブ（#1550）。確かめたい動作を並べたシナリオと、実機の出力（期待値）。手順と、項目と #1550 の表の対応は [PROBE.md](PROBE.md) |
+| `screens/`・`screens-scenes.txt`・`screens-expected/`・`screens-form/`・`capture_screens.ps1`・`screens_report.py` | 画面と音の見比べ（#1553）。主な画面を決まった状態で出すシナリオと、実機・SRC#Form のスクリーンショットの置き場所、並べた一覧を作るスクリプト。場面と手順は [SCREENS.md](SCREENS.md)（Windows での作業は PROBE.md の手順に入れた） |
 
 ファイル名・フォルダ名はすべて ASCII にしている（zip に入れたときや、日本語版でない Windows で名前が化けないように）。
 
