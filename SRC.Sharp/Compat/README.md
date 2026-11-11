@@ -84,6 +84,27 @@ srcsharp play SRC.Sharp/Compat/torres/ep02.eve --script SRC.Sharp/Compat/torres-
 | `SRCCoreTests` の `E2E/CompatScenarioDataTests` | データ・地形・マップ・イベントが誤り無く読めること。データが指す画像（ユニット・顔・地形）・形態（変形・合体・分離の行き先、合体技のパートナー）・スペシャルパワーが揃っていること |
 | `SRCRenderTests` の `CompatScenarioTests` | `torres.play`・`torres-ep02.play` のうち、「ここから最後まで自動で進める」の行の手前（各話の初めの決まった手順と、その結果の確かめ）を流す。最後まで流すと待ち時間（戦闘アニメ・メッセージの表示時間）で数分かかるため、CI では流さない（CI で最後まで流すのは #1551） |
 
+### CI での通しのプレイとゴールデン
+
+CI の `test-compat-scenario`（#1551）が、`tools/compat_play.py` で次のことをする。話（`*.play`）を足しても CI を書き換えなくてよい。
+
+1. `Compat/` の下の、`Data` を持つフォルダを `srcsharp lint` と SRCDataLinter に掛ける。エラーがあれば失敗
+2. `Compat/*.play` のそれぞれを、乱数の種を固定して（`srcsharp play --seed 1`）最初から最後まで流す。始めるイベントファイルと `--app-path` は、`*.play` の先頭のコメントの `#   srcsharp play Compat/<フォルダ>/<イベントファイル> --script ... --app-path ...` の行から読む（パスは `SRC.Sharp` からの相対）。シナリオのフォルダは一時フォルダに写して動かす。次のときは失敗にする
+   - 例外が起きた、または `expect` が外れた（`expect error none` は、イベントのエラーのダイアログが 1 度でも出たことも失敗にする）
+   - シナリオが終わらない（`srcsharp play` の最後の行が `terminated` でない）。上限のターン数は `*.play` の `turns 回数` で決め、その後の `expect finished` で確かめる
+3. 各話（イベントファイル）の終わりの状態（`srcsharp play --state`）を書き出し、`Compat/golden/<*.play の名前>.txt` と比べる。同じ種で 2 回流し、2 回とも同じになることも確かめる。書き出すのは、資金・ターン数、味方・ＮＰＣのユニット（HP・EN・位置・パイロット・アイテム）とパイロット（レベル・経験値・気力・SP）、ほかの陣営の数、手持ちのアイテム、グローバル変数、イベントのエラー
+
+```sh
+# CI と同じこと（srcsharp・SRCDataLinter は Release でビルドしたものを使う。無ければビルドする）
+python3 tools/compat_play.py --repeat 2
+# 1 つの *.play だけ流す（lint は省く）
+python3 tools/compat_play.py torres.play
+# ゴールデンを作り直す（話を足したとき・意図して結果を変えたとき）。差分を PR に載せる
+SRC_GOLDEN_UPDATE=1 python3 tools/compat_play.py
+```
+
+話を足したら、`*.play` に上の形のコメントの行を書き、`SRC_GOLDEN_UPDATE=1` でゴールデンを作る。ゴールデンが変わったときは、SRC# の変更で乱数の使い方や戦闘の結果が変わっていないか、差分を見て理由を確かめてから作り直す。乱数の系列は元の SRC と合わせていないので、ゴールデンの値は元の SRC の結果ではない（黙って変わっていないことを見るためのもの）。
+
 ## 素材の作り方
 
 `python3 SRC.Sharp/Compat/make_assets.py` で作り直せる（Pillow が必要）。

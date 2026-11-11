@@ -186,6 +186,54 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>
+        /// イベントのエラーは例外にならず、ダイアログを出してイベントを打ち切る（元の SRC と同じ）。
+        /// expect error none は、そのダイアログが出たことも失敗にする（#1551。検証用のシナリオの通しのプレイで見つけるため）
+        /// </summary>
+        [TestMethod]
+        public void Play_EventErrorFailsExpectErrorNone()
+        {
+            using (var scenario = new TestScenario())
+            {
+                CopyCase("message-wrap", scenario.Root);
+                scenario.Write("test.eve", "プロローグ:", "Exit", "", "スタート:", "ChangeMap test.map", "GameClear 1", "Quit");
+                var script = scenario.Write("error.txt", "auto 30", "expect error none");
+                var (exitCode, _, stderr) = Run("play", Path.Combine(scenario.Root, "test.eve"), "--script", script, "--skip-wait");
+                Assert.AreEqual(1, exitCode, stderr);
+                StringAssert.Contains(stderr, "エラーのダイアログが出ています");
+                StringAssert.Contains(stderr, "GameClearコマンドの引数の数が違います");
+            }
+        }
+
+        /// <summary>
+        /// --seed で乱数の種を決め、--state に各話（イベントファイル）の終わりの状態を書く（#1551）。
+        /// 同じ種なら同じ状態になる。Continue で次のイベントファイルに移ったときに、前の話の終わりを記録する
+        /// </summary>
+        [TestMethod]
+        public void Play_SeedAndStateAreRepeatable()
+        {
+            var states = new string[2];
+            for (var i = 0; i < states.Length; i++)
+            {
+                using (var scenario = new TestScenario())
+                {
+                    CopyCase("intermission-save", scenario.Root);
+                    var state = Path.Combine(scenario.Root, "state.txt");
+                    var (exitCode, stdout, stderr) = Run("play", Path.Combine(scenario.Root, "test.eve"), "--script", Path.Combine(scenario.Root, "play.txt"), "--skip-wait", "--seed", "1551", "--state", state);
+                    Assert.AreEqual(0, exitCode, stderr);
+                    StringAssert.Contains(stdout, "terminated");
+                    states[i] = File.ReadAllText(state);
+                }
+            }
+            StringAssert.Contains(states[0], "## test.eve の終わり（次は next.eve）");
+            StringAssert.Contains(states[0], "## next.eve の終わり（シナリオの終わり）");
+            StringAssert.Contains(states[0], "資金: ");
+            StringAssert.Contains(states[0], "テスト機");
+            StringAssert.Contains(states[0], "テストパイロット");
+            StringAssert.Contains(states[0], "## イベントのエラー\nなし");
+            Assert.AreEqual(states[0], states[1]);
+        }
+
         [TestMethod]
         public void Play_AutoWritesSnapshots()
         {
