@@ -1,0 +1,118 @@
+# 「トレス島試験記録」の第四話を単体で始めて、空中・テレポート・ジャンプ・ハイパーモードとノーマルモード・追加パイロット・
+# 暴走時パイロット・必要技能（女性・!女性）、中断とクイックセーブからの再開を決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める
+# （srcsharp play の PlayScript。#1549）
+#   srcsharp play Compat/torres/ep04.eve --script Compat/torres-ep04.play --app-path Content/basic-data --skip-wait
+
+choose 試験は失敗した あきらめる
+
+#===============================================================
+# 第四話「空の回廊」1 ターン目
+#===============================================================
+auto 60
+# 空を飛べるヒバリ（空の適応が陸以上）は空中にいる
+expect eval Area(リン) = 空中
+expect eval Unit(リン) = 試作機ヒバリ
+# 必要技能：ＥＮ回復（女性）は働き、ＨＰ回復（!女性）は働かない
+expect eval IsAvailable(リン, ＥＮ回復) = 1
+expect eval IsAvailable(リン, ＨＰ回復) = 0
+
+# テレポート（Lv1・ＥＮ30）：移動力 6 + 1 = 7 マス先の (11,3) へ、防壁と空を越えて跳ぶ
+cell 4 3
+menu 短距離跳躍
+cell 11 3
+wait menu
+menu 待機
+auto 30
+expect eval X(リン) = 11
+expect eval Y(リン) = 3
+expect eval EN(リン) = 120
+
+# ジャンプ（Lv1・ＥＮ10）：移動力 4 + 1 = 5 マス先の (10,9) へ、空の地形を越えて跳ぶ
+cell 5 9
+menu ブースト跳躍
+cell 10 9
+wait menu
+menu 待機
+auto 30
+expect eval X(ダイチ) = 10
+expect eval Y(ダイチ) = 9
+expect eval EN(ダイチ) = 110
+
+# ハイパーモード（Lv0 なので気力 100 で使える）：カスミが試作機カスミ(共鳴) になり、
+# 追加パイロットの白瀬ノア(共鳴) がメインパイロットになる。行動は終わらない
+expect eval Morale(白瀬ノア) = 100
+cell 3 6
+menu 共鳴解放
+auto 30
+expect eval Unit(白瀬ノア) = 試作機カスミ(共鳴)
+expect eval Pilot(UnitID(白瀬ノア)) = 白瀬ノア(共鳴)
+expect eval Action(白瀬ノア) = 1
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第四話 2 ターン目
+#===============================================================
+expect eval ターン数 = 2
+expect message クロムが回廊の向こうで見ています
+expect eval Unit(白瀬ノア) = 試作機カスミ(共鳴)
+# 中断：ハイパーモードの形態（追加パイロット）のまま中断し、起動し直して再開する
+savefile default
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+wait finished
+resume
+auto 60
+expect message 記録を読み込みました。試験を再開します。（ターン2）
+expect eval 再開記録 = 1
+expect eval Unit(白瀬ノア) = 試作機カスミ(共鳴)
+expect eval Pilot(UnitID(白瀬ノア)) = 白瀬ノア(共鳴)
+expect eval X(リン) = 11
+expect eval EN(ダイチ) >= 110
+# クイックセーブ → カスミを動かす → クイックロードで、動かす前に戻る
+cell 1 1 right
+menu クイックセーブ
+auto 30
+cell 3 6
+menu 移動
+cell 3 8
+wait menu
+menu 待機
+auto 30
+expect eval Y(白瀬ノア) = 8
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval Y(白瀬ノア) = 6
+expect eval Action(白瀬ノア) = 1
+expect eval Unit(白瀬ノア) = 試作機カスミ(共鳴)
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第四話 3 ターン目以降
+#===============================================================
+expect eval ターン数 = 3
+# ノーマルモード（残り時間 2）：使ってから 2 ターン後の味方フェイズの初めに、カスミは試作機カスミに戻り、白瀬ノアがメインパイロットに戻る
+expect eval Unit(白瀬ノア) = 試作機カスミ
+expect eval Pilot(UnitID(白瀬ノア)) = 白瀬ノア
+# 暴走時パイロット：3 ターン目のイベントでイワガネが暴走し、岩城ダイチ(暴走) がメインパイロットになった
+expect message ブースト跳躍の反動か
+expect eval 暴走記録 = 岩城ダイチ(暴走)
+# ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+# 話の終わりまで自動で進め、次のインターミッションのコマンドのリストで止まる（次の話は、その話の PlayScript で単体で始めて確かめる）
+holdlist コマンド
+turns 30
+expect message 回廊、制圧！
+expect eval 試験記録 = "第一話の試験（省略）;第二話の調査（省略）;第三話の測量（省略）;第四話の飛行;"
+expect error none

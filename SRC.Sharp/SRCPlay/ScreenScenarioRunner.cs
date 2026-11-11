@@ -19,17 +19,37 @@ namespace SRCPlay
         private volatile bool terminated;
         private int frameCount;
 
+        private readonly string appPath;
+        private readonly Microsoft.Extensions.Logging.ILoggerFactory loggerFactory;
+        private readonly SRCCore.IPlaySound soundPlayer;
+        private string scenarioRoot;
+
         public ScreenScenarioRunner(string appPath, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory = null, SRCCore.IPlaySound soundPlayer = null)
         {
-            Session = new ScreenSession(this, appPath, soundPlayer, loggerFactory);
-            Session.Game.UnhandledException += (s, e) =>
+            this.appPath = appPath;
+            this.loggerFactory = loggerFactory;
+            this.soundPlayer = soundPlayer;
+            CreateSession();
+        }
+
+        private void CreateSession()
+        {
+            var session = new ScreenSession(this, appPath, soundPlayer, loggerFactory);
+            session.Game.UnhandledException += (s, e) =>
             {
                 Error = e.Exception;
                 finished.Set();
             };
+            Session = session;
         }
 
-        public ScreenSession Session { get; }
+        public ScreenSession Session { get; private set; }
+
+        /// <summary>
+        /// <see cref="Restart"/> で新しいセッションを作ったときに呼ばれる（ゲームスレッドを始める前）。
+        /// GUI のイベントの購読や、設定の反映をやり直すのに使う
+        /// </summary>
+        public event Action<ScreenSession> SessionCreated;
         public ScreenGUI GUI => Session.GUI;
         public ScreenState State => Session.GUI.State;
         public Exception Error { get; private set; }
@@ -86,7 +106,29 @@ namespace SRCPlay
         /// <summary>eve を実行する。scenarioRoot はシナリオのフォルダ（省略すると eve のあるフォルダ）。</summary>
         public void Start(string eve, string scenarioRoot = null)
         {
+            this.scenarioRoot = scenarioRoot;
             Session.Start(eve, scenarioRoot);
+        }
+
+        /// <summary>
+        /// 終わったシナリオの後で、新しいセッション（SRC を起動し直したのと同じ）でファイルを実行する。
+        /// 中断（マップのコマンド「中断」で SRC が終わる）の後に、中断データ（.srcq）から再開するのに使う。
+        /// シナリオのフォルダは、省略すると最初の <see cref="Start"/> に渡したもの
+        /// </summary>
+        public void Restart(string file, string scenarioRoot = null)
+        {
+            if (!IsFinished)
+            {
+                throw new InvalidOperationException("シナリオが終わっていません");
+            }
+            Session.Dispose();
+            Session.Game.Join(TimeSpan.FromSeconds(5));
+            terminated = false;
+            Error = null;
+            finished.Reset();
+            CreateSession();
+            SessionCreated?.Invoke(Session);
+            Start(file, scenarioRoot ?? this.scenarioRoot);
         }
 
         /// <summary>シナリオが終了（Quit など）するまで待つ。</summary>

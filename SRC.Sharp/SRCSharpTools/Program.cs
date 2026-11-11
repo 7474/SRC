@@ -159,6 +159,8 @@ namespace SRCSharpTools
             {
                 var log = logHost.LoggerFactory.CreateLogger("SRCSharp.Tools");
                 logHost.ApplyConfig(runner.Session.SRC.SystemConfig);
+                // PlayScript の resume（中断データからの再開）で SRC を起動し直したときも、設定を反映する
+                runner.SessionCreated += session => logHost.ApplyConfig(session.SRC.SystemConfig);
                 logHost.LogStartup(log, "srcsharp play", new[] { eve });
                 // 乱数の種を決める（同じ手順なら毎回同じ結果にする。#1551）
                 if (options.TryGetValue("seed", out var seed))

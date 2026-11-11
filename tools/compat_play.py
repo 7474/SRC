@@ -11,7 +11,7 @@
        #   srcsharp play Compat/<フォルダ>/<イベントファイル> --script Compat/<名前>.play --app-path Content/basic-data ...
      の形の行（コメント）を書く。この行から、始めるイベントファイルと --app-path を読む（パスは SRC.Sharp からの相対）
      - 終了コードが 0 でない（例外・expect の失敗。expect error none はイベントのエラーのダイアログも失敗にする）、
-       またはシナリオが終わらない（最後の行が terminated でない）なら失敗
+       またはシナリオが終わらない（expect finished を書いたスクリプトで terminated の行が無い）なら失敗
      - シナリオのフォルダは一時フォルダに写して動かす（セーブのファイルを書くため）
   3. 各話の終わりの状態（srcsharp play --state）を、同じ種で --repeat 回流して同じになることを確かめ、
      Compat/golden/<*.play の名前>.txt と比べる。違えば差分を出して失敗
@@ -126,12 +126,26 @@ def play_once(srcsharp, play, eve, app, seed, work, timeout):
     if text is not None:
         # 一時フォルダのパスは毎回変わるので置き換える
         text = text.replace(str(scenario), "<scenario>").replace(str(work), "<work>")
-    last = out.strip().splitlines()[-1] if out.strip() else ""
+    lines = [l.strip() for l in out.splitlines()]
     if r.returncode != 0:
         return False, text, out + f"\n終了コード {r.returncode}"
-    if last != "terminated":
-        return False, text, out + "\nシナリオが最後まで進まなかった（最後の行が terminated でない）"
+    # 最後まで進めるスクリプト（expect finished を書いたもの）は、シナリオが終わったこと（terminated の行）を求める。
+    # 1 話だけを流すスクリプトは、話の終わりの次のインターミッションで止めて（holdlist）スクリプトを終えるので、
+    # stopped で終わってよい（止めたときにゲームのスレッドを打ち切るエラーが後ろに出ることがあるが、スクリプトの確かめは済んでいる）
+    if expects_finished(play):
+        if "terminated" not in lines:
+            return False, text, out + "\nシナリオが最後まで進まなかった（terminated の行が無い）"
+    elif "terminated" not in lines and "stopped" not in lines:
+        return False, text, out + "\nスクリプトが最後まで進まなかった（stopped・terminated の行が無い）"
     return True, text, out
+
+
+def expects_finished(play):
+    """スクリプトに expect finished の行（コメントでない）があるか"""
+    for line in play.read_text(encoding="utf-8").splitlines():
+        if line.strip().startswith("expect finished"):
+            return True
+    return False
 
 
 def diff(a, b, name_a, name_b):

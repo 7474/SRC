@@ -1,0 +1,69 @@
+# 「トレス島試験記録」の第八話（終話）を単体で始めて、中断とクイックセーブからの再開を確かめ、
+# 標的を決まった手順で倒してゲームクリアまで進める（srcsharp play の PlayScript。#1549）
+#   srcsharp play Compat/torres/ep08.eve --script Compat/torres-ep08.play --app-path Content/basic-data --skip-wait
+
+choose 試験は失敗した あきらめる
+
+#===============================================================
+# 第八話「試験の終わり」1 ターン目
+#===============================================================
+auto 60
+expect eval HP(標本Ａ) = 1000
+# 中断：起動し直して再開する
+savefile default
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+wait finished
+resume
+auto 60
+expect message 記録を読み込みました。試験を再開します。（ターン1）
+expect eval 再開記録 = 1
+expect eval HP(標本Ｃ) = 1000
+# クイックセーブ → ヤマセの固定砲（固・1000）で標的Ｃを倒す → クイックロードで標的Ｃが戻る
+cell 1 1 right
+menu クイックセーブ
+auto 30
+cell 3 13
+menu 攻撃
+wait list
+list 固定砲
+cell 5 12
+auto 60
+expect eval Status(標本Ｃ) = 破壊
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval Status(標本Ｃ) = 出撃
+expect eval HP(標本Ｃ) = 1000
+# 3 つの標的を、ダメージ固定の武器で一撃ずつ倒す
+cell 3 13
+menu 攻撃
+wait list
+list 固定砲
+cell 5 12
+auto 60
+expect eval Status(標本Ｃ) = 破壊
+cell 5 7
+menu 攻撃
+wait list
+list 減衰ニードル
+cell 5 9
+auto 60
+expect eval Status(標本Ｂ) = 破壊
+# 最後の標的を倒すと全滅のラベルが動き、試験の記録を読み上げてゲームクリアになる
+cell 6 6
+menu 攻撃
+wait list
+list 三連ライフル
+cell 8 6
+# ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+auto 60
+expect message 全員、合格よ
+expect message トレス島試験記録　おわり
+expect eval 試験記録 = "第一話の試験（省略）;第二話の調査（省略）;第三話の測量（省略）;第四話の飛行（省略）;第五話の坑道（省略）;第六話の月面（省略）;第七話の決戦（省略）;第八話の卒業;"
+expect finished
+expect error none

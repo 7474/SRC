@@ -1,0 +1,51 @@
+# 「トレス島試験記録」の第七話を単体で始めて、合体したまま中断から再開することと、クイックセーブからの再開を
+# 決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める（srcsharp play の PlayScript。#1549）
+#   srcsharp play Compat/torres/ep07.eve --script Compat/torres-ep07.play --app-path Content/basic-data --skip-wait
+
+choose 試験は失敗した あきらめる
+
+#===============================================================
+# 第七話「錆の母」1 ターン目
+#===============================================================
+auto 60
+# スタートのイベントの Combine で、トビウオとイワガネがミカヅチに合体している
+expect eval Unit(カイ) = 合体機ミカヅチ
+expect eval CountPilot(カイ) = 2
+expect eval Unit(母蟲) = 錆の母
+# 中断：合体したまま中断し、起動し直して再開する
+savefile default
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+wait finished
+resume
+auto 60
+expect message 記録を読み込みました。試験を再開します。（ターン1）
+expect eval 再開記録 = 1
+expect eval Unit(カイ) = 合体機ミカヅチ
+expect eval Unit(ダイチ) = 合体機ミカヅチ
+expect eval CountPilot(カイ) = 2
+# クイックセーブ → カスミのハイパーモード → クイックロードで、元の形態とメインパイロットに戻る
+cell 1 1 right
+menu クイックセーブ
+auto 30
+cell 4 6
+menu 共鳴解放
+auto 30
+expect eval Unit(白瀬ノア) = 試作機カスミ(共鳴)
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval Unit(白瀬ノア) = 試作機カスミ
+expect eval Pilot(UnitID(白瀬ノア)) = 白瀬ノア
+expect eval 再開記録 = 1
+# ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+# 話の終わりまで自動で進め、次のインターミッションのコマンドのリストで止まる（次の話は、その話の PlayScript で単体で始めて確かめる）
+holdlist コマンド
+turns 30
+expect message 錆の母が……静かになった
+expect eval 試験記録 = "第一話の試験（省略）;第二話の調査（省略）;第三話の測量（省略）;第四話の飛行（省略）;第五話の坑道（省略）;第六話の月面（省略）;第七話の決戦;"
+expect error none

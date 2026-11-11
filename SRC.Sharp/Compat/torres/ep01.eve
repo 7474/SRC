@@ -18,7 +18,8 @@ RenameBGM Briefing cp_briefing.mid
 RenameBGM Intermission cp_intermission.mid
 RenameBGM Map1 cp_map.mid
 RenameBGM Map2 cp_enemy.mid
-Global 試験記録 撃破記録 撃破総数 攻撃記録 攻撃総数 手順説明 敵マップ攻撃
+Global 試験記録 撃破記録 撃破総数 攻撃記録 攻撃総数 手順説明 敵マップ攻撃 再開記録
+再開記録 = 0
 敵マップ攻撃 = 0
 試験記録 = ""
 撃破記録 = 0

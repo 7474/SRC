@@ -1,0 +1,150 @@
+# 「トレス島試験記録」の第五話を単体で始めて、属性（固・連・吸・減・奪）・先制攻撃・地中・召喚と召喚解除・追加サポート、
+# 中断とクイックセーブからの再開を決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める（srcsharp play の PlayScript。#1549）
+#   srcsharp play Compat/torres/ep05.eve --script Compat/torres-ep05.play --app-path Content/basic-data --skip-wait
+# 標本は攻撃が必ず当たり、クリティカルが出ない。ダメージ固定（固）の武器なので、ダメージは武器の攻撃力と同じになる。
+
+choose 試験は失敗した あきらめる
+
+#===============================================================
+# 第五話「地下坑道」1 ターン目
+#===============================================================
+auto 60
+# 換装した地底装備のヒバリには、追加サポートの測量ドローンが乗っている。
+# 追加サポートは CountPilot（パイロットとサポートの数）には数えない（元の SRC の Unit.CountSupport は colSupport だけを数える）
+expect eval Unit(リン) = 試作機ヒバリ(地底装備)
+expect eval Unit(測量ドローン) = 試作機ヒバリ(地底装備)
+expect eval CountPilot(リン) = 1
+expect eval Area(リン) = 地上
+expect eval HP(ダイチ) = 2100
+expect eval EN(リン) = 80
+
+# 先制攻撃：ヤマセの固定砲（固・攻撃力 1000）で錆蟲スティンガー（ＨＰ 1000）を撃つ。
+# スティンガーの毒針（固・先・攻撃力 300）は先に反撃するので、倒される前にヤマセに 300 のダメージを与える
+cell 3 9
+menu 攻撃
+wait list
+list 固定砲
+cell 3 6
+auto 60
+expect eval Status(針蟲) = 破壊
+expect eval HP(ゴロウ) = 8700
+
+# 連（連L3・固）：攻撃力 1200 を 3 回に分けて撃ち、全部当たると 1200
+cell 6 4
+menu 攻撃
+wait list
+list 三連ライフル
+cell 8 4
+auto 60
+expect eval HP(標本Ａ) = 2800
+
+# 吸（固）：与えた 1200 の 1/4（300）だけ、イワガネのＨＰが回復する
+cell 6 13
+menu 攻撃
+wait list
+list 吸着アンカー
+cell 8 13
+auto 60
+expect eval HP(標本Ｂ) = 2800
+expect eval HP(ダイチ) = 2400
+
+# 減（固）：ＨＰを 1000（最大ＨＰ 4000 の 25%）減らしたので、ＥＮも 25%（50）減る
+cell 10 9
+menu 攻撃
+wait list
+list 減衰ニードル
+cell 12 9
+auto 60
+expect eval HP(標本Ｃ) = 3000
+expect eval EN(標本Ｃ) = 150
+
+# 奪（固）：ＥＮを 25%（50）減らし、その半分（25）をヒバリが吸い取る
+cell 3 15
+menu 攻撃
+wait list
+list 掘削ドレイン
+cell 3 16
+auto 60
+expect eval HP(標本Ｄ) = 3000
+expect eval EN(標本Ｄ) = 150
+expect eval EN(リン) = 105
+# 全員が行動を終えたので、確かめのダイアログは出ない
+cell 1 1 right
+menu ターン終了
+auto 60
+
+#===============================================================
+# 第五話 2 ターン目
+#===============================================================
+expect eval ターン数 = 2
+expect message 統率された錆蟲は
+# 中断：起動し直して再開する
+savefile default
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+wait finished
+resume
+auto 60
+expect message 記録を読み込みました。試験を再開します。（ターン2）
+expect eval 再開記録 = 1
+expect eval Unit(リン) = 試作機ヒバリ(地底装備)
+expect eval Unit(測量ドローン) = 試作機ヒバリ(地底装備)
+expect eval HP(標本Ａ) = 2800
+# クイックセーブ → 召喚（ヤマセのアビリティ「ドローン射出」。射程 0 なので隣に出る）→ クイックロードで、召喚する前に戻る
+cell 1 1 right
+menu クイックセーブ
+auto 30
+cell 3 9
+menu アビリティ
+wait list
+list ドローン射出
+auto 30
+expect eval Status(整備ドローンＡＩ) = 出撃
+expect eval Party(整備ドローンＡＩ) = ＮＰＣ
+expect eval Action(ゴロウ) = 0
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval Action(ゴロウ) = 1
+expect eval IsDefined(整備ドローンＡＩ, パイロット) = 0
+# もう一度召喚する
+cell 3 9
+menu アビリティ
+wait list
+list ドローン射出
+auto 30
+expect eval Status(整備ドローンＡＩ) = 出撃
+# 地中：地底装備のヒバリは坑道（陸）で地中に潜れる（行動は終わらない）
+cell 3 15
+menu 地中
+wait ready
+expect eval Area(リン) = 地中
+expect eval Action(リン) = 1
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第五話 3 ターン目以降
+#===============================================================
+expect eval ターン数 = 3
+# 召喚解除：召喚したドローンが消える（行動は終わらない）。解除の後はコマンド選択のままなので、空きマスのクリックで戻る
+cell 3 9
+menu 召喚解除
+cell 1 1
+wait ready
+expect eval Status(整備ドローンＡＩ) = 破棄
+expect eval Action(ゴロウ) = 1
+# ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+# 話の終わりまで自動で進め、次のインターミッションのコマンドのリストで止まる（次の話は、その話の PlayScript で単体で始めて確かめる）
+holdlist コマンド
+turns 30
+expect message 母ハ、月ノ裏ニ
+expect eval 試験記録 = "第一話の試験（省略）;第二話の調査（省略）;第三話の測量（省略）;第四話の飛行（省略）;第五話の坑道;"
+expect error none

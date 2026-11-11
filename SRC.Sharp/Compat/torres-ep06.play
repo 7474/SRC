@@ -1,0 +1,88 @@
+# 「トレス島試験記録」の第六話を単体で始めて、宇宙・Load、中断とクイックセーブからの再開を決まった手順で確かめ、
+# 話の終わり（次のインターミッション）まで自動で進める（srcsharp play の PlayScript。#1549）
+#   srcsharp play Compat/torres/ep06.eve --script Compat/torres-ep06.play --app-path Content/basic-data --skip-wait
+
+choose 試験は失敗した あきらめる
+
+#===============================================================
+# 第六話「月の裏」1 ターン目
+#===============================================================
+auto 60
+# Load：スタートで Load moon する前は月の錆蟲のデータが無く、読んだ後はある
+expect eval 月データ前 = ""
+expect eval 月データ後 = 月面錆蟲
+expect eval Unit(月蟲長) = 月面錆蟲
+# 宇宙の地形にいる月蟲長は宇宙。月面では、空を飛べるヤマセは宇宙、陸だけのトビウオは地上
+expect eval Area(月蟲長) = 宇宙
+expect eval Area(ゴロウ) = 宇宙
+expect eval Area(カイ) = 地上
+# トビウオを宇宙の地形 (8,5) へ動かすと宇宙にいる
+cell 6 5
+menu 移動
+cell 8 5
+wait menu
+menu 待機
+auto 30
+expect eval X(カイ) = 8
+expect eval Area(カイ) = 宇宙
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第六話 2 ターン目
+#===============================================================
+expect eval ターン数 = 2
+# 中断：起動し直して再開する（Load したデータも読み直される）
+savefile default
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+wait finished
+resume
+auto 60
+expect message 記録を読み込みました。試験を再開します。（ターン2）
+expect eval 再開記録 = 1
+expect eval Area(カイ) = 宇宙
+expect eval 月データ後 = 月面錆蟲
+# クイックセーブ → カスミを宇宙へ動かす → クイックロードで、月面に戻る
+cell 1 1 right
+menu クイックセーブ
+auto 30
+cell 4 3
+menu 移動
+cell 7 2
+wait menu
+menu 待機
+auto 30
+expect eval Area(白瀬ノア) = 宇宙
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval X(白瀬ノア) = 4
+expect eval Area(白瀬ノア) = 地上
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第六話 3 ターン目以降
+#===============================================================
+expect eval ターン数 = 3
+# 中断から再開した後も、Load したデータでユニットを作れる
+expect message 暗礁の陰から
+expect eval 増援記録 = 月面錆蟲
+# ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+# 話の終わりまで自動で進め、次のインターミッションのコマンドのリストで止まる（次の話は、その話の PlayScript で単体で始めて確かめる）
+holdlist コマンド
+turns 30
+expect message 月の錆蟲、全部落とした
+expect eval 試験記録 = "第一話の試験（省略）;第二話の調査（省略）;第三話の測量（省略）;第四話の飛行（省略）;第五話の坑道（省略）;第六話の月面;"
+expect error none

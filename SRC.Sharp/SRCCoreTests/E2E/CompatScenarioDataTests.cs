@@ -112,10 +112,25 @@ namespace SRCCore.E2E.Tests
                     missing.Add($"{owner}: ユニット「{name}」");
                 }
             }
+            void RequirePilot(string name, string owner)
+            {
+                if (!src.PDList.IsDefined(name))
+                {
+                    missing.Add($"{owner}: パイロット「{name}」");
+                }
+            }
 
             foreach (var ud in src.UDList.Items)
             {
                 RequireFile("Unit", ud.Bitmap0, ud.Name);
+                // 召喚のアビリティ（「召喚=ユニット名」）の行き先
+                foreach (var ad in ud.Abilities)
+                {
+                    foreach (var effect in ad.Effects.Where(x => x.EffectType == "召喚"))
+                    {
+                        RequireUnit(effect.Data, $"{ud.Name} の{ad.Name}");
+                    }
+                }
                 foreach (var fd in ud.Features)
                 {
                     var args = fd.Data.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -127,6 +142,23 @@ namespace SRCCore.E2E.Tests
                             break;
                         case "合体":
                             args.Skip(1).ToList().ForEach(x => RequireUnit(x, $"{ud.Name} の合体"));
+                            break;
+                        case "換装":
+                            args.ToList().ForEach(x => RequireUnit(x, $"{ud.Name} の換装"));
+                            break;
+                        case "ハイパーモード":
+                        case "パーツ分離":
+                            // 「名前 形態」
+                            RequireUnit(args.Last(), $"{ud.Name} の{fd.Name}");
+                            break;
+                        case "ノーマルモード":
+                            // 「形態 残り時間 …」
+                            RequireUnit(args[0], $"{ud.Name} の{fd.Name}");
+                            break;
+                        case "追加パイロット":
+                        case "追加サポート":
+                        case "暴走時パイロット":
+                            RequirePilot(args[0], $"{ud.Name} の{fd.Name}");
                             break;
                         case "合体技":
                             if (!ud.Weapons.Any(w => w.Name == args[0]))
@@ -157,13 +189,35 @@ namespace SRCCore.E2E.Tests
             Assert.AreEqual(0, missing.Count, "見つからないもの:\n" + string.Join("\n", missing));
         }
 
+        /// <summary>
+        /// 第六話の Load moon で読む Data\moon は、シナリオの始めには読まれず、Load で誤り無く読めること。
+        /// 読んだユニットが指す画像とパイロットが揃っていること
+        /// </summary>
+        [TestMethod]
+        public void LoadedData_Moon_LoadsWithoutErrors()
+        {
+            var dir = ScenarioDir();
+            var src = LoadAll();
+            Assert.IsFalse(src.UDList.IsDefined("月面錆蟲"), "Data\\moon はシナリオの始めには読まれない");
+            src.LoadDataDirectory(Path.Combine(dir, "Data", "moon"));
+            AssertNoDataError(src, "Data\\moon");
+            var ud = src.UDList.Item("月面錆蟲");
+            Assert.IsNotNull(ud, "月面錆蟲");
+            Assert.IsTrue(File.Exists(Path.Combine(dir, "Bitmap", "Unit", ud.Bitmap0)), ud.Bitmap0);
+            foreach (var pname in new[] { "月蟲(ザコ)", "月蟲長" })
+            {
+                Assert.IsTrue(src.PDList.IsDefined(pname), pname);
+                Assert.IsTrue(File.Exists(Path.Combine(dir, "Bitmap", "Pilot", src.PDList.Item(pname).Bitmap0)), pname);
+            }
+        }
+
         [TestMethod]
         public void Events_LoadWithoutErrors()
         {
             var dir = ScenarioDir();
             var src = LoadAll();
             var files = Directory.GetFiles(dir, "*.eve", SearchOption.AllDirectories).OrderBy(x => x, StringComparer.Ordinal).ToList();
-            Assert.IsTrue(files.Count >= 3, "ep01.eve・ep02.eve・Lib/include.eve");
+            Assert.IsTrue(files.Count >= 9, "ep01.eve〜ep08.eve・Lib/include.eve");
             foreach (var file in files)
             {
                 src.Event.LoadEventData(file, "");

@@ -19,9 +19,9 @@ namespace SRCPlay
     /// </summary>
     public sealed class ScenarioStateRecorder : IEventDebugger
     {
-        private readonly SRC src;
+        private SRC src;
         private readonly ScreenScenarioRunner runner;
-        private readonly IEventDebugger inner;
+        private IEventDebugger inner;
         private readonly List<string> sections = new List<string>();
         private readonly List<string> errors = new List<string>();
         private string currentFile;
@@ -29,7 +29,15 @@ namespace SRCPlay
         public ScenarioStateRecorder(ScreenScenarioRunner runner)
         {
             this.runner = runner;
-            src = runner.Session.SRC;
+            Attach(runner.Session.SRC);
+            // 中断データからの再開（PlayScript の resume）で SRC を起動し直したら、新しいセッションの SRC に付け直す。
+            // 再開した話は同じイベントファイルなので、記録中の話（currentFile）はそのまま続ける
+            runner.SessionCreated += session => Attach(session.SRC);
+        }
+
+        private void Attach(SRC newSrc)
+        {
+            src = newSrc;
             // ほかのデバッガが付いていれば、そちらにも渡す
             inner = src.Event.Debugger;
             src.Event.Debugger = this;
