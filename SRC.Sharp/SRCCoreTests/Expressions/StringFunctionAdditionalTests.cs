@@ -224,10 +224,11 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void String_NegativeRepeat_ReturnsEmpty()
+        public void String_NegativeRepeat_IsVbError5()
         {
+            // 元の SRC は 1 文字なら String$(-1, "x") を呼ぶ。VB のエラー 5
             var exp = Create();
-            Assert.AreEqual("", exp.GetValueAsString("String(-1,\"x\")"));
+            Assert.Throws<SRCCore.Exceptions.VbRuntimeErrorException>(() => exp.GetValueAsString("String(-1,\"x\")"));
         }
 
         [TestMethod]

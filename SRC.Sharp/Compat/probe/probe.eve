@@ -180,6 +180,34 @@ Call 記録 "VB5.実行時エラー.LSet(-1)" LSet("abc",-1)
 Exit
 
 *スタート:
+# String は 1 文字以下なら String$ を呼ぶ。長さ 0 の文字列はエラー 5 と読んでいる
+Call 記録 "VB5.実行時エラー.String(空)" "<エラー>"
+Call 記録 "VB5.実行時エラー.String(空)" String(3,"")
+Exit
+
+*スタート:
+# InStrRev は InStr(num - Len(buf2) + 1, ...) から始める
+Call 記録 "VB5.実行時エラー.InStrRev(0)" "<エラー>"
+Call 記録 "VB5.実行時エラー.InStrRev(0)" InStrRev("abcabc","c",0)
+Exit
+
+*スタート:
+# Replace の 5 引数は Right$(buf, Len(buf) - (num + num2 - 1) - 1) の文字数が負になる
+Call 記録 "VB5.実行時エラー.Replace(3,3)" "<エラー>"
+Call 記録 "VB5.実行時エラー.Replace(3,3)" Replace("abcde","c","X",3,3)
+Exit
+
+*スタート:
+Call 記録 "VB5.実行時エラー.MidB(0)" "<エラー>"
+Call 記録 "VB5.実行時エラー.MidB(0)" MidB("abc",0,1)
+Exit
+
+*スタート:
+Call 記録 "VB5.実行時エラー.LeftB(-1)" "<エラー>"
+Call 記録 "VB5.実行時エラー.LeftB(-1)" LeftB("abc",-1)
+Exit
+
+*スタート:
 # RankUp の rk は Integer（CmdData.cls）。RankUp はユニットの名称か ID で指定する。65541 は Integer に入らない。OverflowCheck=-1 で桁が落ちれば 5 足され、エラーなら Rank は変わらない（Rank の上限は 999）
 Call 記録 "VB5.あふれ.RankUp" "<エラー>"
 Set あふれＩＤ UnitID(あふれ機)
@@ -1039,6 +1067,54 @@ Call 記録 "Format.文字列.!" Format("abc","!@@@@@")
 Call 記録 "Format.日付" Format("2012/11/25","yyyy年m月d日")
 Call 記録 "Format.日付.曜日" Format("2012/11/25","aaa")
 Call 記録 "Format.数値でない" Format("abc","0.00")
+Exit
+
+#======================================================================
+# 式と関数: Format の名前の付いた書式と、日付・時刻の書式文字
+# （日本語版の Windows の地域の設定。通貨記号・Medium Date・Medium Time・Yes/No などの文言・和暦は推定）
+#======================================================================
+*スタート:
+Call 記録 "Format.General Number" Format(1234.5,"General Number")
+Call 記録 "Format.Scientific" Format(1234.5,"Scientific")
+Call 記録 "Format.Currency.負" Format(-1234.5,"Currency")
+Call 記録 "Format.fixed" Format(1234.567,"fixed")
+Call 記録 "Format.Yes/No" (Format(0,"Yes/No") & "," & Format(2,"Yes/No"))
+Call 記録 "Format.True/False" (Format(0,"True/False") & "," & Format(2,"True/False"))
+Call 記録 "Format.On/Off" (Format(0,"On/Off") & "," & Format(2,"On/Off"))
+Call 記録 "Format.General Date" Format("2012/11/25 13:04:05","General Date")
+Call 記録 "Format.General Date.日付だけ" Format("2012/11/25","General Date")
+Call 記録 "Format.General Date.時刻だけ" Format("13:04:05","General Date")
+Call 記録 "Format.Long Date" Format("2012/11/25","Long Date")
+Call 記録 "Format.Medium Date" Format("2012/11/25","Medium Date")
+Call 記録 "Format.Short Date" Format("2012/11/25","Short Date")
+Call 記録 "Format.Long Time" Format("13:04:05","Long Time")
+Call 記録 "Format.Medium Time" Format("13:04:05","Medium Time")
+Call 記録 "Format.Short Time" Format("13:04:05","Short Time")
+Call 記録 "Format.日付.シリアル値" Format(41238,"yyyy/mm/dd")
+Call 記録 "Format.日付.aaaa" Format("2012/11/25","aaaa")
+Call 記録 "Format.日付.ddd" Format("2012/11/25","ddd")
+Call 記録 "Format.日付.dddd" Format("2012/11/25","dddd")
+Call 記録 "Format.日付.ddddd" Format("2012/11/25","ddddd")
+Call 記録 "Format.日付.dddddd" Format("2012/11/25","dddddd")
+Call 記録 "Format.日付.mmm" Format("2012/11/25","mmm")
+Call 記録 "Format.日付.mmmm" Format("2012/11/25","mmmm")
+Call 記録 "Format.日付.ggge" Format("2012/11/25","ggge年")
+Call 記録 "Format.日付.gge" Format("2012/11/25","gge")
+Call 記録 "Format.日付.ge" Format("2012/11/25","ge")
+Call 記録 "Format.日付.ee" Format("2012/11/25","ee")
+Call 記録 "Format.日付.令和" Format("2019/05/01","ggge年")
+Call 記録 "Format.日付.q y w ww" Format("2012/11/25","q y w ww")
+Call 記録 "Format.日付.c" Format("2012/11/25 13:04:05","c")
+Call 記録 "Format.時刻.hh:mm:ss" Format("2012/11/25 13:04:05","hh:mm:ss")
+Call 記録 "Format.時刻.h:n:s" Format("2012/11/25 13:04:05","h:n:s")
+Call 記録 "Format.時刻.AM/PM" Format("2012/11/25 13:04:05","hh:nn AM/PM")
+Call 記録 "Format.時刻.AMPM" Format("2012/11/25 13:04:05","h AMPM")
+Call 記録 "Format.時刻.ttttt" Format("2012/11/25 13:04:05","ttttt")
+Call 記録 "Format.日付でない" Format("abc","yyyy/mm/dd")
+Call 記録 "Format.空の書式.文字列" Format("01.50","")
+Call 記録 "Format.書式の種類.0d" Format(12,"0d")
+Call 記録 "Format.書式の種類.No.0" Format(5,"No.0")
+Call 記録 "Format.書式の種類.Level 0" Format(5,"Level 0")
 Exit
 
 #======================================================================

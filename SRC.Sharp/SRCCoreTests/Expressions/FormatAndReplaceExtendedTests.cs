@@ -96,10 +96,11 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void String_NegativeCount_ReturnsEmpty()
+        public void String_NegativeCount_IsVbError5()
         {
+            // 元の SRC は 1 文字なら String$(-1, "a") を呼ぶ。VB のエラー 5
             var exp = Create();
-            Assert.AreEqual("", exp.GetValueAsString("String(-1,\"a\")"));
+            Assert.Throws<SRCCore.Exceptions.VbRuntimeErrorException>(() => exp.GetValueAsString("String(-1,\"a\")"));
         }
 
         [TestMethod]

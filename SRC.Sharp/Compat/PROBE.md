@@ -113,11 +113,11 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 | 範囲外の引数の参照（`BoundsCheck`。#1511） | `VB5.範囲外.Incr`・`.UnSet`・`.Ride`（`probe-bounds/*.eve`） | 引数の無いコマンド。Parse は `strArgs` を作らない。エラーのダイアログの文言（「Incrコマンドの引数の数が違います」か「イベントデータが不正です」か）と、Src.exe が落ちるか |
 | 〃 | `VB5.範囲外.Args(0)`・`Args(-1)`・`Args(2)`（`probe.eve`） | `Args` 関数は引数の数より大きい番号だけを確かめる。0 以下は `ArgStack` の上（前の呼び出しが残した値。`a2`・`a1`）を読むと読んでいる。SRC# は空文字列 |
 | 整数のあふれ（`OverflowCheck`） | `VB5.あふれ.RankUp`・`IncreaseMorale` | Integer の変数に 65541 を入れる。桁が落ちれば 5、エラーなら「`<エラー>`」 |
-| 〃 | `VB5.あふれ.\のLong`・`ModのLong`・`\のLongの上限`・`\のLongの上限+1` | `\`・`Mod` は Long に変換してから計算する |
+| 〃 | `VB5.あふれ.\のLong`・`ModのLong`・`\のLongの上限`・`\のLongの上限+1` | `\`・`Mod` は Long に変換してから計算する。SRC# は `\` も `Mod` と同じく Long に収まらなければエラーにした（#1564 の後。以前の SRC# は `\` だけ 10000000000 を返していた）。実機で桁が落ちる（`OverflowCheck=-1`）なら、両方を直す |
 | 〃 | `VB5.あふれ.文字列の数値`・`VB5.数値.24.*`（`1e400`） | `StrToDbl`（`IsNumeric` の後に `CDbl`。エラー処理なし） |
 | 0 での割り算（`FlPointCheck`） | `VB5.割り算.*`（`/0`・`0/0`・`\0`・`Mod0`・`Mod0.0`） | `/`・`\` は `Expression.bas` が 0 を確かめて 0 にする。`Mod` は確かめない（エラー 11 と読んでいる） |
 | 〃 | `VB5.浮動小数点.*`（`10 ^ 400`・`1e308 * 10`・`(-8) ^ 0.5`・`Sqr(-1)`） | 無限大・非数になるか、エラーになるか。値の書き方（`FormatNum`） |
-| （同じ表の続き。設定に関わらずエラーと読んでいるもの） | `VB5.実行時エラー.*`（`Mid(0)`・`Left(-1)`・`Right(-1)`・`Chr(-1)`・`Chr(70000)`・`Asc(空)`・`String(-1)`・`InStr(0)`・`LSet(-1)`） | VB の文字列関数の引数の誤り（エラー 5） |
+| （同じ表の続き。設定に関わらずエラーと読んでいるもの） | `VB5.実行時エラー.*`（`Mid(0)`・`Left(-1)`・`Right(-1)`・`Chr(-1)`・`Chr(70000)`・`Asc(空)`・`String(-1)`・`String(空)`・`InStr(0)`・`InStrRev(0)`・`Replace(3,3)`・`MidB(0)`・`LeftB(-1)`・`LSet(-1)`） | VB の文字列関数の引数の誤り（エラー 5）。SRC# は `Chr(-1)`・`LSet(-1)` 以外を「`<エラー>`」にした（#1564 の後）。`Chr(-1)` は日本語版の Windows（DBCS）の `Chr$` の範囲（-32768〜65535）の中なのでエラーにならないと読んでいる（推定）。`String(空)`（`String$(3, "")`）のエラーも推定 |
 | IsNumeric と数値の変換（#1534・#1545） | `VB5.数値.<番号>.文字列`・`.IsNumeric`・`.加算`・`.比較`・`.Int` | 下の表の文字列を変数に入れ、`IsNumeric` 関数（`GeneralLib.IsNumber`。`(` で始まるものは数値としない）・足し算（`StrToDbl`）・数値との比較・`Int` を見る |
 | 〃 | `VB5.数値.直書き.1e5`・`.1d5` | 式に直に書いた数値（`EvalTerm` は先頭が数字なら `IsNumeric` の後に `CDbl`） |
 | 〃 | `probe-errors/data-numeric` | データの数値の欄に `&H1000`・`1e3`・`1e2` を書く（データの読み込みも `IsNumeric` と `CLng`） |
@@ -146,7 +146,7 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 |---|---|
 | CallFunction の各関数 | `関数.*`。ヘルプの[関数](../../SRC.Sharp.Help/src/関数.md)の一覧（元の SRC の `Expression.bas` の `CallFunction` の `Case`）を、すべて 1 回以上呼ぶ。`Random` は `Random(1)`（必ず 1）、`GetTime` は 0 以上か、時刻・画面・フォント・キーに左右される `WX`・`WY`・`Font`（フォント名・サイズ）・`TextHeight`・`TextWidth`・`WindowWidth`・`WindowHeight`・`KeyState` は `参考.` にした。`LoadFileDialog`・`SaveFileDialog` はダイアログを出すので呼ばない |
 | Info の各項目 | `Info.ユニット.*`・`Info.パイロット.*`・`Info.パイロットデータ.*`・`Info.ユニットデータ.*`・`Info.非戦闘員.*`・`Info.アイテム.*`・`Info.スペシャルパワー.*`・`Info.マップ.*`・`Info.オプション.*`。ヘルプの [Info関数](../../SRC.Sharp.Help/src/Info関数.md) の情報種類 |
-| Format | `Format.*`。数値の書式（`#`・`0`・`,`・`%`・`E+`・`;`）、丸め（`0.125`・`2.5`・`-3.5`・`-0.4`）、名前の付いた書式（`Fixed`・`Standard`・`Percent`・`Currency`）、文字列（`@`・`!`）、日付の文字列（`yyyy年m月d日`・`aaa`） |
+| Format | `Format.*`。数値の書式（`#`・`0`・`,`・`%`・`E+`・`;`）、丸め（`0.125`・`2.5`・`-3.5`・`-0.4`）、名前の付いた書式（`General Number`・`Fixed`・`Standard`・`Percent`・`Scientific`・`Currency`・`Yes/No`・`True/False`・`On/Off`・`General Date`・`Long Date`・`Medium Date`・`Short Date`・`Long Time`・`Medium Time`・`Short Time`）、文字列（`@`・`!`）、日付・時刻の書式文字（`yyyy年m月d日`・`aaa`・`aaaa`・`ddd`〜`dddddd`・`mmm`・`mmmm`・`g`〜`ggg`・`e`・`ee`・`q`・`y`・`w`・`ww`・`c`・`h:m:s`・`AM/PM`・`AMPM`・`ttttt`）、書式の種類の決め方（`0d`・`No.0`・`Level 0`） |
 | 変数の型（数値と文字列） | `型.*`。`Set a 01` と `Set a "01"`、数値と文字列の比較・連結・演算子の優先順位、`\`・`Mod` の丸め、`FormatNum` の書き方（`1/3`・`1e20`・`1e-5`）、`HP()` に 0 を入れる |
 | 未定義の変数 | `未定義.*`。値・足し算・比較・`Len`・`IsVarDefined`・配列・`Count`、サブルーチンで作った変数と `Local`、`UnSet` |
 | システム変数 | `システム変数.*`。スタートのときと 1 ターン目（`システム変数.ターン.*`）。`AppPath`・`ExtDataPath`・`MouseX` は `参考.` |
@@ -193,9 +193,27 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 | 項目 | SRC# | 元の SRC のコードから読んだ値 |
 |---|---|---|
 | `日付.DiffTime.*` | 秒の差（75・86400・-75） | `Second(d2 - d1)`（差の秒の桁だけ。15・0・15） |
-| `Format.Fixed`・`Standard`・`Percent`・`Currency` | 書式の名前をそのまま返す | VB の `Format$` の名前の付いた書式（`1234.57`・`1,234.57`・`12.30%`・通貨記号の付いた `1,235`） |
-| `Format.日付`・`Format.日付.曜日` | 元の文字列（`2012/11/25`） | `Format$` は日付の文字列を日付として書く（`2012年11月25日`・`日`） |
-| `VB5.実行時エラー.Mid(0)`・`Left(-1)`・`Right(-1)`・`String(-1)`・`InStr(0)`・`Chr(70000)` | エラーにならない（空文字列・0・`?`） | VB の関数の引数の誤り（エラー 5）で「イベントデータが不正です」 |
+| `Format.*`（名前の付いた書式・日付の書式文字） | #1564 の後で、VB5 の `Format$` の資料と日本語版の Windows の地域の設定から読んだ値に直した（`SRCCore/VB/VbFormat.cs`）。下の「SRC# の Format の推定」の表の値を実機で確かめる | 同じ |
+| `VB5.実行時エラー.*` | #1564 の後で、元の SRC と同じく「`<エラー>`」にした（`Chr(-1)`・`LSet(-1)` は値を書く） | VB の関数の引数の誤り（エラー 5）で「イベントデータが不正です」 |
+| `VB5.あふれ.\のLong`・`\のLongの上限+1` | #1564 の後で、`Mod` と同じく「`<エラー>`」にした | `\` は両辺を Long に丸める。エラー 6 か、桁が落ちるか（`OverflowCheck=-1`）は実機で確かめる |
 | `VB5.数値.08`（`(1)`）・`04`（`&H10`）・`09`（`￥100`）・`11`（`1-`）の `.加算` | 0 | `StrToDbl` は `IsNumeric` が真なら `CDbl` で読む（-1・16・100・-1。#1545） |
 | `probe-errors/data-numeric` | `&H1000` を誤り（最大ＨＰの設定が間違っています。）にする | `IsNumeric` が真なので `CLng` で 4096 と読む |
 | `probe-errors/*` のエラーのダイアログ | データの誤りをダイアログに出さない（`SRC.DataErrors` に集める。打ち切る誤りは例外で終わる） | `DataErrorMessage` でダイアログを出す |
+
+### SRC# の Format の推定（#1564）
+
+`Format` の資料（[Format 関数](https://learn.microsoft.com/ja-jp/office/vba/language/reference/user-interface-help/format-function-visual-basic-for-applications)）で決まらず、SRC#（`SRCCore/VB/VbFormat.cs`）が推定で書いている値。実機の値が違えば、`VbFormat.cs` と `SRCCoreTests/Expressions/FormatVbMatchTests.cs` を直す。
+
+| 項目 | SRC# の値 | 推定の根拠 |
+|---|---|---|
+| `Format.Currency`・`Format.Currency.負` | `\1,235`・`-\1,235` | 日本の地域の設定（通貨の小数部 0 桁・負の数は記号の前に `-`）。通貨記号は Shift_JIS の 0x5C（円記号の字形）で書き出され、`probe_pack.py import` で `\` になる |
+| `Format.Medium Date` | `12/11/25` | 資料は「ホスト アプリケーションの言語バージョンで適切な中間の長さ」とだけ書く。日本語版は `yy/mm/dd` と読んだ |
+| `Format.Medium Time`・`Format.時刻.AMPM` | `01:04 午後`・`1 午後` | 資料は「12 時間の書式と AM/PM」。日本の地域の設定の午前・午後の文字列を、時刻の後ろに付けると読んだ |
+| `Format.Yes/No`・`True/False`・`On/Off` | `No,Yes`・`False,True`・`Off,On` | 日本語版でも英語の文言と読んだ |
+| `Format.General Number` | `1234.5` | 桁区切りなし。`CStr` と同じ 15 桁の書き方と読んだ |
+| `Format.日付.ggge`・`gge`・`ge`・`ee`・`令和` | `平成24年`・`平24`・`H24`・`24`・`令和1年` | 日本語版の書式文字（年号・和暦の年）。令和を知っているか（ランタイムが Windows の暦の情報を使うか）は実機で確かめる |
+| `Format.日付.aaaa`・`ddd`・`dddd` | `日曜日`・`日`・`日曜日` | 日本語版の書式文字 `aaa`・`aaaa` と、地域の設定の曜日の名前 |
+| `Format.日付.mmm`・`mmmm` | `11`・`11月` | 日本の地域の設定の月の省略名（数字だけ）と名前 |
+| `Format.日付.q y w ww` | `4 330 1 48` | 週は日曜日から、1 月 1 日を含む週を第 1 週とする（Format の既定） |
+| `Format.空の書式.文字列` | `01.50` | 書式が空なら、文字列の引数をそのまま返す |
+| `Format.書式の種類.0d`・`No.0`・`Level 0` | `12d`・`0o.0`・`L33v33l 0` | 最初の書式文字で書式の種類（数値・日付・文字列）が決まり、後のほかの種類の書式文字は文字のまま。`n`・`e` は日付の書式文字なので、`No.0`・`Level 0` は日付の書式（5 は 1900/01/04 0:00。e は明治 33 年の 33）になると読んだ（OLE Automation の `VarFormat` の実装として Wine の varformat.c を参考にした） |

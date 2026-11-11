@@ -1,3 +1,4 @@
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
@@ -33,8 +34,8 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            // VB版は Format$(文字列, 書式)
-            str_result = FormatString(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+            // VB版は Format$(文字列, 書式)。書式の名前・日付の書式文字も VB5 の Format$ と同じに解釈する（VbFormat）
+            str_result = VbFormat.Format(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsString(@params[2], is_term[2]));
             if (etype == ValueType.NumericType)
             {
                 num_result = GeneralLib.StrToDbl(str_result);
@@ -45,104 +46,38 @@ namespace SRCCore.Expressions.Functions
                 return ValueType.StringType;
             }
         }
+    }
 
-        // VB の Format$ と同様に文字列を書式化する
-        // - 書式に文字列用の記号（@, &）が含まれる場合は文字列として書式化する
-        // - 数値として解釈できる場合は数値として書式化する
-        // - それ以外の場合は文字列をそのまま返す（<, > による大文字・小文字変換のみ行う）
-        public static string FormatString(string value, string format)
+    // 元の SRC の CallFunction が呼ぶ VB の文字列関数の、範囲外の引数の確かめ。
+    // VB の関数は範囲外の引数で実行時エラー 5 を起こし、CallFunction はエラーを処理しないので、
+    // CmdData の Exec が「イベントデータが不正です」を出してイベントを止める（CmdData.cls の Exec の ErrorHandler）
+    internal static class VbArgs
+    {
+        // Mid$(s, start[, length])・MidB$: start は 1 以上、length は 0 以上
+        public static void Mid(string name, int start, int? length = null)
         {
-            value = value ?? "";
-            format = format ?? "";
-            if (format.IndexOf('@') >= 0 || format.IndexOf('&') >= 0)
+            if (start <= 0 || length < 0)
             {
-                return FormatStringWithPlaceholder(value, format);
+                throw VbRuntimeErrorException.InvalidProcedureCall(name);
             }
-            if (Information.IsNumeric(value))
-            {
-                return SrcFormatter.Format(Conversions.ToDouble(value), format);
-            }
-            return ConvertCase(value, format);
         }
 
-        private static string ConvertCase(string value, string format)
+        // Left$・Right$・LeftB$・RightB$・String$ の文字数・回数は 0 以上
+        public static void NonNegative(string name, int length)
         {
-            if (format.IndexOf('<') >= 0)
+            if (length < 0)
             {
-                return value.ToLowerInvariant();
+                throw VbRuntimeErrorException.InvalidProcedureCall(name);
             }
-            if (format.IndexOf('>') >= 0)
-            {
-                return value.ToUpperInvariant();
-            }
-            return value;
         }
 
-        private static string FormatStringWithPlaceholder(string value, string format)
+        // InStr・InStrB の開始位置は 1 以上
+        public static void Start(string name, int start)
         {
-            value = ConvertCase(value, format);
-            var leftToRight = format.IndexOf('!') >= 0;
-            var pattern = format.Replace("!", "").Replace("<", "").Replace(">", "");
-            var placeholders = pattern.Count(c => c == '@' || c == '&');
-            var result = new System.Text.StringBuilder();
-            if (leftToRight)
+            if (start <= 0)
             {
-                // 左から順に文字を割り当てる
-                var idx = 0;
-                foreach (var c in pattern)
-                {
-                    if (c == '@' || c == '&')
-                    {
-                        if (idx < value.Length)
-                        {
-                            result.Append(value[idx++]);
-                        }
-                        else if (c == '@')
-                        {
-                            result.Append(' ');
-                        }
-                    }
-                    else
-                    {
-                        result.Append(c);
-                    }
-                }
-                // 割り当てられなかった文字は末尾に付ける
-                if (idx < value.Length)
-                {
-                    result.Append(value.Substring(idx));
-                }
+                throw VbRuntimeErrorException.InvalidProcedureCall(name);
             }
-            else
-            {
-                // 右から順に文字を割り当てる
-                var idx = value.Length - 1;
-                for (var k = pattern.Length - 1; k >= 0; k--)
-                {
-                    var c = pattern[k];
-                    if (c == '@' || c == '&')
-                    {
-                        if (idx >= 0)
-                        {
-                            result.Insert(0, value[idx--]);
-                        }
-                        else if (c == '@')
-                        {
-                            result.Insert(0, ' ');
-                        }
-                    }
-                    else
-                    {
-                        result.Insert(0, c);
-                    }
-                }
-                // 割り当てられなかった文字は先頭に付ける
-                if (idx >= 0)
-                {
-                    result.Insert(0, value.Substring(0, idx + 1));
-                }
-            }
-            return result.ToString();
         }
     }
 
@@ -164,10 +99,11 @@ namespace SRCCore.Expressions.Functions
                 // params(3)が指定されている場合は、それを検索開始位置似設定
                 // VBのInStrは引数1が開始位置になりますが、現仕様との兼ね合いを考え、
                 // eve上では引数3に設定するようにしています
-                num_result = Strings.InStr(
-                    SRC.Expression.GetValueAsLong(@params[3], is_term[3]),
-                    SRC.Expression.GetValueAsString(@params[1], is_term[1]),
-                    SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+                var start = SRC.Expression.GetValueAsLong(@params[3], is_term[3]);
+                var string1 = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                var string2 = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+                VbArgs.Start("InStr", start);
+                num_result = Strings.InStr(start, string1, string2);
             }
 
 
@@ -206,7 +142,8 @@ namespace SRCCore.Expressions.Functions
                 }
 
                 i = (num - Strings.Len(buf2) + 1);
-                // 開始位置が1未満の場合は見つからない（VB版では実行時エラーとなる）
+                // 元の SRC は InStr(i, buf, buf2) から始めるので、開始位置が 1 未満なら InStr のエラー 5
+                VbArgs.Start("InStrRev", i);
                 while (i > 0)
                 {
                     var j = Strings.InStr(i, buf, buf2);
@@ -275,7 +212,10 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            str_result = Strings.Left(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            var length = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            VbArgs.NonNegative("Left", length);
+            str_result = Strings.Left(buf, length);
             if (etype == ValueType.NumericType)
             {
                 num_result = GeneralLib.StrToDbl(str_result);
@@ -335,6 +275,7 @@ namespace SRCCore.Expressions.Functions
                     {
                         var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
                         var j = SRC.Expression.GetValueAsLong(@params[3], is_term[3]);
+                        VbArgs.Mid("Mid", i, j);
                         str_result = Strings.Mid(buf, i, j);
                         break;
                     }
@@ -342,6 +283,7 @@ namespace SRCCore.Expressions.Functions
                 case 2:
                     {
                         var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+                        VbArgs.Mid("Mid", i);
                         str_result = Strings.Mid(buf, i);
                         break;
                     }
@@ -364,7 +306,10 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             num_result = 0d;
-            str_result = Strings.Right(SRC.Expression.GetValueAsString(@params[1], is_term[1]), SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            var length = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            VbArgs.NonNegative("Right", length);
+            str_result = Strings.Right(buf, length);
             if (etype == ValueType.NumericType)
             {
                 num_result = GeneralLib.StrToDbl(str_result);
@@ -419,6 +364,16 @@ namespace SRCCore.Expressions.Functions
 
             var buf = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
             var num = SRC.Expression.GetValueAsLong(@params[1], is_term[1]);
+            if (Strings.Len(buf) <= 1)
+            {
+                // 元の SRC は String$(回数, buf) を呼ぶ。回数が負か、buf が長さ 0 なら VB のエラー 5
+                VbArgs.NonNegative("String", num);
+                if (buf.Length == 0)
+                {
+                    throw VbRuntimeErrorException.InvalidProcedureCall("String");
+                }
+            }
+            // 2 文字以上は For ループで繋ぐ（負の回数は空文字列）
             str_result = string.Join("", Enumerable.Range(0, Math.Max(0, num)).Select(x => buf));
 
             if (etype == ValueType.NumericType)
@@ -460,10 +415,11 @@ namespace SRCCore.Expressions.Functions
             }
             else
             {
-                num_result = Strings.InStrB(
-                    SRC.Expression.GetValueAsLong(@params[3], is_term[3]),
-                    SRC.Expression.GetValueAsString(@params[1], is_term[1]),
-                    SRC.Expression.GetValueAsString(@params[2], is_term[2]));
+                var start = SRC.Expression.GetValueAsLong(@params[3], is_term[3]);
+                var string1 = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                var string2 = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
+                VbArgs.Start("InStrB", start);
+                num_result = Strings.InStrB(start, string1, string2);
             }
 
             if (etype == ValueType.StringType)
@@ -521,9 +477,10 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            str_result = Strings.LeftB(
-                SRC.Expression.GetValueAsString(@params[1], is_term[1]),
-                SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            var length = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            VbArgs.NonNegative("LeftB", length);
+            str_result = Strings.LeftB(buf, length);
             
             if (etype == ValueType.NumericType)
             {
@@ -570,6 +527,7 @@ namespace SRCCore.Expressions.Functions
                     {
                         var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
                         var j = SRC.Expression.GetValueAsLong(@params[3], is_term[3]);
+                        VbArgs.Mid("MidB", i, j);
                         str_result = Strings.MidB(buf, i, j);
                         break;
                     }
@@ -577,6 +535,7 @@ namespace SRCCore.Expressions.Functions
                 case 2:
                     {
                         var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+                        VbArgs.Mid("MidB", i);
                         str_result = Strings.MidB(buf, i);
                         break;
                     }
@@ -599,9 +558,10 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             num_result = 0d;
-            str_result = Strings.RightB(
-                SRC.Expression.GetValueAsString(@params[1], is_term[1]),
-                SRC.Expression.GetValueAsLong(@params[2], is_term[2]));
+            var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            var length = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+            VbArgs.NonNegative("RightB", length);
+            str_result = Strings.RightB(buf, length);
             
             if (etype == ValueType.NumericType)
             {
@@ -628,8 +588,10 @@ namespace SRCCore.Expressions.Functions
                     {
                         var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                         var num = SRC.Expression.GetValueAsLong(@params[4], is_term[4]);
+                        VbArgs.NonNegative("Right", Strings.Len(buf) - num + 1);
                         var buf2 = Strings.Right(buf, Strings.Len(buf) - num + 1);
                         buf2 = GeneralLib.ReplaceString(buf2, SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
+                        VbArgs.NonNegative("Left", num - 1);
                         str_result = Strings.Left(buf, num - 1) + buf2;
                         break;
                     }
@@ -639,8 +601,11 @@ namespace SRCCore.Expressions.Functions
                         var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                         var num = SRC.Expression.GetValueAsLong(@params[4], is_term[4]);
                         var num2 = SRC.Expression.GetValueAsLong(@params[5], is_term[5]);
+                        VbArgs.Mid("Mid", num, num2);
                         var buf2 = Strings.Mid(buf, num, num2);
                         buf2 = GeneralLib.ReplaceString(buf2, SRC.Expression.GetValueAsString(@params[2], is_term[2]), SRC.Expression.GetValueAsString(@params[3], is_term[3]));
+                        VbArgs.NonNegative("Left", num - 1);
+                        VbArgs.NonNegative("Right", Strings.Len(buf) - (num + num2 - 1) - 1);
                         str_result = Strings.Left(buf, num - 1) + buf2 + Strings.Right(buf, Strings.Len(buf) - (num + num2 - 1) - 1);
                         break;
                     }
@@ -672,7 +637,13 @@ namespace SRCCore.Expressions.Functions
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             str_result = "";
-            num_result = Strings.Asc(SRC.Expression.GetValueAsString(@params[1], is_term[1]));
+            var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+            if (buf.Length == 0)
+            {
+                // VB の Asc は長さ 0 の文字列でエラー 5
+                throw VbRuntimeErrorException.InvalidProcedureCall("Asc");
+            }
+            num_result = Strings.Asc(buf);
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
@@ -691,7 +662,13 @@ namespace SRCCore.Expressions.Functions
         {
             num_result = 0d;
             // Shift_JIS の文字コードとして扱う
-            str_result = Strings.Chr(SRC.Expression.GetValueAsLong(@params[1], is_term[1]));
+            var code = SRC.Expression.GetValueAsLong(@params[1], is_term[1]);
+            // 日本語版の Windows（DBCS）の Chr$ が受け付ける文字コードは -32768〜65535。範囲の外は VB のエラー 5
+            if (code < -32768 || code > 65535)
+            {
+                throw VbRuntimeErrorException.InvalidProcedureCall("Chr");
+            }
+            str_result = Strings.Chr(code);
             return ValueType.StringType;
         }
     }
