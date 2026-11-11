@@ -91,6 +91,8 @@ namespace SRCRender
         public void ClearImageCache()
         {
             images = null;
+            // 読み直した画像が読めなければ、もう一度メッセージを出す
+            reportedPictureErrors.Clear();
         }
         private Map Map => src.Map;
         // WinForms 版から移植したコードとの互換のため
