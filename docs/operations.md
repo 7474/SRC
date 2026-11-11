@@ -60,7 +60,6 @@ flowchart LR
 | `Publish-Package.yml` | タグ（`v*`）の push | 版の確かめの後、NuGet（SRCCore・SRCDataLinter・SRCSharpTools）、SRC#Form と SRC#Web の zip、Docker イメージを出す。リリースの本文は `docs/releases/<タグ>.md` | NuGet・GitHub Releases・Docker Hub（`koudenpa/srcdatalinter`） |
 | `Publish-Avalonia.yml` | タグの push・手動（過去のリリースに添付） | SRC#Avalonia を OS ごと（5 つ）の zip にする | GitHub Releases |
 | `Publish-VSCode.yml` | タグの push・手動 | VS Code 拡張の .vsix を作って出す。公開済みの版なら飛ばす | Visual Studio Marketplace・Open VSX・GitHub Releases |
-| `dotnet-next.yml` | 毎週月曜・手動・`SRC.Sharp/Directory.*.props` かこのワークフローを変えた PR | 次の .NET（11）のプレビュー・RC の SDK でビルドとテスト（SRC#Web の E2E まで）をする。必須チェックではない（[.NET のメジャーの更新](./dotnet-upgrade.md)） | なし（確かめるだけ） |
 | `dependabot-auto-merge.yml` | Dependabot の PR | マイナー・パッチの更新のまとめに自動マージを設定する | master（`ci-passed` が通ったとき） |
 | `regression-label.yml` | Issue の作成・編集 | 不具合の報告で「前の版では動いていた」と答えたものにラベル `regression` を付ける（[テストと CI の設計](./testing.md)） | Issue のラベル |
 

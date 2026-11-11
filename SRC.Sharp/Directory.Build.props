@@ -14,11 +14,11 @@
   </PropertyGroup>
   <!--
     アプリ・ツール・テストのターゲットフレームワーク（ライブラリの SRCCore・SRCRender・SRCSound は netstandard2.1 のまま）。
-    次の .NET を試すときは -p:SrcSharpTargetFramework=net11.0 を付ける（CI の dotnet-next ジョブ。docs/dotnet-upgrade.md）。
-    .NET のメジャーを上げるときは、ここの既定値と Directory.Packages.props の版をそろえて変える
+    .NET のメジャーを上げるときは、ここの既定値と Directory.Packages.props の版をそろえて変える（docs/dotnet-upgrade.md）。
+    次の .NET を試すときは -p:SrcSharpTargetFramework=net12.0 のように付ける
   -->
   <PropertyGroup>
-    <SrcSharpTargetFramework Condition="'$(SrcSharpTargetFramework)' == ''">net10.0</SrcSharpTargetFramework>
+    <SrcSharpTargetFramework Condition="'$(SrcSharpTargetFramework)' == ''">net11.0</SrcSharpTargetFramework>
   </PropertyGroup>
   <!--
     NuGet のパッケージ（SRCCore・SRCDataLinter・SRCSharpTools）のライセンスと出典。

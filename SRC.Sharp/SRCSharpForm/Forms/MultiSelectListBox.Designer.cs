@@ -34,23 +34,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        private Button _cmdResume;
-
-        private Button _cmdSort;
-
-        private Button _cmdSelectAll2;
-
-        private Button _cmdSelectAll;
-
-        private Button _cmdFinish;
-
-        private ListBox _lstItems;
-
-        public Label lblNumber;
-        public Label lblCaption;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -224,5 +207,17 @@ namespace SRCSharpForm
             this.ResumeLayout(false);
 
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        private Button _cmdResume;
+        private Button _cmdSort;
+        private Button _cmdSelectAll2;
+        private Button _cmdSelectAll;
+        private Button _cmdFinish;
+        private ListBox _lstItems;
+        public Label lblNumber;
+        public Label lblCaption;
     }
 }

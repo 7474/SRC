@@ -37,6 +37,6 @@ SRC#Form は、元の SRC の画面を Windows のフォームでそのまま再
 
 ## ほかの SRC# との違い
 
-- 動くのは Windows（x64）だけです。[.NET 10 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/10.0) が要ります。
+- 動くのは Windows（x64）だけです。[.NET 11 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/11.0) が要ります。
 - 素材（汎用グラフィック集など）が無いと動きません。SRC#Avalonia・SRC#Web は素材が無くても動きます。
 - 素材パック（zip）・表示倍率・メニューからの設定は、SRC#Avalonia にだけあります。

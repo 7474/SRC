@@ -98,6 +98,8 @@ namespace SRCSharpForm
         public int PaintedAreaY2 { get; set; }
         public bool IsCursorVisible { get; set; }
         public Color BGColor { get; set; }
+        // その時点のフォントの写しを毎回返す（IGUI の取り決め）。.NET 11 の WinForms のアナライザーの WFO2000 はこの意図を判別できない
+#pragma warning disable WFO2000
         public PaintFont CurrentPaintFont => new PaintFont
         {
             Name = currentDrawFont.Name,
@@ -105,6 +107,7 @@ namespace SRCSharpForm
             Bold = currentDrawFont.Bold,
             Italic = currentDrawFont.Italic,
         };
+#pragma warning restore WFO2000
         // XXX Fontと画像のForeカラー同じでいいのか？
         public Brush CurrentPaintBrush => currentDrawFontColor;
         // XXX そもそもBrushでなくForeColor持っていたほうがいいかもしれない

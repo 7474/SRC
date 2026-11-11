@@ -31,30 +31,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        public CheckBox chkExtendedAnimation;
-        public CheckBox chkMoveAnimation;
-        public CheckBox chkWeaponAnimation;
-        private TextBox _txtMP3Volume;
-
-        private HScrollBar _hscMP3Volume;
-
-        private Button _cmdCancel;
-
-        private Button _cmdOK;
-
-        public CheckBox chkKeepEnemyBGM;
-        public ComboBox cboMessageSpeed;
-        public CheckBox chkAutoMoveCursor;
-        public CheckBox chkShowSquareLine;
-        public CheckBox chkShowTurn;
-        public CheckBox chkSpecialPowerAnimation;
-        private CheckBox _chkBattleAnimation;
-
-        public Label labMP3Volume;
-        public Label labMessageSpeed;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -331,5 +307,25 @@ namespace SRCSharpForm
             this.ResumeLayout(false);
 
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        public CheckBox chkExtendedAnimation;
+        public CheckBox chkMoveAnimation;
+        public CheckBox chkWeaponAnimation;
+        private TextBox _txtMP3Volume;
+        private HScrollBar _hscMP3Volume;
+        private Button _cmdCancel;
+        private Button _cmdOK;
+        public CheckBox chkKeepEnemyBGM;
+        public ComboBox cboMessageSpeed;
+        public CheckBox chkAutoMoveCursor;
+        public CheckBox chkShowSquareLine;
+        public CheckBox chkShowTurn;
+        public CheckBox chkSpecialPowerAnimation;
+        private CheckBox _chkBattleAnimation;
+        public Label labMP3Volume;
+        public Label labMessageSpeed;
     }
 }

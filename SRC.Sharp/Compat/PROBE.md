@@ -86,7 +86,7 @@
 ## SRC# で流す
 
 ```sh
-# CompatProbeTests（CI と同じ）。SRC# の出力は bin/Debug/net10.0/TestResults/e2e/compat-probe/ に書き出す
+# CompatProbeTests（CI と同じ）。SRC# の出力は bin/Debug/net11.0/TestResults/e2e/compat-probe/ に書き出す
 dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatProbeTests"
 
 # 1 つだけ手で流す（out_probe.txt はシナリオのフォルダに書くので、写したフォルダで流すとよい）

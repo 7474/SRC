@@ -33,8 +33,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SHARP = ROOT / "SRC.Sharp"
 COMPAT = SHARP / "Compat"
 GOLDEN = COMPAT / "golden"
-SRCSHARP_DLL = SHARP / "SRCSharpTools" / "bin" / "Release" / "net10.0" / "srcsharp.dll"
-DATALINTER_DLL = SHARP / "SRCDataLinter" / "bin" / "Release" / "net10.0" / "SRCDataLinter.dll"
+SRCSHARP_DLL = SHARP / "SRCSharpTools" / "bin" / "Release" / "net11.0" / "srcsharp.dll"
+DATALINTER_DLL = SHARP / "SRCDataLinter" / "bin" / "Release" / "net11.0" / "SRCDataLinter.dll"
 
 HEADER = re.compile(r"srcsharp\s+play\s+(\S+\.eve)\b(.*)$")
 

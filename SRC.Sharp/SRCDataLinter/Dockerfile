@@ -8,15 +8,15 @@
 #   docker build -f SRC.Sharp/SRCDataLinter/Dockerfile .
 # コンテキストに含めるものは Dockerfile.dockerignore で絞る
 
-# .NET 10 のイメージは Debian bookworm 版が無いため Ubuntu 24.04（noble）にする
-FROM mcr.microsoft.com/dotnet/runtime:10.0-noble AS base
+# Ubuntu の版のイメージにする（.NET 11 は Ubuntu 26.04（resolute）。noble 版は無い）
+FROM mcr.microsoft.com/dotnet/runtime:11.0-resolute AS base
 # シナリオを画面なしで動かす（SkiaSharp）ために fontconfig、日本語の描画に Noto Sans CJK（CI の VRT と同じ）
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libfontconfig1 fonts-noto-cjk \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0-resolute AS build
 WORKDIR /src
 # バージョンは Directory.Build.props で決める
 COPY ["SRC.Sharp/Directory.Build.props", "SRC.Sharp/Directory.Packages.props", "SRC.Sharp/"]

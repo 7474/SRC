@@ -19,11 +19,11 @@ dotnet build tools/pack-analysis -c Release
 ```
 
 ```bash
-dotnet tools/pack-analysis/bin/Release/net10.0/PackAnalysis.dll ../SRC-Data/GSCデータパック/ロボ ロボ tools/pack-analysis/roles-robo.csv tools/pack-analysis/works-robo.txt > robo.md
+dotnet tools/pack-analysis/bin/Release/net11.0/PackAnalysis.dll ../SRC-Data/GSCデータパック/ロボ ロボ tools/pack-analysis/roles-robo.csv tools/pack-analysis/works-robo.txt > robo.md
 ```
 
 ```bash
-dotnet tools/pack-analysis/bin/Release/net10.0/PackAnalysis.dll ../SRC-Data/GSCデータパック/拡張 拡張 tools/pack-analysis/roles-ext.csv tools/pack-analysis/works-ext.txt > ext.md
+dotnet tools/pack-analysis/bin/Release/net11.0/PackAnalysis.dll ../SRC-Data/GSCデータパック/拡張 拡張 tools/pack-analysis/roles-ext.csv tools/pack-analysis/works-ext.txt > ext.md
 ```
 
 それぞれ 10 分ほどかかる（ロボ・拡張とも、帯ごとに最大 400 組を評価する）。標準出力に Markdown、標準エラーに進み具合と、読み込めないデータ・評価できない組を出す。

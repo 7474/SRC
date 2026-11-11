@@ -25,25 +25,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        public PictureBox picFace;
-        public PictureBox picUnit1;
-        public PictureBox picUnit2;
-        public TextBox txtHP2;
-        public PictureBox picHP2;
-        public PictureBox picEN2;
-        public TextBox txtEN2;
-        public TextBox txtEN1;
-        public PictureBox picEN1;
-        public PictureBox picHP1;
-        public TextBox txtHP1;
-        public PictureBox picMessage;
-        public Label labHP2;
-        public Label labEN2;
-        public Label labEN1;
-        public Label labHP1;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -357,5 +338,25 @@ namespace SRCSharpForm
             this.PerformLayout();
 
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        public PictureBox picFace;
+        public PictureBox picUnit1;
+        public PictureBox picUnit2;
+        public TextBox txtHP2;
+        public PictureBox picHP2;
+        public PictureBox picEN2;
+        public TextBox txtEN2;
+        public TextBox txtEN1;
+        public PictureBox picEN1;
+        public PictureBox picHP1;
+        public TextBox txtHP1;
+        public PictureBox picMessage;
+        public Label labHP2;
+        public Label labEN2;
+        public Label labEN1;
+        public Label labHP1;
     }
 }

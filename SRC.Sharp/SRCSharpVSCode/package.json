@@ -351,7 +351,7 @@
       {
         "view": "srcsharp.panel",
         "when": "srcsharp.serverMissing",
-        "contents": "srcsharp（SRC# の .NET tool）が見つかりません。診断・デバッガ・画面の表示に要ります。\n[srcsharp を入れる](command:srcsharp.installServer)\n.NET 10 SDK が要ります（[ダウンロード](https://dotnet.microsoft.com/download/dotnet/10.0)）。入れた場所を指定する場合は設定を開きます。\n[設定を開く](command:srcsharp.openSettings)"
+        "contents": "srcsharp（SRC# の .NET tool）が見つかりません。診断・デバッガ・画面の表示に要ります。\n[srcsharp を入れる](command:srcsharp.installServer)\n.NET 11 SDK が要ります（[ダウンロード](https://dotnet.microsoft.com/download/dotnet/11.0)）。入れた場所を指定する場合は設定を開きます。\n[設定を開く](command:srcsharp.openSettings)"
       }
     ],
     "commands": [

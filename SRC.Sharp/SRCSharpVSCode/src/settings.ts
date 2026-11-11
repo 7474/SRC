@@ -255,7 +255,7 @@ window.addEventListener('message', (e) => {
     $('install').textContent = '更新する';
   } else {
     mark.className = 'error';
-    mark.textContent = '✗ srcsharp が見つかりません。「入れる」で dotnet tool として入れます（.NET 10 SDK が要ります）。';
+    mark.textContent = '✗ srcsharp が見つかりません。「入れる」で dotnet tool として入れます（.NET 11 SDK が要ります）。';
     status.append(mark);
     $('install').textContent = '入れる';
   }

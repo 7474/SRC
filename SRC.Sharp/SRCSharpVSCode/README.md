@@ -22,7 +22,7 @@ Marketplace の [koudenpa.src-vscode](https://marketplace.visualstudio.com/items
 
 ### かんたんな手順
 
-1. [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) を入れる
+1. [.NET 11 SDK](https://dotnet.microsoft.com/download/dotnet/11.0) を入れる
 2. この拡張を入れる
 3. `*.eve` を開くか、アクティビティバーの「SRC#」を開き、「srcsharp が見つかりません」の通知か操作パネルの「srcsharp を入れる」を押す
 
@@ -34,7 +34,7 @@ Marketplace の [koudenpa.src-vscode](https://marketplace.visualstudio.com/items
 
 ### 1. srcsharp（手で入れる場合）
 
-[.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) を入れ、.NET tool として入れます（[.NET tools](https://learn.microsoft.com/dotnet/core/tools/global-tools)、[dotnet tool install](https://learn.microsoft.com/dotnet/core/tools/dotnet-tool-install)）。
+[.NET 11 SDK](https://dotnet.microsoft.com/download/dotnet/11.0) を入れ、.NET tool として入れます（[.NET tools](https://learn.microsoft.com/dotnet/core/tools/global-tools)、[dotnet tool install](https://learn.microsoft.com/dotnet/core/tools/dotnet-tool-install)）。
 
 ```sh
 dotnet tool install -g SRCSharpTools
@@ -71,7 +71,7 @@ VS Code の拡張機能ビューの「…」→「Install from VSIX...」でも�
 ```json
 {
   "srcsharp.serverPath": "dotnet",
-  "srcsharp.serverArgs": ["<リポジトリ>/SRC.Sharp/SRCSharpTools/bin/Debug/net10.0/srcsharp.dll"]
+  "srcsharp.serverArgs": ["<リポジトリ>/SRC.Sharp/SRCSharpTools/bin/Debug/net11.0/srcsharp.dll"]
 }
 ```
 
@@ -256,7 +256,7 @@ srcsharp のログ（[ログの設計](../../docs/logging.md)）は次に出ま�
 | 症状 | 確かめること |
 |---|---|
 | 拡張の起動時にエラーが出て、診断やアウトラインが出ない | 操作パネルの「状態」と設定画面で、srcsharp が見つかっているか、Language Server が動いているか。見つからなければ「srcsharp を入れる」か、`srcsharp.serverPath` に絶対パスを書く |
-| `You must install .NET to run this application` と出る | .NET 10 のランタイムがあるか。拡張は PATH・`DOTNET_ROOT`・`~/.dotnet` から dotnet を探して `DOTNET_ROOT` を渡す。ほかの場所に入れた場合は環境変数 `DOTNET_ROOT` を設定する（[.NET environment variables](https://learn.microsoft.com/dotnet/core/tools/dotnet-environment-variables)） |
+| `You must install .NET to run this application` と出る | .NET 11 のランタイムがあるか。拡張は PATH・`DOTNET_ROOT`・`~/.dotnet` から dotnet を探して `DOTNET_ROOT` を渡す。ほかの場所に入れた場合は環境変数 `DOTNET_ROOT` を設定する（[.NET environment variables](https://learn.microsoft.com/dotnet/core/tools/dotnet-environment-variables)） |
 | 画面のビューに「この srcsharp は画面の取得に対応していません」と出る | srcsharp が 0.5.1 以前。「srcsharp を入れる／更新する」で更新する |
 | `Cannot find module 'vscode-languageclient/node'` と出る | esbuild でまとめる前の古い `.vsix`（v0.5.0 までの `npm run package` で作ったもの）。`npm run package` で作り直す |
 | 画面の日本語が豆腐（□）になり、「日本語のフォントが見つからない」と通知される | srcsharp が動く環境（WSL・Dev Container・SSH 先の Linux など）に日本語のフォントが無い。WSL では Windows の ＭＳ ゴシック・ＭＳ 明朝（`/mnt/c/Windows/Fonts`）を自動で使う。ほかの Linux では日本語のフォントを入れる（Ubuntu・Debian: `sudo apt install fonts-noto-cjk`）か、環境変数 `SRCSHARP_FONTS` にフォントのファイルかフォルダを指定する（複数はパスの区切り文字 `:` で区切る） |

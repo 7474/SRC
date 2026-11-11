@@ -153,6 +153,11 @@
                 // 表示言語・ログのレベルは環境変数で .NET に渡す（WebLocalization.cs）。マルチスレッドの .NET は起動前に JS とやりとりできないため
                 Blazor.start({
                     configureRuntime: dotnet => {
+                        // .NET 11 のマルチスレッドの WebAssembly は、起動の後に作るスレッドが読み込み前の Web Worker に当たると止まる
+                        // （タイマー・Task.Delay・JS の呼び出しの結果が戻らない。https://github.com/dotnet/runtime/issues/136492）。
+                        // 使うスレッド（ゲーム・入力・MIDI・スレッドプール・タイマー）より多くの Worker を起動時に読み込んでおく（既定は 7）。
+                        // 上流で直ったら消す（docs/dotnet-upgrade.md）
+                        dotnet.withConfig({ pthreadPoolInitialSize: 24 });
                         dotnet.withEnvironmentVariable('SRCWEB_LANGUAGE', text.language);
                         dotnet.withEnvironmentVariable('SRCWEB_LANGUAGE_SETTING', text.setting);
                         if (logLevel.trim() !== '') {
