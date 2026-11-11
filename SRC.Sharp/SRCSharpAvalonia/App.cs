@@ -404,7 +404,7 @@ namespace SRCSharpAvalonia
                 SuggestedStartLocation = lastFolder == null ? null : await window.StorageProvider.TryGetFolderFromPathAsync(lastFolder),
                 FileTypeFilter = new[]
                 {
-                    new FilePickerFileType("SRC# files") { Patterns = new[] { "*.eve", "*.srcs", "*.srcq" } },
+                    new FilePickerFileType("SRC# files") { Patterns = new[] { "*.eve", "*.srcs", "*.srcq", "*.src" } },
                 },
             });
             var file = files.FirstOrDefault()?.TryGetLocalPath();

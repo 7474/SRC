@@ -90,7 +90,7 @@ namespace SRCSharpForm
         {
             using (var fbd = new OpenFileDialog())
             {
-                fbd.Filter = "SRC# files (*.eve;*.srcs;*srcsq)|*.eve;*.srcs;*.srcq|event files (*.eve)|*.eve|save files (*.srcs;*srcsq)|*.srcs;*.srcq";
+                fbd.Filter = "SRC# files (*.eve;*.srcs;*.srcq;*.src)|*.eve;*.srcs;*.srcq;*.src|event files (*.eve)|*.eve|save files (*.srcs;*.srcq;*.src)|*.srcs;*.srcq;*.src";
 
                 var res = fbd.ShowDialog();
                 if (res == DialogResult.OK)

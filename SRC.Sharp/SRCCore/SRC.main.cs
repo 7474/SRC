@@ -348,7 +348,10 @@ namespace SRCCore
 
         private void ExecuteFile(string fname)
         {
-            if (Strings.LCase(Strings.Right(fname, 5)) == ".srcs")
+            // 元の SRC のセーブデータ（.src）は、元の SRC と同じく中身でクリアデータか中断データかを決める（#1577）
+            var isOriginalSaveData = Strings.LCase(Strings.Right(fname, 4)) == ".src";
+            var isClearData = isOriginalSaveData && IsClearSaveData(File.ReadAllBytes(fname));
+            if (Strings.LCase(Strings.Right(fname, 5)) == ".srcs" || isClearData)
             {
                 using (var stream = File.OpenRead(fname))
                 {
@@ -375,7 +378,7 @@ namespace SRCCore
                     }
                 }
             }
-            else if (Strings.LCase(Strings.Right(fname, 5)) == ".srcq")
+            else if (Strings.LCase(Strings.Right(fname, 5)) == ".srcq" || isOriginalSaveData)
             {
                 // 中断データの読み込み
                 GUI.LockGUI();
