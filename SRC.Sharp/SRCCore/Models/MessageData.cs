@@ -27,7 +27,7 @@ namespace SRCCore.Models
 
         public bool IsAvailable(Unit u, bool ignore_condition)
         {
-            // XXX MessageDataItem#IsAvailable 常に真でいいか
+            // 元の SRC の MessageData.SelectMessage は話者の状態を調べない（Dialog.IsAvailable に当たるものは無い）
             return true;
         }
     }
@@ -38,7 +38,7 @@ namespace SRCCore.Models
     {
         // データのパイロット名
         // 戦闘アニメデータ及び特殊効果データの場合はユニット名またはユニットクラス
-        public string Name;
+        public string Name = "";
 
         public IList<MessageDataItem> Items { get; } = new List<MessageDataItem>();
 

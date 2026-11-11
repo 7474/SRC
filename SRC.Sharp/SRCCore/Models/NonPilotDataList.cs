@@ -24,7 +24,7 @@ namespace SRCCore.Models
         {
             SRC = src;
             // Talkコマンド用
-            var npd = new NonPilotData();
+            var npd = new NonPilotData(src);
             npd.Name = "ナレーター";
             npd.Nickname = "ナレーター";
             npd.Bitmap = ".bmp";
@@ -39,7 +39,7 @@ namespace SRCCore.Models
         // ノンパイロットデータリストにデータを追加
         public NonPilotData Add(string pname)
         {
-            var new_pilot_data = new NonPilotData();
+            var new_pilot_data = new NonPilotData(SRC);
             new_pilot_data.Name = pname;
             colNonPilotDataList.Add(new_pilot_data, pname);
             return new_pilot_data;
@@ -91,7 +91,7 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
@@ -138,8 +138,15 @@ namespace SRCCore.Models
                         {
                             pd = Item(data_name);
                         }
+                        else if (IsDefined2(data_name))
+                        {
+                            // 大文字・小文字や全角・半角だけが違う名前。元の SRC は Collection に同じキーを
+                            // 追加しようとして実行時エラーになり、エラーの原因を書かないデータエラーで読み込みを打ち切る
+                            throw reader.InvalidDataException("", data_name);
+                        }
                         else
                         {
+                            // 愛称が一致した別のデータ
                             pd = Add(data_name);
                         }
                     }

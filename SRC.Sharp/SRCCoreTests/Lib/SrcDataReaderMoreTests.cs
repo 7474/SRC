@@ -137,10 +137,10 @@ namespace SRCCore.Lib.Tests
         public void LastLine_InlineCommentRemoved_LineContentOnly()
         {
             // LastLine にはコメント削除前のラインバッファが含まれないことを確認
-            // GetLine は "data " を返し、LastLine も "data " になる
+            // GetLine は（元の SRC と同じくコメントを除いてから空白を取り除いた）"data" を返し、LastLine も "data" になる
             using var reader = CreateReader("data // comment");
             var line = reader.GetLine();
-            Assert.AreEqual("data ", reader.LastLine);
+            Assert.AreEqual("data", reader.LastLine);
             Assert.AreEqual(line, reader.LastLine);
         }
 

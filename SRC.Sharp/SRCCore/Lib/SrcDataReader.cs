@@ -53,29 +53,29 @@ namespace SRCCore.Lib
             string line_buf = "";
             while (HasMore)
             {
-                // 完全な互換性にはこだわらないので先にTrimしてしまう
-                var buf = ReadLine().Trim().Trim(
-                        // EOF
-                        (char)0x1a
-                    );
-                _rawBuffer.AppendLine(buf);
+                // EOF（Ctrl+Z）の文字は取り除く
+                var buf = ReadLine().Trim((char)0x1a);
+                // 解析用に残す行（空白を取り除いたもの）
+                var trimmed = GeneralLib.TrimString(buf);
+                _rawBuffer.AppendLine(trimmed);
                 LineNumber++;
 
                 // 空行はそのまま返す
-                if (string.IsNullOrEmpty(buf))
+                if (string.IsNullOrEmpty(trimmed))
                 {
-                    _commentBuffer.AppendLine(buf);
+                    _commentBuffer.AppendLine(trimmed);
                     break;
                 }
 
                 // コメント行はスキップ
+                // VB と同じく、空白を取り除く前の行の先頭で見る（字下げした「#」の行はコメントではない）
                 if (Strings.Left(buf, 1) == "#")
                 {
-                    _commentBuffer.AppendLine(buf);
+                    _commentBuffer.AppendLine(trimmed);
                     continue;
                 }
 
-                _rawDataBuffer.AppendLine(buf);
+                _rawDataBuffer.AppendLine(trimmed);
 
                 // コメント部分を削除
                 var idx = Strings.InStr(buf, "//");
@@ -85,13 +85,15 @@ namespace SRCCore.Lib
                 }
 
                 // 行末が「_」でなければ行の読み込みを完了
+                // VB と同じく、空白を取り除く前の行の末尾で見る（「_」の後ろに空白があれば結合しない）
                 if (Strings.Right(buf, 1) != "_")
                 {
-                    line_buf = line_buf + buf;
+                    line_buf = line_buf + GeneralLib.TrimString(buf);
                     break;
                 }
 
                 // 行末が「_」の場合は行を結合
+                buf = GeneralLib.TrimString(buf);
                 line_buf = line_buf + Strings.Left(buf, Strings.Len(buf) - 1);
             }
 

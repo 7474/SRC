@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>{0}的資料無效。</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>資料無效。</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
@@ -89,5 +92,32 @@
   </data>
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>MP3音量</value>
+  </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>訊息速度</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>手動翻頁</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>慢速</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>普通</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>快速</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>超快速</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>神之領域</value>
+  </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>讀取圖像檔案{0}{1}{0}時發生錯誤。{0}請確認圖像檔案是否已損壞。</value>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>圖像檔案{0}{1}{0}的圖像格式不受支援。</value>
   </data>
 </root>

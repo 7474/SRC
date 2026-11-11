@@ -270,10 +270,10 @@ namespace SRCCore.Lib.Tests
         }
 
         [TestMethod]
-        public void ListTail_FromIndexOne_ReturnsEmpty()
+        public void ListTail_FromIndexOne_ReturnsWholeList()
         {
-            // idx=1 は戻り値""
-            Assert.AreEqual("", GeneralLib.ListTail("a b c", 1));
+            // 元の SRC: idx=1 は最初の要素から（7474/SRC#1498）
+            Assert.AreEqual("a b c", GeneralLib.ListTail("a b c", 1));
         }
 
         [TestMethod]

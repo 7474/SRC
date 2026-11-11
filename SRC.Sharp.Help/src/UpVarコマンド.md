@@ -2,8 +2,6 @@
 layout: default
 title: UpVarコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **UpVarコマンド**
 
 参照可能なサブルーチンの引数のレベルを変更

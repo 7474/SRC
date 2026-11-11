@@ -1,6 +1,7 @@
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -29,14 +30,33 @@ namespace SRCCore.Filesystem
 
         public bool PathEquals(string a, string b)
         {
-            // XXX NormalizePath で先頭 `\` を処理する？
-            return NormalizePath(PathCombine(a)).ToLower() == NormalizePath(PathCombine(b)).ToLower();
+            // 先頭の `\` は PathCombine で取り除いてから比べる
+            return NormalizePath(PathCombine(a)).ToLowerInvariant() == NormalizePath(PathCombine(b)).ToLowerInvariant();
         }
 
         public bool FileExists(params string[] paths)
         {
             string path = PathCombine(paths);
             return entrySets.Any(x => x.Exists(path));
+        }
+
+        public string FindFirstFile(IEnumerable<string> candidates)
+        {
+            var paths = candidates
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Select(x => (Name: x, Path: PathCombine(x)))
+                .ToList();
+            foreach (var entrySet in entrySets)
+            {
+                foreach (var (name, path) in paths)
+                {
+                    if (entrySet.Exists(path))
+                    {
+                        return name;
+                    }
+                }
+            }
+            return null;
         }
 
         public Stream Open(params string[] paths)
@@ -53,7 +73,7 @@ namespace SRCCore.Filesystem
                     basePath
                 ));
             }
-            // XXX Log
+            // 無いフォルダは重ねない（呼び出し元が拡張データのフォルダなどの有無を問わずに渡す）
         }
 
         /// <summary>重ねた zip アーカイブを閉じる（Windows では開いている間、zip を削除・置き換えできない）</summary>
@@ -191,7 +211,7 @@ namespace SRCCore.Filesystem
 
         public bool RelativePathEuqals(string scenarioPath, string a, string b)
         {
-            return ToRelativePath(scenarioPath, a).ToLower() == ToRelativePath(scenarioPath, b).ToLower();
+            return ToRelativePath(scenarioPath, a).ToLowerInvariant() == ToRelativePath(scenarioPath, b).ToLowerInvariant();
         }
 
         public bool IsAbsolutePath(string path)
@@ -264,8 +284,8 @@ namespace SRCCore.Filesystem
             {
                 return Directory.GetFileSystemEntries(PathResolver.Resolve(path), searchPattern, PathResolver.CaseInsensitiveEnumeration)
                                 .Where(x => enumerationOptions == EntryOption.All
-                                    || enumerationOptions == EntryOption.File && !Directory.Exists(x)
-                                    || enumerationOptions == EntryOption.Directory && Directory.Exists(x));
+                                    || (enumerationOptions == EntryOption.File && !Directory.Exists(x))
+                                    || (enumerationOptions == EntryOption.Directory && Directory.Exists(x)));
             }
             catch (DirectoryNotFoundException)
             {
@@ -315,7 +335,7 @@ namespace SRCCore.Filesystem
         public LocalFileSystemPath(string basePath)
         {
             var tmpBasePath = basePath.Replace("\\", "/");
-            if (!tmpBasePath.EndsWith("/"))
+            if (!tmpBasePath.EndsWith("/", StringComparison.Ordinal))
             {
                 tmpBasePath += "/";
             }
@@ -324,7 +344,7 @@ namespace SRCCore.Filesystem
 
         public bool MatchRoot(string entryName)
         {
-            return entryName.Replace("\\", "/").StartsWith(BasePath);
+            return entryName.Replace("\\", "/").StartsWith(BasePath, StringComparison.Ordinal);
         }
 
         public IEnumerable<string> GetFileSystemEntries(string path, string searchPattern, EntryOption enumerationOptions)
@@ -337,8 +357,8 @@ namespace SRCCore.Filesystem
             {
                 return Directory.GetFileSystemEntries(PathResolver.Resolve(path), searchPattern, PathResolver.CaseInsensitiveEnumeration)
                                 .Where(x => enumerationOptions == EntryOption.All
-                                    || enumerationOptions == EntryOption.File && !Directory.Exists(x)
-                                    || enumerationOptions == EntryOption.Directory && Directory.Exists(x));
+                                    || (enumerationOptions == EntryOption.File && !Directory.Exists(x))
+                                    || (enumerationOptions == EntryOption.Directory && Directory.Exists(x)));
             }
             catch (DirectoryNotFoundException)
             {
@@ -355,7 +375,7 @@ namespace SRCCore.Filesystem
         {
             var archivePath = entryName.Replace("\\", "/");
             var isAbsolute = Path.IsPathRooted(entryName);
-            if (isAbsolute && !archivePath.StartsWith(BasePath))
+            if (isAbsolute && !archivePath.StartsWith(BasePath, StringComparison.Ordinal))
             {
                 return null;
             }
@@ -384,13 +404,14 @@ namespace SRCCore.Filesystem
         public Stream OpenWrite(string entryName)
         {
             var info = GetFileInfo(entryName);
-            return info?.OpenWrite();
+            // 既にあるファイルは空にしてから書く（元の SRC の Open … For Output と同じ。FileInfo.OpenWrite は長さを 0 にしない）
+            return info?.Open(FileMode.Create, FileAccess.Write);
         }
 
         public Stream OpenAppend(string entryName)
         {
             var info = GetFileInfo(entryName);
-            return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.OpenWrite();
+            return info?.Exists ?? false ? info.Open(FileMode.Append) : info?.Open(FileMode.Create, FileAccess.Write);
         }
 
         public bool Remove(string entryName)
@@ -416,7 +437,8 @@ namespace SRCCore.Filesystem
             var info = GetFileInfo(entryName);
             if (Directory.Exists(info.FullName))
             {
-                Directory.Delete(info.FullName);
+                // 中のファイルやフォルダごと消す（元の SRC の FileSystemObject.DeleteFolder と同じ）
+                Directory.Delete(info.FullName, true);
                 return true;
             }
             return false;
@@ -436,6 +458,12 @@ namespace SRCCore.Filesystem
         private SrcCollection<ZipArchiveEntry> _entryMap;
         private Task _entryMapResolveTask;
 
+        // ファイル名はひらがな・カタカナを区別する（Windows のファイルシステムと同じ）。
+        // 変数名などと同じ SrcCollection の既定の比較にすると、ひらがなとカタカナだけが違う名前のファイルが重なる
+        private static readonly StringComparer s_entryNameComparer = CultureInfo.InvariantCulture.CompareInfo.GetStringComparer(
+            CompareOptions.IgnoreWidth | CompareOptions.IgnoreCase
+        );
+
         public LocalFileSystemArchive(string basePath, ZipArchive archive) : this(basePath, archive, null)
         {
         }
@@ -443,14 +471,14 @@ namespace SRCCore.Filesystem
         public LocalFileSystemArchive(string basePath, ZipArchive archive, string root)
         {
             var tmpBasePath = basePath.Replace("\\", "/");
-            if (!tmpBasePath.EndsWith("/"))
+            if (!tmpBasePath.EndsWith("/", StringComparison.Ordinal))
             {
                 tmpBasePath += "/";
             }
             BasePath = tmpBasePath;
             Root = string.IsNullOrEmpty(root) ? "" : root.Replace("\\", "/").Trim('/') + "/";
             _archive = archive;
-            _entryMap = new SrcCollection<ZipArchiveEntry>();
+            _entryMap = new SrcCollection<ZipArchiveEntry>(s_entryNameComparer);
 
             _entryMapResolveTask = Task.Run(() =>
             {
@@ -462,7 +490,7 @@ namespace SRCCore.Filesystem
         }
         public bool MatchRoot(string entryName)
         {
-            return entryName.Replace("\\", "/").StartsWith(BasePath);
+            return entryName.Replace("\\", "/").StartsWith(BasePath, StringComparison.Ordinal);
         }
 
         private void WaitForEntryMap()
@@ -479,7 +507,7 @@ namespace SRCCore.Filesystem
             var archivePath = entryName.Replace("\\", "/");
             if (Path.IsPathRooted(entryName))
             {
-                if (!archivePath.StartsWith(BasePath))
+                if (!archivePath.StartsWith(BasePath, StringComparison.Ordinal))
                 {
                     return null;
                 }
@@ -518,7 +546,7 @@ namespace SRCCore.Filesystem
             }
             var regBase = Regex.Escape(Path.Combine(entryPath, searchPattern).Replace("\\", "/"))
                     .Replace(@"\*", "[^/]*").Replace(@"\?", ".");
-            var dirRegex = new Regex("^" + regBase + (regBase.EndsWith("/") ? "" : "/") + "$", RegexOptions.IgnoreCase);
+            var dirRegex = new Regex("^" + regBase + (regBase.EndsWith("/", StringComparison.Ordinal) ? "" : "/") + "$", RegexOptions.IgnoreCase);
             var fileRegex = new Regex("^" + regBase + "$", RegexOptions.IgnoreCase);
 
             // zip の中の名前（Root を除いたもの）を basePath のパスにする
@@ -539,7 +567,7 @@ namespace SRCCore.Filesystem
             if (enumerationOptions.HasFlag(EntryOption.File))
             {
                 files = names
-                    .Where(x => !x.EndsWith("/") && fileRegex.IsMatch(x))
+                    .Where(x => !x.EndsWith("/", StringComparison.Ordinal) && fileRegex.IsMatch(x))
                     .Select(ToPath)
                     .ToList();
             }

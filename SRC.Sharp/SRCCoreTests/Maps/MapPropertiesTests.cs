@@ -18,11 +18,11 @@ namespace SRCCore.Maps.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Constructor_MapFileName_IsNull()
+        public void Constructor_MapFileName_IsEmpty()
         {
             var src = CreateSrc();
             var map = new Map(src);
-            Assert.IsNull(map.MapFileName);
+            Assert.AreEqual("", map.MapFileName);
         }
 
         [TestMethod]

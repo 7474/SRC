@@ -49,7 +49,8 @@ namespace SRCCore.Units
         // ユニットがスペシャルパワー sname の影響下にあるかどうか
         public bool IsSpecialPowerInEffect(string sname)
         {
-            return colSpecialPowerInEffect.List.Any(x => x.Name == sname);
+            // VB 版と同じく Collection のキーで探す（大文字・小文字、全角・半角、ひらがな・カタカナを区別しない）
+            return colSpecialPowerInEffect.ContainsKey(sname);
         }
 
         // ユニットがスペシャルパワー効果 sptype の影響下にあるかどうか
@@ -96,9 +97,14 @@ namespace SRCCore.Units
                 var spd = SRC.SPDList.Item(cnd.Name);
                 foreach (var effect in spd.Effects)
                 {
-                    if (effect.strEffectType == sname && effect.dblEffectLevel > lv)
+                    if (effect.strEffectType == sname)
                     {
-                        lv = effect.dblEffectLevel;
+                        if (effect.dblEffectLevel > lv)
+                        {
+                            lv = effect.dblEffectLevel;
+                        }
+                        // VB 版と同じく、１つのスペシャルパワーでは最初の効果だけを見る
+                        break;
                     }
                 }
             }
@@ -196,6 +202,11 @@ namespace SRCCore.Units
         // スペシャルパワー sname の効果を取り除く
         public void RemoveSpecialPowerInEffect2(int Index)
         {
+            // VB 版は On Error で範囲外を無視する
+            if (Index < 1 || Index > colSpecialPowerInEffect.Count)
+            {
+                return;
+            }
             colSpecialPowerInEffect.Remove(colSpecialPowerInEffect[Index]);
         }
         public void RemoveSpecialPowerInEffect2(string Index)

@@ -29,6 +29,13 @@ namespace SRCCore.Pilots
             return colSkill[Index]?.Name ?? "";
         }
 
+        // 番号で特殊能力を引く。VB の On Error GoTo ErrorHandler がある手続きでは、
+        // 範囲外の番号は見つからない場合と同じに扱う
+        private SkillData SkillAt(int Index)
+        {
+            return Index >= 1 && Index <= colSkill.Count ? colSkill[Index] : null;
+        }
+
         public bool HasSupportSkill()
         {
             return IsSkillAvailable("援護")
@@ -95,44 +102,21 @@ namespace SRCCore.Pilots
             return false;
         }
 
-        //        // 現在のレベルにおいて特殊能力 sname が使用可能か
-        //        // (付加による影響を無視した場合)
-        //        public bool IsSkillAvailable2(string sname)
-        //        {
-        //            bool IsSkillAvailable2Ret = default;
-        //            SkillData sd;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 48641
-
-
-        //            Input:
-
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            sd = (SkillData)colSkill[sname];
-        //            IsSkillAvailable2Ret = true;
-        //            return IsSkillAvailable2Ret;
-        //        ErrorHandler:
-        //            ;
-        //            IsSkillAvailable2Ret = false;
-        //        }
-
         // 現在のレベルにおける特殊能力 Index のレベル
         // データでレベル指定がない場合はレベル 1
         // 特殊能力が使用不能の場合はレベル 0
+        // VB の Index は Variant。数値の Index（番号）と、数値として読める文字列の Index は IsNumeric(Index) が True になる
         public double SkillLevel(int Index, string ref_mode = "")
         {
-            SkillData sd = colSkill[Index];
-            return SkillLevel(null, ref_mode, sd);
+            SkillData sd = SkillAt(Index);
+            return SkillLevel(null, true, ref_mode, sd);
         }
         public double SkillLevel(string Index, string ref_mode = "")
         {
             SkillData sd = colSkill[Index];
-            return SkillLevel(Index, ref_mode, sd);
+            return SkillLevel(Index, Information.IsNumeric(Index), ref_mode, sd);
         }
-        private double SkillLevel(string Index, string ref_mode, SkillData sd)
+        private double SkillLevel(string Index, bool isNumericIndex, string ref_mode, SkillData sd)
         {
             string sname = sd?.Name;
             double SkillLevelRet = sd?.Level ?? 0;
@@ -142,7 +126,7 @@ namespace SRCCore.Pilots
             }
             if (string.IsNullOrEmpty(sname))
             {
-                if (string.IsNullOrEmpty(Index))
+                if (isNumericIndex)
                 {
                     return SkillLevelRet;
                 }
@@ -167,7 +151,7 @@ namespace SRCCore.Pilots
                 case "ＳＰ消費減少":
                 case "スペシャルパワー自動発動":
                     {
-                        if (Information.IsNumeric(Index))
+                        if (isNumericIndex)
                         {
                             return SkillLevelRet;
                         }
@@ -232,7 +216,7 @@ namespace SRCCore.Pilots
         // 特殊能力 Index にレベル指定がなされているか判定
         public bool IsSkillLevelSpecified(int Index)
         {
-            SkillData sd = colSkill[Index];
+            SkillData sd = SkillAt(Index);
             if (sd != null)
             {
                 return sd.Level != Constants.DEFAULT_LEVEL;
@@ -246,6 +230,12 @@ namespace SRCCore.Pilots
             if (sd != null)
             {
                 return sd.Level != Constants.DEFAULT_LEVEL;
+            }
+
+            // VB: 見つからず、Index が数値として読めるときは判定しない
+            if (Information.IsNumeric(Index))
+            {
+                return false;
             }
 
             // 特殊能力付加＆強化による修正
@@ -302,22 +292,23 @@ namespace SRCCore.Pilots
         // 特殊能力のデータ
         public string SkillData(int Index)
         {
-            var sd = colSkill[Index];
-            return SkillData(null, sd);
+            var sd = SkillAt(Index);
+            return SkillData(null, true, sd);
         }
         public string SkillData(string Index)
         {
             var sd = colSkill[Index];
-            return SkillData(Index, sd);
+            return SkillData(Index, Information.IsNumeric(Index), sd);
         }
-        private string SkillData(string Index, SkillData sd)
+        private string SkillData(string Index, bool isNumericIndex, SkillData sd)
         {
             string sname = sd?.Name;
-            string SkillDataRet = sd?.StrData;
+            // VB の戻り値は String なので、見つからないときは ""
+            string SkillDataRet = sd?.StrData ?? "";
 
             if (string.IsNullOrEmpty(sname))
             {
-                if (Information.IsNumeric(Index))
+                if (isNumericIndex)
                 {
                     return SkillDataRet;
                 }
@@ -334,7 +325,7 @@ namespace SRCCore.Pilots
                 case "ＳＰ消費減少":
                 case "スペシャルパワー自動発動":
                     {
-                        if (Information.IsNumeric(Index))
+                        if (isNumericIndex)
                         {
                             return SkillDataRet;
                         }
@@ -400,7 +391,7 @@ namespace SRCCore.Pilots
         // 特殊能力の名称
         public string SkillName(int Index)
         {
-            SkillData sd = colSkill[Index];
+            SkillData sd = SkillAt(Index);
             if (sd == null)
             {
                 return "";
@@ -423,6 +414,11 @@ namespace SRCCore.Pilots
                     return SkillNameRet;
                 }
                 sname = sd.Name;
+            }
+            else if (isNumericIndex)
+            {
+                // VB: 見つからず、Index が数値として読めるときは "" を返す
+                return "";
             }
 
             if (sname == "耐久")
@@ -467,6 +463,23 @@ namespace SRCCore.Pilots
                         {
                             SkillNameRet = Strings.Mid(SkillNameRet, 2);
                             SkillNameRet = Strings.Left(SkillNameRet, GeneralLib.InStr2(SkillNameRet, ")") - 1);
+                        }
+                        return SkillNameRet;
+                    }
+                    break;
+
+                case "ＳＰ消費減少":
+                    if (isNumericIndex)
+                    {
+                        if (Strings.Left(SkillNameRet, 1) == "(")
+                        {
+                            SkillNameRet = Strings.Mid(SkillNameRet, 2);
+                            SkillNameRet = Strings.Left(SkillNameRet, GeneralLib.InStr2(SkillNameRet, ")") - 1);
+                        }
+                        var i = Strings.InStr(SkillNameRet, "Lv");
+                        if (i > 0)
+                        {
+                            SkillNameRet = Strings.Left(SkillNameRet, i - 1);
                         }
                         return SkillNameRet;
                     }
@@ -725,7 +738,7 @@ namespace SRCCore.Pilots
         // 特殊能力名称（レベル表示抜き）
         public string SkillName0(int Index)
         {
-            SkillData sd = colSkill[Index];
+            SkillData sd = SkillAt(Index);
             if (sd == null)
             {
                 return "";
@@ -748,6 +761,11 @@ namespace SRCCore.Pilots
                     return SkillName0Ret;
                 }
                 sname = sd.Name;
+            }
+            else if (isNumericIndex)
+            {
+                // VB: 見つからず、Index が数値として読めるときは "" を返す
+                return "";
             }
 
             if (sname == "耐久")
@@ -1160,7 +1178,7 @@ namespace SRCCore.Pilots
         // 特殊能力の種類
         public string SkillType(string sname)
         {
-            string SkillTypeRet = default;
+            string SkillTypeRet = "";
             int i;
             string sname0, sname2;
             if (string.IsNullOrEmpty(sname))
@@ -1181,7 +1199,8 @@ namespace SRCCore.Pilots
             // エリアスデータが定義されている？
             if (SRC.ALDList.IsDefined(sname0))
             {
-                return SRC.ALDList.Item(sname0).ReplaceTypeName(sname0);
+                // VB: SkillType = .AliasType(1)（エリアスの最初の能力の種類）
+                return SRC.ALDList.Item(sname0).Elements.FirstOrDefault()?.strAliasType ?? "";
             }
 
             // 特殊能力一覧から検索
@@ -1225,9 +1244,9 @@ namespace SRCCore.Pilots
                 {
                     if (ReferenceEquals(this, u.MainPilot()) || ReferenceEquals(this, u.Pilots.First()))
                     {
-                        // XXX 疎通してないから怪しいかもしれん
+                        // VB: 特殊状態を順に見て、「○○付加」「○○付加２」のデータの先頭が sname0 なら ○○ を返す
                         var conditionType = u.Conditions
-                            .Where(c => c.Name.EndsWith("付加") || c.Name.EndsWith("付加２"))
+                            .Where(c => c.Name.EndsWith("付加", System.StringComparison.Ordinal) || c.Name.EndsWith("付加２", System.StringComparison.Ordinal))
                             .Where(c => GeneralLib.LIndex(c.StrData, 1) == sname0)
                             .Select(c => Regex.Replace(c.Name, "付加２?$", ""))
                             .FirstOrDefault();

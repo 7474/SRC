@@ -26,6 +26,7 @@ namespace SRCCore.CmdDatas.Commands
             if (ArgNum == 2 || ArgNum == 4)
             {
                 var loption = GetArgAsString(ArgNum == 2 ? 2 : 4);
+                // 元の SRC と同じく、空文字列はオプションの指定が無いのと同じ（「通常」）
                 switch (loption)
                 {
                     case "情報限定":
@@ -34,6 +35,7 @@ namespace SRCCore.CmdDatas.Commands
                     case "画像限定":
                         isBitmapOnly = true;
                         break;
+                    case "":
                     case "通常":
                         break;
                     default:
@@ -48,7 +50,7 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     for (int j = 1; j <= Map.MapHeight; j++)
                     {
-                        ClearCellLayer(Map.CellAtPoint(i, j), isDataOnly, isBitmapOnly);
+                        ClearCellLayer(i, j, isDataOnly, isBitmapOnly);
                     }
                 }
             }
@@ -67,16 +69,15 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "Ｙ座標の値は1～" + Map.MapHeight + "で指定してください");
                 }
 
-                ClearCellLayer(Map.CellAtPoint(x, y), isDataOnly, isBitmapOnly);
+                ClearCellLayer(x, y, isDataOnly, isBitmapOnly);
             }
 
-            // マップ背景を再描画
-            GUI.SetupBackground(Map.MapDrawMode, "", Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
             return EventData.NextID;
         }
 
-        private void ClearCellLayer(MapCell cell, bool isDataOnly, bool isBitmapOnly)
+        private void ClearCellLayer(int x, int y, bool isDataOnly, bool isBitmapOnly)
         {
+            var cell = Map.CellAtPoint(x, y);
             if (isDataOnly)
             {
                 cell.BoxType = BoxTypes.UpperBmpOnly;
@@ -92,6 +93,18 @@ namespace SRCCore.CmdDatas.Commands
                 cell.LayerBitmapNo = MapCell.NO_LAYER_NUM;
                 cell.BoxType = BoxTypes.Under;
             }
+
+            // 元の SRC と同じく、「情報限定」では画像を書き直さず、ユニットも配置し直さない
+            if (isDataOnly)
+            {
+                return;
+            }
+
+            // レイヤーを消したマスだけを背景に描き直す。背景のほかのマスに描いたもの（IsMapDirty）は残す
+            GUI.RedrawMapCell(x, y);
+
+            // そのマスにいたユニットを配置し直す（入れない地形なら近くのマスへ移る）
+            Map.StandByUnitAgain(x, y);
         }
     }
 }

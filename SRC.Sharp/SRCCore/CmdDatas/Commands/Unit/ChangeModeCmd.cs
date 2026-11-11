@@ -60,8 +60,7 @@ namespace SRCCore.CmdDatas.Commands
                                         throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
                                     }
                                     targetUnits.Add(SRC.PList.Item(pname).Unit);
-                                    targetUnits.AddRange(
-                                        SRC.PList.ItemsByGroupId(pname, true).Select(x => x.Unit).Where(x => x != null));
+                                    AddGroupUnits(targetUnits, pname);
                                 }
                                 break;
                         }
@@ -95,8 +94,7 @@ namespace SRCCore.CmdDatas.Commands
                                         throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
                                     }
                                     targetUnits.Add(SRC.PList.Item(pname).Unit);
-                                    targetUnits.AddRange(
-                                        SRC.PList.ItemsByGroupId(pname, true).Select(x => x.Unit).Where(x => x != null));
+                                    AddGroupUnits(targetUnits, pname);
                                 }
                                 break;
                         }
@@ -114,12 +112,23 @@ namespace SRCCore.CmdDatas.Commands
                     throw new EventErrorException(this, "ChangeModeコマンドの引数の数が違います");
             }
 
-            foreach (var unit in targetUnits)
+            // ユニットに乗っていないパイロットなど、対象のユニットが無いものは飛ばす（VB 版と同じ）
+            foreach (var unit in targetUnits.Where(x => x != null))
             {
                 unit.Mode = new_mode;
             }
 
             return EventData.NextID;
+        }
+
+        // 元の SRC と同じく、「pname:2」「pname:3」……と番号が続く限り（生きているパイロットが見つかる限り）
+        // そのユニットを加える。番号が途切れたらそこで止める
+        private void AddGroupUnits(List<Unit> targetUnits, string pname)
+        {
+            for (var i = 2; SRC.PList.IsDefined(pname + ":" + i); i++)
+            {
+                targetUnits.Add(SRC.PList.Item(pname + ":" + i).Unit);
+            }
         }
     }
 }

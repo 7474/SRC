@@ -25,35 +25,60 @@ namespace SRCCore.Pilots
             // 以前の一覧を削除
             colSkill.Clear();
 
+            // VB の skill_name()・skill_data() と同じく、番号ごとに名前とデータを持つ。
+            // 封印した能力は名前を残したままデータを null にする（番号と、同種の能力の登録キーが VB と同じになるように）
+            var skillNames = new List<string>();
+            var skillDatas = new List<SkillData>();
+
+            // 同種の能力を複数持つことが出来る特殊能力か
+            bool isMultiSkill(string name)
+            {
+                return name == "ＳＰ消費減少" || name == "スペシャルパワー自動発動" || name == "ハンター";
+            }
+
+            // 登録済みの番号（0 から）を探す。無ければ -1
+            int findRegistered(string name, string sdata)
+            {
+                for (var k = 0; k < skillNames.Count; k++)
+                {
+                    if (name != skillNames[k])
+                    {
+                        continue;
+                    }
+                    if (isMultiSkill(name))
+                    {
+                        // これらの特殊能力は同種の能力を複数持つことが出来る
+                        // ただしデータ指定まで同一であれば同じ能力と見なす
+                        if ((sdata ?? "") == (skillDatas[k]?.StrData ?? ""))
+                        {
+                            return k;
+                        }
+                    }
+                    else
+                    {
+                        return k;
+                    }
+                }
+                return -1;
+            }
+
             // パイロットデータを参照しながら使用可能な特殊能力を検索
-            var effectiveSkills = new List<SkillData>();
             foreach (SkillData sd in Data.Skills)
             {
                 if (Level >= sd.NecessaryLevel)
                 {
-                    SkillData registerd;
                     // 既に登録済み？
-                    if (sd.Name == "ＳＰ消費減少" || sd.Name == "スペシャルパワー自動発動" || sd.Name == "ハンター")
-                    {
-                        // これらの特殊能力は同種の能力を複数持つことが出来る
-                        // ただしデータ指定まで同一であれば同じ能力と見なす
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sd.Name && x.StrData == sd.StrData);
-                    }
-                    else
-                    {
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sd.Name);
-                    }
-
-                    if (registerd == null)
+                    var registerd = findRegistered(sd.Name, sd.StrData);
+                    if (registerd < 0)
                     {
                         // 未登録
-                        effectiveSkills.Add(sd);
+                        skillNames.Add(sd.Name);
+                        skillDatas.Add(sd);
                     }
-                    else if (sd.NecessaryLevel > registerd.NecessaryLevel)
+                    else if (sd.NecessaryLevel > skillDatas[registerd].NecessaryLevel)
                     {
-                        // 登録済みである場合は習得レベルが高いものを優先
-                        effectiveSkills.Remove(registerd);
-                        effectiveSkills.Add(sd);
+                        // 登録済みである場合は習得レベルが高いものを優先（VB と同じく元の位置で置き換える）
+                        skillDatas[registerd] = sd;
                     }
                 }
             }
@@ -70,28 +95,24 @@ namespace SRCCore.Pilots
                     var sdata = GeneralLib.ListTail(buf, 2);
 
                     // 既に登録済み？
-                    SkillData registerd = null;
-                    if (sname == "ＳＰ消費減少" || sname == "スペシャルパワー自動発動" || sname == "ハンター")
+                    var j = findRegistered(sname, sdata);
+                    if (j < 0)
                     {
-                        // これらの特殊能力は同種の能力を複数持つことが出来る
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sname && x.StrData == sdata);
-                    }
-                    else
-                    {
-                        registerd = effectiveSkills.FirstOrDefault(x => x.Name == sname);
+                        // 未登録
+                        skillNames.Add(sname);
+                        skillDatas.Add(null);
+                        j = skillNames.Count - 1;
                     }
 
                     var slevel = GeneralLib.StrToDbl(GeneralLib.LIndex(buf, 1));
                     if (slevel == 0d)
                     {
                         // レベル0の場合は能力を封印
-                        if (registerd != null)
-                        {
-                            effectiveSkills.Remove(registerd);
-                        }
+                        skillDatas[j] = null;
                     }
                     else
                     {
+                        // PDListのデータを書き換えるわけにはいかないので
                         // アビリティデータを新規に作成
                         var newSd = new SkillData();
                         newSd.Name = sname;
@@ -101,16 +122,7 @@ namespace SRCCore.Pilots
                             newSd.Level = Constants.DEFAULT_LEVEL;
                         }
                         newSd.StrData = GeneralLib.ListTail(buf, 2);
-
-                        if (registerd != null)
-                        {
-                            var idx = effectiveSkills.IndexOf(registerd);
-                            effectiveSkills[idx] = newSd;
-                        }
-                        else
-                        {
-                            effectiveSkills.Add(newSd);
-                        }
+                        skillDatas[j] = newSd;
                     }
                 }
             }
@@ -118,43 +130,42 @@ namespace SRCCore.Pilots
             // 属性使用不能状態の際、対応する技能を封印する。
             if (Unit != null)
             {
-                for (var si = effectiveSkills.Count - 1; si >= 0; si--)
+                for (var j = 0; j < skillDatas.Count; j++)
                 {
-                    if (effectiveSkills[si] != null)
+                    if (skillDatas[j] != null)
                     {
-                        if (Unit.ConditionLifetime(effectiveSkills[si].Name + "使用不能") > 0)
+                        if (Unit.ConditionLifetime(skillDatas[j].Name + "使用不能") > 0)
                         {
-                            effectiveSkills.RemoveAt(si);
+                            skillDatas[j] = null;
                         }
                     }
                 }
             }
 
             // 使用可能な特殊能力を登録
+            for (var i = 0; i < skillNames.Count; i++)
             {
-                var i = 0;
-                foreach (var sd in effectiveSkills)
+                if (skillDatas[i] is null)
                 {
-                    i++;
-                    switch (sd.Name ?? "")
-                    {
-                        case "ＳＰ消費減少":
-                        case "スペシャルパワー自動発動":
-                        case "ハンター":
-                            if (colSkill.ContainsKey(sd.Name))
-                            {
-                                colSkill.Add(sd, sd.Name + ":" + i);
-                            }
-                            else
-                            {
-                                colSkill.Add(sd, sd.Name);
-                            }
-                            break;
+                    continue;
+                }
 
-                        default:
-                            colSkill.Add(sd, sd.Name);
-                            break;
+                var sname = skillNames[i];
+                if (isMultiSkill(sname))
+                {
+                    // 封印した番号も含めて、同じ名前が前にあれば番号付きのキーにする
+                    if (skillNames.IndexOf(sname) >= i)
+                    {
+                        colSkill.Add(skillDatas[i], sname);
                     }
+                    else
+                    {
+                        colSkill.Add(skillDatas[i], sname + ":" + SrcFormatter.Format(i + 1));
+                    }
+                }
+                else
+                {
+                    colSkill.Add(skillDatas[i], sname);
                 }
             }
             #endregion
@@ -174,35 +185,35 @@ namespace SRCCore.Pilots
             var lv = Level + SkillLevel("追加レベル", "");
             if (Expression.IsOptionDefined("攻撃力低成長"))
             {
-                InfightBase = (InfightBase + (int)(lv * (1d + 2d * SkillLevel("格闘成長", ""))) / 2);
-                ShootingBase = (ShootingBase + (int)(lv * (1d + 2d * SkillLevel("射撃成長", ""))) / 2);
+                InfightBase = (int)(InfightBase + VBMath.IntDiv(lv * (1d + 2d * SkillLevel("格闘成長", "")), 2));
+                ShootingBase = (int)(ShootingBase + VBMath.IntDiv(lv * (1d + 2d * SkillLevel("射撃成長", "")), 2));
             }
             else
             {
-                InfightBase = (InfightBase + (int)(lv * (1d + SkillLevel("格闘成長", ""))));
-                ShootingBase = (ShootingBase + (int)(lv * (1d + SkillLevel("射撃成長", ""))));
+                InfightBase = InfightBase + VBMath.Int(lv * (1d + SkillLevel("格闘成長", "")));
+                ShootingBase = ShootingBase + VBMath.Int(lv * (1d + SkillLevel("射撃成長", "")));
             }
 
-            HitBase = (HitBase + (int)(lv * (2d + SkillLevel("命中成長", ""))));
-            DodgeBase = (DodgeBase + (int)(lv * (2d + SkillLevel("回避成長", ""))));
-            TechniqueBase = (TechniqueBase + (int)(lv * (1d + SkillLevel("技量成長", ""))));
-            IntuitionBase = (IntuitionBase + (int)(lv * (1d + SkillLevel("反応成長", ""))));
+            HitBase = HitBase + VBMath.Int(lv * (2d + SkillLevel("命中成長", "")));
+            DodgeBase = DodgeBase + VBMath.Int(lv * (2d + SkillLevel("回避成長", "")));
+            TechniqueBase = TechniqueBase + VBMath.Int(lv * (1d + SkillLevel("技量成長", "")));
+            IntuitionBase = IntuitionBase + VBMath.Int(lv * (1d + SkillLevel("反応成長", "")));
 
             // 能力ＵＰ
-            InfightBase = (InfightBase + (int)SkillLevel("格闘ＵＰ", ""));
-            ShootingBase = (ShootingBase + (int)SkillLevel("射撃ＵＰ", ""));
-            HitBase = (HitBase + (int)SkillLevel("命中ＵＰ", ""));
-            DodgeBase = (DodgeBase + (int)SkillLevel("回避ＵＰ", ""));
-            TechniqueBase = (TechniqueBase + (int)SkillLevel("技量ＵＰ", ""));
-            IntuitionBase = (IntuitionBase + (int)SkillLevel("反応ＵＰ", ""));
+            InfightBase = VBMath.CLng(InfightBase + SkillLevel("格闘ＵＰ", ""));
+            ShootingBase = VBMath.CLng(ShootingBase + SkillLevel("射撃ＵＰ", ""));
+            HitBase = VBMath.CLng(HitBase + SkillLevel("命中ＵＰ", ""));
+            DodgeBase = VBMath.CLng(DodgeBase + SkillLevel("回避ＵＰ", ""));
+            TechniqueBase = VBMath.CLng(TechniqueBase + SkillLevel("技量ＵＰ", ""));
+            IntuitionBase = VBMath.CLng(IntuitionBase + SkillLevel("反応ＵＰ", ""));
 
             // 能力ＤＯＷＮ
-            InfightBase = (InfightBase - (int)SkillLevel("格闘ＤＯＷＮ", ""));
-            ShootingBase = (ShootingBase - (int)SkillLevel("射撃ＤＯＷＮ", ""));
-            HitBase = (HitBase - (int)SkillLevel("命中ＤＯＷＮ", ""));
-            DodgeBase = (DodgeBase - (int)SkillLevel("回避ＤＯＷＮ", ""));
-            TechniqueBase = (TechniqueBase - (int)SkillLevel("技量ＤＯＷＮ", ""));
-            IntuitionBase = (IntuitionBase - (int)SkillLevel("反応ＤＯＷＮ", ""));
+            InfightBase = VBMath.CLng(InfightBase - SkillLevel("格闘ＤＯＷＮ", ""));
+            ShootingBase = VBMath.CLng(ShootingBase - SkillLevel("射撃ＤＯＷＮ", ""));
+            HitBase = VBMath.CLng(HitBase - SkillLevel("命中ＤＯＷＮ", ""));
+            DodgeBase = VBMath.CLng(DodgeBase - SkillLevel("回避ＤＯＷＮ", ""));
+            TechniqueBase = VBMath.CLng(TechniqueBase - SkillLevel("技量ＤＯＷＮ", ""));
+            IntuitionBase = VBMath.CLng(IntuitionBase - SkillLevel("反応ＤＯＷＮ", ""));
 
             // 上限を超えないように
             InfightBase = GeneralLib.MinLng(InfightBase, 9999);
@@ -227,27 +238,27 @@ namespace SRCCore.Pilots
             lv = SkillLevel("超感覚", "");
             if (lv > 0d)
             {
-                HitMod = (int)(HitMod + 2d * lv + 3d);
-                DodgeMod = (int)(DodgeMod + 2d * lv + 3d);
+                HitMod = VBMath.CLng(HitMod + 2d * lv + 3d);
+                DodgeMod = VBMath.CLng(DodgeMod + 2d * lv + 3d);
             }
 
             lv = SkillLevel("知覚強化", "");
             if (lv > 0d)
             {
-                HitMod = (int)(HitMod + 2d * lv + 3d);
-                DodgeMod = (int)(DodgeMod + 2d * lv + 3d);
+                HitMod = VBMath.CLng(HitMod + 2d * lv + 3d);
+                DodgeMod = VBMath.CLng(DodgeMod + 2d * lv + 3d);
             }
 
             lv = SkillLevel("念力", "");
             if (lv > 0d)
             {
-                HitMod = (int)(HitMod + 2d * lv + 3d);
-                DodgeMod = (int)(DodgeMod + 2d * lv + 3d);
+                HitMod = VBMath.CLng(HitMod + 2d * lv + 3d);
+                DodgeMod = VBMath.CLng(DodgeMod + 2d * lv + 3d);
             }
 
             lv = SkillLevel("超反応", "");
-            HitMod = (int)(HitMod + 2d * lv);
-            DodgeMod = (int)(DodgeMod + 2d * lv);
+            HitMod = VBMath.CLng(HitMod + 2d * lv);
+            DodgeMod = VBMath.CLng(DodgeMod + 2d * lv);
 
             if (IsSkillAvailable("サイボーグ"))
             {
@@ -288,42 +299,42 @@ namespace SRCCore.Pilots
                 {
                     foreach (var sp in u.SubPilots)
                     {
-                        InfightMod = (int)(InfightMod + 2d * sp.SkillLevel("格闘サポート", ref_mode: ""));
+                        InfightMod = VBMath.CLng(InfightMod + 2d * sp.SkillLevel("格闘サポート", ref_mode: ""));
                         if (HasMana())
                         {
-                            ShootingMod = (int)(ShootingMod + 2d * sp.SkillLevel("魔力サポート", ref_mode: ""));
+                            ShootingMod = VBMath.CLng(ShootingMod + 2d * sp.SkillLevel("魔力サポート", ref_mode: ""));
                         }
                         else
                         {
-                            ShootingMod = (int)(ShootingMod + 2d * sp.SkillLevel("射撃サポート", ref_mode: ""));
+                            ShootingMod = VBMath.CLng(ShootingMod + 2d * sp.SkillLevel("射撃サポート", ref_mode: ""));
                         }
 
-                        HitMod = (int)(HitMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
-                        HitMod = (int)(HitMod + 2d * sp.SkillLevel("命中サポート", ref_mode: ""));
-                        DodgeMod = (int)(DodgeMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
-                        DodgeMod = (int)(DodgeMod + 2d * sp.SkillLevel("回避サポート", ref_mode: ""));
-                        TechniqueMod = (int)(TechniqueMod + 2d * sp.SkillLevel("技量サポート", ref_mode: ""));
-                        IntuitionMod = (int)(IntuitionMod + 2d * sp.SkillLevel("反応サポート", ref_mode: ""));
+                        HitMod = VBMath.CLng(HitMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
+                        HitMod = VBMath.CLng(HitMod + 2d * sp.SkillLevel("命中サポート", ref_mode: ""));
+                        DodgeMod = VBMath.CLng(DodgeMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
+                        DodgeMod = VBMath.CLng(DodgeMod + 2d * sp.SkillLevel("回避サポート", ref_mode: ""));
+                        TechniqueMod = VBMath.CLng(TechniqueMod + 2d * sp.SkillLevel("技量サポート", ref_mode: ""));
+                        IntuitionMod = VBMath.CLng(IntuitionMod + 2d * sp.SkillLevel("反応サポート", ref_mode: ""));
                     }
 
                     foreach (var sp in u.Supports)
                     {
-                        InfightMod = (int)(InfightMod + 2d * sp.SkillLevel("格闘サポート", ref_mode: ""));
+                        InfightMod = VBMath.CLng(InfightMod + 2d * sp.SkillLevel("格闘サポート", ref_mode: ""));
                         if (HasMana())
                         {
-                            ShootingMod = (int)(ShootingMod + 2d * sp.SkillLevel("魔力サポート", ref_mode: ""));
+                            ShootingMod = VBMath.CLng(ShootingMod + 2d * sp.SkillLevel("魔力サポート", ref_mode: ""));
                         }
                         else
                         {
-                            ShootingMod = (int)(ShootingMod + 2d * sp.SkillLevel("射撃サポート", ref_mode: ""));
+                            ShootingMod = VBMath.CLng(ShootingMod + 2d * sp.SkillLevel("射撃サポート", ref_mode: ""));
                         }
 
-                        HitMod = (int)(HitMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
-                        HitMod = (int)(HitMod + 2d * sp.SkillLevel("命中サポート", ref_mode: ""));
-                        DodgeMod = (int)(DodgeMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
-                        DodgeMod = (int)(DodgeMod + 2d * sp.SkillLevel("回避サポート", ref_mode: ""));
-                        TechniqueMod = (int)(TechniqueMod + 2d * sp.SkillLevel("技量サポート", ref_mode: ""));
-                        IntuitionMod = (int)(IntuitionMod + 2d * sp.SkillLevel("反応サポート", ref_mode: ""));
+                        HitMod = VBMath.CLng(HitMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
+                        HitMod = VBMath.CLng(HitMod + 2d * sp.SkillLevel("命中サポート", ref_mode: ""));
+                        DodgeMod = VBMath.CLng(DodgeMod + 3d * sp.SkillLevel("サポート", ref_mode: ""));
+                        DodgeMod = VBMath.CLng(DodgeMod + 2d * sp.SkillLevel("回避サポート", ref_mode: ""));
+                        TechniqueMod = VBMath.CLng(TechniqueMod + 2d * sp.SkillLevel("技量サポート", ref_mode: ""));
+                        IntuitionMod = VBMath.CLng(IntuitionMod + 2d * sp.SkillLevel("反応サポート", ref_mode: ""));
                     }
 
                     if (u.IsFeatureAvailable("追加サポート"))
@@ -331,22 +342,22 @@ namespace SRCCore.Pilots
                         var asp = u.AdditionalSupport();
                         if (asp != null)
                         {
-                            InfightMod = (int)(InfightMod + 2d * asp.SkillLevel("格闘サポート", ref_mode: ""));
+                            InfightMod = VBMath.CLng(InfightMod + 2d * asp.SkillLevel("格闘サポート", ref_mode: ""));
                             if (HasMana())
                             {
-                                ShootingMod = (int)(ShootingMod + 2d * asp.SkillLevel("魔力サポート", ref_mode: ""));
+                                ShootingMod = VBMath.CLng(ShootingMod + 2d * asp.SkillLevel("魔力サポート", ref_mode: ""));
                             }
                             else
                             {
-                                ShootingMod = (int)(ShootingMod + 2d * asp.SkillLevel("射撃サポート", ref_mode: ""));
+                                ShootingMod = VBMath.CLng(ShootingMod + 2d * asp.SkillLevel("射撃サポート", ref_mode: ""));
                             }
 
-                            HitMod = (int)(HitMod + 3d * asp.SkillLevel("サポート", ref_mode: ""));
-                            HitMod = (int)(HitMod + 2d * asp.SkillLevel("命中サポート", ref_mode: ""));
-                            DodgeMod = (int)(DodgeMod + 3d * asp.SkillLevel("サポート", ref_mode: ""));
-                            DodgeMod = (int)(DodgeMod + 2d * asp.SkillLevel("回避サポート", ref_mode: ""));
-                            TechniqueMod = (int)(TechniqueMod + 2d * asp.SkillLevel("技量サポート", ref_mode: ""));
-                            IntuitionMod = (int)(IntuitionMod + 2d * asp.SkillLevel("反応サポート", ref_mode: ""));
+                            HitMod = VBMath.CLng(HitMod + 3d * asp.SkillLevel("サポート", ref_mode: ""));
+                            HitMod = VBMath.CLng(HitMod + 2d * asp.SkillLevel("命中サポート", ref_mode: ""));
+                            DodgeMod = VBMath.CLng(DodgeMod + 3d * asp.SkillLevel("サポート", ref_mode: ""));
+                            DodgeMod = VBMath.CLng(DodgeMod + 2d * asp.SkillLevel("回避サポート", ref_mode: ""));
+                            TechniqueMod = VBMath.CLng(TechniqueMod + 2d * asp.SkillLevel("技量サポート", ref_mode: ""));
+                            IntuitionMod = VBMath.CLng(IntuitionMod + 2d * asp.SkillLevel("反応サポート", ref_mode: ""));
                         }
                     }
                 }
@@ -359,37 +370,37 @@ namespace SRCCore.Pilots
                         case "格闘強化":
                             if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
                             {
-                                InfightMod = (int)(InfightMod + 5d * f.FeatureLevel);
+                                InfightMod = VBMath.CLng(InfightMod + 5d * f.FeatureLevel);
                             }
                             break;
                         case "射撃強化":
                             if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
                             {
-                                ShootingMod = (int)(ShootingMod + 5d * f.FeatureLevel);
+                                ShootingMod = VBMath.CLng(ShootingMod + 5d * f.FeatureLevel);
                             }
                             break;
                         case "命中強化":
                             if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
                             {
-                                HitMod = (int)(HitMod + 5d * f.FeatureLevel);
+                                HitMod = VBMath.CLng(HitMod + 5d * f.FeatureLevel);
                             }
                             break;
                         case "回避強化":
                             if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
                             {
-                                DodgeMod = (int)(DodgeMod + 5d * f.FeatureLevel);
+                                DodgeMod = VBMath.CLng(DodgeMod + 5d * f.FeatureLevel);
                             }
                             break;
                         case "技量強化":
                             if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
                             {
-                                TechniqueMod = (int)(TechniqueMod + 5d * f.FeatureLevel);
+                                TechniqueMod = VBMath.CLng(TechniqueMod + 5d * f.FeatureLevel);
                             }
                             break;
                         case "反応強化":
                             if (Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(f.Data, 2)))
                             {
-                                IntuitionMod = (int)(IntuitionMod + 5d * f.FeatureLevel);
+                                IntuitionMod = VBMath.CLng(IntuitionMod + 5d * f.FeatureLevel);
                             }
                             break;
                     }
@@ -581,7 +592,7 @@ namespace SRCCore.Pilots
             // 指揮効果判定用に自分の階級レベルを算出
             if (IsSkillAvailable("階級"))
             {
-                my_cmd_rank = (int)SkillLevel("階級", ref_mode: "");
+                my_cmd_rank = VBMath.CLng(SkillLevel("階級", ref_mode: ""));
                 cmd_rank = my_cmd_rank;
             }
             else
@@ -688,7 +699,7 @@ namespace SRCCore.Pilots
                             goto NextUnit;
                         }
 
-                        cmd_rank2 = (int)withBlock2.SkillLevel("階級", ref_mode: "");
+                        cmd_rank2 = VBMath.CLng(withBlock2.SkillLevel("階級", ref_mode: ""));
                         if (cmd_rank2 > cmd_rank)
                         {
                             cmd_rank = cmd_rank2;
@@ -714,8 +725,8 @@ namespace SRCCore.Pilots
             // 広域サポートによる修正
             if (cs_level != Constants.DEFAULT_LEVEL)
             {
-                HitMod2 = (int)(HitMod2 + 5.0 * cs_level);
-                DodgeMod2 = (int)(DodgeMod2 + 5.0 * cs_level);
+                HitMod2 = VBMath.CLng(HitMod2 + 5.0 * cs_level);
+                DodgeMod2 = VBMath.CLng(DodgeMod2 + 5.0 * cs_level);
             }
 
             // 指揮能力による修正
@@ -725,8 +736,8 @@ namespace SRCCore.Pilots
                     // 修正なし
                     break;
                 case 0:
-                    HitMod2 = (int)(HitMod2 + 5.0 * cmd_level);
-                    DodgeMod2 = (int)(DodgeMod2 + 5.0 * cmd_level);
+                    HitMod2 = VBMath.CLng(HitMod2 + 5.0 * cmd_level);
+                    DodgeMod2 = VBMath.CLng(DodgeMod2 + 5.0 * cmd_level);
                     break;
 
                 default:
@@ -734,8 +745,8 @@ namespace SRCCore.Pilots
                     // 持つパイロットの指揮効果のみを受ける
                     if (cmd_rank > my_cmd_rank)
                     {
-                        HitMod2 = (int)(HitMod2 + 5.0 * cmd_level);
-                        DodgeMod2 = (int)(DodgeMod2 + 5.0 * cmd_level);
+                        HitMod2 = VBMath.CLng(HitMod2 + 5.0 * cmd_level);
+                        DodgeMod2 = VBMath.CLng(DodgeMod2 + 5.0 * cmd_level);
                     }
                     break;
             }

@@ -95,7 +95,8 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            if (pcount >= 2)
+            // 元の SRC: 引数が 2〜4 個のときだけダイアログを出す
+            if (2 <= pcount && pcount <= 4)
             {
                 var ftype = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                 var fsuffix = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
@@ -106,12 +107,14 @@ namespace SRCCore.Expressions.Functions
                     ? SRC.ScenarioPath
                     : SRC.FileSystem.ToAbsolutePath(SRC.ScenarioPath, subdir);
 
-                var selectedPath = SRC.GUI.SelectLoadFile("ファイルを開く", initialDir, ftype, fsuffix);
+                // 第 3 引数のファイルを初めに選んでおく（VB: Expression.bas の LoadFileDialog の default_file）
+                var selectedPath = SRC.GUI.SelectLoadFile("ファイルを開く", initialDir, initialFile, ftype, fsuffix);
                 if (!string.IsNullOrEmpty(selectedPath))
                 {
-                    var relPath = SRC.FileSystem.ToRelativePath(SRC.ScenarioPath, selectedPath);
-                    // ToRelativePath はシナリオフォルダ外のパスを変換できず絶対パスのまま返す。
+                    // シナリオのフォルダからの相対パスにする（ScenarioPath は末尾に区切りが無いため、先頭の \ も外す）。
+                    // シナリオフォルダ外のパスは変換できず絶対パスのまま返る。
                     // 相対パスに変換できた（シナリオフォルダ内）ときのみ結果として返す。
+                    var relPath = SRC.ToSavedPath(selectedPath);
                     if (!SRC.FileSystem.IsAbsolutePath(relPath))
                     {
                         str_result = relPath;
@@ -131,7 +134,8 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            if (pcount >= 2)
+            // 元の SRC: 引数が 2〜4 個のときだけダイアログを出す
+            if (2 <= pcount && pcount <= 4)
             {
                 var ftype = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                 var fsuffix = SRC.Expression.GetValueAsString(@params[2], is_term[2]);
@@ -145,9 +149,10 @@ namespace SRCCore.Expressions.Functions
                 var selectedPath = SRC.GUI.SelectSaveFile("ファイルを保存", initialDir, initialFile, ftype, fsuffix);
                 if (!string.IsNullOrEmpty(selectedPath))
                 {
-                    var relPath = SRC.FileSystem.ToRelativePath(SRC.ScenarioPath, selectedPath);
-                    // ToRelativePath はシナリオフォルダ外のパスを変換できず絶対パスのまま返す。
+                    // シナリオのフォルダからの相対パスにする（ScenarioPath は末尾に区切りが無いため、先頭の \ も外す）。
+                    // シナリオフォルダ外のパスは変換できず絶対パスのまま返る。
                     // 相対パスに変換できた（シナリオフォルダ内）ときのみ結果として返す。
+                    var relPath = SRC.ToSavedPath(selectedPath);
                     if (!SRC.FileSystem.IsAbsolutePath(relPath))
                     {
                         str_result = relPath;

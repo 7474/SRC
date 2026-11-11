@@ -3,6 +3,7 @@ using SRCCore.Events;
 using SRCCore.TestLib;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Tests
 {
@@ -51,6 +52,51 @@ namespace SRCCore.CmdDatas.Tests
             Assert.IsTrue(captured.Bold);
             Assert.IsFalse(captured.Italic);
             Assert.AreEqual(Color.White, captured.Color);
+        }
+
+        [TestMethod]
+        public void FontCmd_NoArgs_ResetsFromChangedFont()
+        {
+            // 元の SRC（CmdData.cls ExecFontCmd）は引数が無ければ白・ＭＳ Ｐ明朝・16pt・太字・斜体なしに戻す。
+            // いまの書式が既定と違っても、既定に戻す
+            var (src, gui) = CreateSrc();
+            gui.CurrentPaintFont = new PaintFont { Name = "ＭＳ ゴシック", Size = 24, Bold = false, Italic = true };
+            gui.CurrentPaintColor = Color.Red;
+            gui.ResetDrawStringHandler = () => { };
+            DrawFontOption captured = null;
+            gui.SetDrawFontHandler = o => captured = o;
+            Assert.AreEqual(1, CreateCmd(src, "Font").Exec());
+            Assert.IsNotNull(captured);
+            Assert.AreEqual("ＭＳ Ｐ明朝", captured.FontFamily);
+            Assert.AreEqual(16f, captured.Size);
+            Assert.IsTrue(captured.Bold);
+            Assert.IsFalse(captured.Italic);
+            Assert.AreEqual(Color.White.ToArgb(), captured.Color.ToArgb());
+        }
+
+        [TestMethod]
+        public void FontCmd_Size_RoundsToIntegerLikeCInt()
+        {
+            // 元の SRC は .Font.Size = CInt(opt) なので、小数の大きさは偶数丸めで整数にする
+            var (src, gui) = CreateSrc();
+            DrawFontOption captured = null;
+            gui.SetDrawFontHandler = o => captured = o;
+            Assert.AreEqual(1, CreateCmd(src, "Font 12.5pt").Exec());
+            Assert.AreEqual(12f, captured.Size);
+            Assert.AreEqual(2, CreateCmd(src, "Font 13.5pt", 1).Exec());
+            Assert.AreEqual(14f, captured.Size);
+        }
+
+        [TestMethod]
+        public void FontCmd_NonNumericSize_IsError()
+        {
+            // 元の SRC は CInt("abc") が型の不一致の実行時エラーになり、「イベントデータが不正です」で止まる
+            var (src, gui) = CreateSrc();
+            DrawFontOption captured = null;
+            gui.SetDrawFontHandler = o => captured = o;
+            Assert.AreEqual(-1, CreateCmd(src, "Font abcpt").Exec());
+            Assert.IsNull(captured);
+            Assert.AreEqual("イベントデータが不正です", src.DataErrors.Last().msg);
         }
 
         [TestMethod]

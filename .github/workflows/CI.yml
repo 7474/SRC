@@ -66,6 +66,14 @@ jobs:
     - uses: actions/checkout@v7
     - run: python3 tools/release.py check
 
+  # VB 版と C# の手続きの対応表（docs/history/porting/vb-map）に VB のすべての手続きがあり、状態の書き方が正しいか（#1498）。
+  # 表は文書なので、文書だけの PR でも動かす
+  port-map-check:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v7
+    - run: python3 tools/vb_port_map.py --check
+
   # SRCCore のユニットテストと、SRCRender の E2E・VRT（正とする環境は Linux）
   test-srccore-linux:
     needs: changes
@@ -91,6 +99,13 @@ jobs:
     - name: Test SRCCore
       run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --verbosity normal
 
+    # 実行する環境の言語に左右されないこと（#1554）。小数点が「,」のドイツ語と、I の小文字が ı のトルコ語でも通す。
+    # 言語は SRC_TEST_CULTURE（SRCCoreTests/TestCulture.cs）で切り替える。無いカルチャの名前ならテストが失敗する
+    - name: Test SRCCore (de-DE, tr-TR)
+      run: |
+        SRC_TEST_CULTURE=de-DE dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build
+        SRC_TEST_CULTURE=tr-TR dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build
+
     - name: Test SRCRender (E2E / VRT)
       run: dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --verbosity normal
 
@@ -102,6 +117,20 @@ jobs:
         path: |
           SRC.Sharp/SRCRenderTests/bin/**/TestResults/vrt/
           SRC.Sharp/SRCRenderTests/bin/**/TestResults/e2e/
+        if-no-files-found: ignore
+
+    # 画面と音の見比べ（#1553）。実機（Compat/screens-expected）・SRC#（CompatScreensTests）・SRC#Form（Compat/screens-form）の
+    # 画像を場面ごとに並べた一覧を作る。画像は比べない（人が見る）。手順は SRC.Sharp/Compat/SCREENS.md
+    - name: Compat screens report
+      if: always()
+      run: python3 SRC.Sharp/Compat/screens_report.py --out compat-screens-report
+
+    - name: Upload compat screens report
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: compat-screens
+        path: compat-screens-report/
         if-no-files-found: ignore
 
   # SRC#Avalonia・作成支援ツール・SRCSound
@@ -127,6 +156,10 @@ jobs:
     # マウスカーソルの移動（X11）を確かめるため Xvfb 上で実行する
     - name: Test SRC#Avalonia (headless)
       run: xvfb-run -a dotnet test SRC.Sharp/SRCSharpAvaloniaTests/SRCSharpAvaloniaTests.csproj --verbosity normal
+
+    # VB 版からの移植で起きやすい誤りを見つけるアナライザー（SRC.Sharp/SRCPortingAnalyzers/README.md）
+    - name: Test SRCPortingAnalyzers
+      run: dotnet test SRC.Sharp/SRCPortingAnalyzersTests/SRCPortingAnalyzersTests.csproj --verbosity normal
 
     # 作成支援ツール（lint・解析・バランス集計・Language Server・デバッガ）
     - name: Test SRCAuthoring
@@ -411,6 +444,46 @@ jobs:
           SRC.Sharp/SRCSharpWeb.E2E/test-results/
         if-no-files-found: ignore
 
+  # 互換性の検証用のシナリオ（SRC.Sharp/Compat/。#1549）を lint に掛け、Compat/*.play のすべてを最初から最後まで自動でプレイし、
+  # 各話の終わりの状態をゴールデン（Compat/golden/）と比べる（#1551）。同じ乱数の種で 2 回流し、同じ結果になることも確かめる。
+  # srcsharp だけをビルドすればよく数分で終わるので、長いジョブ（test-srccore-linux・test-tools-linux）に足さずに並べて動かす
+  test-compat-scenario:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
+
+    # 画面なしの描画（SkiaSharp）で日本語を描くため。VRT と同じフォント
+    - name: Install fonts
+      run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+
+    - name: Build srcsharp and SRCDataLinter
+      run: |
+        dotnet build SRC.Sharp/SRCSharpTools/SRCSharpTools.csproj -c Release
+        dotnet build SRC.Sharp/SRCDataLinter/SRCDataLinter.csproj -c Release
+
+    # 話を足しても、ここは変えなくてよい（Compat/*.play をすべて流す。流し方は SRC.Sharp/Compat/README.md）
+    - name: Lint and play compat scenarios
+      run: python3 tools/compat_play.py --repeat 2 --out compat-results
+
+    - name: Upload compat scenario results
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: compat-scenario
+        path: compat-results/
+        if-no-files-found: ignore
+
   # 検証用のイメージ（koudenpa/srcdatalinter）。従来の lint と srcsharp（自動プレイ・バランス集計）が動くことを確かめる
   docker-srcdatalinter:
     needs: changes
@@ -516,7 +589,7 @@ jobs:
   # ブランチ保護の必須チェック。どれかのジョブが失敗・取り消しなら失敗する（省いたジョブは成功として扱う）
   ci-passed:
     if: always()
-    needs: [changes, release-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-viewer, test-lint, docker-srcdatalinter, build-and-test-srcs, build-help]
+    needs: [changes, release-check, port-map-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-viewer, test-lint, test-compat-scenario, docker-srcdatalinter, build-and-test-srcs, build-help]
     runs-on: ubuntu-24.04
     steps:
     - name: Check results

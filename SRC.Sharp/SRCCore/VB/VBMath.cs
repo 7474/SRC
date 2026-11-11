@@ -18,6 +18,24 @@ namespace SRCCore.VB
         }
 
         /// <summary>
+        /// VB5 の Int 関数。x を超えない最大の整数（負の数は小さいほうへ。Int(-1.5) = -2）。
+        /// https://learn.microsoft.com/office/vba/language/reference/user-interface-help/int-fix-functions
+        /// </summary>
+        public static int Int(double x)
+        {
+            return checked((int)Math.Floor(x));
+        }
+
+        /// <summary>
+        /// VB5 の Fix 関数。小数部を切り捨てる（0 に近いほうへ。Fix(-1.5) = -1）。C# の (int) キャストと同じ。
+        /// https://learn.microsoft.com/office/vba/language/reference/user-interface-help/int-fix-functions
+        /// </summary>
+        public static int Fix(double x)
+        {
+            return checked((int)Math.Truncate(x));
+        }
+
+        /// <summary>
         /// VB5 の整数除算（\ 演算子）。割る前に被除数を偶数丸めで整数にしてから、商の小数部を切り捨てる。
         /// C# の (long) キャストは切り捨てになるため、Double を \ で割っていた箇所ではこちらを使う。
         /// https://learn.microsoft.com/office/vba/language/reference/user-interface-help/backslash-operator

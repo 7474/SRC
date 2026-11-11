@@ -203,6 +203,80 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         /// <summary>
+        /// RecoverSP の端数は元の SRC の Long への代入と同じく偶数へ丸める（7474/SRC#1471）
+        /// </summary>
+        [TestMethod]
+        public void RecoverSPCmd_RoundsFractionToEven()
+        {
+            var src = CreateSrc();
+            var pd = src.PDList.Add("SP丸め");
+            pd.SP = 98;
+            var pilot = src.PList.Add("SP丸め", 1, "味方");
+            // MaxSP = 2 × レベル1 + 98 = 100
+            Assert.AreEqual(100, pilot.MaxSP);
+
+            pilot.SP = 10;
+            Assert.AreEqual(1, CreateCmd(src, "RecoverSP SP丸め 3.5", 0).Exec());
+            Assert.AreEqual(14, pilot.SP); // 13.5 → 14
+
+            pilot.SP = 10;
+            Assert.AreEqual(2, CreateCmd(src, "RecoverSP SP丸め 2.5", 1).Exec());
+            Assert.AreEqual(12, pilot.SP); // 12.5 → 12
+        }
+
+        /// <summary>
+        /// RecoverPlana の端数は元の SRC の Long への代入と同じく偶数へ丸める（7474/SRC#1471）
+        /// </summary>
+        [TestMethod]
+        public void RecoverPlanaCmd_RoundsFractionToEven()
+        {
+            var src = CreateSrc();
+            var pd = src.PDList.Add("霊力丸め");
+            pd.SP = 10;
+            pd.AddSkill("霊力", 17d, "", 1);
+            var pilot = src.PList.Add("霊力丸め", 2, "味方");
+            // 最大霊力 = 17 + 1.5 × 2 = 20
+            Assert.AreEqual(20, pilot.MaxPlana());
+
+            pilot.Plana = 0;
+            Assert.AreEqual(1, CreateCmd(src, "RecoverPlana 霊力丸め 17.5", 0).Exec());
+            Assert.AreEqual(4, pilot.Plana); // 3.5 → 4
+
+            pilot.Plana = 0;
+            Assert.AreEqual(2, CreateCmd(src, "RecoverPlana 霊力丸め 12.5", 1).Exec());
+            Assert.AreEqual(2, pilot.Plana); // 2.5 → 2
+        }
+
+        /// <summary>
+        /// LevelUp・ExpUp はユニットの HP・EN を変化前の割合で入れ直す。VB の Long への代入と同じく
+        /// 偶数丸めにするので、割合の往復で生じる誤差（1000 × 32.3% / 100 = 322.99…）で 1 減らない
+        /// （VB: CmdData.cls ExecLevelUpCmd・ExecExpUpCmd の .HP = .MaxHP * hp_ratio / 100）
+        /// </summary>
+        [TestMethod]
+        public void LevelUpAndExpUp_KeepHPWithoutRoundTripTruncation()
+        {
+            var src = CreateSrc();
+            var ud = src.UDList.Add("割合機");
+            ud.HP = 1000;
+            ud.EN = 100;
+            ud.PilotNum = 1;
+            var u = src.UList.Add("割合機", 0, "味方");
+            u.Update();
+            var pilot = CreatePilot(src, "割合パイロット", 1);
+            pilot.Ride(u);
+
+            u.HP = 323;
+            Assert.AreEqual(1, CreateCmd(src, "LevelUp 割合パイロット 1", 0).Exec());
+            Assert.AreEqual(2, pilot.Level);
+            Assert.AreEqual(323, u.HP);
+
+            u.HP = 641;
+            Assert.AreEqual(2, CreateCmd(src, "ExpUp 割合パイロット 1000", 1).Exec());
+            Assert.IsTrue(pilot.Level > 2);
+            Assert.AreEqual(641, u.HP);
+        }
+
+        /// <summary>
         /// RecoverSP 存在しないパイロット 100 → エラー
         /// </summary>
         [TestMethod]

@@ -8,8 +8,7 @@ namespace SRCCore.Extensions
 {
     public static class ListExtension
     {
-        // XXX EnumerableExtension
-        // XXX 多分遅い
+        // VB には無い SRC# の補助（ReDim Preserve で配列を伸ばして足す処理の代わり）。appends は呼んだときに読み切る
         public static IEnumerable<T> AppendRange<T>(this IEnumerable<T> list, IEnumerable<T> appends)
         {
             foreach (var a in appends)

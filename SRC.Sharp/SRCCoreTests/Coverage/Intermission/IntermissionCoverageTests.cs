@@ -430,7 +430,7 @@ namespace SRCCore.Coverage.Tests
 
             var row = captured.Items[1];
             StringAssert.EndsWith(row.Text, "  テスト隊長");
-            Assert.AreEqual("ブースター 装甲板", row.ListItemComment);
+            Assert.AreEqual("ブースター 装甲板 ", row.ListItemComment);
         }
 
         [TestMethod]
@@ -569,7 +569,7 @@ namespace SRCCore.Coverage.Tests
 
             src.InterMission.ExchangeUnitCommand();
 
-            Assert.AreEqual("パイロット選択", captured.lb_info);
+            Assert.AreEqual("パイロット選択", captured.lb_caption);
             CollectionAssert.AreEqual(new[] { "▽並べ替え▽", high.ID, low.ID },
                 captured.Items.Select(x => x.ListItemID).ToList());
         }
@@ -592,7 +592,7 @@ namespace SRCCore.Coverage.Tests
             var riding = captured.Items.Single(x => x.ListItemID == p.ID);
             StringAssert.Contains(riding.Text, "テスト隊長");
             StringAssert.Contains(riding.Text, "試作機");
-            Assert.AreEqual("ブースター", riding.ListItemComment);
+            Assert.AreEqual("ブースター ", riding.ListItemComment);
             var notRiding = captured.Items.Single(x => x.ListItemID == free.ID);
             StringAssert.StartsWith(notRiding.Text, " 待機者");
             Assert.AreEqual("", notRiding.ListItemComment);
@@ -651,13 +651,13 @@ namespace SRCCore.Coverage.Tests
             // 乗り換え先の一覧: 今のユニットと敵ユニットは含まない
             var candidates = lists[1].Items.Skip(1).Select(x => x.ListItemID).ToList();
             CollectionAssert.AreEqual(new[] { newUnit.ID }, candidates);
-            StringAssert.StartsWith(lists[1].lb_info, "乗り換え先選択 ： テスト隊長 (旧型機)");
+            StringAssert.StartsWith(lists[1].lb_caption, "乗り換え先選択 ： テスト隊長 (旧型機)");
             Assert.AreSame(newUnit, p.Unit);
             Assert.AreEqual(0, oldUnit.CountPilot());
             Assert.AreEqual(1, newUnit.CountPilot());
             // 乗り換え後はパイロット選択に戻る
             Assert.AreEqual(3, lists.Count);
-            Assert.AreEqual("パイロット選択", lists[2].lb_info);
+            Assert.AreEqual("パイロット選択", lists[2].lb_caption);
         }
 
         [TestMethod]
@@ -685,7 +685,7 @@ namespace SRCCore.Coverage.Tests
 
             // 乗り換え先の行には今のパイロット名が出る
             StringAssert.Contains(lists[1].Items[1].Text, "前任者");
-            StringAssert.StartsWith(lists[1].lb_info, "乗り換え先選択 ： 後任者");
+            StringAssert.StartsWith(lists[1].lb_caption, "乗り換え先選択 ： 後任者");
             Assert.AreSame(target, p.Unit);
             Assert.IsNull(current.Unit);
             Assert.AreSame(p, target.MainPilot());
@@ -786,7 +786,7 @@ namespace SRCCore.Coverage.Tests
             Assert.AreEqual("アイテムを交換するユニットを選択", captured.lb_caption);
             CollectionAssert.AreEqual(new[] { "▽並べ替え▽", u.ID }, captured.Items.Select(x => x.ListItemID).ToList());
             StringAssert.Contains(captured.Items[1].Text, "1/3");
-            Assert.AreEqual("ブースター", captured.Items[1].ListItemComment);
+            Assert.AreEqual("ブースター ", captured.Items[1].ListItemComment);
         }
 
         [TestMethod]
@@ -818,11 +818,11 @@ namespace SRCCore.Coverage.Tests
             StringAssert.StartsWith(slots.Items[0].Text, "----");
             StringAssert.EndsWith(slots.Items[0].Text, "強化パーツ");
             Assert.AreEqual("▽装備解除▽", slots.Items[2].Text);
-            // 装備できるアイテムの一覧（装備数/所有数）
+            // 装備できるアイテムの一覧（未装備の数/使える数）
             var choices = lists[2];
             StringAssert.StartsWith(choices.lb_caption, "装備するアイテムを選択 ： 試作機");
             Assert.AreEqual(itm.Name, choices.Items.Single().ListItemID);
-            StringAssert.Contains(choices.Items[0].Text, "0 /1");
+            StringAssert.EndsWith(choices.Items[0].Text, " 1/ 1");
             // 装備された
             Assert.AreSame(u, itm.Unit);
             Assert.AreEqual(1, u.CountItem());

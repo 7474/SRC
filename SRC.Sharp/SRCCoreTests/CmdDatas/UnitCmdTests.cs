@@ -4,6 +4,7 @@ using SRCCore.CmdDatas.Commands;
 using SRCCore.Events;
 using SRCCore.TestLib;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Tests
 {
@@ -201,6 +202,65 @@ namespace SRCCore.CmdDatas.Tests
             var cmd = CreateCmd(src, "ChangeMode a b c d e");
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void ChangeModeCmd_PilotNotOnUnit_IsIgnored()
+        {
+            // VB の ExecChangeModeCmd は対象のユニットが Nothing なら飛ばす。
+            // ユニットに乗っていないパイロットを指定してもエラーにならない（7474/SRC#1463）
+            var fx = new Coverage.Tests.UnitAbilityCoverageFixture();
+            var src = fx.Src;
+            fx.AddPilotData("待機パイロット");
+            src.PList.Add("待機パイロット", 1, "味方");
+            src.Map.MapWidth = 10;
+            src.Map.MapHeight = 10;
+
+            Assert.AreEqual(1, CreateCmd(src, "ChangeMode 待機パイロット 待機").Exec());
+            Assert.AreEqual(2, CreateCmd(src, "ChangeMode 待機パイロット 3 4", 1).Exec());
+            Assert.AreEqual(0, fx.Gui.CallsOf(nameof(SRCCore.IGUI.ErrorMessage)).Count());
+        }
+
+        [TestMethod]
+        public void ChangeModeCmd_PilotOnUnit_ChangesUnitMode()
+        {
+            var fx = new Coverage.Tests.UnitAbilityCoverageFixture();
+            var src = fx.Src;
+            fx.AddUnitData("テスト機");
+            var u = fx.CreateUnit("テスト機", "乗っているパイロット");
+
+            Assert.AreEqual(1, CreateCmd(src, "ChangeMode 乗っているパイロット 待機").Exec());
+            Assert.AreEqual("待機", u.Mode);
+        }
+
+        [TestMethod]
+        public void ChangeModeCmd_GroupId_StopsAtFirstMissingNumber()
+        {
+            // VB の ExecChangeModeCmd は「名前:2」「名前:3」……と番号が続く限り（生きているパイロットが
+            // 見つかる限り）ユニットを加え、途切れたらそこで止める
+            var fx = new Coverage.Tests.UnitAbilityCoverageFixture();
+            var src = fx.Src;
+            fx.AddUnitData("敵機");
+            fx.AddPilotData("敵パイロット");
+            var units = new List<SRCCore.Units.Unit>();
+            for (var i = 0; i < 4; i++)
+            {
+                var unit = src.UList.Add("敵機", 0, "敵");
+                var pilot = src.PList.Add("敵パイロット", 1, "敵", "敵部隊");
+                unit.AddPilot(pilot);
+                pilot.Unit = unit;
+                units.Add(unit);
+            }
+            Assert.AreEqual("敵部隊:3", units[2].MainPilot().ID);
+            // 「敵部隊:3」が死んでいると「敵部隊:4」は対象にならない
+            units[2].MainPilot().Alive = false;
+
+            Assert.AreEqual(1, CreateCmd(src, "ChangeMode 敵部隊 待機").Exec());
+
+            Assert.AreEqual("待機", units[0].Mode);
+            Assert.AreEqual("待機", units[1].Mode);
+            Assert.AreNotEqual("待機", units[2].Mode);
+            Assert.AreNotEqual("待機", units[3].Mode);
         }
 
         // ──────────────────────────────────────────────

@@ -17,8 +17,11 @@ namespace SRCPlay
     ///   auto [秒]              メッセージ・ダイアログ・リスト等を自動で進め、マップで操作を受け付ける状態になるまで待つ
     ///   wait ready [秒]        マップで操作を受け付ける状態になるまで待つ（自動では進めない）
     ///   wait message [文字列]  メッセージ（指定があればその文字列を含むもの）が出るまで待つ
+    ///   wait battle 文字列     その文字列を含む戦闘中のメッセージ（クリックを待たずに時間で進むもの）が出るまで待つ
+    ///                          （メッセージスピードが「手動送り」なら、出たまま click で進むまで止まっている）
     ///   wait list [文字列]     リスト（指定があれば見出しにその文字列を含むもの）が出るまで待つ
     ///   wait menu|dialog|click 各状態になるまで待つ
+    ///   wait finished [秒]     シナリオ（SRC）が終わるまで待つ（中断の後の resume の前に使う）
     ///   click X Y [right]      画面座標をクリックする
     ///   cell X Y [right]       マップのマス（必要ならそのマスを画面の中央に寄せる）をクリックする
     ///   menu 項目名            ポップアップメニューの項目を選ぶ
@@ -32,15 +35,21 @@ namespace SRCPlay
     ///                          hold は移動せず届く敵だけ攻撃する
     ///   autodefense on|off     敵の攻撃への反撃・防御・回避を SRC に任せる（設定「自動反撃」。CPU と同じ判断で選ぶ）
     ///   stall 秒               auto・turns で、待ちの状態でないまま進まないときにボタンを押すまでの時間（既定 5 秒）
+    ///   holdlist 見出し        auto・turns・phase で、見出し（または説明）にその文字列を含むリストが出たら、選ばずにそこで止まる
+    ///                          （次の list で選ぶまで。例: holdlist コマンド … インターミッションのコマンドのリストで止めて、乗り換えなどを list で選ぶ）
     ///   choose 見出し 項目     auto・turns で、見出し（または説明）にその文字列を含むリストが出たら、その文字列を含む項目を選ぶ
     ///                          （例: choose コマンド 次のステージへ … インターミッションで次のステージへ進む）
     ///   snapshot 名前          画面を保存する
+    ///   savefile 名前|default|cancel  ファイルの保存のダイアログ（マップのコマンド「中断」など）に、シナリオのフォルダの中のその名前で答える
+    ///                          （既定はキャンセル。default はダイアログが初めに示す名前）
+    ///   resume [ファイル名]    シナリオが終わった後（中断の後）、SRC を起動し直してそのファイル（省略すると savefile で最後に書いたファイル）を実行する
+    ///                          （中断データからの再開。ファイル名はシナリオのフォルダからの相対パス）
     ///   phase                  味方フェイズを簡単な方針で自動で行い、ターンを終える（ScriptedPhase）
     ///   turns 回数             「auto → phase」を繰り返す
     ///   expect finished        シナリオが終わっていることを確かめる
     ///   expect message 文字列  その文字列を含むメッセージが表示されたことを確かめる（画面の折り返しはまたいで探す。戦闘中のメッセージも探す）
     ///   expect log 文字列      操作の記録（phase の「攻撃: 敵の名前」など）にその文字列があることを確かめる
-    ///   expect error none      エラーが起きていないことを確かめる
+    ///   expect error none      エラー（例外と、イベントのエラーなどのエラーのダイアログ）が起きていないことを確かめる
     ///   expect eval 式 演算子 式  SRC の式を評価して比べる（例: expect eval HP(標的) &lt; MaxHP(標的)）
     /// </summary>
     public sealed class PlayScript
@@ -54,14 +63,12 @@ namespace SRCPlay
             this.runner = runner;
             auto = new AutoPlayer(runner);
             auto.ListChosen = (caption, item) => Record($"選択: {caption?.Trim()} → {item?.Trim()}");
-            // 戦闘中のメッセージはクリックを待たないので、表示したときに記録する（ゲームスレッドから呼ばれる）
-            runner.GUI.BattleMessageShown += (pname, msg) =>
-            {
-                lock (battleMessages)
-                {
-                    battleMessages.Add(msg);
-                }
-            };
+            // 戦闘中のメッセージはクリックを待たないので、表示したときに記録する（ゲームスレッドから呼ばれる）。
+            // resume で SRC を起動し直したら、新しいセッションの GUI でも記録する
+            AttachGUI(runner.GUI);
+            auto.HoldList = list => holdCaption != null
+                && ((list.Caption ?? "").Contains(holdCaption) || (list.Info ?? "").Contains(holdCaption));
+            runner.SessionCreated += session => AttachGUI(session.GUI);
             // 止まって押した位置（スクリプトが描いたクリック領域があればその ID）を記録する
             auto.Trace = m =>
             {
@@ -71,6 +78,51 @@ namespace SRCPlay
                 }
             };
         }
+
+        private void AttachGUI(ScreenGUI gui)
+        {
+            gui.BattleMessageShown += (pname, msg) =>
+            {
+                lock (battleMessages)
+                {
+                    battleMessages.Add(msg);
+                }
+            };
+            // エラーのダイアログ（イベントのエラーなど）。ダイアログは auto が OK を押して進めるので、出たことを覚えておく（expect error none で見る）
+            gui.ErrorShown += msg =>
+            {
+                // 終了（GameClear・Quit など）の後は、打ち切りの例外を実行中のコマンドが捕まえて「イベントデータが不正です」と出すことがある。
+                // シナリオの誤りではないので数えない
+                if (runner.IsTerminated)
+                {
+                    return;
+                }
+                lock (errorMessages)
+                {
+                    errorMessages.Add(msg);
+                }
+                Record($"{DateTime.Now:HH:mm:ss} ERROR {msg?.Replace("\r\n", " / ").Replace("\n", " / ")}");
+            };
+        }
+
+        /// <summary>holdlist で決めた、auto・turns で選ばずに止まるリストの見出し（次の list で選ぶまで）</summary>
+        private string holdCaption;
+
+        /// <summary>holdlist で決めたリストが出ていて、選ばずに止まっているか</summary>
+        internal bool IsHeld
+        {
+            get
+            {
+                var list = runner.State.List;
+                return list != null && GUI.IsWaitingList && auto.HoldList(list);
+            }
+        }
+
+        /// <summary>savefile で決めた、ファイルの保存のダイアログへの答え（シナリオのフォルダの中のファイル名）</summary>
+        private string saveFileName;
+
+        /// <summary>保存のダイアログに答えて書いたファイルの最後のもの（resume の既定）</summary>
+        private string lastSavedFile;
 
         /// <summary>スナップショットの保存先（null なら保存しない）</summary>
         public string SnapshotDirectory
@@ -103,6 +155,20 @@ namespace SRCPlay
                 lock (battleMessages)
                 {
                     return battleMessages.ToList();
+                }
+            }
+        }
+
+        private readonly List<string> errorMessages = new List<string>();
+
+        /// <summary>これまでに出たエラーのダイアログ（イベントのエラー・データのエラーなど）の文言</summary>
+        public IList<string> ErrorMessages
+        {
+            get
+            {
+                lock (errorMessages)
+                {
+                    return errorMessages.ToList();
                 }
             }
         }
@@ -148,7 +214,8 @@ namespace SRCPlay
                 {
                     continue;
                 }
-                if (runner.IsFinished && args[0] != "expect" && args[0] != "snapshot")
+                if (runner.IsFinished && args[0] != "expect" && args[0] != "snapshot" && args[0] != "resume"
+                    && !(args[0] == "wait" && args.Length > 1 && args[1] == "finished"))
                 {
                     // シナリオが終わった後の操作は行わない。ただし後ろの expect は確かめる
                     // （ここで抜けると、手順より早く終わったシナリオでも、最後の expect を飛ばして通ってしまう）
@@ -238,7 +305,7 @@ namespace SRCPlay
                 case "autodefense":
                     {
                         var on = args.Length > 1 && args[1] == "on";
-                        OnGame(() => Src.SystemConfig.AutoDefense = on);
+                        OnGame(() => Src.Config.AutoDefense = on);
                         Record($"{DateTime.Now:HH:mm:ss} AUTODEFENSE {(on ? "on" : "off")}");
                     }
                     break;
@@ -251,6 +318,15 @@ namespace SRCPlay
                         throw new PlayScriptException("choose 見出し 項目");
                     }
                     auto.ListRules.Add((args[1], Rest(args, 2)));
+                    break;
+                case "holdlist":
+                    // auto・turns・phase で、見出し（または説明）にその文字列を含むリストが出たら、選ばずにそこで止まる。
+                    // 次の list で項目を選ぶまで止まり続ける（インターミッションのコマンドのリストで止めて、乗り換え・換装などをスクリプトで行う）
+                    if (args.Length < 2)
+                    {
+                        throw new PlayScriptException("holdlist 見出し");
+                    }
+                    holdCaption = Rest(args, 1);
                     break;
                 case "choose1":
                     // 一度だけ使う規則（順に使う）。見出しに「クリック」を指定すると、スクリプトが描いたクリック領域を ID で選ぶ
@@ -282,6 +358,12 @@ namespace SRCPlay
                 case "snapshot":
                     Snapshot(args.Length > 1 ? args[1] : "snapshot");
                     break;
+                case "savefile":
+                    SetSaveFile(Rest(args, 1));
+                    break;
+                case "resume":
+                    Resume(Rest(args, 1));
+                    break;
                 case "phase":
                     new ScriptedPhase(this).Run();
                     break;
@@ -302,6 +384,59 @@ namespace SRCPlay
                 default:
                     throw new PlayScriptException($"不明なコマンド: {args[0]}");
             }
+        }
+
+        /// <summary>
+        /// savefile ファイル名|default|cancel: ファイルの保存のダイアログ（マップのコマンド「中断」など）に答える。
+        /// ファイル名はシナリオのフォルダ（ダイアログの初めのフォルダ）の中の名前。default はダイアログが初めに示す名前（中断なら「〜を中断.srcq」）
+        /// </summary>
+        private void SetSaveFile(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new PlayScriptException("savefile ファイル名|default|cancel");
+            }
+            saveFileName = name == "cancel" ? null : name;
+            runner.SaveFileHandler = request =>
+            {
+                if (saveFileName == null)
+                {
+                    return null;
+                }
+                var file = saveFileName == "default" ? request.InitialFile : saveFileName;
+                var path = Path.Combine(request.InitialDirectory ?? "", file);
+                lastSavedFile = path;
+                Record($"{DateTime.Now:HH:mm:ss} SAVEFILE {path}");
+                return path;
+            };
+        }
+
+        /// <summary>
+        /// resume [ファイル名]: 終わったシナリオの後で、SRC を起動し直して中断データ（.srcq）などを実行する。
+        /// 中断（マップのコマンド「中断」で SRC が終わる）から再開するのに使う。
+        /// ファイル名は、絶対パスでなければシナリオのフォルダからの相対パス。省略すると savefile で最後に書いたファイル
+        /// </summary>
+        private void Resume(string name)
+        {
+            var file = name;
+            if (string.IsNullOrEmpty(file))
+            {
+                file = lastSavedFile ?? throw new PlayScriptException("resume するファイルがありません（savefile で保存のダイアログに答えてから中断してください）");
+            }
+            else if (!Path.IsPathRooted(file))
+            {
+                file = Path.Combine(Src.ScenarioPath ?? "", file);
+            }
+            if (!runner.IsFinished)
+            {
+                throw new PlayScriptException("シナリオが終わっていないため resume できません（中断が済んでいません）");
+            }
+            if (!File.Exists(file))
+            {
+                throw new PlayScriptException($"resume するファイルがありません: {file}");
+            }
+            Record($"{DateTime.Now:HH:mm:ss} RESUME {file}");
+            runner.Restart(file);
         }
 
         private static readonly string[] Operators = { "<=", ">=", "<>", "<", ">", "=" };
@@ -339,6 +474,11 @@ namespace SRCPlay
                     if (runner.Error != null && !(runner.Error is SRCCore.TestLib.HeadlessTerminatedException))
                     {
                         throw new PlayScriptException("エラーが発生しています: " + runner.Error);
+                    }
+                    // イベントのエラーは例外にならず、ダイアログを出して続く（元の SRC と同じ）ので、ダイアログが出たかも見る
+                    if (ErrorMessages.Count > 0)
+                    {
+                        throw new PlayScriptException("エラーのダイアログが出ています: " + string.Join(" / ", ErrorMessages));
                     }
                     break;
                 case "eval":
@@ -487,13 +627,19 @@ namespace SRCPlay
                         return true;
                     }
                 }
+                if (IsHeld)
+                {
+                    // holdlist のリストで止まる。マップで操作を受け付ける状態ではないので false（turns・phase も止まる）
+                    Record($"{DateTime.Now:HH:mm:ss} HOLD {runner.State.List.Info ?? runner.State.List.Caption}");
+                    return false;
+                }
                 // 停滞時にボタンを押す（StallClickMillis）より長く待つ。
                 // 停滞時のクリックで画面が更新され続けると戻らないので、期限もここで判定する
                 var suspendedBefore = runner.SuspendedTime;
-                auto.Run(int.MaxValue, 60000, () => IsReady || DateTime.UtcNow >= deadline + (runner.SuspendedTime - suspendedBefore));
+                auto.Run(int.MaxValue, 60000, () => IsReady || IsHeld || DateTime.UtcNow >= deadline + (runner.SuspendedTime - suspendedBefore));
                 deadline += runner.SuspendedTime - suspendedBefore;
             }
-            if (!IsReady && !runner.IsFinished)
+            if (!IsReady && !runner.IsFinished && !IsHeld)
             {
                 Record($"{DateTime.Now:HH:mm:ss} NOT READY {NotReadyReason()}");
             }
@@ -531,6 +677,18 @@ namespace SRCPlay
                     ok = WaitUntil(() => runner.State.Message.Visible && runner.State.Message.Waiting
                         && (text == null || string.Join("", runner.State.Message.Lines).Contains(text)), DefaultTimeout);
                     break;
+                case "battle":
+                    // 戦闘中のメッセージ（DisplayBattleMessage）はクリックの待ちの状態にならない。表示した行で見る
+                    ok = WaitUntil(() => runner.State.Message.Visible
+                        && string.Join("", runner.State.Message.Lines.ToList()).Contains(text ?? ""), DefaultTimeout);
+                    if (ok)
+                    {
+                        // 行を書いた後、クリックの受け付けを始める（IsFormClicked を戻す）前に click すると取りこぼす。
+                        // ゲームスレッドが待ちのループ（DoEvents）に 2 回入るまで待ってから進める
+                        SettleGame();
+                        SettleGame();
+                    }
+                    break;
                 case "list":
                     ok = WaitUntil(() => runner.State.List != null && GUI.IsWaitingList
                         && (text == null || (runner.State.List.Caption ?? "").Contains(text) || (runner.State.List.Info ?? "").Contains(text)), DefaultTimeout);
@@ -543,6 +701,10 @@ namespace SRCPlay
                     break;
                 case "click":
                     ok = WaitUntil(() => GUI.IsWaitingClick, DefaultTimeout);
+                    break;
+                case "finished":
+                    // シナリオ（SRC）が終わるまで待つ（中断で SRC が終わるのを待ってから resume する）
+                    ok = WaitUntil(() => runner.IsFinished, Seconds(args, 2, DefaultTimeout));
                     break;
                 default:
                     throw new PlayScriptException($"不明な待ち: {what}");
@@ -557,6 +719,20 @@ namespace SRCPlay
         #endregion
 
         #region 操作
+
+        /// <summary>ゲームスレッドが UI から渡した処理を 1 回こなすまで待つ（待ちのループの DoEvents に入ったことを確かめる）</summary>
+        private void SettleGame()
+        {
+            if (runner.IsFinished)
+            {
+                return;
+            }
+            using (var done = new ManualResetEventSlim())
+            {
+                runner.Session.Game.Post(done.Set);
+                done.Wait(TimeSpan.FromSeconds(2));
+            }
+        }
 
         public void Snapshot(string name)
         {
@@ -627,6 +803,8 @@ namespace SRCPlay
             {
                 throw new PlayScriptException("リストが出ません");
             }
+            // holdlist で止めたリストは、スクリプトで選んだら止めるのをやめる
+            holdCaption = null;
             var list = runner.State.List;
             int index;
             if (item.StartsWith("#"))
@@ -744,6 +922,11 @@ namespace SRCPlay
         {
             for (var i = 0; i < 3; i++)
             {
+                if (script.IsHeld)
+                {
+                    // 行動の結果でステージが終わり、holdlist のリスト（インターミッションのコマンドなど）で止まっている。取り消さない
+                    return;
+                }
                 var menu = script.Runner.State.Menu;
                 if (menu != null && menu.Items.Contains("待機"))
                 {
@@ -1106,8 +1289,24 @@ namespace SRCPlay
                 return false;
             }
             var list = script.Runner.State.List;
-            var index = Enumerable.Range(0, list.Items.Count)
-                .FirstOrDefault(i => !list.Items[i].Disabled && (list.Items[i].Text ?? "").StartsWith(name), -1);
+            var index = FindListItem(list, name);
+            if (index < 0)
+            {
+                // パイロットが 2 人以上乗っているユニットは、スペシャルパワーの一覧の前に、使うパイロットを選ぶ一覧が出る。
+                // PlanSpecialPower はメインパイロットのスペシャルパワーを選ぶので、メインパイロットを選んでから次の一覧を待つ
+                // （ここで取り消すと、自動の進行がパイロットとスペシャルパワーを選ぶことがあり、結果が毎回変わる）
+                var pilot = script.OnGame(() => script.Src.UList.Item(unit.ID)?.MainPilot()?.get_Nickname(false) ?? "");
+                var pilotIndex = pilot.Length == 0 ? -1 : FindListItem(list, pilot);
+                if (pilotIndex >= 0)
+                {
+                    script.ChooseListIndex(list, pilotIndex);
+                    if (script.WaitUntil(() => script.Runner.State.List != null && script.Runner.State.List != list && script.Runner.GUI.IsWaitingList, TimeSpan.FromSeconds(10)))
+                    {
+                        list = script.Runner.State.List;
+                        index = FindListItem(list, name);
+                    }
+                }
+            }
             if (index < 0)
             {
                 Log($"{label}がありません: {name}");
@@ -1119,6 +1318,13 @@ namespace SRCPlay
             script.ChooseListIndex(list, index);
             script.AutoUntilReady(TimeSpan.FromMinutes(1));
             return true;
+        }
+
+        /// <summary>リストの、選べる項目のうち name で始まるものの番号（無ければ -1）</summary>
+        private static int FindListItem(ListState list, string name)
+        {
+            return Enumerable.Range(0, list.Items.Count)
+                .FirstOrDefault(i => !list.Items[i].Disabled && (list.Items[i].Text ?? "").StartsWith(name, StringComparison.Ordinal), -1);
         }
 
         private void ActUnitSmart(UnitInfo unit)

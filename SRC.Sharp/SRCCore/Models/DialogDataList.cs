@@ -59,7 +59,7 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
@@ -70,30 +70,46 @@ namespace SRCCore.Models
             using (var reader = new SrcDataReader(fname, stream))
             {
                 string line_buf = "";
-                while (reader.HasMore)
+                while (true)
                 {
-                    line_buf = reader.GetLine();
-                    while (reader.HasMore && string.IsNullOrEmpty(line_buf))
+                    // 空行を読み飛ばす。ファイルの終わりなら読み込みを終える
+                    do
                     {
+                        if (!reader.HasMore)
+                        {
+                            return;
+                        }
                         line_buf = reader.GetLine();
                     }
+                    while (Strings.Len(line_buf) == 0);
 
                     // パイロット名一覧
+                    if (GeneralLib.LLength(line_buf) == 0)
+                    {
+                        // 元の SRC はエラーの原因を書かないデータエラーで読み込みを打ち切る
+                        throw reader.InvalidDataException("", "");
+                    }
                     var pilot_list = GeneralLib.LNormalize(line_buf);
                     if (IsDefined(pilot_list))
                     {
                         Delete(pilot_list);
                     }
 
-
                     DialogData dd = Add(pilot_list);
+                    // 元の SRC と同じく、ファイルの終わりでも GetLine は空文字列を返す
                     line_buf = reader.GetLine();
-                    while (reader.HasMore && Strings.Len(line_buf) > 0)
+                    while (Strings.Len(line_buf) > 0)
                     {
                         // シチューション
                         var d = dd.AddDialog(line_buf);
-                        while (reader.HasMore)
+                        while (true)
                         {
+                            // 元の SRC はファイルの終わりで読み込みを終える
+                            if (!reader.HasMore)
+                            {
+                                return;
+                            }
+
                             line_buf = reader.GetLine();
 
                             // 話者

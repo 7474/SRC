@@ -135,11 +135,12 @@ namespace SRCCore.Units.Tests
         }
 
         [TestMethod]
-        public void FeatureLevel_OutOfRange_ThrowsIndexOutOfRangeException()
+        public void FeatureLevel_OutOfRange_ReturnsZero()
         {
+            // 元の SRC（Unit.cls FeatureLevel）は On Error で 0 を返す
             var src = CreateSrc();
             var unit = new Unit(src);
-            Assert.Throws<System.IndexOutOfRangeException>(() => unit.FeatureLevel(99));
+            Assert.AreEqual(0d, unit.FeatureLevel(99));
         }
 
         // ──────────────────────────────────────────────

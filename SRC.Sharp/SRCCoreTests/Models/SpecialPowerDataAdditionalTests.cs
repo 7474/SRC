@@ -17,52 +17,52 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Constructor_KanaName_DefaultIsNull()
+        public void Constructor_KanaName_DefaultIsEmpty()
         {
             var sp = new SpecialPowerData(CreateSrc());
-            Assert.IsNull(sp.KanaName);
+            Assert.AreEqual("", sp.KanaName);
         }
 
         [TestMethod]
-        public void Constructor_ShortName_DefaultIsNull()
+        public void Constructor_ShortName_DefaultIsEmpty()
         {
             var sp = new SpecialPowerData(CreateSrc());
-            Assert.IsNull(sp.ShortName);
+            Assert.AreEqual("", sp.ShortName);
         }
 
         [TestMethod]
-        public void Constructor_TargetType_DefaultIsNull()
+        public void Constructor_TargetType_DefaultIsEmpty()
         {
             var sp = new SpecialPowerData(CreateSrc());
-            Assert.IsNull(sp.TargetType);
+            Assert.AreEqual("", sp.TargetType);
         }
 
         [TestMethod]
-        public void Constructor_Duration_DefaultIsNull()
+        public void Constructor_Duration_DefaultIsEmpty()
         {
             var sp = new SpecialPowerData(CreateSrc());
-            Assert.IsNull(sp.Duration);
+            Assert.AreEqual("", sp.Duration);
         }
 
         [TestMethod]
-        public void Constructor_NecessaryCondition_DefaultIsNull()
+        public void Constructor_NecessaryCondition_DefaultIsEmpty()
         {
             var sp = new SpecialPowerData(CreateSrc());
-            Assert.IsNull(sp.NecessaryCondition);
+            Assert.AreEqual("", sp.NecessaryCondition);
         }
 
         [TestMethod]
-        public void Constructor_Animation_DefaultIsNull()
+        public void Constructor_Animation_DefaultIsEmpty()
         {
             var sp = new SpecialPowerData(CreateSrc());
-            Assert.IsNull(sp.Animation);
+            Assert.AreEqual("", sp.Animation);
         }
 
         [TestMethod]
-        public void Constructor_Comment_DefaultIsNull()
+        public void Constructor_Comment_DefaultIsEmpty()
         {
             var sp = new SpecialPowerData(CreateSrc());
-            Assert.IsNull(sp.Comment);
+            Assert.AreEqual("", sp.Comment);
         }
 
         // ──────────────────────────────────────────────
@@ -150,11 +150,12 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void SetEffect_SimpleEffect_NullData()
+        public void SetEffect_SimpleEffect_EmptyData()
         {
+            // VB の String 配列の既定値は ""（#1498）
             var sp = new SpecialPowerData(CreateSrc());
             sp.SetEffect("必中");
-            Assert.IsNull(sp.Effects[0].strEffectData);
+            Assert.AreEqual("", sp.Effects[0].strEffectData);
         }
 
         // ──────────────────────────────────────────────
@@ -162,12 +163,14 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SetEffect_CalledTwice_Accumulates()
+        public void SetEffect_CalledTwice_Replaces()
         {
+            // VB の SetEffect は ReDim で作り直す（#1498）
             var sp = new SpecialPowerData(CreateSrc());
             sp.SetEffect("必中");
             sp.SetEffect("加速");
-            Assert.AreEqual(2, sp.CountEffect());
+            Assert.AreEqual(1, sp.CountEffect());
+            Assert.AreEqual("加速", sp.Effects[0].strEffectType);
         }
 
         // ──────────────────────────────────────────────

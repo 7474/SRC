@@ -2,8 +2,6 @@
 layout: default
 title: SetStockコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **SetStockコマンド**
 
 ユニットのアビリティの残り使用回数を変更

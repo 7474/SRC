@@ -79,9 +79,10 @@ namespace SRCCore.Extensions
             }
 
             // メッセージの候補リスト第一次審査
+            // 元の SRC と同じく、シチュエーションの先頭が一致するものだけ IsAvailable を調べる（Left$ の比較なので序数で比べる）
             var list0 = Items
+                .Where(m => situations.Any(s => (m.Situation ?? "").StartsWith(s, System.StringComparison.Ordinal)))
                 .Where(m => m.IsAvailable(u, ignore_condition))
-                .Where(m => situations.Any(s => m.Situation.StartsWith(s)))
                 .ToList();
 
             if (!list0.Any())
@@ -92,6 +93,9 @@ namespace SRCCore.Extensions
             // 最初に相手限定のシチュエーションのみで検索
             // 宣言位置は goto SkipMessagesWithTarget より前でなければならない
             List<T> targetList = null;
+            // 元の SRC で選んだ相手限定メッセージ（Dice(2) で外れても、汎用メッセージが無ければこれを返す）
+            T targetMsg = default;
+            var hasTargetMsg = false;
             if (u is null)
             {
                 goto SkipMessagesWithTarget;
@@ -229,8 +233,8 @@ namespace SRCCore.Extensions
             }
 
             // 対強敵
-            if (t.BossRank >= 0 || Strings.InStr(t.MainPilot().Name, "(ザコ)") == 0
-                && u.MainPilot().Technique <= t.MainPilot().Technique)
+            if (t.BossRank >= 0 || (Strings.InStr(t.MainPilot().Name, "(ザコ)") == 0
+                && u.MainPilot().Technique <= t.MainPilot().Technique))
             {
                 sub_situations.Add("(対強敵)");
             }
@@ -307,8 +311,11 @@ namespace SRCCore.Extensions
                 var loopTo9 = Strings.Len(wclass);
                 for (var i = 1; i <= loopTo9; i++)
                 {
-                    var ch = GeneralLib.GetClassBundle(wclass, ref i).FirstOrDefault();
-                    if (ch > 127)
+                    // 元の SRC（MessageData）は属性のまとまり（「弱火」など）を GetClassBundle で取り出し、
+                    // 「Case 0 To 127」（ch は String）で英数字を除く。ここではまとまりの先頭の文字のコードで判定する
+                    // （VB6 で String を数値の範囲と比べたときの動作は実機で確かめていない）
+                    var ch = GeneralLib.GetClassBundle(wclass, ref i) ?? "";
+                    if (ch.Length > 0 && ch[0] > 127)
                     {
                         sub_situations.Add("(対" + ch + "属性)");
                     }
@@ -341,17 +348,32 @@ namespace SRCCore.Extensions
                 if (list.Any())
                 {
                     // 特定の状況では相手限定メッセージを必ず優先
-                    if (Strings.InStr(msg_situation, "(とどめ)") > 0
+                    var mustUseTarget = Strings.InStr(msg_situation, "(とどめ)") > 0
                         || msg_situation == "挑発"
                         || msg_situation == "脱力"
                         || msg_situation == "魅惑"
                         || msg_situation == "威圧"
-                        || (u.Party ?? "") == (t.Party ?? ""))
+                        || (u.Party ?? "") == (t.Party ?? "");
+                    if (SRC.Expression.IsOptionDefined(TargetMessageEvenOption))
                     {
-                        return list.Dice();
+                        if (mustUseTarget)
+                        {
+                            return list.Dice();
+                        }
+                        // Option「相手限定メッセージ等確率」: 相手限定メッセージを候補として保持し、後で汎用メッセージと等確率で選ぶ
+                        targetList = list;
                     }
-                    // 通常の状況では相手限定メッセージを候補として保持し、後で 50% の確率で使う（VB5 互換。Option「相手限定メッセージ等確率」では等確率）
-                    targetList = list;
+                    else
+                    {
+                        // 元の SRC と同じ順で乱数を使う。先に Dice(list_num) で相手限定メッセージを選び、
+                        // Dice(2) は特定の状況でも必ず呼ぶ（VB の Or は短絡しない）
+                        targetMsg = list.Dice();
+                        hasTargetMsg = true;
+                        if (GeneralLib.Dice(2) == 1 || mustUseTarget)
+                        {
+                            return targetMsg;
+                        }
+                    }
                 }
             }
 
@@ -398,19 +420,9 @@ namespace SRCCore.Extensions
                     .Where(m => situations.Any(s => m.Situation == s || sub_situations.Any(subs => m.Situation == s + subs)))
                     .ToList();
                 // Option「相手限定メッセージ等確率」: 相手限定メッセージを汎用メッセージと同じ候補として、1 件ずつ等確率で選ぶ（#555）
-                if (targetList != null && SRC.Expression.IsOptionDefined(TargetMessageEvenOption))
-                {
-                    return list.Concat(targetList).ToList().Dice();
-                }
-                // 相手限定メッセージが見つかっていた場合は50%の確率で使用 (VB5互換)
                 if (targetList != null)
                 {
-                    var targetMsg = targetList.Dice();
-                    // 汎用メッセージがない場合、または50%の確率で相手限定メッセージを使用
-                    if (!list.Any() || GeneralLib.Dice(2) == 1)
-                    {
-                        return targetMsg;
-                    }
+                    return list.Concat(targetList).ToList().Dice();
                 }
                 // シチュエーションに合ったメッセージが見つかれば、その中からメッセージを選択
                 if (list.Any())
@@ -419,7 +431,8 @@ namespace SRCCore.Extensions
                 }
             }
 
-            return default;
+            // 元の SRC は相手限定メッセージを選んだ後に Dice(2) で外れても、汎用メッセージが無ければそれを返す
+            return hasTargetMsg ? targetMsg : default;
         }
     }
 }

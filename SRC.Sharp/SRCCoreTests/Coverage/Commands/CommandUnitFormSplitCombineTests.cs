@@ -444,6 +444,31 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
+        public void ExchangeForm_CommentEndsWithSpace_AndCombinationWeaponIsNotCounted()
+        {
+            // 元の SRC は特殊能力の名称ごとに後ろへ空白を付けてコメントにする。
+            // 最大攻撃力・最大射程には合体技を数えない
+            var f = new CommandUnitFormFixture(onMap: false);
+            var u = CreateExchangeUnit(f);
+            var space = f.Src.UDList.Item("宇宙型");
+            var cw = space.AddWeapon("合体ビーム");
+            cw.Power = 9000;
+            cw.MinRange = 1;
+            cw.MaxRange = 9;
+            cw.Class = "合";
+            cw.Adaption = "AAAA";
+            u.OtherForm("宇宙型").Update();
+            f.Src.Commands.SelectedUnit = u;
+
+            Run(f, Command.ExchangeFormCmdID, "換装");
+
+            var lb = f.ListBoxes.Single();
+            Assert.AreEqual("ホバー移動 ", lb.Items[0].ListItemComment);
+            Assert.IsFalse(lb.Items[1].Text.Contains("9000"));
+            Assert.IsTrue(lb.Items[1].Text.TrimEnd().EndsWith(" 6"));
+        }
+
+        [TestMethod]
         public void ExchangeForm_Cancel_KeepsForm()
         {
             // リストをキャンセルすると換装しない

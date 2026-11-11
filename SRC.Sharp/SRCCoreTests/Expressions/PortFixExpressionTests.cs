@@ -245,15 +245,13 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void ListSplitStrict_DetectsUnclosed()
+        public void ListSplit_DetectsUnclosed()
         {
-            Assert.AreEqual(-1, GeneralLib.ListSplitStrict("a (b c", out _));
-            Assert.AreEqual(-1, GeneralLib.ListSplitStrict("a \"b c", out _));
-            Assert.AreEqual(-1, GeneralLib.ListSplitStrict("a `b c", out _));
-            Assert.AreEqual(-1, GeneralLib.ListSplitStrict("a b)", out _));
-            Assert.AreEqual(2, GeneralLib.ListSplitStrict("a (b c)", out _));
-            // 従来の ListSplit は末尾の閉じ忘れを検出しない
-            Assert.AreEqual(2, GeneralLib.ListSplit("a (b c", out _));
+            Assert.AreEqual(-1, GeneralLib.ListSplit("a (b c", out _));
+            Assert.AreEqual(-1, GeneralLib.ListSplit("a \"b c", out _));
+            Assert.AreEqual(-1, GeneralLib.ListSplit("a `b c", out _));
+            Assert.AreEqual(-1, GeneralLib.ListSplit("a b)", out _));
+            Assert.AreEqual(2, GeneralLib.ListSplit("a (b c)", out _));
         }
 
         // ──────────────────────────────────────────────

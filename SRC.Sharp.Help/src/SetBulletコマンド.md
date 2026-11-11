@@ -2,8 +2,6 @@
 layout: default
 title: SetBulletコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **SetBulletコマンド**
 
 ユニットの武器の残弾数を変更

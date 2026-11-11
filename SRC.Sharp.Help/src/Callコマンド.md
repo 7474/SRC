@@ -2,8 +2,6 @@
 layout: default
 title: Callコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Callコマンド**
 
 サブルーチンコール

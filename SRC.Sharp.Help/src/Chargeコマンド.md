@@ -2,8 +2,6 @@
 layout: default
 title: Chargeコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Chargeコマンド**
 
 チャージを実行

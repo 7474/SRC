@@ -47,7 +47,6 @@ namespace SRCSharpForm
         private ListBoxItem SelectedItem => lstItems.SelectedIndex >= 0 ? ListBoxItems[lstItems.SelectedIndex] : null;
         private bool HasFlag;
 
-
         // リストボックスの高さを大きくする
         public void EnlargeListBoxHeight()
         {
@@ -379,19 +378,6 @@ namespace SRCSharpForm
                 {
                     lstItems.Items.Add(text);
                 }
-
-                // XXX 後でクリアしてるから意味ないのでは？
-                //i = (short)Information.UBound(list);
-                //while (i > 0)
-                //{
-                //    if (!ListItemFlag[i])
-                //    {
-                //        lstItems.SelectedIndex = i - 1;
-                //        break;
-                //    }
-
-                //    i = (short)(i - 1);
-                //}
             }
             else
             {
@@ -403,12 +389,6 @@ namespace SRCSharpForm
 
             lstItems.SelectedIndex = -1;
             lstItems.Visible = true;
-
-            //// コメント付きのアイテム？
-            //if (Information.UBound(ListItemComment) != Information.UBound(list))
-            //{
-            //    Array.Resize(ListItemComment, Information.UBound(list) + 1);
-            //}
 
             // 先頭のアイテムを設定
             if (GUI.TopItem > 0)
@@ -490,9 +470,7 @@ namespace SRCSharpForm
                 GUI.IsMordal = false;
                 Show();
                 lstItems.Focus();
-                //SetWindowPos(Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
                 Refresh();
-                //return ListBoxRet;
             }
             else if (Strings.InStr(lb_mode, "連続表示") > 0)
             {
@@ -501,7 +479,6 @@ namespace SRCSharpForm
                 if (!Visible)
                 {
                     Show();
-                    //SetWindowPos(Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
                     lstItems.Focus();
                 }
 
@@ -516,15 +493,6 @@ namespace SRCSharpForm
                 while (!GUI.IsFormClicked)
                 {
                     Application.DoEvents();
-                    //// 右ボタンでのダブルクリックの実現
-                    //if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
-                    //{
-                    //    is_rbutton_released = true;
-                    //}
-                    //else if (is_rbutton_released)
-                    //{
-                    //    IsFormClicked = true;
-                    //}
 
                     Thread.Sleep(50);
                 }
@@ -534,7 +502,6 @@ namespace SRCSharpForm
                 // 選択が行われた時点でリストボックスを閉じる
                 GUI.IsMordal = false;
                 Show();
-                //SetWindowPos(Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
                 lstItems.Focus();
                 if (Strings.InStr(lb_mode, "カーソル移動") > 0)
                 {
@@ -547,15 +514,6 @@ namespace SRCSharpForm
                 while (!GUI.IsFormClicked)
                 {
                     Application.DoEvents();
-                    //// 右ボタンでのダブルクリックの実現
-                    //if ((GetAsyncKeyState(RButtonID) && 0x8000) == 0)
-                    //{
-                    //    is_rbutton_released = true;
-                    //}
-                    //else if (is_rbutton_released)
-                    //{
-                    //    IsFormClicked = true;
-                    //}
 
                     Thread.Sleep(50);
                 }
@@ -721,10 +679,6 @@ namespace SRCSharpForm
         private void lstItems_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
             var Button = ResolveMouseButton(eventArgs);
-            //int Button = (eventArgs.Button / 0x100000);
-            //int Shift = (ModifierKeys / 0x10000);
-            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
             switch (Button)
             {
                 case GuiButton.Left:
@@ -772,10 +726,6 @@ namespace SRCSharpForm
         private void labCaption_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
             var Button = ResolveMouseButton(eventArgs);
-            //int Button = (eventArgs.Button / 0x100000);
-            //int Shift = (ModifierKeys / 0x10000);
-            //float X = (float)SrcFormatter.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)SrcFormatter.PixelsToTwipsY(eventArgs.Y);
             switch (Button)
             {
                 case GuiButton.Left:
@@ -894,57 +844,42 @@ namespace SRCSharpForm
         // 選択されているアイテムに対応するユニットのステータス表示
         private void Timer2_Tick(object eventSender, EventArgs eventArgs)
         {
-            //            Unit u;
-            //            if (!Visible || !GUI.MainForm.Visible)
-            //            {
-            //                return;
-            //            }
+            if (!Visible || MainForm == null || !MainForm.Visible)
+            {
+                return;
+            }
 
-            //            if (lstItems.SelectedIndex == -1)
-            //            {
-            //                return;
-            //            };
-            //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 10644
+            if (lstItems.SelectedIndex == -1 || ListBoxItems == null || lstItems.SelectedIndex >= ListBoxItems.Count)
+            {
+                return;
+            }
 
+            var id = SelectedItem?.ListItemID;
+            MainForm.FormGUI.RunOnCore(() =>
+            {
+                // 選択されたユニットが存在する？
+                if (string.IsNullOrEmpty(id) || !SRC.UList.IsDefined2(id))
+                {
+                    return;
+                }
 
-            //            Input:
+                var u = SRC.UList.Item2(id);
 
-            //                    On Error GoTo ErrorHandler
+                // 選択されたユニットにパイロットが乗っている？
+                if (u.CountPilot() == 0)
+                {
+                    return;
+                }
 
-            //             */
-            //            if (lstItems.SelectedIndex >= Information.UBound(GUI.ListItemID))
-            //            {
-            //                return;
-            //            }
+                // 既に表示している？
+                if (ReferenceEquals(Status.DisplayedUnit, u))
+                {
+                    return;
+                }
 
-            //            // 選択されたユニットが存在する？
-            //            bool localIsDefined2() { var tmp = GUI.ListItemID; object argIndex1 = tmp[lstItems.SelectedIndex + 1]; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
-
-            //            if (!localIsDefined2())
-            //            {
-            //                return;
-            //            }
-
-            //            var tmp = GUI.ListItemID;
-            //            u = SRC.UList.Item2(tmp[lstItems.SelectedIndex + 1]);
-
-            //            // 選択されたユニットにパイロットが乗っている？
-            //            if (u.CountPilot() == 0)
-            //            {
-            //                return;
-            //            }
-
-            //            // 既に表示している？
-            //            if (ReferenceEquals(Status.DisplayedUnit, u))
-            //            {
-            //                return;
-            //            }
-
-            //            // 選択されたユニットをステータスウィンドウに表示
-            //            Status.DisplayUnitStatus(u);
-            //        ErrorHandler:
-            //            ;
+                // 選択されたユニットをステータスウィンドウに表示
+                Status.DisplayUnitStatus(u);
+            });
         }
         private static GuiButton ResolveMouseButton(MouseEventArgs eventArgs)
         {

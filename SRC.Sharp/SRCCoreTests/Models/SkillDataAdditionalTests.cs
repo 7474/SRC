@@ -45,9 +45,9 @@ namespace SRCCore.Models.Tests
         public void DefaultValues_AreExpected()
         {
             var sd = new SkillData();
-            Assert.IsNull(sd.Name);
+            Assert.AreEqual("", sd.Name);
             Assert.AreEqual(0.0, sd.Level);
-            Assert.IsNull(sd.StrData);
+            Assert.AreEqual("", sd.StrData);
             Assert.AreEqual(0, sd.NecessaryLevel);
         }
 

@@ -22,6 +22,7 @@ namespace SRCCore.Config
         public bool WeaponAnimation { get; set; }
         public bool ExtendedAnimation { get; set; }
         public bool MoveAnimation { get; set; }
+        public int MessageWait { get; set; }
         public int ImageBufferSize { get; set; }
         public int MaxImageBufferByteSize { get; set; }
         public bool KeepStretchedImage { get; set; }
@@ -48,6 +49,8 @@ namespace SRCCore.Config
             // 互換モードは既定でOnにしておく
             SRCCompatibilityMode = SRCCompatibilityMode.ReadWrite;
             SoundVolume = 50;
+            // メッセージスピードは「普通」（元の SRC の既定値）
+            MessageWait = MessageSpeeds.DefaultWait;
         }
 
         public string GetItem(string section, string name)

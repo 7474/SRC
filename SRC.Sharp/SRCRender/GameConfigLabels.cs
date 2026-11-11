@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace SRCRender
 {
     /// <summary>
@@ -16,5 +18,20 @@ namespace SRCRender
         public static string ShowTurn => Resources.Strings.ConfigShowTurn;
         public static string KeepEnemyBGM => Resources.Strings.ConfigKeepEnemyBGM;
         public static string Volume => Resources.Strings.ConfigMP3Volume;
+        public static string MessageSpeed => Resources.Strings.ConfigMessageSpeed;
+
+        /// <summary>
+        /// メッセージスピードの選択肢の名前。並びは <see cref="SRCCore.Config.MessageSpeeds.Items"/> と同じ
+        /// （元の SRC の設定変更の画面の「手動送り」～「神の領域」）
+        /// </summary>
+        public static IReadOnlyList<string> MessageSpeedNames => new[]
+        {
+            Resources.Strings.ConfigMessageSpeedManual,
+            Resources.Strings.ConfigMessageSpeedSlow,
+            Resources.Strings.ConfigMessageSpeedNormal,
+            Resources.Strings.ConfigMessageSpeedFast,
+            Resources.Strings.ConfigMessageSpeedVeryFast,
+            Resources.Strings.ConfigMessageSpeedInstant,
+        };
     }
 }

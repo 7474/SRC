@@ -106,6 +106,8 @@ namespace SRCCore.Events
                         {
                             var u = p.Unit;
                             // 格納されていたユニットも破壊しておく
+                            // VB は For i = 1 To .CountUnitOnBoard で UnitOnBoard(i) を降ろすため、
+                            // 2 体以上いると 1 つおきになり範囲外を参照する（VB の不具合）。「破壊」と同じくすべて降ろす
                             while (u.CountUnitOnBoard() > 0)
                             {
                                 var onBoardUnit = u.UnitOnBoards.First();
@@ -117,14 +119,15 @@ namespace SRCCore.Events
                             uparty = u.Party0;
                         }
 
-                        // XXX 全滅の処理どこでやってんの？
+                        // 全滅の判定はしない（VB と同じ）。マップ攻撃では Unit.attackmap.cs が
+                        // 破壊を処理したあとに HandleEvent("全滅", …) を呼ぶ（VB: Unit.cls MapAttack）
 
                         break;
                     }
 
                 case "ターン":
-                    EventQue.Add(string.Join(" ", "ターン ", "全", Args[2]));
-                    EventQue.Add(string.Join(" ", "ターン ", Args[1], Args[2]));
+                    EventQue.Add(string.Join(" ", "ターン", "全", Args[2]));
+                    EventQue.Add(string.Join(" ", "ターン", Args[1], Args[2]));
                     break;
 
                 case "損傷率":
@@ -158,7 +161,8 @@ namespace SRCCore.Events
                     {
                         EventQue.Add(string.Join(" ", "脱出", Args[1], "E"));
                     }
-                    else if (Conversions.ToInteger(Args[3]) == 1)
+                    // 四隅では左右と上下の両方の脱出イベントが発生する（元の SRC と同じ）
+                    if (Conversions.ToInteger(Args[3]) == 1)
                     {
                         EventQue.Add(string.Join(" ", "脱出", Args[1], "N"));
                     }
@@ -222,6 +226,8 @@ namespace SRCCore.Events
             // 各イベントを発生させる
             // 実行中に追加されたイベント（RegisterEvent など）も順に処理する
             SRC.IsCanceled = false;
+            // イベントデータの末尾を越えて実行したか（VB: GoTo ExitLoop）
+            var reached_end_of_data = false;
             for (var i = event_que_idx; i < EventQue.Count; i++)
             {
                 var eventItem = EventQue[i];
@@ -341,6 +347,8 @@ namespace SRCCore.Events
                         CurrentLineNum = ret;
                         if (CurrentLineNum >= EventCmd.Count)
                         {
+                            // VB と同じく、キューに残ったイベントも実行せずに終わる
+                            reached_end_of_data = true;
                             break;
                         }
 
@@ -349,13 +357,13 @@ namespace SRCCore.Events
                     while (ret > 0);
 
                     // ステージが終了 or キャンセル？
-                    if (SRC.IsScenarioFinished || SRC.IsCanceled)
+                    if (reached_end_of_data || SRC.IsScenarioFinished || SRC.IsCanceled)
                     {
                         break;
                     }
                 }
                 // ステージが終了 or キャンセル？
-                if (SRC.IsScenarioFinished || SRC.IsCanceled)
+                if (reached_end_of_data || SRC.IsScenarioFinished || SRC.IsCanceled)
                 {
                     break;
                 }
@@ -374,8 +382,10 @@ namespace SRCCore.Events
             }
             else
             {
+                // CallDepth は負にならないので通らない（VB と同じ形で残す）。
+                // VB の VarIndex = 0（空）は、C# では -1
                 ArgIndex = 0;
-                VarIndex = 0;
+                VarIndex = -1;
                 ForIndex = 0;
             }
 
@@ -387,13 +397,13 @@ namespace SRCCore.Events
             }
 
             // フォント設定をデフォルトに戻す
-            // XXX 位置はリセットしない？
+            // VB も文字の描画の位置（CurrentX・CurrentY）は戻さない
             GUI.ResetDrawString();
             GUI.PermanentStringMode = false;
             GUI.KeepStringMode = false;
 
             // オブジェクト色をデフォルトに戻す
-            // XXX これはEventsが持ってていいのか？
+            // VB も ObjColor などは Event.bas が持つ
             ObjColor = Color.White;
             ObjFillColor = Color.White;
             ObjFillStyle = FillStyle.VbFSTransparent;

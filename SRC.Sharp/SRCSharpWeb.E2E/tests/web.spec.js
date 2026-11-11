@@ -321,6 +321,86 @@ test('ブラウザの保存領域を使えなくても、失敗を出して一�
   await expect(page.locator('#catalog button').first()).toBeEnabled();
 });
 
+test('プレイ中に変えたシナリオの設定（Src.ini）を、シナリオごとにブラウザに残す', async ({ page }) => {
+  // シナリオの Src.ini にある項目（自動反撃モード）をプレイ中に変えると、Src.ini に書き戻し（元の SRC と同じ）、ブラウザにも残す
+  const base = path.join(corpus, 'battle-basic');
+  const files = [];
+  const add = dir => {
+    for (const entry of fs.readdirSync(path.join(base, dir), { withFileTypes: true })) {
+      const rel = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        add(rel);
+      } else if (rel.startsWith('Data') || rel === 'test.map') {
+        files.push({ name: 'ad/' + rel.split(path.sep).join('/'), data: fs.readFileSync(path.join(base, rel)) });
+      }
+    }
+  };
+  add('');
+  const eve = [
+    '@テスト', 'プロローグ:', 'Exit', '',
+    'スタート:', 'ChangeMap test.map',
+    'Create 味方 テスト機 0 テストパイロット 20 6 6',
+    'Create 敵 標的機 0 標的パイロット 1 12 6',
+    'Talk システム', 'AD=$(Info(オプション, AutoDeffence))', 'End', 'Exit', '',
+  ].join('\r\n');
+  files.push({ name: 'ad/test.eve', data: Buffer.from(eve, 'utf8') });
+  files.push({ name: 'ad/Src.ini', data: Buffer.from('; シナリオの設定\r\n[Option]\r\nAutoDefense=Off\r\n', 'utf8') });
+  const name = 'シナリオの設定のテスト.zip';
+  const scenarioId = 'archive-' + name;
+
+  await open(page);
+  await page.setInputFiles('#add-archive', { name, mimeType: 'application/zip', buffer: makeZip(files) });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await expect.poll(async () => (await screenState(page)).message ?? '', { timeout: 120 * 1000 }).toContain('AD=Off');
+
+  // メッセージを送り、味方フェイズにする
+  await expect.poll(async () => {
+    const s = await screenState(page);
+    if (s.message !== undefined) {
+      await page.locator('#screen').click({ position: { x: 200, y: 200 } });
+    }
+    return s.message === undefined && s.locked === false;
+  }, { intervals: [500, 1000], timeout: 60 * 1000 }).toBe(true);
+
+  // ユニットのいない 3 行目のマスで B（Esc）→ マップのコマンドのメニュー →「自動反撃モード」（ユニットは 6 行目だけ）
+  await page.locator('#screen').focus();
+  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowLeft');
+  for (let i = 0; i < 3; i++) {
+    await page.keyboard.press('ArrowUp');
+  }
+  await expect.poll(async () => (await screenState(page)).cursor?.[1]).toBe(3);
+  await page.keyboard.press('Escape');
+  await expect.poll(async () => (await screenState(page)).menu?.items ?? []).toContain('自動反撃モード');
+  const index = (await screenState(page)).menu.items.indexOf('自動反撃モード');
+  for (let i = 0; i < index; i++) {
+    await page.keyboard.press('ArrowDown');
+  }
+  await page.keyboard.press('Enter');
+
+  // Src.ini に書き戻したものがブラウザに残る（コメントはそのまま）
+  const stored = () => page.evaluate(async ([id]) => {
+    const bytes = await window.srcwebStore.getSave(id, 'ad/Src.ini');
+    return bytes ? new TextDecoder().decode(bytes) : '';
+  }, [scenarioId]);
+  await expect.poll(stored).toBe('; シナリオの設定\r\n[Option]\r\nAutoDefense=On\r\n');
+  // セーブデータと同じ場所（シナリオごと）に残す。画面のセーブデータの一覧には出さない（App.razor の RestoreSavesAsync）
+  expect(await page.evaluate(id => window.srcwebStore.listSaves(id).then(x => x.map(s => s.name)), scenarioId)).toContain('ad/Src.ini');
+
+  // 開き直すと、同梱の Src.ini（Off）ではなく、変えた設定（On）で始まる
+  await page.reload();
+  await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
+  await page.locator('#archives li', { hasText: name }).getByRole('button', { name }).click();
+  // リスタートのセーブがあるので、始め方を選ぶ画面が出る。新しく始める（設定ファイルはセーブデータの一覧に出さない）
+  const eveButton = page.getByRole('button', { name: 'test.eve' });
+  await expect(eveButton).toBeVisible();
+  await expect(page.locator('#saves li', { hasText: 'Src.ini' })).toHaveCount(0);
+  await eveButton.click();
+  await expect(page.locator('#screen')).toBeVisible();
+  await expect.poll(async () => (await screenState(page)).message ?? '', { timeout: 120 * 1000 }).toContain('AD=On');
+});
+
 // App.razor の FormatSize と同じ表示
 function formatSize(size) {
   return size >= 1024 * 1024 ? `${(size / 1024 / 1024).toFixed(1)} MB` : `${Math.round(size / 1024)} KB`;

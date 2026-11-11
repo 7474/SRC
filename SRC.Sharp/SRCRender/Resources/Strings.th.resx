@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>ข้อมูล {0} ไม่ถูกต้อง</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>ข้อมูลไม่ถูกต้อง</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>ยกเลิก</value>
   </data>
@@ -89,5 +92,32 @@
   </data>
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>ระดับเสียง MP3</value>
+  </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>ความเร็วข้อความ</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>เลื่อนเอง</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>ช้า</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>ปกติ</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>เร็ว</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>เร็วมาก</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>ทันที</value>
+  </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>เกิดข้อผิดพลาดขณะโหลดไฟล์ภาพ{0}{1}{0}โปรดตรวจสอบว่าไฟล์ภาพไม่เสียหาย</value>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>ไม่รองรับรูปแบบของไฟล์ภาพ{0}{1}</value>
   </data>
 </root>

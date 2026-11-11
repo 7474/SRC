@@ -145,6 +145,27 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         [TestMethod]
+        public void FadeInCmd_RButtonPressed_OnlyUpdatesScreen()
+        {
+            // 元の SRC（CmdData.cls ExecFadeInCmd）は右ボタンが押されていれば picMain(0).Refresh だけをして抜ける。
+            // 描いてある画面を表示し直すだけで、マップを描き直さない（RefreshScreen ではない）
+            var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.IsRButtonPressedHandler = _ => true;
+            var updated = 0;
+            var refreshed = 0;
+            var transion = 0;
+            gui.UpdateScreenHandler = () => updated++;
+            gui.RefreshScreenHandler = (a, b) => refreshed++;
+            gui.TransionScreanHandler = (p, c, f, fm) => transion++;
+            var cmd = CreateCmd(src, "FadeIn", 2);
+            Assert.AreEqual(3, cmd.Exec());
+            Assert.AreEqual(1, updated);
+            Assert.AreEqual(0, refreshed);
+            Assert.AreEqual(0, transion);
+        }
+
+        [TestMethod]
         public void FadeInCmd_TooManyArgs_ReturnsError()
         {
             // ヘルプ: FadeIn [times] — 引数が3個以上はエラー
@@ -504,7 +525,13 @@ namespace SRCCore.CmdDatas.Tests
         [TestMethod]
         public void PSetCmd_InvalidColor_ReturnsError()
         {
+            // 元の SRC は画面の外なら色指定を確かめないので、画面の中の点で確かめる
             var src = CreateSrc();
+            var gui = (MockGUI)src.GUI;
+            gui.MapPWidth = 640;
+            gui.MapPHeight = 480;
+            gui.SaveScreenHandler = () => { };
+            src.GUIScrean = new MockGUIScrean();
             var cmd = CreateCmd(src, "PSet 100 100 BADCOLOR");
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);

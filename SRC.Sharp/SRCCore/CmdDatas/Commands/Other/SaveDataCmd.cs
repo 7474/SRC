@@ -21,6 +21,12 @@ namespace SRCCore.CmdDatas.Commands
             {
                 // ファイル名指定セーブ
                 var fname = GetArgAsString(2);
+                // 元の SRC と同じく、ファイル名が空ならセーブしない
+                if (string.IsNullOrEmpty(fname))
+                {
+                    return EventData.NextID;
+                }
+
                 using (var saveStream = SRC.FileSystem.OpenSafe(SafeOpenMode.Write, fname))
                 {
                     if (saveStream != null)

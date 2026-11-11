@@ -1,6 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Pilots;
+using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -62,13 +63,13 @@ namespace SRCCore.CmdDatas.Commands
                 }
             }
 
-            p.Plana = ((int)(p.Plana + per * p.MaxPlana() / 100d));
+            p.Plana = VBMath.CLng(p.Plana + per * p.MaxPlana() / 100d);
             if (p.Unit is object)
             {
                 {
                     var u = p.Unit;
-                    u.HP = (int)(u.MaxHP * hp_ratio / 100d);
-                    u.EN = (int)(u.MaxEN * en_ratio / 100d);
+                    u.HP = VBMath.CLng(u.MaxHP * hp_ratio / 100d);
+                    u.EN = VBMath.CLng(u.MaxEN * en_ratio / 100d);
                 }
             }
 

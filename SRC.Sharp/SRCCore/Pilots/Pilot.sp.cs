@@ -41,7 +41,7 @@ namespace SRCCore.Pilots
                     lv = 100;
                 }
 
-                lv = (int)(lv + SkillLevel("追加レベル", ""));
+                lv = VBMath.CLng(lv + SkillLevel("追加レベル", ""));
                 if (lv > 40)
                 {
                     MaxSPRet = lv + 40;
@@ -69,10 +69,10 @@ namespace SRCCore.Pilots
                 MaxSPRet = MaxSPRet + Data.SP;
 
                 // 能力ＵＰ
-                MaxSPRet = (int)(MaxSPRet + SkillLevel("ＳＰＵＰ", ""));
+                MaxSPRet = VBMath.CLng(MaxSPRet + SkillLevel("ＳＰＵＰ", ""));
 
                 // 能力ＤＯＷＮ
-                MaxSPRet = (int)(MaxSPRet - SkillLevel("ＳＰＤＯＷＮ", ""));
+                MaxSPRet = VBMath.CLng(MaxSPRet - SkillLevel("ＳＰＤＯＷＮ", ""));
 
                 // 上限を超えないように
                 if (MaxSPRet > 9999)
@@ -283,7 +283,7 @@ namespace SRCCore.Pilots
                             {
                                 if ((sname ?? "") == (GeneralLib.LIndex(adata, i) ?? ""))
                                 {
-                                    return (int)((10d - SkillLevel("ＳＰ消費減少", "")) * SpecialPowerCostRet / 10L);
+                                    return (int)VBMath.IntDiv((10d - SkillLevel("ＳＰ消費減少", "")) * SpecialPowerCostRet, 10L);
                                 }
                             }
                         }
@@ -299,7 +299,7 @@ namespace SRCCore.Pilots
                 {
                     if ((sname ?? "") == (GeneralLib.LIndex(adata, j) ?? ""))
                     {
-                        return (int)((10d - skill.LevelOrDefault(1d)) * SpecialPowerCostRet / 10L);
+                        return (int)VBMath.IntDiv((10d - skill.LevelOrDefault(1d)) * SpecialPowerCostRet, 10L);
                     }
                 }
             }
@@ -360,7 +360,7 @@ namespace SRCCore.Pilots
                 my_unit.CurrentForm().MainPilot();
             }
 
-            SP = (int)(SP - sp_mod * SpecialPowerCost(sname));
+            SP = VBMath.CLng(SP - sp_mod * SpecialPowerCost(sname));
             GUI.CloseMessageForm();
         }
     }

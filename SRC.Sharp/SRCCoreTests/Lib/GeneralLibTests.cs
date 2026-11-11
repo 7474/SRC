@@ -259,8 +259,9 @@ namespace SRCCore.Lib.Tests
             Assert.AreEqual("b c", GeneralLib.ListTail("a b c", 2));
             Assert.AreEqual("c", GeneralLib.ListTail("a b c", 3));
             Assert.AreEqual("", GeneralLib.ListTail("a b c", 4));
-            // idx <= 1 の場合は空文字列を返す（VB5の仕様に基づく）
-            Assert.AreEqual("", GeneralLib.ListTail("a b c", 1));
+            // 元の SRC: idx = 1 は最初の要素から、idx < 1 は空文字列（7474/SRC#1498）
+            Assert.AreEqual("a b c", GeneralLib.ListTail("a b c", 1));
+            Assert.AreEqual("", GeneralLib.ListTail("a b c", 0));
         }
 
         // ──────────────────────────────────────────────

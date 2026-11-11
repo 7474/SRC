@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using SRCCore;
+using SRCCore.Filesystem;
 using SRCSharpForm.Extensions;
 using System.Collections.Generic;
 using System.Drawing;
@@ -25,12 +26,9 @@ namespace SRCSharpForm.Resoruces
 
         private SRC SRC;
 
-        private IList<string> bitmapDirectories;
-
         public ImageBuffer(SRC src)
         {
             SRC = src;
-            InitFileSystemInfo();
             cacheItemPolicy = new CacheItemPolicy()
             {
                 RemovedCallback = (arg) =>
@@ -40,8 +38,8 @@ namespace SRCSharpForm.Resoruces
             };
             cache = new MemoryCache("ImageBuffer", new System.Collections.Specialized.NameValueCollection()
             {
-                ["CacheMemoryLimitMegabytes"] = SRC.SystemConfig.MaxImageBufferByteSize > 0
-                    ? $"{SRC.SystemConfig.MaxImageBufferByteSize / 1024 / 1024}"
+                ["CacheMemoryLimitMegabytes"] = SRC.Config.MaxImageBufferByteSize > 0
+                    ? $"{SRC.Config.MaxImageBufferByteSize / 1024 / 1024}"
                     : "128",
             });
         }
@@ -138,34 +136,10 @@ namespace SRCSharpForm.Resoruces
 
         public string SearchFile(string name)
         {
-            var path =  ImageFilders()
-                .Select(x => SRC.FileSystem.PathCombine(x, name))
-                .FirstOrDefault(x => SRC.FileSystem.FileExists(x));
+            // 元の SRC と同じ順番で探す（フォルダごとに、ファイル名の候補を順に探す）
+            var path = BitmapSearch.FindPicture(SRC, name);
             SRC.LogDebug($"{name} -> {path}");
             return path;
-        }
-
-        private IEnumerable<string> ImageFilders()
-        {
-            return bitmapDirectories;
-        }
-
-        public void InitFileSystemInfo()
-        {
-            // 当面事前チェックやマップ向けディレクトリの特別視はしない
-            var subDirectories = new List<string>()
-            {
-                "",
-                SRC.FileSystem.PathCombine("Bitmap"),
-                SRC.FileSystem.PathCombine("Bitmap", "Anime"),
-                SRC.FileSystem.PathCombine("Bitmap", "Event"),
-                SRC.FileSystem.PathCombine("Bitmap", "Cutin"),
-                SRC.FileSystem.PathCombine("Bitmap", "Pilot"),
-                SRC.FileSystem.PathCombine("Bitmap", "Unit"),
-                SRC.FileSystem.PathCombine("Bitmap", "Map"),
-            };
-            bitmapDirectories = subDirectories
-                .ToList();
         }
     }
 }

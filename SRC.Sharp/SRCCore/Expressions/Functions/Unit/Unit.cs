@@ -102,8 +102,9 @@ namespace SRCCore.Expressions.Functions
             num_result = unit?.CountItem() ?? 0d;
             if (pcount == 1)
             {
+                // 元の SRC と同じく、ユニットにもパイロットにも当たらないときだけ「未装備」のアイテムを数える
                 var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-                if (pname == "未装備")
+                if (!SRC.UList.IsDefined2(pname) && !SRC.PList.IsDefined(pname) && pname == "未装備")
                 {
                     num_result = SRC.IList.List.Count(itm => itm.Unit == null && itm.Exist);
                 }
@@ -230,7 +231,11 @@ namespace SRCCore.Expressions.Functions
             // エリアスが定義されている？
             if (SRC.ALDList.IsDefined(name))
             {
-                name = SRC.ALDList.Item(name).ReplaceTypeName(name);
+                // 元の SRC と同じく、ユニットを指定したとき（引数 2 個）はデータの先頭が名前と同じ要素を探し、
+                // 指定しないとき（引数 1 個）は最初の要素の種類にする
+                name = pcount == 1
+                    ? SRC.ALDList.Item(name).Elements.First().strAliasType
+                    : SRC.ALDList.Item(name).ReplaceTypeName(name);
             }
             num_result = unit?.IsFeatureAvailable(name) ?? false ? 1d : 0d;
             if (etype == ValueType.StringType)
@@ -268,69 +273,96 @@ namespace SRCCore.Expressions.Functions
         }
     }
 
-    public class Item : AUnitFunction
+    public class Item : AFunction
     {
-        protected override int OptionArgCount => 1;
-        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
             num_result = 0d;
-
-            var index = pcount == 1
-                ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
-                : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
-            if (index <= 0)
-            {
-                return ValueType.StringType;
-            }
-            if (pcount == 2)
-            {
-                var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-                if (pname == "未装備")
-                {
-                    var items = SRC.IList.List.Where(itm => itm.Unit == null && itm.Exist).ToList();
-                    str_result = items.Count > index - 1 ? items[index - 1].Name : "";
-                    return ValueType.StringType;
-                }
-            }
-            if (unit != null)
-            {
-                str_result = unit.ItemList.Count > index - 1 ? unit.ItemList[index - 1].Name : "";
-            }
+            str_result = ItemFunctionHelper.FindItem(SRC, @params, pcount, is_term)?.Name ?? "";
             return ValueType.StringType;
         }
     }
 
-    public class ItemID : AUnitFunction
+    public class ItemID : AFunction
     {
-        protected override int OptionArgCount => 1;
-        protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
+        protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
-            str_result = "";
             num_result = 0d;
-
-            var index = pcount == 1
-                ? SRC.Expression.GetValueAsLong(@params[1], is_term[1])
-                : SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
-            if (index <= 0)
-            {
-                return ValueType.StringType;
-            }
-            if (pcount == 2)
-            {
-                var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
-                if (pname == "未装備")
-                {
-                    var items = SRC.IList.List.Where(itm => itm.Unit == null && itm.Exist).ToList();
-                    str_result = items.Count > index - 1 ? items[index - 1].ID : "";
-                    return ValueType.StringType;
-                }
-            }
-            if (unit != null)
-            {
-                str_result = unit.ItemList.Count > index - 1 ? unit.ItemList[index - 1].ID : "";
-            }
+            str_result = ItemFunctionHelper.FindItem(SRC, @params, pcount, is_term)?.ID ?? "";
             return ValueType.StringType;
+        }
+    }
+
+    internal static class ItemFunctionHelper
+    {
+        // Item関数、ItemID関数の対象となるアイテムを返す（元の SRC の Case "item"・"itemid" と同じ順に引数を評価する）
+        public static Items.Item FindItem(SRC SRC, string[] @params, int pcount, bool[] is_term)
+        {
+            switch (pcount)
+            {
+                case 2:
+                    {
+                        var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
+                        if (SRC.UList.IsDefined2(pname))
+                        {
+                            var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+                            return NthItem(SRC.UList.Item2(pname), i);
+                        }
+                        else if (!SRC.PList.IsDefined(pname))
+                        {
+                            if (pname == "未装備")
+                            {
+                                // ユニットに装備されていないアイテムの j 番目
+                                var j = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+                                var i = 0;
+                                foreach (var it in SRC.IList.List)
+                                {
+                                    if (it.Unit == null && it.Exist)
+                                    {
+                                        i++;
+                                        if (i == j)
+                                        {
+                                            return it;
+                                        }
+                                    }
+                                }
+                            }
+                            return null;
+                        }
+                        else
+                        {
+                            var u = SRC.PList.Item(pname).Unit;
+                            if (u == null)
+                            {
+                                return null;
+                            }
+                            var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
+                            return NthItem(u, i);
+                        }
+                    }
+
+                case 1:
+                    {
+                        var u = SRC.Event.SelectedUnitForEvent;
+                        if (u == null)
+                        {
+                            return null;
+                        }
+                        var i = SRC.Expression.GetValueAsLong(@params[1], is_term[1]);
+                        return NthItem(u, i);
+                    }
+            }
+            // 元の SRC: 引数が 0 個・3 個以上なら空
+            return null;
+        }
+
+        private static Items.Item NthItem(Units.Unit u, int i)
+        {
+            if (1 <= i && i <= u.CountItem())
+            {
+                return u.ItemList[i - 1];
+            }
+            return null;
         }
     }
 
@@ -358,6 +390,10 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
+            if (pcount > 1)
+            {
+                unit = null;
+            }
             str_result = unit?.Party0 ?? "";
             num_result = 0d;
             // パイロット名で指定したときはパイロットの陣営（ユニットに乗っていなくても返す。VB 版と同じ）
@@ -469,6 +505,10 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
+            if (pcount > 1)
+            {
+                unit = null;
+            }
             str_result = "";
             num_result = unit?.Rank ?? 0d;
             if (etype == ValueType.StringType)
@@ -488,6 +528,10 @@ namespace SRCCore.Expressions.Functions
         protected override int OptionArgCount => 1;
         protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
+            if (pcount > 2)
+            {
+                unit = null;
+            }
             str_result = "";
             num_result = 0d;
 
@@ -516,6 +560,10 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
+            if (pcount > 1)
+            {
+                unit = null;
+            }
             str_result = unit?.Status ?? "";
             num_result = 0d;
             return ValueType.StringType;
@@ -526,6 +574,10 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
+            if (pcount > 1)
+            {
+                unit = null;
+            }
             str_result = unit?.Name ?? "";
             num_result = 0d;
             return ValueType.StringType;
@@ -536,6 +588,10 @@ namespace SRCCore.Expressions.Functions
     {
         protected override ValueType InvokeInternal(SRC SRC, Units.Unit unit, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
+            if (pcount > 1)
+            {
+                unit = null;
+            }
             str_result = unit?.ID ?? "";
             num_result = 0d;
             return ValueType.StringType;

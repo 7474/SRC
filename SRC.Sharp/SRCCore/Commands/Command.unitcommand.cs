@@ -25,7 +25,7 @@ namespace SRCCore.Commands
                     // 移動後のコマンド選択をやり直す
                     if (CommandState == "移動後コマンド選択")
                     {
-                        //Application.DoEvents();
+                        // VB の DoEvents は SRC# では要らない（画面の処理を止めていないため）
                         return;
                     }
 
@@ -239,8 +239,7 @@ namespace SRCCore.Commands
                     // 移動後のコマンド選択をやり直す
                     if (CommandState == "移動後コマンド選択")
                     {
-                        // XXX
-                        //Application.DoEvents();
+                        // VB の DoEvents は SRC# では要らない（画面の処理を止めていないため）
                         return;
                     }
                     break;
@@ -408,9 +407,32 @@ namespace SRCCore.Commands
             var p = SelectedUnit.Pilots.First();
 
             // 接触イベント
-            foreach (var unit in Map.AdjacentUnit(SelectedUnit))
+            // 元の SRC と同じく左・右・上・下の順に、イベントのたびに隣のユニットを取り直す
+            // （イベントでユニットが動いたり、隣のユニットが変わったりすることがあるため）
+            for (var i = 1; i <= 4; i++)
             {
-                SelectedTarget = unit;
+                SelectedTarget = null;
+                switch (i)
+                {
+                    case 1:
+                        SelectedTarget = Map.UnitAtPoint(SelectedUnit.x - 1, SelectedUnit.y);
+                        break;
+                    case 2:
+                        SelectedTarget = Map.UnitAtPoint(SelectedUnit.x + 1, SelectedUnit.y);
+                        break;
+                    case 3:
+                        SelectedTarget = Map.UnitAtPoint(SelectedUnit.x, SelectedUnit.y - 1);
+                        break;
+                    case 4:
+                        SelectedTarget = Map.UnitAtPoint(SelectedUnit.x, SelectedUnit.y + 1);
+                        break;
+                }
+
+                if (SelectedTarget is null)
+                {
+                    continue;
+                }
+
                 Event.HandleEvent("接触", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
                 SelectedTarget = null;
                 if (SRC.IsScenarioFinished)
@@ -484,15 +506,15 @@ namespace SRCCore.Commands
 
             GUI.UnlockGUI();
 
-            //// ステータスウィンドウの表示内容を更新
-            //if (SelectedUnit.Status == "出撃" && GUI.MainWidth == 15)
-            //{
-            //    Status.DisplayUnitStatus(SelectedUnit);
-            //}
-            //else
-            //{
-            //    Status.ClearUnitStatus();
-            //}
+            // ステータスウィンドウの表示内容を更新
+            if (SelectedUnit.Status == "出撃" && GUI.MainWidth == 15)
+            {
+                Status.DisplayUnitStatus(SelectedUnit);
+            }
+            else
+            {
+                Status.ClearUnitStatus();
+            }
         }
     }
 }

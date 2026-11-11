@@ -28,6 +28,7 @@
     <Compile Include="..\SRCSharpWeb\WebLogging.cs" Link="SRCSharpWeb\WebLogging.cs" />
     <Compile Include="..\SRCSharpWeb\WebLogPanel.cs" Link="SRCSharpWeb\WebLogPanel.cs" />
     <Compile Include="..\SRCSharpWeb\WebGameSettings.cs" Link="SRCSharpWeb\WebGameSettings.cs" />
+    <Compile Include="..\SRCSharpWeb\FileChoice.cs" Link="SRCSharpWeb\FileChoice.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,8 +2,6 @@
 layout: default
 title: RecoverPlanaコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RecoverPlanaコマンド**
 
 霊力を回復

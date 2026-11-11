@@ -1,5 +1,6 @@
 using SkiaSharp;
 using SRCCore;
+using SRCCore.Filesystem;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Units;
@@ -15,9 +16,31 @@ namespace SRCRender
     // 画面へは displayBuffer を表示する。
     public partial class ScreenGUI
     {
-        private static readonly SKColor MapMaskColor = new SKColor(100, 100, 100, 127);
-        private static readonly SKColor UnitMaskColor = new SKColor(100, 100, 100, 127);
         private static readonly SKColor MapLineColor = new SKColor(100, 100, 100);
+
+        // 元の SRC（Main.frm の picMask・picMask2）の網掛け。マスの左上から数えて x + y が奇数のピクセルだけを、
+        // 行動済みは黒（picMask との AND）、マスクは灰色 RGB(140, 140, 140)（AND のあと picMask2 との XOR）にする。
+        // 残りのピクセルは元の絵のまま
+        private static readonly SKBitmap ActedPattern = CheckerPattern(SKColors.Black);
+        private static readonly SKBitmap MaskedPattern = CheckerPattern(new SKColor(140, 140, 140));
+
+        private static SKBitmap CheckerPattern(SKColor color)
+        {
+            var px = ScreenLayout.CellPx;
+            var bitmap = new SKBitmap(px, px, SKColorType.Bgra8888, SKAlphaType.Premul);
+            bitmap.Erase(SKColors.Transparent);
+            for (var y = 0; y < px; y++)
+            {
+                for (var x = 0; x < px; x++)
+                {
+                    if ((x + y) % 2 == 1)
+                    {
+                        bitmap.SetPixel(x, y, color);
+                    }
+                }
+            }
+            return bitmap;
+        }
 
         private SKBitmap mainBuffer = NewBuffer(ScreenLayout.MapWidthPx, ScreenLayout.MapHeightPx);
         private SKBitmap mainBufferBack = NewBuffer(ScreenLayout.MapWidthPx, ScreenLayout.MapHeightPx);
@@ -114,21 +137,28 @@ namespace SRCRender
             MapX = (MainWidth / 2 + 1);
             MapY = (MainHeight / 2 + 1);
 
-            var built = renderer.BuildBackground(src, Images);
-            built = ImageFilters.ApplyDrawMode(built, draw_mode, filter_color, filter_trans_par);
+            // 描画モードは地形とレイヤーに別々にかける（レイヤーは背景色を白として透過で処理する。元の SRC と同じ）
+            var built = renderer.BuildBackground(src, Images,
+                (image, isLayer) => ImageFilters.ApplyDrawMode(image, draw_mode, filter_color, filter_trans_par, transparent: isLayer));
             if (src.ShowSquareLine)
             {
+                // 元の SRC（GUI.bas の SetupBackground）と同じ位置に 1 ピクセルの線を引く。
+                // 外枠は (0, 0)-(MapPWidth - 1, MapPHeight - 1)、縦線は各マスの左端の列（x = 32 * i）、
+                // 横線は各マスの下端の行（y = 32 * i - 1）
                 using (var canvas = new SKCanvas(built))
-                using (var paint = new SKPaint { Color = MapLineColor, Style = SKPaintStyle.Stroke })
+                using (var paint = new SKPaint { Color = MapLineColor, Style = SKPaintStyle.Fill })
                 {
-                    canvas.DrawRect(0, 0, MapPWidth, MapPHeight, paint);
+                    canvas.DrawRect(0, 0, MapPWidth, 1, paint);
+                    canvas.DrawRect(0, MapPHeight - 1, MapPWidth, 1, paint);
+                    canvas.DrawRect(0, 0, 1, MapPHeight, paint);
+                    canvas.DrawRect(MapPWidth - 1, 0, 1, MapPHeight, paint);
                     for (var x = 1; x <= Map.MapWidth - 1; x++)
                     {
-                        canvas.DrawLine(x * ScreenLayout.CellPx, 0, x * ScreenLayout.CellPx, MapPHeight, paint);
+                        canvas.DrawRect(x * ScreenLayout.CellPx, 0, 1, MapPHeight, paint);
                     }
                     for (var y = 1; y <= Map.MapHeight - 1; y++)
                     {
-                        canvas.DrawLine(0, y * ScreenLayout.CellPx, MapPWidth, y * ScreenLayout.CellPx, paint);
+                        canvas.DrawRect(0, y * ScreenLayout.CellPx - 1, MapPWidth, 1, paint);
                     }
                 }
             }
@@ -139,6 +169,40 @@ namespace SRCRender
             {
                 RefreshScreen();
             }
+        }
+
+        public void RedrawMapCell(int X, int Y)
+        {
+            if (backgroundBuffer == null || Map.MapData == null
+                || X < 1 || X > Map.MapWidth || Y < 1 || Y > Map.MapHeight)
+            {
+                return;
+            }
+
+            // 元の SRC の ExecChangeTerrainCmd・ExecChangeLayerCmd と同じく、そのマスだけを
+            // 今の描画モードで描き直す（背景のほかのマスに描いたものと IsMapDirty はそのまま）
+            var cellImage = renderer.BuildMapCell(src, Images, X, Y,
+                (image, isLayer) => ImageFilters.ApplyDrawMode(image, Map.MapDrawMode, Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent, transparent: isLayer));
+            using (cellImage)
+            {
+                if (src.ShowSquareLine)
+                {
+                    // マス目は左端・上端の線を引く
+                    using (var canvas = new SKCanvas(cellImage))
+                    using (var paint = new SKPaint { Color = MapLineColor, Style = SKPaintStyle.Stroke })
+                    {
+                        canvas.DrawLine(0, 0, ScreenLayout.CellPx, 0, paint);
+                        canvas.DrawLine(0, 0, 0, ScreenLayout.CellPx, paint);
+                    }
+                }
+                using (var canvas = new SKCanvas(backgroundBuffer))
+                {
+                    canvas.DrawBitmap(cellImage, ScreenLayout.CellPx * (X - 1), ScreenLayout.CellPx * (Y - 1), SKSamplingOptions.Default);
+                }
+            }
+
+            // 表示用バッファのそのマスも描き直す。画面への反映は次に画面を更新したとき（元の SRC の picMain(0) への BitBlt）
+            EraseMapPointOnMain(X, Y);
         }
 
         public void RedrawScreen(bool late_refresh = false)
@@ -173,7 +237,6 @@ namespace SRCRender
 
             State.ShowMap = true;
             using (var canvas = new SKCanvas(mainBuffer))
-            using (var paint = new SKPaint())
             {
                 canvas.Clear(SKColors.Black);
                 var mx = MapX - (MainWidth + 1) / 2 + 1;
@@ -206,14 +269,16 @@ namespace SRCRender
                         var dest = SKRect.Create(ScreenLayout.CellPx * i, ScreenLayout.CellPx * j, ScreenLayout.CellPx, ScreenLayout.CellPx);
                         var cell = Map.MapData[x, y];
                         var u = Map.MapDataForUnit[x, y];
-                        if (u != null)
+                        var masked = ScreenIsMasked && Map.MaskData != null && Map.MaskData[x, y];
+                        if (u != null && !u.IsBitmapHidden())
                         {
-                            DrawUnit(canvas, cell, u, dest);
+                            // マスクされたユニットは行動済みかに関わらずマスク入りの画像（元の SRC の picUnitBitmap の 3 段目）
+                            DrawUnit(canvas, cell, u, dest, masked: masked);
                         }
-                        if (ScreenIsMasked && Map.MaskData != null && Map.MaskData[x, y])
+                        else if (masked)
                         {
-                            paint.Color = MapMaskColor;
-                            canvas.DrawRect(dest, paint);
+                            // マスクされた地形（元の SRC の picMaskedBack）
+                            canvas.DrawBitmap(MaskedPattern, dest.Left, dest.Top, SKSamplingOptions.Default);
                         }
                     }
                 }
@@ -297,37 +362,88 @@ namespace SRCRender
 
         private bool IsInsideWindow(int x, int y)
         {
-            // WinForms 版と同じ判定（実質的に常に true）
-            return x >= MapX - (MainWidth + 1) / 2
-                || MapX + (MainWidth + 1) / 2 >= x
-                || y >= MapY - (MainHeight + 1) / 2
-                || MapY + (MainHeight + 1) / 2 >= y;
+            // 元の SRC（GUI.bas の PaintUnitBitmap・EraseUnitBitmap の「画面外？」）と同じ判定。
+            // 画面に見えているマスと、その外側の 1 マスまでを画面の中とする
+            return !(x < MapX - (MainWidth + 1) / 2
+                || MapX + (MainWidth + 1) / 2 < x
+                || y < MapY - (MainHeight + 1) / 2
+                || MapY + (MainHeight + 1) / 2 < y);
         }
 
         #region ユニット
 
         /// <summary>
-        /// ユニットを1マス分描画する（陣営枠、ユニット画像、描画モード、行動済み、地形の線）。
+        /// ユニットを1マス分描画する（陣営枠、ユニット画像、描画モード、行動済み・マスク、地形の線）。
         /// </summary>
-        private void DrawUnit(SKCanvas target, MapCell cell, Unit u, SKRect dest, bool useOrigColor = false)
+        /// <param name="useOrigColor">描画モードで色を変えない（元の SRC の LoadUnitBitmap の use_orig_color）</param>
+        /// <param name="withActed">行動済みなら網掛けにする（元の SRC の picUnitBitmap の 2 段目）</param>
+        /// <param name="withAreaLine">ユニットのいる場所（空中・水中など）の線を引く</param>
+        /// <param name="masked">マスク入りの画像にする（元の SRC の picUnitBitmap の 3 段目。行動済みかに関わらない）</param>
+        private void DrawUnit(SKCanvas target, MapCell cell, Unit u, SKRect dest, bool useOrigColor = false,
+            bool withActed = true, bool withAreaLine = true, bool masked = false)
         {
-            using (var image = CreateUnitImage(cell, u, useOrigColor))
+            if (u.IsBitmapHidden())
+            {
+                // 非表示のユニットはユニットのいる地形のタイルを描く（元の SRC の BitmapID が -1 のユニット）
+                DrawTerrainTile(target, cell?.X ?? u.x, cell?.Y ?? u.y, dest);
+                return;
+            }
+            using (var image = CreateUnitImage(cell, u, useOrigColor, withActed, withAreaLine, masked))
             {
                 target.DrawBitmap(image, dest, SKSamplingOptions.Default);
             }
         }
 
-        private SKBitmap CreateUnitImage(MapCell cell, Unit u, bool useOrigColor = false)
+        /// <summary>マップの背景（地形）の (x, y) のマスを dest に描く</summary>
+        private void DrawTerrainTile(SKCanvas target, int x, int y, SKRect dest)
+        {
+            if (backgroundBuffer == null || x < 1 || y < 1 || x > Map.MapWidth || y > Map.MapHeight)
+            {
+                return;
+            }
+            var source = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
+            target.DrawBitmapShared(backgroundBuffer, source, dest);
+        }
+
+        /// <summary>
+        /// 画像を表示しないユニット画像のファイル名か（元の SRC の FindUnitBitmap は「\-.bmp」を含むファイル名を
+        /// 見つからなかったものとし、陣営のタイルだけを描く）
+        /// </summary>
+        private static bool IsNoImageBitmap(string bitmap)
+        {
+            return ("\\" + (bitmap ?? "").Replace('/', '\\')).Contains("\\-.bmp");
+        }
+
+        private SKBitmap CreateUnitImage(MapCell cell, Unit u, bool useOrigColor = false,
+            bool withActed = true, bool withAreaLine = true, bool masked = false)
         {
             var px = ScreenLayout.CellPx;
             var image = new SKBitmap(px, px, SKColorType.Bgra8888, SKAlphaType.Premul);
             var rect = SKRect.Create(0, 0, px, px);
+            if (u.IsBitmapHidden())
+            {
+                // 非表示のユニットは描かない（移動のアニメーションなど）
+                image.Erase(SKColors.Transparent);
+                return image;
+            }
             var emitLight = Map.MapDrawMode == "夜" && !Map.MapDrawIsMapOnly && !useOrigColor && SafeFeature(u, "発光");
 
+            // 地形ユニットは Bitmap\Map の画像（地形画像の番号付きのファイル名にも読み替える）を、
+            // 陣営色の背景を描かず、白を透過せずにそのまま使う（元の SRC の FindUnitBitmap・LoadUnitBitmap）
+            var isTerrainUnit = SafeFeature(u, "地形ユニット");
             SKBitmap unitImage = null;
+            SKBitmap terrainUnitImage = null;
+            var noImage = false;
             try
             {
-                unitImage = Images.GetTransparent(u.CurrentForm().CurrentBitmap());
+                var bitmap = u.CurrentForm().CurrentBitmap();
+                noImage = IsNoImageBitmap(bitmap);
+                if (isTerrainUnit)
+                {
+                    bitmap = BitmapSearch.TerrainUnitBitmap(SRC, bitmap);
+                    terrainUnitImage = Images.Get(bitmap);
+                }
+                unitImage = Images.GetTransparent(bitmap);
             }
             catch
             {
@@ -337,18 +453,27 @@ namespace SRCRender
             using (var canvas = new SKCanvas(image))
             {
                 canvas.Clear(SKColors.Transparent);
-                var frame = UnitFrames.ForParty(u.Party0);
-                if (frame != null)
+                if (terrainUnitImage != null)
                 {
-                    canvas.DrawBitmap(frame, rect, SKSamplingOptions.Default);
+                    canvas.DrawBitmap(terrainUnitImage, rect, SKSamplingOptions.Default);
                 }
-                if (unitImage != null && !emitLight)
+                else
                 {
-                    canvas.DrawBitmap(unitImage, rect, SKSamplingOptions.Default);
-                }
-                else if (unitImage == null)
-                {
-                    renderer.DrawUnitInitial(canvas, u.Nickname0 ?? u.Name, rect);
+                    var frame = UnitFrames.ForParty(u.Party0);
+                    if (frame != null)
+                    {
+                        canvas.DrawBitmap(frame, rect, SKSamplingOptions.Default);
+                    }
+                    if (unitImage != null && !emitLight)
+                    {
+                        canvas.DrawBitmap(unitImage, rect, SKSamplingOptions.Default);
+                    }
+                    else if (unitImage == null && !noImage)
+                    {
+                        // 素材の無いユニットは名前の頭文字を出す（SRC# の素材なしでの表示。docs/assets.md）。
+                        // 画像に「-」を指定したユニットは、元の SRC と同じく陣営のタイルだけにする
+                        renderer.DrawUnitInitial(canvas, u.Nickname0 ?? u.Name, rect);
+                    }
                 }
             }
 
@@ -365,35 +490,62 @@ namespace SRCRender
             }
 
             using (var canvas = new SKCanvas(image))
-            using (var paint = new SKPaint { Color = UnitMaskColor })
             {
-                if (u.Action <= 0 && !SafeFeature(u, "地形ユニット"))
+                if (masked)
                 {
-                    canvas.DrawRect(rect, paint);
+                    // マスク入りの画像（元の SRC の MakeUnitBitmap。行動済みの画像に picMask2 を XOR）
+                    canvas.DrawBitmap(MaskedPattern, 0, 0, SKSamplingOptions.Default);
                 }
-                paint.Color = SKColors.Black;
-                paint.Style = SKPaintStyle.Stroke;
+                else if (withActed && u.Action <= 0 && !isTerrainUnit)
+                {
+                    // 行動済みの場合は網掛け
+                    canvas.DrawBitmap(ActedPattern, 0, 0, SKSamplingOptions.Default);
+                }
+            }
+
+            if (withAreaLine)
+            {
+                // ユニットのいる場所に合わせて表示を変更（元の SRC は MoveToEx・LineTo で x = 0 から 30 まで。
+                // マスクされたユニットは DottedLine で x が奇数のピクセルだけ）
                 switch (u.Area ?? "")
                 {
                     case "空中":
-                        canvas.DrawLine(0, 28.5f, 31, 28.5f, paint);
+                        DrawAreaLine(image, 28, masked);
                         break;
                     case "水中":
-                        canvas.DrawLine(0, 3.5f, 31, 3.5f, paint);
+                        DrawAreaLine(image, 3, masked);
                         break;
                     case "地中":
-                        canvas.DrawLine(0, 28.5f, 31, 28.5f, paint);
-                        canvas.DrawLine(0, 3.5f, 31, 3.5f, paint);
+                        DrawAreaLine(image, 28, masked);
+                        DrawAreaLine(image, 3, masked);
                         break;
                     case "宇宙":
                         if (cell?.Terrain?.Class == "月面")
                         {
-                            canvas.DrawLine(0, 28.5f, 31, 28.5f, paint);
+                            DrawAreaLine(image, 28, masked);
                         }
                         break;
                 }
             }
             return image;
+        }
+
+        private static void DrawAreaLine(SKBitmap image, int y, bool dotted)
+        {
+            if (dotted)
+            {
+                for (var i = 0; i <= 15; i++)
+                {
+                    image.SetPixel(2 * i + 1, y, SKColors.Black);
+                }
+            }
+            else
+            {
+                for (var x = 0; x <= 30; x++)
+                {
+                    image.SetPixel(x, y, SKColors.Black);
+                }
+            }
         }
 
         private static bool SafeFeature(Unit u, string feature)
@@ -410,6 +562,11 @@ namespace SRCRender
 
         public void PaintUnitBitmap(Unit u, string smode = "")
         {
+            // 非表示？
+            if (u.IsBitmapHidden())
+            {
+                return;
+            }
             if (!IsInsideWindow(u.x, u.y))
             {
                 return;
@@ -422,6 +579,8 @@ namespace SRCRender
             }
             if (smode != "リフレッシュ無し")
             {
+                // 画面が書き換えられたことを記録（元の SRC と同じ）
+                ScreenIsSaved = false;
                 UpdateScreen();
             }
         }
@@ -440,11 +599,24 @@ namespace SRCRender
             EraseMapPoint(X, Y);
             if (do_refresh)
             {
+                // 画面が書き換えられたことを記録（元の SRC と同じ）
+                ScreenIsSaved = false;
                 UpdateScreen();
             }
         }
 
         private void EraseMapPoint(int X, int Y)
+        {
+            CopyBackgroundCell(X, Y, mainBuffer, mainBufferBack);
+        }
+
+        /// <summary>背景の (X, Y) のマスを表示用バッファだけに写す</summary>
+        private void EraseMapPointOnMain(int X, int Y)
+        {
+            CopyBackgroundCell(X, Y, mainBuffer);
+        }
+
+        private void CopyBackgroundCell(int X, int Y, params SKBitmap[] buffers)
         {
             if (backgroundBuffer == null)
             {
@@ -452,7 +624,7 @@ namespace SRCRender
             }
             var dest = SKRect.Create(MapToPixelX(X), MapToPixelY(Y), ScreenLayout.CellPx, ScreenLayout.CellPx);
             var source = SKRect.Create((X - 1) * ScreenLayout.CellPx, (Y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-            foreach (var buffer in new[] { mainBuffer, mainBufferBack })
+            foreach (var buffer in buffers)
             {
                 using (var canvas = new SKCanvas(buffer))
                 {
@@ -512,13 +684,16 @@ namespace SRCRender
             var waitTime = wait_time0 / division;
             var startTime = GeneralLib.timeGetTime();
             SaveScreen();
-            using (var unitImage = CreateUnitImage(Map.CellAtPoint(u.x, u.y), u))
+            // 元の SRC と同じく、行動済みでも網掛けしていない画像（picUnitBitmap の 1 段目）で動かす
+            using (var unitImage = CreateUnitImage(Map.CellAtPoint(u.x, u.y), u, withActed: false))
             {
                 var xx = MapToPixelX(x1);
                 var yy = MapToPixelY(y1);
+                // 背景上の画像をまず消去（既に移動している場合を除く）。
+                // 元の SRC は画面外かや IsPictureVisible を見ずに picMain(0)・picMain(1) の両方を背景で消す
                 if (ReferenceEquals(u, Map.MapDataForUnit[x1, y1]))
                 {
-                    EraseUnitBitmap(x1, y1, false);
+                    EraseMapPoint(x1, y1);
                 }
 
                 // 長い方の軸を先に移動し、次に短い方の軸を移動する
@@ -550,7 +725,8 @@ namespace SRCRender
             var waitTime = wait_time0 / division;
             var startTime = GeneralLib.timeGetTime();
             SaveScreen();
-            using (var unitImage = CreateUnitImage(Map.CellAtPoint(u.x, u.y), u))
+            // 元の SRC と同じく、行動済みでも網掛けしていない画像（picUnitBitmap の 1 段目）で動かす
+            using (var unitImage = CreateUnitImage(Map.CellAtPoint(u.x, u.y), u, withActed: false))
             {
                 Map.SearchMoveRoute(u.x, u.y, out IList<int> routeX, out IList<int> routeY);
                 if (routeX.Count == 0)

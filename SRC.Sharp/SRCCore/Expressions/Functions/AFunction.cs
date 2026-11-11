@@ -1,4 +1,5 @@
 using SRCCore.Logging;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.Expressions.Functions
@@ -20,7 +21,7 @@ namespace SRCCore.Expressions.Functions
                res.ToString().Substring(0, 1),
                GetType().Name + "(" + string.Join(",", Enumerable.Range(1, pcount).Select(x => @params[x])) + ")",
                str_result,
-               num_result.ToString()
+               num_result.ToString(SrcCulture.Japanese)
             );
             return res;
         }
@@ -62,13 +63,25 @@ namespace SRCCore.Expressions.Functions
     public abstract class APilotFunction : AFunction
     {
         protected virtual int OptionArgCount => 0;
+        // 元の SRC では引数がこれより多いと、どのパイロットも選ばない（引数も評価しない）
+        protected virtual int MaxArgCount => OptionArgCount + 1;
+        // 元の SRC で、選択中のユニットにパイロットが乗っているかを確かめてから MainPilot を見る関数（Level・Morale）
+        protected virtual bool CheckSelectedUnitHasPilot => false;
         protected override ValueType InvokeInternal(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
             Pilots.Pilot pilot = null;
 
-            if (OptionArgCount >= pcount)
+            if (pcount > MaxArgCount)
             {
-                pilot = SRC.Event.SelectedUnitForEvent?.MainPilot();
+                pilot = null;
+            }
+            else if (OptionArgCount >= pcount)
+            {
+                var u = SRC.Event.SelectedUnitForEvent;
+                if (u != null && (!CheckSelectedUnitHasPilot || u.CountPilot() > 0))
+                {
+                    pilot = u.MainPilot();
+                }
             }
             else
             {

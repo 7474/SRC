@@ -49,8 +49,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
-                                AbsorbRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -63,8 +63,8 @@ namespace SRCCore.Units
                             {
                                 if (GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                                 {
-                                    AbsorbRet = true;
-                                    break;
+                                    // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                    return true;
                                 }
                             }
 
@@ -75,8 +75,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, c) > 0)
                             {
-                                AbsorbRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -128,8 +128,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
-                                ImmuneRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -140,8 +140,8 @@ namespace SRCCore.Units
                             // 魔法武器以外の魔属性なら特性が有効
                             if (GeneralLib.InStrNotNest(aname, "魔") > 0 && GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                             {
-                                ImmuneRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -151,8 +151,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, c) > 0)
                             {
-                                ImmuneRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -204,8 +204,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
-                                ResistRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -216,8 +216,8 @@ namespace SRCCore.Units
                             // 魔法武器以外の魔属性なら特性が有効
                             if (GeneralLib.InStrNotNest(aname, "魔") > 0 && GeneralLib.InStrNotNest(aname, "魔武") == 0 && GeneralLib.InStrNotNest(aname, "魔突") == 0 && GeneralLib.InStrNotNest(aname, "魔接") == 0 && GeneralLib.InStrNotNest(aname, "魔銃") == 0 && GeneralLib.InStrNotNest(aname, "魔実") == 0)
                             {
-                                ResistRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -227,8 +227,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, c) > 0)
                             {
-                                ResistRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -278,8 +278,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
-                                WeaknessRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -289,8 +289,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, c) > 0)
                             {
-                                WeaknessRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -340,8 +340,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, "魔") == 0 && GeneralLib.InStrNotNest(aname, "精") == 0)
                             {
-                                EffectiveRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -351,8 +351,8 @@ namespace SRCCore.Units
                         {
                             if (GeneralLib.InStrNotNest(aname, c) > 0)
                             {
-                                EffectiveRet = true;
-                                break;
+                                // VB: Exit Do（ループを抜ける。以降で値は変わらないので返す）
+                                return true;
                             }
 
                             break;
@@ -450,7 +450,8 @@ namespace SRCCore.Units
                             if (GeneralLib.InStrNotNest(aclass2, "魔") == 0 && GeneralLib.InStrNotNest(aclass2, "精") == 0)
                             {
                                 IsAttributeClassifiedRet = true;
-                                break;
+                                // VB: Exit Do
+                                goto EndOfFunction;
                             }
 
                             break;
@@ -470,7 +471,8 @@ namespace SRCCore.Units
                                     IsAttributeClassifiedRet = true;
                                 }
 
-                                break;
+                                // VB: Exit Do（魔法武器でも以降の属性は見ない）
+                                goto EndOfFunction;
                             }
 
                             break;
@@ -487,7 +489,8 @@ namespace SRCCore.Units
                             if (GeneralLib.InStrNotNest(aclass2, attr) > 0)
                             {
                                 IsAttributeClassifiedRet = true;
-                                break;
+                                // VB: Exit Do
+                                goto EndOfFunction;
                             }
 
                             break;

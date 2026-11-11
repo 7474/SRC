@@ -2,8 +2,6 @@
 layout: default
 title: ChangeTerrainコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **ChangeTerrainコマンド**
 
 地形を変更
@@ -34,7 +32,7 @@ title: ChangeTerrainコマンド
 ```sh
 #(7,8)の地形を廃墟に変更。使用するビットマップは remains1.bmp。
 ChangeTerrain 7 8 廃墟 1
-#(7,7)の地形を基地(ローカル)に変更。使用するビットマップは base-1.bmp。
+#(7,8)の地形を基地(ローカル)に変更。使用するビットマップは base-1.bmp。
 ChangeTerrain 7 8 基地(ローカル) 1
 #マップ画面を更新
 Redraw

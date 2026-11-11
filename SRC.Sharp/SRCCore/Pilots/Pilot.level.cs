@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using SRCCore.Lib;
+using SRCCore.VB;
 
 namespace SRCCore.Pilots
 {
@@ -102,7 +103,7 @@ namespace SRCCore.Pilots
                 {
                     if (IsSkillLevelSpecified("気力上限"))
                     {
-                        MaxMoraleRet = GeneralLib.MaxLng((int)SkillLevel("気力上限", ref_mode: ""), 0);
+                        MaxMoraleRet = GeneralLib.MaxLng(VBMath.CLng(SkillLevel("気力上限", ref_mode: "")), 0);
                     }
                 }
 
@@ -119,7 +120,7 @@ namespace SRCCore.Pilots
                 {
                     if (IsSkillLevelSpecified("気力下限"))
                     {
-                        MinMoraleRet = (int)GeneralLib.MaxLng((int)SkillLevel("気力下限", ref_mode: ""), 0);
+                        MinMoraleRet = GeneralLib.MaxLng(VBMath.CLng(SkillLevel("気力下限", ref_mode: "")), 0);
                     }
                 }
 

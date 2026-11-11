@@ -199,15 +199,15 @@ namespace SRCCore.Units
         public void RankUp(int incrRank = 1, double hp_ratio = 1d, double en_ratio = 1d)
         {
             Rank = Rank + incrRank;
-            HP = (int)(MaxHP * hp_ratio);
-            EN = (int)(MaxEN * en_ratio);
+            HP = VBMath.CLng(MaxHP * hp_ratio);
+            EN = VBMath.CLng(MaxEN * en_ratio);
 
             // 他形態のランクも上げておく
             foreach (var of in OtherForms)
             {
                 of.Rank = Rank;
-                of.HP = (int)(of.MaxHP * hp_ratio);
-                of.EN = (int)(of.MaxEN * en_ratio);
+                of.HP = VBMath.CLng(of.MaxHP * hp_ratio);
+                of.EN = VBMath.CLng(of.MaxEN * en_ratio);
             }
             // 合体形態が主形態の分離形態が改造された場合は他の分離形態のユニットの
             // ランクも上げる
@@ -228,11 +228,7 @@ namespace SRCCore.Units
                 {
                     if (mu.IsFeatureAvailable("分離"))
                     {
-                        var buf = mu.FeatureData("分離");
-                        foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
-                        {
-                            RankUpPart(pu, hp_ratio, en_ratio);
-                        }
+                        RankUpParts(mu.FeatureData("分離"), hp_ratio, en_ratio);
                     }
                 }
             }
@@ -240,8 +236,19 @@ namespace SRCCore.Units
             // 合体ユニットの場合は分離形態のユニットのランクも上げる
             if (IsFeatureAvailable("分離"))
             {
-                var buf = FeatureData("分離");
-                foreach (var pu in GeneralLib.ToList(buf).Skip(1).Select(x => SRC.UList.Item(x)).Where(x => x != null))
+                RankUpParts(FeatureData("分離"), hp_ratio, en_ratio);
+            }
+        }
+
+        // 特殊能力「分離」のデータ buf に並ぶ分離形態のユニットのランクを上げる。
+        // VB: For i = 2 To LLength(buf)、UList.IsDefined(LIndex(buf, i))（括弧・クォートを考えず、空白だけで分ける）
+        private void RankUpParts(string buf, double hp_ratio, double en_ratio)
+        {
+            var num = GeneralLib.LLength(buf);
+            for (var i = 2; i <= num; i++)
+            {
+                var pu = SRC.UList.Item(GeneralLib.LIndex(buf, i));
+                if (pu != null)
                 {
                     RankUpPart(pu, hp_ratio, en_ratio);
                 }
@@ -252,13 +259,13 @@ namespace SRCCore.Units
         private void RankUpPart(Unit pu, double hp_ratio, double en_ratio)
         {
             pu.Rank = GeneralLib.MaxLng(Rank, pu.Rank);
-            pu.HP = (int)(pu.MaxHP * hp_ratio);
-            pu.EN = (int)(pu.MaxEN * en_ratio);
+            pu.HP = VBMath.CLng(pu.MaxHP * hp_ratio);
+            pu.EN = VBMath.CLng(pu.MaxEN * en_ratio);
             foreach (var of in pu.OtherForms)
             {
                 of.Rank = pu.Rank;
-                of.HP = (int)(of.MaxHP * hp_ratio);
-                of.EN = (int)(of.MaxEN * en_ratio);
+                of.HP = VBMath.CLng(of.MaxHP * hp_ratio);
+                of.EN = VBMath.CLng(of.MaxEN * en_ratio);
             }
         }
 
@@ -361,13 +368,13 @@ namespace SRCCore.Units
                     // 霊力変換器装備ユニットは霊力に応じて最大ＨＰが変化
                     if (IsFeatureAvailable("霊力変換器"))
                     {
-                        MaxHPRet = (int)(MaxHPRet + 10d * PlanaLevel());
+                        MaxHPRet = VBMath.CLng(MaxHPRet + 10d * PlanaLevel());
                     }
 
                     // オーラ変換器装備ユニットはオーラレベルに応じて最大ＨＰが変化
                     if (IsFeatureAvailable("オーラ変換器"))
                     {
-                        MaxHPRet = (int)(MaxHPRet + 100d * AuraLevel());
+                        MaxHPRet = VBMath.CLng(MaxHPRet + 100d * AuraLevel());
                     }
                 }
 
@@ -394,13 +401,13 @@ namespace SRCCore.Units
                     // 霊力変換器装備ユニットは霊力に応じて最大ＥＮが変化
                     if (IsFeatureAvailable("霊力変換器"))
                     {
-                        MaxENRet = (int)(MaxENRet + 0.5d * PlanaLevel());
+                        MaxENRet = VBMath.CLng(MaxENRet + 0.5d * PlanaLevel());
                     }
 
                     // オーラ変換器装備ユニットはオーラレベルに応じて最大ＥＮが変化
                     if (IsFeatureAvailable("オーラ変換器"))
                     {
-                        MaxENRet = (int)(MaxENRet + 10d * AuraLevel());
+                        MaxENRet = VBMath.CLng(MaxENRet + 10d * AuraLevel());
                     }
                 }
 
@@ -436,7 +443,6 @@ namespace SRCCore.Units
             }
         }
 
-        //// ＥＮ
         public int EN
         {
             get => intEN;
@@ -472,7 +478,7 @@ namespace SRCCore.Units
                 // 特殊状態による移動力修正
                 if (IsUnderSpecialPowerEffect("移動力強化"))
                 {
-                    SpeedRet = (int)(SpeedRet + SpecialPowerEffectLevel("移動力強化"));
+                    SpeedRet = VBMath.CLng(SpeedRet + SpecialPowerEffectLevel("移動力強化"));
                 }
                 else if (IsConditionSatisfied("移動力ＵＰ"))
                 {
@@ -496,7 +502,7 @@ namespace SRCCore.Units
                 {
                     if (CountPilot() > 0)
                     {
-                        SpeedRet = (int)(SpeedRet + 0.01d * PlanaLevel());
+                        SpeedRet = SpeedRet + VBMath.Int(0.01d * PlanaLevel());
                     }
                 }
 
@@ -543,7 +549,6 @@ namespace SRCCore.Units
                 return SpeedRet;
             }
         }
-
 
         // 移動形態
         public string Transportation
@@ -596,7 +601,6 @@ namespace SRCCore.Units
                 return TransportationRet;
             }
         }
-
 
         // 地形適応
         public int get_Adaption(int idx)
@@ -943,7 +947,6 @@ namespace SRCCore.Units
             return AdaptionModRet;
         }
 
-
         // 装甲
         public int get_Armor(string ref_mode)
         {
@@ -984,19 +987,19 @@ namespace SRCCore.Units
                 // 霊力による装甲修正
                 if (IsFeatureAvailable("霊力変換器"))
                 {
-                    ArmorRet = (int)(ArmorRet + 5d * PlanaLevel());
+                    ArmorRet = VBMath.CLng(ArmorRet + 5d * PlanaLevel());
                 }
 
                 // サイキックドライブ装備ユニットは超能力レベルに応じて装甲が変化
                 if (IsFeatureAvailable("サイキックドライブ"))
                 {
-                    ArmorRet = (int)(ArmorRet + 100d * PsychicLevel());
+                    ArmorRet = VBMath.CLng(ArmorRet + 100d * PsychicLevel());
                 }
 
                 // オーラ変換器装備ユニットはオーラレベルに応じて装甲が変化
                 if (IsFeatureAvailable("オーラ変換器"))
                 {
-                    ArmorRet = (int)(ArmorRet + 50d * AuraLevel());
+                    ArmorRet = VBMath.CLng(ArmorRet + 50d * AuraLevel());
                 }
             }
 
@@ -1045,13 +1048,13 @@ namespace SRCCore.Units
                 // サイキックドライブ装備ユニットは超能力レベルに応じて運動性が変化
                 if (IsFeatureAvailable("サイキックドライブ"))
                 {
-                    MobilityRet = (int)(MobilityRet + 5d * PsychicLevel());
+                    MobilityRet = VBMath.CLng(MobilityRet + 5d * PsychicLevel());
                 }
 
                 // オーラ変換器装備ユニットはオーラレベルに応じて運動性が変化
                 if (IsFeatureAvailable("オーラ変換器"))
                 {
-                    MobilityRet = (int)(MobilityRet + 2d * AuraLevel());
+                    MobilityRet = VBMath.CLng(MobilityRet + 2d * AuraLevel());
                 }
 
                 // シンクロドライブ装備ユニットは同調率レベルに応じて運動性が変化
@@ -1059,12 +1062,22 @@ namespace SRCCore.Units
                 {
                     if (MainPilot().SynchroRate() > 0)
                     {
-                        MobilityRet = (int)(MobilityRet + (long)(SyncLevel() - 50d) / 2L);
+                        MobilityRet = (int)(MobilityRet + VBMath.IntDiv(SyncLevel() - 50d, 2));
                     }
                 }
             }
 
             return MobilityRet;
+        }
+
+        /// <summary>
+        /// ユニット画像を表示しないか（ユニット用特殊能力「非表示」、または状態「非表示付加」）。
+        /// 元の SRC の BitmapID が -1 のユニットにあたり、マップには地形だけを描き、
+        /// メッセージウィンドウなどにはユニットのいる地形のタイルを出す。
+        /// </summary>
+        public bool IsBitmapHidden()
+        {
+            return IsFeatureAvailable("非表示") || IsConditionSatisfied("非表示付加");
         }
 
         // 描画すべきビットマップ
@@ -1132,7 +1145,7 @@ namespace SRCCore.Units
                 int ExpValueRet = Data.ExpValue;
                 if (IsFeatureAvailable("経験値修正"))
                 {
-                    ExpValueRet = GeneralLib.MaxLng((int)(ExpValueRet + 10d * FeatureLevel("経験値修正")), 0);
+                    ExpValueRet = GeneralLib.MaxLng(VBMath.CLng(ExpValueRet + 10d * FeatureLevel("経験値修正")), 0);
                 }
 
                 if (BossRank > 0)
@@ -1145,6 +1158,7 @@ namespace SRCCore.Units
         }
 
         // 残り行動数
-        public int Action => Math.Max(MaxAction() - UsedAction, 0);
+        // 行動できないとき（MaxAction が 0）は、再動などで UsedAction が負でも 0
+        public int Action => MaxAction() > 0 ? Math.Max(MaxAction() - UsedAction, 0) : 0;
     }
 }

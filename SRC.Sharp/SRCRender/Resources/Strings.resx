@@ -23,6 +23,10 @@
     <value>{0}のデータが不正です。</value>
     <comment>{0}: データの名称</comment>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>データが不正です。</value>
+    <comment>データ名も原因も無いとき</comment>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
@@ -91,5 +95,34 @@
   </data>
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>MP3音量</value>
+  </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>メッセージスピード</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>手動送り</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>低速</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>普通</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>高速</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>超高速</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>神の領域</value>
+  </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>画像ファイル{0}{1}{0}の読み込み中にエラーが発生しました。{0}画像ファイルが壊れていないか確認して下さい。</value>
+    <comment>{0}: 改行, {1}: 画像ファイルのパス（元の SRC の Susie.bas の LoadPicture2）</comment>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>画像ファイル{0}{1}{0}の画像フォーマットはサポートされていません。</value>
+    <comment>{0}: 改行, {1}: 画像ファイルのパス（元の SRC の Susie.bas の LoadPicture2）</comment>
   </data>
 </root>

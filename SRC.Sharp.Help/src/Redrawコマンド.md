@@ -2,8 +2,6 @@
 layout: default
 title: Redrawコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Redrawコマンド**
 
 マップ画面の再描画

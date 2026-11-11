@@ -2,8 +2,6 @@
 layout: default
 title: RecoverSPコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RecoverSPコマンド**
 
 ＳＰを回復

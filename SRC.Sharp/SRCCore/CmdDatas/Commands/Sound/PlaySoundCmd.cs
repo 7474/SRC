@@ -1,6 +1,5 @@
 using SRCCore.Events;
 using SRCCore.Lib;
-using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -12,7 +11,8 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            string fname = GeneralLib.ToList(EventData.Data).Skip(1).FirstOrDefault();
+            // 2 番目以降の引数をまとめてファイル名にする（スペースを含むファイル名を「"」で囲わずに書ける。元の SRC と同じ）
+            string fname = GeneralLib.ListTail(EventData.Data, 2);
             if (GeneralLib.ListLength(fname) == 1)
             {
                 fname = Expression.GetValueAsString(fname);

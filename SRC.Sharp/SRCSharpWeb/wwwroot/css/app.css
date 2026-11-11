@@ -1352,7 +1352,8 @@ input[type=file]::file-selector-button {
     box-shadow: none;
 }
 
-.modal-list li button:hover {
+.modal-list li button:hover,
+.modal-list li button.selected {
     color: var(--select-text);
     background: var(--select);
     box-shadow: none;

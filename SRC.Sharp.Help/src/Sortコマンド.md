@@ -2,8 +2,6 @@
 layout: default
 title: Sortコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Sortコマンド**
 
 配列をソート
@@ -56,8 +54,11 @@ abc[a] = 2
 abc[b] = 3
 abc[c] = 1
 Sort abc 昇順
-この場合、配列abcの値が再配置されて次のようになる。
+```
 
+この場合、配列abcの値が再配置されて次のようになります。
+
+```sh
 abc[c] = 1
 abc[a] = 2
 abc[b] = 3

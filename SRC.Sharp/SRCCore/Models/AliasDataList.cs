@@ -5,6 +5,7 @@
 using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -83,7 +84,7 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
@@ -129,15 +130,29 @@ namespace SRCCore.Models
                     }
 
                     var ad = Add(data_name);
-                    while (reader.HasMore)
+                    while (true)
                     {
+                        // 元の SRC と同じく、ファイルの終わりではエリアスの数を調べずに読み込みを終える
+                        if (!reader.HasMore)
+                        {
+                            return;
+                        }
+
                         line_buf = reader.GetLine();
                         if (Strings.Len(line_buf) == 0)
                         {
                             break;
                         }
 
-                        ad.AddAlias(line_buf);
+                        try
+                        {
+                            ad.AddAlias(line_buf);
+                        }
+                        catch (FormatException)
+                        {
+                            // 元の SRC はレベルの CDbl が実行時エラーになり、エラーの原因を書かないデータエラーで読み込みを打ち切る
+                            throw reader.InvalidDataException("", data_name);
+                        }
                     }
 
                     if (ad.Count == 0)

@@ -46,12 +46,15 @@ namespace SRCCore.Pilots
                 plana_ratio = -1;
             }
 
+            // VB と同じく、搭乗先を判定する前に Unit を設定する
+            // （IsSupport の中で参照する愛称・性別は、搭乗先のユニットの「パイロット愛称」「性別」で変わる）
+            Unit = u;
+
             {
                 // パイロットの搭乗処理
                 if (GeneralLib.InStrNotNest(Class, "サポート)") > 0 && GeneralLib.LLength(Class) == 1 && !u.IsFeatureAvailable("ダミーユニット"))
                 {
                     // サポートにしかなれないパイロットの場合
-                    Unit = u;
                     u.AddSupport(this);
                 }
                 else if (IsSupport(u))
@@ -60,12 +63,10 @@ namespace SRCCore.Pilots
                     // がいける場合は通常パイロットを優先
                     if (u.CountPilot() < Math.Abs(u.Data.PilotNum) && GeneralLib.InStrNotNest(Class, u.Class0 + " ") > 0 && !is_support)
                     {
-                        Unit = u;
                         u.AddPilot(this);
                     }
                     else
                     {
-                        Unit = u;
                         u.AddSupport(this);
                     }
                 }
@@ -77,7 +78,6 @@ namespace SRCCore.Pilots
                         u.Pilots.First().GetOff();
                     }
 
-                    Unit = u;
                     u.AddPilot(this);
                 }
 
@@ -90,7 +90,7 @@ namespace SRCCore.Pilots
                 // 霊力値のアップデート
                 if (plana_ratio >= 0d)
                 {
-                    Plana = (int)(MaxPlana() * plana_ratio / 100d);
+                    Plana = (int)VBMath.IntDiv(MaxPlana() * plana_ratio, 100);
                 }
                 else
                 {
@@ -98,8 +98,8 @@ namespace SRCCore.Pilots
                 }
 
                 // パイロットが乗り込むことによるＨＰ＆ＥＮの増減に対応
-                u.HP = (int)(u.MaxHP * hp_ratio / 100d);
-                u.EN = (int)(u.MaxEN * en_ratio / 100d);
+                u.HP = (int)VBMath.IntDiv(u.MaxHP * hp_ratio, 100);
+                u.EN = (int)VBMath.IntDiv(u.MaxEN * en_ratio, 100);
             }
         }
 

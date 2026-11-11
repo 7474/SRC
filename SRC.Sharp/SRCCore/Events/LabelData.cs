@@ -21,7 +21,7 @@ namespace SRCCore.Events
         public int AsterNum;
 
         // ラベル全体
-        private string StrData;
+        private string StrData = "";
         // ラベルの個数
         private int intParaNum;
         // ラベルの各パラメータ
@@ -51,7 +51,8 @@ namespace SRCCore.Events
         // ラベルの idx 番目のパラメータ
         public string Para(int idx)
         {
-            string ParaRet = default;
+            // VB の String の既定値は空文字列。1 番目（ラベル名）の要素は空文字列のまま評価する
+            string ParaRet = "";
             if (idx <= intParaNum)
             {
                 if (blnConst[idx])
@@ -60,7 +61,7 @@ namespace SRCCore.Events
                 }
                 else
                 {
-                    ParaRet = Expression.GetValueAsString(strParas[idx], true);
+                    ParaRet = Expression.GetValueAsString(strParas[idx] ?? "", true);
                 }
             }
 
@@ -306,10 +307,15 @@ namespace SRCCore.Events
                 }
 
                 // パラメータ
-                intParaNum = GeneralLib.ListLength(value);
+                // VB の ListLength と同じく、括弧やクォートの対応が取れていなければ -1
+                intParaNum = GeneralLib.ListSplit(value, out _);
                 if (intParaNum == -1)
                 {
-                    SRC.Event.DisplayEventErrorMessage(SRC.Event.CurrentLineNum, "ラベルの引数の括弧の対応が取れていません");
+                    // VB はラベルを登録している行（CurrentLineNum）のエラーとして表示する
+                    var lnum = SRC.Event.CurrentLineNum;
+                    var lines = SRC.Event.EventData;
+                    var line = lines != null && lnum >= 0 && lnum < lines.Count ? lines[lnum] : EventDataLine.Empty;
+                    SRC.Event.DisplayEventErrorMessage(line, "ラベルの引数の括弧の対応が取れていません");
                     return;
                 }
 

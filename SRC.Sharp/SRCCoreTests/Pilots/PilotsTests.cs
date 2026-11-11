@@ -200,12 +200,14 @@ namespace SRCCore.Pilots.Tests
         }
 
         [TestMethod]
-        public void Item_DeadPilot_ReturnsNull()
+        public void Item_DeadPilot_ReturnsDeadPilotById()
         {
+            // 元の SRC（Pilots.cls Item）は、名称・愛称で破棄されていないパイロットが見つからなければ
+            // ＩＤで見つかった破棄されたパイロットを返す
             var src = CreateSRC();
             var p = AddPilot(src, "死亡パイロット");
             p.Alive = false;
-            Assert.IsNull(src.PList.Item(p.ID));
+            Assert.AreSame(p, src.PList.Item(p.ID));
         }
 
         // ──────────────────────────────────────────────

@@ -30,10 +30,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void EffectType_DefaultIsNull()
+        public void EffectType_DefaultIsEmpty()
         {
             var effect = new SpecialPowerEffect();
-            Assert.IsNull(effect.strEffectType);
+            Assert.AreEqual("", effect.strEffectType);
         }
 
         [TestMethod]
@@ -44,10 +44,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void EffectData_DefaultIsNull()
+        public void EffectData_DefaultIsEmpty()
         {
             var effect = new SpecialPowerEffect();
-            Assert.IsNull(effect.strEffectData);
+            Assert.AreEqual("", effect.strEffectData);
         }
 
         [TestMethod]

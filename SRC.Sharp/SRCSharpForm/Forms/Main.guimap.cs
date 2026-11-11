@@ -1,4 +1,5 @@
 using SRCCore;
+using SRCCore.Filesystem;
 using SRCCore.Maps;
 using SRCSharpForm.Extensions;
 using SRCSharpForm.Resoruces;
@@ -20,8 +21,6 @@ namespace SRCSharpForm
         public int MainPHeight => GUI.MainHeight * MapCellPx;
 
         private Pen MapLinePen = new Pen(Color.FromArgb(100, 100, 100));
-        //private Brush MapMaskBrush = new HatchBrush(HatchStyle.BackwardDiagonal, Color.FromArgb(0, 0x39, 0x6b));
-        //private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 0, 0x39, 0x6b));
         private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
         private Brush UnitMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
 
@@ -110,27 +109,6 @@ namespace SRCSharpForm
             picPilotStatus.Size = new Size(155, 72);
             picUnitStatus.Location = new Point(MainPWidth + 16 + 4, 4 + 68 + 4);
             picUnitStatus.Size = new Size(225 + 5, MainPHeight - 64 + 16);
-            //    if (NewGUIMode)
-            //    {
-            //        withBlock.picUnitStatus.Move(MainPWidth - 230 - 10, 10, 230, MainPHeight - 20);
-            //        withBlock.picUnitStatus.Visible = false;
-            //        withBlock.picPilotStatus.Visible = false;
-            //        withBlock.picFace.Visible = false;
-            //        Status.StatusWindowBackBolor = STATUSBACK;
-            //        Status.StatusWindowFrameColor = STATUSBACK;
-            //        Status.StatusWindowFrameWidth = 1;
-            //        withBlock.picUnitStatus.BackColor = Status.StatusWindowBackBolor;
-            //        Status.StatusFontColorAbilityName = Information.RGB(0, 0, 150);
-            //        Status.StatusFontColorAbilityEnable = ColorTranslator.ToOle(Color.Blue);
-            //        Status.StatusFontColorAbilityDisable = Information.RGB(150, 0, 0);
-            //        Status.StatusFontColorNormalString = ColorTranslator.ToOle(Color.Black);
-            //    }
-            //    else
-            //    {
-            //        withBlock.picFace.Move(MainPWidth + 24, 4);
-            //        withBlock.picPilotStatus.Move(MainPWidth + 24 + 68 + 4, 4, 155, 72);
-            //        withBlock.picUnitStatus.Move(MainPWidth + 24, 4 + 68 + 4, 225 + 5, MainPHeight - 64 + 16);
-            //    }
         }
 
         public void InitMapSize(int w, int h)
@@ -144,20 +122,8 @@ namespace SRCSharpForm
             // メインウィンドウの位置＆サイズを設定
             Width = Width - ClientRectangle.Width + (MainPWidth + 16 + 4 + 225 + 4);
             Height = Height - ClientRectangle.Height + (MainPHeight + 16);
-            //if (!NewGUIMode)
-            //{
-            //    withBlock.Width = Width - ClientRectangle.Width + (MainPWidth + 24 + 225 + 4);
-            //    withBlock.Height = Height - ClientRectangle.Height + (MainPHeight + 24);
-            //}
-            //else
-            //{
-            //    withBlock.Width = Width - ClientRectangle.Width + MainPWidth;
-            //    withBlock.Height = Height - ClientRectangle.Height + MainPHeight;
-            //}
 
             // XXX 画面中央に出すなら出す
-            //withBlock.Left = (int)SrcFormatter.TwipsToPixelsX((SrcFormatter.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - SrcFormatter.PixelsToTwipsX(withBlock.Width)) / 2d);
-            //withBlock.Top = (int)SrcFormatter.TwipsToPixelsY((SrcFormatter.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - SrcFormatter.PixelsToTwipsY(withBlock.Height)) / 2d);
 
             // スクロールバーの位置を設定
             VScrollBar.Location = new Point(MainPHeight, 0);
@@ -166,32 +132,11 @@ namespace SRCSharpForm
             HScrollBar.Location = new Point(0, MainPHeight);
             HScrollBar.Size = new Size(MainPWidth, 16);
             HScrollBar.Visible = true;
-            //if (!NewGUIMode)
-            //{
-            //    withBlock.VScroll.Move(MainPWidth + 4, 4, 16, MainPWidth);
-            //    withBlock.HScroll.Move(4, MainPHeight + 4, MainPWidth, 16);
-            //}
-            //else
-            //{
-            //    VScrollBar.Visible = false;
-            //    HScrollBar.Visible = false;
-            //}
 
             // マップウィンドウのサイズを設定
             picMain.Location = new Point(0, 0);
             picMain.Size = new Size(MainPWidth, MainPHeight);
             InitMainBuffer(MainPWidth, MainPHeight);
-
-            //    if (!NewGUIMode)
-            //    {
-            //        withBlock.picMain(0).Move(4, 4, MainPWidth, MainPHeight);
-            //        withBlock.picMain(1).Move(4, 4, MainPWidth, MainPHeight);
-            //    }
-            //    else
-            //    {
-            //        withBlock.picMain(0).Move(0, 0, MainPWidth, MainPHeight);
-            //        withBlock.picMain(1).Move(0, 0, MainPWidth, MainPHeight);
-            //    }
         }
         public void SetMapSize(int w, int h)
         {
@@ -205,18 +150,10 @@ namespace SRCSharpForm
             if (HScrollBar.Maximum != MapWidth)
             {
                 HScrollBar.Maximum = MapWidth;
-                //if (!GUI.NewGUIMode)
-                //{
-                //    withBlock2.Visible = true;
-                //}
             }
             if (VScrollBar.Maximum != MapHeight)
             {
                 VScrollBar.Maximum = MapHeight;
-                //if (!GUI.NewGUIMode)
-                //{
-                //    withBlock2.Visible = true;
-                //}
             }
         }
 
@@ -249,63 +186,13 @@ namespace SRCSharpForm
                 {
                     for (var y = 1; y <= Map.MapHeight; y++)
                     {
-                        var cell = Map.MapData[x, y];
-                        var xpx = (x - 1) * MapCellPx;
-                        var ypx = (y - 1) * MapCellPx;
-
-                        // 画像を描き込み
-                        var bitmapPath = Map.SearchTerrainImageFile(cell);
-                        if (!string.IsNullOrEmpty(bitmapPath))
-                        {
-                            g.DrawImage(ImageBuffer.Get(bitmapPath), xpx, ypx);
-                        }
-                        else
-                        {
-                            g.FillRectangle(Brushes.Black, xpx, ypx, MapCellPx, MapCellPx);
-                        }
-
-                        // レイヤー画像を描き込み
-                        var layerBitmapPath = Map.SearchLayerImageFile(cell);
-                        if (!string.IsNullOrEmpty(layerBitmapPath))
-                        {
-                            var layerImage = ImageBuffer.GetTransparent(layerBitmapPath);
-                            if (layerImage != null)
-                            {
-                                g.DrawImage(layerImage, xpx, ypx);
-                            }
-                        }
-                        //g.DrawString($"{cell.TerrainType}", SystemFonts.DefaultFont, Brushes.Gray, xpx + 2, ypx + 2);
+                        DrawMapCell(g, Map.MapData[x, y], (x - 1) * MapCellPx, (y - 1) * MapCellPx);
                     }
                 }
             }
 
             // マップ設定によって表示色を変更
-            switch (draw_mode ?? "")
-            {
-                case "夜":
-                    BackgroundBuffer.Dark();
-                    break;
-
-                case "セピア":
-                    BackgroundBuffer.Sepia();
-                    break;
-
-                case "白黒":
-                    BackgroundBuffer.Monotone();
-                    break;
-
-                case "夕焼け":
-                    BackgroundBuffer.Sunset();
-                    break;
-
-                case "水中":
-                    BackgroundBuffer.Water();
-                    break;
-
-                case "フィルタ":
-                    BackgroundBuffer.ColorFilter(filter_color, (float)filter_trans_par);
-                    break;
-            }
+            ApplyMapDrawMode(BackgroundBuffer, draw_mode, filter_color, filter_trans_par);
 
             // マス目の表示
             if (SRC.ShowSquareLine)
@@ -328,6 +215,109 @@ namespace SRCSharpForm
             if (!Map.IsStatusView && string.IsNullOrEmpty(draw_option))
             {
                 GUI.RefreshScreen();
+            }
+        }
+
+        /// <summary>
+        /// マップの1マス分の背景（地形とレイヤー）を (xpx, ypx) に描く。描画モードの色の変更はしない。
+        /// </summary>
+        private void DrawMapCell(Graphics g, MapCell cell, int xpx, int ypx)
+        {
+            // 画像を描き込み
+            var bitmapPath = Map.SearchTerrainImageFile(cell);
+            if (!string.IsNullOrEmpty(bitmapPath))
+            {
+                g.DrawImage(ImageBuffer.Get(bitmapPath), xpx, ypx);
+            }
+            else
+            {
+                g.FillRectangle(Brushes.Black, xpx, ypx, MapCellPx, MapCellPx);
+            }
+
+            // レイヤー画像を描き込み（「通常」「画像限定」のマスだけ。元の SRC の SetupBackground）
+            if (cell.IsLayerBitmapVisible)
+            {
+                var layerBitmapPath = Map.SearchLayerImageFile(cell);
+                if (!string.IsNullOrEmpty(layerBitmapPath))
+                {
+                    var layerImage = ImageBuffer.GetTransparent(layerBitmapPath);
+                    if (layerImage != null)
+                    {
+                        g.DrawImage(layerImage, xpx, ypx);
+                    }
+                }
+            }
+        }
+
+        private static void ApplyMapDrawMode(Image image, string draw_mode, Color filter_color, double filter_trans_par)
+        {
+            switch (draw_mode ?? "")
+            {
+                case "夜":
+                    image.Dark();
+                    break;
+
+                case "セピア":
+                    image.Sepia();
+                    break;
+
+                case "白黒":
+                    image.Monotone();
+                    break;
+
+                case "夕焼け":
+                    image.Sunset();
+                    break;
+
+                case "水中":
+                    image.Water();
+                    break;
+
+                case "フィルタ":
+                    image.ColorFilter(filter_color, (float)filter_trans_par);
+                    break;
+            }
+        }
+
+        public void RedrawMapCell(int X, int Y)
+        {
+            if (BackgroundBuffer == null || Map.MapData == null
+                || X < 1 || X > Map.MapWidth || Y < 1 || Y > Map.MapHeight)
+            {
+                return;
+            }
+
+            // 元の SRC の ExecChangeTerrainCmd・ExecChangeLayerCmd と同じく、そのマスだけを
+            // 今の描画モードで描き直す（背景のほかのマスに描いたものと IsMapDirty はそのまま）
+            using (var cellImage = new Bitmap(MapCellPx, MapCellPx))
+            {
+                using (var g = Graphics.FromImage(cellImage))
+                {
+                    DrawMapCell(g, Map.MapData[X, Y], 0, 0);
+                }
+                ApplyMapDrawMode(cellImage, Map.MapDrawMode, Map.MapDrawFilterColor, Map.MapDrawFilterTransPercent);
+                using (var g = Graphics.FromImage(cellImage))
+                {
+                    // マス目は左端・上端の線を引く
+                    if (SRC.ShowSquareLine)
+                    {
+                        g.DrawLine(MapLinePen, 0, 0, MapCellPx, 0);
+                        g.DrawLine(MapLinePen, 0, 0, 0, MapCellPx);
+                    }
+                }
+                using (var g = Graphics.FromImage(BackgroundBuffer))
+                {
+                    g.DrawImage(cellImage, (X - 1) * MapCellPx, (Y - 1) * MapCellPx, MapCellPx, MapCellPx);
+                }
+            }
+
+            // 表示用バッファのそのマスも描き直す。画面への反映は次に画面を更新したとき（元の SRC の picMain(0) への BitBlt）
+            using (var g = Graphics.FromImage(MainBuffer))
+            {
+                g.DrawImage(BackgroundBuffer,
+                    new Rectangle(GUI.MapToPixelX(X), GUI.MapToPixelY(Y), MapCellPx, MapCellPx),
+                    new Rectangle((X - 1) * MapCellPx, (Y - 1) * MapCellPx, MapCellPx, MapCellPx),
+                    GraphicsUnit.Pixel);
             }
         }
 
@@ -459,15 +449,8 @@ namespace SRCSharpForm
                             }
                         }
                         // XXX マスク
-                        //// マスク入りの画像を作成
-                        //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 64, 32, 32, withBlock.picUnitBitmap.hDC, xx, (int)yy + 32, SRCCOPY);
-                        //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 64, 32, 32, withBlock.picMask2.hDC, 0, 0, SRCINVERT);
                     }
                 }
-
-                //// 描画色を元に戻しておく
-                //pic.ForeColor = ColorTranslator.FromOle(prev_color);
-
             }
             // 画面が書き換えられたことを記録
             GUI.ScreenIsSaved = false;
@@ -491,6 +474,18 @@ namespace SRCSharpForm
 
         public void DrawUnit(Graphics g, MapCell cell, SRCCore.Units.Unit u, Rectangle destRect)
         {
+            if (u.IsBitmapHidden())
+            {
+                // 非表示のユニットはユニットのいる地形のタイルを描く（元の SRC の BitmapID が -1 のユニット）
+                var x = cell?.X ?? u.x;
+                var y = cell?.Y ?? u.y;
+                if (BackgroundBuffer != null && x >= 1 && y >= 1 && x <= Map.MapWidth && y <= Map.MapHeight)
+                {
+                    var fromRect = new Rectangle(MapCellPx * (x - 1), MapCellPx * (y - 1), MapCellPx, MapCellPx);
+                    g.DrawImage(BackgroundBuffer, destRect, fromRect, GraphicsUnit.Pixel);
+                }
+                return;
+            }
             using var image = DrawUnit(cell, u);
             if (image != null)
             {
@@ -511,53 +506,46 @@ namespace SRCSharpForm
             }
 
             using var g = Graphics.FromImage(image);
-            // タイル
-            switch (u.Party0 ?? "")
+
+            // 地形ユニットは Bitmap\Map の画像（地形画像の番号付きのファイル名にも読み替える）を探す（元の SRC の FindUnitBitmap）
+            var isTerrainUnit = u.IsFeatureAvailable("地形ユニット");
+            var bitmap = u.CurrentForm().CurrentBitmap();
+            if (isTerrainUnit)
             {
-                case "味方":
-                case "ＮＰＣ":
-                    g.DrawImage(picUnit.Image, destRect);
-                    break;
-                case "敵":
-                    g.DrawImage(picEnemy.Image, destRect);
-                    break;
-                case "中立":
-                    g.DrawImage(picNeautral.Image, destRect);
-                    break;
+                bitmap = BitmapSearch.TerrainUnitBitmap(SRC, bitmap);
+            }
+            var unitImage = ImageBuffer.GetTransparent(bitmap);
+            var terrainUnitImage = isTerrainUnit ? ImageBuffer.Get(bitmap) : null;
+
+            if (terrainUnitImage != null)
+            {
+                // 地形ユニットの場合は画像をそのまま使う（陣営色のタイルと重ねず、白も透過しない）
+                g.DrawImage(terrainUnitImage, destRect);
+            }
+            else
+            {
+                // タイル
+                switch (u.Party0 ?? "")
+                {
+                    case "味方":
+                    case "ＮＰＣ":
+                        g.DrawImage(picUnit.Image, destRect);
+                        break;
+                    case "敵":
+                        g.DrawImage(picEnemy.Image, destRect);
+                        break;
+                    case "中立":
+                        g.DrawImage(picNeautral.Image, destRect);
+                        break;
+                }
+
+                // (発光している場合は２度塗りを防ぐため描画しない)
+                if (unitImage != null && !emit_light)
+                {
+                    g.DrawImage(unitImage, destRect);
+                }
             }
 
-            var unitImage = ImageBuffer.GetTransparent(u.CurrentForm().CurrentBitmap());
-            // (発光している場合は２度塗りを防ぐため描画しない)
-            if (unitImage != null && !emit_light)
-            {
-                g.DrawImage(unitImage, destRect);
-            }
-
-            // TODO Impl フィルタ（地形ユニットの特別処理: 旧VB5の BitBlt→新システムは DrawImage + アルファブレンドで代替）
-            // 地形ユニットフィルタ:
-            // 旧VB5では BitBlt によるマスク合成でタイルとユニット画像を重ね合わせていたが、
-            // 新システムでは DrawImage + アルファブレンドで代替する。地形ユニットの特別処理は未実装。
-            //            if (u.IsFeatureAvailable("地形ユニット"))
-            //            {
-            //                // 地形ユニットの場合は画像をそのまま使う
-            //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCCOPY);
-            //            }
-            //            else
-            //            {
-            //                // BitBltを使ってユニット画像とタイルを重ね合わせる
-
-            //                // マスクを作成
-            //                Graphics.MakeMask(ref withBlock.picTmp32(0).hDC, ref withBlock.picTmp32(2).hDC, ref 32, ref 32, ref ColorTranslator.ToOle(Color.White));
-
-
-            //                // 画像の重ね合わせ
-            //                // (発光している場合は２度塗りを防ぐため描画しない)
-            //                if (!emit_light)
-            //                {
-            //                    ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(2).hDC, 0, 0, SRCERASE);
-            //                    ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
-            //                }
-            //            }
             // 色をステージの状況に合わせて変更
             if (!use_orig_color && !Map.MapDrawIsMapOnly)
             {
@@ -599,7 +587,7 @@ namespace SRCSharpForm
             }
 
             // 行動済のフィルタ
-            if (u.Action <= 0 && !u.IsFeatureAvailable("地形ユニット"))
+            if (u.Action <= 0 && !isTerrainUnit)
             {
                 // 行動済のユニット
                 g.FillRectangle(UnitMaskBrush, destRect);

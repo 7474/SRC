@@ -58,7 +58,7 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
@@ -88,7 +88,7 @@ namespace SRCCore.Models
                         Delete(data_name);
                     }
 
-                    // XXX これでいいんか？　nullになったり上書きされそう。
+                    // VB と同じく、空行までの最後の行が計算式になる（式の行が無ければ空文字列のまま）
                     var cd = Add(data_name);
                     while (reader.HasMore)
                     {

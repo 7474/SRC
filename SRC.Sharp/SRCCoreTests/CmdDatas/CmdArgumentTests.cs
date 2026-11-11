@@ -31,7 +31,7 @@ namespace SRCCore.CmdDatas.Tests
             var arg = new CmdArgument();
             Assert.AreEqual(0, arg.lngArg);
             Assert.AreEqual(0d, arg.dblArg);
-            Assert.IsNull(arg.strArg);
+            Assert.AreEqual("", arg.strArg);
             Assert.AreEqual(ValueType.UndefinedType, arg.argType);
         }
 

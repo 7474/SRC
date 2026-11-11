@@ -138,19 +138,14 @@ namespace SRCCore.Units
             if (SRC.PList.IsDefined(pname))
             {
                 // 既に暴走時パイロットが作成済み
+                // 元の SRC と同じく、先にユニットを設定してから気力・レベル・経験値を合わせる。
+                // 元の SRC はユニットを設定した直後に「このユニットのものでなければ Update・UpdateSupportMod」と
+                // 判定するので、その Update・UpdateSupportMod は呼ばれない（レベルが変わったときの Update だけ）
                 var berserkPilot = SRC.PList.Item(pname);
+                berserkPilot.Unit = this;
                 berserkPilot.Morale = Pilots.First().Morale;
                 berserkPilot.Level = Pilots.First().Level;
                 berserkPilot.Exp = Pilots.First().Exp;
-                if (!without_update)
-                {
-                    if (!ReferenceEquals(berserkPilot.Unit, this))
-                    {
-                        berserkPilot.Unit = this;
-                        berserkPilot.Update();
-                        berserkPilot.UpdateSupportMod();
-                    }
-                }
 
                 return berserkPilot;
             }
@@ -216,12 +211,9 @@ namespace SRCCore.Units
                                 }
                             }
 
-                            // VB 版と同じく、ここでは周りのユニットからの支援の修正（UpdateSupportMod）を見直さない。
+                            // VB 版と同じく、ここでは Update（レベルが変わったときを除く）と
+                            // 周りのユニットからの支援の修正（UpdateSupportMod）を見直さない。
                             // 見直すと、同じ追加パイロットを持つ近くのユニットとパイロットを取り合い続ける（#1411）
-                            if (!without_update)
-                            {
-                                pltAdditionalPilot.Update();
-                            }
                         }
 
                         return pltAdditionalPilot;
@@ -236,25 +228,12 @@ namespace SRCCore.Units
                         var additionalPilot = otherForm.pltAdditionalPilot;
                         if ((additionalPilot.Name ?? "") == (pname ?? ""))
                         {
+                            // 元の SRC と同じく、陣営とユニットを設定するだけで、レベル・経験値・気力は合わせない。
+                            // 元の SRC はユニットを設定した直後に「追加パイロットで、このユニットのものでなければ合わせる」と
+                            // 判定するので、合わせる処理は呼ばれない（他形態で変わった気力などをそのまま引き継ぐ）
                             pltAdditionalPilot = additionalPilot;
                             additionalPilot.Party = Party0;
-                            // 気力の設定がこのユニットの MainPilot を呼んでも同じ処理を繰り返さないよう、先にユニットを設定する（#1407）
-                            if (additionalPilot.IsAdditionalPilot && !ReferenceEquals(additionalPilot.Unit, this))
-                            {
-                                additionalPilot.Unit = this;
-                                if (CountPilot() > 0)
-                                {
-                                    additionalPilot.Level = Pilots.First().Level;
-                                    additionalPilot.Exp = Pilots.First().Exp;
-                                    if (additionalPilot.Personality != "機械")
-                                    {
-                                        additionalPilot.Morale = Pilots.First().Morale;
-                                    }
-                                }
-
-                                // 支援の修正は見直さない（上と同じ理由。#1411）
-                                additionalPilot.Update();
-                            }
+                            additionalPilot.Unit = this;
 
                             return pltAdditionalPilot;
                         }
@@ -280,7 +259,7 @@ namespace SRCCore.Units
                 if (SRC.PList.IsDefined(pname))
                 {
                     p = SRC.PList.Item(pname);
-                    if (!p.IsAdditionalPilot || Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0)
+                    if (!p.IsAdditionalPilot || (Strings.InStr(pname, "(ザコ)") == 0 && Strings.InStr(pname, "(汎用)") == 0))
                     {
                         pltAdditionalPilot = p;
                         pltAdditionalPilot.IsAdditionalPilot = true;
@@ -353,7 +332,9 @@ namespace SRCCore.Units
         /// <summary>
         /// 全てのパイロット
         /// MainPilotを解決、追加サポート含む
-        /// TODO 使用している個所でもともと追加サポートを処理していたか精査
+        /// （元の SRC の MainPilot・Pilot(2 To CountPilot)・Support(1 To CountSupport)・追加サポートの AdditionalSupport の順。
+        /// 使っている処理（スペシャルパワー・アビリティのＳＰ回復、「本当に乗っている？」の判定、メッセージのパイロット名、
+        /// パイロットの武器・アビリティ）は、元の SRC でも追加サポートを含む）
         /// </summary>
         public IEnumerable<Pilot> AllPilots => Enumerable.Empty<Pilot>()
             .Append(MainPilot())
@@ -367,6 +348,89 @@ namespace SRCCore.Units
         /// </summary>
         public IEnumerable<Pilot> AllRawPilots => Pilots
                     .Concat(Supports);
+
+        // ステータスウィンドウで切り替えて表示できるパイロットの数
+        // （パイロット、サポート、追加サポートの順。Main.frm の picFace_Click）
+        public int CountStatusPilot()
+        {
+            var n = CountPilot() + CountSupport();
+            if (IsFeatureAvailable("追加サポート"))
+            {
+                n = n + 1;
+            }
+            return n;
+        }
+
+        // ステータスウィンドウに pindex 番目に表示するパイロット（Status.bas の DisplayUnitStatus の pindex）
+        // 0 はメインパイロット
+        public Pilot StatusPilot(int pindex)
+        {
+            if (pindex <= 0)
+            {
+                return MainPilot();
+            }
+            else if (pindex == 1)
+            {
+                // メインパイロットまたは１番目のパイロット
+                if (!IsMainPilotFirstPilotForStatus())
+                {
+                    return colPilot[1];
+                }
+                return MainPilot();
+            }
+            else if (pindex <= CountPilot())
+            {
+                // サブパイロット
+                return colPilot[pindex];
+            }
+            else if (pindex <= CountPilot() + CountSupport())
+            {
+                // サポートパイロット
+                return colSupport[pindex - CountPilot()];
+            }
+            // 追加サポート
+            return AdditionalSupport() ?? MainPilot();
+        }
+
+        // ステータスウィンドウに表示しているパイロットの番号（Status.bas の DisplayedPilotInd）
+        // メインパイロット（pindex = 0）は、１番目のパイロットと同じなら 1、違うなら 0
+        public int StatusPilotIndex(Pilot p)
+        {
+            if (CountPilot() == 0)
+            {
+                return 0;
+            }
+            // メインパイロットは pindex = 0 で表示する（Status.bas の DisplayPilotStatus は先にメインパイロットかを見る）
+            if (p == null || ReferenceEquals(p, MainPilot()))
+            {
+                return IsMainPilotFirstPilotForStatus() ? 1 : 0;
+            }
+            var n = CountStatusPilot();
+            for (var i = 1; i <= n; i++)
+            {
+                if (ReferenceEquals(StatusPilot(i), p))
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        // 顔グラフィックのクリックで次に表示するパイロットの番号（Main.frm の picFace_Click）
+        public int NextStatusPilotIndex(int pindex)
+        {
+            pindex = pindex + 1;
+            if (pindex > CountStatusPilot())
+            {
+                pindex = 1;
+            }
+            return pindex;
+        }
+
+        private bool IsMainPilotFirstPilotForStatus()
+        {
+            return MainPilot().get_Nickname(false) == colPilot[1].get_Nickname(false) || Data.PilotNum == 1;
+        }
 
 
         // サポートパイロットを追加
@@ -401,9 +465,10 @@ namespace SRCCore.Units
                 }
             }
             colSupport.Clear();
+            // 元の SRC と同じく、入れ替えのあとは ID をキーにして登録し直す（AddSupport のキーは名前）
             foreach (var p0 in newList)
             {
-                AddSupport(p0);
+                colSupport.Add(p0, p0.ID);
             }
         }
 
@@ -597,7 +662,7 @@ namespace SRCCore.Units
                 case "Ｓ防御":
                 case "切り払い":
                     {
-                        SkillLevelRet = MainPilot().SkillLevel(sname, 1.ToString());
+                        SkillLevelRet = MainPilot().SkillLevel(sname, "1");
                         break;
                     }
 

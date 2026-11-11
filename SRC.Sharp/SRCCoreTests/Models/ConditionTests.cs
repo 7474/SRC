@@ -32,10 +32,10 @@ namespace SRCCore.Models.Tests
         public void DefaultValues_AreCorrect()
         {
             var condition = new Condition();
-            Assert.IsNull(condition.Name);
+            Assert.AreEqual("", condition.Name);
             Assert.AreEqual(0, condition.Lifetime);
             Assert.AreEqual(0.0, condition.Level);
-            Assert.IsNull(condition.StrData);
+            Assert.AreEqual("", condition.StrData);
             Assert.IsFalse(condition.IsEnable);
         }
 

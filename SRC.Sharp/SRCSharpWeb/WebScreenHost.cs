@@ -181,7 +181,9 @@ namespace SRCSharpWeb
             {
                 return Task.FromResult<string>(null);
             }
-            return OnUi(() => WebInterop.ShowChoice(string.IsNullOrEmpty(request.Title) ? L["OpenFile"] : request.Title, names, L["ModalCancel"]))
+            // 初めに選ぶファイル（LoadFileDialog 関数の第 3 引数）が一覧にあれば選んでおく
+            var selected = FileChoice.Initial(names, request.InitialFile) ?? "";
+            return OnUi(() => WebInterop.ShowChoice(string.IsNullOrEmpty(request.Title) ? L["OpenFile"] : request.Title, names, selected, L["ModalCancel"]))
                 .ContinueWith(t => t.Result == null ? null : Path.Combine(dir, t.Result), TaskScheduler.Default);
         }
 

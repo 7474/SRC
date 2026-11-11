@@ -56,13 +56,36 @@ namespace SRCCore.Coverage.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void GetVariable_UndefinedScalar_ReturnsNameAndUndefinedType()
+        public void GetVariable_UndefinedScalar_ReturnsNameAsString()
         {
-            // 未定義の変数は変数名そのものを返す
+            // 未定義の変数は変数名そのものを返す。VB の GetVariable と同じく型は StringType
             var src = CreateSrc();
             var s = GetStr(src, "未定義変数", out var type);
 
-            Assert.AreEqual(VT.UndefinedType, type);
+            Assert.AreEqual(VT.StringType, type);
+            Assert.AreEqual("未定義変数", s);
+        }
+
+        [TestMethod]
+        public void GetVariable_UndefinedScalar_NumericRequest_ReturnsZeroAsNumeric()
+        {
+            // VB の GetVariable: 未定義の変数を数値として求めると 0（NumericType）
+            var src = CreateSrc();
+            var n = GetNum(src, "未定義変数", out var type);
+
+            Assert.AreEqual(VT.NumericType, type);
+            Assert.AreEqual(0d, n);
+        }
+
+        [TestMethod]
+        public void GetVariable_UndefinedScalar_UndefinedRequest_ReturnsNameAsString()
+        {
+            // VB の GetVariable: 型を決めずに求めると変数名（StringType）。
+            // Local・Set で代入すると文字列の変数になる
+            var src = CreateSrc();
+            var type = src.Expression.GetVariable("未定義変数", VT.UndefinedType, out var s, out _);
+
+            Assert.AreEqual(VT.StringType, type);
             Assert.AreEqual("未定義変数", s);
         }
 
@@ -75,7 +98,7 @@ namespace SRCCore.Coverage.Tests
 
             var s = GetStr(src, "arr[2]", out var type);
 
-            Assert.AreEqual(VT.UndefinedType, type);
+            Assert.AreEqual(VT.StringType, type);
             Assert.AreEqual("", s);
         }
 
@@ -429,7 +452,7 @@ namespace SRCCore.Coverage.Tests
             src.Event.BCVariable.IsConfig = false;
 
             Assert.AreEqual("攻撃値", GetStr(src, "攻撃値", out var t));
-            Assert.AreEqual(VT.UndefinedType, t);
+            Assert.AreEqual(VT.StringType, t);
         }
 
         [TestMethod]

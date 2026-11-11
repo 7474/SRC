@@ -42,6 +42,15 @@ namespace SRCCore.Coverage.Tests.UnitAttackCheck
 AAAA, -.bmp
 パンチ, 1000, 1, 1, +0, -, -, -, AAAA, +0, 突
 
+ラーニング元機
+ラーニング元機, らーにんぐもとき, 汎用, 1, 2
+陸, 4, M, 1000, 100
+特殊能力
+ラーニング可能技=底力
+3000, 200, 1000, 100
+AAAA, -.bmp
+パンチ, 1000, 1, 1, +0, -, -, -, AAAA, +0, 突
+
 縛無効機
 縛無効機, ばくむこうき, 汎用, 1, 2
 陸, 4, M, 1000, 100
@@ -97,6 +106,10 @@ AAAA, -.bmp
         [DataRow("凍", "凍結", 3, "凍結")]
         [DataRow("痺", "麻痺", 3, "麻痺")]
         [DataRow("痺L1", "麻痺", 1, "麻痺")]
+        // VB の AddCondition の持続ターンは Integer の引数なので、小数のレベルは偶数への丸めになる（切り捨てではない）
+        [DataRow("縛L3.5", "行動不能", 4, "捕縛")]
+        [DataRow("痺L1.5", "麻痺", 2, "麻痺")]
+        [DataRow("痺L2.5", "麻痺", 2, "麻痺")]
         [DataRow("眠", "睡眠", 3, "睡眠")]
         [DataRow("乱", "混乱", 3, "混乱")]
         [DataRow("撹", "撹乱", 2, "撹乱")]
@@ -421,6 +434,85 @@ AAAA, -.bmp
 
             Assert.IsTrue(Cause(a, t, out _, out _));
             Assert.AreEqual(expectedEN, t.EN);
+        }
+
+        [TestMethod]
+        [DataRow("衰L1.5", 1500, "50%")]
+        [DataRow("衰L2.5", 1500, "50%")]
+        [DataRow("衰L3.5", 3000, "")]
+        public void HPDecay_FractionalLevel_RoundsLikeVBCInt(string wclass, int expectedHP, string rate)
+        {
+            // VB は Select Case CInt(WeaponLevel(w, "衰")) なので、小数のレベルは偶数への丸めで 1〜3 のどれかに当たる
+            // （1.5 → 2、2.5 → 2、3.5 → 4 はどれにも当たらず減らない）
+            var (_, a, t) = Setup(wclass);
+            t.HP = 3000;
+
+            Assert.IsTrue(Cause(a, t, out var msg, out _));
+            Assert.AreEqual(expectedHP, t.HP);
+            Assert.AreEqual("[標的機]のＨＰを" + rate + "減少させた。;", msg);
+        }
+
+        [TestMethod]
+        public void ENDecay_FractionalLevel_RoundsLikeVBCInt()
+        {
+            // CInt(1.5) = 2 なので 50% 減る
+            var (_, a, t) = Setup("滅L1.5");
+            t.EN = 200;
+
+            Assert.IsTrue(Cause(a, t, out _, out _));
+            Assert.AreEqual(100, t.EN);
+        }
+
+        [TestMethod]
+        public void Dispel_KeepsNormalModeAndPermanentConditions()
+        {
+            // 「ノーマルモード付加」と持続ターンが 0 以下の状態は打ち消さない
+            var (_, a, t) = Setup("除");
+            t.AddCondition("ノーマルモード付加", 3);
+            t.AddCondition("運動性ＵＰ", 2);
+            t.AddCondition("防御力ＵＰ", 0);
+            t.AddCondition("攻撃力ＵＰ", 1);
+
+            Assert.IsTrue(Cause(a, t, out _, out _));
+            Assert.IsTrue(t.IsConditionSatisfied("ノーマルモード付加"));
+            Assert.IsFalse(t.IsConditionSatisfied("運動性ＵＰ"));
+            Assert.IsTrue(t.IsConditionSatisfied("防御力ＵＰ"));
+            Assert.IsFalse(t.IsConditionSatisfied("攻撃力ＵＰ"));
+        }
+
+        // ──────────────────────────────────────────────
+        // ラーニング
+        // ──────────────────────────────────────────────
+
+        [TestMethod]
+        public void Learning_DefinesAbilityVariables()
+        {
+            var (f, a, t) = Setup("習", targetUnit: "ラーニング元機");
+            var pid = a.MainPilot().ID;
+
+            Assert.IsTrue(Cause(a, t, out var msg, out var critical_type));
+            Assert.AreEqual("[攻撃者]は「底力」を習得した。;", msg);
+            Assert.AreEqual(" ラーニング", critical_type);
+            Assert.AreEqual("底力", f.Src.Event.GlobalVariableList["Ability(" + pid + ")"].StringValue);
+            // 能力名だけの指定は「非表示」
+            Assert.AreEqual("-1 非表示", f.Src.Event.GlobalVariableList["Ability(" + pid + ",底力)"].StringValue);
+        }
+
+        [TestMethod]
+        public void Learning_AppendsToGlobalVariableEvenIfLocalVariableHasSameName()
+        {
+            // VB は GlobalVariableList.Item(vname).StringValue を直接書き換えるので、
+            // 同じ名前のローカル変数があってもグローバル変数の一覧に足し、ローカル変数は変えない
+            var (f, a, t) = Setup("習", targetUnit: "ラーニング元機");
+            var vname = "Ability(" + a.MainPilot().ID + ")";
+            f.Src.Expression.DefineGlobalVariable(vname);
+            f.Src.Expression.SetVariableAsString(vname, "見切り");
+            f.Src.Expression.DefineLocalVariable(vname);
+            f.Src.Event.LocalVariableList[vname].SetValue(vname, SRCCore.Expressions.ValueType.StringType, "ローカル", 0d);
+
+            Assert.IsTrue(Cause(a, t, out _, out _));
+            Assert.AreEqual("見切り 底力", f.Src.Event.GlobalVariableList[vname].StringValue);
+            Assert.AreEqual("ローカル", f.Src.Event.LocalVariableList[vname].StringValue);
         }
 
         // ──────────────────────────────────────────────

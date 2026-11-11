@@ -1,0 +1,149 @@
+# 「トレス島試験記録」の第三話を単体で始めて、水上・水中、地形適応、ＺＯＣとＺＯＣ無効化、パーツ分離、
+# ユニットのコマンドでの着艦と発進、進入と行動終了のラベル、中断とクイックセーブからの再開を決まった手順で確かめ、話の終わり（次のインターミッション）まで自動で進める
+# （srcsharp play の PlayScript。#1549）
+#   srcsharp play Compat/torres/ep03.eve --script Compat/torres-ep03.play --app-path Content/basic-data --skip-wait
+# 前の話のデータが無いので、Lib\include.eve の「単体の部隊」が部隊を作る（リンはトビウオのサポート）。
+
+choose 試験は失敗した あきらめる
+
+#===============================================================
+# 第三話「霧の水路」1 ターン目
+#===============================================================
+auto 60
+# 水上移動を持つ錆蟲フロートは浅瀬で水上、移動タイプが水の錆蟲ダイバーは深い水路で水中にいる
+expect eval Area(浮き蟲) = 水上
+expect eval Area(潜り蟲) = 水中
+expect eval Area(ダイチ) = 地上
+# 千草リンはトビウオのサポート（単体で始めたときは Ride で乗せる。通しのプレイではインターミッションの乗り換え）
+expect eval Unit(リン) = 試作機トビウオ
+# CountPilot はサポートも数える（元の SRC の Expression.bas: CountPilot + CountSupport）
+expect eval CountPilot(カイ) = 2
+
+# 地形適応：イワガネ（移動力 4）は「防水処理 浅瀬」で、浅瀬（移動コスト 2）を 1 で進み、(3,9) から (7,9) まで行ける。
+# 浅瀬にいる陸のユニットは水中にいる。そこから隣の錆蟲シェルを殴ると、パーツ分離で錆蟲シェル(脱皮) になる
+cell 3 9
+menu 移動
+cell 7 9
+wait menu
+menu 攻撃
+wait list
+list イワガネハンマー
+cell 8 9
+auto 60
+expect eval X(ダイチ) = 7
+expect eval Area(ダイチ) = 水中
+expect eval Unit(殻蟲) = 錆蟲シェル(脱皮)
+expect message 殻が割れて、中から本体が這い出した
+expect eval 殻破壊記録 = 0
+
+# ＺＯＣ：カスミ（移動力 5）は、防壁の切れ目の先 (12,5) が錆蟲ウォールのＺＯＣなので、5 マス先の (13,5) へは行けない
+# （行けないマスをクリックしても何も起きない）。右クリックでユニットのコマンドに戻り、Escape で取りやめる
+cell 9 6
+menu 移動
+cell 13 5
+expect eval X(ノア) = 9
+expect eval 突破記録 = 0
+cell 13 5 right
+wait menu
+key Escape
+wait ready
+# ＺＯＣ無効化：学舎の徽章（錆蟲払い）を付けたトビウオは、同じ 5 マス先の (13,5) へ行ける
+cell 8 5
+menu 移動
+cell 13 5
+wait menu
+menu 待機
+auto 30
+expect eval X(カイ) = 13
+expect eval Y(カイ) = 5
+# 進入のラベル（(13,5) に入った）と行動終了のラベル（待機した）
+expect message ＺＯＣを抜けたぞ
+expect eval 突破記録 = 1
+expect eval 行動終了記録 = 1
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第三話 2 ターン目
+#===============================================================
+expect eval ターン数 = 2
+expect message 霧が濃くなってきました
+# 中断：中断データを書いて SRC を終え、起動し直して再開する（マップが変わるので再開のラベルが起きる）
+savefile default
+cell 1 1 right
+menu 中断
+wait dialog
+dialog OK
+wait finished
+resume
+auto 60
+expect message 記録を読み込みました。試験を再開します。（ターン2）
+expect eval 再開記録 = 1
+expect eval ターン数 = 2
+expect eval Unit(殻蟲) = 錆蟲シェル(脱皮)
+expect eval Unit(リン) = 試作機トビウオ
+expect eval X(カイ) = 13
+# クイックセーブしてから、カスミをヤマセのマスへ動かして着艦する（収納のラベルで、浅瀬 (4,10) が橋になる）
+cell 1 1 right
+menu クイックセーブ
+auto 30
+cell 9 6
+menu 移動
+cell 8 8
+wait dialog
+dialog OK
+auto 30
+expect eval Status(ノア) = 格納
+expect eval 収納記録 = 1
+expect eval Info(マップ, 4, 10, 地形名) = 橋
+# クイックロード：地形が変わっているので、元の SRC と同じく再開のラベルが起きる。地形と着艦は戻る
+cell 1 1 right
+menu クイックロード
+wait dialog
+dialog OK
+auto 30
+expect eval 再開記録 = 2
+expect eval Status(ノア) = 出撃
+expect eval 収納記録 = 0
+expect eval Info(マップ, 4, 10, 地形名) = 浅瀬
+# もう一度着艦する
+cell 9 6
+menu 移動
+cell 8 8
+wait dialog
+dialog OK
+auto 30
+expect eval Status(ノア) = 格納
+cell 1 1 right
+menu ターン終了
+wait dialog
+dialog OK
+auto 60
+
+#===============================================================
+# 第三話 3 ターン目以降
+#===============================================================
+expect eval ターン数 = 3
+# 格納していたカスミを、ヤマセの「発進」で出す
+cell 8 8
+menu 発進
+wait list ユニット選択
+list カスミ
+cell 8 7
+wait menu
+menu 待機
+auto 30
+expect eval Status(ノア) = 出撃
+expect eval X(ノア) = 8
+expect eval Y(ノア) = 7
+# ここから最後まで自動で進める（SRCRenderTests の CompatScenarioTests は、この行の手前までを流す）
+# 話の終わりまで自動で進め、次のインターミッションのコマンドのリストで止まる（次の話は、その話の PlayScript で単体で始めて確かめる）
+holdlist コマンド
+turns 30
+expect message 測量、完了です
+expect eval 水路の記録 = "学舎艦ヤマセ;試作機イワガネ;試作機トビウオ;試作機カスミ;"
+expect eval 試験記録 = "第一話の試験（省略）;第二話の調査（省略）;第三話の測量;"
+expect error none

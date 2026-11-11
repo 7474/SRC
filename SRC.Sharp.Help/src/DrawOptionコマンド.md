@@ -2,8 +2,6 @@
 layout: default
 title: DrawOptionコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **DrawOptionコマンド**
 
 図形の描画方法を変更

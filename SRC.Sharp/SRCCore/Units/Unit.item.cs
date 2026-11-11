@@ -21,7 +21,7 @@ namespace SRCCore.Units
                 {
                     if (fd.Name == "ハードポイント" && (fd.Data == "強化パーツ" || fd.Data == "アイテム"))
                     {
-                        MaxItemNumRet = (int)(MaxItemNumRet + fd.FeatureLevel);
+                        MaxItemNumRet = VBMath.CLng(MaxItemNumRet + fd.FeatureLevel);
                         break;
                     }
                 }
@@ -61,7 +61,7 @@ namespace SRCCore.Units
             // 見つからなければアイテム名で検索
             foreach (Item itm in colItem.List)
             {
-                // XXX ケース考慮など
+                // VB の Unit.cls は Option Compare を指定していないので、名前は大文字・小文字を区別して比べる
                 if (itm.Name == Index)
                 {
                     ItemRet = itm;
@@ -117,7 +117,7 @@ namespace SRCCore.Units
                             }
 
                             // 大型アイテムの場合は余分に外す
-                            num = (int)(num + itm.FeatureLevel("大型アイテム"));
+                            num = VBMath.CLng(num + itm.FeatureLevel("大型アイテム"));
 
                             // 何れかを外さなければならない場合
                             while (num >= MaxItemNum() && num > 0)
@@ -149,19 +149,9 @@ namespace SRCCore.Units
                                     }
                                 }
 
-                                // ハードポイント付きのものしかない場合
-                                if (itm2 != null)
-                                {
-                                    num = (num - Item(1).Size());
-                                    if (Party0 != "味方")
-                                    {
-                                        Item(1).Exist = false;
-                                    }
-
-                                    DeleteItem(Item(1));
-                                    found_item = true;
-                                }
-
+                                // VB には続けて「ハードポイント付きのものしかない場合」に Item(1) を外す
+                                // ループの変数が Nothing になり、外した場合も Set itm2 = Nothing するので
+                                // この分岐には入らない。ハードポイント付きのものしかなければ何も外さない
                                 if (!found_item)
                                 {
                                     // 外せるアイテムがない
@@ -422,7 +412,6 @@ namespace SRCCore.Units
         EquipItem:
             ;
 
-
             // 装備されたアイテムは常に存在するとみなす
             if (Status != "破棄")
             {
@@ -451,8 +440,9 @@ namespace SRCCore.Units
                 return;
             }
 
-            // XXX 元は削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、
-            // 削除するアイテムによって付加された武器・アビリティのデータを削除していた
+            // 削除するアイテムの武器・アビリティの残弾数が引き継がれるのを防ぐため、
+            // 削除するアイテムによって付加された武器・アビリティのデータを削除する
+            DetachItemWeaponsAndAbilities(itm);
             DeleteItemInternal(itm);
 
             // ハードポイントを持つアイテムをはずした場合は他のアイテムを連続してはずす必要がある
@@ -538,6 +528,80 @@ namespace SRCCore.Units
             while (is_changed);
         }
 
+        // アイテムが付加した武器・アビリティを武器・アビリティの一覧から外す。
+        // Update は同じ武器データの武器から残弾数を引き継ぐので、外さないと
+        // 同じアイテムを２つ装備しているときに、外したほうの残弾数が残ったほうに引き継がれることがある。
+        // VB は番号を数えて WData(i)・adata(i) を Nothing にする（数え方は Update の並びに合わせる）
+        private void DetachItemWeaponsAndAbilities(Item itm)
+        {
+            if (WData == null || AData == null)
+            {
+                return;
+            }
+
+            var hasPilot = CountPilot() > 0;
+            var wnum = Data.Weapons.Count + (hasPilot ? AllPilots.Sum(p => p.Data.Weapons.Count) : 0);
+            var anum = Data.Abilities.Count + (hasPilot ? AllPilots.Sum(p => p.Data.Abilities.Count) : 0);
+            foreach (var itm2 in ItemList)
+            {
+                if (!itm2.Activated)
+                {
+                    continue;
+                }
+
+                if (ReferenceEquals(itm2, itm))
+                {
+                    var weapons = WData.Where((w, i) => i >= wnum && i < wnum + itm.Data.Weapons.Count
+                        && ReferenceEquals(w.WeaponData, itm.Data.Weapons[i - wnum])).ToList();
+                    var abilities = AData.Where((a, i) => i >= anum && i < anum + itm.Data.Abilities.Count
+                        && ReferenceEquals(a.Data, itm.Data.Abilities[i - anum])).ToList();
+                    WData = WData.Where(w => !weapons.Any(x => ReferenceEquals(x, w))).ToList();
+                    AData = AData.Where(a => !abilities.Any(x => ReferenceEquals(x, a))).ToList();
+                    return;
+                }
+
+                wnum += itm2.Data.Weapons.Count;
+                anum += itm2.Data.Abilities.Count;
+            }
+        }
+
+        // 使い切った武器・アビリティを付加したアイテム（7474/SRC#1508）。
+        // 元の SRC（Attack・MapAttack・ExecuteAbility・ExecuteMapAbility の「アイテムを消費」）は
+        // 武器・アビリティの番号を数えて、その番号が入るアイテムを消す（同名の武器・アビリティを持つ最初のアイテムではない）。
+        // VB の数え方には、2 人目からしかサポートを数えず、装備していないアイテムの武器・アビリティも数える誤りがあるため、
+        // ここでは武器・アビリティの一覧の作り方（Update）に合わせて数える
+        public Item ItemOfWeapon(UnitWeapon w)
+        {
+            var activeItems = ItemList.Where(itm => itm.Activated).ToList();
+            return ItemOfIndex(w.WeaponNo(), Weapons.Count, activeItems, activeItems.Select(itm => itm.Data.Weapons.Count));
+        }
+
+        public Item ItemOfAbility(UnitAbility a)
+        {
+            var activeItems = ItemList.Where(itm => itm.Activated).ToList();
+            return ItemOfIndex(a.AbilityNo(), Abilities.Count, activeItems, activeItems.Select(itm => itm.Data.Abilities.Count));
+        }
+
+        private static Item ItemOfIndex(int no, int total, IList<Item> activeItems, IEnumerable<int> counts)
+        {
+            var countList = counts.ToList();
+            // VB と同じく、ユニット・パイロットの武器・アビリティの番号でも最初のアイテムに当たる
+            var num = total - countList.Sum();
+            if (no <= 0)
+            {
+                return null;
+            }
+            for (var i = 0; i < activeItems.Count; i++)
+            {
+                num += countList[i];
+                if (no <= num)
+                {
+                    return activeItems[i];
+                }
+            }
+            return null;
+        }
+
         // 装備個所ごとのハードポイントのサイズ
         private Dictionary<string, int> HardPointSizes(bool includeItemParts)
         {
@@ -550,7 +614,7 @@ namespace SRCCore.Units
                 }
 
                 sizes.TryGetValue(fd.Data, out var size);
-                sizes[fd.Data] = (int)(size + fd.FeatureLevel);
+                sizes[fd.Data] = VBMath.CLng(size + fd.FeatureLevel);
             }
 
             return sizes;
@@ -606,7 +670,7 @@ namespace SRCCore.Units
                                     case "強化パーツ":
                                     case "アイテム":
                                         {
-                                            ItemSlotSizeRet = ((int)(ItemSlotSizeRet + fd.FeatureLevel));
+                                            ItemSlotSizeRet = VBMath.CLng(ItemSlotSizeRet + fd.FeatureLevel);
                                             break;
                                         }
                                 }
@@ -630,7 +694,7 @@ namespace SRCCore.Units
                             {
                                 if (fd.Data == ipart)
                                 {
-                                    ItemSlotSizeRet = ((int)(ItemSlotSizeRet + fd.FeatureLevel));
+                                    ItemSlotSizeRet = VBMath.CLng(ItemSlotSizeRet + fd.FeatureLevel);
                                 }
                             }
                         }
@@ -651,7 +715,7 @@ namespace SRCCore.Units
         // 装備可能な武器クラス
         public string WeaponProficiency()
         {
-            string WeaponProficiencyRet = default;
+            string WeaponProficiencyRet = "";
             foreach (FeatureData fd in colFeature)
             {
                 if (fd.Name == "武器クラス")
@@ -666,7 +730,7 @@ namespace SRCCore.Units
         // 装備可能な防具クラス
         public string ArmorProficiency()
         {
-            string ArmorProficiencyRet = default;
+            string ArmorProficiencyRet = "";
             foreach (FeatureData fd in colFeature)
             {
                 if (fd.Name == "防具クラス")

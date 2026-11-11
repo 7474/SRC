@@ -159,7 +159,17 @@ namespace SRCSharpTools
             {
                 var log = logHost.LoggerFactory.CreateLogger("SRCSharp.Tools");
                 logHost.ApplyConfig(runner.Session.SRC.SystemConfig);
+                // PlayScript の resume（中断データからの再開）で SRC を起動し直したときも、設定を反映する
+                runner.SessionCreated += session => logHost.ApplyConfig(session.SRC.SystemConfig);
                 logHost.LogStartup(log, "srcsharp play", new[] { eve });
+                // 乱数の種を決める（同じ手順なら毎回同じ結果にする。#1551）
+                if (options.TryGetValue("seed", out var seed))
+                {
+                    runner.Session.SRC.InitialRndSeed = int.Parse(seed, CultureInfo.InvariantCulture);
+                }
+                // 各話の終わりの状態を記録する（#1551）
+                options.TryGetValue("state", out var statePath);
+                var recorder = string.IsNullOrEmpty(statePath) ? null : new ScenarioStateRecorder(runner);
                 runner.Start(eve, scenarioRoot);
                 try
                 {
@@ -182,8 +192,10 @@ namespace SRCSharpTools
                 catch (PlayScriptException ex)
                 {
                     Console.Error.WriteLine("error: " + ex.Message);
+                    WriteState(runner, recorder, statePath);
                     return 1;
                 }
+                WriteState(runner, recorder, statePath);
                 if (runner.Error != null && !(runner.Error is SRCCore.TestLib.HeadlessTerminatedException))
                 {
                     log.LogError(runner.Error, "シナリオの実行中のエラー");
@@ -193,6 +205,25 @@ namespace SRCSharpTools
                 Console.WriteLine(runner.IsTerminated ? "terminated" : "stopped");
                 return 0;
             }
+        }
+
+        private static void WriteState(ScreenScenarioRunner runner, ScenarioStateRecorder recorder, string path)
+        {
+            if (recorder == null)
+            {
+                return;
+            }
+            // 終わっていなければゲームのスレッドで読む（終わっていれば、ゲームのスレッドはもう状態を変えない）
+            if (runner.IsFinished)
+            {
+                recorder.CaptureFinal(true);
+            }
+            else
+            {
+                runner.Session.Game.Post(() => recorder.CaptureFinal(false));
+                runner.TrySync(TimeSpan.FromSeconds(10));
+            }
+            File.WriteAllText(path, recorder.ToText(), new UTF8Encoding(false));
         }
 
         private static int Help(List<string> topics, Dictionary<string, string> options)

@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>{0} 데이터가 올바르지 않습니다.</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>데이터가 올바르지 않습니다.</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>취소</value>
   </data>
@@ -89,5 +92,32 @@
   </data>
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>MP3 음량</value>
+  </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>메시지 속도</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>수동 넘기기</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>느림</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>보통</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>빠름</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>매우 빠름</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>신의 영역</value>
+  </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>이미지 파일{0}{1}{0}을(를) 읽는 중 오류가 발생했습니다.{0}이미지 파일이 손상되지 않았는지 확인하십시오.</value>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>이미지 파일{0}{1}{0}의 이미지 형식은 지원되지 않습니다.</value>
   </data>
 </root>

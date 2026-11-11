@@ -65,7 +65,6 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             // カーソルが陣営変更されたユニット上にあるとカーソルは消去されるので
-            // XXX 実装次第要素
             GUI.IsCursorVisible = false;
 
             return EventData.NextID;

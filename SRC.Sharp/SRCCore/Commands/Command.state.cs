@@ -25,7 +25,24 @@ namespace SRCCore.Commands
                 return;
             }
 
-            SelectedState = SavedStateStack.Pop();
+            // スタックトップから記録された選択状況を取り出す
+            // 元の SRC が記録するのはユニット・ターゲット（イベント用を含む）・武器・反撃武器・防御方法・アビリティ・座標だけ。
+            // コマンド・パイロット・合体技のパートナーなどは戻さない。
+            // ユニットは記録した後に変形・分離などで形態が変わっていることがあるので、今の形態を選ぶ
+            var saved = SavedStateStack.Pop();
+            SelectedUnit = saved.SelectedUnit?.CurrentForm();
+            SelectedTarget = saved.SelectedTarget?.CurrentForm();
+            SelectedState.SelectedUnitForEvent = saved.SelectedUnitForEvent?.CurrentForm();
+            SelectedState.SelectedTargetForEvent = saved.SelectedTargetForEvent?.CurrentForm();
+            SelectedWeapon = saved.SelectedWeapon;
+            SelectedWeaponName = saved.SelectedWeaponName;
+            SelectedTWeapon = saved.SelectedTWeapon;
+            SelectedTWeaponName = saved.SelectedTWeaponName;
+            SelectedDefenseOption = saved.SelectedDefenseOption;
+            SelectedAbility = saved.SelectedAbility;
+            SelectedAbilityName = saved.SelectedAbilityName;
+            SelectedX = saved.SelectedX;
+            SelectedY = saved.SelectedY;
         }
 
         // 選択を入れ替える

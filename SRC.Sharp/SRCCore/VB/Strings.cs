@@ -4,7 +4,6 @@ using System.Text;
 
 namespace SRCCore.VB
 {
-
     public enum VbStrConv
     {
         Wide,
@@ -114,15 +113,16 @@ namespace SRCCore.VB
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.lcase?view=net-5.0
+        // 日本語の地域の設定と同じ結果にする（トルコ語の設定でも LCase("I") は "i"。7474/SRC#1554）
         public static string LCase(string Value)
         {
-            return Value.ToLower();
+            return Value.ToLowerInvariant();
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.lcase?view=net-5.0
         public static char LCase(char Value)
         {
-            return Value.ToString().ToLower()[0];
+            return Value.ToString().ToLowerInvariant()[0];
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.left?view=net-5.0
@@ -317,7 +317,6 @@ namespace SRCCore.VB
                 // Basic katakana: add offset to get full-width
                 return (char)(c - 0xFF66 + 0x30A1);
             }
-            // For dakuten/handakuten marks and other special cases, return as-is
             // A full implementation would handle these properly
             return c;
         }
@@ -335,7 +334,6 @@ namespace SRCCore.VB
                 // Basic katakana: subtract offset to get half-width
                 return (char)(c - 0x30A1 + 0xFF66);
             }
-            // For special cases, return as-is
             return c;
         }
 

@@ -6,7 +6,6 @@ using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace SRCCore.Pilots
 {
@@ -121,7 +120,9 @@ namespace SRCCore.Pilots
             // Nickname()への呼び出しは無効化
             if (dont_call_unit_nickname)
             {
-                NicknameRet = new Regex(@"nickname\(\)", RegexOptions.IgnoreCase).Replace(NicknameRet, "");
+                // VB の ReplaceString は大文字・小文字を区別するので、この 2 つの書き方だけを消す
+                NicknameRet = GeneralLib.ReplaceString(NicknameRet, "Nickname()", "");
+                NicknameRet = GeneralLib.ReplaceString(NicknameRet, "nickname()", "");
             }
 
             // 愛称内の式置換のため、デフォルトユニットを一時的に変更する
@@ -400,19 +401,19 @@ namespace SRCCore.Pilots
                 int DefenseRet = default;
                 if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
                 {
-                    DefenseRet = (int)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
+                    DefenseRet = VBMath.CLng(100d + 5d * SkillLevel("耐久", ref_mode: ""));
                     if (Expression.IsOptionDefined("防御力低成長"))
                     {
-                        DefenseRet = (int)(DefenseRet + (long)(Level * (1d + 2d * SkillLevel("防御成長", ref_mode: ""))) / 2L);
+                        DefenseRet = (int)(DefenseRet + VBMath.IntDiv(Level * (1d + 2d * SkillLevel("防御成長", ref_mode: "")), 2));
                     }
                     else
                     {
-                        DefenseRet = (int)(DefenseRet + Level * (1d + SkillLevel("防御成長", ref_mode: "")));
+                        DefenseRet = DefenseRet + VBMath.Int(Level * (1d + SkillLevel("防御成長", ref_mode: "")));
                     }
                 }
                 else
                 {
-                    DefenseRet = (int)(100d + 5d * SkillLevel("耐久", ref_mode: ""));
+                    DefenseRet = VBMath.CLng(100d + 5d * SkillLevel("耐久", ref_mode: ""));
                 }
 
                 return DefenseRet;

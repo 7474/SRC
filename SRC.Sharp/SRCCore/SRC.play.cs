@@ -12,6 +12,12 @@ namespace SRCCore
         public void StartScenario(string fname)
         {
             // ファイルを検索
+            if (string.IsNullOrEmpty(fname))
+            {
+                // 元の SRC はファイル名が空ならそのまま終了する（エラーメッセージは出さない）
+                TerminateSRC();
+                return;
+            }
             if (!Path.IsPathRooted(fname))
             {
                 fname = new string[]
@@ -27,41 +33,22 @@ namespace SRCCore
                 TerminateSRC();
             }
 
-            // XXX ウィンドウのタイトルを設定するなら IGUI.MainFormText を見直す
+            // ウィンドウのタイトルは、下でシナリオのファイル名を付けるときに「SRC# - 」から設定する
+            // （元の SRC は版で「SRC」「SRC開発版」を選んでから付け足す）
 
             ScenarioFileName = fname;
             if (!IsSubStage)
             {
-                //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Date", FileAttribute.Directory)) > 0)
-                //    {
-                //        GUI.ErrorMessage("シナリオ側のDataフォルダ名がDateになっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Date" + Constants.vbCr + Constants.vbLf + "フォルダ名をDataに直してください。");
-                //        TerminateSRC();
-                //    }
-                //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｄａｔａ", FileAttribute.Directory)) > 0)
-                //    {
-                //        GUI.ErrorMessage("シナリオ側のDataフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｄａｔａ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
-                //        TerminateSRC();
-                //    }
-                //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｂｉｔｍａｐ", FileAttribute.Directory)) > 0)
-                //    {
-                //        GUI.ErrorMessage("シナリオ側のBitmapフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｂｉｔｍａｐ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
-                //        TerminateSRC();
-                //    }
-                //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｌｉｂ", FileAttribute.Directory)) > 0)
-                //    {
-                //        GUI.ErrorMessage("シナリオ側のLibフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｌｉｂ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
-                //        TerminateSRC();
-                //    }
-                //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｍｉｄｉ", FileAttribute.Directory)) > 0)
-                //    {
-                //        GUI.ErrorMessage("シナリオ側のMidiフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｍｉｄｉ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
-                //        TerminateSRC();
-                //    }
-                //    if (Strings.Len(FileSystem.Dir(ScenarioPath + "Ｓｏｕｎｄ", FileAttribute.Directory)) > 0)
-                //    {
-                //        GUI.ErrorMessage("シナリオ側のSoundフォルダ名が全角文字になっています。" + Constants.vbCr + Constants.vbLf + ScenarioPath + "Ｓｏｕｎｄ" + Constants.vbCr + Constants.vbLf + "フォルダ名を半角文字に直してください。");
-                //        TerminateSRC();
-                //    }
+                // シナリオ側のフォルダ名の誤りを確かめる
+                if (!CheckScenarioFolderName("Date", "シナリオ側のDataフォルダ名がDateになっています。", "フォルダ名をDataに直してください。")
+                    || !CheckScenarioFolderName("Ｄａｔａ", "シナリオ側のDataフォルダ名が全角文字になっています。", "フォルダ名を半角文字に直してください。")
+                    || !CheckScenarioFolderName("Ｂｉｔｍａｐ", "シナリオ側のBitmapフォルダ名が全角文字になっています。", "フォルダ名を半角文字に直してください。")
+                    || !CheckScenarioFolderName("Ｌｉｂ", "シナリオ側のLibフォルダ名が全角文字になっています。", "フォルダ名を半角文字に直してください。")
+                    || !CheckScenarioFolderName("Ｍｉｄｉ", "シナリオ側のMidiフォルダ名が全角文字になっています。", "フォルダ名を半角文字に直してください。")
+                    || !CheckScenarioFolderName("Ｓｏｕｎｄ", "シナリオ側のSoundフォルダ名が全角文字になっています。", "フォルダ名を半角文字に直してください。"))
+                {
+                    return;
+                }
 
                 // 読み込むイベントファイル名に合わせて各種システム変数を設定
                 if (!Expression.IsGlobalVariableDefined("次ステージ"))
@@ -96,6 +83,7 @@ namespace SRCCore
             GUI.IsPictureVisible = false;
             GUI.IsCursorVisible = false;
             LastSaveDataFileName = "";
+            IsLastSaveDataQuikSaveStream = false;
             IsRestartSaveDataAvailable = false;
             IsQuickSaveDataAvailable = false;
             Commands.CommandState = "ユニット選択";
@@ -109,12 +97,15 @@ namespace SRCCore
             // 描画の基準座標位置をリセット
             Event.ResetBasePoint();
 
+            // 元の SRC はここでメモリを消費し過ぎないようにユニット画像をクリアする（UList.ClearUnitBitmap）。
+            // SRC# はユニット画像を GUI 側で持つので要らない
+
             GUI.LockGUI();
-            // XXX Mapサイズ処理が要りそうなら処理する
-            //if (Map.MapWidth == 1)
-            //{
-            //    Map.SetMapSize(15, 15);
-            //}
+            // ClearMap（インターミッション・Exec）の後でマップが 1x1 のままなら、プロローグ用に 15x15 にする
+            if (Map.MapWidth == 1)
+            {
+                Map.SetMapSize(15, 15);
+            }
 
             // プロローグ
             Stage = "プロローグ";
@@ -158,7 +149,6 @@ namespace SRCCore
             if (!GUI.MainFormVisible)
             {
                 GUI.MainFormShow();
-                //GUI.MainForm.Refresh();
             }
 
             GUI.RedrawScreen();
@@ -178,6 +168,24 @@ namespace SRCCore
             // クイックロードを無効にする
             IsQuickSaveDataAvailable = false;
             StartTurn("味方");
+        }
+
+        /// <summary>
+        /// シナリオのフォルダに name のフォルダがあれば、エラーを表示して終了する（元の SRC の StartScenario）。
+        /// 終了したら false を返す。
+        /// </summary>
+        private bool CheckScenarioFolderName(string name, string message, string howToFix)
+        {
+            if (!FileSystem.GetFileSystemEntries(ScenarioPath, name, Filesystem.EntryOption.Directory).Any())
+            {
+                return true;
+            }
+
+            GUI.ErrorMessage(message + Constants.vbCr + Constants.vbLf
+                + FileSystem.PathCombine(ScenarioPath, name) + Constants.vbCr + Constants.vbLf
+                + howToFix);
+            TerminateSRC();
+            return false;
         }
 
         // 陣営upartyのフェイズを実行
@@ -241,6 +249,8 @@ namespace SRCCore
                                 }
                         }
                     }
+                    // 元の SRC は For Each SelectedUnit In UList で回すので、回り終えると SelectedUnit は Nothing になる
+                    Commands.SelectedUnit = null;
 
                     // 味方が敵にかけたスペシャルパワーを解除
                     foreach (var currentU in UList.Items)
@@ -287,7 +297,7 @@ namespace SRCCore
 
                     // ターンイベント
                     Event.IsUnitCenter = false;
-                    Event.HandleEvent("ターン", Turn.ToString(), "味方");
+                    Event.HandleEvent("ターン", Turn.ToString(SrcCulture.Japanese), "味方");
                     if (IsScenarioFinished)
                     {
                         GUI.UnlockGUI();
@@ -394,6 +404,8 @@ namespace SRCCore
                             }
                     }
                 }
+                // 元の SRC は For Each SelectedUnit In UList で回すので、回り終えると SelectedUnit は Nothing になる
+                Commands.SelectedUnit = null;
 
                 // 敵ユニットが味方にかけたスペシャルパワーを解除
                 foreach (var currentUnit in UList.Items)
@@ -464,7 +476,7 @@ namespace SRCCore
                 }
 
                 // ターンイベント
-                Event.HandleEvent("ターン", Turn.ToString(), uparty);
+                Event.HandleEvent("ターン", Turn.ToString(SrcCulture.Japanese), uparty);
                 if (IsScenarioFinished)
                 {
                     GUI.UnlockGUI();
@@ -625,7 +637,7 @@ namespace SRCCore
                             }
                         }
                     }
-                    // XXX 二段階走査してるってこと？
+                    // 護衛対象もほかのユニットを護衛していれば、その護衛対象に合わせる（元の SRC も 2 段だけたどる）
                     if (PList.IsDefined(phaseJudgeUnit.Mode))
                     {
                         var p = PList.Item(phaseJudgeUnit.Mode);
@@ -701,9 +713,8 @@ namespace SRCCore
                         {
                             GUIStatus.DisplayUnitStatus(Commands.SelectedUnit);
                             GUI.Center(Commands.SelectedUnit.x, Commands.SelectedUnit.y);
+                            // 元の SRC はここで DoEvents して画面を更新する。SRC# の画面は GUI 側のスレッドで更新する
                             GUI.RedrawScreen();
-                            // XXX
-                            //Application.DoEvents();
                         }
 
                         IsCanceled = false; // Cancelコマンドのクリア
@@ -887,7 +898,7 @@ namespace SRCCore
             Sound.BossBGM = false;
             Sound.StopBGM();
 
-            // Exit.eveを探す
+            // 終了用のイベントファイル Exit.eve を探す
             GUI.MainFormHide();
             var exitFiles = new string[]
             {
@@ -897,7 +908,7 @@ namespace SRCCore
             var exitFile = exitFiles.FirstOrDefault(x => FileSystem.FileExists(x));
             if (string.IsNullOrEmpty(exitFile))
             {
-                // Exit.eveが無ければそのまま終了
+                // 終了用のイベントファイル Exit.eve が無ければそのまま終了
                 TerminateSRC();
             }
 
@@ -907,7 +918,7 @@ namespace SRCCore
                 NPDList.Load(nonPilotFile);
             }
 
-            // Exit.eveを読み込み
+            // 終了用のイベントファイル Exit.eve を読み込み
             Event.ClearEventData();
             Event.LoadEventData(exitFile, load_mode: "");
             // 元の SRC（SRC.bas の ExitGame）はシナリオのファイル名を変えない
@@ -917,7 +928,7 @@ namespace SRCCore
                 TerminateSRC();
             }
 
-            // Exit.eveのプロローグイベントを実施
+            // 終了用のイベントファイル Exit.eve のプロローグイベントを実施
             Event.HandleEvent("プロローグ");
 
             // SRCを終了
@@ -927,46 +938,9 @@ namespace SRCCore
         // SRCを終了
         public void TerminateSRC()
         {
-            //// ウィンドウを閉じる
-            //if (GUI.MainForm is object)
-            //{
-            //    GUI.MainForm.Hide();
-            //}
-            //Load(My.MyProject.Forms.frmMessage);
-            //if (My.MyProject.Forms.frmMessage.Visible)
-            //{
-            //    GUI.CloseMessageForm();
-            //}
-            //Load(My.MyProject.Forms.frmListBox);
-            //if (My.MyProject.Forms.frmListBox.Visible)
-            //{
-            //    My.MyProject.Forms.frmListBox.Hide();
-            //}
-            //Load(My.MyProject.Forms.frmNowLoading);
-            //if (My.MyProject.Forms.frmNowLoading.Visible)
-            //{
-            //    My.MyProject.Forms.frmNowLoading.Hide();
-            //}
-
-            //Application.DoEvents();
-
-            //// 時間解像度を元に戻す
-            //GeneralLib.timeEndPeriod(1);
-
-            //// フルスクリーンモードを使っていた場合は解像度を元に戻す
-            //if (GeneralLib.ReadIni("Option", "FullScreen") == "On")
-            //{
-            //    GUI.ChangeDisplaySize(0, 0);
-            //}
-
-            //// ＢＧＭ・効果音の再生を停止
-            //Sound.FreeSoundModule();
-
-            //// 各種データを解放
-
-            //// なぜかこれがないと不正終了する……
-            //Application.DoEvents();
-
+            // 元の SRC はウィンドウを閉じ、時間解像度・画面の解像度を戻し、ＢＧＭ・効果音を止め、
+            // 各種データを解放してから End する。SRC# では画面と音の後始末は GUI 側（IGUI.Terminate）が受け持ち、
+            // データはプロセスの終了で解放する。GUI がアプリを終えないと返したとき（Web・Avalonia のセッション）は終了しない
             if (GUI?.Terminate() ?? true)
             {
                 Environment.Exit(0);

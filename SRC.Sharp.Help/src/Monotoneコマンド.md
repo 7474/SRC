@@ -2,8 +2,6 @@
 layout: default
 title: Monotoneコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Monotoneコマンド**
 
 マップを白黒に変更

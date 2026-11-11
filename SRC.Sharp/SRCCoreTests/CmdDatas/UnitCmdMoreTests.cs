@@ -380,6 +380,36 @@ namespace SRCCore.CmdDatas.Tests
             Assert.AreEqual(-1, result);
         }
 
+        [TestMethod]
+        public void ReleaseCmd_NoArgs_ReleasesMainPilot()
+        {
+            // VB の ExecReleaseCmd は引数を省略するとデフォルトユニットの MainPilot の固定を解除する（7474/SRC#1475）。
+            // 追加パイロットを持つユニットでは 1 人目のパイロットとメインパイロットが違う
+            var fx = new Coverage.Tests.UnitAbilityCoverageFixture();
+            var src = fx.Src;
+            var ud = fx.AddUnitData("テスト機");
+            ud.PilotNum = 1;
+            ud.AddFeature("追加パイロット=合体パイロット");
+            fx.AddPilotData("乗るパイロット");
+            fx.AddPilotData("合体パイロット");
+            var u = src.UList.Add("テスト機", 0, "味方");
+            var p = src.PList.Add("乗るパイロット", 1, "味方");
+            p.Ride(u);
+            Assert.AreEqual("合体パイロット", u.MainPilot().Name);
+
+            src.Expression.DefineGlobalVariable("Fix(乗るパイロット)");
+            src.Expression.SetVariableAsLong("Fix(乗るパイロット)", 1);
+            src.Expression.DefineGlobalVariable("Fix(合体パイロット)");
+            src.Expression.SetVariableAsLong("Fix(合体パイロット)", 1);
+            src.Event.SelectedUnitForEvent = u;
+
+            var result = CreateCmd(src, "Release").Exec();
+
+            Assert.AreEqual(1, result);
+            Assert.IsFalse(src.Expression.IsGlobalVariableDefined("Fix(合体パイロット)"));
+            Assert.IsTrue(src.Expression.IsGlobalVariableDefined("Fix(乗るパイロット)"));
+        }
+
         // ──────────────────────────────────────────────
         // UpgradeCmd
         // ヘルプ: Upgrade [ユニット名] 変更後ユニット名 — ユニットを上位機体に換装

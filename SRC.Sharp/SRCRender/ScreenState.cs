@@ -37,8 +37,8 @@ namespace SRCRender
         /// <summary>キー操作のポインタが指しているホットポイントの矩形（無ければ null）</summary>
         public SkiaSharp.SKRectI? KeyPointerTarget { get; set; }
 
-        /// <summary>タイトルやロード中の表示（null で非表示）</summary>
-        public string Splash { get; set; }
+        /// <summary>「Now Loading ...」の画面（元の SRC の frmNowLoading）。表示していなければ null</summary>
+        public NowLoadingState NowLoading { get; set; }
 
         /// <summary>起動時のタイトル（元の SRC の frmTitle）。表示していなければ null</summary>
         public TitleState Title { get; set; }
@@ -134,6 +134,18 @@ namespace SRCRender
         public int X { get; set; }
         public int Y { get; set; }
         public int Highlight { get; set; } = -1;
+    }
+
+    /// <summary>
+    /// 「Now Loading ...」の画面の進み具合（元の SRC の NowLoading.frm の Size・Value）。
+    /// </summary>
+    public class NowLoadingState
+    {
+        /// <summary>データ総数（SetLoadImageSize）</summary>
+        public int Size { get; set; }
+
+        /// <summary>読み込み終えたデータの数（DisplayLoadingProgress で 1 ずつ増える）</summary>
+        public int Value { get; set; }
     }
 
     public class TitleState

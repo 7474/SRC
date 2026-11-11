@@ -43,7 +43,7 @@ namespace SRCSharpForm
         }
 
         public bool IsGUILocked { get; set; }
-        public short TopItem { get; set; }
+        public int TopItem { get; set; }
         public bool MessageWindowIsOut { get; set; }
         public bool IsFormClicked { get; set; }
         public bool IsMordal { get; set; }
@@ -109,7 +109,6 @@ namespace SRCSharpForm
         public Brush CurrentPaintBrush => currentDrawFontColor;
         // XXX そもそもBrushでなくForeColor持っていたほうがいいかもしれない
         public Color CurrentPaintColor => (currentDrawFontColor as SolidBrush).Color;
-        int IGUI.TopItem { get; set; }
 
         private frmNowLoading frmNowLoading;
         private frmTitle frmTitle;
@@ -186,51 +185,12 @@ namespace SRCSharpForm
         {
             Console.WriteLine("LoadForms");
 
-            //short X, Y;
-
-            //Load(frmToolTip);
             frmMessage = new frmMessage()
             {
                 SRC = SRC
             };
-            //Load(frmListBox);
             LockGUI();
-            //Commands.CommandState = "ユニット選択";
 
-            //// マップ画面に表示できるマップのサイズ
-            //switch (Strings.LCase(GeneralLib.ReadIni("Option", "NewGUI")) ?? "")
-            //{
-            //    case "on":
-            //        {
-            //            // MOD START MARGE
-            //            NewGUIMode = true;
-            //            // MOD END MARGE
-            //            MainWidth = 20;
-            //            break;
-            //        }
-
-            //    case "off":
-            //        {
-            //            MainWidth = 15;
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            MainWidth = 15;
-            //            SystemConfig.SetItem("Option", "NewGUI", "Off");
-            //            break;
-            //        }
-            //}
-            //// ADD START MARGE
-            //// Optionで定義されていればそちらを優先する
-            //if (Expression.IsOptionDefined("新ＧＵＩ"))
-            //{
-            //    NewGUIMode = true;
-            //    MainWidth = 20;
-            //}
-            //// ADD END MARGE
-            //MainHeight = 15;
             MainWidth = 15;
             MainHeight = 15;
 
@@ -324,16 +284,17 @@ namespace SRCSharpForm
             MainForm.SetupBackground(draw_mode, draw_option, filter_color, filter_trans_par);
         }
 
+        public void RedrawMapCell(int X, int Y)
+        {
+            MainForm.RedrawMapCell(X, Y);
+        }
+
         public void RedrawScreen(bool late_refresh)
         {
             ScreenIsMasked = false;
 
             // 画面を更新
             RefreshScreen(false, late_refresh);
-
-            //'カーソルを再描画
-            //GetCursorPos PT
-            //ret = SetCursorPos(PT.X, PT.Y)
         }
 
         public void MaskScreen()
@@ -463,7 +424,8 @@ namespace SRCSharpForm
 
         public void DieAnimation(Unit u)
         {
-            EraseUnitBitmap(u.x, u.y, false);
+            // 元の SRC は EraseUnitBitmap の do_refresh を省略して呼ぶ（既定は True）。消したユニットをすぐ画面に出す
+            EraseUnitBitmap(u.x, u.y, true);
 
             // 人間ユニットでない場合は爆発を表示
             if (!u.IsHero())
@@ -477,50 +439,6 @@ namespace SRCSharpForm
             {
                 return;
             }
-
-            #region XXX 右ボタン参照
-            //GUI.GetCursorPos(PT);
-
-            //// メッセージウインドウ上でマウスボタンを押した場合
-            //if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
-            //{
-            //    {
-            //        var withBlock = My.MyProject.Forms.frmMessage;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
-            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX()
-            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
-            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-            //        {
-            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
-            //&& 0x8000) != 0)
-            //            {
-            //                // 右ボタンで爆発スキップ
-            //                return;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// メインウインドウ上でマウスボタンを押した場合
-            //if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
-            //{
-            //    {
-            //        var withBlock1 = GUI.MainForm;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
-            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX()
-            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
-            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-            //        {
-            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
-            //&& 0x8000) != 0)
-            //            {
-            //                // 右ボタンで爆発スキップ
-            //                return;
-            //            }
-            //        }
-            //    }
-            //}
-            #endregion
 
             // 倒れる音
             switch (u.Area ?? "")
@@ -635,51 +553,6 @@ namespace SRCSharpForm
             {
                 return;
             }
-
-            #region XXX 右ボタン参照
-            //GUI.GetCursorPos(PT);
-
-            //// メッセージウインドウ上でマウスボタンを押した場合
-            //if (ReferenceEquals(Form.ActiveForm, My.MyProject.Forms.m_frmMessage))
-            //{
-            //    {
-            //        var withBlock = My.MyProject.Forms.frmMessage;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
-            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock.Left) + SrcFormatter.PixelsToTwipsX(withBlock.Width)) / (long)SrcFormatter.TwipsPerPixelX()
-            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
-            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock.Top) + SrcFormatter.PixelsToTwipsY(withBlock.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-            //        {
-            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
-            //&& 0x8000) != 0)
-            //            {
-            //                // 右ボタンで爆発スキップ
-            //                return;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// メインウインドウ上でマウスボタンを押した場合
-            //if (ReferenceEquals(Form.ActiveForm, GUI.MainForm))
-            //{
-            //    {
-            //        var withBlock1 = GUI.MainForm;
-            //        if ((long)SrcFormatter.PixelsToTwipsX(withBlock1.Left) / (long)SrcFormatter.TwipsPerPixelX() <= PT.X
-            //&& PT.X <= (long)(SrcFormatter.PixelsToTwipsX(withBlock1.Left) + SrcFormatter.PixelsToTwipsX(withBlock1.Width)) / (long)SrcFormatter.TwipsPerPixelX()
-            //&& (long)SrcFormatter.PixelsToTwipsY(withBlock1.Top) / (long)SrcFormatter.TwipsPerPixelY() <= PT.Y
-            //&& PT.Y <= (long)(SrcFormatter.PixelsToTwipsY(withBlock1.Top) + SrcFormatter.PixelsToTwipsY(withBlock1.Height)) / (long)SrcFormatter.TwipsPerPixelY())
-            //        {
-            //            if ((GUI.GetAsyncKeyState(GUI.RButtonID)
-            //&& 0x8000) != 0)
-            //            {
-            //                // 右ボタンで爆発スキップ
-            //                return;
-            //            }
-            //        }
-            //    }
-            //}
-            #endregion
-
 
             // 爆発音
             switch (tsize ?? "")
@@ -895,7 +768,6 @@ namespace SRCSharpForm
             }
         }
 
-
         public int ListBox(ListBoxArgs args)
         {
             frmListBox.ShowItems(MainForm, args);
@@ -953,58 +825,42 @@ namespace SRCSharpForm
         public UnitWeapon WeaponListBox(Unit u, UnitWeaponList weapons, string caption_msg, string lb_mode, string BGM)
         {
             TopItem = -1;
-            var list = weapons.Items.Select(x => new ListBoxItem()
+            // 元の SRC はリストボックスを出したところでＢＧＭを変える（反撃のときは BGM を渡さない）
+            if (!string.IsNullOrEmpty(BGM))
             {
-                Text = $"{ GeneralLib.RightPaddedString(x.Weapon.Name, 28)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponPower("") + "", 4)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponPrecision() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponCritical() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.Bullet() + "", 3)}" +
-                    $" { GeneralLib.LeftPaddedString(x.Weapon.WeaponENConsumption() + "", 4)}" +
-                    $" {x.Weapon.WeaponData.Adaption}" +
-                    $" {x.Weapon.WeaponClass()}",
-                ListItemComment = "",
-                ListItemFlag = !x.CanUse,
-                ListItemID = "",
-            }).ToList();
-            var ret = ListBox(new ListBoxArgs
-            {
-                Items = list,
-                HasFlag = true,
-                lb_caption = caption_msg,
-                //"名称                         攻撃 命中 " + Expression.Term("EN"4, u, 2) + "   弾  " + Expression.Term("EN"5, u, 2) + " 適応 分類",
-                lb_info = "名称                         攻撃 命中 CT   弾  EN 適応 分類",
-                lb_mode = "",
-            });
-            //var WeaponListBoxRet = wlist[ret];
+                SRC.Sound.ChangeBGM(BGM);
+            }
+            // GUI.bas の WeaponListBox と同じ欄・表示内容・見出し。援護攻撃の使用・不使用を切り替える行も出す
+            var ret = weapons.SelectWeapon(SRC, caption_msg, ListBox);
             Application.DoEvents();
-            return ret > 0 ? weapons.Items[ret - 1].Weapon : null;
+            return ret;
         }
 
         public UnitAbility AbilityListBox(Unit u, UnitAbilityList abilities, string caption_msg, string lb_mode, bool is_item = false)
         {
             TopItem = -1;
-            var list = abilities.Items.Select(x => new ListBoxItem()
+            // メニューにアビリティ名を表示しているときは一覧を出さずに選ぶ
+            var ability = abilities.AbilityWithoutListBox(SRC, lb_mode, is_item);
+            if (ability != null)
             {
-                Text = $"{x.Ability.Data.Name}",
-                ListItemComment = "",
-                ListItemFlag = !x.CanUse,
-                ListItemID = "",
-            }).ToList();
-            if (list.Count == 1 && lb_mode != "一覧" && !is_item)
+                return ability;
+            }
+            // GUI.bas の AbilityListBox と同じ欄・表示内容・見出し
+            var list = abilities.ToListBoxItems(is_item);
+            if (list.Count == 0)
             {
-                return abilities.Items[0].Ability;
+                return null;
             }
             var ret = ListBox(new ListBoxArgs
             {
-                Items = list,
+                Items = list.Cast<ListBoxItem>().ToList(),
                 HasFlag = true,
                 lb_caption = caption_msg,
-                lb_info = "名称",
+                lb_info = abilities.ListBoxInfo(SRC),
                 lb_mode = "",
             });
             Application.DoEvents();
-            return ret > 0 ? abilities.Items[ret - 1].Ability : null;
+            return ret > 0 ? list[ret - 1].ListItemObject : null;
         }
 
         public int LIPS(ListBoxArgs args, int time_limit)
@@ -1050,7 +906,6 @@ namespace SRCSharpForm
 
                 return Commands.SelectedItem;
             }
-
         }
 
         public bool IsInDeploymentSelection { get; private set; }
@@ -1231,8 +1086,8 @@ namespace SRCSharpForm
                         }
                         else
                         {
-                            // そうでなければ最初のアイテムに
-                            i = TopItem;
+                            // そうでなければ最初のアイテムに（GUI.bas の MoveCursorPos と同じく、表示している先頭の項目）
+                            i = frmListBox.ListBox.TopIndex + 1;
                         }
 
                         // XXX これでいい感じが維持されるかは分からん
@@ -1245,13 +1100,6 @@ namespace SRCSharpForm
             {
                 // ユニット上まで移動
                 {
-                    //var withBlock2 = MainForm;
-                    //if (NewGUIMode)
-                    //{
-                    //    tx = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock2.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() + 32 * (t.x - (MapX - MainWidth / 2)) + 4L);
-                    //    ty = (int)((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() + (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.Height) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock2.ClientRectangle.Height) + 32 * (t.y - (MapY - MainHeight / 2)) + 16d);
-                    //}
-                    //else
                     {
                         tx = MainForm.Left + 32 * (t.x - (MapX - MainWidth / 2)) + 24;
                         ty = MainForm.Top + MainForm.Height - MainForm.ClientRectangle.Height + 32 * (t.y - (MapY - MainHeight / 2)) + 20;
@@ -1265,8 +1113,8 @@ namespace SRCSharpForm
             // カーソルを移動
             var prev_lock = IsGUILocked;
             IsGUILocked = true;
-            // XXX
-            //Status.IsStatusWindowDisabled = true;
+            // 元の SRC と同じく、動かしている間はカーソルの下のユニットをステータスに出さない
+            frmMain.IsStatusWindowDisabled = true;
             for (var i = 1; i <= num; i++)
             {
                 Cursor.Position = new Point(
@@ -1275,7 +1123,7 @@ namespace SRCSharpForm
                 );
                 Sleep(10, true);
             }
-            //Status.IsStatusWindowDisabled = false;
+            frmMain.IsStatusWindowDisabled = false;
             IsGUILocked = prev_lock;
 
             // 新しいカーソル位置を記録
@@ -1353,8 +1201,6 @@ namespace SRCSharpForm
             frmNowLoading.Close();
             frmNowLoading.Dispose();
             frmNowLoading = null;
-            // XXX シナリオのパスが決まってるタイミングでという意味でファイルシステムの状態を再処理してる。カス。
-            imageBuffer.InitFileSystemInfo();
         }
 
         public void DisplayLoadingProgress()
@@ -1445,7 +1291,12 @@ namespace SRCSharpForm
                 Expression.FormatMessage(ref msg);
                 if (Strings.InStr(msg, ".") > 0)
                 {
-                    msg = msg.Replace(".", Environment.NewLine);
+                    // 元の SRC と同じく、最初の 2 つの「.」を改行にする
+                    for (var n = 0; n < 2 && msg.IndexOf('.') >= 0; n++)
+                    {
+                        var i = msg.IndexOf('.');
+                        msg = msg.Substring(0, i) + Environment.NewLine + msg.Substring(i + 1);
+                    }
                     telop.Height = 78;
                 }
                 else
@@ -1467,14 +1318,13 @@ namespace SRCSharpForm
                 telop.Label1.Text = msg;
                 telop.Show();
                 telop.Refresh();
-                if (!IsRButtonPressed())
+                // 元の SRC と同じく、右ボタンを押していれば待たない（メッセージのウエイトには関わらない）
+                if (!IsRButtonPressed(true))
                 {
                     Sleep(1000);
                 }
                 telop.Close();
             }
-
-
         }
 
         public void SetTitle(string title)
@@ -1553,7 +1403,6 @@ namespace SRCSharpForm
             if (icon.HasValue)
             {
                 res = MsgBox.Show(owner, message, title, buttons, icon.Value);
-
             }
             else
             {
@@ -1586,12 +1435,6 @@ namespace SRCSharpForm
 
         public Stream SelectSaveStream(SRCSaveKind saveKind, string defaultName)
         {
-            //// 一旦「常に手前に表示」を解除
-            //if (My.MyProject.Forms.frmListBox.Visible)
-            //{
-            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
-            //}
-            
             var ext = saveKind == SRCSaveKind.Normal ? "srcs" : "srcq";
             string fname;
             using (var fsd = new SaveFileDialog())
@@ -1612,12 +1455,6 @@ namespace SRCSharpForm
                     return null;
                 }
             }
-
-            //// 再び「常に手前に表示」
-            //if (My.MyProject.Forms.frmListBox.Visible)
-            //{
-            //    ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
-            //}
 
             // キャンセル？
             if (string.IsNullOrEmpty(fname))
@@ -1651,7 +1488,7 @@ namespace SRCSharpForm
             }
         }
 
-        public string SelectLoadFile(string title, string initialDirectory, string fileType, string fileExtension)
+        public string SelectLoadFile(string title, string initialDirectory, string initialFile, string fileType, string fileExtension)
         {
             using (var ofd = new OpenFileDialog())
             {
@@ -1659,6 +1496,8 @@ namespace SRCSharpForm
                 var effectiveDir = new[] { initialDirectory, SRC.ScenarioPath }
                     .FirstOrDefault(x => !string.IsNullOrEmpty(x) && Directory.Exists(x));
                 if (effectiveDir != null) ofd.InitialDirectory = effectiveDir;
+                // 初めに選んでおくファイル（VB: FileDialog.bas の LoadFileDialog の default_file）
+                ofd.FileName = initialFile ?? "";
                 if (!string.IsNullOrEmpty(fileExtension) && !string.IsNullOrEmpty(fileType))
                 {
                     ofd.Filter = $"{fileType} (*.{fileExtension})|*.{fileExtension}|すべてのファイル (*.*)|*.*";

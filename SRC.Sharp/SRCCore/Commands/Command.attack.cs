@@ -119,7 +119,7 @@ namespace SRCCore.Commands
             }
             else if (currentWeapon.IsWeaponClassifiedAs("Ｍ扇"))
             {
-                Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, (int)currentWeapon.WeaponLevel("Ｍ扇"));
+                Map.AreaInSectorCross(currentUnit.x, currentUnit.y, min_range, max_range, VBMath.CLng(currentWeapon.WeaponLevel("Ｍ扇")));
             }
             else if (currentWeapon.IsWeaponClassifiedAs("Ｍ全")
                 || currentWeapon.IsWeaponClassifiedAs("Ｍ投")
@@ -177,7 +177,7 @@ namespace SRCCore.Commands
                         // 封印武器の対象属性外でない？
                         if (currentWeapon.IsWeaponClassifiedAs("封"))
                         {
-                            if (currentWeapon.WeaponData.Power > 0 && currentWeapon.Damage(t, true) == 0
+                            if ((currentWeapon.WeaponData.Power > 0 && currentWeapon.Damage(t, true) == 0)
                                 || currentWeapon.CriticalProbability(t) == 0)
                             {
                                 Map.MaskData[i, j] = true;
@@ -188,8 +188,8 @@ namespace SRCCore.Commands
                         // 限定武器の対象属性外でない？
                         if (currentWeapon.IsWeaponClassifiedAs("限"))
                         {
-                            if (currentWeapon.WeaponData.Power > 0 && currentWeapon.Damage(t, true) == 0
-                                || currentWeapon.WeaponData.Power == 0 && currentWeapon.CriticalProbability(t) == 0)
+                            if ((currentWeapon.WeaponData.Power > 0 && currentWeapon.Damage(t, true) == 0)
+                                || (currentWeapon.WeaponData.Power == 0 && currentWeapon.CriticalProbability(t) == 0))
                             {
                                 Map.MaskData[i, j] = true;
                                 goto NextLoop;
@@ -317,11 +317,6 @@ namespace SRCCore.Commands
             var support_attack_done = default(bool);
             int w2;
             bool is_p_weapon;
-            //// If MainWidth <> 15 Then
-            //if (GUI.NewGUIMode)
-            //{
-            //    Status.ClearUnitStatus();
-            //}
 
             GUI.LockGUI();
             var currentUnit = SelectedUnit;
@@ -568,9 +563,10 @@ namespace SRCCore.Commands
                             targetUnit.Attack(targetWeapon, SelectedUnit, "先制攻撃", "");
                             SelectedTarget = targetUnit.CurrentForm();
                         }
+                        // VB 版の Or は短絡しないので、武器が「先」でも乱数を 1 つ消費する
                         else if (targetWeapon.IsWeaponClassifiedAs("先")
-                            || targetUnit.MainPilot().SkillLevel("先読み", "") >= GeneralLib.Dice(16)
-                            || targetUnit.IsUnderSpecialPowerEffect("カウンター"))
+                            | targetUnit.MainPilot().SkillLevel("先読み", "") >= GeneralLib.Dice(16)
+                            | targetUnit.IsUnderSpecialPowerEffect("カウンター"))
                         {
                             def_mode = "先制攻撃";
                             if (targetWeapon.IsWeaponClassifiedAs("自"))
@@ -617,7 +613,7 @@ namespace SRCCore.Commands
                     // 合体技ではサポートアタック不能
                     if (0 < SelectedWeapon && SelectedWeapon <= currentUnit.CountWeapon())
                     {
-                        if (currentWeapon.IsWeaponClassifiedAs("合"))
+                        if (currentUnit.Weapon(SelectedWeapon).IsWeaponClassifiedAs("合"))
                         {
                             SupportAttackUnit = null;
                         }
@@ -655,16 +651,15 @@ namespace SRCCore.Commands
                     {
                         SelectedWeapon = -1;
                     }
-                    else if ((wname ?? "") != (currentWeapon.Name ?? ""))
+                    // 元の SRC と同じく、イベントなどで武器の並びが変わっていたら攻撃しない
+                    else if ((wname ?? "") != (currentUnit.Weapon(SelectedWeapon).Name ?? ""))
                     {
-                        // インデックスがずれた場合は名前で検索
-                        var foundIdx = currentUnit.Weapons
-                            .Select((w, idx) => (w, idx))
-                            .FirstOrDefault(t => (t.w.Name ?? "") == (wname ?? ""));
-                        SelectedWeapon = foundIdx.w != null ? foundIdx.idx + 1 : -1;
+                        SelectedWeapon = -1;
                     }
                     else if (CommandState == "移動後ターゲット選択")
                     {
+                        // 以降は今の SelectedWeapon 番目の武器で判定・攻撃する（VB は番号で参照する）
+                        currentWeapon = currentUnit.Weapon(SelectedWeapon);
                         if (!currentWeapon.IsWeaponAvailable("移動後"))
                         {
                             SelectedWeapon = -1;
@@ -672,6 +667,7 @@ namespace SRCCore.Commands
                     }
                     else
                     {
+                        currentWeapon = currentUnit.Weapon(SelectedWeapon);
                         if (!currentWeapon.IsWeaponAvailable("移動前"))
                         {
                             SelectedWeapon = -1;
@@ -709,12 +705,12 @@ namespace SRCCore.Commands
 
                     if (SelectedWeapon > 0)
                     {
-                        //if (SupportAttackUnit is object && currentUnit.MaxSyncAttack() > currentUnit.UsedSyncAttack)
-                        //{
-                        //    // 同時援護攻撃
-                        //    currentWeapon.Attack( SelectedTarget, "統率", def_mode);
-                        //}
-                        //else
+                        if (SupportAttackUnit is object && currentUnit.MaxSyncAttack() > currentUnit.UsedSyncAttack)
+                        {
+                            // 同時援護攻撃
+                            currentUnit.Attack(currentWeapon, SelectedTarget, "統率", def_mode);
+                        }
+                        else
                         {
                             // 通常攻撃
                             currentUnit.Attack(currentWeapon, SelectedTarget, "", def_mode);
@@ -1002,7 +998,7 @@ namespace SRCCore.Commands
                         // スペシャルパワーによる獲得資金増加
                         if (su.IsUnderSpecialPowerEffect("獲得資金増加"))
                         {
-                            earnings = (int)(earnings * (1d + 0.1d * su.SpecialPowerEffectLevel("獲得資金増加")));
+                            earnings = VBMath.CLng(earnings * (1d + 0.1d * su.SpecialPowerEffectLevel("獲得資金増加")));
                         }
 
                         // パイロット能力による獲得資金増加
@@ -1010,7 +1006,7 @@ namespace SRCCore.Commands
                         {
                             if (!su.IsUnderSpecialPowerEffect("獲得資金増加") || Expression.IsOptionDefined("収得効果重複"))
                             {
-                                earnings = (int)GeneralLib.MinDbl(earnings * ((10d + su.SkillLevel("資金獲得", 5d)) / 10d), 999999999d);
+                                earnings = VBMath.CLng(GeneralLib.MinDbl(earnings * ((10d + su.SkillLevel("資金獲得", 5d)) / 10d), 999999999d));
                             }
                         }
 
@@ -1297,7 +1293,6 @@ namespace SRCCore.Commands
         EndAttack:
             ;
 
-
             // 合体技のパートナーの行動数を減らす
             if (!Expression.IsOptionDefined("合体技パートナー行動数無消費"))
             {
@@ -1383,18 +1378,18 @@ namespace SRCCore.Commands
                     }
 
                     // 攻撃目標地点
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
 
                     // 攻撃範囲を設定
                     if (currentWeapon.IsWeaponClassifiedAs("識")
                         || currentUnit.IsUnderSpecialPowerEffect("識別攻撃"))
                     {
-                        Map.AreaInRange(SelectedX, SelectedY, (int)currentWeapon.WeaponLevel("Ｍ投"), 1, "味方の敵");
+                        Map.AreaInRange(SelectedX, SelectedY, VBMath.CLng(currentWeapon.WeaponLevel("Ｍ投")), 1, "味方の敵");
                     }
                     else
                     {
-                        Map.AreaInRange(SelectedX, SelectedY, (int)currentWeapon.WeaponLevel("Ｍ投"), 1, "すべて");
+                        Map.AreaInRange(SelectedX, SelectedY, VBMath.CLng(currentWeapon.WeaponLevel("Ｍ投")), 1, "すべて");
                     }
 
                     GUI.MaskScreen();
@@ -1403,8 +1398,8 @@ namespace SRCCore.Commands
                 else if (currentWeapon.IsWeaponClassifiedAs("Ｍ移"))
                 {
                     // 攻撃目標地点
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
 
                     // 攻撃目標地点に他のユニットがいては駄目
                     if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
@@ -1439,8 +1434,8 @@ namespace SRCCore.Commands
                     }
 
                     // 攻撃目標地点
-                    SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                    SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
+                    SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                    SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
 
                     // 攻撃範囲を設定
                     Map.AreaInPointToPoint(currentUnit.x, currentUnit.y, SelectedX, SelectedY);

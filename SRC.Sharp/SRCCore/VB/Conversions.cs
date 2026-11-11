@@ -1,13 +1,16 @@
 using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace SRCCore.VB
 {
     // VBの Microsoft.VisualBasic.Conversions のうちSRCで使用していたものの仮実装。
     public static class Conversions
     {
+        // VB の CStr と同じく、数値は日本語の地域の設定（SrcCulture。小数点は「.」）で書く。実行する環境の言語によらない
         public static string ToString(object Value)
         {
-            return Value?.ToString() ?? "";
+            return Convert.ToString(Value, SrcCulture.Japanese) ?? "";
         }
 
         // 数値の文字列として読む前に、VB（OLE Automation の VarParseNumFromStr）と同じく全角の英数字・記号・空白を半角にし、前後の空白を除く。
@@ -47,10 +50,11 @@ namespace SRCCore.VB
             return text;
         }
 
+        // 数値の文字列は、実行する環境の言語によらず日本語の地域の設定（SrcCulture。小数点は「.」、桁区切りは「,」）で読む（7474/SRC#1545）
         public static int ToInteger(string Value)
         {
             Value = NumericText(Value);
-            if (int.TryParse(Value, out int ret))
+            if (int.TryParse(Value, NumberStyles.Integer, SrcCulture.Japanese, out int ret))
             {
                 return ret;
             }
@@ -74,13 +78,42 @@ namespace SRCCore.VB
             {
                 return int.MinValue;
             }
-            return (int)rounded;
+            // rounded は偶数丸め済みの整数なので、VBMath.CLng はそのままの値を返す
+            return VBMath.CLng(rounded);
+        }
+
+        // 指数表記の数値（「1e5」「1.5E-3」「1d5」）を読む。VB（OLE Automation の VarParseNumFromStr）と同じく、
+        // 指数の記号には E のほか D も使え、記号の後ろには符号と 1 桁以上の数字が要る（「1e」「e5」は数値ではない）。
+        // text は NumericText で全角を半角にし、前後の空白を除いたもの
+        private static readonly Regex ExponentPattern = new Regex(
+            @"^[+-]?(?:[0-9][0-9,]*(?:\.[0-9]*)?|\.[0-9]+)[eEdD][+-]?[0-9]+$",
+            RegexOptions.CultureInvariant);
+        internal static bool TryParseExponent(string text, out double value)
+        {
+            value = 0d;
+            if (string.IsNullOrEmpty(text) || !ExponentPattern.IsMatch(text))
+            {
+                return false;
+            }
+            var normalized = text.Replace(",", "").Replace('d', 'e').Replace('D', 'e');
+            if (!double.TryParse(normalized, NumberStyles.Float, CultureInfo.InvariantCulture, out value)
+                || double.IsInfinity(value) || double.IsNaN(value))
+            {
+                // 範囲を超える値（「1e400」）は数値とみなさない（VB ではオーバーフロー）
+                value = 0d;
+                return false;
+            }
+            return true;
         }
 
         public static double ToDouble(string Value)
         {
             Value = NumericText(Value);
-            if (double.TryParse(Value, out double ret))
+            if (TryParseExponent(Value, out double exp))
+            {
+                return exp;
+            }
+            if (double.TryParse(Value, NumberStyles.Float | NumberStyles.AllowThousands, SrcCulture.Japanese, out double ret))
             {
                 return ret;
             }
@@ -88,14 +121,31 @@ namespace SRCCore.VB
         }
 
         // 以下 Microsoft.VisualBasic.Conversions とは関係ないが便宜上変換処理として配置している関数。
+        // VB の IsDate と CDate（日付の関数・DiffTime が使う）。
+        // 日本語版の Windows と同じく、実行する環境の言語によらず日本語の書式（「2024/01/02」「2024年1月2日」「午後 1:30」など）で読む。
+        // 日本語の書式で読めなければ、英語の月の名前（「Jan 2, 2024」）なども読めるインバリアントの書式で読む（VB も英語の月の名前を読む）。
+        // 時刻だけの文字列は、VB の日付の 0（1899/12/30）のその時刻にする（今日の日付にしない）
         public static bool TryToDateTime(string value, out DateTime dateTime)
         {
-            // XXX DateTime パースの精査
-            return DateTime.TryParse(value, out dateTime);
+            const DateTimeStyles styles = DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.NoCurrentDateDefault;
+            if (!DateTime.TryParse(value, SrcCulture.Japanese, styles, out dateTime)
+                && !DateTime.TryParse(value, CultureInfo.InvariantCulture, styles, out dateTime))
+            {
+                return false;
+            }
+            if (dateTime.Date == DateTime.MinValue.Date)
+            {
+                dateTime = VBDateZero + dateTime.TimeOfDay;
+            }
+            return true;
         }
+
+        // VB の日付の 0（CDate(0)）
+        private static readonly DateTime VBDateZero = new DateTime(1899, 12, 30);
+
+        // VB の Now（日付の関数・DiffTime・変数 Now が使う）。IsDate・CDate の代わりと並べて置く
         public static DateTime GetNow()
         {
-            // XXX 変換ですらないがパースの隣にあったほうが見通しがいいので。。。
             return DateTime.Now;
         }
     }

@@ -17,10 +17,10 @@ namespace SRCCore.Commands.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void CommandState_DefaultIsNull()
+        public void CommandState_DefaultIsEmpty()
         {
             var src = CreateSrc();
-            Assert.IsNull(src.Commands.CommandState);
+            Assert.AreEqual("", src.Commands.CommandState);
         }
 
         [TestMethod]
@@ -100,10 +100,11 @@ namespace SRCCore.Commands.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SelectedCommand_DefaultIsNull()
+        public void SelectedCommand_DefaultIsEmpty()
         {
+            // VB の String の初期値は ""
             var src = CreateSrc();
-            Assert.IsNull(src.Commands.SelectedCommand);
+            Assert.AreEqual("", src.Commands.SelectedCommand);
         }
 
         [TestMethod]
@@ -187,10 +188,11 @@ namespace SRCCore.Commands.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SelectedWeaponName_DefaultIsNull()
+        public void SelectedWeaponName_DefaultIsEmpty()
         {
+            // VB の String の初期値は ""
             var src = CreateSrc();
-            Assert.IsNull(src.Commands.SelectedWeaponName);
+            Assert.AreEqual("", src.Commands.SelectedWeaponName);
         }
 
         [TestMethod]
@@ -214,10 +216,11 @@ namespace SRCCore.Commands.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SelectedDefenseOption_DefaultIsNull()
+        public void SelectedDefenseOption_DefaultIsEmpty()
         {
+            // VB の String の初期値は ""
             var src = CreateSrc();
-            Assert.IsNull(src.Commands.SelectedDefenseOption);
+            Assert.AreEqual("", src.Commands.SelectedDefenseOption);
         }
 
         [TestMethod]
@@ -279,10 +282,11 @@ namespace SRCCore.Commands.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void SelectedSpecialPower_DefaultIsNull()
+        public void SelectedSpecialPower_DefaultIsEmpty()
         {
+            // VB の String の初期値は ""
             var src = CreateSrc();
-            Assert.IsNull(src.Commands.SelectedSpecialPower);
+            Assert.AreEqual("", src.Commands.SelectedSpecialPower);
         }
 
         [TestMethod]

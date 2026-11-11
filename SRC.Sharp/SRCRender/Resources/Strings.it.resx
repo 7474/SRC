@@ -21,6 +21,9 @@
   <data name="DataErrorInvalidData" xml:space="preserve">
     <value>Dati di {0} non validi.</value>
   </data>
+  <data name="DataErrorInvalid" xml:space="preserve">
+    <value>Dati non validi.</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
@@ -89,5 +92,32 @@
   </data>
   <data name="ConfigMP3Volume" xml:space="preserve">
     <value>Volume MP3</value>
+  </data>
+  <data name="ConfigMessageSpeed" xml:space="preserve">
+    <value>Velocità dei messaggi</value>
+  </data>
+  <data name="ConfigMessageSpeedManual" xml:space="preserve">
+    <value>Manuale</value>
+  </data>
+  <data name="ConfigMessageSpeedSlow" xml:space="preserve">
+    <value>Lenta</value>
+  </data>
+  <data name="ConfigMessageSpeedNormal" xml:space="preserve">
+    <value>Normale</value>
+  </data>
+  <data name="ConfigMessageSpeedFast" xml:space="preserve">
+    <value>Veloce</value>
+  </data>
+  <data name="ConfigMessageSpeedVeryFast" xml:space="preserve">
+    <value>Molto veloce</value>
+  </data>
+  <data name="ConfigMessageSpeedInstant" xml:space="preserve">
+    <value>Istantanea</value>
+  </data>
+  <data name="PictureLoadError" xml:space="preserve">
+    <value>Si è verificato un errore durante il caricamento del file immagine{0}{1}{0}Verificare che il file immagine non sia danneggiato.</value>
+  </data>
+  <data name="PictureFormatNotSupported" xml:space="preserve">
+    <value>Il formato del file immagine{0}{1}{0}non è supportato.</value>
   </data>
 </root>

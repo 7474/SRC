@@ -121,7 +121,8 @@ namespace SRCCore.Units
         {
             // 特殊効果データを検索
             var anime = SpecialEffectData(main_situation, sub_situation);
-            anime = anime.Trim();
+            // 元の SRC の TrimString と同じく、前後のタブ・空白・全角空白だけを除く
+            anime = anime.Trim('\t', ' ', '\u3000');
 
             // 表示キャンセル
             if (string.IsNullOrEmpty(anime) || anime == "-")
@@ -306,7 +307,7 @@ namespace SRCCore.Units
                                 // カットインの表示
                                 if (wait_time > 0)
                                 {
-                                    animepart = (wait_time / 100d) + ";" + animepart;
+                                    animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                                     wait_time = 0;
                                     need_refresh = false;
                                 }
@@ -338,7 +339,7 @@ namespace SRCCore.Units
                                 // 画面処理コマンド
                                 if (wait_time > 0)
                                 {
-                                    animepart = (wait_time / 100d) + ";" + animepart;
+                                    animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                                     wait_time = 0;
                                     need_refresh = false;
                                 }
@@ -376,14 +377,14 @@ namespace SRCCore.Units
                     // ウェイト？
                     if (Information.IsNumeric(animepart))
                     {
-                        wait_time = (int)(100d * Conversions.ToDouble(animepart));
+                        wait_time = VBMath.CLng(100d * Conversions.ToDouble(animepart));
                         goto NextAnime;
                     }
 
                     // メッセージ表示として処理
                     if (wait_time > 0)
                     {
-                        animepart = (wait_time / 100d) + ";" + animepart;
+                        animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                         wait_time = 0;
                     }
 

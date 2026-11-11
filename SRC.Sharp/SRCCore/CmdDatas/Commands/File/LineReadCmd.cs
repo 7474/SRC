@@ -17,6 +17,12 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             var buf = SRC.FileHandleManager.Get(GetArgAsLong(2)).Reader.ReadLine();
+            if (buf == null)
+            {
+                // ファイルの最後を超えて読み出した。元の SRC は Line Input # が実行時エラーになり、
+                // イベントを止めて「イベントデータが不正です」を表示する
+                throw new EventErrorException(this, "イベントデータが不正です");
+            }
             Expression.SetVariableAsString(GetArg(3), buf);
             return EventData.NextID;
         }

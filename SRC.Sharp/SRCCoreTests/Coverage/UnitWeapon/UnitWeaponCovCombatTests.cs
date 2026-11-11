@@ -298,6 +298,23 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         }
 
         [TestMethod]
+        public void Damage_LevelLimited_FractionalLevelRoundedToEven()
+        {
+            // VB の Mod は実数を偶数丸めで整数にしてから割る: 対L1.5 → 2。レベル 3 は 2 の倍数でないので効かない
+            Assert.AreEqual(0, Setup(wclass: "射対L1.5").Let(b => { b.Target.MainPilot().Level = 3; return b.W.Damage(b.Target, true); }));
+            // 対L2.5 → 2。レベル 4 には効く
+            Assert.AreEqual(700, Setup(wclass: "射対L2.5").Let(b => { b.Target.MainPilot().Level = 4; return b.W.Damage(b.Target, true); }));
+        }
+
+        [TestMethod]
+        public void CriticalProbability_LevelLimited_FractionalLevelRoundedToEven()
+        {
+            // 特殊効果の発動率も Damage と同じく、VB の Mod は実数を偶数丸めで整数にしてから割る: 対L2.5 → 2。レベル 4 には効き、3 には効かない
+            Assert.AreNotEqual(0, Setup(wclass: "射Ｓ対L2.5").Let(b => { b.Target.MainPilot().Level = 4; return b.W.CriticalProbability(b.Target); }));
+            Assert.AreEqual(0, Setup(wclass: "射Ｓ対L2.5").Let(b => { b.Target.MainPilot().Level = 3; return b.W.CriticalProbability(b.Target); }));
+        }
+
+        [TestMethod]
         public void Damage_AttackerConditions()
         {
             // 攻撃力ＵＰ: 1.25 倍、恐怖: 0.8 倍
@@ -401,6 +418,48 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
             var b = Setup(wclass: "射Ｓ視");
             b.Target.AddCondition("盲目", 1);
             Assert.AreEqual(0, b.W.CriticalProbability(b.Target));
+        }
+
+        // ══════════════════════════════════════════════
+        // CanUseFor（反撃）
+        // GUI.bas の WeaponListBox の「反撃」は ElseIf の連なりで、使用不能・射程外・Ｍ・合の
+        // いずれかなら、特殊効果を与えられる武器でも選べない（7474/SRC#1490）
+        // ══════════════════════════════════════════════
+
+        [TestMethod]
+        public void CanUseFor_Counter_InRange()
+        {
+            var b = Setup();
+            Assert.IsTrue(b.W.CanUseFor(WeaponListMode.Counter, b.Target));
+        }
+
+        [TestMethod]
+        public void CanUseFor_Counter_SpecialEffectOutOfRange_IsNotUsable()
+        {
+            // 射程 1 の特殊効果の武器で、距離 3 の相手には反撃できない
+            var b = Setup(wclass: "武Ｓ", maxRange: 1, tx: 4, ty: 1);
+            Assert.IsTrue(b.W.CriticalProbability(b.Target) > 0);
+            Assert.IsFalse(b.W.CanUseFor(WeaponListMode.Counter, b.Target));
+        }
+
+        [TestMethod]
+        public void CanUseFor_Counter_SpecialEffectMapAttack_IsNotUsable()
+        {
+            var b = Setup(wclass: "射ＳＭ投");
+            Assert.IsFalse(b.W.CanUseFor(WeaponListMode.Counter, b.Target));
+        }
+
+        [TestMethod]
+        public void CanUseFor_Counter_SpecialEffectWithoutDamage_IsUsable()
+        {
+            // ダメージを与えられなくても、特殊効果を与えられれば選べる
+            var b = Setup(wclass: "射Ｓ");
+            b.W.WeaponData.Power = 0;
+            b.Attacker.Update(true);
+            var w = Weapon(b.Attacker, "武器");
+            Assert.AreEqual(0, w.Damage(b.Target, true));
+            Assert.IsTrue(w.CriticalProbability(b.Target) > 0);
+            Assert.IsTrue(w.CanUseFor(WeaponListMode.Counter, b.Target));
         }
     }
 

@@ -170,7 +170,6 @@ namespace SRCAuthoring.Analysis
         private static void CheckLabelReferences(SRCCore.SRC src, ScenarioAnalysis result)
         {
             var cmds = src.Event.EventCmd ?? new List<CmdData>();
-            // Set・Local などで値を入れている名前は、ラベル名を入れた変数かもしれないので調べない
             var assigned = new HashSet<string>(cmds
                 .Where(x => x.Name == CmdType.SetCmd || x.Name == CmdType.LocalCmd || x.Name == CmdType.GlobalCmd)
                 .Select(x => x.GetArg(2))

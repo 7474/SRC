@@ -87,6 +87,20 @@
                     </fieldset>
                     <fieldset>
                         <legend>@L["SettingsGame"]</legend>
+                        <label class="message-speed">@SRCRender.GameConfigLabels.MessageSpeed
+                            <select id="setting-message-speed" @onchange="SetMessageSpeedAsync">
+                                @if (SRCCore.Config.MessageSpeeds.IndexOf(gameSettings.MessageWait) < 0)
+                                {
+                                    @* 選択肢に無い値（設定ファイルで決めたもの）は何も選ばない。元の SRC と同じ *@
+                                    <option value="" selected></option>
+                                }
+                                @for (var i = 0; i < SRCCore.Config.MessageSpeeds.Items.Count; i++)
+                                {
+                                    var wait = SRCCore.Config.MessageSpeeds.Items[i].Wait;
+                                    <option value="@wait" selected="@(gameSettings.MessageWait == wait)">@SRCRender.GameConfigLabels.MessageSpeedNames[i]</option>
+                                }
+                            </select>
+                        </label>
                         @foreach (var option in GameOptions)
                         {
                             var disabled = option.DependsOnBattleAnimation && !gameSettings.BattleAnimation;
@@ -935,6 +949,11 @@ else
         return options;
     }
 
+    private Task SetMessageSpeedAsync(ChangeEventArgs e)
+    {
+        return ChangeGameSettingAsync(x => x.MessageWait = int.TryParse(e.Value?.ToString(), out var wait) ? wait : x.MessageWait);
+    }
+
     private Task SetVolumeAsync(ChangeEventArgs e)
     {
         return ChangeGameSettingAsync(x => x.SoundVolume = int.TryParse(e.Value?.ToString(), out var volume) ? volume : x.SoundVolume);
@@ -952,6 +971,8 @@ else
         {
             settings.ApplyTo(running.SRC.SystemConfig);
             running.SRC.Sound.Player.SoundVolume = settings.SoundVolume / 100f;
+            // メッセージスピードもその場で変える（シナリオの設定ファイルで決めていれば、そちらを使う）
+            running.GUI.MessageWait = SRCCore.Config.MessageSpeeds.Normalize(running.SRC.Config.MessageWait);
         });
     }
 
@@ -1670,8 +1691,10 @@ else
         saveSync = new SaveSync(scenarioDir);
         try
         {
-            saves = await JS.InvokeAsync<List<StoredSave>>("srcwebStore.listSaves", scenarioId) ?? new List<StoredSave>();
-            foreach (var save in saves)
+            // セーブデータと、プレイ中に変えたシナリオの設定ファイル（SaveSync）を戻す。一覧にはセーブデータだけを出す
+            var stored = await JS.InvokeAsync<List<StoredSave>>("srcwebStore.listSaves", scenarioId) ?? new List<StoredSave>();
+            saves = stored.Where(x => SaveSync.IsSaveFile(x.Name)).ToList();
+            foreach (var save in stored)
             {
                 var data = await JS.InvokeAsync<byte[]>("srcwebStore.getSave", scenarioId, save.Name);
                 if (data != null)
@@ -1688,7 +1711,7 @@ else
         }
     }
 
-    /// <summary>ゲームが書いたセーブデータをブラウザに保存する</summary>
+    /// <summary>ゲームが書いたセーブデータ・シナリオの設定ファイルをブラウザに保存する</summary>
     private async Task SyncSavesAsync()
     {
         if (saveSync == null || Interlocked.Exchange(ref syncing, 1) == 1)

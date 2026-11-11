@@ -2,8 +2,6 @@
 layout: default
 title: QuickLoadコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **QuickLoadコマンド**
 
 クイックセーブ時からプレイを再開

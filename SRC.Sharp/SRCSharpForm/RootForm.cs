@@ -71,7 +71,8 @@ namespace SRCSharpForm
 
             formGUI = new SRCSharpFormGUI(SRC);
             SRC.GUI = formGUI;
-            SRC.GUI.MessageWait = 700;
+            // 設定のメッセージスピード（シナリオを始めるときに、シナリオの設定ファイルも見て決め直す）
+            SRC.GUI.MessageWait = MessageSpeeds.Normalize(config.MessageWait);
 
             if (IsGameThreadEnabled())
             {
@@ -144,16 +145,6 @@ namespace SRCSharpForm
             {
                 throw new Exception("hoge");
             });
-
-            // CurrentDomain.UnhandledException
-            //var newThread = new System.Threading.Thread(() =>
-            //{
-            //    throw new Exception("hoge");
-            //});
-            //newThread.Start();
-
-            // ThreadException（UIスレッド）
-            //throw new Exception("hoge");
         }
     }
 }

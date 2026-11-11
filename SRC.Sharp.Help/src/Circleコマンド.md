@@ -2,8 +2,6 @@
 layout: default
 title: Circleコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Circleコマンド**
 
 円を描画

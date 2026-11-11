@@ -14,6 +14,9 @@ namespace SRCRender.Resources
         public static string ErrorTitle => Rm.GetString(nameof(ErrorTitle));
         public static string DataErrorLine => Rm.GetString(nameof(DataErrorLine));
         public static string DataErrorInvalidData => Rm.GetString(nameof(DataErrorInvalidData));
+        public static string DataErrorInvalid => Rm.GetString(nameof(DataErrorInvalid));
+        public static string PictureLoadError => Rm.GetString(nameof(PictureLoadError));
+        public static string PictureFormatNotSupported => Rm.GetString(nameof(PictureFormatNotSupported));
         public static string Cancel => Rm.GetString(nameof(Cancel));
         public static string InputDefaultValue => Rm.GetString(nameof(InputDefaultValue));
         public static string SaveDialogTitle => Rm.GetString(nameof(SaveDialogTitle));
@@ -37,5 +40,12 @@ namespace SRCRender.Resources
         public static string ConfigShowTurn => Rm.GetString(nameof(ConfigShowTurn));
         public static string ConfigKeepEnemyBGM => Rm.GetString(nameof(ConfigKeepEnemyBGM));
         public static string ConfigMP3Volume => Rm.GetString(nameof(ConfigMP3Volume));
+        public static string ConfigMessageSpeed => Rm.GetString(nameof(ConfigMessageSpeed));
+        public static string ConfigMessageSpeedManual => Rm.GetString(nameof(ConfigMessageSpeedManual));
+        public static string ConfigMessageSpeedSlow => Rm.GetString(nameof(ConfigMessageSpeedSlow));
+        public static string ConfigMessageSpeedNormal => Rm.GetString(nameof(ConfigMessageSpeedNormal));
+        public static string ConfigMessageSpeedFast => Rm.GetString(nameof(ConfigMessageSpeedFast));
+        public static string ConfigMessageSpeedVeryFast => Rm.GetString(nameof(ConfigMessageSpeedVeryFast));
+        public static string ConfigMessageSpeedInstant => Rm.GetString(nameof(ConfigMessageSpeedInstant));
     }
 }

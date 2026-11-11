@@ -61,9 +61,10 @@ namespace SRCCore.Models.Tests
         public void Ability_ByKey_ReturnsCorrectAbility()
         {
             var src = CreateSRC();
-            var item = new ItemData(src);
+            // 元の SRC（ItemData.cls）と同じく、アイテムの名前と番号がキーになる
+            var item = new ItemData(src) { Name = "テストアイテム" };
             item.AddAbility("スペシャル");
-            var ad = item.Ability("スペシャル0");
+            var ad = item.Ability("テストアイテム0");
             Assert.IsNotNull(ad);
         }
 

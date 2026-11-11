@@ -46,6 +46,13 @@ namespace SRCCore.CmdDatas.Commands
                                 u = SRC.UList.Items
                                     .FirstOrDefault(x => x.Name == pname && x.Party0 == "味方" && x.CurrentForm().Status == "離脱")
                                     ?.CurrentForm();
+                                // 元の SRC は、いまの形態が別の名前のユニットなら加えない
+                                // （見つからないときは、元の SRC は For Each のあとの Nothing を参照して実行時エラーになる。
+                                // 不具合なので SRC# は何もしない）
+                                if (u != null && u.Name != pname)
+                                {
+                                    u = null;
+                                }
                             }
                         }
                         else

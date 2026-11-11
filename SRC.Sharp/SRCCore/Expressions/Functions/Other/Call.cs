@@ -1,6 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Lib;
 using SRCCore.Logging;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.Expressions.Functions
@@ -32,7 +33,8 @@ namespace SRCCore.Expressions.Functions
                 ret = ret + 1;
 
                 // 呼び出し階層をチェック
-                if (SRC.Event.CallDepth >= Event.MaxCallDepth)
+                // 元の SRC と同じく、CallDepth が MaxCallDepth を超えたときだけエラー（スタックは MaxCallDepth + 1 個ある）
+                if (SRC.Event.CallDepth > Event.MaxCallDepth)
                 {
                     SRC.Event.CallDepth = Event.MaxCallDepth;
                     SRC.Event.DisplayEventErrorMessage(SRC.Event.CurrentLineNum, Event.MaxCallDepth + "階層を越えるサブルーチンの呼び出しは出来ません");
@@ -40,7 +42,8 @@ namespace SRCCore.Expressions.Functions
                 }
 
                 // 引数用スタックが溢れないかチェック
-                if ((SRC.Event.ArgIndex + pcount) >= Event.MaxArgIndex)
+                // 元の SRC と同じく、ArgIndex + pcount が MaxArgIndex を超えたときだけエラー（積むのは pcount - 1 個）
+                if ((SRC.Event.ArgIndex + pcount) > Event.MaxArgIndex)
                 {
                     SRC.Event.DisplayEventErrorMessage(SRC.Event.CurrentLineNum, "サブルーチンの引数の総数が" + Event.MaxArgIndex + "個を超えています");
                     return CallFunctionRet;
@@ -137,7 +140,7 @@ namespace SRCCore.Expressions.Functions
                    etype.ToString().Substring(0, 1),
                    @params[1] + "(" + string.Join(",", Enumerable.Range(2, pcount - 1).Select(x => @params[x])) + ")",
                    str_result,
-                   num_result.ToString()
+                   num_result.ToString(SrcCulture.Japanese)
                 );
             }
 

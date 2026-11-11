@@ -26,10 +26,10 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void IsNumeric_DoubleWithE_ReturnsFalse()
+        public void IsNumeric_DoubleWithE_ReturnsTrue()
         {
-            // SRC の IsNumeric は科学的表記を数値として扱わない
-            Assert.IsFalse(Information.IsNumeric("1E5"));
+            // VB の IsNumeric("1E5") は True（7474/SRC#1534）
+            Assert.IsTrue(Information.IsNumeric("1E5"));
         }
 
         [TestMethod]

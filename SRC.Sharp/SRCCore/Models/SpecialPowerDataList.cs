@@ -6,6 +6,7 @@
 using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -61,7 +62,7 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
@@ -100,17 +101,17 @@ namespace SRCCore.Models
 
                     if (Strings.InStr(data_name, " ") > 0)
                     {
-                        throw reader.InvalidDataException("名称に半角スペースは使用出来ません。", line_buf);
+                        throw reader.InvalidDataException("名称に半角スペースは使用出来ません。", data_name);
                     }
 
                     if (Strings.InStr(data_name, "（") > 0 || Strings.InStr(data_name, "）") > 0)
                     {
-                        throw reader.InvalidDataException("名称に全角括弧は使用出来ません。", line_buf);
+                        throw reader.InvalidDataException("名称に全角括弧は使用出来ません。", data_name);
                     }
 
                     if (Strings.InStr(data_name, "\"") > 0)
                     {
-                        throw reader.InvalidDataException("名称に\"は使用出来ません。", line_buf);
+                        throw reader.InvalidDataException("名称に\"は使用出来ません。", data_name);
                     }
 
                     if (IsDefined(data_name))
@@ -123,7 +124,7 @@ namespace SRCCore.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret > 0)
                     {
-                        throw reader.InvalidDataException("読み仮名の後に余分なデータが指定されています。", line_buf);
+                        throw reader.InvalidDataException("読み仮名の後に余分なデータが指定されています。", data_name);
                     }
 
                     sd.KanaName = Strings.Trim(buf);
@@ -139,7 +140,7 @@ namespace SRCCore.Models
                     ret = Strings.InStr(line_buf, ",");
                     if (ret == 0)
                     {
-                        throw reader.InvalidDataException("消費ＳＰが抜けています。", line_buf);
+                        throw reader.InvalidDataException("消費ＳＰが抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
@@ -150,7 +151,7 @@ namespace SRCCore.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        throw reader.InvalidDataException("対象が抜けています。", line_buf);
+                        throw reader.InvalidDataException("対象が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -168,14 +169,14 @@ namespace SRCCore.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        throw reader.InvalidDataException("効果時間が抜けています。", line_buf);
+                        throw reader.InvalidDataException("効果時間が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
                     buf = Strings.Mid(buf, ret + 1);
                     if (Information.IsNumeric(buf2))
                     {
-                        throw reader.InvalidDataException("対象が間違っています。", line_buf);
+                        throw reader.InvalidDataException("対象が間違っています。", data_name);
                     }
 
                     sd.TargetType = buf2;
@@ -184,14 +185,14 @@ namespace SRCCore.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        throw reader.InvalidDataException("効果時間が抜けています。", line_buf);
+                        throw reader.InvalidDataException("効果時間が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
                     buf = Strings.Mid(buf, ret + 1);
                     if (Information.IsNumeric(buf2))
                     {
-                        throw reader.InvalidDataException("効果時間が間違っています。", line_buf);
+                        throw reader.InvalidDataException("効果時間が間違っています。", data_name);
                     }
 
                     sd.Duration = buf2;
@@ -200,14 +201,14 @@ namespace SRCCore.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        throw reader.InvalidDataException("使用条件が抜けています。", line_buf);
+                        throw reader.InvalidDataException("使用条件が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
                     buf = Strings.Mid(buf, ret + 1);
                     if (Information.IsNumeric(buf2))
                     {
-                        throw reader.InvalidDataException("適用条件が間違っています。", line_buf);
+                        throw reader.InvalidDataException("適用条件が間違っています。", data_name);
                     }
 
                     sd.NecessaryCondition = buf2;
@@ -227,16 +228,24 @@ namespace SRCCore.Models
                     line_buf = reader.GetLine();
                     if (Strings.Len(line_buf) == 0)
                     {
-                        throw reader.InvalidDataException("効果が指定されていません。", line_buf);
+                        throw reader.InvalidDataException("効果が指定されていません。", data_name);
                     }
 
-                    sd.SetEffect(line_buf);
+                    try
+                    {
+                        sd.SetEffect(line_buf);
+                    }
+                    catch (FormatException)
+                    {
+                        // 元の SRC で SetEffect が実行時エラーになるとき。Load の ErrorHandler は err_msg が空のまま DataErrorMessage を出す
+                        throw reader.InvalidDataException("", data_name);
+                    }
 
                     // 解説
                     line_buf = reader.GetLine();
                     if (Strings.Len(line_buf) == 0)
                     {
-                        throw reader.InvalidDataException("解説が指定されていません。", line_buf);
+                        throw reader.InvalidDataException("解説が指定されていません。", data_name);
                     }
 
                     sd.Comment = line_buf;

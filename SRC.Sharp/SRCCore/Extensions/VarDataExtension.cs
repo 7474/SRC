@@ -2,6 +2,7 @@
 using SRCCore.Expressions;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace SRCCore.Extensions
 {
@@ -9,7 +10,7 @@ namespace SRCCore.Extensions
     {
         public static IEnumerable<VarData> ArrayByName(this IEnumerable<VarData> vars, string vname)
         {
-            return vars.Where(x => x.Name.StartsWith(vname + "["));
+            return vars.Where(x => x.Name.StartsWith(vname + "[", StringComparison.Ordinal));
         }
 
         public static IEnumerable<string> ArrayIndexesByName(this IEnumerable<VarData> vars, string vname)

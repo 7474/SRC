@@ -459,6 +459,32 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void AreaInTeleport_FractionalLevel_RoundsRangeToEven()
+        {
+            // VB: Map.bas AreaInTeleport は r（Integer）= .Speed + .FeatureLevel("テレポート") で、
+            // 代入のときに偶数への丸めになる。移動力1＋Lv1.6 = 2.6 → 3（切り捨てなら 2）
+            var f = Create(".......");
+            f.DefineUnit("瞬兵", "陸", 1, "AA-A", "テレポートLv1.6");
+            var u = f.Place("瞬兵", "味方", 1, 1);
+
+            f.Map.AreaInTeleport(u);
+            CollectionAssert.AreEquivalent(new[] { "1,1", "2,1", "3,1", "4,1" }, f.Unmasked().ToList());
+        }
+
+        [TestMethod]
+        public void AreaInSpeed_JumpFractionalLevel_RoundsSpeedToEven()
+        {
+            // VB: Map.bas AreaInSpeed は uspeed（Integer）= .Speed + .FeatureLevel("ジャンプ") で、
+            // 代入のときに偶数への丸めになる。移動力1＋Lv1.6 = 2.6 → 3（切り捨てなら 2）
+            var f = Create(".......");
+            f.DefineUnit("跳兵", "陸", 1, "AA-A", "ジャンプLv1.6");
+            var u = f.Place("跳兵", "味方", 1, 1);
+
+            f.Map.AreaInSpeed(u, true);
+            CollectionAssert.AreEquivalent(new[] { "1,1", "2,1", "3,1", "4,1" }, f.Unmasked().ToList());
+        }
+
+        [TestMethod]
         public void AreaInMoveAction_ExcludesWallsLineBlockedWaterAndUnits()
         {
             // Ｍ移の移動先: 射程内で、進入可能な地形・ユニット無し・壁に遮られていないマス
@@ -550,7 +576,8 @@ namespace SRCCore.Coverage.Tests
             f.Place("歩兵", "敵", 1, 1);
             f.Map.AreaInSpeed(u);
 
-            f.Map.SafetyPoint(u, out var x, out var y);
+            int x = u.x, y = u.y;
+            f.Map.SafetyPoint(u, ref x, ref y);
             Assert.AreEqual(6, x);
             Assert.AreEqual(1, y);
         }

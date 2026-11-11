@@ -2,8 +2,6 @@
 layout: default
 title: Questionコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Questionコマンド**
 
 プレイヤーによる制限時間付き選択肢入力

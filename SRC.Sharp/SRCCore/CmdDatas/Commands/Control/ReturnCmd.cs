@@ -15,6 +15,12 @@ namespace SRCCore.CmdDatas.Commands
             {
                 throw new EventErrorException(this, "CallコマンドとReturnコマンドが対応していません");
             }
+            else if (Event.CallDepth == 1 && Event.CallStack[Event.CallDepth] == 0)
+            {
+                // 元の SRC と同じく、イベントの最上位（HandleEvent が CallDepth を 1 にした階層）で
+                // まだ 1 階層目からの Call が無いときの Return は対応の誤りとする
+                throw new EventErrorException(this, "CallコマンドとReturnコマンドが対応していません");
+            }
 
             // 呼び出し階層数をデクリメント
             Event.CallDepth = Event.CallDepth - 1;

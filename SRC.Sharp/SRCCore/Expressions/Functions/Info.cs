@@ -3,7 +3,10 @@ using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 
 namespace SRCCore.Expressions.Functions
@@ -106,7 +109,14 @@ namespace SRCCore.Expressions.Functions
 
                 case var @case when @case == "":
                     {
-                        return etype;
+                        // VB は EvalInfoFunc を "" で抜け、呼び出し元（CallFunction の "info"）が
+                        // etype に応じて数値か文字列を返す。etype をそのまま返すと UndefinedType の
+                        // ときにユーザー定義関数の探索へ進んでしまう
+                        if (etype == ValueType.NumericType)
+                        {
+                            return ValueType.NumericType;
+                        }
+                        return ValueType.StringType;
                     }
 
                 default:
@@ -243,7 +253,9 @@ namespace SRCCore.Expressions.Functions
                         {
                             str_result = pd.Sex;
                         }
-                        return ValueType.StringType;
+
+                        // VB の Exit Function は EvalInfoFunc を抜けるだけで、呼び出し元で etype に応じた変換をする
+                        break;
                     }
 
                 case "ユニットクラス":
@@ -335,19 +347,19 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
-                            str_result = u.ExpValue.ToString();
+                            str_result = u.ExpValue.ToString(SrcCulture.Japanese);
                         }
                         else if (ud != null)
                         {
-                            str_result = ud.ExpValue.ToString();
+                            str_result = ud.ExpValue.ToString(SrcCulture.Japanese);
                         }
                         else if (p != null)
                         {
-                            str_result = p.ExpValue.ToString();
+                            str_result = p.ExpValue.ToString(SrcCulture.Japanese);
                         }
                         else if (pd != null)
                         {
-                            str_result = pd.ExpValue.ToString();
+                            str_result = pd.ExpValue.ToString(SrcCulture.Japanese);
                         }
 
                         break;
@@ -904,11 +916,11 @@ namespace SRCCore.Expressions.Functions
                         }
                         else if (p != null)
                         {
-                            str_result = p.CountSkill().ToString();
+                            str_result = p.CountSkill().ToString(SrcCulture.Japanese);
                         }
                         else if (pd != null)
                         {
-                            str_result = GeneralLib.LLength(pd.Skill(100)).ToString();
+                            str_result = GeneralLib.LLength(pd.Skill(100)).ToString(SrcCulture.Japanese);
                         }
                         else if (it != null)
                         {
@@ -1530,11 +1542,11 @@ namespace SRCCore.Expressions.Functions
                     {
                         if (u != null)
                         {
-                            str_result = u.Value.ToString();
+                            str_result = u.Value.ToString(SrcCulture.Japanese);
                         }
                         else if (ud != null)
                         {
-                            str_result = ud.Value.ToString();
+                            str_result = ud.Value.ToString(SrcCulture.Japanese);
                         }
 
                         break;
@@ -1673,7 +1685,8 @@ namespace SRCCore.Expressions.Functions
                             // 指定した武器を持っていない
                             if (uw == null)
                             {
-                                return ValueType.StringType;
+                                // VB の Exit Function は EvalInfoFunc を "" で抜けるだけで、呼び出し元で etype に応じた変換をする
+                                return ExitFunction(etype);
                             }
 
                             idx = (idx + 1);
@@ -1769,7 +1782,7 @@ namespace SRCCore.Expressions.Functions
 
                                 case "属性レベル":
                                     {
-                                        str_result = uw.WeaponLevel(@params[idx + 1]).ToString();
+                                        str_result = uw.WeaponLevel(@params[idx + 1]).ToString(SrcCulture.Japanese);
                                         break;
                                     }
 
@@ -1892,7 +1905,8 @@ namespace SRCCore.Expressions.Functions
                             // 指定したアビリティを持っていない
                             if (ua == null)
                             {
-                                return ValueType.StringType;
+                                // VB の Exit Function は EvalInfoFunc を "" で抜けるだけで、呼び出し元で etype に応じた変換をする
+                                return ExitFunction(etype);
                             }
 
                             idx = (idx + 1);
@@ -1917,7 +1931,13 @@ namespace SRCCore.Expressions.Functions
                                         if (GeneralLib.IsNumber(@params[idx + 1]))
                                         {
                                             var j = Conversions.ToInteger(@params[idx + 1]);
-                                            str_result = ua.Data.Effects.SafeRefOneOffset(j).EffectType;
+                                            // 範囲外の番号は空文字列。VB のユニットの分岐は「j <= 0 And .CountEffect < j」と書き誤っていて
+                                            // Collection の範囲外で実行時エラーになるため、ユニットデータなどの分岐（Or）に合わせる
+                                            var effect = ua.Data.Effects.SafeRefOneOffset(j);
+                                            if (effect != null)
+                                            {
+                                                str_result = effect.EffectType;
+                                            }
                                         }
                                         break;
                                     }
@@ -1928,7 +1948,13 @@ namespace SRCCore.Expressions.Functions
                                         if (GeneralLib.IsNumber(@params[idx + 1]))
                                         {
                                             var j = Conversions.ToInteger(@params[idx + 1]);
-                                            str_result = SrcFormatter.Format(ua.Data.Effects.SafeRefOneOffset(j).Level);
+                                            // 範囲外の番号は空文字列。VB のユニットの分岐は「j <= 0 And .CountEffect < j」と書き誤っていて
+                                            // Collection の範囲外で実行時エラーになるため、ユニットデータなどの分岐（Or）に合わせる
+                                            var effect = ua.Data.Effects.SafeRefOneOffset(j);
+                                            if (effect != null)
+                                            {
+                                                str_result = SrcFormatter.Format(effect.Level);
+                                            }
                                         }
                                         break;
                                     }
@@ -1939,7 +1965,13 @@ namespace SRCCore.Expressions.Functions
                                         if (GeneralLib.IsNumber(@params[idx + 1]))
                                         {
                                             var j = Conversions.ToInteger(@params[idx + 1]);
-                                            str_result = ua.Data.Effects.SafeRefOneOffset(j).Data;
+                                            // 範囲外の番号は空文字列。VB のユニットの分岐は「j <= 0 And .CountEffect < j」と書き誤っていて
+                                            // Collection の範囲外で実行時エラーになるため、ユニットデータなどの分岐（Or）に合わせる
+                                            var effect = ua.Data.Effects.SafeRefOneOffset(j);
+                                            if (effect != null)
+                                            {
+                                                str_result = effect.Data;
+                                            }
                                         }
                                         break;
                                     }
@@ -2003,7 +2035,7 @@ namespace SRCCore.Expressions.Functions
 
                                 case "属性レベル":
                                     {
-                                        str_result = ua.AbilityLevel(@params[idx + 1]).ToString();
+                                        str_result = ua.AbilityLevel(@params[idx + 1]).ToString(SrcCulture.Japanese);
                                         break;
                                     }
 
@@ -2485,7 +2517,7 @@ namespace SRCCore.Expressions.Functions
                                         if (SRC.Map.MapDrawMode == "フィルタ")
                                         {
                                             buf = SRC.Map.MapDrawFilterColor.ToHexString()
-                                                + " " + SrcFormatter.Format(SRC.Map.MapDrawFilterTransPercent * 100) + "%";
+                                                + " " + VbCStr(SRC.Map.MapDrawFilterTransPercent * 100) + "%";
                                         }
                                         else
                                         {
@@ -2528,7 +2560,8 @@ namespace SRCCore.Expressions.Functions
 
                                     if (mx < 1 || SRC.Map.MapWidth < mx || my < 1 || SRC.Map.MapHeight < my)
                                     {
-                                        return ValueType.StringType;
+                                        // VB の Exit Function は EvalInfoFunc を "" で抜けるだけで、呼び出し元で etype に応じた変換をする
+                                        return ExitFunction(etype);
                                     }
 
                                     idx = (idx + 1);
@@ -2581,15 +2614,13 @@ namespace SRCCore.Expressions.Functions
 
                                         case "ビットマップ名":
                                             {
-                                                // XXX 多分一度レンダリングしてないと取れない
-                                                str_result = SRC.Map.MapUnderImageFilePath[mx, my];
+                                                str_result = MapBitmapName(SRC.Map, mx, my, false);
 
                                                 break;
                                             }
                                         case "レイヤービットマップ名":
                                             {
-                                                // XXX 未対応
-                                                str_result = SRC.Map.MapUpperImageFilePath[mx, my];
+                                                str_result = MapBitmapName(SRC.Map, mx, my, true);
                                                 break;
                                             }
                                         case "ユニットＩＤ":
@@ -2663,7 +2694,7 @@ namespace SRCCore.Expressions.Functions
 
                             case "AutoDeffence":
                                 {
-                                    if (SRC.SystemConfig.AutoDefense)
+                                    if (SRC.Config.AutoDefense)
                                     {
                                         str_result = "On";
                                     }
@@ -2699,7 +2730,7 @@ namespace SRCCore.Expressions.Functions
                             case "UseTransparentBlt":
                             case "NewGUI":
                                 {
-                                    str_result = SRC.SystemConfig.GetItem("Option", @params[idx]);
+                                    str_result = SRC.Config.GetItem("Option", @params[idx]);
                                     break;
                                 }
 
@@ -2733,6 +2764,79 @@ namespace SRCCore.Expressions.Functions
             {
                 return ValueType.StringType;
             }
+        }
+
+        // VB の EvalInfoFunc を途中の Exit Function で抜けたとき（戻り値は ""）の型。
+        // 呼び出し元（CallFunction の "info"）が etype が NumericType なら StrToDbl("") = 0 の数値にする
+        private static ValueType ExitFunction(ValueType etype)
+        {
+            return etype == ValueType.NumericType ? ValueType.NumericType : ValueType.StringType;
+        }
+
+        // VB の CStr（Double を有効数字 15 桁で文字列にする）と同じ書式にする。
+        // 0.07 * 100 のような計算の誤差（7.000000000000001）を VB と同じく「7」と書く
+        private static string VbCStr(double value)
+        {
+            return value.ToString("G15", CultureInfo.InvariantCulture);
+        }
+
+        // VB の Info(マップ,X,Y,ビットマップ名)・Info(マップ,X,Y,レイヤービットマップ名) と同じく、
+        // Bitmap\Map フォルダからの相対のファイル名（「plain\plain0000.bmp」「plain0000.bmp」「plain0.bmp」）を返す。
+        // VB は地点ごとに最後に見つけた画像ファイルの格納形式（MapImageFileTypeData。描画のときに下層・上層の順に探して記録する）で
+        // 書式を選び、まだ探していない地点は旧形式（plain0.bmp）になる。SRC# は見つけたファイルのパスから格納形式を読み取る
+        private static string MapBitmapName(Maps.Map map, int x, int y, bool layer)
+        {
+            var cell = map.MapData?[x, y];
+            if (cell == null)
+            {
+                return "";
+            }
+
+            var bmp = (layer ? cell.UpperTerrain : cell.UnderTerrain)?.Bitmap ?? "";
+            var no = layer ? cell.LayerBitmapNo : cell.BitmapNo;
+            switch (MapImageFileTypeOf(map, cell))
+            {
+                case Maps.MapImageFileType.SeparateDirMapImageFileType:
+                    return bmp + "\\" + bmp + no.ToString("0000", CultureInfo.InvariantCulture) + ".bmp";
+                case Maps.MapImageFileType.FourFiguresMapImageFileType:
+                    return bmp + no.ToString("0000", CultureInfo.InvariantCulture) + ".bmp";
+                default:
+                    return bmp + no + ".bmp";
+            }
+        }
+
+        private static Maps.MapImageFileType MapImageFileTypeOf(Maps.Map map, Maps.MapCell cell)
+        {
+            // 上層の画像は下層のあとに探すので、上層の画像が見つかっていればその形式が最後に記録された形式
+            var upper = map.MapUpperImageFilePath?[cell.X, cell.Y];
+            if (!string.IsNullOrEmpty(upper))
+            {
+                return MapImageFileTypeOfPath(upper, cell.UpperTerrain?.Bitmap ?? "", cell.LayerBitmapNo);
+            }
+
+            var under = map.MapUnderImageFilePath?[cell.X, cell.Y];
+            if (!string.IsNullOrEmpty(under))
+            {
+                return MapImageFileTypeOfPath(under, cell.UnderTerrain?.Bitmap ?? "", cell.BitmapNo);
+            }
+
+            return Maps.MapImageFileType.OldMapImageFileType;
+        }
+
+        private static Maps.MapImageFileType MapImageFileTypeOfPath(string path, string bmp, int no)
+        {
+            var fourFigures = bmp + no.ToString("0000", CultureInfo.InvariantCulture) + ".bmp";
+            var fileName = Path.GetFileName(path);
+            if (!string.Equals(fileName, fourFigures, StringComparison.OrdinalIgnoreCase))
+            {
+                return Maps.MapImageFileType.OldMapImageFileType;
+            }
+
+            // VB と同じく「ビットマップ名\ビットマップ名0000.bmp」を先に、「ビットマップ名0000.bmp」をその次に探している
+            var dirName = Path.GetFileName(Path.GetDirectoryName(path) ?? "");
+            return string.Equals(dirName, bmp, StringComparison.OrdinalIgnoreCase)
+                ? Maps.MapImageFileType.SeparateDirMapImageFileType
+                : Maps.MapImageFileType.FourFiguresMapImageFileType;
         }
 
         private static string InfoWeaponData(string[] @params, int idx, IList<WeaponData> weapons)
@@ -2924,7 +3028,12 @@ namespace SRCCore.Expressions.Functions
                         if (GeneralLib.IsNumber(@params[idx + 1]))
                         {
                             var j = Conversions.ToInteger(@params[idx + 1]);
-                            str_result = ad.Effects.SafeRefOneOffset(j).EffectType;
+                            // 範囲外の番号は空文字列（VB: If j <= 0 Or .CountEffect < j Then Exit Function）
+                            var effect = ad.Effects.SafeRefOneOffset(j);
+                            if (effect != null)
+                            {
+                                str_result = effect.EffectType;
+                            }
                         }
                         break;
                     }
@@ -2935,7 +3044,12 @@ namespace SRCCore.Expressions.Functions
                         if (GeneralLib.IsNumber(@params[idx + 1]))
                         {
                             var j = Conversions.ToInteger(@params[idx + 1]);
-                            str_result = SrcFormatter.Format(ad.Effects.SafeRefOneOffset(j).Level);
+                            // 範囲外の番号は空文字列（VB: If j <= 0 Or .CountEffect < j Then Exit Function）
+                            var effect = ad.Effects.SafeRefOneOffset(j);
+                            if (effect != null)
+                            {
+                                str_result = SrcFormatter.Format(effect.Level);
+                            }
                         }
                         break;
                     }
@@ -2946,7 +3060,12 @@ namespace SRCCore.Expressions.Functions
                         if (GeneralLib.IsNumber(@params[idx + 1]))
                         {
                             var j = Conversions.ToInteger(@params[idx + 1]);
-                            str_result = ad.Effects.SafeRefOneOffset(j).Data;
+                            // 範囲外の番号は空文字列（VB: If j <= 0 Or .CountEffect < j Then Exit Function）
+                            var effect = ad.Effects.SafeRefOneOffset(j);
+                            if (effect != null)
+                            {
+                                str_result = effect.Data;
+                            }
                         }
                         break;
                     }

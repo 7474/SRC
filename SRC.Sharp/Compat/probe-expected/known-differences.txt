@@ -1,0 +1,10 @@
+# 実機との比較のプローブ（#1550）で、元の SRC（VB5 の Src.exe）と SRC# の値が違ってよい項目（理由のある違い）
+# SRCRenderTests の CompatProbeTests は、ここに書いた項目を比べない。
+#
+# 1 行に「ケース<TAB>項目名<TAB>理由」を書く（区切りはタブ）。# で始まる行は読まない。
+#   ケース   probe/probe.eve・probe-bounds/incr.eve・probe-errors/unit-hp-text/probe.eve のように書く
+#   項目名   out_*.txt の項目名。「#errors」と書くと、そのケースのエラーのダイアログを比べない
+#   理由     わざと残した違いなら、SRC.Sharp.Help/src/SRCとの互換性.md の載せた所も書く
+#
+# 例:
+# probe/probe.eve	日付.DiffTime.75秒	（理由と、SRCとの互換性.md の節）

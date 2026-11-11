@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +94,7 @@ namespace SRCCore.Logging
             settings.File = ParseOnOff(Get("File"));
             var path = Get("Path");
             if (!string.IsNullOrWhiteSpace(path)) { settings.Directory = path; }
-            if (int.TryParse(Get("RetainDays"), out var days) && days > 0) { settings.RetainDays = days; }
+            if (int.TryParse(Get("RetainDays"), NumberStyles.Integer, CultureInfo.InvariantCulture, out var days) && days > 0) { settings.RetainDays = days; }
             foreach (var category in categories ?? LogCategories.All)
             {
                 var level = ParseLevel(Get(CategoryLevelPrefix + category));

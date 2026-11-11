@@ -116,5 +116,19 @@ namespace SRCCore.Filesystem.Tests
                 CollectionAssert.AreEqual(new[] { "Map", "Unit" }, dirs);
             }
         }
+
+        [TestMethod]
+        public void Archive_DistinguishesHiraganaAndKatakanaInNames()
+        {
+            // ファイル名はひらがなとカタカナを区別する（変数名などとは違う。7474/SRC#1477）
+            var zip = WritePack("kana.zip", Encoding.UTF8,
+                ("Bitmap/Event/あ.bmp", "hiragana"),
+                ("Bitmap/Event/ア.bmp", "katakana"));
+            using var fs = new LocalFileSystem();
+            fs.AddPath(appPath);
+            AssetPacks.Mount(fs, appPath, (z, ex) => Assert.Fail(ex.ToString()));
+            Assert.AreEqual("hiragana", Read(fs, appPath, "bitmap", "event", "あ.bmp"));
+            Assert.AreEqual("katakana", Read(fs, appPath, "bitmap", "event", "ア.bmp"));
+        }
     }
 }

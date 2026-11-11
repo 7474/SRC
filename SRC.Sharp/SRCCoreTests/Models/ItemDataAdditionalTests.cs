@@ -17,24 +17,24 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void Constructor_Name_DefaultIsNull()
+        public void Constructor_Name_DefaultIsEmpty()
         {
             var item = new ItemData(CreateSrc());
-            Assert.IsNull(item.Name);
+            Assert.AreEqual("", item.Name);
         }
 
         [TestMethod]
-        public void Constructor_Class_DefaultIsNull()
+        public void Constructor_Class_DefaultIsEmpty()
         {
             var item = new ItemData(CreateSrc());
-            Assert.IsNull(item.Class);
+            Assert.AreEqual("", item.Class);
         }
 
         [TestMethod]
-        public void Constructor_Part_DefaultIsNull()
+        public void Constructor_Part_DefaultIsEmpty()
         {
             var item = new ItemData(CreateSrc());
-            Assert.IsNull(item.Part);
+            Assert.AreEqual("", item.Part);
         }
 
         [TestMethod]
@@ -59,10 +59,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void Constructor_Comment_DefaultIsNull()
+        public void Constructor_Comment_DefaultIsEmpty()
         {
             var item = new ItemData(CreateSrc());
-            Assert.IsNull(item.Comment);
+            Assert.AreEqual("", item.Comment);
         }
 
         [TestMethod]

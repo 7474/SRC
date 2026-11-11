@@ -72,7 +72,7 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
@@ -214,7 +214,7 @@ namespace SRCCore.Models
                 nd.Part = buf2;
 
                 // 特殊能力データ
-                line_buf = UnitDataList.LoadFeatureOuter(data_name, nd, reader, SRC);
+                line_buf = UnitDataList.LoadFeatureOuter(data_name, nd, reader, SRC, isItem: true);
 
                 // 最大ＨＰ修正値, 最大ＥＮ修正値, 装甲修正値, 運動性修正値, 移動力修正値
 
@@ -312,12 +312,12 @@ namespace SRCCore.Models
                 }
 
                 // 武器データ
-                line_buf = UnitDataList.LoadWepon(data_name, nd, reader, SRC);
+                line_buf = UnitDataList.LoadWepon(data_name, nd, reader, SRC, isItem: true);
 
                 if (line_buf == "===")
                 {
                     // アビリティデータ
-                    line_buf = UnitDataList.LoadAbility(data_name, nd, reader, SRC);
+                    line_buf = UnitDataList.LoadAbility(data_name, nd, reader, SRC, "アビリティデータの終りには空行を置いてください。", isItem: true);
                 }
 
                 // 解説

@@ -27,7 +27,7 @@ namespace SRCCore.Expressions
 
             // 式をあらかじめ要素に分解
             string[] terms;
-            var tcount = GeneralLib.ListSplitStrict(expr, out terms);
+            var tcount = GeneralLib.ListSplit(expr, out terms);
             switch (tcount)
             {
                 // 空白
@@ -65,7 +65,8 @@ namespace SRCCore.Expressions
             // 優先度に合わせ、どの演算が実行されるかを判定
             op_idx = -1;
             op_pri = 100;
-            for (var i = 0; i < terms.Length; i++)
+            // VB は For i = 1 To tnum - 1。最後の項は演算子として見ない（「1 +」は演算をせず文字列のまま）
+            for (var i = 0; i < terms.Length - 1; i++)
             {
                 // 演算子の種類を判定
                 var ret = Strings.Asc(terms[i]);
@@ -415,7 +416,6 @@ namespace SRCCore.Expressions
             }
             else
             {
-                //// 右辺引数の連結処理
                 rop = string.Join(" ", terms.Skip(op_idx + 1));
             }
 
@@ -592,7 +592,7 @@ namespace SRCCore.Expressions
 
                         if (rnum != 0d)
                         {
-                            num_result = (long)lnum / (long)rnum;
+                            num_result = VBMath.IntDiv(lnum, VBMath.CLng(rnum));
                         }
                         else
                         {
@@ -635,14 +635,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                            str_result = GeneralLib.FormatNum(lnum % rnum);
+                            str_result = GeneralLib.FormatNum(VbMod(lnum, rnum));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            // UPGRADE_WARNING: Mod に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                            num_result = lnum % rnum;
+                            num_result = VbMod(lnum, rnum);
                         }
 
                         break;
@@ -1317,6 +1315,15 @@ namespace SRCCore.Expressions
             }
 
             return EvalExprRet;
+        }
+
+        // VB の Mod 演算子。両辺を偶数丸めで Long（32 ビット）にしてから割った余り。符号は被除数に合わせる。
+        // 除数が丸めて 0 になるときは、VB では実行時エラー 11（0 で除算しました）になるので DivideByZeroException を投げる
+        // （VB の EvalExpr は \ と違って Mod では rnum <> 0 を確かめない）。
+        // https://learn.microsoft.com/office/vba/language/reference/user-interface-help/mod-operator
+        private static double VbMod(double lnum, double rnum)
+        {
+            return VBMath.CLng(lnum) % VBMath.CLng(rnum);
         }
 
         // VB Like 演算子のパターンマッチ（ヘルプ仕様: *, ?, #, [文字列], [!文字列]）

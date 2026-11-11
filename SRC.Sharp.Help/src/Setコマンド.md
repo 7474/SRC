@@ -2,8 +2,6 @@
 layout: default
 title: Setコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Setコマンド**
 
 変数を書き換え

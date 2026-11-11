@@ -21,10 +21,10 @@ namespace SRCCore.Coverage.Tests.COMTests
             return f;
         }
 
-        private static AbilityData AddHealing(UnitData ud, string name, int level, int maxRange, int en)
+        private static AbilityData AddHealing(UnitData ud, string name, double level, int maxRange, int en)
         {
             var ad = ud.AddAbility(name);
-            ad.SetEffect("回復Lv" + level);
+            ad.SetEffect("回復Lv" + level.ToString(System.Globalization.CultureInfo.InvariantCulture));
             ad.Class = "";
             ad.MinRange = 1;
             ad.MaxRange = maxRange;
@@ -95,6 +95,28 @@ namespace SRCCore.Coverage.Tests.COMTests
             Assert.IsTrue(f.Src.COM.TryHealing(false));
             Assert.AreEqual(1, System.Math.Abs(u.x - t.x) + System.Math.Abs(u.y - t.y));
             Assert.AreEqual(1500, t.HP);
+        }
+
+        [TestMethod]
+        public void TryHealing_HealingPowerIsRoundedToEvenLikeVB()
+        {
+            // 回復量は VB 版で apower = 500 * EffectLevel を Long に入れるので偶数への丸めになる。
+            // 回復Lv0.291 は 145.5 → 146（切り捨てなら 145）。
+            // 足りない HP が 146 のとき、VB 版では Lv0.291 で全快すると見なし、あとの全快するアビリティには替えない
+            var f = CreateField();
+            COMTestField.AddWeapon(f.DefineUnit("小型機", hp: 500), "パンチ", 1200);
+            var ud = f.DefineUnit("修理機");
+            COMTestField.AddWeapon(ud, "パンチ", 1200);
+            AddHealing(ud, "応急修理", 0.291, 3, 10);
+            AddHealing(ud, "修理ビーム", 1, 3, 30);
+            var u = f.Deploy("修理機", "敵A", "敵", 3, 3);
+            var t = f.Deploy("小型機", "敵B", "敵", 4, 3);
+            t.HP = t.MaxHP - 146;
+            f.Src.Commands.SelectedUnit = u;
+
+            Assert.IsTrue(f.Src.COM.TryHealing(false));
+
+            Assert.AreEqual("応急修理", f.Src.Commands.SelectedAbilityName);
         }
     }
 }

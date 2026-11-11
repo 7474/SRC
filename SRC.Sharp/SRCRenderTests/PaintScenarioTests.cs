@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SkiaSharp;
+using System;
 using System.IO;
 using SRCPlay;
 
@@ -173,6 +174,184 @@ namespace SRCRender.Tests
                     Assert.IsTrue(HasColorNear(bitmap, 350, 220, SKColors.Red), "2 の上端");
                     Assert.IsTrue(HasColorNear(bitmap, 390, 300, SKColors.Red), "2 の右端");
                     Assert.IsFalse(HasColorNear(bitmap, 430, 300, SKColors.Red), "2 は横に半径 80 まで伸びない");
+                }
+
+                runner.WaitForTermination();
+            }
+        }
+
+        /// <summary>
+        /// Arc は VB の Circle メソッドと同じく、開始から終了へ反時計回りに描く（終了が小さければ 0 度をまたぐ）。
+        /// 塗りつぶしのときは開始から終了までの扇形を塗る（CmdData.cls の ExecArcCmd。7474/SRC#1503）。
+        /// </summary>
+        [TestMethod]
+        public void PlayScenario_ArcSweepsCounterClockwise()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    "Show",
+                    // 270 度（下）から 0 度（右）を通って 90 度（上）まで: 右半分
+                    "Arc 150 150 60 270 90 #FF0000",
+                    // 0 度から 90 度の扇形: 右上の 4 分の 1 を塗る
+                    "FillStyle 塗りつぶし",
+                    "FillColor #00FF00",
+                    "Arc 400 150 60 0 90 #FF0000",
+                    "Refresh",
+                    "Wait Click",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                using (var bitmap = WaitClick(runner))
+                {
+                    Assert.IsTrue(HasColorNear(bitmap, 210, 150, SKColors.Red), "右端を通る");
+                    Assert.IsFalse(HasColorNear(bitmap, 90, 150, SKColors.Red), "左端は通らない");
+                    Assert.AreEqual(new SKColor(0, 255, 0), bitmap.GetPixel(420, 130), "右上を塗る");
+                    Assert.AreNotEqual(new SKColor(0, 255, 0), bitmap.GetPixel(420, 170), "右下は塗らない");
+                    Assert.AreNotEqual(new SKColor(0, 255, 0), bitmap.GetPixel(380, 130), "左上は塗らない");
+                }
+
+                runner.WaitForTermination();
+            }
+        }
+
+        /// <summary>
+        /// PaintPicture の透過色（#rrggbb）と、部分表示の塗りつぶし。
+        /// 元の SRC（CmdData.cls の PaintPictureCmd、GUI.bas の DrawPicture）では、白以外の色は透過色（背景色）になり、
+        /// 部分表示は背景色で塗りつぶしてから透過色を抜く（7474/SRC#1467）。
+        /// </summary>
+        [TestMethod]
+        public void PlayScenario_PaintPictureTransparentColor()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                workspace.WriteTestImage(Path.Combine("Bitmap", "Event", "test.png"));
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    "Show",
+                    // 描画色は部分表示の塗りつぶしに使わない
+                    "Color #00FF00",
+                    "PaintPicture test.png 0 0 透過 #FF0000",
+                    "PaintPicture test.png 100 0 #FF0000",
+                    "PaintPicture test.png 200 0 透過 上半分",
+                    "PaintPicture test.png 300 0 上半分",
+                    "PaintPicture test.png 0 100 透過 #0000FF 下半分",
+                    "Refresh",
+                    "Wait Click",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                using (var bitmap = WaitClick(runner))
+                {
+                    bool IsTerrain(int x, int y)
+                    {
+                        var c = bitmap.GetPixel(x, y);
+                        return c != SKColors.White && c != SKColors.Red && c != SKColors.Blue && c != new SKColor(0, 255, 0);
+                    }
+                    // 透過 #FF0000: 赤が抜け、白は残る
+                    Assert.IsTrue(IsTerrain(16, 32), "赤を透過する");
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(2, 2), "白は透過しない");
+                    Assert.AreEqual(SKColors.Blue, bitmap.GetPixel(48, 32));
+                    // 透過を付けなければ色を指定しても抜かない
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(100 + 16, 32));
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(100 + 2, 2));
+                    // 透過 上半分: 下半分は背景色（白）で塗りつぶして透過する
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(200 + 16, 16));
+                    Assert.IsTrue(IsTerrain(200 + 16, 48), "塗りつぶした下半分を透過する");
+                    // 上半分（透過なし）: 下半分は背景色（白）で塗りつぶす
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(300 + 16, 48));
+                    // 透過 #0000FF 下半分: 上半分は背景色（青）で塗りつぶして透過し、下半分の青も抜ける
+                    Assert.IsTrue(IsTerrain(16, 100 + 16), "塗りつぶした上半分を透過する");
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(16, 100 + 48));
+                    Assert.IsTrue(IsTerrain(48, 100 + 48), "青を透過する");
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(2, 100 + 60));
+                }
+
+                runner.WaitForTermination();
+            }
+        }
+
+        [TestMethod]
+        public void FillStylePatterns_DrawLinesEvery8Pixels()
+        {
+            // 元の SRC（VB の FillStyle。Windows のハッチブラシ）と同じく、8 ピクセルごとの線だけを塗り、線の間は塗らない
+            var cases = new (SRCCore.VB.FillStyle Style, Func<int, int, bool> IsLine)[]
+            {
+                (SRCCore.VB.FillStyle.VbHorizontalLine, (x, y) => y % 8 == 7),
+                (SRCCore.VB.FillStyle.VbVerticalLine, (x, y) => x % 8 == 4),
+                (SRCCore.VB.FillStyle.VbUpwardDiagonal, (x, y) => x % 8 == y % 8),
+                (SRCCore.VB.FillStyle.VbDownwardDiagonal, (x, y) => (x + y) % 8 == 7),
+                (SRCCore.VB.FillStyle.VbCross, (x, y) => x % 8 == 4 || y % 8 == 7),
+                (SRCCore.VB.FillStyle.VbDiagonalCross, (x, y) => x % 8 == y % 8 || (x + y) % 8 == 7),
+            };
+            foreach (var (style, isLine) in cases)
+            {
+                using (var bitmap = new SKBitmap(32, 32))
+                using (var canvas = new SKCanvas(bitmap))
+                using (var paint = ScreenGUI.CreateFillPaint(style, SKColors.Red))
+                {
+                    canvas.Clear(SKColors.White);
+                    canvas.DrawRect(SKRect.Create(4, 4, 24, 24), paint);
+                    for (var y = 0; y < 32; y++)
+                    {
+                        for (var x = 0; x < 32; x++)
+                        {
+                            var inside = x >= 4 && x < 28 && y >= 4 && y < 28;
+                            var expected = inside && isLine(x, y) ? SKColors.Red : SKColors.White;
+                            Assert.AreEqual(expected, bitmap.GetPixel(x, y), $"{style} ({x}, {y})");
+                        }
+                    }
+                }
+            }
+            Assert.IsNull(ScreenGUI.CreateFillPaint(SRCCore.VB.FillStyle.VbFSTransparent, SKColors.Red));
+            using (var solid = ScreenGUI.CreateFillPaint(SRCCore.VB.FillStyle.VbFSSolid, SKColors.Red))
+            {
+                Assert.IsNull(solid.Shader);
+            }
+        }
+
+        [TestMethod]
+        public void PlayScenario_FillStyleCrossOnBox()
+        {
+            using (var workspace = new ScenarioWorkspace())
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                workspace.WriteMap("test.map", 20, 20, (x, y) => 0);
+                workspace.Write("test.eve",
+                    "プロローグ:",
+                    "ChangeMap test.map",
+                    "Show",
+                    "Line 0 0 199 199 BF #FFFFFF",
+                    "FillStyle クロス",
+                    "FillColor #FF0000",
+                    "Line 40 40 120 120 B #0000FF",
+                    "Refresh",
+                    "Wait Click",
+                    "Quit",
+                    "");
+
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+
+                using (var bitmap = WaitClick(runner))
+                {
+                    // 縦線（x が 8 の倍数 + 4）と横線（y が 8 の倍数 + 7）だけを塗り、間は元の白のまま
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(60, 50));
+                    Assert.AreEqual(SKColors.Red, bitmap.GetPixel(50, 63));
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(50, 50));
+                    Assert.AreEqual(SKColors.White, bitmap.GetPixel(61, 60));
+                    // 枠は線の色
+                    Assert.AreEqual(SKColors.Blue, bitmap.GetPixel(40, 80));
                 }
 
                 runner.WaitForTermination();

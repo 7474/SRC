@@ -1,5 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Lib;
+using SRCCore.VB;
+using System.IO;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -14,10 +16,52 @@ namespace SRCCore.CmdDatas.Commands
             GUI.LockGUI();
             SRC.GUIStatus.ClearUnitStatus();
             Sound.StopBGM();
-            if (SRC.FileSystem.FileExists(SRC.LastSaveDataFileName))
+            // 最後にセーブしたデータを読む（VB: RestoreData LastSaveDataFileName, True）
+            if (SRC.IsLastSaveDataQuikSaveStream)
+            {
+                // 最後のセーブがクイックセーブなら、クイックセーブのデータをロード（#1530）
+                Stream stream = null;
+                try
+                {
+                    stream = GUI.OpenQuikSaveStream(FileAccess.Read);
+                }
+                catch (IOException)
+                {
+                }
+                if (stream != null)
+                {
+                    using (stream)
+                    {
+                        SRC.RestoreData(stream, SRCSaveKind.Quik);
+                    }
+                }
+                else
+                {
+                    // セーブファイルが見つからなければ強制終了
+                    GUI.ErrorMessage("セーブデータが見つかりません");
+                    SRC.TerminateSRC();
+                }
+            }
+            else if (SRC.FileSystem.FileExists(SRC.LastSaveDataFileName))
             {
                 // セーブしたファイルが存在すればそれをロード
-                SRC.RestoreData(SRC.LastSaveDataFileName, SRCSaveKind.Quik);
+                // 元の SRC は常にクイックロードとして読み、ファイル名でリスタート・クイックセーブのフラグを立てる（#1530）
+                var fname = SRC.LastSaveDataFileName.Replace('/', '\\');
+                if (Strings.InStr(fname, @"\_リスタート.src") > 0)
+                {
+                    SRC.RestoreData(SRC.LastSaveDataFileName, SRCSaveKind.Restart);
+                }
+                else if (Strings.InStr(fname, @"\_クイックセーブ.src") > 0)
+                {
+                    SRC.RestoreData(SRC.LastSaveDataFileName, SRCSaveKind.Quik);
+                }
+                else
+                {
+                    // 中断データなど。クイックロードとして読むが、どちらのフラグも立てない
+                    var isQuickSaveDataAvailable = SRC.IsQuickSaveDataAvailable;
+                    SRC.RestoreData(SRC.LastSaveDataFileName, SRCSaveKind.Quik);
+                    SRC.IsQuickSaveDataAvailable = isQuickSaveDataAvailable;
+                }
             }
             else
             {

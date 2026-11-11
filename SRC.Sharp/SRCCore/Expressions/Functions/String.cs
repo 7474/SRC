@@ -69,11 +69,11 @@ namespace SRCCore.Expressions.Functions
         {
             if (format.IndexOf('<') >= 0)
             {
-                return value.ToLower();
+                return value.ToLowerInvariant();
             }
             if (format.IndexOf('>') >= 0)
             {
-                return value.ToUpper();
+                return value.ToUpperInvariant();
             }
             return value;
         }
@@ -314,7 +314,9 @@ namespace SRCCore.Expressions.Functions
 
             var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
             var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
-            str_result = GeneralLib.RightPaddedString(buf, i);
+            // 元の SRC: Shift_JIS のバイト数（LenB(StrConv(buf, vbFromUnicode))）が i に足りない分だけ空白を付ける
+            var len = Strings.LenB(buf);
+            str_result = len < i ? buf + Strings.Space(i - len) : buf;
             return ValueType.StringType;
         }
     }
@@ -383,7 +385,9 @@ namespace SRCCore.Expressions.Functions
 
             var buf = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
             var i = SRC.Expression.GetValueAsLong(@params[2], is_term[2]);
-            str_result = GeneralLib.LeftPaddedString(buf, i);
+            // 元の SRC: Shift_JIS のバイト数（LenB(StrConv(buf, vbFromUnicode))）が i に足りない分だけ空白を付ける
+            var len = Strings.LenB(buf);
+            str_result = len < i ? Strings.Space(i - len) + buf : buf;
             return ValueType.StringType;
         }
     }

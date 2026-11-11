@@ -2,8 +2,6 @@
 layout: default
 title: RemoveFolderコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RemoveFolderコマンド**
 
 フォルダを削除
@@ -27,6 +25,6 @@ title: RemoveFolderコマンド
 **例**
 ```sh
 #Logフォルダを削除
-RomoveFolder Log
+RemoveFolder Log
 ```
 

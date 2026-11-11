@@ -4,7 +4,7 @@
     {
         public static bool GetFlag(this ISystemConfig config, string section, string name)
         {
-            return config.GetItem(section, name)?.ToLower() == "on";
+            return config.GetItem(section, name)?.ToLowerInvariant() == "on";
         }
 
         public static void SetFlag(this ISystemConfig config, string section, string name, bool value)

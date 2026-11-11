@@ -23,8 +23,9 @@ namespace SRCCore.Units
 
                 foreach (var fname in fd.DataL.Skip(1))
                 {
-                    // XXX ! 条件が複数あった時は？ そもそも修理不可Helpにも実装にもないけれどどういう存在なんだ？
-                    if (fname.StartsWith("!") && fname != "!" + fixFname)
+                    // 元の SRC（StartFixCommand・TryFix）と同じく先頭から順に見て、「!名称」が修理装置の名称と違うか、
+                    // 名称が修理装置と同じものが 1 つでもあれば修理できない（「!」を複数書くと、どの修理装置でも修理できない）
+                    if (fname.StartsWith("!", StringComparison.Ordinal) && fname != "!" + fixFname)
                     {
                         canFix = false;
                         break;
@@ -47,8 +48,6 @@ namespace SRCCore.Units
         // ステータスを全回復
         public void FullRecover()
         {
-            Update();
-
             // パイロットのステータスを全回復
             foreach (var p in Pilots)
             {
@@ -76,6 +75,8 @@ namespace SRCCore.Units
                 cf.FullSupply();
 
                 // ステータス異常のみを消去
+                // 元の SRC は番号で消すが、状態の名前はキーと同じで重複しない。
+                // 残す状態（名前が「付加」で終わるもの）以外の削除では Update が呼ばれず状態の並びが変わらないので、名前で消しても同じ
                 foreach (var cnd in cf.Conditions.CloneList())
                 {
                     var cname = cnd.Name ?? "";
@@ -100,8 +101,8 @@ namespace SRCCore.Units
                 cf.UsedCounterAttack = 0;
                 cf.Mode = "通常";
 
-                // 他形態も回復
-                foreach (var of in OtherForms)
+                // 他形態も回復（元の SRC は With CurrentForm の中なので、現在の形態から見た他形態）
+                foreach (var of in cf.OtherForms)
                 {
                     of.HP = of.MaxHP;
                     of.EN = of.MaxEN;
@@ -171,7 +172,7 @@ namespace SRCCore.Units
         // ＨＰを percent ％回復
         public void RecoverHP(double percent)
         {
-            HP = (int)(HP + MaxHP * percent / 100d);
+            HP = VBMath.CLng(HP + MaxHP * percent / 100d);
             if (HP <= 0)
             {
                 HP = 1;
@@ -190,7 +191,7 @@ namespace SRCCore.Units
         // ＥＮを percent ％回復
         public void RecoverEN(double percent)
         {
-            EN = (int)(EN + MaxEN * percent / 100d);
+            EN = VBMath.CLng(EN + MaxEN * percent / 100d);
             if (EN <= 0)
             {
                 EN = 0;
@@ -224,10 +225,10 @@ namespace SRCCore.Units
                     var plana_hp_ratio = 100 * HP / (double)MaxHP;
                     var plana_en_ratio = 100 * EN / (double)MaxEN;
                     p.Plana = (int)(p.Plana + p.MaxPlana() / 16
-                        + (long)(p.MaxPlana() * FeatureLevel("霊力回復")) / 10L
-                        - (long)(p.MaxPlana() * FeatureLevel("霊力消費")) / 10L);
-                    HP = (int)((long)(MaxHP * plana_hp_ratio) / 100L);
-                    EN = (int)((long)(MaxEN * plana_en_ratio) / 100L);
+                        + VBMath.IntDiv(p.MaxPlana() * FeatureLevel("霊力回復"), 10)
+                        - VBMath.IntDiv(p.MaxPlana() * FeatureLevel("霊力消費"), 10));
+                    HP = (int)VBMath.IntDiv(MaxHP * plana_hp_ratio, 100);
+                    EN = (int)VBMath.IntDiv(MaxEN * plana_en_ratio, 100);
                 }
 
                 // ＳＰ回復
@@ -328,23 +329,23 @@ namespace SRCCore.Units
             {
                 if (IsFeatureAvailable("ＨＰ回復"))
                 {
-                    hp_recovery = (int)(10d * FeatureLevel("ＨＰ回復"));
+                    hp_recovery = VBMath.CLng(10d * FeatureLevel("ＨＰ回復"));
                 }
 
                 if (IsFeatureAvailable("ＥＮ回復"))
                 {
-                    en_recovery = (int)(10d * FeatureLevel("ＥＮ回復"));
+                    en_recovery = VBMath.CLng(10d * FeatureLevel("ＥＮ回復"));
                 }
             }
 
             if (IsFeatureAvailable("ＨＰ消費"))
             {
-                hp_recovery = (int)(hp_recovery - 10d * FeatureLevel("ＨＰ消費"));
+                hp_recovery = VBMath.CLng(hp_recovery - 10d * FeatureLevel("ＨＰ消費"));
             }
 
             if (IsFeatureAvailable("ＥＮ消費"))
             {
-                en_recovery = (int)(en_recovery - 10d * FeatureLevel("ＥＮ消費"));
+                en_recovery = VBMath.CLng(en_recovery - 10d * FeatureLevel("ＥＮ消費"));
             }
 
             // 毒によるＨＰ減少
@@ -404,8 +405,8 @@ namespace SRCCore.Units
             var hp_ratio = 100 * HP / (double)MaxHP;
             var en_ratio = 100 * EN / (double)MaxEN;
             UpdateCondition(true);
-            HP = (int)((long)(MaxHP * hp_ratio) / 100L);
-            EN = (int)((long)(MaxEN * en_ratio) / 100L);
+            HP = (int)VBMath.IntDiv(MaxHP * hp_ratio, 100);
+            EN = (int)VBMath.IntDiv(MaxEN * en_ratio, 100);
 
             // サポートアタック＆ガード
             UsedSupportAttack = 0;
@@ -531,19 +532,19 @@ namespace SRCCore.Units
                                 switch (fd.Name ?? "")
                                 {
                                     case "ＨＰ回復":
-                                        hp_recovery = (int)(hp_recovery + 10 * flevel);
+                                        hp_recovery = VBMath.CLng(hp_recovery + 10 * flevel);
                                         break;
 
                                     case "ＥＮ回復":
-                                        en_recovery = (int)(en_recovery + 10 * flevel);
+                                        en_recovery = VBMath.CLng(en_recovery + 10 * flevel);
                                         break;
 
                                     case "ＨＰ増加":
-                                        hp_up = (int)(hp_up + 1000 * flevel);
+                                        hp_up = VBMath.CLng(hp_up + 1000 * flevel);
                                         break;
 
                                     case "ＥＮ増加":
-                                        en_up = (int)(en_up + 10 * flevel);
+                                        en_up = VBMath.CLng(en_up + 10 * flevel);
                                         break;
                                 }
                             }
@@ -553,19 +554,19 @@ namespace SRCCore.Units
                                 switch (fd.Name ?? "")
                                 {
                                     case "ＨＰ減少":
-                                        hp_recovery += TerrainDecreaseRate(fd.Data, 10 * flevel);
+                                        hp_recovery = VBMath.CLng(hp_recovery + TerrainDecreaseRate(fd.Data, 10 * flevel));
                                         break;
 
                                     case "ＥＮ減少":
-                                        en_recovery += TerrainDecreaseRate(fd.Data, 10 * flevel);
+                                        en_recovery = VBMath.CLng(en_recovery + TerrainDecreaseRate(fd.Data, 10 * flevel));
                                         break;
 
                                     case "ＨＰ低下":
-                                        hp_up += TerrainDecreaseRate(fd.Data, 1000 * flevel);
+                                        hp_up = VBMath.CLng(hp_up + TerrainDecreaseRate(fd.Data, 1000 * flevel));
                                         break;
 
                                     case "ＥＮ低下":
-                                        en_up += TerrainDecreaseRate(fd.Data, 10 * flevel);
+                                        en_up = VBMath.CLng(en_up + TerrainDecreaseRate(fd.Data, 10 * flevel));
                                         break;
 
                                     case "状態付加":
@@ -576,7 +577,7 @@ namespace SRCCore.Units
                                             {
                                                 if (fd.HasLevel)
                                                 {
-                                                    AddCondition(cname, (int)fd.Level, cdata: "");
+                                                    AddCondition(cname, VBMath.CLng(fd.Level), cdata: "");
                                                 }
                                                 else
                                                 {
@@ -860,27 +861,28 @@ namespace SRCCore.Units
 
         // 地形効果「ＨＰ減少」「ＥＮ減少」「ＨＰ低下」「ＥＮ低下」による変化量
         // rate は属性 attr に対して特に耐性等が無い場合の減少量
-        private int TerrainDecreaseRate(string attr, double rate)
+        // VB は「hp_recovery = hp_recovery - 20 * .FeatureLevel(i)」のように足してから丸めるので、実数のまま返す
+        private double TerrainDecreaseRate(string attr, double rate)
         {
             if (Weakness(attr))
             {
-                return (int)(-2d * rate);
+                return -2d * rate;
             }
             else if (Effective(attr))
             {
-                return (int)-rate;
+                return -rate;
             }
             else if (Absorb(attr))
             {
-                return (int)rate;
+                return rate;
             }
             else if (Resist(attr))
             {
-                return (int)(-rate / 2d);
+                return -rate / 2d;
             }
             else if (!Immune(attr))
             {
-                return (int)-rate;
+                return -rate;
             }
 
             return 0;
@@ -1369,37 +1371,37 @@ namespace SRCCore.Units
             }
 
             // 他の形態の弾数も変更
+            // 元の SRC と同じく、他の形態の武器・アビリティは直前に合わせたものの次から探す
+            // （同名の武器が複数あっても、順に 1 つずつ対応させる）
             foreach (var of in OtherForms)
             {
+                var ofWeapons = of.Weapons;
+                var idx = 0;
                 foreach (var wj in Weapons)
                 {
-                    if (wj.MaxBullet() <= 0)
+                    for (var k = idx; k < ofWeapons.Count; k++)
                     {
-                        continue;
-                    }
-
-                    foreach (var wk in of.Weapons)
-                    {
-                        if ((wj.Name ?? "") == (wk.Name ?? "") && wk.MaxBullet() > 0)
+                        var wk = ofWeapons[k];
+                        if ((wj.Name ?? "") == (wk.Name ?? "") && wj.MaxBullet() > 0 && wk.MaxBullet() > 0)
                         {
                             wk.SetBullet((wk.MaxBullet() * wj.Bullet()) / wj.MaxBullet());
+                            idx = k + 1;
                             break;
                         }
                     }
                 }
 
+                var ofAbilities = of.Abilities;
+                idx = 0;
                 foreach (var aj in Abilities)
                 {
-                    if (aj.MaxStock() <= 0)
+                    for (var k = idx; k < ofAbilities.Count; k++)
                     {
-                        continue;
-                    }
-
-                    foreach (var ak in of.Abilities)
-                    {
-                        if ((aj.Data.Name ?? "") == (ak.Data.Name ?? "") && ak.MaxStock() > 0)
+                        var ak = ofAbilities[k];
+                        if ((aj.Data.Name ?? "") == (ak.Data.Name ?? "") && aj.MaxStock() > 0 && ak.MaxStock() > 0)
                         {
                             ak.SetStock((ak.MaxStock() * aj.Stock()) / aj.MaxStock());
+                            idx = k + 1;
                             break;
                         }
                     }

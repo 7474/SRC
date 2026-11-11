@@ -161,20 +161,23 @@ namespace SRCCore.CmdDatas.Commands
                         // 配列を検索し、配列要素を見つける
                         if (GeneralLib.InStrNotNest(aname, "パイロット一覧(") == 1)
                         {
+                            var key_type = KeyType(aname);
+
                             // 配列作成
+                            // VB: 生きていて離脱していないパイロット。ユニットのメインパイロットが 1 番目のパイロットと
+                            // 違う（メインパイロットが差し替わっている）ときは、そのメインパイロットを除く
                             var pilots = SRC.PList.Items.Where(p => p.Alive && !p.Away)
-                                 // XXX メインパイロットが差し変わっていたら除外？
-                                 .Where(p => !(p.Unit != null && p.Unit.CountPilot() > 0 && p == p.Unit.MainPilot() && p != p.Unit.Pilots.First()));
+                                 .Where(p => !(p.Unit != null && p.Unit.CountPilot() > 0 && p == p.Unit.MainPilot() && p != p.Unit.Pilots.First()))
+                                 .ToList();
 
                             // ソート
-                            var key_type = Expression.GetValueAsString(aname.InsideKakko());
                             if (key_type == "名称")
                             {
-                                pilots = pilots.OrderBy(x => x.KanaName);
+                                Event.ForEachSet = SortAscendingByText(pilots.Select(p => p.ID).ToList(), pilots.Select(p => p.KanaName).ToList());
                             }
                             else
                             {
-                                pilots = pilots.OrderByDescending(p =>
+                                Event.ForEachSet = SortDescending(pilots.Select(p => p.ID).ToList(), pilots.Select(p =>
                                    {
                                        switch (key_type ?? "")
                                        {
@@ -188,23 +191,24 @@ namespace SRCCore.CmdDatas.Commands
                                            case "反応": return p.Intuition;
                                            default: return 0;
                                        }
-                                   });
+                                   }).ToList());
                             }
-                            pilots.ToList().ForEach(p => Event.ForEachSet.Add(p.ID));
                         }
                         else if (GeneralLib.InStrNotNest(aname, "ユニット一覧(") == 1)
                         {
-                            // 配列作成
-                            var units = SRC.UList.Items.Where(u => u.Status == "出撃" || u.Status == "格納" || u.Status == "待機");
+                            var key_type = KeyType(aname);
 
-                            var key_type = Expression.GetValueAsString(aname.InsideKakko());
+                            // 配列作成
+                            var units = SRC.UList.Items.Where(u => u.Status == "出撃" || u.Status == "格納" || u.Status == "待機").ToList();
+
+                            // ソート
                             if (key_type == "名称")
                             {
-                                units = units.OrderBy(x => x.KanaName);
+                                Event.ForEachSet = SortAscendingByText(units.Select(u => u.ID).ToList(), units.Select(u => u.KanaName).ToList());
                             }
                             else
                             {
-                                units = units.OrderByDescending(u =>
+                                Event.ForEachSet = SortDescending(units.Select(u => u.ID).ToList(), units.Select(u =>
                                 {
                                     switch (key_type ?? "")
                                     {
@@ -231,9 +235,8 @@ namespace SRCCore.CmdDatas.Commands
                                                 .Max();
                                         default: return 0;
                                     }
-                                });
+                                }).ToList());
                             }
-                            units.ToList().ForEach(u => Event.ForEachSet.Add(u.ID));
                         }
                         else
                         {
@@ -267,8 +270,19 @@ namespace SRCCore.CmdDatas.Commands
                                     || (Strings.Left(aname, 1) == "`" && Strings.Right(aname, 1) == "`")
                                     || (Strings.InStr(Strings.LCase(aname), "list(") == 1 && Strings.Right(aname, 1) == ")")))
                             {
+                                // VB: ReDim ForEachSet(ListLength(buf))、ForEachSet(i) = ListIndex(buf, i)。
+                                // 括弧・クォートの対応が取れていない（ListLength が -1）と ReDim ForEachSet(-1) が実行時エラーになり、
+                                // Exec の ErrorHandler が「イベントデータが不正です」を出してイベントを止める
                                 var buf = Expression.GetValueAsString(aname);
-                                Event.ForEachSet = GeneralLib.ToList(buf);
+                                var num = GeneralLib.ListLength(buf);
+                                if (num < 0)
+                                {
+                                    throw new EventErrorException(this, "イベントデータが不正です");
+                                }
+                                for (var i = 1; i <= num; i++)
+                                {
+                                    Event.ForEachSet.Add(GeneralLib.ListIndex(buf, i));
+                                }
                             }
                         }
 
@@ -322,6 +336,65 @@ namespace SRCCore.CmdDatas.Commands
                 }
                 throw new EventErrorException(this, "ForまたはForEachとNextが対応していません");
             }
+        }
+
+        // VB: key_type = Mid$(aname, InStrNotNest(aname, "(") + 1, Len(aname) - InStrNotNest(aname, "(") - 1)
+        // （最初の括弧の次から、最後の 1 文字の前まで）を式として評価する
+        private string KeyType(string aname)
+        {
+            var pos = GeneralLib.InStrNotNest(aname, "(");
+            return Expression.GetValueAsString(Strings.Mid(aname, pos + 1, Strings.Len(aname) - pos - 1));
+        }
+
+        // VB の選択ソートと同じ順に並べる（降順）。
+        // 最大の要素（同じ値なら前のもの）を先頭と入れ替えるので、同じ値の要素の順は保たれないことがある
+        private static IList<string> SortDescending(IList<string> ids, IList<int> keys)
+        {
+            for (var i = 0; i < ids.Count - 1; i++)
+            {
+                var max_item = i;
+                var max_value = keys[i];
+                for (var j = i + 1; j < ids.Count; j++)
+                {
+                    if (keys[j] > max_value)
+                    {
+                        max_item = j;
+                        max_value = keys[j];
+                    }
+                }
+                if (max_item != i)
+                {
+                    (ids[i], ids[max_item]) = (ids[max_item], ids[i]);
+                    keys[max_item] = keys[i];
+                }
+            }
+            return ids;
+        }
+
+        // VB: StrComp(strkey_list(j), max_str, vbTextCompare) = -1 で最小のものを選ぶ選択ソート（昇順）。
+        // 文字列の比較は、日本語版の Windows の VB と同じく大文字・小文字、全角・半角、ひらがな・カタカナを区別しない
+        private static IList<string> SortAscendingByText(IList<string> ids, IList<string> keys)
+        {
+            var comparer = SrcCollection<string>.KeyComparer;
+            for (var i = 0; i < ids.Count - 1; i++)
+            {
+                var max_item = i;
+                var max_str = keys[i];
+                for (var j = i + 1; j < ids.Count; j++)
+                {
+                    if (comparer.Compare(keys[j] ?? "", max_str ?? "") < 0)
+                    {
+                        max_item = j;
+                        max_str = keys[j];
+                    }
+                }
+                if (max_item != i)
+                {
+                    (ids[i], ids[max_item]) = (ids[max_item], ids[i]);
+                    keys[max_item] = keys[i];
+                }
+            }
+            return ids;
         }
     }
 }

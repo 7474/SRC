@@ -98,15 +98,13 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
         }
         public void Load(string fname, Stream stream)
         {
-            //try
-            //{
             using (var reader = new SrcDataReader(fname, stream))
             {
                 UnitData lastUd = null;
@@ -116,11 +114,6 @@ namespace SRCCore.Models
                 }
                 Raw = reader.Raw;
             }
-            //}
-            //catch (InvalidSrcDataException)
-            //{
-            //    throw;
-            //}
         }
 
         // reader から１つユニットを読み込む。
@@ -288,7 +281,8 @@ namespace SRCCore.Models
                 {
                     if (Strings.Right(buf2, 1) != ")")
                     {
-                        throw reader.InvalidDataException(@"パイロット数の設定が間違っています。", data_name);
+                        // 元の SRC は err_msg を設定せずに Error 0 を呼ぶので、原因を書かないデータエラーになる
+                        throw reader.InvalidDataException("", data_name);
                     }
 
                     buf2 = Strings.Mid(buf2, 2, Strings.Len(buf2) - 2);
@@ -308,7 +302,7 @@ namespace SRCCore.Models
                         ud.PilotNum = 1;
                     }
 
-                    // XXX 何で負数にしてるの？
+                    // 括弧付きの指定は負の数で持つ（UnitData.PilotNum の説明。Unit.cls などが符号で見分ける）
                     ud.PilotNum = -ud.PilotNum;
                 }
 
@@ -562,7 +556,6 @@ namespace SRCCore.Models
 
                 // アビリティデータ
                 line_buf = LoadAbility(data_name, ud, reader, SRC);
-
             }
             finally
             {
@@ -575,7 +568,8 @@ namespace SRCCore.Models
             return ud;
         }
 
-        public static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
+        /// <param name="isItem">アイテムデータ（ItemDataList.cls）の場合 true。新形式の節の終わり方が違う。</param>
+        public static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC, bool isItem = false)
         {
             int ret;
             string buf;
@@ -588,7 +582,7 @@ namespace SRCCore.Models
             else if (line_buf == "特殊能力")
             {
                 // 新形式による特殊能力表記
-                line_buf = LoadFeature(data_name, ud, reader, SRC);
+                line_buf = LoadFeature(data_name, ud, reader, SRC, isItem: isItem);
             }
             else if (Strings.InStr(line_buf, "特殊能力,") == 1)
             {
@@ -625,7 +619,7 @@ namespace SRCCore.Models
                     ret = Strings.InStr(buf, ",");
                     if (!string.IsNullOrEmpty(buf2))
                     {
-                        ud.AddFeature(buf2);
+                        AddFeature(data_name, ud, reader, buf2);
                     }
                     else
                     {
@@ -637,7 +631,7 @@ namespace SRCCore.Models
                 buf2 = Strings.Trim(buf);
                 if (!string.IsNullOrEmpty(buf2))
                 {
-                    ud.AddFeature(buf2);
+                    AddFeature(data_name, ud, reader, buf2);
                 }
                 else
                 {
@@ -654,18 +648,48 @@ namespace SRCCore.Models
             return line_buf;
         }
 
-        /// <param name="isPilot">パイロットの「===」特殊能力節の場合 true。
-        /// ユニット・アイテムと異なり数値の項目で節を終えず、エラーとして扱う（PilotDataList.cls）。</param>
-        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC, bool isPilot = false)
+        // 特殊能力を登録する。「Lv」の後が数値でないとき、元の SRC の AddFeature（PilotData・UnitData・ItemData）は
+        // CDbl が実行時エラー 13 になり、Load の ErrorHandler が原因を書かないデータエラーとして読み込みを打ち切る（7474/SRC#1526）
+        private static void AddFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, string fdef)
         {
+            try
+            {
+                ud.AddFeature(fdef);
+            }
+            catch (FormatException)
+            {
+                throw reader.InvalidDataException("", data_name);
+            }
+        }
+
+        /// <summary>
+        /// 新形式の特殊能力の節を読む。節の終わり方はデータの種類で違う。
+        /// <list type="bullet">
+        /// <item>ユニット（UnitDataList.cls）: 数値（IsNumeric）の項目で終える。空の項目（空行を含む）はエラーを出して読み続ける</item>
+        /// <item>アイテム（ItemDataList.cls）: 行頭の項目が数値で「,」が続くときだけ終える。それ以外の数値は特殊能力として読む</item>
+        /// <item>パイロットの「===」の節（PilotDataList.cls）: 空行か「===」で終える。数値の項目はエラー</item>
+        /// </list>
+        /// ユニット・アイテムの元の SRC は、ファイルの終わりでも節を終えずに空行を読み続ける（無限ループ）。SRC# はそこで終える。
+        /// </summary>
+        /// <param name="isPilot">パイロットの「===」特殊能力節の場合 true。</param>
+        /// <param name="isItem">アイテムデータの場合 true。</param>
+        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC, bool isPilot = false, bool isItem = false)
+        {
+            var isFirstLine = true;
             string line_buf = reader.GetLine();
             string buf = line_buf;
             string buf2;
             int i = 0;
             while (true)
             {
-                // パイロットデータ時には空行やデータ区切りでブレークする。
-                if (string.IsNullOrEmpty(line_buf) || line_buf == "===") { break; }
+                if (isPilot)
+                {
+                    // 元の SRC（PilotDataList.cls）は「===」の直後の行だけは空行でも読み、
+                    // 「行頭から1番目の特殊能力の設定が間違っています。」として次の行へ進む
+                    if (line_buf == "===") { break; }
+                    if (string.IsNullOrEmpty(line_buf) && !isFirstLine) { break; }
+                    isFirstLine = false;
+                }
 
                 i = i + 1;
                 int ret = 0;
@@ -693,7 +717,9 @@ namespace SRCCore.Models
                 if (ret > 0)
                 {
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-                    if (!isPilot && j == 1)
+                    // アイテムは行頭の項目が数値なら節を終える（ItemDataList.cls の i = 1）。
+                    // ユニット（UnitDataList.cls）は j = 1 で比べるが、そのとき buf2 は空なので終えることは無い
+                    if (isItem && i == 1)
                     {
                         if (Information.IsNumeric(buf2))
                         {
@@ -708,8 +734,19 @@ namespace SRCCore.Models
                     buf = "";
                 }
 
-                // ユニットとアイテムは特殊能力に続いて数値のみの行が続く。
-                if (!isPilot && Information.IsNumeric(buf2.Replace("+", "").Replace("-", "")))
+                if (isItem)
+                {
+                    if (!string.IsNullOrEmpty(buf2))
+                    {
+                        AddFeature(data_name, ud, reader, buf2);
+                    }
+                    else
+                    {
+                        SRC.AddDataError(reader.InvalidData("行頭から" + i + "番目の特殊能力の設定が間違っています。", data_name));
+                    }
+                }
+                // ユニットは特殊能力に続いて数値の行（最大ＨＰなど）が続く
+                else if (!isPilot && Information.IsNumeric(buf2))
                 {
                     break;
                 }
@@ -719,11 +756,17 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    ud.AddFeature(buf2);
+                    AddFeature(data_name, ud, reader, buf2);
                 }
 
                 if (string.IsNullOrEmpty(buf))
                 {
+                    if (!isPilot && reader.EOT)
+                    {
+                        // 元の SRC はここで空行を読み続ける（無限ループ）
+                        line_buf = "";
+                        break;
+                    }
                     line_buf = reader.GetLine();
                     buf = line_buf;
                     i = 0;
@@ -732,7 +775,9 @@ namespace SRCCore.Models
             return line_buf;
         }
 
-        public static string LoadWepon(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
+        /// <param name="isItem">アイテムデータ（ItemDataList.cls）の場合 true。
+        /// 「*」で始まる行（解説）で終え、最小射程を 99 までにする。</param>
+        public static string LoadWepon(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC, bool isItem = false)
         {
             int ret;
             string buf;
@@ -741,7 +786,7 @@ namespace SRCCore.Models
             // アビリティとの区切り文字かアイテムの解説行で終了
             while (Strings.Len(line_buf) > 0
                 && line_buf != "==="
-                && !line_buf.StartsWith("*"))
+                && !(isItem && Strings.Left(line_buf, 1) == "*"))
             {
                 // 武器名
                 ret = Strings.InStr(line_buf, ",");
@@ -798,7 +843,10 @@ namespace SRCCore.Models
                 buf = Strings.Mid(buf, ret + 1);
                 if (Information.IsNumeric(buf2))
                 {
-                    wd.MinRange = Conversions.ToInteger(buf2);
+                    // アイテム（ItemDataList.cls）は MinLng(CLng(buf2), 99)、ユニット・パイロットは CInt(buf2)
+                    wd.MinRange = isItem
+                        ? GeneralLib.MinLng(Conversions.ToInteger(buf2), 99)
+                        : Conversions.ToInteger(buf2);
                 }
                 else
                 {
@@ -1077,7 +1125,11 @@ namespace SRCCore.Models
             return line_buf;
         }
 
-        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
+        /// <param name="noBlankLineMessage">アビリティ名の後に「,」が無いときのエラー。
+        /// ユニットデータ（UnitDataList.cls）は「終りに」、パイロット・アイテムのデータは「終りには」。</param>
+        /// <param name="isItem">アイテムデータ（ItemDataList.cls）の場合 true。「*」で始まる行（解説）で終える。</param>
+        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC,
+            string noBlankLineMessage = "アビリティデータの終りに空行を置いてください。", bool isItem = false)
         {
             int ret;
             string buf;
@@ -1085,13 +1137,13 @@ namespace SRCCore.Models
             string line_buf = reader.GetLine();
             // アイテムの解説行で終了
             while (Strings.Len(line_buf) > 0
-                && !line_buf.StartsWith("*"))
+                && !(isItem && Strings.Left(line_buf, 1) == "*"))
             {
                 // アビリティ名
                 ret = Strings.InStr(line_buf, ",");
                 if (ret == 0)
                 {
-                    throw reader.InvalidDataException(@"アビリティデータの終りに空行を置いてください。", data_name);
+                    throw reader.InvalidDataException(noBlankLineMessage, data_name);
                 }
 
                 string sname = Strings.Trim(Strings.Left(line_buf, ret - 1));
@@ -1113,7 +1165,16 @@ namespace SRCCore.Models
 
                 buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
                 buf = Strings.Mid(buf, ret + 1);
-                sd.SetEffect(buf2);
+                // 効果の「Lv」の後が数値でない・データが空のとき、元の SRC の SetEffect は実行時エラーになり、
+                // Load の ErrorHandler が原因を書かないデータエラーとして読み込みを打ち切る
+                try
+                {
+                    sd.SetEffect(buf2);
+                }
+                catch (FormatException)
+                {
+                    throw reader.InvalidDataException("", data_name);
+                }
 
                 // 射程
                 sd.MinRange = 0;

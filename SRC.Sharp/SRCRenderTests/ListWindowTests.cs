@@ -177,5 +177,23 @@ namespace SRCRender.Tests
                 CollectionAssert.AreEqual(new[] { false, false, false, true, true }, args.Items.Select(x => x.ListItemFlag).ToArray());
             }
         }
+
+        [TestMethod]
+        public void LIPS_TimeLimitIsCountedInTenthsOfSecond()
+        {
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                runner.WaitForMessage();
+                // 元の SRC と同じく制限時間は 0.1 秒単位（10 なら 1 秒）。時間切れで 0 を返す
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+                var result = RunOnGame(runner, () => runner.GUI.LIPS(Args(3, "選択"), 10));
+                Assert.AreEqual(0, result());
+                watch.Stop();
+                Assert.IsTrue(watch.ElapsedMilliseconds >= 900, $"elapsed {watch.ElapsedMilliseconds}ms");
+                Assert.IsTrue(watch.ElapsedMilliseconds < 5000, $"elapsed {watch.ElapsedMilliseconds}ms");
+                Assert.IsNull(runner.State.List);
+            }
+        }
     }
 }

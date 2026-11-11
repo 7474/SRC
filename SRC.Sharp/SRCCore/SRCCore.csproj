@@ -6,17 +6,18 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <Version>$(SrcSharpLibraryVersion)</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- .NET のコード分析（netstandard では既定で無効）。グローバリゼーションの規則を .editorconfig でエラーにしている -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Events\Event.ref.cs" />
-    <Compile Remove="Units\Unit.ref.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="README.md" Pack="true" PackagePath="\" />
-    <None Include="Units\Unit.ref.cs" />
+  </ItemGroup>
+
+  <!-- VB 版からの移植で起きやすい誤りを見つけるアナライザー（SRCPortingAnalyzers/README.md）。パッケージには含めない -->
+  <ItemGroup>
+    <ProjectReference Include="..\SRCPortingAnalyzers\SRCPortingAnalyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

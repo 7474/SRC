@@ -65,24 +65,24 @@ namespace SRCCore.Units
             {
                 if (ty < y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "N", (int)w.WeaponLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "N", VBMath.CLng(w.WeaponLevel("Ｍ扇")));
                 }
                 else if (ty > y && Math.Abs((y - ty)) >= Math.Abs((x - tx)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "S", (int)w.WeaponLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "S", VBMath.CLng(w.WeaponLevel("Ｍ扇")));
                 }
                 else if (tx < x && Math.Abs((x - tx)) >= Math.Abs((y - ty)))
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "W", (int)w.WeaponLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "W", VBMath.CLng(w.WeaponLevel("Ｍ扇")));
                 }
                 else
                 {
-                    Map.AreaInSector(x, y, min_range, max_range, "E", (int)w.WeaponLevel("Ｍ扇"));
+                    Map.AreaInSector(x, y, min_range, max_range, "E", VBMath.CLng(w.WeaponLevel("Ｍ扇")));
                 }
             }
             else if (w.IsWeaponClassifiedAs("Ｍ投"))
             {
-                Map.AreaInRange(tx, ty, (int)w.WeaponLevel("Ｍ投"), 1, "すべて");
+                Map.AreaInRange(tx, ty, VBMath.CLng(w.WeaponLevel("Ｍ投")), 1, "すべて");
             }
             else if (w.IsWeaponClassifiedAs("Ｍ全"))
             {
@@ -156,7 +156,7 @@ namespace SRCCore.Units
             Map.MaskData[x, y] = true;
 
             // マップ攻撃の影響を受けるユニットのリストを作成
-            IList<Unit> targets = new List<Unit>();
+            var targets = new List<Unit>();
             var loopTo5 = Map.MapWidth;
             for (var i = 1; i <= loopTo5; i++)
             {
@@ -216,8 +216,28 @@ namespace SRCCore.Units
             }
 
             // 起点からの距離に応じて並べ替え
-            // 近い順
-            targets = targets.OrderBy(t => Math.Abs(t.x - rx) + Math.Abs(t.y - ry)).ToList();
+            // 元の SRC と同じ選択ソート（安定ではないため、同じ距離のユニットの順は走査順と変わることがある）
+            for (var i = 0; i < targets.Count - 1; i++)
+            {
+                var min_item = i;
+                var min_value = Math.Abs(targets[i].x - rx) + Math.Abs(targets[i].y - ry);
+                for (var j = i + 1; j < targets.Count; j++)
+                {
+                    var d = Math.Abs(targets[j].x - rx) + Math.Abs(targets[j].y - ry);
+                    if (d < min_value)
+                    {
+                        min_item = j;
+                        min_value = d;
+                    }
+                }
+
+                if (min_item != i)
+                {
+                    var tmp = targets[i];
+                    targets[i] = targets[min_item];
+                    targets[min_item] = tmp;
+                }
+            }
 
             // 戦闘前に一旦クリア
             Commands.SupportAttackUnit = null;
@@ -265,13 +285,17 @@ namespace SRCCore.Units
             }
 
             // ターゲットに関する情報を記録
-            var targetsInfo = targets.Select(t => new
+            var targets_hp_ratio = new double[targets.Count];
+            var targets_x = new int[targets.Count];
+            var targets_y = new int[targets.Count];
+            for (var i = 0; i < targets.Count; i++)
             {
-                t = t,
-                targets_hp_ratio = t.HP / (double)t.MaxHP,
-                targets_x = t.x,
-                targets_y = t.y,
-            }).ToList();
+                var t = targets[i].CurrentForm();
+                targets[i] = t;
+                targets_hp_ratio[i] = t.HP / (double)t.MaxHP;
+                targets_x[i] = t.x;
+                targets_y[i] = t.y;
+            }
 
             GUI.OpenMessageForm(this, u2: null);
 
@@ -489,9 +513,9 @@ namespace SRCCore.Units
             }
 
             // 個々のユニットに対して攻撃
-            foreach (var tu in targets)
+            for (var i = 0; i < targets.Count; i++)
             {
-                var t = tu.CurrentForm();
+                var t = targets[i].CurrentForm();
                 if (t.Status == "出撃")
                 {
                     if (Party == "味方" || Party == "ＮＰＣ")
@@ -505,6 +529,15 @@ namespace SRCCore.Units
 
                     // 攻撃を行う
                     Attack(w, t, "マップ攻撃", "", is_event);
+
+                    // かばうによりターゲットが変化している？
+                    if (Commands.SupportGuardUnit != null)
+                    {
+                        targets[i] = Commands.SupportGuardUnit.CurrentForm();
+                        targets_hp_ratio[i] = Commands.SupportGuardUnitHPRatio;
+                        targets_x[i] = targets[i].x;
+                        targets_y[i] = targets[i].y;
+                    }
 
                     // これ以上攻撃を続けられない場合
                     if (Status != "出撃" || CountPilot() == 0 || IsMapAttackCanceled)
@@ -598,22 +631,24 @@ namespace SRCCore.Units
                 }
             }
 
-            var isDestroyed = false;
+            // 元の SRC では最後に破壊したユニットから得た資金で「敵破壊」の効果の解除を決める
+            var earnings = 0;
             if (Party == "味方" && !is_event)
             {
                 // 経験値＆資金の獲得
                 var earned_exp = 0;
+                // 元の SRC では資金の用語名を最後のターゲットの用語名で表示する
+                Unit lastTarget = null;
                 foreach (var tu in targets)
                 {
                     var t = tu.CurrentForm();
+                    lastTarget = t;
                     if (!IsEnemy(t))
                     {
                     }
                     // 味方からは経験値＆資金は得られない
                     else if (t.Status == "破壊")
                     {
-                        isDestroyed = true;
-
                         // 経験値の獲得
                         earned_exp = earned_exp + GetExp(t, "破壊", "マップ");
 
@@ -627,12 +662,12 @@ namespace SRCCore.Units
                         }
 
                         // 獲得する資金を算出
-                        int earnings = t.Value / 2;
+                        earnings = t.Value / 2;
 
                         // スペシャルパワーによる獲得資金増加
                         if (IsUnderSpecialPowerEffect("獲得資金増加"))
                         {
-                            earnings = (int)GeneralLib.MinDbl(earnings * (1d + 0.1d * SpecialPowerEffectLevel("獲得資金増加")), 999999999d);
+                            earnings = VBMath.CLng(GeneralLib.MinDbl(earnings * (1d + 0.1d * SpecialPowerEffectLevel("獲得資金増加")), 999999999d));
                         }
 
                         // パイロット能力による獲得資金増加
@@ -640,7 +675,7 @@ namespace SRCCore.Units
                         {
                             if (!IsUnderSpecialPowerEffect("獲得資金増加") || Expression.IsOptionDefined("収得効果重複"))
                             {
-                                earnings = (int)GeneralLib.MinDbl(earnings * ((10d + SkillLevel("資金獲得", 5d)) / 10d), 999999999d);
+                                earnings = VBMath.CLng(GeneralLib.MinDbl(earnings * ((10d + SkillLevel("資金獲得", 5d)) / 10d), 999999999d));
                             }
                         }
 
@@ -666,7 +701,7 @@ namespace SRCCore.Units
                 // 獲得した経験値＆資金の表示
                 if (SRC.Money > prev_money)
                 {
-                    GUI.DisplaySysMessage(SrcFormatter.Format(SRC.Money - prev_money) + "の" + Expression.Term("資金", w.Unit) + "を得た。");
+                    GUI.DisplaySysMessage(SrcFormatter.Format(SRC.Money - prev_money) + "の" + Expression.Term("資金", lastTarget) + "を得た。");
                 }
 
                 {
@@ -712,7 +747,8 @@ namespace SRCCore.Units
                                                 // 新規習得
                                                 msg = msg + ";" + sDisplayName + "を習得。";
                                             }
-                                            else if (withBlock8.SkillLevel(si, "基本値") > foundPrev.prev_slevel)
+                                            // 元の SRC では今のレベルを名前で引く
+                                            else if (withBlock8.SkillLevel(sname, "基本値") > foundPrev.prev_slevel)
                                             {
                                                 // レベルアップ
                                                 msg = msg + ";" + foundPrev.prev_sname + " => " + sDisplayName + "。";
@@ -757,7 +793,7 @@ namespace SRCCore.Units
 
             RemoveSpecialPowerInEffect("攻撃");
             RemoveSpecialPowerInEffect("戦闘終了");
-            if (isDestroyed)
+            if (earnings > 0)
             {
                 RemoveSpecialPowerInEffect("敵破壊");
             }
@@ -795,24 +831,93 @@ namespace SRCCore.Units
             }
 
             // 合体技のパートナーの弾数＆ＥＮを消費
+            // 元の SRC では uname をパートナーの処理と自分の変形技の処理で共有している
+            var uname = "";
             foreach (var partner in partners)
             {
                 var pu = partner.CurrentForm();
-                bool weaponFound = false;
-                for (var pj = 1; pj <= pu.CountWeapon(); pj++)
+                UnitWeapon pw = null;
+                foreach (var uw in pu.Weapons)
                 {
-                    if (pu.Weapon(pj).Name == wname)
+                    if (uw.Name == wname)
                     {
-                        pu.Weapon(pj).UseWeapon();
-                        weaponFound = true;
+                        pw = uw;
                         break;
                     }
                 }
 
-                // 同名の武器がなかった場合は自分のデータを使って処理
-                if (!weaponFound)
+                if (pw != null)
                 {
-                    if (w.WeaponENConsumption() > 0)
+                    pw.UseWeapon();
+                    if (pw.IsWeaponClassifiedAs("自"))
+                    {
+                        if (pu.IsFeatureAvailable("パーツ分離"))
+                        {
+                            uname = GeneralLib.LIndex(pu.FeatureData("パーツ分離"), 2);
+                            if (pu.OtherForm(uname)?.IsAbleToEnter(pu.x, pu.y) == true)
+                            {
+                                pu.Transform(uname);
+                                var cf = pu.CurrentForm();
+                                cf.HP = cf.MaxHP;
+                                cf.UsedAction = cf.MaxAction();
+                            }
+                            else
+                            {
+                                pu.Die();
+                            }
+                        }
+                        else
+                        {
+                            pu.Die();
+                        }
+                    }
+                    else if (pw.IsWeaponClassifiedAs("失") && pu.HP == 0)
+                    {
+                        pu.Die();
+                    }
+                    else if (pw.IsWeaponClassifiedAs("変"))
+                    {
+                        if (pu.IsFeatureAvailable("変形技"))
+                        {
+                            foreach (var f in pu.Features)
+                            {
+                                if (f.Name == "変形技" && GeneralLib.LIndex(f.Data, 1) == wname)
+                                {
+                                    uname = GeneralLib.LIndex(f.Data, 2);
+                                    if (pu.OtherForm(uname)?.IsAbleToEnter(pu.x, pu.y) == true)
+                                    {
+                                        pu.Transform(uname);
+                                    }
+                                    break;
+                                }
+                            }
+
+                            if (uname != pu.CurrentForm().Name)
+                            {
+                                if (pu.IsFeatureAvailable("ノーマルモード"))
+                                {
+                                    uname = GeneralLib.LIndex(pu.FeatureData("ノーマルモード"), 1);
+                                    if (pu.OtherForm(uname)?.IsAbleToEnter(pu.x, pu.y) == true)
+                                    {
+                                        pu.Transform(uname);
+                                    }
+                                }
+                            }
+                        }
+                        else if (pu.IsFeatureAvailable("ノーマルモード"))
+                        {
+                            uname = GeneralLib.LIndex(pu.FeatureData("ノーマルモード"), 1);
+                            if (pu.OtherForm(uname)?.IsAbleToEnter(pu.x, pu.y) == true)
+                            {
+                                pu.Transform(uname);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // 同名の武器がなかった場合は自分のデータを使って処理
+                    if (w.WeaponData.ENConsumption > 0)
                     {
                         pu.EN = pu.EN - w.WeaponENConsumption();
                     }
@@ -829,7 +934,67 @@ namespace SRCCore.Units
 
                     if (w.IsWeaponClassifiedAs("気"))
                     {
-                        pu.IncreaseMorale(-5 * (int)w.WeaponLevel("気"));
+                        pu.IncreaseMorale(VBMath.CLng(-5 * w.WeaponLevel("気")));
+                    }
+
+                    if (w.IsWeaponClassifiedAs("霊"))
+                    {
+                        var hp_ratio = 100 * pu.HP / (double)pu.MaxHP;
+                        var en_ratio = 100 * pu.EN / (double)pu.MaxEN;
+                        pu.MainPilot().Plana = VBMath.CLng(pu.MainPilot().Plana - 5d * w.WeaponLevel("霊"));
+                        pu.HP = VBMath.CLng(pu.MaxHP * hp_ratio / 100d);
+                        pu.EN = VBMath.CLng(pu.MaxEN * en_ratio / 100d);
+                    }
+                    else if (w.IsWeaponClassifiedAs("プ"))
+                    {
+                        var hp_ratio = 100 * pu.HP / (double)pu.MaxHP;
+                        var en_ratio = 100 * pu.EN / (double)pu.MaxEN;
+                        pu.MainPilot().Plana = VBMath.CLng(pu.MainPilot().Plana - 5d * w.WeaponLevel("プ"));
+                        pu.HP = VBMath.CLng(pu.MaxHP * hp_ratio / 100d);
+                        pu.EN = VBMath.CLng(pu.MaxEN * en_ratio / 100d);
+                    }
+
+                    if (w.IsWeaponClassifiedAs("失"))
+                    {
+                        pu.HP = GeneralLib.MaxLng(pu.HP - VBMath.CLng(pu.MaxHP * w.WeaponLevel("失")) / 10, 0);
+                    }
+
+                    if (w.IsWeaponClassifiedAs("自"))
+                    {
+                        if (pu.IsFeatureAvailable("パーツ分離"))
+                        {
+                            uname = GeneralLib.LIndex(pu.FeatureData("パーツ分離"), 2);
+                            if (pu.OtherForm(uname)?.IsAbleToEnter(pu.x, pu.y) == true)
+                            {
+                                pu.Transform(uname);
+                                var cf = pu.CurrentForm();
+                                cf.HP = cf.MaxHP;
+                                cf.UsedAction = cf.MaxAction();
+                            }
+                            else
+                            {
+                                pu.Die();
+                            }
+                        }
+                        else
+                        {
+                            pu.Die();
+                        }
+                    }
+                    else if (w.IsWeaponClassifiedAs("失") && pu.HP == 0)
+                    {
+                        pu.Die();
+                    }
+                    else if (w.IsWeaponClassifiedAs("変"))
+                    {
+                        if (pu.IsFeatureAvailable("ノーマルモード"))
+                        {
+                            uname = GeneralLib.LIndex(pu.FeatureData("ノーマルモード"), 1);
+                            if (pu.OtherForm(uname)?.IsAbleToEnter(pu.x, pu.y) == true)
+                            {
+                                pu.Transform(uname);
+                            }
+                        }
                     }
                 }
             }
@@ -841,7 +1006,7 @@ namespace SRCCore.Units
             {
                 if (IsFeatureAvailable("パーツ分離"))
                 {
-                    var uname = GeneralLib.LIndex(FeatureData("パーツ分離"), 2);
+                    uname = GeneralLib.LIndex(FeatureData("パーツ分離"), 2);
                     if (OtherForm(uname)?.IsAbleToEnter(x, y) == true)
                     {
                         Transform(uname);
@@ -924,7 +1089,6 @@ namespace SRCCore.Units
             // 変形技
             else if (w.IsWeaponClassifiedAs("変"))
             {
-                string uname = null;
                 if (IsFeatureAvailable("変形技"))
                 {
                     foreach (var f in Features)
@@ -961,6 +1125,17 @@ namespace SRCCore.Units
                     }
                 }
             }
+            // アイテムを消費
+            else if (w.WeaponData.IsItem() && w.Bullet() == 0 && w.MaxBullet() > 0)
+            {
+                // アイテムを削除（元の SRC と同じく、武器の番号が入るアイテムを消す）
+                var itm = ItemOfWeapon(w);
+                if (itm != null)
+                {
+                    itm.Exist = false;
+                    DeleteItem(itm);
+                }
+            }
 
             GUI.CloseMessageForm();
         DoEvent:
@@ -970,10 +1145,9 @@ namespace SRCCore.Units
             // イベント処理
             if (!is_event)
             {
-                foreach (var tu in targets)
+                for (var i = 0; i < targets.Count; i++)
                 {
-                    var t = tu.CurrentForm();
-                    var prev = targetsInfo.First(x => x.t.ID == t.ID);
+                    var t = targets[i].CurrentForm();
                     if (t.Status == "破壊")
                     {
                         // 破壊イベントを発生
@@ -988,7 +1162,7 @@ namespace SRCCore.Units
                     }
                     else if (t.Status == "出撃")
                     {
-                        if (t.HP / (double)t.MaxHP < prev.targets_hp_ratio)
+                        if (t.HP / (double)t.MaxHP < targets_hp_ratio[i])
                         {
                             // 損傷率イベント
                             Commands.SaveSelections();
@@ -1004,7 +1178,7 @@ namespace SRCCore.Units
                         // ターゲットが動いていたら進入イベントを発生
                         {
                             var withBlock14 = t.CurrentForm();
-                            if (withBlock14.Status == "出撃" && (withBlock14.x != prev.targets_x || withBlock14.y != prev.targets_y))
+                            if (withBlock14.Status == "出撃" && (withBlock14.x != targets_x[i] || withBlock14.y != targets_y[i]))
                             {
                                 Event.HandleEvent("進入", withBlock14.MainPilot().ID, "" + withBlock14.x, "" + withBlock14.y);
                                 if (SRC.IsScenarioFinished || SRC.IsCanceled)

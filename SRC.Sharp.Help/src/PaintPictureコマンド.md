@@ -2,8 +2,6 @@
 layout: default
 title: PaintPictureコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **PaintPictureコマンド**
 
 画像を表示
@@ -44,71 +42,29 @@ title: PaintPictureコマンド
 
 画像ファイルはファイル名、データ名の両方で指定可能です。ファイル名にスペースが含まれている場合は画像ファイル名を「"」で囲ってください。
 
-ファイル名で指定した場合は、
+ファイル名で指定した場合は、シナリオのあるフォルダ、ExtDataPathで設定されたフォルダ、ExtDataPath2で設定されたフォルダ、SRC#のフォルダ（素材パックを含む）の順に、それぞれのフォルダの
 
-シナリオのあるフォルダ\Bitmap
+Bitmap
 
-Src.exeのあるフォルダ\Bitmap
+Bitmap\Anime
 
-シナリオのあるフォルダ\Bitmap\Event
+Bitmap\Event
 
-シナリオのあるフォルダ\Bitmap\Cutin
+Bitmap\Cutin
 
-シナリオのあるフォルダ\Bitmap\Pilot
+Bitmap\Pilot
 
-シナリオのあるフォルダ\Bitmap\Unitt
+Bitmap\Unit
 
-シナリオのあるフォルダ\Bitmap\Map
+Bitmap\Map
 
-ExtDataPathで設定されたフォルダ\Bitmap\Event
+の下が順に検索されて使用されます。地形画像のファイル名（例: plain0.bmp）を指定した場合は、Bitmap\Map の前に地形画像のフォルダ（Bitmap\Map\plain）と、4 桁の番号付きのファイル名（plain0000.bmp）も検索されます。
 
-ExtDataPathで設定されたフォルダ\Bitmap\Cutin
-
-ExtDataPathで設定されたフォルダ\Bitmap\Pilot
-
-ExtDataPathで設定されたフォルダ\Bitmap\Unit
-
-ExtDataPathで設定されたフォルダ\Bitmap\Map
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Event
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Cutin
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Pilot
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Unit
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Map
-
-Src.exeのあるフォルダ\Bitmap\Event
-
-Src.exeのあるフォルダ\Bitmap\Cutin
-
-Src.exeのあるフォルダ\Bitmap\Pilot
-
-Src.exeのあるフォルダ\Bitmap\Unit
-
-Src.exeのあるフォルダ\Bitmap\Map
-
-の順で検索されて使用されます。
-
-なお、フォルダ名を含めたパス名で指定することもできます。
+なお、フォルダ名を含めたパス名で指定することもできます。この場合は、先にそれぞれのフォルダの Bitmap の下で指定したパスが検索されます。
 
 **例** Pilot\Hyp\_AlexisDelicat(19).bmp
 
-![](./images/bm0.gif) フォルダ名を含めた方がファイル検索が高速に行えるため、描画処理自体も高速になります。
-
-画像ファイルとして地形画像を指定した場合、以下のディレクトリも検索対象になります。
-
-(「画像ディレクトリ」は画像ファイル名から「数字.bmp」の部分を除いたもの(例:plain))
-
-シナリオのあるフォルダ\Bitmap\Map\画像ディレクトリ
-
-ExtDataPathで設定されたフォルダ\Bitmap\Map\画像ディレクトリ
-
-ExtDataPath2で設定されたフォルダ\Bitmap\Map\画像ディレクトリ
-
-Src.exeのあるフォルダ\Bitmap\Map\画像ディレクトリ
+SRC# では、見つからなかった場合に *file* に指定したパスそのものも検索されます。
 
 画像をデータ名で指定した場合は下の順番でデータが検索され、該当するデータの画像が使用されます。
 

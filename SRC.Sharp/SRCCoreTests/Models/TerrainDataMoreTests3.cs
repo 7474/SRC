@@ -85,6 +85,33 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
+        public void EffectForRecover_FractionalLevel_RoundsToEven()
+        {
+            // VB: Map.bas TerrainEffectForHPRecover / TerrainEffectForENRecover は
+            // As Integer の関数なので 10 * Lv を偶数丸めで返す
+            var td = new TerrainData();
+            td.AddFeature("ＨＰ回復Lv0.36");
+            td.AddFeature("ＥＮ回復Lv0.25");
+            // 3.6 → 4（切り捨てなら 3）
+            Assert.AreEqual(4, td.EffectForHPRecover());
+            // 2.5 → 2（偶数丸め）
+            Assert.AreEqual(2, td.EffectForENRecover());
+        }
+
+        [TestMethod]
+        public void Load_FractionalMoveCost_RoundsDoubledCostToEven()
+        {
+            // VB: TerrainDataList.cls Load の .MoveCost = CInt(2 * CDbl(buf2))。
+            // 1.3 → 2.6 → 3（切り捨てなら 2）、1.25 → 2.5 → 2（偶数丸め）
+            var src = new SRC { GUI = new SRCCore.TestLib.MockGUI() };
+            var text = "0\r\n平地, plain\r\n陸, 1.3, 0, 0\r\n\r\n" +
+                "1\r\n草地, grass\r\n陸, 1.25, 0, 0\r\n\r\n";
+            src.TDList.Load("terrain.txt", new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(text)));
+            Assert.AreEqual(3, src.TDList.Item(0).MoveCost);
+            Assert.AreEqual(2, src.TDList.Item(1).MoveCost);
+        }
+
+        [TestMethod]
         public void EffectForENRecover_NoFeature_ReturnsZero()
         {
             var td = new TerrainData();

@@ -68,18 +68,25 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
-        public void AreaInReachable_EnemyOfAlly_KeepsConfusedAllySelectable()
+        public void AreaInReachable_EnemyOfAlly_SelectsOnlyBerserkCharmedPossessedAllies()
         {
-            // AreaInReachable の「味方の敵」も同じ規則で混乱した味方を残す
+            // AreaInReachable の「味方の敵」は、暴走・魅了・憑依の味方だけを対象にする。
+            // AreaInRange と違い、混乱・睡眠の味方は対象にしない（VB: AreaInReachable の Case "味方の敵", "ＮＰＣの敵"）
             var f = Create(".......", ".......", ".......", ".......", ".......", ".......", ".......");
             f.DefineUnit("歩兵", "陸", 1);
             var u = f.Place("歩兵", "味方", 4, 4);
             var confused = f.Place("歩兵", "味方", 6, 4);
             confused.AddCondition("混乱", 1);
+            var sleeping = f.Place("歩兵", "味方", 2, 4);
+            sleeping.AddCondition("睡眠", 1);
+            var charmed = f.Place("歩兵", "味方", 4, 2);
+            charmed.AddCondition("魅了", 1);
             f.Place("歩兵", "味方", 4, 6);
 
             f.Map.AreaInReachable(u, 1, "味方の敵");
-            Assert.IsFalse(f.Map.MaskData[6, 4]);
+            Assert.IsTrue(f.Map.MaskData[6, 4]);
+            Assert.IsTrue(f.Map.MaskData[2, 4]);
+            Assert.IsFalse(f.Map.MaskData[4, 2]);
             Assert.IsTrue(f.Map.MaskData[4, 6]);
         }
 

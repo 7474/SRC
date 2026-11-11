@@ -17,10 +17,10 @@ namespace SRCCore.Maps.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void MapFileName_DefaultIsNull()
+        public void MapFileName_DefaultIsEmpty()
         {
             var src = CreateSrc();
-            Assert.IsNull(src.Map.MapFileName);
+            Assert.AreEqual("", src.Map.MapFileName);
         }
 
         [TestMethod]
@@ -98,10 +98,10 @@ namespace SRCCore.Maps.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void MapDrawMode_DefaultIsNull()
+        public void MapDrawMode_DefaultIsEmpty()
         {
             var src = CreateSrc();
-            Assert.IsNull(src.Map.MapDrawMode);
+            Assert.AreEqual("", src.Map.MapDrawMode);
         }
 
         [TestMethod]

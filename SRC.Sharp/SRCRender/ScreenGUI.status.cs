@@ -23,10 +23,16 @@ namespace SRCRender
     {
         public Unit DisplayedUnit { get; set; }
         public Pilot DisplayedPilot { get; set; }
+        // ステータスウィンドウに表示しているパイロットの番号（Status.bas の DisplayedPilotInd）
+        public int DisplayedPilotInd { get; private set; }
 
-        // XXX
-        // ステータス画面の更新を一時停止するかどうか
+        // ステータス画面の更新を一時停止するかどうか（元の SRC は GUI.bas の MoveCursorPos がカーソルを動かす間だけ True にする）
         public static bool IsStatusWindowDisabled;
+        // 元の SRC は、ステータス画面の背景色・枠・文字色（StatusWindowBackBolor 〜 StatusFontColorNormalString）を
+        // SetWindowColor・SetWindowFrameWidth・SetStatusStringColor で変えられるが、Status.bas がそれを使うのは
+        // 新ＧＵＩ（NewGUIMode）のときだけ。新ＧＵＩでなければ、下の決まった色（能力名は RGB(0, 0, 150)、
+        // 有効な能力は vbBlue、無効な能力は RGB(150, 0, 0)、それ以外は黒）で書く。SRC# は新ＧＵＩを持たないので、
+        // コマンドの設定（グローバル変数 StatusWindow(…)）を読まない（7474/SRC#1520）
         // ステータス画面の背景色
         public Color StatusWindowBackBolor;
         // ステータス画面の枠色
@@ -36,180 +42,190 @@ namespace SRCRender
         // ステータス画面 能力名のフォントカラー
         public Color StatusFontColorAbilityName = Color.FromArgb(0, 0, 150);
         // ステータス画面 有効な能力のフォントカラー
-        public Color StatusFontColorAbilityEnable = Color.FromArgb(0, 0, 200);
+        public Color StatusFontColorAbilityEnable = Color.FromArgb(0, 0, 255);
         // ステータス画面 無効な能力のフォントカラー
         public Color StatusFontColorAbilityDisable = Color.FromArgb(150, 0, 0);
         // ステータス画面 その他通常描画のフォントカラー
         public Color StatusFontColorNormalString = Color.FromArgb(0, 0, 0);
         public Color StatusFontColorWarning = Color.FromArgb(190, 0, 0);
 
-        //private Font StatusFont
-        //private Font StatusFont = new Font("Meiryo UI", 10f);
         private Font StatusFont = new Font("ＭＳ 明朝", 10f);
         // XXX 10.5より大きい感じする
         private Font HeadingFont = new Font("ＭＳ 明朝", 10.5f);
         private Font StatusSmallFont = new Font("ＭＳ 明朝", 9f);
-        private Brush StatusNormalStringBrush = Brushes.Black;
-        private Brush StatusAbilityNameBrush = new SolidBrush(Color.FromArgb(0, 0, 150));
-        private Brush StatusAbilityEnableBrush = new SolidBrush(Color.FromArgb(0, 0, 200));
-        private Brush StatusAbilityDisableBrush = new SolidBrush(Color.FromArgb(150, 0, 0));
+        // DisplayGlobalStatus の文字（元の SRC は pic.FontSize = 12）
+        private Font GlobalStatusFont = new Font("ＭＳ 明朝", 12f);
 
         private const float UnitStatusGridColumnWidth = 112f;
 
-        // XXX 他所にもある
-        // BarBackBrush / BarForeBrush はメッセージ表示と共通（ScreenGUI.message.cs）
-        private Brush BarShadowLightBruch = new SolidBrush(Color.FromArgb(227, 227, 227));
-        private Brush BarShadowDarkBruch = new SolidBrush(Color.FromArgb(105, 105, 105));
-
         public void DisplayGlobalStatus()
         {
+            // ステータスウィンドウを消去
             ClearUnitStatus();
+            StatusTextLog.Clear();
 
+            // マウスカーソルの位置は？
             var xx = GUI.PixelToMapX((int)GUI.MouseX);
             var yy = GUI.PixelToMapY((int)GUI.MouseY);
             var mapCell = Map.CellAtPoint(xx, yy);
-
-            var sb = new StringBuilder();
-            sb.AppendLine("ターン数 " + SrcFormatter.Format(SRC.Turn));
-            sb.AppendLine(Expression.Term("資金", null, 8) + " " + SrcFormatter.Format(SRC.Money));
-
-            // マップ外をクリックした時はここで終了
-            if (mapCell == null)
-            {
-                picUnitStatus.NewImageIfNull();
-                using (var g = Graphics.FromImage(picUnitStatus.Image))
-                {
-                    g.TextRenderingHint = RenderingConfig.TextHint;
-                    g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
-                }
-                Present();
-                return;
-            }
-
-            // 地形情報の表示
-            var td = mapCell.Terrain;
-            var sbTerrain = new StringBuilder();
-            // 地形名称
-            sbTerrain.Append($"({mapCell.X},{mapCell.Y}) ");
-            if (Strings.InStr(td.Name, "(") > 0)
-            {
-                sbTerrain.AppendLine(Strings.Left(td.Name, Strings.InStr(td.Name, "(") - 1));
-            }
-            else
-            {
-                sbTerrain.AppendLine(td.Name);
-            }
-
-            // 命中修正
-            if (td.HitMod >= 0)
-            {
-                sbTerrain.Append("回避 +" + SrcFormatter.Format(td.HitMod) + "%");
-            }
-            else
-            {
-                sbTerrain.Append("回避 " + SrcFormatter.Format(td.HitMod) + "%");
-            }
-
-            // ダメージ修正
-            if (td.DamageMod >= 0)
-            {
-                sbTerrain.AppendLine("  防御 +" + SrcFormatter.Format(td.DamageMod) + "%");
-            }
-            else
-            {
-                sbTerrain.AppendLine("  防御 " + SrcFormatter.Format(td.DamageMod) + "%");
-            }
-
-            // ＨＰ回復率
-            if (td.EffectForHPRecover() > 0)
-            {
-                sbTerrain.Append(Expression.Term("ＨＰ", u: null) + " +" + SrcFormatter.Format(td.EffectForHPRecover()) + "%  ");
-            }
-
-            // ＥＮ回復率
-            if (td.EffectForENRecover() > 0)
-            {
-                sbTerrain.Append(Expression.Term("ＥＮ", u: null) + " +" + SrcFormatter.Format(td.EffectForENRecover()) + "%");
-            }
-
-            if (td.EffectForHPRecover() > 0 || td.EffectForENRecover() > 0)
-            {
-                sbTerrain.AppendLine();
-            }
-
-            // ＨＰ＆ＥＮ減少
-            if (td.IsFeatureAvailable("ＨＰ減少"))
-            {
-                sbTerrain.Append(Expression.Term("ＨＰ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＨＰ減少")) + "% (" + td.Feature("ＨＰ減少").Data + ")  ");
-            }
-
-            if (td.IsFeatureAvailable("ＥＮ減少"))
-            {
-                sbTerrain.Append(Expression.Term("ＥＮ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ減少")) + "% (" + td.Feature("ＥＮ減少").Data + ")  ");
-            }
-
-            if (td.IsFeatureAvailable("ＨＰ減少") || td.IsFeatureAvailable("ＥＮ減少"))
-            {
-                sbTerrain.AppendLine();
-            }
-
-            // ＨＰ＆ＥＮ増加
-            if (td.IsFeatureAvailable("ＨＰ増加"))
-            {
-                sbTerrain.Append(Expression.Term("ＨＰ", u: null) + " +" + SrcFormatter.Format(1000d * td.FeatureLevel("ＨＰ増加")) + "  ");
-            }
-
-            if (td.IsFeatureAvailable("ＥＮ増加"))
-            {
-                sbTerrain.Append(Expression.Term("ＥＮ", u: null) + " +" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ増加")) + "  ");
-            }
-
-            if (td.IsFeatureAvailable("ＨＰ増加") || td.IsFeatureAvailable("ＥＮ増加"))
-            {
-                sbTerrain.AppendLine();
-            }
-
-            // ＨＰ＆ＥＮ低下
-            if (td.IsFeatureAvailable("ＨＰ低下"))
-            {
-                sbTerrain.Append(Expression.Term("ＨＰ", u: null) + " -" + SrcFormatter.Format(1000d * td.FeatureLevel("ＨＰ低下")) + "  ");
-            }
-
-            if (td.IsFeatureAvailable("ＥＮ低下"))
-            {
-                sbTerrain.Append(Expression.Term("ＥＮ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ低下")) + "  ");
-            }
-
-            if (td.IsFeatureAvailable("ＨＰ低下") || td.IsFeatureAvailable("ＥＮ低下"))
-            {
-                sbTerrain.AppendLine();
-            }
-
-            // 摩擦
-            if (td.IsFeatureAvailable("摩擦"))
-            {
-                sbTerrain.AppendLine("摩擦Lv" + SrcFormatter.Format(td.FeatureLevel("摩擦")));
-            }
-            // 状態異常付加
-            if (td.IsFeatureAvailable("状態付加"))
-            {
-                sbTerrain.AppendLine(td.Feature("状態付加").Data + "状態付加");
-            }
 
             picUnitStatus.NewImageIfNull();
             using (var g = Graphics.FromImage(picUnitStatus.Image))
             {
                 g.TextRenderingHint = RenderingConfig.TextHint;
-                g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
+                // 元の SRC は picUnitStatus の文字の大きさを 12 にして書く
+                var pic = NewStatusPrinter(g, GlobalStatusFont, "unit");
 
-                // マップ画像表示
+                pic.Print("ターン数 " + SrcFormatter.Format(SRC.Turn));
+                pic.Print();
+                pic.Print(Expression.Term("資金", null, 8) + " " + SrcFormatter.Format(SRC.Money));
+                pic.Print();
+
+                // マップ外をクリックした時はここで終了
+                if (mapCell == null)
+                {
+                    goto Done;
+                }
+
+                // 地形情報の表示
+                pic.Print();
+
+                // 地形名称
+                var td = mapCell.Terrain;
+                // マップ画像表示（元の SRC は (0, 48) に 32×32 で写し、地形名称を (37, 65) から書く）
                 g.DrawImage(BackgroundBuffer, 0, 48,
                     new Rectangle((xx - 1) * MapCellPx, (yy - 1) * MapCellPx, MapCellPx, MapCellPx),
                     GraphicsUnit.Pixel);
+                pic.CurrentX = 37;
+                pic.CurrentY = 65;
+                if (Strings.InStr(td.Name, "(") > 0)
+                {
+                    pic.Print("(" + SrcFormatter.Format(mapCell.X) + "," + SrcFormatter.Format(mapCell.Y) + ") "
+                        + Strings.Left(td.Name, Strings.InStr(td.Name, "(") - 1));
+                }
+                else
+                {
+                    pic.Print("(" + SrcFormatter.Format(mapCell.X) + "," + SrcFormatter.Format(mapCell.Y) + ") " + td.Name);
+                }
+                pic.Print();
 
-                g.DrawString(sbTerrain.ToString(), StatusFont, StatusNormalStringBrush, MapCellPx + 5, 48);
+                // 命中修正
+                if (td.HitMod >= 0)
+                {
+                    pic.Print("回避 +" + SrcFormatter.Format(td.HitMod) + "%");
+                }
+                else
+                {
+                    pic.Print("回避 " + SrcFormatter.Format(td.HitMod) + "%");
+                }
+
+                // ダメージ修正
+                if (td.DamageMod >= 0)
+                {
+                    pic.Print("  防御 +" + SrcFormatter.Format(td.DamageMod) + "%");
+                }
+                else
+                {
+                    pic.Print("  防御 " + SrcFormatter.Format(td.DamageMod) + "%");
+                }
+                pic.Print();
+
+                // ＨＰ回復率
+                if (td.EffectForHPRecover() > 0)
+                {
+                    pic.Print(Expression.Term("ＨＰ", u: null) + " +" + SrcFormatter.Format(td.EffectForHPRecover()) + "%  ");
+                }
+
+                // ＥＮ回復率
+                if (td.EffectForENRecover() > 0)
+                {
+                    pic.Print(Expression.Term("ＥＮ", u: null) + " +" + SrcFormatter.Format(td.EffectForENRecover()) + "%");
+                }
+
+                if (td.EffectForHPRecover() > 0 || td.EffectForENRecover() > 0)
+                {
+                    pic.Print();
+                }
+
+                // ＨＰ＆ＥＮ減少
+                if (td.IsFeatureAvailable("ＨＰ減少"))
+                {
+                    pic.Print(Expression.Term("ＨＰ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＨＰ減少")) + "% (" + td.Feature("ＨＰ減少").Data + ")  ");
+                }
+
+                if (td.IsFeatureAvailable("ＥＮ減少"))
+                {
+                    pic.Print(Expression.Term("ＥＮ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ減少")) + "% (" + td.Feature("ＥＮ減少").Data + ")  ");
+                }
+
+                if (td.IsFeatureAvailable("ＨＰ減少") || td.IsFeatureAvailable("ＥＮ減少"))
+                {
+                    pic.Print();
+                }
+
+                // ＨＰ＆ＥＮ増加
+                if (td.IsFeatureAvailable("ＨＰ増加"))
+                {
+                    pic.Print(Expression.Term("ＨＰ", u: null) + " +" + SrcFormatter.Format(1000d * td.FeatureLevel("ＨＰ増加")) + "  ");
+                }
+
+                if (td.IsFeatureAvailable("ＥＮ増加"))
+                {
+                    pic.Print(Expression.Term("ＥＮ", u: null) + " +" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ増加")) + "  ");
+                }
+
+                if (td.IsFeatureAvailable("ＨＰ増加") || td.IsFeatureAvailable("ＥＮ増加"))
+                {
+                    pic.Print();
+                }
+
+                // ＨＰ＆ＥＮ低下
+                if (td.IsFeatureAvailable("ＨＰ低下"))
+                {
+                    pic.Print(Expression.Term("ＨＰ", u: null) + " -" + SrcFormatter.Format(1000d * td.FeatureLevel("ＨＰ低下")) + "  ");
+                }
+
+                if (td.IsFeatureAvailable("ＥＮ低下"))
+                {
+                    pic.Print(Expression.Term("ＥＮ", u: null) + " -" + SrcFormatter.Format(10d * td.FeatureLevel("ＥＮ低下")) + "  ");
+                }
+
+                if (td.IsFeatureAvailable("ＨＰ低下") || td.IsFeatureAvailable("ＥＮ低下"))
+                {
+                    pic.Print();
+                }
+
+                // 摩擦
+                if (td.IsFeatureAvailable("摩擦"))
+                {
+                    pic.Print("摩擦Lv" + SrcFormatter.Format(td.FeatureLevel("摩擦")));
+                    pic.Print();
+                }
+                // 状態異常付加
+                if (td.IsFeatureAvailable("状態付加"))
+                {
+                    pic.Print(td.Feature("状態付加").Data + "状態付加");
+                    pic.Print();
+                }
+            Done:
+                ;
             }
             Present();
+        }
+
+        // ステータスウィンドウに書いた文字列（テストで表示の位置・色を確かめるため）。
+        // Box は "pilot"（picPilotStatus）か "unit"（picUnitStatus）
+        internal List<(string Box, float X, float Y, string Text, Color Color)> StatusTextLog { get; }
+            = new List<(string Box, float X, float Y, string Text, Color Color)>();
+
+        // ステータスウィンドウ（picUnitStatus）の画像（テストでゲージの色を確かめるため）
+        internal SkiaSharp.SKBitmap UnitStatusImage => picUnitStatus.Image;
+
+        private Printer NewStatusPrinter(Graphics g, Font font, string box)
+        {
+            var printer = new Printer(g, font, StatusFontColorNormalString, UnitStatusGridColumnWidth);
+            printer.Printed = (x, y, text, color) => StatusTextLog.Add((box, x, y, text, color));
+            return printer;
         }
 
         public void DisplayUnitStatus(Unit u, Pilot p = null)
@@ -234,6 +250,9 @@ namespace SRCRender
             // 情報を更新
             u.Update();
 
+            // 表示するパイロットの番号（顔グラフィックのクリックで次のパイロットに切り替える）
+            DisplayedPilotInd = u.StatusPilotIndex(p);
+
             // 未確認ユニットかどうか判定しておく
             var is_unknown = Expression.IsOptionDefined("ユニット情報隠蔽") && !u.IsConditionSatisfied("識別済み") && (u.Party0 == "敵" || u.Party0 == "中立")
                 || u.IsConditionSatisfied("ユニット情報隠蔽");
@@ -245,19 +264,16 @@ namespace SRCRender
                 {
                     pilotG.TextRenderingHint = RenderingConfig.TextHint;
                     unitG.TextRenderingHint = RenderingConfig.TextHint;
-                    var headingMargin = HeadingFont.Height;
-                    var textMargin = StatusFont.Height;
-                    var smallMargin = StatusSmallFont.Height;
-
-                    var ppic = new Printer(pilotG, StatusFont, StatusFontColorNormalString, UnitStatusGridColumnWidth);
-                    var upic = new Printer(unitG, StatusFont, StatusFontColorNormalString, UnitStatusGridColumnWidth);
+                    StatusTextLog.Clear();
+                    var ppic = NewStatusPrinter(pilotG, StatusFont, "pilot");
+                    var upic = NewStatusPrinter(unitG, StatusFont, "unit");
 
                     // パイロットが乗っていない？
                     if (u.CountPilot() == 0)
                     {
                         // キャラ画面をクリア
                         picFace.Image = null;
-                        DrawPilotLabel(u, pilotG, upic, headingMargin);
+                        DrawPilotLabel(u, ppic, upic);
                         goto UnitStatus;
                     }
 
@@ -284,15 +300,16 @@ namespace SRCRender
                         var image = Images.Get(fname);
                         picFace.Image = image;
                     }
-                    // パイロット愛称
-                    ppic.SetFont(StatusFont);
+                    // パイロット愛称（元の SRC は文字の大きさを 10.5 にして書き、そのあと 10 に戻す）
+                    ppic.SetFont(HeadingFont);
                     ppic.SetColor(StatusFontColorNormalString);
                     ppic.Print(p.get_Nickname(false));
                     ppic.Print();
+                    ppic.SetFont(StatusFont);
                     // ダミーパイロット？
                     if (p.Nickname0 == "パイロット不在")
                     {
-                        DrawPilotLabel(u, pilotG, upic, headingMargin);
+                        DrawPilotLabel(u, ppic, upic);
                         goto UnitStatus;
                     }
                     // レベル、経験値、行動回数
@@ -304,7 +321,7 @@ namespace SRCRender
                         switch (u.Action)
                         {
                             case 2:
-                                actionText = "Ｗ";
+                                actionText = " Ｗ";
                                 break;
 
                             case 3:
@@ -317,16 +334,15 @@ namespace SRCRender
                         lvExpText = SrcFormatter.Format(p.Level);
                         if (u.Action == 2)
                         {
-                            actionText = "Ｗ";
+                            actionText = " Ｗ";
                         }
                     }
                     else
                     {
                         lvExpText = "？";
                     }
-                    ppic.SetFont(StatusFont);
                     ppic.SetColor(StatusFontColorAbilityName);
-                    ppic.Print("レベル ");
+                    ppic.Print(Expression.Term("レベル", u) + " ");
                     ppic.SetColor(StatusFontColorNormalString);
                     ppic.Print(lvExpText);
                     ppic.SetColor(StatusFontColorAbilityEnable);
@@ -351,7 +367,7 @@ namespace SRCRender
                         moraleText = "？";
                     }
                     ppic.SetColor(StatusFontColorAbilityName);
-                    ppic.Print("気力 ");
+                    ppic.Print(Expression.Term("気力", u) + " ");
                     ppic.SetColor(StatusFontColorNormalString);
                     ppic.Print(moraleText);
                     ppic.Print();
@@ -371,6 +387,7 @@ namespace SRCRender
                         {
                             ppic.Print("？");
                         }
+                        ppic.Print();
                     }
                     else
                     {
@@ -382,10 +399,12 @@ namespace SRCRender
                     {
                         ppic.SetColor(StatusFontColorNormalString);
                         ppic.Print(u.SpecialPowerInEffect());
+                        ppic.Print();
                     }
                     if (isNoSp)
                     {
                         ppic.Print(" ");
+                        ppic.Print();
                     }
 
                     // upicを明示的に初期化
@@ -436,7 +455,6 @@ namespace SRCRender
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
-                    upic.PushGrid();
 
                     // 射撃
                     upic.SetColor(StatusFontColorAbilityName);
@@ -490,7 +508,7 @@ namespace SRCRender
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(5));
                     }
-                    upic.PushGrid();
+                    upic.Print();
 
                     // 命中
                     upic.SetColor(StatusFontColorAbilityName);
@@ -537,7 +555,6 @@ namespace SRCRender
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
-                    upic.PushGrid();
 
                     // 回避
                     upic.SetColor(StatusFontColorAbilityName);
@@ -584,7 +601,7 @@ namespace SRCRender
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
-                    upic.PushGrid();
+                    upic.Print();
 
                     // 技量
                     upic.SetColor(StatusFontColorAbilityName);
@@ -631,7 +648,6 @@ namespace SRCRender
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
-                    upic.PushGrid();
 
                     // 反応
                     upic.SetColor(StatusFontColorAbilityName);
@@ -678,7 +694,7 @@ namespace SRCRender
                     {
                         upic.Print(GeneralLib.LeftPaddedString("--", 5) + Strings.Space(9));
                     }
-                    upic.PushGrid();
+                    upic.Print();
 
                     if (Expression.IsOptionDefined("防御力成長") || Expression.IsOptionDefined("防御力レベルアップ"))
                     {
@@ -700,7 +716,7 @@ namespace SRCRender
                         {
                             upic.Print(GeneralLib.LeftPaddedString("--", 5));
                         }
-                        upic.PushGrid();
+                        upic.Print();
                     }
 
                     upic.ClearGrid();
@@ -764,7 +780,7 @@ namespace SRCRender
                             }
                             upic.Print(SrcFormatter.Format(p.Plana) + "/" + SrcFormatter.Format(p.MaxPlana()));
                             upic.SetColor(StatusFontColorNormalString);
-                            upic.PushGrid();
+                            upic.Print();
                         }
                     }
 
@@ -782,7 +798,7 @@ namespace SRCRender
                             }
                             upic.Print(SrcFormatter.Format(p.SynchroRate()) + "%");
                             upic.SetColor(StatusFontColorNormalString);
-                            upic.PushGrid();
+                            upic.Print();
                         }
                     }
                     upic.ClearGrid();
@@ -898,7 +914,8 @@ namespace SRCRender
                             {
                                 case "オーラ":
                                     {
-                                        if (p.IsMainPilot)
+                                        // 元の SRC は表示しているパイロットの番号（DisplayedPilotInd）が 1 のときだけ
+                                        if (DisplayedPilotInd == 1)
                                         {
                                             if (u.AuraLevel(true) < u.AuraLevel() && !string.IsNullOrEmpty(Map.MapFileName))
                                             {
@@ -916,7 +933,7 @@ namespace SRCRender
 
                                 case "超能力":
                                     {
-                                        if (p.IsMainPilot)
+                                        if (DisplayedPilotInd == 1)
                                         {
                                             if (u.PsychicLevel(true) < u.PsychicLevel() && !string.IsNullOrEmpty(Map.MapFileName))
                                             {
@@ -975,7 +992,7 @@ namespace SRCRender
                                         }
                                         else
                                         {
-                                            if (p.Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(p.SkillData(i), 3)))
+                                            if (p.Morale >= GeneralLib.StrToLng(GeneralLib.LIndex(p.SkillData(stype), 3)))
                                             {
                                                 upic.SetColor(StatusFontColorAbilityEnable);
                                             }
@@ -1011,7 +1028,7 @@ namespace SRCRender
                                 case "切り払い":
                                     {
                                         if (!u.IsFeatureAvailable("格闘武器")
-                                            && !u.Weapons.Any(uw => uw.IsWeaponClassifiedAs("武"))
+                                            && !u.Weapons.Any(uw => uw.IsWeaponClassifiedAs("武") && !u.IsDisabled(uw.Name))
                                             && Strings.InStr(u.FeatureData("阻止"), "切り払い") == 0
                                             && Strings.InStr(u.FeatureData("広域阻止"), "切り払い") == 0
                                             && Strings.InStr(u.FeatureData("反射"), "切り払い") == 0
@@ -1044,7 +1061,7 @@ namespace SRCRender
 
                                 case "浄化":
                                     {
-                                        if (!u.Weapons.Any(uw => uw.IsWeaponClassifiedAs("浄"))
+                                        if (!u.Weapons.Any(uw => uw.IsWeaponClassifiedAs("浄") && !u.IsDisabled(uw.Name))
                                             && !Map.IsStatusView)
                                         {
                                             upic.SetColor(StatusFontColorAbilityDisable);
@@ -1067,7 +1084,6 @@ namespace SRCRender
                                                 if (u.IsUnderSpecialPowerEffect("サポートガード不能"))
                                                 {
                                                     // MOD START 240a
-                                                    // upic.ForeColor = rgb(150, 0, 0)
                                                     upic.SetColor(StatusFontColorAbilityDisable);
                                                 }
 
@@ -1189,12 +1205,6 @@ namespace SRCRender
                                 if (n > 0)
                                 {
                                     upic.Print();
-                                    //// ADD START 240a
-                                    //if (GUI.NewGUIMode)
-                                    //{
-                                    //    upic.CurrentX = 5;
-                                    //}
-                                    //// ADD  END  240a
                                 }
                                 upic.Print(sname);
                                 n = 2;
@@ -1211,12 +1221,6 @@ namespace SRCRender
                             if (n > 1)
                             {
                                 upic.Print();
-                                //// ADD START 240a
-                                //if (GUI.NewGUIMode)
-                                //{
-                                //    upic.CurrentX = 5;
-                                //}
-                                //// ADD  END  240a
                                 n = 0;
                             }
 
@@ -1242,14 +1246,11 @@ namespace SRCRender
 
                     // ここからはユニットに関する情報
                     upic.ClearGrid();
-                    upic.Print();
                     var mapCell = Map.CellAtPoint(u.x, u.y);
                     var td = mapCell.Terrain;
                     string buf;
 
                     // ユニット愛称
-                    var offset = new Point();
-                    offset.Y = textMargin * 8;
                     upic.SetFont(HeadingFont);
                     upic.Print(u.Nickname0);
                     upic.Print();
@@ -1370,56 +1371,53 @@ namespace SRCRender
                         upic.Print(Expression.Term("ＨＰ", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("?????/?????");
-                        upic.PushGrid();
+                        upic.Print();
 
                         // ＥＮ
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("ＥＮ", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("???/???");
-                        upic.PushGrid();
+                        upic.Print();
 
                         // 装甲
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("装甲", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString("？", 12));
-                        upic.PushGrid();
 
                         // 運動性
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("運動性", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("？");
-                        upic.PushGrid();
+                        upic.Print();
 
                         // 移動タイプ
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("タイプ", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString("？", 12));
-                        upic.PushGrid();
 
                         // 移動力
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("移動力", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("？");
-                        upic.PushGrid();
+                        upic.Print();
 
                         // 地形適応
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print("適応   ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(GeneralLib.RightPaddedString("？", 12));
-                        upic.PushGrid();
 
                         // ユニットサイズ
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print(Expression.Term("サイズ", null, 6) + " ");
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print("？");
-                        upic.PushGrid();
+                        upic.Print();
 
                         // サポートアタックを得られるかどうかのみ表示
                         if ((Commands.CommandState == "ターゲット選択" || Commands.CommandState == "移動後ターゲット選択") && (Commands.SelectedCommand == "攻撃" || Commands.SelectedCommand == "マップ攻撃") && Commands.SelectedUnit is object)
@@ -1524,6 +1522,7 @@ namespace SRCRender
                     }
 
                     // ＨＰ
+                    DrawStatusGauge(upic.Graphics, upic.CurrentY, u.HP, u.MaxHP);
                     upic.SetColor(StatusFontColorAbilityName);
                     upic.Print(Expression.Term("ＨＰ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
@@ -1551,18 +1550,10 @@ namespace SRCRender
                             upic.Print("?????");
                         }
                     }
-                    upic.PushGrid();
-                    // HP Bar
-                    upic.Graphics.DrawBarWithShadow(
-                        new RectangleF(upic.CurrentX + 2, upic.CurrentY + 2, upic.CellWidth - 10, 8),
-                        u.HP * 1f / u.MaxHP,
-                        BarBackBrush,
-                        BarForeBrush,
-                        BarShadowLightBruch,
-                        BarShadowDarkBruch);
                     upic.Print();
 
                     // ＥＮ
+                    DrawStatusGauge(upic.Graphics, upic.CurrentY, u.EN, u.MaxEN);
                     upic.SetColor(StatusFontColorAbilityName);
                     upic.Print(Expression.Term("ＥＮ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
@@ -1590,15 +1581,6 @@ namespace SRCRender
                             upic.Print("???");
                         }
                     }
-                    upic.PushGrid();
-                    // EN Bar
-                    upic.Graphics.DrawBarWithShadow(
-                        new RectangleF(upic.CurrentX + 2, upic.CurrentY + 2, upic.CellWidth - 10, 8),
-                        u.EN * 1f / u.MaxEN,
-                        BarBackBrush,
-                        BarForeBrush,
-                        BarShadowLightBruch,
-                        BarShadowDarkBruch);
                     upic.Print();
 
                     // 装甲
@@ -1631,7 +1613,6 @@ namespace SRCRender
                                 break;
                             }
                     }
-                    upic.PushGrid();
 
                     // 運動性
                     upic.SetColor(StatusFontColorAbilityName);
@@ -1657,14 +1638,13 @@ namespace SRCRender
                                 break;
                             }
                     }
-                    upic.PushGrid();
+                    upic.Print();
 
                     // 移動タイプ
                     upic.SetColor(StatusFontColorAbilityName);
                     upic.Print(Expression.Term("タイプ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
                     upic.Print(GeneralLib.RightPaddedString(u.Transportation, 12));
-                    upic.PushGrid();
 
                     // 移動力
                     upic.SetColor(StatusFontColorAbilityName);
@@ -1678,7 +1658,7 @@ namespace SRCRender
                     {
                         upic.Print(SrcFormatter.Format(u.Speed));
                     }
-                    upic.PushGrid();
+                    upic.Print();
 
                     // 地形適応
                     upic.SetColor(StatusFontColorAbilityName);
@@ -1725,18 +1705,17 @@ namespace SRCRender
                                 }
                         }
                     }
-                    upic.PushGrid();
+                    upic.Print(Strings.Space(8));
 
                     // ユニットサイズ
                     upic.SetColor(StatusFontColorAbilityName);
                     upic.Print(Expression.Term("サイズ", u, 6) + " ");
                     upic.SetColor(StatusFontColorNormalString);
                     upic.Print(Strings.StrConv(u.Size, VbStrConv.Wide));
-                    upic.PushGrid();
+                    upic.Print();
 
                     upic.ClearGrid();
                     {
-                        // XXX n の処理
                         var n = 0;
                         // 防御属性の表示
                         {
@@ -1804,7 +1783,6 @@ namespace SRCRender
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("耐性   ");
                                 // MOD START 240a
-                                // upic.ForeColor = rgb(0, 0, 0)
                                 upic.SetColor(StatusFontColorNormalString);
                                 upic.Print(GeneralLib.RightPaddedString(u.strResist, 12));
                                 n = (n + 1);
@@ -1895,6 +1873,7 @@ namespace SRCRender
                             {
                                 upic.Print();
                             }
+                            n = 0;
                         }
 
                         // 武器・防具クラス
@@ -2020,7 +1999,8 @@ namespace SRCRender
 
                                 case "ハイパーモード":
                                     {
-                                        if (pmorale < (10d * fd.Level) + 100 && u.HP > u.MaxHP / 4)
+                                        // 元の SRC は CInt(10# * .FeatureLevel(i)) + 100（レベル指定が無ければ 1）
+                                        if (pmorale < Conversions.ToInteger(10d * fd.FeatureLevel) + 100 && u.HP > u.MaxHP / 4)
                                         {
                                             upic.SetColor(StatusFontColorAbilityDisable);
                                         }
@@ -2433,7 +2413,6 @@ namespace SRCRender
                                         if (pmorale < nmorale)
                                         {
                                             // MOD START 240a
-                                            // upic.ForeColor = rgb(150, 0, 0)
                                             upic.SetColor(StatusFontColorAbilityDisable);
                                         }
 
@@ -2653,12 +2632,12 @@ namespace SRCRender
 
                                 case "盾":
                                     {
-                                        if ((u.Condition("盾ダメージ")?.Level ?? 0) >= fd.Level)
+                                        // 元の SRC は AllFeatureLevel("盾")（レベル指定が無ければ 1）
+                                        if (u.ConditionLevel("盾ダメージ") >= fd.FeatureLevel)
                                         {
                                             upic.SetColor(StatusFontColorAbilityDisable);
                                         }
-
-                                        fname = fname + "(" + SrcFormatter.Format(GeneralLib.MaxLng((int)(fd.Level - (u.Condition("盾ダメージ")?.Level ?? 0)), 0)) + "/" + SrcFormatter.Format(fd.Level) + ")";
+                                        fname = fname + "(" + SrcFormatter.Format(GeneralLib.MaxLng(Conversions.ToInteger(fd.FeatureLevel - u.ConditionLevel("盾ダメージ")), 0)) + "/" + SrcFormatter.Format(fd.FeatureLevel) + ")";
                                         break;
                                     }
 
@@ -2887,13 +2866,11 @@ namespace SRCRender
 
                         upic.ClearGrid();
                         upic.Print();
-                        upic.SetGridCellWidth(55f);
 
                         // 攻撃手段
                         var uw = Commands.SelectedUnit.Weapon(Commands.SelectedWeapon);
                         upic.SetColor(StatusFontColorAbilityName);
                         upic.Print("攻撃     ");
-                        upic.PushGrid();
                         upic.SetColor(StatusFontColorNormalString);
                         upic.Print(uw.WeaponNickname());
                         // サポートアタックを得られる？
@@ -2934,7 +2911,6 @@ namespace SRCRender
                         {
                             upic.SetColor(StatusFontColorAbilityName);
                             upic.Print("ダメージ ");
-                            upic.PushGrid();
                             var dmg = uw.Damage(u, true);
                             if (def_mode == "防御")
                             {
@@ -2958,7 +2934,6 @@ namespace SRCRender
                         {
                             upic.SetColor(StatusFontColorAbilityName);
                             upic.Print("命中率   ");
-                            upic.PushGrid();
                             upic.SetColor(StatusFontColorNormalString);
                             var prob = uw.HitProbability(u, true);
                             if (def_mode == "回避")
@@ -2978,7 +2953,6 @@ namespace SRCRender
                             // 反撃手段
                             upic.SetColor(StatusFontColorAbilityName);
                             upic.Print("反撃     ");
-                            upic.PushGrid();
                             upic.SetColor(StatusFontColorNormalString);
                             upic.Print(tuw.WeaponNickname());
                             // サポートガードを受けられる？
@@ -2993,7 +2967,6 @@ namespace SRCRender
                             {
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("ダメージ ");
-                                upic.PushGrid();
                                 var dmg = tuw.Damage(Commands.SelectedUnit, true);
                                 if (dmg >= Commands.SelectedUnit.HP)
                                 {
@@ -3012,7 +2985,6 @@ namespace SRCRender
                             {
                                 upic.SetColor(StatusFontColorAbilityName);
                                 upic.Print("命中率   ");
-                                upic.PushGrid();
                                 upic.SetColor(StatusFontColorNormalString);
                                 var prob = tuw.HitProbability(Commands.SelectedUnit, true);
                                 var cprob = tuw.CriticalProbability(Commands.SelectedUnit);
@@ -3048,26 +3020,22 @@ namespace SRCRender
                     // 武器一覧
                     {
                         upic.ClearGrid();
-                        upic.Print();
+                        upic.CurrentY = upic.CurrentY + 8;
+                        upic.Print(Strings.Space(25));
                         upic.SetColor(StatusFontColorAbilityName);
-                        upic.Print(Strings.Space(25) + "攻撃 射程");
+                        upic.Print("攻撃 射程");
+                        upic.Print();
                         upic.SetColor(StatusFontColorNormalString);
 
-                        // 攻撃力, 消費EN, 残弾数でソート
-                        var weapons = u.Weapons
-                            .OrderBy(x => x.WeaponPower("") * 1000 * 100
-                                + x.WeaponENConsumption() * 100
-                                + x.Bullet())
-                            .ToList();
+                        // 攻撃力でソート
+                        var weapons = StatusWeaponOrder(u);
                         // 個々の武器を表示
                         foreach (var uw in weapons)
                         {
-                            // XXX 枠の外なら無視
-                            //if (upic.CurrentY > 420)
-                            //{
-                            //    break;
-                            //}
-
+                            if (upic.CurrentY > 420)
+                            {
+                                break;
+                            }
                             if (!uw.IsWeaponAvailable("ステータス"))
                             {
                                 // 習得していない技は表示しない
@@ -3129,7 +3097,6 @@ namespace SRCRender
                                 buf = buf + "M";
                             }
                             // 特殊効果
-                            var wclass = uw.WeaponClass();
                             buf += Strings.StrDup("+", uw.CountWeaponEffect());
                             upic.Print(buf);
                             upic.Print();
@@ -3145,12 +3112,10 @@ namespace SRCRender
                         var abilities = u.Abilities;
                         foreach (var ua in abilities)
                         {
-                            // XXX 枠の外なら無視
-                            //if (upic.CurrentY > 420)
-                            //{
-                            //    break;
-                            //}
-
+                            if (upic.CurrentY > 420)
+                            {
+                                break;
+                            }
                             if (!ua.IsAbilityAvailable("ステータス"))
                             {
                                 // 習得していない技は表示しない
@@ -3175,7 +3140,6 @@ namespace SRCRender
                             }
 
                             // アビリティの表示
-                            // XXX 終端空白無視されてそう。どうすっかな。
                             upic.Print(GeneralLib.RightPaddedString(SrcFormatter.Format(ua.AbilityNickname()), 29));
                             if (ua.AbilityMaxRange() > 1)
                             {
@@ -3207,6 +3171,7 @@ namespace SRCRender
                             else
                             {
                                 upic.Print("    -");
+                                upic.Print();
                             }
                             upic.SetColor(StatusFontColorNormalString);
                         NextAbility:
@@ -3216,17 +3181,11 @@ namespace SRCRender
 
                 UpdateStatusWindow:
                     ;
-
-                    //// ステータスウィンドウをリフレッシュ
-                    //GUI.picFace.Refresh();
-                    //ppic.Refresh();
-                    //upic.Refresh();
                 }
             }
             catch (Exception ex)
             {
                 SRC.LogWarn(ex);
-                //    GUI.ErrorMessage("パイロット用画像ファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。");
             }
             finally
             {
@@ -3234,13 +3193,18 @@ namespace SRCRender
             }
         }
 
-        private void DrawPilotLabel(Unit u, Graphics pilotG, Compat.Printer upic, float headingMargin)
+        // パイロットが乗っていない・パイロット不在のときの見出し（Status.bas の DisplayUnitStatus）
+        private void DrawPilotLabel(Unit u, Compat.Printer ppic, Compat.Printer upic)
         {
-            // XXX ニックネームのフォントサイズ分マージンを入れる
-            pilotG.DrawString(
-@$"{Expression.Term("レベル", u)}
-{Expression.Term("気力", u)}", StatusFont, StatusAbilityNameBrush, 0, headingMargin);
+            ppic.SetFont(StatusFont);
+            ppic.SetColor(StatusFontColorAbilityName);
+            ppic.Print(Expression.Term("レベル", u));
+            ppic.Print();
+            ppic.Print(Expression.Term("気力", u));
+            ppic.Print();
+            ppic.SetColor(StatusFontColorNormalString);
 
+            upic.SetFont(StatusSmallFont);
             upic.SetColor(StatusFontColorAbilityName);
             upic.Print(Expression.Term("格闘", u, 4) + "               " + Expression.Term("射撃", u));
             upic.Print();
@@ -3248,15 +3212,131 @@ namespace SRCRender
             upic.Print();
             upic.Print(Expression.Term("技量", u, 4) + "               " + Expression.Term("反応", u));
             upic.Print();
+            upic.Print();
+            upic.Print();
+            upic.SetColor(StatusFontColorNormalString);
+        }
+
+        // ＨＰ・ＥＮのゲージ（Status.bas の DisplayUnitStatus）。元の SRC は upic.Line で、行の上端 cy から
+        // x = 116〜206 に枠（上と左は RGB(100, 100, 100)、下と右は RGB(220, 220, 220)）を描き、中を RGB(200, 0, 0) で
+        // 塗ってから、値の割合（GauageWidth * value \ maxValue）だけ RGB(0, 210, 0) で塗る
+        private void DrawStatusGauge(Graphics g, float cy, int value, int maxValue)
+        {
+            const int gauageWidth = 88;
+            using (var dark = new SolidBrush(Color.FromArgb(100, 100, 100)))
+            using (var light = new SolidBrush(Color.FromArgb(220, 220, 220)))
+            using (var back = new SolidBrush(Color.FromArgb(200, 0, 0)))
+            using (var fore = new SolidBrush(Color.FromArgb(0, 210, 0)))
+            {
+                // Line (116, cy + 2)-(118 + GauageWidth, cy + 2)・Line (116, cy + 2)-(116, cy + 9)（終点は描かない）
+                g.FillRectangle(dark, 116, cy + 2, 2 + gauageWidth, 1);
+                g.FillRectangle(dark, 116, cy + 2, 1, 7);
+                // Line (117, cy + 8)-(118 + GauageWidth, cy + 8)・Line (118 + GauageWidth, cy + 3)-(118 + GauageWidth, cy + 9)
+                g.FillRectangle(light, 117, cy + 8, 1 + gauageWidth, 1);
+                g.FillRectangle(light, 118 + gauageWidth, cy + 3, 1, 6);
+                // Line (117, cy + 3)-(117 + GauageWidth, cy + 7), , BF（両端を含む）
+                g.FillRectangle(back, 117, cy + 3, gauageWidth + 1, 5);
+                if (value > 0 && maxValue > 0)
+                {
+                    var w = (int)((long)gauageWidth * value / maxValue);
+                    g.FillRectangle(fore, 117, cy + 3, w + 1, 5);
+                }
+            }
+        }
+
+        // 武器一覧の並び（Status.bas の DisplayUnitStatus）。攻撃力の小さい順に、元の SRC と同じ挿入ソートで並べる。
+        // 攻撃力が同じときは、新しい武器の消費ＥＮ（WeaponData）があれば消費ＥＮの小さい順、弾数があれば弾数の多い順、
+        // どちらも無ければ消費ＥＮも弾数も無い武器の後ろに置く。元の SRC は最後の比較で .Weapon(i - j) と書いているが、
+        // warray(i - j) の書き間違いなので、ここでは並べた位置の武器と比べる
+        internal static IList<UnitWeapon> StatusWeaponOrder(Unit u)
+        {
+            var weapons = u.Weapons;
+            var n = weapons.Count;
+            var wpower = new int[n + 1];
+            var warray = new int[n + 1];
+            for (var i = 1; i <= n; i++)
+            {
+                wpower[i] = weapons[i - 1].WeaponPower("");
+            }
+            for (var i = 1; i <= n; i++)
+            {
+                var wi = weapons[i - 1].WeaponData;
+                int j;
+                for (j = 1; j <= i - 1; j++)
+                {
+                    var wj = weapons[warray[i - j] - 1].WeaponData;
+                    if (wpower[i] > wpower[warray[i - j]])
+                    {
+                        break;
+                    }
+                    else if (wpower[i] == wpower[warray[i - j]])
+                    {
+                        if (wi.ENConsumption > 0)
+                        {
+                            if (wi.ENConsumption >= wj.ENConsumption)
+                            {
+                                break;
+                            }
+                        }
+                        else if (wi.Bullet > 0)
+                        {
+                            if (wi.Bullet <= wj.Bullet)
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (wj.ENConsumption == 0 && wj.Bullet == 0)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+                for (var k = 1; k <= j - 1; k++)
+                {
+                    warray[i - k + 1] = warray[i - k];
+                }
+                warray[i - j + 1] = i;
+            }
+            return Enumerable.Range(1, n).Select(i => weapons[warray[i] - 1]).ToList();
         }
 
         public void DisplayPilotStatus(Pilot p)
         {
             DisplayedUnit = p.Unit;
+            var u = DisplayedUnit;
 
-            // メインパイロット、サブパイロット、サポートパイロット、追加サポート
-            // の場合がある
-            DisplayUnitStatus(DisplayedUnit, p);
+            // 元の SRC はメインパイロット・サブパイロット・サポートパイロットの順に表示する番号を探し、
+            // どれでもなければ追加サポートを表示する（追加サポートの能力が無ければ何も表示しない）
+            if (ReferenceEquals(p, u.MainPilot()))
+            {
+                DisplayUnitStatus(u, p);
+                return;
+            }
+            var pilots = u.Pilots;
+            for (var i = 1; i <= pilots.Count; i++)
+            {
+                if (ReferenceEquals(p, pilots[i - 1]))
+                {
+                    DisplayUnitStatus(u, u.StatusPilot(i));
+                    return;
+                }
+            }
+            var supports = u.SupportPilots;
+            for (var i = 1; i <= supports.Count; i++)
+            {
+                if (ReferenceEquals(p, supports[i - 1]))
+                {
+                    DisplayUnitStatus(u, u.StatusPilot(i + pilots.Count));
+                    return;
+                }
+            }
+            if (u.IsFeatureAvailable("追加サポート"))
+            {
+                DisplayUnitStatus(u, u.StatusPilot(pilots.Count + supports.Count + 1));
+            }
         }
 
         public void InstantUnitStatusDisplay(int X, int Y)
@@ -3288,6 +3368,28 @@ namespace SRCRender
             }
 
             DisplayUnitStatus(u);
+        }
+
+        // ステータスウィンドウの顔グラフィックのクリックで、表示するパイロットを順に切り替える
+        // （Main.frm の picFace_Click）
+        public void ChangeDisplayedPilot()
+        {
+            // ＧＵＩのロック中は無視
+            if (IsGUILocked)
+            {
+                return;
+            }
+
+            // ステータスウィンドウで表示しているパイロットを変更
+            var u = DisplayedUnit;
+            if (u == null || u.CountPilot() == 0)
+            {
+                return;
+            }
+
+            var pindex = u.NextStatusPilotIndex(DisplayedPilotInd);
+            DisplayUnitStatus(u, u.StatusPilot(pindex));
+            DisplayedPilotInd = pindex;
         }
 
         public void ClearUnitStatus()

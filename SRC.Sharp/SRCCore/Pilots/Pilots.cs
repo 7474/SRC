@@ -123,8 +123,7 @@ namespace SRCCore.Pilots
                 {
                     results.Add(first);
                 }
-                results.AddRange(Items.Where(x => x.ID.StartsWith(gid + ":")));
-
+                results.AddRange(Items.Where(x => x.ID.StartsWith(gid + ":", StringComparison.Ordinal)));
             }
             return results;
         }
@@ -142,6 +141,8 @@ namespace SRCCore.Pilots
         }
 
         // リストからパイロットを検索
+        // 元の SRC は、ＩＤで見つかったパイロットが破棄されていれば名称・愛称で探し直し、
+        // それでも見つからなければＩＤで見つかった（破棄された）パイロットを返す（On Error GoTo の後も Item は代入されたまま）
         public Pilot Item(string Index)
         {
             Pilot p = colPilots[Index];
@@ -150,29 +151,26 @@ namespace SRCCore.Pilots
                 return p;
             }
 
+            return FindAliveByName(Index) ?? p;
+        }
+
+        // ＩＤで見つからなければ名称で、それでも見つからなければ愛称で、破棄されていないパイロットを検索
+        private Pilot FindAliveByName(string pname)
+        {
             // ＩＤで見つからなければ名称で検索
-            var pname = Index;
-            foreach (Pilot currentP in AlivePilots)
+            foreach (Pilot p in AlivePilots)
             {
-                p = currentP;
                 if ((p.Data.Name ?? "") == (pname ?? ""))
                 {
-                    if (p.Alive)
-                    {
-                        return p;
-                    }
+                    return p;
                 }
             }
             // それでも見つからなければ愛称で検索
-            foreach (Pilot currentP in AlivePilots)
+            foreach (Pilot p in AlivePilots)
             {
-                p = currentP;
                 if ((p.Data.Nickname ?? "") == (pname ?? ""))
                 {
-                    if (p.Alive)
-                    {
-                        return p;
-                    }
+                    return p;
                 }
             }
 
@@ -180,9 +178,16 @@ namespace SRCCore.Pilots
         }
 
         // パイロットが定義されているか
+        // Item と異なり、破棄されたパイロットは定義されていないものとする
         public bool IsDefined(string Index)
         {
-            return Item(Index) != null;
+            var p = colPilots[Index];
+            if (p?.Alive ?? false)
+            {
+                return true;
+            }
+
+            return FindAliveByName(Index) != null;
         }
 
         // パイロットを検索 (IDのみで検索)
@@ -262,317 +267,6 @@ namespace SRCCore.Pilots
                 p.FullRecover();
             }
         }
-
-        //        // ファイルにデータをセーブ
-        //        public void Save()
-        //        {
-        //            var num = default;
-        //            Pilot p;
-
-        //            // 追加パイロットや追加サポートを除いたパイロット数を算出
-        //            foreach (Pilot currentP in colPilots)
-        //            {
-        //                p = currentP;
-        //                if (!p.IsAdditionalPilot && !p.IsAdditionalSupport)
-        //                {
-        //                    num = (num + 1);
-        //                }
-        //            }
-
-        //            FileSystem.WriteLine(SRC.SaveDataFileNumber, (object)num);
-        //            foreach (Pilot currentP1 in colPilots)
-        //            {
-        //                p = currentP1;
-        //                // 追加パイロットや追加サポートはセーブしない
-        //                if (!p.IsAdditionalPilot && !p.IsAdditionalSupport)
-        //                {
-        //                    if ((p.Name ?? "") == (p.ID ?? ""))
-        //                    {
-        //                        FileSystem.WriteLine(SRC.SaveDataFileNumber, p.Name);
-        //                    }
-        //                    else
-        //                    {
-        //                        FileSystem.WriteLine(SRC.SaveDataFileNumber, p.Name + " " + p.ID);
-        //                    }
-
-        //                    FileSystem.WriteLine(SRC.SaveDataFileNumber, p.Level, p.Exp);
-        //                    if (p.Unit is null)
-        //                    {
-        //                        if (p.Away)
-        //                        {
-        //                            FileSystem.WriteLine(SRC.SaveDataFileNumber, "離脱");
-        //                        }
-        //                        else
-        //                        {
-        //                            FileSystem.WriteLine(SRC.SaveDataFileNumber, "-");
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        FileSystem.WriteLine(SRC.SaveDataFileNumber, p.Unit.ID);
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        // ファイルからデータをロード (リンクは行わない)
-        //        public void Load()
-        //        {
-        //            int i, num = default;
-        //            var pname = default(string);
-        //            int plevel = default, pexp = default;
-        //            var dummy = default(string);
-        //            FileSystem.Input(SRC.SaveDataFileNumber, num);
-        //            var loopTo = num;
-        //            for (i = 1; i <= loopTo; i++)
-        //            {
-        //                // Name
-        //                FileSystem.Input(SRC.SaveDataFileNumber, pname);
-        //                // Level, Exp
-        //                FileSystem.Input(SRC.SaveDataFileNumber, plevel);
-        //                FileSystem.Input(SRC.SaveDataFileNumber, pexp);
-        //                // Unit
-        //                FileSystem.Input(SRC.SaveDataFileNumber, dummy);
-        //                if (GeneralLib.LLength(pname) == 1)
-        //                {
-        //                    bool localIsDefined1() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-        //                    if (!localIsDefined1())
-        //                    {
-        //                        if (Strings.InStr(pname, "(") > 0)
-        //                        {
-        //                            pname = Strings.Left(pname, Strings.InStr(pname, "(") - 1);
-        //                        }
-
-        //                        bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-        //                        if (!localIsDefined())
-        //                        {
-        //                            GUI.ErrorMessage(pname + "のデータが定義されていません");
-        //                            SRC.TerminateSRC();
-        //                            Environment.Exit(0);
-        //                        }
-        //                    }
-
-        //                    {
-        //                        var withBlock = Add(pname, plevel, "味方", gid: "");
-        //                        withBlock.Exp = pexp;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(pname, 1); var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-        //                    if (!localIsDefined2())
-        //                    {
-        //                        GUI.ErrorMessage(GeneralLib.LIndex(pname, 1) + "のデータが定義されていません");
-        //                        SRC.TerminateSRC();
-        //                        Environment.Exit(0);
-        //                    }
-
-        //                    {
-        //                        var withBlock1 = Add(GeneralLib.LIndex(pname, 1), plevel, "味方", GeneralLib.LIndex(pname, 2));
-        //                        withBlock1.Exp = pexp;
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        // ファイルからデータを読み込みリンク
-        //        public void LoadLinkInfo()
-        //        {
-        //            int ret, i, num = default;
-        //            string pname = default, uid = default;
-        //            string dummy;
-        //            Unit u;
-        //            FileSystem.Input(SRC.SaveDataFileNumber, num);
-        //            var loopTo = num;
-        //            for (i = 1; i <= loopTo; i++)
-        //            {
-        //                // Name
-        //                FileSystem.Input(SRC.SaveDataFileNumber, pname);
-        //                // Level, Exp
-        //                dummy = FileSystem.LineInput(SRC.SaveDataFileNumber);
-        //                // Unit
-        //                FileSystem.Input(SRC.SaveDataFileNumber, uid);
-        //                if (GeneralLib.LLength(pname) == 1)
-        //                {
-        //                    bool localIsDefined() { object argIndex1 = pname; var ret = IsDefined(argIndex1); return ret; }
-
-        //                    if (!localIsDefined())
-        //                    {
-        //                        pname = Strings.Left(pname, Strings.InStr(pname, "(") - 1);
-        //                    }
-        //                }
-
-        //                switch (uid ?? "")
-        //                {
-        //                    case "離脱":
-        //                        {
-        //                            // Leaveされたパイロット
-        //                            if (GeneralLib.LLength(pname) == 1)
-        //                            {
-        //                                Pilot localItem() { object argIndex1 = pname; var ret = Item(argIndex1); return ret; }
-
-        //                                localItem().Away = true;
-        //                            }
-        //                            else
-        //                            {
-        //                                Pilot localItem1() { object argIndex1 = GeneralLib.LIndex(pname, 2); var ret = Item(argIndex1); return ret; }
-
-        //                                localItem1().Away = true;
-        //                            }
-
-        //                            goto NextPilot;
-        //                            break;
-        //                        }
-
-        //                    case "-":
-        //                    case "Dummy":
-        //                        {
-        //                            // ユニットに乗っていないパイロット
-        //                            goto NextPilot;
-        //                            break;
-        //                        }
-        //                }
-
-        //                // 旧形式のユニットＩＤを新形式に変換
-        //                if (SRC.SaveDataVersion < 10700)
-        //                {
-        //                    SRC.ConvertUnitID(uid);
-        //                }
-
-        //                if (SRC.UList.IsDefined(uid))
-        //                {
-        //                    // パイロットをユニットに乗せる
-        //                    u = SRC.UList.Item(uid);
-        //                    if (GeneralLib.LLength(pname) == 1)
-        //                    {
-        //                        Pilot localItem2() { object argIndex1 = pname; var ret = Item(argIndex1); return ret; }
-
-        //                        localItem2().Unit = u;
-        //                    }
-        //                    else
-        //                    {
-        //                        Pilot localItem3() { object argIndex1 = GeneralLib.LIndex(pname, 2); var ret = Item(argIndex1); return ret; }
-
-        //                        localItem3().Unit = u;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    // 乗せるべきユニットが見つからなかった場合は強制的にユニットを
-        //                    // 作って乗せる (バグ対策だったけど……不要？)
-        //                    ret = Strings.InStr(uid, ":");
-        //                    uid = Strings.Left(uid, ret - 1);
-        //                    if (SRC.UDList.IsDefined(uid))
-        //                    {
-        //                        u = SRC.UList.Add(uid, 0, "味方");
-        //                        if (GeneralLib.LLength(pname) == 1)
-        //                        {
-        //                            Pilot localItem4() { object argIndex1 = pname; var ret = Item(argIndex1); return ret; }
-
-        //                            localItem4().Ride(u);
-        //                        }
-        //                        else
-        //                        {
-        //                            Pilot localItem5() { object argIndex1 = GeneralLib.LIndex(pname, 2); var ret = Item(argIndex1); return ret; }
-
-        //                            localItem5().Ride(u);
-        //                        }
-        //                    }
-        //                }
-
-        //            NextPilot:
-        //                ;
-        //            }
-        //        }
-
-
-        //        // 一時中断用データをセーブする
-        //        public void Dump()
-        //        {
-        //            Pilot p;
-        //            var num = default;
-
-        //            // 追加パイロットを除いたパイロット数を算出
-        //            foreach (Pilot currentP in colPilots)
-        //            {
-        //                p = currentP;
-        //                if (!p.IsAdditionalPilot)
-        //                {
-        //                    num = (num + 1);
-        //                }
-        //            }
-
-        //            FileSystem.WriteLine(SRC.SaveDataFileNumber, (object)num);
-        //            foreach (Pilot currentP1 in colPilots)
-        //            {
-        //                p = currentP1;
-        //                // 追加パイロットはセーブしない
-        //                if (!p.IsAdditionalPilot)
-        //                {
-        //                    p.Dump();
-        //                }
-        //            }
-        //        }
-
-        //        // 一時中断用データをファイルからロードする
-        //        public void Restore()
-        //        {
-        //            int i, num = default;
-        //            string buf;
-        //            Pilot p;
-        //            {
-        //                var withBlock = colPilots;
-        //                var loopTo = withBlock.Count;
-        //                for (i = 1; i <= loopTo; i++)
-        //                    withBlock.Remove(1);
-        //            }
-
-        //            FileSystem.Input(SRC.SaveDataFileNumber, num);
-        //            var loopTo1 = num;
-        //            for (i = 1; i <= loopTo1; i++)
-        //            {
-        //                p = new Pilot();
-        //                p.Restore();
-        //                colPilots.Add(p, p.ID);
-        //            }
-        //        }
-
-        //        // 一時中断用データのリンク情報をファイルからロードする
-        //        public void RestoreLinkInfo()
-        //        {
-        //            int i, num = default;
-        //            FileSystem.Input(SRC.SaveDataFileNumber, num);
-        //            var loopTo = num;
-        //            for (i = 1; i <= loopTo; i++)
-        //                // UPGRADE_WARNING: オブジェクト colPilots().RestoreLinkInfo の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                colPilots[i].RestoreLinkInfo();
-        //        }
-
-        //        // 一時中断用データのパラメータ情報をファイルからロードする
-        //        public void RestoreParameter()
-        //        {
-        //            int i, num = default;
-        //            FileSystem.Input(SRC.SaveDataFileNumber, num);
-        //            var loopTo = num;
-        //            for (i = 1; i <= loopTo; i++)
-        //                // UPGRADE_WARNING: オブジェクト colPilots().RestoreParameter の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                colPilots[i].RestoreParameter();
-        //        }
-
-        //        // リストをクリア
-        //        public void Clear()
-        //        {
-        //            int i;
-        //            var loopTo = Count();
-        //            for (i = 1; i <= loopTo; i++)
-        //            {
-        //                Delete(1);
-        //            }
-        //        }
-
 
         // パイロットの支援修正を更新
         public void UpdateSupportMod(Unit u = null)

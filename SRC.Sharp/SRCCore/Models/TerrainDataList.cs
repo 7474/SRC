@@ -6,6 +6,7 @@ using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -24,10 +25,23 @@ namespace SRCCore.Models
         // 他のリスト管理用クラスと異なり配列を使っているのはアクセスを高速化するため
         private TerrainData[] TerrainList = new TerrainData[(Map.MAX_TERRAIN_DATA_NUM + 1)];
 
+        // 地形データの登録順を記録するための配列
+        private readonly List<int> OrderList = new List<int>();
+
+        // 地形データの登録数
+        public int Count => OrderList.Count;
+
         // 指定したデータは登録されているか？
         public bool IsDefined(int ID)
         {
-            return Item(ID) != null;
+            // 範囲外の番号は登録されていない（Item が返す EmptyTerrain は ID が -1）
+            return ID >= 0 && ID < TerrainList.Length && TerrainList[ID] != null && TerrainList[ID].ID >= 0;
+        }
+
+        // Ｎ番目に登録したデータの番号
+        public int OrderedID(int n)
+        {
+            return OrderList[n - 1];
         }
 
         // 地形データリストから指定したデータを取り出す
@@ -59,101 +73,29 @@ namespace SRCCore.Models
                 DamageMod = 0,
             };
             TerrainList[ID] = td;
+            OrderList.Add(ID);
             return td;
         }
 
-        // 名前を指定してデータを取り出す
-        public TerrainData ItemByName(string name)
+        /// <summary>
+        /// 指定したビットマップ名の地形が登録されているか（大文字・小文字を区別する）。
+        /// </summary>
+        public bool HasBitmap(string bitmap)
         {
-            // 定義されていない番号は null のため飛ばす
-            return TerrainList.FirstOrDefault(x => x != null && x.Name == name);
+            return TerrainList.Any(x => x != null && x.Bitmap == bitmap);
         }
 
-        //// 指定したデータの名称
-        //public string Name(int ID)
-        //{
-        //    string NameRet = default;
-        //    NameRet = TerrainDataList[ID].Name;
-        //    return NameRet;
-        //}
-
-        //// 指定したデータの画像ファイル名
-        //public string Bitmap(int ID)
-        //{
-        //    string BitmapRet = default;
-        //    BitmapRet = TerrainDataList[ID].Bitmap;
-        //    return BitmapRet;
-        //}
-
-        //// 指定したデータのクラス
-        //// UPGRADE_NOTE: Class は Class にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //public string Class(int ID)
-        //{
-        //    string ClassRet = default;
-        //    ClassRet = TerrainDataList[ID].Class;
-        //    return ClassRet;
-        //}
-
-        //// 指定したデータの移動コスト
-        //public int MoveCost(int ID)
-        //{
-        //    int MoveCostRet = default;
-        //    MoveCostRet = TerrainDataList[ID].MoveCost;
-        //    return MoveCostRet;
-        //}
-
-        //// 指定したデータの命中修正
-        //public int HitMod(int ID)
-        //{
-        //    int HitModRet = default;
-        //    HitModRet = TerrainDataList[ID].HitMod;
-        //    return HitModRet;
-        //}
-
-        //// 指定したデータのダメージ修正
-        //public int DamageMod(int ID)
-        //{
-        //    int DamageModRet = default;
-        //    DamageModRet = TerrainDataList[ID].DamageMod;
-        //    return DamageModRet;
-        //}
-
-
-        //// 指定したデータの特殊能力
-
-        //public bool IsFeatureAvailable(int ID, string ftype)
-        //{
-        //    bool IsFeatureAvailableRet = default;
-        //    IsFeatureAvailableRet = TerrainDataList[ID].IsFeatureAvailable(ftype);
-        //    return IsFeatureAvailableRet;
-        //}
-
-        //public double FeatureLevel(int ID, string ftype)
-        //{
-        //    double FeatureLevelRet = default;
-        //    FeatureLevelRet = TerrainDataList[ID].FeatureLevel(ftype);
-        //    return FeatureLevelRet;
-        //}
-
-        //public string FeatureData(int ID, string ftype)
-        //{
-        //    string FeatureDataRet = default;
-        //    FeatureDataRet = TerrainDataList[ID].FeatureData(ftype);
-        //    return FeatureDataRet;
-        //}
-
-        //// Ｎ番目に登録したデータの番号
-        //public int OrderedID(int n)
-        //{
-        //    int OrderedIDRet = default;
-        //    OrderedIDRet = OrderList[n];
-        //    return OrderedIDRet;
-        //}
+        // 名前を指定してデータを取り出す
+        // VB（ChangeTerrain・ChangeLayer など）と同じく登録した順に探す
+        public TerrainData ItemByName(string name)
+        {
+            return OrderList.Select(x => TerrainList[x]).FirstOrDefault(x => x.Name == name);
+        }
 
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
@@ -180,18 +122,28 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        throw reader.InvalidDataException("番号の設定が間違っています。", line_buf);
+                        throw reader.InvalidDataException("番号の設定が間違っています。", "");
                     }
 
                     if (data_id < 0 || data_id >= Map.MAX_TERRAIN_DATA_NUM)
                     {
-                        throw reader.InvalidDataException("番号の設定が間違っています。", line_buf);
+                        throw reader.InvalidDataException("番号の設定が間違っています。", "");
                     }
 
-                    TerrainData td = new TerrainData
+                    // VB は番号ごとの TerrainData を使い回す。登録済みなら地形効果を消して上書きする
+                    // （登録順は最初に登録したときのまま）
+                    TerrainData td = TerrainList[data_id];
+                    if (td == null || td.ID < 0)
                     {
-                        ID = data_id,
-                    };
+                        td = td ?? new TerrainData();
+                        TerrainList[data_id] = td;
+                        OrderList.Add(data_id);
+                    }
+                    else
+                    {
+                        td.Clear();
+                    }
+                    td.ID = data_id;
 
                     // 名称, 画像ファイル名
                     line_buf = reader.GetLine();
@@ -200,7 +152,7 @@ namespace SRCCore.Models
                     var ret = Strings.InStr(line_buf, ",");
                     if (ret == 0)
                     {
-                        throw reader.InvalidDataException("画像ファイル名が抜けています。", line_buf);
+                        throw reader.InvalidDataException("画像ファイル名が抜けています。", "");
                     }
 
                     var data_name = Strings.Trim(Strings.Left(line_buf, ret - 1));
@@ -244,7 +196,7 @@ namespace SRCCore.Models
                     else if (Information.IsNumeric(buf2))
                     {
                         // 0.5刻みの移動コストを使えるようにするため、実際の２倍の値で記録する
-                        td.MoveCost = (int)(2d * Conversions.ToDouble(buf2));
+                        td.MoveCost = VBMath.CLng(2d * Conversions.ToDouble(buf2));
                     }
 
                     if (td.MoveCost <= 0)
@@ -299,7 +251,8 @@ namespace SRCCore.Models
                             ret = 0;
                             in_quote = false;
                             var loopTo = Strings.Len(buf);
-                            for (var j = 1; j <= loopTo; j++)
+                            // VB は引用符の外の最初の「,」で Exit For する
+                            for (var j = 1; j <= loopTo && ret == 0; j++)
                             {
                                 switch (Strings.Mid(buf, j, 1) ?? "")
                                 {
@@ -308,7 +261,6 @@ namespace SRCCore.Models
                                             if (!in_quote)
                                             {
                                                 ret = j;
-                                                break;
                                             }
 
                                             break;
@@ -351,7 +303,6 @@ namespace SRCCore.Models
                             break;
                         }
                     }
-                    TerrainList[data_id] = td;
                 }
             }
         }
@@ -363,6 +314,7 @@ namespace SRCCore.Models
             {
                 TerrainList[i] = null;
             }
+            OrderList.Clear();
         }
     }
 }

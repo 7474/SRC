@@ -27,6 +27,7 @@ namespace SRCCore.CmdDatas.Tests
             public bool WeaponAnimation { get; set; }
             public bool ExtendedAnimation { get; set; }
             public bool MoveAnimation { get; set; }
+            public int MessageWait { get; set; }
             public int ImageBufferSize { get; set; }
             public int MaxImageBufferByteSize { get; set; }
             public bool KeepStretchedImage { get; set; }

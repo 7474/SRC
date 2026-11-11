@@ -19,8 +19,7 @@ namespace SRCCore.CmdDatas.Commands
                 throw new EventErrorException(this, "Openコマンドの引数の数が違います");
             }
 
-            // 許可されたパスから相対パスで探すより単にディレクトリパスつけたほうが手堅いかもしれない。
-            //var fname = SRC.ScenarioPath + GetArgAsString(2);
+            // VB は ScenarioPath を前に付ける。SRC# は FileSystem（OpenSafe）がシナリオのフォルダを起点に解決するので付けない
             var fname = GetArgAsString(2);
             if (Strings.InStr(fname, @"..\") > 0)
             {
@@ -40,14 +39,14 @@ namespace SRCCore.CmdDatas.Commands
                 case "出力":
                     f = SRC.FileHandleManager.Add(
                         SafeOpenMode.Write,
-                        SRC.SystemConfig.SRCCompatibilityMode,
+                        SRC.Config.SRCCompatibilityMode,
                         SRC.FileSystem.OpenSafe(SafeOpenMode.Write, fname));
                     break;
 
                 case "追加出力":
                     f = SRC.FileHandleManager.Add(
                         SafeOpenMode.Append,
-                        SRC.SystemConfig.SRCCompatibilityMode,
+                        SRC.Config.SRCCompatibilityMode,
                         SRC.FileSystem.OpenSafe(SafeOpenMode.Append, fname));
                     break;
 
@@ -60,7 +59,7 @@ namespace SRCCore.CmdDatas.Commands
 
                         f = SRC.FileHandleManager.Add(
                             SafeOpenMode.Read,
-                            SRC.SystemConfig.SRCCompatibilityMode,
+                            SRC.Config.SRCCompatibilityMode,
                             SRC.FileSystem.OpenSafe(SafeOpenMode.Read, fname));
                         break;
                     }

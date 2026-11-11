@@ -90,11 +90,11 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void EffectType_NullName_ReturnsNull()
+        public void EffectType_DefaultName_ReturnsEmpty()
         {
             var effect = new AbilityEffect();
-            // 初期値はnull
-            Assert.IsNull(effect.EffectType);
+            // 初期値は VB の String と同じ空文字列
+            Assert.AreEqual("", effect.EffectType);
         }
     }
 }

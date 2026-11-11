@@ -73,5 +73,36 @@ namespace SRCRender.Tests
                 Assert.AreEqual("名前は[]", runner.WaitForMessage());
             }
         }
+
+        [TestMethod]
+        public void LoadFileDialog_PassesDefaultFileToHost()
+        {
+            // LoadFileDialog 関数の第 3 引数（デフォルトファイル）をダイアログで初めに選んでおく（7474/SRC#1479）
+            workspace.Write("b.txt", "");
+            workspace.Write("test.eve",
+                "プロローグ:",
+                "ChangeMap test.map",
+                "Set ファイル LoadFileDialog(\"テキスト\", \"txt\", \"b.txt\")",
+                "Talk システム",
+                "ファイルは$(ファイル)",
+                "End",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                FileDialogRequest asked = null;
+                runner.OpenFileHandler = request =>
+                {
+                    asked = request;
+                    // 初めに選んだファイルのまま決める
+                    return Path.Combine(request.InitialDirectory, request.InitialFile);
+                };
+                runner.Start(Path.Combine(workspace.AppPath, "test.eve"));
+                Assert.AreEqual("ファイルはb.txt", runner.WaitForMessage());
+                Assert.AreEqual("b.txt", asked.InitialFile);
+                Assert.AreEqual("テキスト", asked.FileType);
+                Assert.AreEqual("txt", asked.FileExtension);
+            }
+        }
     }
 }

@@ -38,12 +38,12 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void SetValue_NumericType_ZeroValue_StringValueIsZero()
+        public void SetValue_NumericType_ZeroValue_KeepsPassedStringValue()
         {
             var v = new VarData();
             v.SetValue("n", ValueType.NumericType, "", 0d);
             Assert.AreEqual(0d, v.NumericValue);
-            Assert.AreEqual("0", v.StringValue);
+            Assert.AreEqual("", v.StringValue);
         }
 
         // ──────────────────────────────────────────────
@@ -87,14 +87,13 @@ namespace SRCCore.Expressions.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void ReferenceValue_StringRequest_UndefinedTypeVar_ReturnsStringValue()
+        public void ReferenceValue_StringRequest_UndefinedTypeVar_FormatsNumericValue()
         {
-            // VariableType が UndefinedType の場合、StringType リクエストは
-            // VariableType != NumericType → str_result = StringValue を返す
+            // VB と同じく、VariableType が StringType でなければ（UndefinedType も）FormatNum(NumericValue)
             var v = new VarData("u", ValueType.UndefinedType, "rawStr", 99d);
             var type = v.ReferenceValue(ValueType.StringType, out var str, out var num);
             Assert.AreEqual(ValueType.StringType, type);
-            Assert.AreEqual("rawStr", str);
+            Assert.AreEqual("99", str);
         }
 
         [TestMethod]
@@ -103,7 +102,7 @@ namespace SRCCore.Expressions.Tests
             var v = new VarData("u", ValueType.UndefinedType, "55", 0d);
             var type = v.ReferenceValue(ValueType.NumericType, out var str, out var num);
             Assert.AreEqual(ValueType.NumericType, type);
-            // NumericType でないので StringValue を Conversions.ToDouble で変換
+            // NumericType でないので StringValue を StrToDbl で変換
             Assert.AreEqual(55d, num);
         }
 

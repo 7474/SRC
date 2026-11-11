@@ -75,12 +75,12 @@ namespace SRCCore
         // パイロット p の特殊能力の解説
         public string SkillHelpMessage(Pilot p, string sindex)
         {
-            string SkillHelpMessageRet = default;
+            string SkillHelpMessageRet = "";
             string sname, stype, sname0;
             double slevel;
             string sdata;
             bool is_level_specified;
-            var msg = default(string);
+            var msg = "";
             Unit u, u2 = default;
             string uname, fdata;
             int i;
@@ -137,11 +137,11 @@ namespace SRCCore
                     {
                         if (u.FeatureName0("バリア") == "オーラバリア")
                         {
-                            msg = "オーラ技「オ」の攻撃力と" + u.FeatureName0("オーラバリア") + "の強度に" + SrcFormatter.Format((int)(100d * slevel)) + "の修正を与える。";
+                            msg = "オーラ技「オ」の攻撃力と" + u.FeatureName0("オーラバリア") + "の強度に" + SrcFormatter.Format(VBMath.CLng(100d * slevel)) + "の修正を与える。";
                         }
                         else
                         {
-                            msg = "オーラ技「オ」の攻撃力の強度に" + SrcFormatter.Format((int)(100d * slevel)) + "の修正を与える。";
+                            msg = "オーラ技「オ」の攻撃力の強度に" + SrcFormatter.Format(VBMath.CLng(100d * slevel)) + "の修正を与える。";
                         }
 
                         if (u.IsFeatureAvailable("オーラ変換器"))
@@ -154,7 +154,7 @@ namespace SRCCore
 
                 case "分身":
                     {
-                        msg = SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で分身し、攻撃を回避する。";
+                        msg = SrcFormatter.Format(VBMath.IntDiv(100d * slevel, 16L)) + "% の確率で分身し、攻撃を回避する。";
                         break;
                     }
 
@@ -163,7 +163,7 @@ namespace SRCCore
                         msg = Expression.Term("命中", u) + "・" + Expression.Term("回避", u);
                         if (slevel > 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel + 3d)) + " の修正を与える。";
                         }
                         else
                         {
@@ -172,7 +172,7 @@ namespace SRCCore
 
                         if (slevel > 3d)
                         {
-                            msg = msg + ";思念誘導攻撃(サ)の射程を" + SrcFormatter.Format((int)((long)slevel / 4L)) + "だけ延長する。";
+                            msg = msg + ";思念誘導攻撃(サ)の射程を" + SrcFormatter.Format(VBMath.IntDiv(slevel, 4L)) + "だけ延長する。";
                         }
 
                         break;
@@ -183,7 +183,7 @@ namespace SRCCore
                         msg = Expression.Term("命中", u) + "・" + Expression.Term("回避", u);
                         if (slevel > 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。;";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel + 3d)) + " の修正を与える。;";
                         }
                         else
                         {
@@ -192,7 +192,7 @@ namespace SRCCore
 
                         if (slevel > 3d)
                         {
-                            msg = msg + "思念誘導攻撃(サ)の射程を" + SrcFormatter.Format((int)((long)slevel / 4L)) + "だけ延長する。";
+                            msg = msg + "思念誘導攻撃(サ)の射程を" + SrcFormatter.Format(VBMath.IntDiv(slevel, 4L)) + "だけ延長する。";
                         }
 
                         msg = msg + "精神不安定により" + Expression.Term("ＳＰ", u) + "消費量が20%増加する";
@@ -204,7 +204,7 @@ namespace SRCCore
                         msg = Expression.Term("命中", u) + "・" + Expression.Term("回避", u);
                         if (slevel > 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel + 3d)) + " の修正を与える。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel + 3d)) + " の修正を与える。";
                         }
                         else
                         {
@@ -216,13 +216,13 @@ namespace SRCCore
 
                 case "切り払い":
                     {
-                        msg = "格闘武器(武)、突進技(突)、実弾攻撃(実)による攻撃を " + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で切り払って回避する。";
+                        msg = "格闘武器(武)、突進技(突)、実弾攻撃(実)による攻撃を " + SrcFormatter.Format(VBMath.IntDiv(100d * slevel, 16L)) + "% の確率で切り払って回避する。";
                         break;
                     }
 
                 case "迎撃":
                     {
-                        msg = "実弾攻撃(実)による攻撃を " + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で迎撃する。";
+                        msg = "実弾攻撃(実)による攻撃を " + SrcFormatter.Format(VBMath.IntDiv(100d * slevel, 16L)) + "% の確率で迎撃する。";
                         break;
                     }
 
@@ -237,11 +237,11 @@ namespace SRCCore
                     {
                         if (u.IsFeatureAvailable("盾"))
                         {
-                            msg = "シールド防御を行い、ダメージを" + SrcFormatter.Format((int)(100d * slevel + 400d)) + "減少させる。";
+                            msg = "シールド防御を行い、ダメージを" + SrcFormatter.Format(VBMath.CLng(100d * slevel + 400d)) + "減少させる。";
                         }
                         else
                         {
-                            msg = SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率でシールド防御を行う。";
+                            msg = SrcFormatter.Format(VBMath.IntDiv(100d * slevel, 16L)) + "% の確率でシールド防御を行う。";
                         }
 
                         break;
@@ -381,13 +381,13 @@ namespace SRCCore
                 case "再生":
                 case "英雄":
                     {
-                        msg = Expression.Term("ＨＰ", u) + "が０になった時に" + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "%の確率で復活する。";
+                        msg = Expression.Term("ＨＰ", u) + "が０になった時に" + SrcFormatter.Format(VBMath.IntDiv(100d * slevel, 16L)) + "%の確率で復活する。";
                         break;
                     }
 
                 case "超能力":
                     {
-                        msg = Expression.Term("命中", u) + "・" + Expression.Term("回避", u) + "・" + Expression.Term("ＣＴ率", u) + "にそれぞれ +5。;" + "サイキック攻撃(超)の攻撃力に +" + SrcFormatter.Format((int)(100d * slevel)) + "。;" + Expression.Term("ＳＰ", u) + "消費量を20%削減する。";
+                        msg = Expression.Term("命中", u) + "・" + Expression.Term("回避", u) + "・" + Expression.Term("ＣＴ率", u) + "にそれぞれ +5。;" + "サイキック攻撃(超)の攻撃力に +" + SrcFormatter.Format(VBMath.CLng(100d * slevel)) + "。;" + Expression.Term("ＳＰ", u) + "消費量を20%削減する。";
                         break;
                     }
 
@@ -402,11 +402,11 @@ namespace SRCCore
                         msg = Expression.Term("命中", u) + "・" + Expression.Term("回避", u) + "・" + Expression.Term("ＣＴ率", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "にそれぞれ +" + SrcFormatter.Format((int)(2d * slevel)) + " の修正を与える。";
+                            msg = msg + "にそれぞれ +" + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + " の修正を与える。";
                         }
                         else
                         {
-                            msg = msg + "にそれぞれ " + SrcFormatter.Format((int)(2d * slevel)) + " の修正を与える。";
+                            msg = msg + "にそれぞれ " + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + " の修正を与える。";
                         }
 
                         break;
@@ -623,11 +623,11 @@ namespace SRCCore
                         msg = "半径" + Strings.StrConv(SrcFormatter.Format(p.CommandRange()), VbStrConv.Wide) + "マス以内にいる味方ザコ・汎用及び階級所有パイロットの" + Expression.Term("命中", u) + "・" + Expression.Term("回避", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(5d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(5d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(5d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(5d * slevel)) + "。";
                         }
 
                         break;
@@ -637,7 +637,7 @@ namespace SRCCore
                     {
                         if (Strings.InStr(sname, "階級Lv") == 0)
                         {
-                            msg = "階級レベル" + Strings.StrConv(SrcFormatter.Format((int)slevel), VbStrConv.Wide) + "に相当する。;";
+                            msg = "階級レベル" + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(slevel)), VbStrConv.Wide) + "に相当する。;";
                         }
 
                         msg = msg + "半径" + Strings.StrConv(SrcFormatter.Format(p.CommandRange()), VbStrConv.Wide) + "マス以内にいるザコ及び階級所有パイロットに指揮効果を与える。";
@@ -649,11 +649,11 @@ namespace SRCCore
                         msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term("格闘", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
 
                         break;
@@ -664,11 +664,11 @@ namespace SRCCore
                         msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term("射撃", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
 
                         break;
@@ -679,11 +679,11 @@ namespace SRCCore
                         msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term("魔力", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
 
                         break;
@@ -694,11 +694,11 @@ namespace SRCCore
                         msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term("命中", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
 
                         break;
@@ -709,11 +709,11 @@ namespace SRCCore
                         msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term("回避", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
 
                         break;
@@ -724,11 +724,11 @@ namespace SRCCore
                         msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term("技量", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
 
                         break;
@@ -739,11 +739,11 @@ namespace SRCCore
                         msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term("反応", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(2d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(2d * slevel)) + "。";
                         }
 
                         break;
@@ -754,11 +754,11 @@ namespace SRCCore
                         msg = "自分がサポートパイロットの時にメインパイロットの" + Expression.Term("命中", u) + "・" + Expression.Term("回避", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(3d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(3d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(3d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(3d * slevel)) + "。";
                         }
 
                         break;
@@ -769,11 +769,11 @@ namespace SRCCore
                         msg = "半径２マス以内にいる味方パイロットの" + Expression.Term("命中", u) + "・" + Expression.Term("回避", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "に +" + SrcFormatter.Format((int)(5d * slevel)) + "。";
+                            msg = msg + "に +" + SrcFormatter.Format(VBMath.CLng(5d * slevel)) + "。";
                         }
                         else
                         {
-                            msg = msg + "に " + SrcFormatter.Format((int)(5d * slevel)) + "。";
+                            msg = msg + "に " + SrcFormatter.Format(VBMath.CLng(5d * slevel)) + "。";
                         }
 
                         break;
@@ -781,25 +781,25 @@ namespace SRCCore
 
                 case "援護":
                     {
-                        msg = "隣接するユニットにサポートアタックとサポートガードを" + "１ターンにそれぞれ" + SrcFormatter.Format((int)slevel) + "回行う。";
+                        msg = "隣接するユニットにサポートアタックとサポートガードを" + "１ターンにそれぞれ" + SrcFormatter.Format(VBMath.CLng(slevel)) + "回行う。";
                         break;
                     }
 
                 case "援護攻撃":
                     {
-                        msg = "隣接するユニットにサポートアタックを１ターンに" + SrcFormatter.Format((int)slevel) + "回行う。";
+                        msg = "隣接するユニットにサポートアタックを１ターンに" + SrcFormatter.Format(VBMath.CLng(slevel)) + "回行う。";
                         break;
                     }
 
                 case "援護防御":
                     {
-                        msg = "隣接するユニットにサポートガードを１ターンに" + SrcFormatter.Format((int)slevel) + "回行う。";
+                        msg = "隣接するユニットにサポートガードを１ターンに" + SrcFormatter.Format(VBMath.CLng(slevel)) + "回行う。";
                         break;
                     }
 
                 case "統率":
                     {
-                        msg = "自分から攻撃をかけた場合、" + "サポートアタックが同時援護攻撃に変更される。;" + "（１ターンに " + SrcFormatter.Format((int)slevel) + "回）";
+                        msg = "自分から攻撃をかけた場合、" + "サポートアタックが同時援護攻撃に変更される。;" + "（１ターンに " + SrcFormatter.Format(VBMath.CLng(slevel)) + "回）";
                         break;
                     }
 
@@ -811,7 +811,7 @@ namespace SRCCore
 
                 case "カウンター":
                     {
-                        msg = "１ターンに " + SrcFormatter.Format((int)slevel) + "回" + "反撃がカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
+                        msg = "１ターンに " + SrcFormatter.Format(VBMath.CLng(slevel)) + "回" + "反撃がカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
                         break;
                     }
 
@@ -832,13 +832,13 @@ namespace SRCCore
 
                 case "先読み":
                     {
-                        msg = SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "%の確率で" + "反撃がカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
+                        msg = SrcFormatter.Format(VBMath.IntDiv(100d * slevel, 16L)) + "%の確率で" + "反撃がカウンター攻撃になり、相手の攻撃に先制して反撃を行う。";
                         break;
                     }
 
                 case "再攻撃":
                     {
-                        msg = "自分の攻撃の直後に " + SrcFormatter.Format((int)((long)(100d * slevel) / 16L)) + "% の確率で再攻撃を行う。" + "ただしパイロットの" + Expression.Term("反応", u) + "が相手を下回る場合、確率は半減。";
+                        msg = "自分の攻撃の直後に " + SrcFormatter.Format(VBMath.IntDiv(100d * slevel, 16L)) + "% の確率で再攻撃を行う。" + "ただしパイロットの" + Expression.Term("反応", u) + "が相手を下回る場合、確率は半減。";
                         break;
                     }
 
@@ -852,11 +852,11 @@ namespace SRCCore
                     {
                         if (slevel >= 0d)
                         {
-                            msg = "ダメージ計算の際に" + Expression.Term("装甲", u) + "を" + SrcFormatter.Format((int)(5d * slevel)) + "%増加させる。";
+                            msg = "ダメージ計算の際に" + Expression.Term("装甲", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * slevel)) + "%増加させる。";
                         }
                         else
                         {
-                            msg = "ダメージ計算の際に" + Expression.Term("装甲", u) + "を" + SrcFormatter.Format((int)(5d * Math.Abs(slevel))) + "%減少させる。";
+                            msg = "ダメージ計算の際に" + Expression.Term("装甲", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * Math.Abs(slevel))) + "%減少させる。";
                         }
 
                         break;
@@ -970,11 +970,11 @@ namespace SRCCore
                     {
                         if (slevel >= -1)
                         {
-                            msg = "ダメージを受けた際に" + Expression.Term("気力", u) + "+" + SrcFormatter.Format((int)(slevel + 1d)) + "。";
+                            msg = "ダメージを受けた際に" + Expression.Term("気力", u) + "+" + SrcFormatter.Format(VBMath.CLng(slevel + 1d)) + "。";
                         }
                         else
                         {
-                            msg = "ダメージを受けた際に" + Expression.Term("気力", u) + SrcFormatter.Format((int)(slevel + 1d)) + "。";
+                            msg = "ダメージを受けた際に" + Expression.Term("気力", u) + SrcFormatter.Format(VBMath.CLng(slevel + 1d)) + "。";
                         }
 
                         break;
@@ -984,11 +984,11 @@ namespace SRCCore
                     {
                         if (slevel >= 0d)
                         {
-                            msg = "攻撃を命中させた際に" + Expression.Term("気力", u) + "+" + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
+                            msg = "攻撃を命中させた際に" + Expression.Term("気力", u) + "+" + SrcFormatter.Format(VBMath.CLng(slevel)) + "。(マップ攻撃は例外)";
                         }
                         else
                         {
-                            msg = "攻撃を命中させた際に" + Expression.Term("気力", u) + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
+                            msg = "攻撃を命中させた際に" + Expression.Term("気力", u) + SrcFormatter.Format(VBMath.CLng(slevel)) + "。(マップ攻撃は例外)";
                         }
 
                         break;
@@ -998,11 +998,11 @@ namespace SRCCore
                     {
                         if (slevel >= 0d)
                         {
-                            msg = "攻撃を外してしまった際に" + Expression.Term("気力", u) + "+" + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
+                            msg = "攻撃を外してしまった際に" + Expression.Term("気力", u) + "+" + SrcFormatter.Format(VBMath.CLng(slevel)) + "。(マップ攻撃は例外)";
                         }
                         else
                         {
-                            msg = "攻撃を外してしまった際に" + Expression.Term("気力", u) + SrcFormatter.Format((int)slevel) + "。(マップ攻撃は例外)";
+                            msg = "攻撃を外してしまった際に" + Expression.Term("気力", u) + SrcFormatter.Format(VBMath.CLng(slevel)) + "。(マップ攻撃は例外)";
                         }
 
                         break;
@@ -1012,11 +1012,11 @@ namespace SRCCore
                     {
                         if (slevel >= 0d)
                         {
-                            msg = "攻撃を回避した際に" + Expression.Term("気力", u) + "+" + SrcFormatter.Format((int)slevel) + "。";
+                            msg = "攻撃を回避した際に" + Expression.Term("気力", u) + "+" + SrcFormatter.Format(VBMath.CLng(slevel)) + "。";
                         }
                         else
                         {
-                            msg = "攻撃を回避した際に" + Expression.Term("気力", u) + SrcFormatter.Format((int)slevel) + "。";
+                            msg = "攻撃を回避した際に" + Expression.Term("気力", u) + SrcFormatter.Format(VBMath.CLng(slevel)) + "。";
                         }
 
                         break;
@@ -1033,11 +1033,11 @@ namespace SRCCore
                         msg = "思考パターン決定の際に用いられる" + Expression.Term("技量", u);
                         if (slevel >= 0d)
                         {
-                            msg = msg + "初期値がレベル×10増加(+" + SrcFormatter.Format((int)(10d * slevel)) + ")。";
+                            msg = msg + "初期値がレベル×10増加(+" + SrcFormatter.Format(VBMath.CLng(10d * slevel)) + ")。";
                         }
                         else
                         {
-                            msg = msg + "初期値がレベル×10減少(" + SrcFormatter.Format((int)(10d * slevel)) + ")。";
+                            msg = msg + "初期値がレベル×10減少(" + SrcFormatter.Format(VBMath.CLng(10d * slevel)) + ")。";
                         }
 
                         break;
@@ -1151,7 +1151,7 @@ namespace SRCCore
                         i = 150;
                         if (slevel != 0d)
                         {
-                            i = (int)GeneralLib.MaxLng((int)slevel, 0);
+                            i = GeneralLib.MaxLng(VBMath.CLng(slevel), 0);
                         }
 
                         msg = Expression.Term("気力", u) + "の上限が" + SrcFormatter.Format(i) + "になる。";
@@ -1163,18 +1163,15 @@ namespace SRCCore
                         i = 50;
                         if (slevel != 0d)
                         {
-                            i = (int)GeneralLib.MaxLng((int)slevel, 0);
+                            i = GeneralLib.MaxLng(VBMath.CLng(slevel), 0);
                         }
 
                         msg = Expression.Term("気力", u) + "の下限が" + SrcFormatter.Format(i) + "になる。";
                         break;
                     }
 
-                // ADD START MARGE
                 case "遊撃":
                     {
-                        // ADD END MARGE
-
                         msg = "移動後使用可能な武器・" + Expression.Term("アビリティ", u) + "を使った後に、残った移動力を使って移動できる。";
                         break;
                     }
@@ -1389,13 +1386,13 @@ namespace SRCCore
         }
         public string FeatureHelpMessage(Unit u, FeatureData fd, bool is_additional)
         {
-            string FeatureHelpMessageRet = default;
+            string FeatureHelpMessageRet = "";
             var fid = default(int);
             string fname, ftype, fname0;
             string fdata = default, opt;
             double flevel = default, lv_mod;
             var flevel_specified = default(bool);
-            var msg = default(string);
+            var msg = "";
             int i, idx;
             var buf = default(string);
             var prob = default(int);
@@ -1443,7 +1440,7 @@ namespace SRCCore
                 case "シールド":
                     {
                         sname = p.SkillName0("Ｓ防御");
-                        prob = (int)((long)(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d) / 16L);
+                        prob = (int)VBMath.IntDiv(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d, 16L);
                         msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
                         break;
                     }
@@ -1453,7 +1450,7 @@ namespace SRCCore
                         sname = p.SkillName0("Ｓ防御");
                         if (p.IsSkillAvailable("Ｓ防御"))
                         {
-                            prob = (int)((long)((p.SkillLevel("Ｓ防御", ref_mode: "") + 1d) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv((p.SkillLevel("Ｓ防御", ref_mode: "") + 1d) * 100d, 16L);
                         }
 
                         msg = "(" + sname + "Lv+1)/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
@@ -1463,7 +1460,7 @@ namespace SRCCore
                 case "小型シールド":
                     {
                         sname = p.SkillName0("Ｓ防御");
-                        prob = (int)((long)(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d) / 16L);
+                        prob = (int)VBMath.IntDiv(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d, 16L);
                         msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを2/3に減少。";
                         break;
                     }
@@ -1471,7 +1468,7 @@ namespace SRCCore
                 case "エネルギーシールド":
                     {
                         sname = p.SkillName0("Ｓ防御");
-                        prob = (int)((long)(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d) / 16L);
+                        prob = (int)VBMath.IntDiv(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d, 16L);
                         if (flevel > 0d)
                         {
                             msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減した上で更に" + SrcFormatter.Format(100d * flevel) + "減少。";
@@ -1488,10 +1485,10 @@ namespace SRCCore
                 case "アクティブシールド":
                     {
                         sname = p.SkillName0("Ｓ防御");
-                        prob = (int)((long)(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d) / 16L);
+                        prob = (int)VBMath.IntDiv(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d, 16L);
                         if (p.IsSkillAvailable("Ｓ防御"))
                         {
-                            prob = (int)((long)((p.SkillLevel("Ｓ防御", ref_mode: "") + 2d) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv((p.SkillLevel("Ｓ防御", ref_mode: "") + 2d) * 100d, 16L);
                         }
 
                         msg = "(" + sname + "Lv+2)/16の確率(" + SrcFormatter.Format(prob) + "%)で防御を行い、" + "ダメージを半減。";
@@ -1507,7 +1504,7 @@ namespace SRCCore
                             slevel = 100d * slevel + 400d;
                         }
 
-                        msg = SrcFormatter.Format(flevel) + "回、攻撃によって貫通されるまでシールド防御を行い、" + "ダメージを減少させる(-" + SrcFormatter.Format((int)slevel) + ")。;" + "ただし攻撃側が「破」属性を持っていた場合、一度に２回分破壊される。;" + "ダメージの減少量はパイロットの" + sname + "レベルによって決まる。";
+                        msg = SrcFormatter.Format(flevel) + "回、攻撃によって貫通されるまでシールド防御を行い、" + "ダメージを減少させる(-" + SrcFormatter.Format(VBMath.CLng(slevel)) + ")。;" + "ただし攻撃側が「破」属性を持っていた場合、一度に２回分破壊される。;" + "ダメージの減少量はパイロットの" + sname + "レベルによって決まる。";
                         break;
                     }
 
@@ -1525,7 +1522,7 @@ namespace SRCCore
                             }
                         }
 
-                        msg = msg + "ダメージ" + SrcFormatter.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
+                        msg = msg + "ダメージ" + SrcFormatter.Format(VBMath.CLng(1000d * flevel)) + "以下の攻撃を無効化。";
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                         {
                             int localStrToLng() { string argexpr = GeneralLib.LIndex(fdata, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
@@ -1677,7 +1674,7 @@ namespace SRCCore
                 case "バリアシールド":
                     {
                         sname = p.SkillName0("Ｓ防御");
-                        prob = (int)((long)(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d) / 16L);
+                        prob = (int)VBMath.IntDiv(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d, 16L);
                         msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
                         if (!string.IsNullOrEmpty(GeneralLib.LIndex(fdata, 2)) && GeneralLib.LIndex(fdata, 2) != "全")
                         {
@@ -1691,7 +1688,7 @@ namespace SRCCore
                             }
                         }
 
-                        msg = msg + "ダメージ" + SrcFormatter.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
+                        msg = msg + "ダメージ" + SrcFormatter.Format(VBMath.CLng(1000d * flevel)) + "以下の攻撃を無効化。";
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                         {
                             int localStrToLng1() { string argexpr = GeneralLib.LIndex(fdata, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
@@ -1865,7 +1862,7 @@ namespace SRCCore
                             }
                         }
 
-                        msg = msg + "ダメージ" + SrcFormatter.Format((int)(1000d * flevel)) + "以下の攻撃を無効化。";
+                        msg = msg + "ダメージ" + SrcFormatter.Format(VBMath.CLng(1000d * flevel)) + "以下の攻撃を無効化。";
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                         {
                             int localStrToLng2() { string argexpr = GeneralLib.LIndex(fdata, 4); var ret = GeneralLib.StrToLng(argexpr); return ret; }
@@ -1909,11 +1906,11 @@ namespace SRCCore
 
                         if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(500d * flevel)) + "減少させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(500d * flevel)) + "減少させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-500 * flevel)) + "増加させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(-500 * flevel)) + "増加させる。";
                         }
 
                         int localStrToLng3() { string argexpr = GeneralLib.LIndex(fdata, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
@@ -2060,7 +2057,7 @@ namespace SRCCore
                 case "アクティブフィールド":
                     {
                         sname = p.SkillName0("Ｓ防御");
-                        prob = (int)((long)(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d) / 16L);
+                        prob = (int)VBMath.IntDiv(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d, 16L);
                         msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
                         if (!string.IsNullOrEmpty(GeneralLib.LIndex(fdata, 2)) && GeneralLib.LIndex(fdata, 2) != "全")
                         {
@@ -2076,11 +2073,11 @@ namespace SRCCore
 
                         if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(500d * flevel)) + "減少させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(500d * flevel)) + "減少させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-500 * flevel)) + "増加させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(-500 * flevel)) + "増加させる。";
                         }
 
                         int localStrToLng4() { string argexpr = GeneralLib.LIndex(fdata, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
@@ -2251,11 +2248,11 @@ namespace SRCCore
 
                         if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(500d * flevel)) + "減少させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(500d * flevel)) + "減少させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-500 * flevel)) + "増加させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(-500 * flevel)) + "増加させる。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
@@ -2301,15 +2298,15 @@ namespace SRCCore
 
                         if (flevel > 10d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel - 100d)) + "%吸収する。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(10d * flevel - 100d)) + "%吸収する。";
                         }
                         else if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel)) + "%減少させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(10d * flevel)) + "%減少させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(-10 * flevel)) + "%増加させる。";
                         }
 
                         int localStrToLng6() { string argexpr = GeneralLib.LIndex(fdata, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
@@ -2462,7 +2459,7 @@ namespace SRCCore
                 case "アクティブプロテクション":
                     {
                         sname = p.SkillName0("Ｓ防御");
-                        prob = (int)((long)(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d) / 16L);
+                        prob = (int)VBMath.IntDiv(p.SkillLevel("Ｓ防御", ref_mode: "") * 100d, 16L);
                         msg = sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、";
                         if (!string.IsNullOrEmpty(GeneralLib.LIndex(fdata, 2)) && GeneralLib.LIndex(fdata, 2) != "全")
                         {
@@ -2478,15 +2475,15 @@ namespace SRCCore
 
                         if (flevel > 10d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel - 100d)) + "%吸収する。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(10d * flevel - 100d)) + "%吸収する。";
                         }
                         else if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel)) + "%減少させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(10d * flevel)) + "%減少させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(-10 * flevel)) + "%増加させる。";
                         }
 
                         int localStrToLng8() { string argexpr = GeneralLib.LIndex(fdata, 3); var ret = GeneralLib.StrToLng(argexpr); return ret; }
@@ -2663,15 +2660,15 @@ namespace SRCCore
 
                         if (flevel > 10d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel - 100d)) + "%吸収する。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(10d * flevel - 100d)) + "%吸収する。";
                         }
                         else if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(10d * flevel)) + "%減少させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(10d * flevel)) + "%減少させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
+                            msg = msg + "攻撃のダメージを" + SrcFormatter.Format(VBMath.CLng(-10 * flevel)) + "%増加させる。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
@@ -2717,11 +2714,11 @@ namespace SRCCore
 
                         if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃に対して装甲を" + SrcFormatter.Format((int)(100d * flevel)) + "増加させる。";
+                            msg = msg + "攻撃に対して装甲を" + SrcFormatter.Format(VBMath.CLng(100d * flevel)) + "増加させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃に対して装甲を" + SrcFormatter.Format((int)(-100 * flevel)) + "減少させる。";
+                            msg = msg + "攻撃に対して装甲を" + SrcFormatter.Format(VBMath.CLng(-100 * flevel)) + "減少させる。";
                         }
 
                         if (GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 3)) > 50)
@@ -2840,15 +2837,15 @@ namespace SRCCore
 
                         if (flevel > 10d)
                         {
-                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format(100 - (int)(10d * flevel)) + "%吸収する。";
+                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format(100 - VBMath.CLng(10d * flevel)) + "%吸収する。";
                         }
                         else if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format((int)(10d * flevel)) + "%軽減させる。";
+                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format(VBMath.CLng(10d * flevel)) + "%軽減させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format((int)(-10 * flevel)) + "%増加させる。";
+                            msg = msg + "攻撃に対してダメージを" + SrcFormatter.Format(VBMath.CLng(-10 * flevel)) + "%増加させる。";
                         }
 
                         if (GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 3)) > 50)
@@ -2967,7 +2964,7 @@ namespace SRCCore
 
                         if (flevel != 1d)
                         {
-                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "までの";
+                            msg = msg + "ダメージ" + SrcFormatter.Format(VBMath.CLng(500d * flevel)) + "までの";
                         }
 
                         msg = msg + "攻撃を";
@@ -2987,13 +2984,13 @@ namespace SRCCore
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
-                            prob = (int)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d, 16L);
                             msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で受け止め、";
                         }
                         else
                         {
                             sname = u.SkillName0(buf);
-                            prob = (int)((long)(u.SkillLevel(buf) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv(u.SkillLevel(buf) * 100d, 16L);
                             msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で受け止め、";
                         }
 
@@ -3155,7 +3152,7 @@ namespace SRCCore
 
                         if (flevel != 1d)
                         {
-                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "までの";
+                            msg = msg + "ダメージ" + SrcFormatter.Format(VBMath.CLng(500d * flevel)) + "までの";
                         }
 
                         msg = msg + "攻撃を";
@@ -3175,13 +3172,13 @@ namespace SRCCore
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
-                            prob = (int)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d, 16L);
                             msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で反射。";
                         }
                         else
                         {
                             sname = u.SkillName0(buf);
-                            prob = (int)((long)(u.SkillLevel(buf) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv(u.SkillLevel(buf) * 100d, 16L);
                             msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で反射。";
                         }
 
@@ -3336,7 +3333,7 @@ namespace SRCCore
 
                         if (flevel != 1d)
                         {
-                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "以下の";
+                            msg = msg + "ダメージ" + SrcFormatter.Format(VBMath.CLng(500d * flevel)) + "以下の";
                         }
 
                         msg = msg + "攻撃を";
@@ -3349,23 +3346,20 @@ namespace SRCCore
                             }
                             else
                             {
-                                // MOD START MARGE
-                                // msg = msg && buf && "阻止。"
                                 msg = msg + "阻止。";
-                                // MOD END MARGE
                             }
                         }
                         else if (Strings.InStr(buf, "+") > 0 || Strings.InStr(buf, "-") > 0)
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
-                            prob = (int)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d, 16L);
                             msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で阻止。";
                         }
                         else
                         {
                             sname = u.SkillName0(buf);
-                            prob = (int)((long)(u.SkillLevel(buf) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv(u.SkillLevel(buf) * 100d, 16L);
                             msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で阻止。";
                         }
 
@@ -3531,7 +3525,7 @@ namespace SRCCore
 
                         if (flevel != 1d)
                         {
-                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "以下の";
+                            msg = msg + "ダメージ" + SrcFormatter.Format(VBMath.CLng(500d * flevel)) + "以下の";
                         }
 
                         msg = msg + "攻撃を";
@@ -3540,11 +3534,8 @@ namespace SRCCore
                         {
                             if (buf != "100")
                             {
-                                // MOD START MARGE
-                                // msg = msg && "%の確率で阻止。"
                                 msg = msg + buf + "%の確率で阻止。";
                             }
-                            // MOD END MARGE
                             else
                             {
                                 msg = msg + "阻止。";
@@ -3554,13 +3545,13 @@ namespace SRCCore
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
-                            prob = (int)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d, 16L);
                             msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で阻止。";
                         }
                         else
                         {
                             sname = u.SkillName0(buf);
-                            prob = (int)((long)(u.SkillLevel(buf) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv(u.SkillLevel(buf) * 100d, 16L);
                             msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で阻止。";
                         }
 
@@ -3586,7 +3577,7 @@ namespace SRCCore
 
                 case "融合":
                     {
-                        prob = (int)((long)(flevel * 100d) / 16L);
+                        prob = (int)VBMath.IntDiv(flevel * 100d, 16L);
                         msg = SrcFormatter.Format(flevel) + "/16の確率(" + SrcFormatter.Format(prob) + "%)で発動し、" + "ダメージを" + Expression.Term("ＨＰ", u) + "に変換。;" + "ただし、「武」「突」「接」による攻撃には無効。";
                         break;
                     }
@@ -3633,7 +3624,7 @@ namespace SRCCore
 
                         if (flevel != 1d)
                         {
-                            msg = msg + "ダメージ" + SrcFormatter.Format((int)(500d * flevel)) + "までの";
+                            msg = msg + "ダメージ" + SrcFormatter.Format(VBMath.CLng(500d * flevel)) + "までの";
                         }
 
                         msg = msg + "攻撃を受けた際に";
@@ -3649,13 +3640,13 @@ namespace SRCCore
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
-                            prob = (int)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d, 16L);
                             msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で、";
                         }
                         else
                         {
                             sname = u.SkillName0(buf);
-                            prob = (int)((long)(u.SkillLevel(buf) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv(u.SkillLevel(buf) * 100d, 16L);
                             msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で、";
                         }
 
@@ -3933,11 +3924,11 @@ namespace SRCCore
 
                         if (flevel >= 0d)
                         {
-                            msg = msg + "攻撃の命中率を本来の" + SrcFormatter.Format((int)(100d - 10d * flevel)) + "%に減少させる。";
+                            msg = msg + "攻撃の命中率を本来の" + SrcFormatter.Format(VBMath.CLng(100d - 10d * flevel)) + "%に減少させる。";
                         }
                         else
                         {
-                            msg = msg + "攻撃の命中率を本来の" + SrcFormatter.Format((int)(100d - 10d * flevel)) + "%に増加させる。";
+                            msg = msg + "攻撃の命中率を本来の" + SrcFormatter.Format(VBMath.CLng(100d - 10d * flevel)) + "%に増加させる。";
                         }
 
                         if (GeneralLib.StrToLng(GeneralLib.LIndex(fdata, 3)) > 50)
@@ -4571,7 +4562,7 @@ namespace SRCCore
                             buf = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
                         }
 
-                        msg = msg + "同時に相手の" + buf + "能力のレベルを、この能力のレベル分だけ下げる。";
+                        msg = msg + "同時に相手の" + buf + "能力の効果を無効化。";
                         msg = msg + ";思念誘導攻撃や近接攻撃には無効。";
                         break;
                     }
@@ -4606,11 +4597,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "パイロットの" + Expression.Term("格闘", u) + "を+" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("格闘", u) + "を+" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
                         else
                         {
-                            msg = "パイロットの" + Expression.Term("格闘", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("格闘", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4627,20 +4618,20 @@ namespace SRCCore
                         {
                             if (flevel >= 0d)
                             {
-                                msg = "パイロットの" + Expression.Term("魔力", u) + "を+" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                                msg = "パイロットの" + Expression.Term("魔力", u) + "を+" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                             }
                             else
                             {
-                                msg = "パイロットの" + Expression.Term("魔力", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                                msg = "パイロットの" + Expression.Term("魔力", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                             }
                         }
                         else if (flevel >= 0d)
                         {
-                            msg = "パイロットの" + Expression.Term("射撃", u) + "を+" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("射撃", u) + "を+" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
                         else
                         {
-                            msg = "パイロットの" + Expression.Term("射撃", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("射撃", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4655,11 +4646,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "パイロットの" + Expression.Term("命中", u) + "を+" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("命中", u) + "を+" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
                         else
                         {
-                            msg = "パイロットの" + Expression.Term("命中", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("命中", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4674,11 +4665,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "パイロットの" + Expression.Term("回避", u) + "を+" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("回避", u) + "を+" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
                         else
                         {
-                            msg = "パイロットの" + Expression.Term("回避", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("回避", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4693,11 +4684,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "パイロットの" + Expression.Term("技量", u) + "を+" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("技量", u) + "を+" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
                         else
                         {
-                            msg = "パイロットの" + Expression.Term("技量", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("技量", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4712,11 +4703,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "パイロットの" + Expression.Term("反応", u) + "を+" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("反応", u) + "を+" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
                         else
                         {
-                            msg = "パイロットの" + Expression.Term("反応", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "。";
+                            msg = "パイロットの" + Expression.Term("反応", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4731,11 +4722,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "最大" + Expression.Term("ＨＰ", u) + "を" + SrcFormatter.Format((int)(200d * flevel)) + "増加。";
+                            msg = "最大" + Expression.Term("ＨＰ", u) + "を" + SrcFormatter.Format(VBMath.CLng(200d * flevel)) + "増加。";
                         }
                         else
                         {
-                            msg = "最大" + Expression.Term("ＨＰ", u) + "を" + SrcFormatter.Format((int)(-200 * flevel)) + "減少。";
+                            msg = "最大" + Expression.Term("ＨＰ", u) + "を" + SrcFormatter.Format(VBMath.CLng(-200 * flevel)) + "減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4750,11 +4741,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "最大" + Expression.Term("ＥＮ", u) + "を" + SrcFormatter.Format((int)(10d * flevel)) + "増加。";
+                            msg = "最大" + Expression.Term("ＥＮ", u) + "を" + SrcFormatter.Format(VBMath.CLng(10d * flevel)) + "増加。";
                         }
                         else
                         {
-                            msg = "最大" + Expression.Term("ＥＮ", u) + "を" + SrcFormatter.Format((int)(-10 * flevel)) + "減少。";
+                            msg = "最大" + Expression.Term("ＥＮ", u) + "を" + SrcFormatter.Format(VBMath.CLng(-10 * flevel)) + "減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4769,11 +4760,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = Expression.Term("装甲", u) + "を" + SrcFormatter.Format((int)(100d * flevel)) + "増加。";
+                            msg = Expression.Term("装甲", u) + "を" + SrcFormatter.Format(VBMath.CLng(100d * flevel)) + "増加。";
                         }
                         else
                         {
-                            msg = Expression.Term("装甲", u) + "を" + SrcFormatter.Format((int)(-100 * flevel)) + "減少。";
+                            msg = Expression.Term("装甲", u) + "を" + SrcFormatter.Format(VBMath.CLng(-100 * flevel)) + "減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4788,11 +4779,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = Expression.Term("運動性", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "増加。";
+                            msg = Expression.Term("運動性", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "増加。";
                         }
                         else
                         {
-                            msg = Expression.Term("運動性", u) + "を" + SrcFormatter.Format((int)(-5 * flevel)) + "減少。";
+                            msg = Expression.Term("運動性", u) + "を" + SrcFormatter.Format(VBMath.CLng(-5 * flevel)) + "減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4807,11 +4798,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = Expression.Term("移動力", u) + "を" + SrcFormatter.Format((int)flevel) + "増加。";
+                            msg = Expression.Term("移動力", u) + "を" + SrcFormatter.Format(VBMath.CLng(flevel)) + "増加。";
                         }
                         else
                         {
-                            msg = Expression.Term("移動力", u) + "を" + SrcFormatter.Format((int)flevel) + "減少。";
+                            msg = Expression.Term("移動力", u) + "を" + SrcFormatter.Format(VBMath.CLng(flevel)) + "減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4826,11 +4817,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "最大" + Expression.Term("ＨＰ", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "%分増加。";
+                            msg = "最大" + Expression.Term("ＨＰ", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "%分増加。";
                         }
                         else
                         {
-                            msg = "最大" + Expression.Term("ＨＰ", u) + "を" + SrcFormatter.Format((int)(-5 * flevel)) + "%分減少。";
+                            msg = "最大" + Expression.Term("ＨＰ", u) + "を" + SrcFormatter.Format(VBMath.CLng(-5 * flevel)) + "%分減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4845,11 +4836,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = "最大" + Expression.Term("ＥＮ", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "%分増加。";
+                            msg = "最大" + Expression.Term("ＥＮ", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "%分増加。";
                         }
                         else
                         {
-                            msg = "最大" + Expression.Term("ＥＮ", u) + "を" + SrcFormatter.Format((int)(-5 * flevel)) + "%分減少。";
+                            msg = "最大" + Expression.Term("ＥＮ", u) + "を" + SrcFormatter.Format(VBMath.CLng(-5 * flevel)) + "%分減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4864,11 +4855,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = Expression.Term("装甲", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "%分増加。";
+                            msg = Expression.Term("装甲", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "%分増加。";
                         }
                         else
                         {
-                            msg = Expression.Term("装甲", u) + "を" + SrcFormatter.Format((int)(-5 * flevel)) + "%分減少。";
+                            msg = Expression.Term("装甲", u) + "を" + SrcFormatter.Format(VBMath.CLng(-5 * flevel)) + "%分減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4883,11 +4874,11 @@ namespace SRCCore
                     {
                         if (flevel >= 0d)
                         {
-                            msg = Expression.Term("運動性", u) + "を" + SrcFormatter.Format((int)(5d * flevel)) + "%分増加。";
+                            msg = Expression.Term("運動性", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * flevel)) + "%分増加。";
                         }
                         else
                         {
-                            msg = Expression.Term("運動性", u) + "を" + SrcFormatter.Format((int)(-5 * flevel)) + "%分減少。";
+                            msg = Expression.Term("運動性", u) + "を" + SrcFormatter.Format(VBMath.CLng(-5 * flevel)) + "%分減少。";
                         }
 
                         if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
@@ -4926,13 +4917,13 @@ namespace SRCCore
                         {
                             i = (int)GeneralLib.MaxLng(Strings.InStr(buf, "+"), Strings.InStr(buf, "-"));
                             sname = u.SkillName0(Strings.Left(buf, i - 1));
-                            prob = (int)((long)((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv((u.SkillLevel(Strings.Left(buf, i - 1)) + Conversions.ToInteger(Strings.Mid(buf, i))) * 100d, 16L);
                             msg = msg + "(" + sname + "Lv" + Strings.Mid(buf, i) + ")/16の確率(" + SrcFormatter.Format(prob) + "%)で";
                         }
                         else
                         {
                             sname = u.SkillName0(buf);
-                            prob = (int)((long)(u.SkillLevel(buf) * 100d) / 16L);
+                            prob = (int)VBMath.IntDiv(u.SkillLevel(buf) * 100d, 16L);
                             msg = msg + sname + "Lv/16の確率(" + SrcFormatter.Format(prob) + "%)で";
                         }
 
@@ -5061,7 +5052,6 @@ namespace SRCCore
                         break;
                     }
 
-                // ADD START MARGE
                 case "地形効果無効化":
                     {
                         if (GeneralLib.LLength(fdata) > 1)
@@ -5083,7 +5073,6 @@ namespace SRCCore
                         {
                             msg = msg + "全地形の";
                         }
-                        // ADD END MARGE
 
                         msg = msg + "ＨＰ・ＥＮ減少や状態付加等の特殊効果を無効化する。";
                         break;
@@ -5160,7 +5149,7 @@ namespace SRCCore
         // ユニット u の武器＆アビリティ属性 atr の名称
         public string AttributeName(Unit u, string atr, bool is_ability = false)
         {
-            string AttributeNameRet = default;
+            string AttributeNameRet = "";
             string fdata;
             switch (atr ?? "")
             {
@@ -6072,10 +6061,10 @@ namespace SRCCore
         // ユニット u の idx 番目の武器＆アビリティの属性 atr の解説を表示
         public string AttributeHelpMessage(Unit u, string atr, int idx, bool is_ability)
         {
-            string AttributeHelpMessageRet = default;
+            string AttributeHelpMessageRet = "";
             string atype;
             double alevel;
-            string msg = default, whatsthis;
+            string msg = "", whatsthis;
             string wanickname, waname, uname = default;
             Pilot p;
             int i, j;
@@ -6418,16 +6407,17 @@ namespace SRCCore
 
                 case "合":
                     {
-                        var fd = u.Features.FirstOrDefault(fd => fd.Name == "合体技" && fd.DataL.First() == waname);
+                        // 元の SRC と同じく、データの 1 番目が武器名の合体技を探す（データが空でも例外にしない）
+                        var fd = u.Features.FirstOrDefault(x => x.Name == "合体技" && GeneralLib.LIndex(x.Data, 1) == (waname ?? ""));
                         if (fd == null)
                         {
                             GUI.ErrorMessage(u.Name + "の合体技「" + waname + "」に対応した合体技能力がありません");
                             return AttributeHelpMessageRet;
                         }
 
-                        if (fd.DataL.Count == 2)
+                        if (GeneralLib.LLength(fd.Data) == 2)
                         {
-                            uname = fd.DataL.Skip(1).First();
+                            uname = GeneralLib.LIndex(fd.Data, 2);
                             if (SRC.UDList.IsDefined(uname))
                             {
                                 uname = SRC.UDList.Item(uname).Nickname;
@@ -6568,13 +6558,13 @@ namespace SRCCore
 
                 case "失":
                     {
-                        msg = "使用時に" + SrcFormatter.Format((long)(alevel * u.MaxHP) / 10L) + "の" + Expression.Term("ＨＰ", u) + "を失う。";
+                        msg = "使用時に" + SrcFormatter.Format(VBMath.IntDiv(alevel * u.MaxHP, 10L)) + "の" + Expression.Term("ＨＰ", u) + "を失う。";
                         break;
                     }
 
                 case "銭":
                     {
-                        msg = "使用時に" + SrcFormatter.Format(GeneralLib.MaxLng((int)alevel, 1) * u.Value / 10) + "の" + Expression.Term("資金", u) + "が必要。;" + Expression.Term("資金", u) + "が足りない場合は使用不可。";
+                        msg = "使用時に" + SrcFormatter.Format(GeneralLib.MaxLng(VBMath.CLng(alevel), 1) * u.Value / 10) + "の" + Expression.Term("資金", u) + "が必要。;" + Expression.Term("資金", u) + "が足りない場合は使用不可。";
                         break;
                     }
 
@@ -6615,10 +6605,11 @@ namespace SRCCore
                     {
                         if (u.IsFeatureAvailable("変形技"))
                         {
-                            var fd = u.Feature("変形技");
-                            if (fd.DataL.First() == (waname ?? ""))
+                            // 元の SRC と同じく、すべての変形技からデータの 1 番目が武器名のものを探す
+                            var fd = u.Features.FirstOrDefault(x => x.Name == "変形技" && GeneralLib.LIndex(x.Data, 1) == (waname ?? ""));
+                            if (fd != null)
                             {
-                                uname = fd.DataL.Skip(1).First();
+                                uname = GeneralLib.LIndex(fd.Data, 2);
                             }
                         }
 
@@ -6710,7 +6701,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6731,7 +6722,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6753,7 +6744,7 @@ namespace SRCCore
                             msg = "クリティカル発生時に相手の装甲を";
                             if (alevel > 0d)
                             {
-                                msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                                msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                             }
                             else
                             {
@@ -6776,7 +6767,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手が持つバリア等の防御能力を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6798,7 +6789,7 @@ namespace SRCCore
                             msg = "クリティカル発生時に相手を";
                             if (alevel > 0d)
                             {
-                                msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                                msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                             }
                             else
                             {
@@ -6821,7 +6812,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6844,7 +6835,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6865,7 +6856,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6888,7 +6879,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6909,7 +6900,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6931,7 +6922,7 @@ namespace SRCCore
                             msg = "クリティカル発生時に相手を";
                             if (alevel > 0d)
                             {
-                                msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                                msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                             }
                             else
                             {
@@ -6954,7 +6945,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6975,7 +6966,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -6996,7 +6987,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7017,7 +7008,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7038,7 +7029,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7059,7 +7050,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7080,7 +7071,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7115,7 +7106,7 @@ namespace SRCCore
                     {
                         if (alevel > 0d)
                         {
-                            msg = "クリティカル発生時に相手を「死の宣告」状態にし、" + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン後に" + Expression.Term("ＨＰ", u) + "を１にする。";
+                            msg = "クリティカル発生時に相手を「死の宣告」状態にし、" + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン後に" + Expression.Term("ＨＰ", u) + "を１にする。";
                         }
                         else
                         {
@@ -7133,11 +7124,11 @@ namespace SRCCore
                         }
                         else if (alevel >= 0d)
                         {
-                            msg = "相手の" + Expression.Term("気力", u) + "を" + SrcFormatter.Format((int)(5d * alevel)) + "低下させる。";
+                            msg = "相手の" + Expression.Term("気力", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * alevel)) + "低下させる。";
                         }
                         else
                         {
-                            msg = "相手の" + Expression.Term("気力", u) + "を" + SrcFormatter.Format((int)(-5 * alevel)) + "増加させる。";
+                            msg = "相手の" + Expression.Term("気力", u) + "を" + SrcFormatter.Format(VBMath.CLng(-5 * alevel)) + "増加させる。";
                         }
 
                         break;
@@ -7151,11 +7142,11 @@ namespace SRCCore
                         }
                         else if (alevel >= 0d)
                         {
-                            msg = "相手の" + Expression.Term("気力", u) + "を" + SrcFormatter.Format((int)(5d * alevel)) + "低下させ、その半分を吸収する。";
+                            msg = "相手の" + Expression.Term("気力", u) + "を" + SrcFormatter.Format(VBMath.CLng(5d * alevel)) + "低下させ、その半分を吸収する。";
                         }
                         else
                         {
-                            msg = "相手の" + Expression.Term("気力", u) + "を" + SrcFormatter.Format((int)(-5 * alevel)) + "増加させ、その半分を与える。";
+                            msg = "相手の" + Expression.Term("気力", u) + "を" + SrcFormatter.Format(VBMath.CLng(-5 * alevel)) + "増加させ、その半分を与える。";
                         }
 
                         break;
@@ -7171,7 +7162,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手の攻撃力を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7192,7 +7183,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手の" + Expression.Term("装甲", u) + "を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7213,7 +7204,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手の" + Expression.Term("運動性", u) + "を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7234,7 +7225,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手の" + Expression.Term("移動力", u) + "を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7261,7 +7252,7 @@ namespace SRCCore
                     {
                         if (alevel > 0d)
                         {
-                            msg = "相手ユニットを" + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。";
+                            msg = "相手ユニットを" + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。";
                         }
                         else
                         {
@@ -7275,7 +7266,7 @@ namespace SRCCore
                     {
                         if (alevel > 0d)
                         {
-                            msg = "相手ユニットを" + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。" + Expression.Term("サイズ", u) + "制限あり。";
+                            msg = "相手ユニットを" + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "マス吹き飛ばす。;" + "クリティカル発生時は吹き飛ばし距離＋１。" + Expression.Term("サイズ", u) + "制限あり。";
                         }
                         else
                         {
@@ -7293,7 +7284,7 @@ namespace SRCCore
 
                 case "転":
                     {
-                        msg = "クリティカル発生時に相手ユニットを" + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "マス強制テレポートさせる。テレポート先はランダムに選ばれる。";
+                        msg = "クリティカル発生時に相手ユニットを" + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "マス強制テレポートさせる。テレポート先はランダムに選ばれる。";
                         break;
                     }
 
@@ -7305,7 +7296,7 @@ namespace SRCCore
 
                 case "再":
                     {
-                        msg = SrcFormatter.Format((long)(100d * alevel) / 16L) + "%の確率で再攻撃。";
+                        msg = SrcFormatter.Format(VBMath.IntDiv(100d * alevel, 16L)) + "%の確率で再攻撃。";
                         break;
                     }
 
@@ -7420,7 +7411,7 @@ namespace SRCCore
                 case "衰":
                     {
                         msg = "クリティカル発生時に敵の" + Expression.Term("ＨＰ", u) + "を現在値の ";
-                        switch ((int)alevel)
+                        switch (VBMath.CLng(alevel))
                         {
                             case 1:
                                 {
@@ -7448,7 +7439,7 @@ namespace SRCCore
                 case "滅":
                     {
                         msg = "クリティカル発生時に敵の" + Expression.Term("ＥＮ", u) + "を現在値の ";
-                        switch ((int)alevel)
+                        switch (VBMath.CLng(alevel))
                         {
                             case 1:
                                 {
@@ -7483,7 +7474,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7504,7 +7495,7 @@ namespace SRCCore
                         msg = "クリティカル発生時に相手を";
                         if (alevel > 0d)
                         {
-                            msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                            msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                         }
                         else
                         {
@@ -7526,7 +7517,7 @@ namespace SRCCore
                             msg = "クリティカル発生時に相手を";
                             if (alevel > 0d)
                             {
-                                msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                                msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                             }
                             else
                             {
@@ -7550,7 +7541,7 @@ namespace SRCCore
                             msg = "クリティカル発生時に相手を";
                             if (alevel > 0d)
                             {
-                                msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                                msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                             }
                             else
                             {
@@ -7736,7 +7727,7 @@ namespace SRCCore
                             whatsthis = "攻撃";
                         }
 
-                        msg = "相手のメインパイロットのレベルが" + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "の倍数の場合にのみ有効な" + whatsthis + "。";
+                        msg = "相手のメインパイロットのレベルが" + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "の倍数の場合にのみ有効な" + whatsthis + "。";
                         break;
                     }
 
@@ -7753,7 +7744,7 @@ namespace SRCCore
 
                 case "小":
                     {
-                        msg = "最小射程が" + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "になる。";
+                        msg = "最小射程が" + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "になる。";
                         break;
                     }
 
@@ -7778,7 +7769,7 @@ namespace SRCCore
                                     msg = "クリティカル発生時に相手に" + Strings.Mid(atype, 2) + "属性に対する弱点を";
                                     if (alevel > 0d)
                                     {
-                                        msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                                        msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                                     }
                                     else
                                     {
@@ -7799,7 +7790,7 @@ namespace SRCCore
                                     msg = "クリティカル発生時に相手に" + Strings.Mid(atype, 2) + "属性に対する有効を";
                                     if (alevel > 0d)
                                     {
-                                        msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                                        msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                                     }
                                     else
                                     {
@@ -7872,7 +7863,7 @@ namespace SRCCore
                                     msg = msg + "を";
                                     if (alevel > 0d)
                                     {
-                                        msg = msg + Strings.StrConv(SrcFormatter.Format((int)alevel), VbStrConv.Wide) + "ターン";
+                                        msg = msg + Strings.StrConv(SrcFormatter.Format(VBMath.CLng(alevel)), VbStrConv.Wide) + "ターン";
                                     }
                                     else
                                     {

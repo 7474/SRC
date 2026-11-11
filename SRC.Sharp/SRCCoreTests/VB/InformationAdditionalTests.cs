@@ -20,10 +20,10 @@ namespace SRCCore.VB.Tests
         }
 
         [TestMethod]
-        public void IsNumeric_ScientificNotation_ReturnsFalse()
+        public void IsNumeric_ScientificNotation_ReturnsTrue()
         {
-            // decimal.TryParse は科学的表記法をサポートしていないため False
-            Assert.IsFalse(Information.IsNumeric("1e5"));
+            // VB の IsNumeric("1e5") は True（7474/SRC#1534）
+            Assert.IsTrue(Information.IsNumeric("1e5"));
         }
 
         [TestMethod]

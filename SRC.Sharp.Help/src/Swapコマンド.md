@@ -2,8 +2,6 @@
 layout: default
 title: Swapコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Swapコマンド**
 
 変数の値を入れ替え

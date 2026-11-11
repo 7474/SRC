@@ -183,6 +183,21 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         [TestMethod]
+        public void ClearObjCmd_DuplicateName_RemovesFirstOnly()
+        {
+            // VB の ExecClearObjCmd は名前の合う最初のホットポイントだけを消す
+            var src = CreateSrc();
+            src.Event.HotPointList = new List<HotPoint>
+            {
+                new HotPoint { Name = "btn", Caption = "1" },
+                new HotPoint { Name = "btn", Caption = "2" },
+            };
+            CreateCmd(src, "ClearObj btn").Exec();
+            Assert.AreEqual(1, src.Event.HotPointList.Count);
+            Assert.AreEqual("2", src.Event.HotPointList[0].Caption);
+        }
+
+        [TestMethod]
         public void ClearObjCmd_WrongArgCount_ReturnsError()
         {
             // 引数が多すぎる場合はエラー

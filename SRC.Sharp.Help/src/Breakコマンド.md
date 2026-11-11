@@ -2,8 +2,6 @@
 layout: default
 title: Breakコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Breakコマンド**
 
 繰り返し実行を中止

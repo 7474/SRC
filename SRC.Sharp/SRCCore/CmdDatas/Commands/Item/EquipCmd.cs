@@ -2,6 +2,7 @@ using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Items;
 using SRCCore.Units;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
@@ -102,21 +103,47 @@ namespace SRCCore.CmdDatas.Commands
                         itm.Unit.DeleteItem(itm);
                     }
 
+                    // 元の SRC と同じく、装備の前の画像と指揮・階級・広域サポートのレベル（Integer）を覚えておく
+                    var ubitmap = u.get_Bitmap(false);
+                    var cmd_lv = 0;
+                    var rank_lv = 0;
+                    var support_lv = 0;
+                    if (u.CountPilot() > 0)
+                    {
+                        var mp = u.MainPilot();
+                        cmd_lv = Conversions.ToInteger(mp.SkillLevel("指揮"));
+                        rank_lv = Conversions.ToInteger(mp.SkillLevel("階級"));
+                        support_lv = Conversions.ToInteger(mp.SkillLevel("広域サポート"));
+                    }
+
                     u.AddItem(itm);
 
                     // ユニット画像が変化した？
-                    if (u.Status == "出撃")
+                    // （元の SRC の BitmapID の作り直しは、SRC# では描画のときに画像を引くので要らない）
+                    if (ubitmap != u.get_Bitmap(false))
                     {
-                        if (!GUI.IsPictureVisible && !Map.IsStatusView)
+                        if (u.Status == "出撃")
                         {
-                            GUI.PaintUnitBitmap(u);
+                            if (!GUI.IsPictureVisible && !Map.IsStatusView)
+                            {
+                                GUI.PaintUnitBitmap(u);
+                            }
                         }
                     }
 
                     // 支援効果が変化した？
-                    if (u.Status == "出撃")
+                    if (u.CountPilot() > 0)
                     {
-                        SRC.PList.UpdateSupportMod(u);
+                        var mp = u.MainPilot();
+                        if (cmd_lv != mp.SkillLevel("指揮")
+                            || rank_lv != mp.SkillLevel("階級")
+                            || support_lv != mp.SkillLevel("広域サポート"))
+                        {
+                            if (u.Status == "出撃")
+                            {
+                                SRC.PList.UpdateSupportMod(u);
+                            }
+                        }
                     }
 
                     // 最大弾数が変化した？

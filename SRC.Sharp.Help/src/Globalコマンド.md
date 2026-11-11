@@ -2,8 +2,6 @@
 layout: default
 title: Globalコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Globalコマンド**
 
 グローバル変数を作成

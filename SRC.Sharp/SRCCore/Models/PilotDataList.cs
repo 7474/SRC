@@ -107,10 +107,21 @@ namespace SRCCore.Models
             return colPilotDataList.ContainsKey(Index);
         }
 
+        // 特殊能力のレベルの文字列。元の SRC は CInt・CDbl で数値にするので、数値でなければ
+        // 実行時エラーになり、エラーの原因を書かないデータエラーで読み込みを打ち切る
+        private static string SkillLevelText(SrcDataReader reader, string data_name, string buf)
+        {
+            if (!Information.IsNumeric(buf))
+            {
+                throw reader.InvalidDataException("", data_name);
+            }
+            return buf;
+        }
+
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.SystemConfig.SRCCompatibilityMode, fname))
+            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
             {
                 Load(fname, stream);
             }
@@ -187,6 +198,12 @@ namespace SRCCore.Models
                 {
                     // すでに定義済みのパイロットの場合はデータを置き換え
                     pd = Item(data_name);
+                    if (pd.Name != data_name)
+                    {
+                        // 大文字・小文字や全角・半角だけが違う名前。元の SRC は Collection に同じキーを
+                        // 追加しようとして実行時エラーになり、読み込みを打ち切る
+                        throw reader.InvalidDataException("", data_name);
+                    }
                     pd.Clear();
                 }
                 else
@@ -501,7 +518,8 @@ namespace SRCCore.Models
                                             SRC.AddDataError(reader.InvalidData(@"特殊能力「" + aname + "」のレベル指定が不正です。", data_name));
                                         }
 
-                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, j + 2));
+                                        // 元の SRC は CInt で整数に丸める（偶数丸め）
+                                        alevel = Conversions.ToInteger(SkillLevelText(reader, data_name, Strings.Mid(buf2, j + 2)));
                                         if (string.IsNullOrEmpty(aname))
                                         {
                                             SRC.AddDataError(reader.InvalidData(@"行頭から" + SrcFormatter.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。", data_name));
@@ -514,7 +532,7 @@ namespace SRCCore.Models
                                     {
                                         // 特殊能力名とレベルの両方が指定されている
                                         aname = Strings.Left(buf2, j - 1);
-                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, j + 2));
+                                        alevel = Conversions.ToDouble(SkillLevelText(reader, data_name, Strings.Mid(buf2, j + 2)));
                                         break;
                                     }
                             }
@@ -703,7 +721,7 @@ namespace SRCCore.Models
                                     {
                                         // 特殊能力名とレベルの両方が指定されている
                                         aname = Strings.Left(buf2, j - 1);
-                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, j + 2));
+                                        alevel = Conversions.ToDouble(SkillLevelText(reader, data_name, Strings.Mid(buf2, j + 2)));
                                         break;
                                     }
                             }
@@ -1087,7 +1105,7 @@ namespace SRCCore.Models
                 }
 
                 // アビリティデータ
-                line_buf = UnitDataList.LoadAbility(data_name, pd, reader, SRC);
+                line_buf = UnitDataList.LoadAbility(data_name, pd, reader, SRC, "アビリティデータの終りには空行を置いてください。");
 
             }
             finally

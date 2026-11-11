@@ -4,6 +4,7 @@ using SRCCore.CmdDatas.Commands;
 using SRCCore.Events;
 using SRCCore.TestLib;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Tests
 {
@@ -253,6 +254,26 @@ namespace SRCCore.CmdDatas.Tests
             var cmd = CreateCmd(src, "MapAbility unitA アビリティ 1 2 余分");
             var result = cmd.Exec();
             Assert.AreEqual(-1, result);
+        }
+
+        [TestMethod]
+        public void MapAbilityCmd_UnitOmitted_WrongAbilityName_ReportsAbilityNameError()
+        {
+            // VB の ExecMapAbilityCmd は unit を省略したときもアビリティが見つからなければ
+            // 「アビリティ名が間違っています」のエラーにする（7474/SRC#1473）
+            var fx = new Coverage.Tests.UnitAbilityCoverageFixture();
+            var src = fx.Src;
+            fx.AddUnitData("テスト機");
+            var u = fx.CreateUnit("テスト機", "テストパイロット");
+            u.Status = "出撃";
+            src.Event.SelectedUnitForEvent = u;
+
+            var result = CreateCmd(src, "MapAbility 存在しないアビリティ 1 1").Exec();
+
+            Assert.AreEqual(-1, result);
+            var errors = fx.Gui.CallsOf(nameof(SRCCore.IGUI.ErrorMessage)).Select(x => (string)x.Args[0]).ToList();
+            Assert.AreEqual(1, errors.Count);
+            StringAssert.Contains(errors[0], "アビリティ名が間違っています");
         }
 
         // ──────────────────────────────────────────────

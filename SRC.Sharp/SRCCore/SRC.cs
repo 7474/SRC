@@ -8,6 +8,7 @@ using SRCCore.Config;
 using SRCCore.Events;
 using SRCCore.Expressions;
 using SRCCore.Filesystem;
+using SRCCore.Lib;
 using SRCCore.Logging;
 using SRCCore.Maps;
 using SRCCore.Models;
@@ -104,7 +105,7 @@ namespace SRCCore
         public bool IsCanceled;
 
         // フェイズ名
-        public string Stage;
+        public string Stage = "";
         // ターン数
         public int Turn;
         // 総ターン数
@@ -117,14 +118,49 @@ namespace SRCCore
         public bool IsLocalDataLoaded;
 
         // 最新のセーブデータのファイル名
-        public string LastSaveDataFileName;
+        public string LastSaveDataFileName = "";
+        // 最新のセーブデータがクイックセーブのストリーム（GUI.OpenQuikSaveStream）かどうか。
+        // 元の SRC はクイックセーブもファイル（_クイックセーブ.src）なので LastSaveDataFileName で足りるが、
+        // SRC# のクイックセーブは保存先を GUI が決め、ファイル名を知らないので、こちらで覚える（#1530）
+        public bool IsLastSaveDataQuikSaveStream;
         // リスタート用セーブデータが利用可能かどうか
         public bool IsRestartSaveDataAvailable;
         // クイックロード用セーブデータが利用可能かどうか
         public bool IsQuickSaveDataAvailable;
 
         // システムオプション
+        /// <summary>アプリの設定（srcs.json）。設定の画面で読み書きし、保存する</summary>
         public ISystemConfig SystemConfig { get; set; }
+
+        /// <summary>シナリオのフォルダの設定（Src.ini・srcs.json）。無ければ null</summary>
+        public ScenarioConfig ScenarioConfig
+        {
+            get => scenarioConfig;
+            set
+            {
+                scenarioConfig = value;
+                composedConfig = null;
+            }
+        }
+        private ScenarioConfig scenarioConfig;
+        private ComposedConfig composedConfig;
+
+        /// <summary>
+        /// ゲームが参照する設定。アプリの設定にシナリオの設定を重ねたもの（<see cref="ComposedConfig"/>）。
+        /// アプリの設定が差し替えられたら作り直す
+        /// </summary>
+        public ISystemConfig Config
+        {
+            get
+            {
+                if (composedConfig == null || composedConfig.Base != SystemConfig)
+                {
+                    composedConfig = new ComposedConfig(SystemConfig, scenarioConfig, FileSystem,
+                        ex => Log.LogWarning(ex, "シナリオの設定ファイルを書けませんでした。変えた設定はこのゲームの間だけ効きます。"));
+                }
+                return composedConfig;
+            }
+        }
 
         /// <summary>
         /// オートプレイ（味方フェイズを CPU と同じ思考で自動で行い、ターンを終える）。マップコマンドで切り替える。
@@ -133,35 +169,37 @@ namespace SRCCore
         public bool AutoPlay { get; set; }
 
         /// <summary>敵の攻撃への反撃・防御・回避を CPU と同じ判断で選ぶか（自動反撃モードかオートプレイ中）</summary>
-        public bool IsAutoDefense => SystemConfig.AutoDefense || AutoPlay;
+        public bool IsAutoDefense => Config.AutoDefense || AutoPlay;
 
         // マス目の表示をするか
-        public bool ShowSquareLine => SystemConfig.ShowSquareLine;
+        public bool ShowSquareLine => Config.ShowSquareLine;
         // 敵フェイズにはＢＧＭを変更しないか
-        public bool KeepEnemyBGM => SystemConfig.KeepEnemyBGM;
+        public bool KeepEnemyBGM => Config.KeepEnemyBGM;
         // 拡張データフォルダへのパス
-        public string ExtDataPath => SystemConfig.ExtDataPath;
-        public string ExtDataPath2 => SystemConfig.ExtDataPath2;
+        public string ExtDataPath => Config.ExtDataPath;
+        public string ExtDataPath2 => Config.ExtDataPath2;
         // 自動防御モードを使うか
-        public bool AutoMoveCursor => SystemConfig.AutoMoveCursor;
+        public bool AutoMoveCursor => Config.AutoMoveCursor;
         // スペシャルパワーアニメを表示するか
-        public bool SpecialPowerAnimation => SystemConfig.SpecialPowerAnimation;
+        public bool SpecialPowerAnimation => Config.SpecialPowerAnimation;
         // 戦闘アニメを表示するか
-        public bool BattleAnimation => SystemConfig.BattleAnimation;
+        public bool BattleAnimation => !BattleAnimationUnavailable && Config.BattleAnimation;
+        /// <summary>汎用戦闘アニメのインクルードファイルが無く、戦闘アニメを使えないか。設定ファイルには残さない</summary>
+        public bool BattleAnimationUnavailable { get; set; }
         // 武器準備アニメを表示するか
-        public bool WeaponAnimation => SystemConfig.WeaponAnimation;
+        public bool WeaponAnimation => Config.WeaponAnimation;
         // 拡大戦闘アニメを表示するか
-        public bool ExtendedAnimation => SystemConfig.ExtendedAnimation;
+        public bool ExtendedAnimation => Config.ExtendedAnimation;
         // 移動アニメを表示するか
-        public bool MoveAnimation => SystemConfig.MoveAnimation;
+        public bool MoveAnimation => Config.MoveAnimation;
         // 画像バッファの枚数
-        public int ImageBufferSize => SystemConfig.ImageBufferSize;
+        public int ImageBufferSize => Config.ImageBufferSize;
         // 画像バッファの最大バイト数
-        public int MaxImageBufferByteSize => SystemConfig.MaxImageBufferByteSize;
+        public int MaxImageBufferByteSize => Config.MaxImageBufferByteSize;
         // 拡大画像を画像バッファに保存するか
-        public bool KeepStretchedImage => SystemConfig.KeepStretchedImage;
+        public bool KeepStretchedImage => Config.KeepStretchedImage;
         // SRC.exeのある場所
-        public string AppPath => SystemConfig.AppPath;
+        public string AppPath => Config.AppPath;
 
         /// <summary>
         /// ログを出さずに作る。ログの出力先はホストが <see cref="SRC(ILoggerFactory)"/> で渡す。
@@ -208,8 +246,12 @@ namespace SRCCore
             UList = new Units.Units(this);
             IList = new Items.Items(this);
 
-            // XXX 別な実装をするならコンストラクタでは設定しない
+            // 既定の設定（Src.ini の代わりの設定ファイル）。画面（SRCSharpForm・SRCRender）は作ったあとに自分の設定に差し替える
             SystemConfig = new LocalFileConfig();
+
+            // GeneralLib.Dice が Option「乱数系列非保存」を見られるようにする（最後に作った SRC のオプションを見る）
+            var self = new WeakReference<SRC>(this);
+            GeneralLib.IsRndHistoryUnsaved = () => self.TryGetTarget(out var src) && src.Expression.IsOptionDefined("乱数系列非保存");
         }
 
         public void LogError(Exception ex)

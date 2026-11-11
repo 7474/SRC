@@ -9,7 +9,6 @@ namespace SRCSharpForm
 {
     internal partial class frmConfiguration : Form
     {
-
         // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
         // 本プログラムはフリーソフトであり、無保証です。
         // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
@@ -17,30 +16,30 @@ namespace SRCSharpForm
 
         // マップコマンド「設定変更」用ダイアログ
 
-
         // MP3Volumeを記録
         private float SavedMP3Volume;
 
         public SRCCore.SRC SRC;
         private Sound Sound => SRC.Sound;
-        // XXX 型
-        private LocalFileConfig SystemConfig => SRC.SystemConfig as LocalFileConfig;
+        // ゲームが参照する設定（アプリの設定にシナリオの設定を重ねたもの）。
+        // シナリオの設定ファイルにある項目はシナリオの設定に書く（元の SRC の WriteIni）
+        private ComposedConfig SystemConfig => SRC.Config as ComposedConfig;
 
         // 戦闘アニメOn・Off切り替え
         // UPGRADE_WARNING: イベント chkBattleAnimation.CheckStateChanged は、フォームが初期化されたときに発生します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="88B12AE1-6DE0-48A0-86F1-60C0686C026A"' をクリックしてください。
         private void chkBattleAnimation_CheckStateChanged(object eventSender, EventArgs eventArgs)
         {
-            //// 戦闘アニメを表示しない場合は拡張戦闘アニメ、武器アニメ選択の項目を選択不能にする
-            //if ((int)chkBattleAnimation.CheckState == 1)
-            //{
-            //    chkExtendedAnimation.Enabled = true;
-            //    chkWeaponAnimation.Enabled = true;
-            //}
-            //else
-            //{
-            //    chkExtendedAnimation.Enabled = false;
-            //    chkWeaponAnimation.Enabled = false;
-            //}
+            // 戦闘アニメを表示しない場合は拡張戦闘アニメ、武器アニメ選択の項目を選択不能にする
+            if ((int)chkBattleAnimation.CheckState == 1)
+            {
+                chkExtendedAnimation.Enabled = true;
+                chkWeaponAnimation.Enabled = true;
+            }
+            else
+            {
+                chkExtendedAnimation.Enabled = false;
+                chkWeaponAnimation.Enabled = false;
+            }
         }
 
         // キャンセルボタンが押された
@@ -54,54 +53,25 @@ namespace SRCSharpForm
         // OKボタンが押された
         private void cmdOK_Click(object eventSender, EventArgs eventArgs)
         {
-            //// 各種設定を変更
+            // 各種設定を変更
 
-            //// メッセージスピード
-            //switch (cboMessageSpeed.Text ?? "")
-            //{
-            //    case "神の領域":
-            //        {
-            //            GUI.MessageWait = 0;
-            //            break;
-            //        }
-
-            //    case "超高速":
-            //        {
-            //            GUI.MessageWait = 200;
-            //            break;
-            //        }
-
-            //    case "高速":
-            //        {
-            //            GUI.MessageWait = 400;
-            //            break;
-            //        }
-
-            //    case "普通":
-            //        {
-            //            GUI.MessageWait = 700;
-            //            break;
-            //        }
-
-            //    case "低速":
-            //        {
-            //            GUI.MessageWait = 1000;
-            //            break;
-            //        }
-
-            //    case "手動送り":
-            //        {
-            //            GUI.MessageWait = 10000000;
-            //            break;
-            //        }
-            //}
-
-            //SystemConfig.SetItem("Option", "MessageWait", SrcFormatter.Format(GUI.MessageWait));
+            // メッセージスピード（選択肢に無い値なら変えない。元の SRC と同じ）
+            foreach (var (name, wait) in MessageSpeeds.Items)
+            {
+                if (cboMessageSpeed.Text == name)
+                {
+                    SRC.GUI.MessageWait = wait;
+                    SystemConfig.MessageWait = wait;
+                    break;
+                }
+            }
 
             // 戦闘アニメ表示
             if ((int)chkBattleAnimation.CheckState == 1)
             {
                 SystemConfig.BattleAnimation = true;
+                // 汎用戦闘アニメが無くて使えなくしていた戦闘アニメも、選び直したら使う（SRCRender の設定変更と同じ）
+                SRC.BattleAnimationUnavailable = false;
             }
             else
             {
@@ -202,51 +172,14 @@ namespace SRCSharpForm
         {
             // ダイアログを初期化
 
-            //// メッセージスピード
-            //cboMessageSpeed.Items.Add("手動送り");
-            //cboMessageSpeed.Items.Add("低速");
-            //cboMessageSpeed.Items.Add("普通");
-            //cboMessageSpeed.Items.Add("高速");
-            //cboMessageSpeed.Items.Add("超高速");
-            //cboMessageSpeed.Items.Add("神の領域");
-            //switch (GUI.MessageWait)
-            //{
-            //    case 0:
-            //        {
-            //            cboMessageSpeed.Text = "神の領域";
-            //            break;
-            //        }
-
-            //    case 200:
-            //        {
-            //            cboMessageSpeed.Text = "超高速";
-            //            break;
-            //        }
-
-            //    case 400:
-            //        {
-            //            cboMessageSpeed.Text = "高速";
-            //            break;
-            //        }
-
-            //    case 700:
-            //        {
-            //            cboMessageSpeed.Text = "普通";
-            //            break;
-            //        }
-
-            //    case 1000:
-            //        {
-            //            cboMessageSpeed.Text = "低速";
-            //            break;
-            //        }
-
-            //    case 10000000:
-            //        {
-            //            cboMessageSpeed.Text = "手動送り";
-            //            break;
-            //        }
-            //}
+            // メッセージスピード（選択肢に無い値なら何も選ばない。元の SRC と同じ）
+            cboMessageSpeed.Items.Clear();
+            foreach (var (name, _) in MessageSpeeds.Items)
+            {
+                cboMessageSpeed.Items.Add(name);
+            }
+            var speed = MessageSpeeds.IndexOf(SRC.GUI.MessageWait);
+            cboMessageSpeed.SelectedIndex = speed;
 
             // 戦闘アニメ表示
             if (SRC.BattleAnimation)
@@ -257,15 +190,6 @@ namespace SRCSharpForm
             {
                 chkBattleAnimation.CheckState = CheckState.Unchecked;
             }
-
-            //bool localFileExists() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; 
-            //    var ret = SRC.FileSystem.FileExists(argfname); 
-            //    return ret; }
-
-            //if (!localFileExists())
-            //{
-            //    chkBattleAnimation.CheckState = CheckState.Indeterminate; // 無効
-            //}
 
             // 拡張戦闘アニメ表示
             if (SRC.ExtendedAnimation)
@@ -345,36 +269,25 @@ namespace SRCSharpForm
                 chkShowSquareLine.CheckState = CheckState.Unchecked;
             }
 
-            //// 味方フェイズ開始時のターン表示
-            //if (Strings.LCase(GeneralLib.ReadIni("Option", "Turn")) == "on")
-            //{
-            //    chkShowTurn.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkShowTurn.CheckState = CheckState.Unchecked;
-            //}
+            // 味方フェイズ開始時のターン表示
+            if ((SRC.Config.GetItem("Option", "Turn") ?? "").ToLower() == "on")
+            {
+                chkShowTurn.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkShowTurn.CheckState = CheckState.Unchecked;
+            }
 
-            //// 敵フェイズ中にＢＧＭを変更しない
-            //if (SRC.KeepEnemyBGM)
-            //{
-            //    chkKeepEnemyBGM.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkKeepEnemyBGM.CheckState = CheckState.Unchecked;
-            //}
-
-            //// MIDI演奏にDirectMusicを使用する
-            //if (Strings.LCase(GeneralLib.ReadIni("Option", "UseDirectMusic")) == "on")
-            //{
-            //    chkUseDirectMusic.CheckState = CheckState.Checked;
-            //}
-            //else
-            //{
-            //    chkUseDirectMusic.CheckState = CheckState.Unchecked;
-            //}
-
+            // 敵フェイズ中にＢＧＭを変更しない
+            if (SRC.Config.KeepEnemyBGM)
+            {
+                chkKeepEnemyBGM.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                chkKeepEnemyBGM.CheckState = CheckState.Unchecked;
+            }
 
             // MP3音量
             SavedMP3Volume = Sound.Player.SoundVolume;

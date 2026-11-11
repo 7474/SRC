@@ -193,6 +193,29 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        public void CanFix_MultipleNegatedRepairBlocks_RejectsEveryFixer()
+        {
+            // VB（StartFixCommand・TryFix）は先頭から順に見て、「!名称」が修理装置の名称と違えば修理できない。
+            // 「!」を 2 つ書くと、どちらの修理装置も片方の「!」に当たって修理できない
+            var src = CreateSrc();
+            var ud = AddUnitData(src);
+            ud.AddFeature("修理不可=修理不可 !修理装置 !応急修理");
+            var unit = CreateUnit(src, ud);
+            var fixerData = AddUnitData(src, "修理機");
+            fixerData.AddFeature("修理装置");
+            var fixer = src.UList.Add("修理機", 0, "味方");
+            fixer.Update();
+            var otherData = AddUnitData(src, "応急修理機");
+            otherData.AddFeature("修理装置=応急修理");
+            var other = src.UList.Add("応急修理機", 0, "味方");
+            other.Update();
+            unit.HP = 500;
+
+            Assert.IsFalse(unit.CanFix(fixer));
+            Assert.IsFalse(unit.CanFix(other));
+        }
+
+        [TestMethod]
         public void CanFix_FullHP_IsFalse()
         {
             var src = CreateSrc();
@@ -362,6 +385,42 @@ namespace SRCCore.Coverage.Tests
 
             unit.RecoverEN(500);
             Assert.AreEqual(100, unit.EN);
+        }
+
+        [TestMethod]
+        public void RecoverHP_RoundsFractionToEven()
+        {
+            // 元の SRC は回復後の値を Long へ代入するので偶数への丸め（7474/SRC#1471）
+            var src = CreateSrc();
+            var unit = CreateUnit(src, AddUnitData(src));
+
+            unit.HP = 500;
+            unit.RecoverHP(0.75); // 500 + 7.5 = 507.5 → 508
+            Assert.AreEqual(508, unit.HP);
+
+            unit.HP = 500;
+            unit.RecoverHP(0.25); // 500 + 2.5 = 502.5 → 502
+            Assert.AreEqual(502, unit.HP);
+
+            unit.HP = 500;
+            unit.RecoverHP(-0.04); // 500 - 0.4 = 499.6 → 500
+            Assert.AreEqual(500, unit.HP);
+        }
+
+        [TestMethod]
+        public void RecoverEN_RoundsFractionToEven()
+        {
+            // 元の SRC は回復後の値を Long へ代入するので偶数への丸め（7474/SRC#1471）
+            var src = CreateSrc();
+            var unit = CreateUnit(src, AddUnitData(src));
+
+            unit.EN = 50;
+            unit.RecoverEN(1.5); // 50 + 1.5 = 51.5 → 52
+            Assert.AreEqual(52, unit.EN);
+
+            unit.EN = 50;
+            unit.RecoverEN(2.5); // 50 + 2.5 = 52.5 → 52
+            Assert.AreEqual(52, unit.EN);
         }
 
         [TestMethod]

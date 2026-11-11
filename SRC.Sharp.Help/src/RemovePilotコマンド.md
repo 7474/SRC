@@ -2,15 +2,13 @@
 layout: default
 title: RemovePilotコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **RemovePilotコマンド**
 
 パイロットを削除
 
 **書式**
 
-**RemovePilot** *pilot* [*option*]
+**RemovePilot** [*pilot*] [*option*]
 
 **指定項目説明**
 

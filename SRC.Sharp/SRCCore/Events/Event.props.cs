@@ -27,7 +27,6 @@ namespace SRCCore.Events
         // シナリオ添付のシステムファイルがチェックされたかどうか
         private bool ScenarioLibChecked;
 
-        //// ラベルのリスト
         public SrcCollection<LabelData> colEventLabelList = new SrcCollection<LabelData>();
         private SrcCollection<LabelData> colSysNormalLabelList = new SrcCollection<LabelData>();
         private SrcCollection<LabelData> colNormalLabelList = new SrcCollection<LabelData>();
@@ -47,10 +46,12 @@ namespace SRCCore.Events
         // イベント呼び出しのキュー
         public List<string> EventQue;
         // 現在実行中のイベントラベル
-        public int CurrentLabel;
+        // VB の初期値 0（ラベルが無い）に当たる。C# は行番号が 0 から始まるので -1 にする
+        // （HandleEvent を通らずに引数なしの ClearEvent を実行しても 0 行目のラベルを消さない）
+        public int CurrentLabel = -1;
 
         // Askコマンドで選択した選択肢
-        public string SelectedAlternative;
+        public string SelectedAlternative = "";
 
         // 関数呼び出し用変数
 
@@ -85,7 +86,7 @@ namespace SRCCore.Events
         public IList<string> ForEachSet;
 
         // Rideコマンド用パイロット搭乗履歴
-        public string LastUnitName;
+        public string LastUnitName = "";
         public IList<string> LastPilotID = new List<string>();
 
         // Wait開始時刻
@@ -108,7 +109,7 @@ namespace SRCCore.Events
         // オブジェクトの背景描画方法
         public FillStyle ObjFillStyle;
         // オブジェクトの描画方法
-        public string ObjDrawOption;
+        public string ObjDrawOption = "";
 
         public ObjectDrawSetting GetObjectDrawSetting()
         {
@@ -133,7 +134,7 @@ namespace SRCCore.Events
         {
             SetObjectDrawSetting(DefaultObjectDrawSetting);
         }
-        // XXX GUIの責務にしたい
+        // VB も ObjColor などの描画の設定を Event.bas に持つので、ここに置く
         public ObjectDrawSetting DefaultObjectDrawSetting = new ObjectDrawSetting
         {
             ObjColor = Color.White,
@@ -170,6 +171,6 @@ namespace SRCCore.Events
         // オブジェクトの背景描画方法
         public FillStyle ObjFillStyle;
         // オブジェクトの描画方法
-        public string ObjDrawOption;
+        public string ObjDrawOption = "";
     }
 }

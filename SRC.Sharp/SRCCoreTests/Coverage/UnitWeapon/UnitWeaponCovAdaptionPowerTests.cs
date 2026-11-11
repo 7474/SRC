@@ -344,16 +344,17 @@ namespace SRCCore.Coverage.Tests.UnitWeaponCov
         // ══════════════════════════════════════════════
 
         [TestMethod]
-        public void SetMaxRangeCorrection_NotBelowMinRange()
+        public void SetMaxRangeCorrection_MinimumIsOne()
         {
-            // 最大射程の補正は最小射程を下回らない
+            // 最大射程の補正後の最低値は 1（VB: If intWeaponMaxRange(i) <= 0 Then intWeaponMaxRange(i) = 1）。
+            // 最小射程には引き上げない
             var src = CreateSrc();
             var u = CreateUnit(src, configure: ud => AddWeapon(ud, "ライフル", wclass: "射", minRange: 2, maxRange: 4));
             var w = Weapon(u, "ライフル");
             w.SetMaxRangeCorrection(2);
             Assert.AreEqual(6, w.WeaponMaxRange());
             w.SetMaxRangeCorrection(-5);
-            Assert.AreEqual(2, w.WeaponMaxRange());
+            Assert.AreEqual(1, w.WeaponMaxRange());
         }
     }
 }

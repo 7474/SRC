@@ -12,7 +12,8 @@ namespace SRCRender
     {
         public void DieAnimation(Unit u)
         {
-            EraseUnitBitmap(u.x, u.y, false);
+            // 元の SRC は EraseUnitBitmap の do_refresh を省略して呼ぶ（既定は True）。消したユニットをすぐ画面に出す
+            EraseUnitBitmap(u.x, u.y);
             if (!u.IsHero())
             {
                 ExplodeAnimation(u.Size, u.x, u.y);
@@ -122,7 +123,7 @@ namespace SRCRender
             }
 
             // サイズごとの（表示位置のずれ, 大きさ, 1コマの時間）。汎用戦闘アニメの画像と旧来の画像で異なる
-            var isAnime = Strings.InStr(path, "Anime") > 0;
+            var isAnime = IsAnimeExplodeImagePath(path);
             int offset, size, wait;
             switch (tsize ?? "")
             {
@@ -146,6 +147,15 @@ namespace SRCRender
             }
             ClearPicture();
             UpdateScreen();
+        }
+
+        /// <summary>
+        /// 爆発の画像が戦闘アニメ版（Bitmap\Anime\Explode）か。元の SRC の ExplodeAnimation は
+        /// InStr(explode_image_path, "\Anime\") > 0 で見分ける。パスの区切りは OS に合わせてあるので、\ にそろえてから探す。
+        /// </summary>
+        internal static bool IsAnimeExplodeImagePath(string path)
+        {
+            return Strings.InStr((path ?? "").Replace('/', '\\'), @"\Anime\") > 0;
         }
 
         #region カーソル
@@ -234,7 +244,9 @@ namespace SRCRender
                     }
                     else
                     {
-                        i = TopItem;
+                        // 表示している先頭の項目（GUI.bas の MoveCursorPos の .lstItems.TopIndex + 1）。
+                        // TopItem は WeaponListBox・AbilityListBox で -1 になっていることがあるので使わない
+                        i = w.lstItems.TopIndex + 1;
                     }
                     ty = w.ScreenTop + Compat.Form.TitleBarHeight + w.lstItems.Top + 2
                         + w.lstItems.ItemHeight * (i - 1 - w.lstItems.TopIndex) + w.lstItems.ItemHeight / 2f;
@@ -249,7 +261,10 @@ namespace SRCRender
 
             var prev_lock = IsGUILocked;
             IsGUILocked = true;
+            // 元の SRC と同じく、動かしている間はカーソルの下のユニットをステータスに出さない
+            IsStatusWindowDisabled = true;
             AnimateCursor(posX, posY, tx, ty, 25);
+            IsStatusWindowDisabled = false;
             IsGUILocked = prev_lock;
 
             // 新しいカーソル位置を記録

@@ -14,14 +14,6 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            if (ArgNum < 2)
-            {
-                throw new EventErrorException(this, "Questionコマンドの引数の数が違います");
-            }
-
-            var timeLimit = GetArgAsLong(2);
-            var msg = ArgNum >= 3 ? GetArgAsString(3) : "さあ、どうする？";
-
             // 選択肢の読みこみ
             var answerList = new List<ListBoxItem>();
             CmdData hitEndCmd = null;
@@ -31,7 +23,9 @@ namespace SRCCore.CmdDatas.Commands
                 Expression.FormatMessage(ref buf);
                 if (Strings.Len(buf) > 0)
                 {
-                    if (Event.EventCmd[eventId].Name == CmdType.EndCmd)
+                    // 元の SRC と同じく、式置換の後の行が「End」（大文字・小文字は区別しない）のときに終わる。
+                    // 「End」に引数がある行は選択肢になる
+                    if (Strings.LCase(buf) == "end")
                     {
                         hitEndCmd = Event.EventCmd[eventId];
                         break;
@@ -40,12 +34,13 @@ namespace SRCCore.CmdDatas.Commands
                     answerList.Add(new ListBoxItem
                     {
                         Text = buf,
-                        ListItemID = (eventId - EventData.ID).ToString(),
+                        ListItemID = (eventId - EventData.ID).ToString(SrcCulture.Japanese),
                         ListItemFlag = false,
                     });
                 }
             }
 
+            // 元の SRC は End が無いとき（判定の誤りで）エラーにせず最後の行まで選択肢にするが、SRC# はエラーにする
             if (hitEndCmd == null)
             {
                 throw new EventErrorException(this, "QuestionとEndが対応していません");
@@ -53,6 +48,21 @@ namespace SRCCore.CmdDatas.Commands
 
             if (answerList.Any())
             {
+                // 元の SRC と同じく、引数の数は選択肢があるときだけ確かめる
+                string msg;
+                switch (ArgNum)
+                {
+                    case 3:
+                        msg = GetArgAsString(3);
+                        break;
+                    case 2:
+                        msg = "さあ、どうする？";
+                        break;
+                    default:
+                        throw new EventErrorException(this, "Questionコマンドの引数の数が違います");
+                }
+                var timeLimit = GetArgAsLong(2);
+
                 Commands.SelectedItem = GUI.LIPS(new ListBoxArgs
                 {
                     lb_caption = "選択",

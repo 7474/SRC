@@ -78,7 +78,8 @@ namespace SRCCore.Coverage.Tests
             fx.AddPilotData("使用者").AddSkill("霊力", 20d, "", 1);
             var (user, _, a) = Create("回復Lv1", aclass: "霊L2");
             var p = user.MainPilot();
-            Assert.AreEqual(21, p.MaxPlana());
+            // 霊力20 + 1.5 × レベル1 = 21.5 → 22（元の SRC の Long への代入と同じ偶数への丸め）
+            Assert.AreEqual(22, p.MaxPlana());
 
             p.Plana = 9;
             Assert.IsFalse(a.IsAbilityAvailable("移動前"));
@@ -87,9 +88,9 @@ namespace SRCCore.Coverage.Tests
 
             user.HP = 500;
             user.EN = 40;
-            p.Plana = 21;
+            p.Plana = 22;
             a.UseAbility();
-            Assert.AreEqual(11, p.Plana);
+            Assert.AreEqual(12, p.Plana);
             Assert.AreEqual(500, user.HP);
             Assert.AreEqual(40, user.EN);
         }

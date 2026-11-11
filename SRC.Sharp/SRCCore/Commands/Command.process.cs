@@ -107,9 +107,8 @@ namespace SRCCore.Commands
             SRC.IsScenarioFinished = false;
             SRC.IsCanceled = false;
 
-            //// ポップアップメニュー上で押したマウスボタンが左右どちらかを判定するため、
-            //// あらかじめGetAsyncKeyState()を実行しておく必要がある
-            //GUI.GetAsyncKeyState(GUI.RButtonID);
+            // VB はポップアップメニューで押したボタンを判定するため GetAsyncKeyState を呼んでおくが、
+            // SRC# はメニューの選択を GUI が UiCommand で返すので要らない
             switch (CommandState ?? "")
             {
                 case "ユニット選択":
@@ -137,7 +136,7 @@ namespace SRCCore.Commands
 
             }
 
-            // XXX ロックしたままのパターンをフォローする
+            // VB と同じく、どの分岐でも最後にロックを解く
             GUI.IsGUILocked = false;
         }
 
@@ -156,9 +155,14 @@ namespace SRCCore.Commands
 
             if (SelectedUnit is null)
             {
-                SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
-                SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
-                if (!Map.IsStatusView)
+                SelectedX = GUI.PixelToMapX(VBMath.CLng(GUI.MouseX));
+                SelectedY = GUI.PixelToMapY(VBMath.CLng(GUI.MouseY));
+                // VB: Main.frm の mnuMapCommandItem は番号の順に並び、ProceedCommand は Visible だけを切り替える。
+                // メニューの並びは ターン終了・中断・部隊表・スペシャルパワー検索・全体マップ・作戦目的・
+                // イベントのマップコマンド・自動反撃モード・設定変更・リスタート・クイックロード・クイックセーブ。
+                // 部隊表は Visible を切り替えないので、パイロットステータス・ユニットステータスのステージでも表示する
+                var isNormalStage = !Map.IsStatusView;
+                if (isNormalStage)
                 {
                     // 通常のステージ
                     Status.DisplayGlobalStatus();
@@ -185,10 +189,19 @@ namespace SRCCore.Commands
                             mapCommands.Add(new UiCommand(DumpCmdID, "中断"));
                         }
                     }
+                }
 
-                    // 部隊表
-                    mapCommands.Add(new UiCommand(UnitListCmdID, "部隊表"));
+                // 部隊表
+                mapCommands.Add(new UiCommand(UnitListCmdID, "部隊表"));
 
+                // スペシャルパワー検索
+                if (SRC.PList.Items.Any(p => p.Party == "味方" && p.CountSpecialPower > 0))
+                {
+                    mapCommands.Add(new UiCommand(SearchSpecialPowerCmdID, Expression.Term("スペシャルパワー", u: null) + "検索"));
+                }
+
+                if (isNormalStage)
+                {
                     // 全体マップ
                     mapCommands.Add(new UiCommand(GlobalMapCmdID, "全体マップ"));
 
@@ -197,11 +210,35 @@ namespace SRCCore.Commands
                     {
                         mapCommands.Add(new UiCommand(OperationObjectCmdID, "作戦目的"));
                     }
+                }
 
+                // イベントで定義されたマップコマンド
+                if (!ViewMode)
+                {
+                    var mapCommandCount = 0;
+                    foreach (LabelData lab in Event.colEventLabelList.Values
+                        .Where(x => x.Name == LabelType.MapCommandEventLabel && x.Enable))
+                    {
+                        // 無条件で実行できるコマンド、または条件を満たした場合のみ実行できるコマンド
+                        if (lab.CountPara() == 2 || GeneralLib.StrToLng(lab.Para(3)) != 0)
+                        {
+                            mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
+                            // VB: メニュー項目は MapCommand10CmdID までなので10個で打ち切る
+                            mapCommandCount++;
+                            if (mapCommandCount >= MaxUserCommandCount)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (isNormalStage)
+                {
                     // 自動反撃モード
                     mapCommands.Add(new UiCommand(AutoDefenseCmdID, "自動反撃モード", SystemConfig.AutoDefense));
 
-                    // オートプレイ
+                    // オートプレイ（SRC# で加えたコマンド）
                     if (!ViewMode)
                     {
                         mapCommands.Add(new UiCommand(AutoPlayCmdID, "オートプレイ", SRC.AutoPlay));
@@ -231,59 +268,11 @@ namespace SRCCore.Commands
                         }
                     }
                 }
-                else
-                {
-                    // パイロットステータス・ユニットステータスのステージ
-                }
-                // スペシャルパワー検索
-                if (SRC.PList.Items.Any(p => p.Party == "味方" && p.CountSpecialPower > 0))
-                {
-                    mapCommands.Add(new UiCommand(SearchSpecialPowerCmdID, Expression.Term("スペシャルパワー", u: null) + "検索"));
-                }
-
-                // イベントで定義されたマップコマンド
-                if (!ViewMode)
-                {
-                    var mapCommandCount = 0;
-                    foreach (LabelData lab in Event.colEventLabelList.Values
-                        .Where(x => x.Name == LabelType.MapCommandEventLabel && x.Enable))
-                    {
-                        // 無条件で実行できるコマンド、または条件を満たした場合のみ実行できるコマンド
-                        if (lab.CountPara() == 2 || GeneralLib.StrToLng(lab.Para(3)) != 0)
-                        {
-                            mapCommands.Add(new UiCommand(MapCommandCmdID, lab.Para(2), lab));
-                            // VB: メニュー項目は MapCommand10CmdID までなので10個で打ち切る
-                            mapCommandCount++;
-                            if (mapCommandCount >= MaxUserCommandCount)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
 
                 CommandState = "マップコマンド";
                 GUI.IsGUILocked = false;
-                // XXX
-                //// ADD START 240a
-                //// ここに来た時点でcancel=Trueはユニットのいないセルを右クリックした場合のみ
-                //if (by_cancel)
-                //{
-                //    if (GUI.NewGUIMode && !string.IsNullOrEmpty(Map.MapFileName))
-                //    {
-                //        if (GUI.MouseX < GUI.MainPWidth / 2)
-                //        {
-                //            GUI.MainForm.picUnitStatus.Move(GUI.MainPWidth - 240, 10);
-                //        }
-                //        else
-                //        {
-                //            GUI.MainForm.picUnitStatus.Move(5, 10);
-                //        }
-                //        GUI.MainForm.picUnitStatus.Visible = true;
-                //    }
-                //}
-                //// ADD  END  240a
-                ///
+                // VB はここで新ＧＵＩ（Option「新ＧＵＩ」）のときだけユニットステータスの窓を動かす。
+                // SRC# は新ＧＵＩに対応していない（GUI.SetNewGUIMode は何もしない）ので要らない
                 GUI.ShowMapCommandMenu(mapCommands);
                 return;
             }
@@ -297,10 +286,10 @@ namespace SRCCore.Commands
                 // ユニット上でキャンセルボタンを押した場合は武器一覧
                 // もしくはアビリティ一覧を表示する
                 // 情報が隠蔽されている場合は表示しない
-                if (Expression.IsOptionDefined("ユニット情報隠蔽")
+                if ((Expression.IsOptionDefined("ユニット情報隠蔽")
                     && !SelectedUnit.IsConditionSatisfied("識別済み")
                     && (SelectedUnit.Party0 == "敵"
-                        || SelectedUnit.Party0 == "中立")
+                        || SelectedUnit.Party0 == "中立"))
                         || SelectedUnit.IsConditionSatisfied("ユニット情報隠蔽")
                         || SelectedUnit.IsFeatureAvailable("ダミーユニット"))
                 {
@@ -335,19 +324,9 @@ namespace SRCCore.Commands
 
             var unitCommands = new List<UiCommand>();
 
-            //// MOD START 240aClearUnitStatus
-            //// If MainWidth <> 15 Then
-            //// DisplayUnitStatus SelectedUnit
-            //// End If
-            //if (!GUI.NewGUIMode)
-            //{
-            //    Status.DisplayUnitStatus(SelectedUnit);
-            //}
-            //else
-            //{
-            //    Status.ClearUnitStatus();
-            //}
-            //// MOD  END  240a
+            // VB は新ＧＵＩでなければユニットステータスを表示する（新ＧＵＩでは消す）。
+            // SRC# は新ＧＵＩに対応していないので、常に表示する
+            Status.DisplayUnitStatus(SelectedUnit);
 
             // 武装一覧以外は一旦消しておく
             unitCommands.Add(new UiCommand(WeaponListCmdID, "武装一覧"));
@@ -371,7 +350,7 @@ namespace SRCCore.Commands
                             switch (fd.Name)
                             {
                                 case "合体":
-                                    if (SRC.UList.IsDefined(fd.DataL.Skip(1).First()))
+                                    if (SRC.UList.IsDefined(GeneralLib.LIndex(fd.Data, 2)))
                                     {
                                         isFeatureListVisible = true;
                                     }
@@ -528,6 +507,10 @@ namespace SRCCore.Commands
                         if (currentUnit.IsFeatureAvailable("変形"))
                         {
                             var caption = currentUnit.FeatureName("変形");
+                            if (string.IsNullOrEmpty(caption))
+                            {
+                                caption = "変形";
+                            }
                             var fd = currentUnit.Feature("変形");
                             if (fd.DataL.Skip(1).Any(uname => currentUnit.OtherForm(uname).IsAvailable()))
                             {
@@ -539,6 +522,10 @@ namespace SRCCore.Commands
                         if (currentUnit.IsFeatureAvailable("分離"))
                         {
                             var caption = currentUnit.FeatureName("分離");
+                            if (string.IsNullOrEmpty(caption))
+                            {
+                                caption = "分離";
+                            }
                             var fd = currentUnit.Feature("分離");
                             // 分離形態が利用出来ない場合は分離を行わない
                             var isSplitUnitAvailable = fd.DataL.Skip(1).All(uname => SRC.UList.IsDefined(uname));
@@ -552,26 +539,34 @@ namespace SRCCore.Commands
                             }
                         }
 
+                        // VB: 分離と同じメニュー項目の表示名を置き換えて表示する（項目は 1 つ）
                         if (currentUnit.IsFeatureAvailable("パーツ分離"))
                         {
                             var caption = currentUnit.FeatureName("パーツ分離");
+                            if (string.IsNullOrEmpty(caption))
+                            {
+                                caption = "パーツ分離";
+                            }
+                            unitCommands.RemoveItem(x => x.Id == SplitCmdID);
                             unitCommands.Add(new UiCommand(SplitCmdID, caption));
                         }
 
                         // 合体コマンド
                         if (currentUnit.IsFeatureAvailable("合体"))
                         {
+                            // VB: 条件を満たす最初の合体能力だけをメニューに出す（項目は 1 つ）
                             foreach (var fd in currentUnit.Features.Where(fd => fd.Name == "合体"))
                             {
-                                var caption = fd.DataL.First();
+                                var caption = GeneralLib.LIndex(fd.Data, 1);
                                 // パートナーが存在しているか？
                                 var isPartnerUnitAvailable = fd.DataL.Skip(2).Select(uname => SRC.UList.Item(uname))
-                                        .All(u => !(u.Status != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限")));
+                                        .All(u => u != null && !(u.Status != "出撃" && u.CurrentForm().IsFeatureAvailable("合体制限")));
                                 // 合体先のユニットが作成されているか？
-                                var isCombineUnitExist = SRC.UList.IsDefined(fd.DataL.Skip(1).First());
+                                var isCombineUnitExist = SRC.UList.IsDefined(GeneralLib.LIndex(fd.Data, 2));
                                 if (isPartnerUnitAvailable && isCombineUnitExist)
                                 {
                                     unitCommands.Add(new UiCommand(CombineCmdID, caption == "非表示" ? "合体" : caption));
+                                    break;
                                 }
                             }
                         }
@@ -587,7 +582,7 @@ namespace SRCCore.Commands
                             {
                                 var fd = currentUnit.Feature("ハイパーモード");
 
-                                if (currentUnit.OtherForm(fd.DataL.Skip(1).First()).IsAvailable())
+                                if (currentUnit.OtherForm(GeneralLib.LIndex(fd.Data, 2)).IsAvailable())
                                 {
                                     var caption = fd.DataL.First();
                                     unitCommands.Add(new UiCommand(HyperModeCmdID, caption == "非表示" ? "ハイパーモード" : caption));
@@ -643,12 +638,13 @@ namespace SRCCore.Commands
                     // ユニットコマンド
                     if (!ViewMode)
                     {
-                        // VB: Command.bas ProceedCommand（味方以外のメニュー、735行目付近）ではこの箇所だけ条件式を GetValueAsLong で評価する（他は StrToLng）
-                        AddUserUnitCommand(unitCommands, evalConditionAsExpression: true);
+                        // VB: Command.bas ProceedCommand（味方以外のメニュー、735行目付近）ではこの箇所だけ
+                        // 対象を GetValueAsString、条件式を GetValueAsLong でさらに式として評価する（他は Para のまま・StrToLng）
+                        AddUserUnitCommand(unitCommands, evalAsExpression: true);
                     }
 
                     // 未確認ユニットの場合は情報を隠蔽
-                    if (Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立") || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
+                    if ((Expression.IsOptionDefined("ユニット情報隠蔽") && !currentUnit.IsConditionSatisfied("識別済み") && (currentUnit.Party0 == "敵" || currentUnit.Party0 == "中立")) || currentUnit.IsConditionSatisfied("ユニット情報隠蔽"))
                     {
                         unitCommands.RemoveItem(uc => new int[] {
                             MoveCmdID,
@@ -669,15 +665,7 @@ namespace SRCCore.Commands
 
                     GUI.IsGUILocked = false;
                     GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
-                    // XXX ユニットコマンドの初期選択？
-                    //if (by_cancel)
-                    //{
-                    //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
-                    //}
-                    //else
-                    //{
-                    //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
-                    //}
+                    // VB はキャンセルで開いたときとで PopupMenu の縦の位置を変える（+5・-6）。メニューの位置は GUI が決めるので要らない
                     return;
                 }
 
@@ -736,7 +724,11 @@ namespace SRCCore.Commands
                             }
                         }
                         // 通常移動がテレポートの場合
-                        if (currentUnit.Speed0 == 0 || currentUnit.FeatureLevel("テレポート") >= 0d && enCost == 0)
+                        // VB: Command.bas 859-865。EN コストを書いたときだけ判定し、コストは文字列で "0" と比べる
+                        if (GeneralLib.LLength(currentUnit.FeatureData("テレポート")) == 2
+                            && (currentUnit.Speed0 == 0
+                                || (currentUnit.FeatureLevel("テレポート") >= 0d
+                                    && GeneralLib.LIndex(currentUnit.FeatureData("テレポート"), 2) == "0")))
                         {
                             unitCommands.RemoveItem(x => x.Id == MoveCmdID);
                         }
@@ -762,7 +754,13 @@ namespace SRCCore.Commands
                             }
                         }
                         // 通常移動がジャンプの場合
-                        if (currentUnit.Speed0 == 0 || currentUnit.FeatureLevel("ジャンプ") >= 0d && enCost == 0)
+                        // VB: Command.bas 893-904。EN コストを書いたときはコストを文字列で "0" と比べ、
+                        // 書かないときはレベルだけで判定する
+                        if (GeneralLib.LLength(currentUnit.FeatureData("ジャンプ")) == 2
+                            ? (currentUnit.Speed0 == 0
+                                || (currentUnit.FeatureLevel("ジャンプ") >= 0d
+                                    && GeneralLib.LIndex(currentUnit.FeatureData("ジャンプ"), 2) == "0"))
+                            : currentUnit.FeatureLevel("ジャンプ") >= 0d)
                         {
                             unitCommands.RemoveItem(x => x.Id == MoveCmdID);
                         }
@@ -798,19 +796,16 @@ namespace SRCCore.Commands
                     AddFixSupplyCommand(unitCommands, currentUnit, false);
 
                     // アビリティコマンド
-                    if (currentUnit.Area != "地中")
                     {
-                        var displayAbilities = currentUnit.Abilities.Where(x => x.IsAbilityMastered()
-                          && !x.Data.IsItem()
-                          && x.IsAbilityUseful("移動前")
-                          ).ToList();
-                        if (displayAbilities.Count > 0)
+                        // アイテムでない修得済みのアビリティが 1 つだけなら、メニューにはアビリティ名を表示する
+                        var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem() && x.IsAbilityMastered()).ToList();
+                        AbilityCommandCaption = unitAbilities.Count == 1
+                            ? unitAbilities.First().AbilityNickname()
+                            : Expression.Term("アビリティ", SelectedUnit);
+                        if (currentUnit.Area != "地中"
+                            && unitAbilities.Any(x => x.IsAbilityUseful("移動前")))
                         {
-                            var caption = Expression.Term("アビリティ", SelectedUnit);
-                            var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
-                            unitCommands.Add(new UiCommand(
-                                AbilityCmdID,
-                                unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
+                            unitCommands.Add(new UiCommand(AbilityCmdID, AbilityCommandCaption));
                         }
                     }
 
@@ -820,7 +815,8 @@ namespace SRCCore.Commands
                         if (currentUnit.Weapons.Any(uw => uw.IsWeaponClassifiedAs("Ｃ") && uw.IsWeaponAvailable("チャージ"))
                              || currentUnit.Abilities.Any(ua => ua.IsAbilityClassifiedAs("Ｃ") && ua.IsAbilityAvailable("チャージ")))
                         {
-                            unitCommands.Add(new UiCommand(ChargeCmdID, Expression.Term("チャージ", SelectedUnit)));
+                            // VB は表示名を変えない（Main.frm の Caption「チャージ」のまま。用語名は使わない）
+                            unitCommands.Add(new UiCommand(ChargeCmdID, "チャージ"));
                         }
                     }
 
@@ -871,9 +867,11 @@ namespace SRCCore.Commands
                         }
                     }
 
+                    // VB: 分離と同じメニュー項目の表示名を置き換えて表示する（項目は 1 つ）
                     if (currentUnit.IsFeatureAvailable("パーツ分離")
                         && !string.IsNullOrEmpty(currentUnit.FeatureName("パーツ分離")))
                     {
+                        unitCommands.RemoveItem(x => x.Id == SplitCmdID);
                         unitCommands.Add(new UiCommand(SplitCmdID, currentUnit.FeatureName("パーツ分離")));
                     }
 
@@ -882,10 +880,11 @@ namespace SRCCore.Commands
                         && !currentUnit.IsConditionSatisfied("形態固定")
                         && !currentUnit.IsConditionSatisfied("機体固定"))
                     {
-                        var combines = currentUnit.CombineFeatures(SRC, forMenu: true);
-                        foreach (var fd in combines)
+                        // VB: 条件を満たす最初の合体能力だけをメニューに出す（項目は 1 つ。選んだあとに CombineCommand で一覧を出す）
+                        var combine = FirstCombineFeatureForMenu(currentUnit);
+                        if (combine != null)
                         {
-                            unitCommands.Add(new UiCommand(CombineCmdID, fd.CombineName));
+                            unitCommands.Add(new UiCommand(CombineCmdID, combine.CombineName));
                         }
                     }
 
@@ -893,8 +892,8 @@ namespace SRCCore.Commands
                     {
                         // ハイパーモードコマンド
                         if (currentUnit.IsFeatureAvailable("ハイパーモード")
-                            && (currentUnit.MainPilot().Morale >= (10d * currentUnit.FeatureLevel("ハイパーモード")) + 100
-                                || currentUnit.HP <= currentUnit.MaxHP / 4 && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "気力発動") == 0)
+                            && (currentUnit.MainPilot().Morale >= VBMath.CLng(10d * currentUnit.FeatureLevel("ハイパーモード")) + 100
+                                || (currentUnit.HP <= currentUnit.MaxHP / 4 && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "気力発動") == 0))
                             && Strings.InStr(currentUnit.FeatureData("ハイパーモード"), "自動発動") == 0
                             && !string.IsNullOrEmpty(currentUnit.FeatureName("ハイパーモード"))
                             && !currentUnit.IsConditionSatisfied("形態固定")
@@ -902,8 +901,10 @@ namespace SRCCore.Commands
                         {
                             var fd = currentUnit.Feature("ハイパーモード");
 
-                            if (!currentUnit.IsConditionSatisfied("行動不能")
-                                && currentUnit.OtherForm(fd.DataL.Skip(1).First()).IsAbleToEnter(currentUnit.x, currentUnit.y))
+                            // VB: 行動不能は変身後の形態で見る（.OtherForm(uname).IsConditionSatisfied("行動不能")）
+                            var hyperForm = currentUnit.OtherForm(GeneralLib.LIndex(fd.Data, 2));
+                            if (!hyperForm.IsConditionSatisfied("行動不能")
+                                && hyperForm.IsAbleToEnter(currentUnit.x, currentUnit.y))
                             {
                                 var caption = fd.DataL.First();
                                 unitCommands.Add(new UiCommand(HyperModeCmdID, caption == "非表示" ? "ハイパーモード" : caption));
@@ -1031,9 +1032,12 @@ namespace SRCCore.Commands
                                 case "旧主形態":
                                 case "旧形態":
                                     // 合体後の形態が出撃中なら使用不可
-                                    if (!cf.CombineFeatures(SRC)
-                                        .Select(x => SRC.UList.Item(x.ConbineUnitName))
-                                        .Where(u => u != null)
+                                    // VB: すべての合体能力の合体後のユニット（LIndex(FeatureData, 2)）の今の形態の状態を見る
+                                    if (!cf.Features
+                                        .Where(x => x.Name == "合体")
+                                        .Select(x => GeneralLib.LIndex(x.Data, 2))
+                                        .Where(uname => SRC.UList.IsDefined(uname))
+                                        .Select(uname => SRC.UList.Item(uname).CurrentForm())
                                         .Any(u => u.Status == "出撃" || u.Status == "格納"))
                                     {
                                         isDismissAvailable = true;
@@ -1057,28 +1061,15 @@ namespace SRCCore.Commands
                 }
             }
 
-            //if (!ReferenceEquals(SelectedUnit, Status.DisplayedUnit))
-            //{
-            //    // MOD START 240a
-            //    // DisplayUnitStatus SelectedUnit
-            //    // 新ＧＵＩ使用時はクリック時にユニットステータスを表示しない
-            //    if (!GUI.NewGUIMode)
-            //    {
-            //        Status.DisplayUnitStatus(SelectedUnit);
-            //    }
-            //    // MOD  END  240a
-            //}
+            // VB: 新ＧＵＩでなければ、表示していないユニットのステータスを表示する（SRC# は新ＧＵＩに対応していない）
+            if (!ReferenceEquals(SelectedUnit, Status.DisplayedUnit))
+            {
+                Status.DisplayUnitStatus(SelectedUnit);
+            }
 
             GUI.IsGUILocked = false;
             GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
-            //if (by_cancel)
-            //{
-            //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
-            //}
-            //else
-            //{
-            //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
-            //}
+            // VB はキャンセルで開いたときとで PopupMenu の縦の位置を変える（+5・-6）。メニューの位置は GUI が決めるので要らない
         }
 
         private void AddFixSupplyCommand(List<UiCommand> unitCommands, Unit currentUnit, bool isMoved)
@@ -1086,9 +1077,12 @@ namespace SRCCore.Commands
             // 修理コマンド
             if (currentUnit.IsFeatureAvailable("修理装置") && currentUnit.Area != "地中")
             {
+                // VB: メニューでは隣のユニットの HP だけを見る（修理不可は修理の対象を選ぶときに見る）。
+                // ゾンビを除くのは移動前だけ（移動後のメニューはゾンビを見ない）
                 if (Map.AdjacentUnit(currentUnit)
                     .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
-                        && u.CanFix(currentUnit)))
+                        && u.HP < u.MaxHP
+                        && (isMoved || !u.IsConditionSatisfied("ゾンビ"))))
                 {
                     var fd = currentUnit.Feature("修理装置");
                     if (!string.IsNullOrEmpty(fd.Data))
@@ -1113,9 +1107,12 @@ namespace SRCCore.Commands
             {
                 if (currentUnit.IsFeatureAvailable("補給装置") && currentUnit.Area != "地中")
                 {
+                    // VB: ゾンビの EN を見ないのは移動前だけ（移動後のメニューはゾンビでも EN を見る）
                     if (Map.AdjacentUnit(currentUnit)
                         .Any(u => (u.Party == "味方" || u.Party == "ＮＰＣ")
-                            && u.CanSupply))
+                            && ((isMoved ? u.EN < u.MaxEN : u.CanENRecovery)
+                                || u.CanBulletRecovery
+                                || u.CanStockRecovery)))
                     {
                         var fd = currentUnit.Feature("補給装置");
                         if (!string.IsNullOrEmpty(fd.Data))
@@ -1137,11 +1134,58 @@ namespace SRCCore.Commands
             }
         }
 
+        // メニューに出す合体能力（VB: Command.bas ProceedCommand 1224-1263・1701-1738）。
+        // 名称を能力ごとに見て（.FeatureName(i)）、3 体以上の合体のうち、パートナーが動けて
+        // 縦横の和で 2 以内にいて、合体後のユニットが行動不能でない最初のものを返す
+        private CombineFeature FirstCombineFeatureForMenu(Unit currentUnit)
+        {
+            foreach (var fd in currentUnit.Features.Where(x => x.Name == "合体"))
+            {
+                var data = fd.Data;
+                var len = GeneralLib.LLength(data);
+                if (string.IsNullOrEmpty(fd.FeatureName(currentUnit)) || len <= 3)
+                {
+                    continue;
+                }
+
+                var n = 0;
+                for (var j = 3; j <= len; j++)
+                {
+                    var pu = SRC.UList.Item(GeneralLib.LIndex(data, j));
+                    if (pu is null || !pu.IsOperational())
+                    {
+                        break;
+                    }
+                    if (pu.Status != "出撃" && pu.CurrentForm().IsFeatureAvailable("合体制限"))
+                    {
+                        break;
+                    }
+                    if (Math.Abs(currentUnit.x - pu.CurrentForm().x) + Math.Abs(currentUnit.y - pu.CurrentForm().y) > 2)
+                    {
+                        break;
+                    }
+                    n++;
+                }
+
+                var cu = SRC.UList.Item(GeneralLib.LIndex(data, 2));
+                if (cu is null || cu.IsConditionSatisfied("行動不能"))
+                {
+                    n = 0;
+                }
+
+                if (n == len - 2)
+                {
+                    return new CombineFeature(fd);
+                }
+            }
+            return null;
+        }
+
         // イベントで定義できるユニットコマンド・マップコマンドのメニュー項目の上限
         // （VB: UnitCommand1CmdID ～ UnitCommand10CmdID、MapCommand1CmdID ～ MapCommand10CmdID）
         public const int MaxUserCommandCount = 10;
 
-        private void AddUserUnitCommand(List<UiCommand> unitCommands, Func<LabelData, bool> labelFilter = null, bool evalConditionAsExpression = false)
+        private void AddUserUnitCommand(List<UiCommand> unitCommands, Func<LabelData, bool> labelFilter = null, bool evalAsExpression = false)
         {
             // VB: Command.bas ProceedCommand のユニットコマンドの列挙
             // 同名のコマンドでもラベルごとに1項目とし、名前で重複を除くことはしない。
@@ -1151,12 +1195,13 @@ namespace SRCCore.Commands
                 .Where(x => x.Name == LabelType.UnitCommandEventLabel && x.Enable)
                 .Where(x => labelFilter == null || labelFilter(x)))
             {
-                var target = lab.Para(3);
-                if (SelectedUnit.Party == "味方" && (
+                // VB: 味方以外のメニューでは buf = GetValueAsString(.Para(3))
+                var target = evalAsExpression ? Expression.GetValueAsString(lab.Para(3)) : lab.Para(3);
+                if ((SelectedUnit.Party == "味方" && (
                         (target ?? "") == (SelectedUnit.MainPilot().Name ?? "")
                         || (target ?? "") == (SelectedUnit.MainPilot().get_Nickname(false) ?? "")
                         || (target ?? "") == (SelectedUnit.Name ?? "")
-                    )
+                    ))
                     || (target ?? "") == (SelectedUnit.Party ?? "")
                     || target == "全")
                 {
@@ -1166,7 +1211,7 @@ namespace SRCCore.Commands
                         // 無条件で実行できるコマンド
                         visible = true;
                     }
-                    else if (evalConditionAsExpression)
+                    else if (evalAsExpression)
                     {
                         // 条件を満たした場合のみ実行できるコマンド
                         // VB: GetValueAsLong(.Para(4)) で評価した値をさらに式として評価する
@@ -1205,17 +1250,12 @@ namespace SRCCore.Commands
 
             {
                 var currentUnit = SelectedUnit;
-                //// 移動時にＥＮを消費している場合はステータスウィンドウを更新
-                //// MOD START MARGE
-                //// If MainWidth = 15 Then
-                //if (!GUI.NewGUIMode)
-                //{
-                //    // MOD END MARGE
-                //    if (PrevUnitEN != currentUnit.EN)
-                //    {
-                //        Status.DisplayUnitStatus(SelectedUnit);
-                //    }
-                //}
+                // 移動時にＥＮを消費している場合はステータスウィンドウを更新
+                // （VB は新ＧＵＩでないときだけ。SRC# は新ＧＵＩに対応していない）
+                if (PrevUnitEN != currentUnit.EN)
+                {
+                    Status.DisplayUnitStatus(SelectedUnit);
+                }
 
                 unitCommands.Add(new UiCommand(WaitCmdID, "待機"));
 
@@ -1245,19 +1285,19 @@ namespace SRCCore.Commands
                 AddFixSupplyCommand(unitCommands, currentUnit, true);
 
                 // アビリティコマンド
-                if (currentUnit.Area != "地中")
                 {
-                    var displayAbilities = currentUnit.Abilities.Where(x => x.IsAbilityMastered()
-                      && !x.Data.IsItem()
-                      && x.IsAbilityUseful("移動後")
-                      ).ToList();
-                    if (displayAbilities.Count > 0)
+                    // アイテムでないアビリティが 1 つだけなら、メニューにはアビリティ名を表示する
+                    // （元の SRC は移動後は修得済みかどうかを問わずに数える）
+                    var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
+                    AbilityCommandCaption = unitAbilities.Count == 1
+                        ? unitAbilities.First().AbilityNickname()
+                        : Expression.Term("アビリティ", SelectedUnit);
+                    if (currentUnit.Area != "地中"
+                        && currentUnit.Abilities.Any(x => x.IsAbilityMastered()
+                            && !x.Data.IsItem()
+                            && x.IsAbilityUseful("移動後")))
                     {
-                        var caption = Expression.Term("アビリティ", SelectedUnit);
-                        var unitAbilities = currentUnit.Abilities.Where(x => !x.Data.IsItem()).ToList();
-                        unitCommands.Add(new UiCommand(
-                            AbilityCmdID,
-                            unitAbilities.Count == 1 ? unitAbilities.First().AbilityNickname() : caption));
+                        unitCommands.Add(new UiCommand(AbilityCmdID, AbilityCommandCaption));
                     }
                 }
 
@@ -1266,10 +1306,11 @@ namespace SRCCore.Commands
                     && !currentUnit.IsConditionSatisfied("形態固定")
                     && !currentUnit.IsConditionSatisfied("機体固定"))
                 {
-                    var combines = currentUnit.CombineFeatures(SRC, forMenu: true);
-                    foreach (var fd in combines)
+                    // VB: 条件を満たす最初の合体能力だけをメニューに出す（項目は 1 つ）
+                    var combine = FirstCombineFeatureForMenu(currentUnit);
+                    if (combine != null)
                     {
-                        unitCommands.Add(new UiCommand(CombineCmdID, fd.CombineName));
+                        unitCommands.Add(new UiCommand(CombineCmdID, combine.CombineName));
                     }
                 }
 
@@ -1289,22 +1330,8 @@ namespace SRCCore.Commands
 
             GUI.IsGUILocked = false;
             GUI.ShowUnitCommandMenu(unitCommands.OrderBy(x => x.Id).ToList());
-            //if (by_cancel)
-            //{
-            //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
-            //}
-            //else
-            //{
-            //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
-            //    Application.DoEvents();
-            //    // ＰＣに負荷がかかったような状態だとポップアップメニューの選択が
-            //    // うまく行えない場合があるのでやり直す
-            //    while (CommandState == "移動後コマンド選択" && SelectedCommand == "移動")
-            //    {
-            //        GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
-            //        Application.DoEvents();
-            //    }
-            //}
+            // VB はメニューの位置を変え、PC の負荷でポップアップメニューの選択に失敗したときに出し直す。
+            // メニューの表示と選択は GUI が受け持つので要らない
         }
 
         private void ProceedTargetSelect(
@@ -1450,11 +1477,11 @@ namespace SRCCore.Commands
         {
             LogDebug();
 
-            if (1 <= GUI.PixelToMapX((int)GUI.MouseX) && GUI.PixelToMapX((int)GUI.MouseX) <= Map.MapWidth)
+            if (1 <= GUI.PixelToMapX(VBMath.CLng(GUI.MouseX)) && GUI.PixelToMapX(VBMath.CLng(GUI.MouseX)) <= Map.MapWidth)
             {
-                if (1 <= GUI.PixelToMapY((int)GUI.MouseY) && GUI.PixelToMapY((int)GUI.MouseY) <= Map.MapHeight)
+                if (1 <= GUI.PixelToMapY(VBMath.CLng(GUI.MouseY)) && GUI.PixelToMapY(VBMath.CLng(GUI.MouseY)) <= Map.MapHeight)
                 {
-                    if (!Map.MaskData[GUI.PixelToMapX((int)GUI.MouseX), GUI.PixelToMapY((int)GUI.MouseY)])
+                    if (!Map.MaskData[GUI.PixelToMapX(VBMath.CLng(GUI.MouseX)), GUI.PixelToMapY(VBMath.CLng(GUI.MouseY))])
                     {
                         // 効果範囲内でクリックされればマップ攻撃発動
                         if (SelectedCommand == "マップ攻撃")
@@ -1485,13 +1512,7 @@ namespace SRCCore.Commands
                     CommandState = "ユニット選択";
                     // 選択したコマンドを初期化
                     SelectedCommand = "";
-                    //// MOD START MARGE
-                    //// If MainWidth <> 15 Then
-                    //if (GUI.NewGUIMode)
-                    //{
-                    //    // MOD  END  MARGE
-                    //    Status.ClearUnitStatus();
-                    //}
+                    // VB は新ＧＵＩのときだけユニットステータスを消す。SRC# は新ＧＵＩに対応していないので要らない
 
                     break;
 
@@ -1519,14 +1540,11 @@ namespace SRCCore.Commands
                         GUI.PaintUnitBitmap(SelectedTarget);
                         SelectedUnit = Map.MapDataForUnit[PrevUnitX, PrevUnitY];
                     }
-                    //// MOD START MARGE
-                    //// ElseIf MainWidth = 15 Then
-                    //else if (!GUI.NewGUIMode)
-                    //{
-                    //    // MOD END MARGE
-                    //    Status.DisplayUnitStatus(SelectedUnit);
-                    //}
-                    //// MOD START MARGE
+                    else
+                    {
+                        // VB は新ＧＵＩでないときに表示する（SRC# は新ＧＵＩに対応していない）
+                        Status.DisplayUnitStatus(SelectedUnit);
+                    }
                     // 移動後コマンドをキャンセルした場合、MoveCostを0にリセットする
                     SelectedUnitMoveCost = 0;
                     switch (SelectedCommand ?? "")

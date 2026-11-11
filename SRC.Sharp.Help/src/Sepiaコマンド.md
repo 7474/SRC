@@ -2,8 +2,6 @@
 layout: default
 title: Sepiaコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Sepiaコマンド**
 
 マップをセピア色に変更

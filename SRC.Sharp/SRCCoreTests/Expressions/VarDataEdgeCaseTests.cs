@@ -83,13 +83,13 @@ namespace SRCCore.Expressions.Tests
         }
 
         [TestMethod]
-        public void SetValue_StringType_SetsNumericValueFromParse()
+        public void SetValue_StringType_KeepsPassedNumericValue()
         {
             var vd = new VarData();
             vd.SetValue("y", ValueType.StringType, "42", 0d);
             Assert.AreEqual(ValueType.StringType, vd.VariableType);
             Assert.AreEqual("42", vd.StringValue);
-            Assert.AreEqual(42d, vd.NumericValue, 0.001); // 文字列から数値に変換
+            Assert.AreEqual(0d, vd.NumericValue); // VB と同じく、渡した数値をそのまま持つ
         }
 
         [TestMethod]

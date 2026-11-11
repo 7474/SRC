@@ -53,7 +53,8 @@ namespace SRCCore.Units
         // 戦闘アニメデータを検索
         public string AnimationData(string main_situation, string sub_situation, bool ext_anime_only = false)
         {
-            string AnimationDataRet = null;
+            // 元の SRC の String 型の戻り値と同じく、見つからなければ空文字列を返す
+            string AnimationDataRet = "";
             if (!SRC.BattleAnimation)
             {
                 return AnimationDataRet;
@@ -269,7 +270,8 @@ namespace SRCCore.Units
                 }
             }
 
-            anime = anime.Trim();
+            // 元の SRC の TrimString と同じく、前後のタブ・空白・全角空白だけを除く
+            anime = anime.Trim('\t', ' ', '\u3000');
 
             // 表示キャンセル
             if (string.IsNullOrEmpty(anime) || anime == "-")
@@ -375,7 +377,7 @@ namespace SRCCore.Units
                                 // カットインの表示
                                 if (wait_time > 0)
                                 {
-                                    animepart = (wait_time / 100d) + ";" + animepart;
+                                    animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                                     wait_time = 0;
                                     need_refresh = false;
                                 }
@@ -407,7 +409,7 @@ namespace SRCCore.Units
                                 // 画面処理コマンド
                                 if (wait_time > 0)
                                 {
-                                    animepart = (wait_time / 100d) + ";" + animepart;
+                                    animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                                     wait_time = 0;
                                     need_refresh = false;
                                 }
@@ -447,7 +449,7 @@ namespace SRCCore.Units
                     // ウェイト？
                     if (Information.IsNumeric(animepart))
                     {
-                        wait_time = (int)(100d * Conversions.ToDouble(animepart));
+                        wait_time = VBMath.CLng(100d * Conversions.ToDouble(animepart));
                         goto NextAnime;
                     }
 
@@ -551,7 +553,7 @@ namespace SRCCore.Units
                         {
                             if (wait_time > 0)
                             {
-                                animepart = (wait_time / 100d) + ";" + animepart;
+                                animepart = SrcFormatter.Format(wait_time / 100d) + ";" + animepart;
                                 wait_time = 0;
                             }
 
@@ -574,8 +576,12 @@ namespace SRCCore.Units
 
                     sname = "`" + sname + "`";
 
-                    // 引数の構築
-                    sname = sname + "," + string.Join(",", GeneralLib.ToList(animepart).Skip(1));
+                    // 引数の構築（引数が無ければ「,」を付けない）
+                    var argCount = GeneralLib.ListLength(animepart);
+                    for (var j = 2; j <= argCount; j++)
+                    {
+                        sname = sname + "," + GeneralLib.ListIndex(animepart, j);
+                    }
                     if (in_bulk)
                     {
                         sname = sname + ",`一括指定`";

@@ -129,6 +129,20 @@ namespace SRCCore.Coverage.Tests.UnitAttack
             Assert.AreEqual(prevMoney + 1950, f.Src.Money);
         }
 
+        // 獲得資金は VB では Long の変数に入れるので、小数部は偶数への丸めになる（1501 × 1.5 = 2251.5 → 2252）
+        [TestMethod]
+        public void MapAttack_Earnings_MoneySkill_RoundsToEven()
+        {
+            var (f, a) = Setup("Ｍ全", maxRange: 2, skills: new[] { ("資金獲得", 5d) });
+            f.AddUnit("敵機", "敵", 6, 5, hp: 500);
+            f.Src.UDList.Item("敵機").Value = 3002;
+            var prevMoney = f.Src.Money;
+
+            a.MapAttack(a.Weapons.First(), 6, 5);
+
+            Assert.AreEqual(prevMoney + 2252, f.Src.Money);
+        }
+
         // 獲得資金増加の効果：(1 + 0.1 × レベル) 倍。資金獲得スキルとは重複しない
         [TestMethod]
         public void MapAttack_Earnings_SpecialPowerOverridesSkill()

@@ -1,7 +1,9 @@
 using SRCCore;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace SRCSharpForm
 {
@@ -29,8 +31,27 @@ namespace SRCSharpForm
 
         private Brush GetBrush(ScreanDrawOption option)
         {
-            // TODO FillStyle（透過・単色・ハッチなど）は現状 SolidBrush のみ実装。VB5互換の塗りつぶしスタイル対応が残タスク。
-            return new SolidBrush(option.FillColor);
+            // 元の SRC（VB の FillStyle）と同じく、横線・縦線・斜線などは 8 ピクセル間隔の模様で塗る。
+            // 線の間は塗らない（元の画像が見える）。透明（VbFSTransparent）は呼び出し側で塗らない
+            switch (option.FillStyle)
+            {
+                case FillStyle.VbHorizontalLine:
+                    return new HatchBrush(HatchStyle.Horizontal, option.FillColor, Color.Transparent);
+                case FillStyle.VbVerticalLine:
+                    return new HatchBrush(HatchStyle.Vertical, option.FillColor, Color.Transparent);
+                case FillStyle.VbUpwardDiagonal:
+                    // VB の vbUpwardDiagonal は Windows の HS_FDIAGONAL（左上から右下への線）
+                    return new HatchBrush(HatchStyle.ForwardDiagonal, option.FillColor, Color.Transparent);
+                case FillStyle.VbDownwardDiagonal:
+                    // VB の vbDownwardDiagonal は Windows の HS_BDIAGONAL（左下から右上への線）
+                    return new HatchBrush(HatchStyle.BackwardDiagonal, option.FillColor, Color.Transparent);
+                case FillStyle.VbCross:
+                    return new HatchBrush(HatchStyle.Cross, option.FillColor, Color.Transparent);
+                case FillStyle.VbDiagonalCross:
+                    return new HatchBrush(HatchStyle.DiagonalCross, option.FillColor, Color.Transparent);
+                default:
+                    return new SolidBrush(option.FillColor);
+            }
         }
 
         private Rectangle GetCircleRect(int centerX, int centerY, int rad, float oval_ratio = 1f)
@@ -68,13 +89,31 @@ namespace SRCSharpForm
                 {
                     using (var g = Graphics.FromImage(buffer))
                     {
-                        // GraphicsのインタフェースとSRCのインタフェースで回転方向が逆
-                        if (option.FillStyle != FillStyle.VbFSTransparent)
+                        // VB の Circle メソッドと同じく、開始から終了へ反時計回りに描く。負の角度は中心へ線を引き、
+                        // 両方が負なら扇形を塗る（IGUIScrean.ArcCmd）。Graphics の角度は時計回りなので符号を反転する
+                        var arc = new ScreanArc(start_angle, end_angle);
+                        var rect = GetCircleRect(x1, y1, rad);
+                        if (arc.IsPie)
                         {
-                            g.FillPie(brush, GetCircleRect(x1, y1, rad), -start_angle, -(end_angle - start_angle));
-
+                            if (option.FillStyle != FillStyle.VbFSTransparent)
+                            {
+                                g.FillPie(brush, rect, -arc.StartAngle, -arc.SweepAngle);
+                            }
+                            g.DrawPie(pen, rect, -arc.StartAngle, -arc.SweepAngle);
                         }
-                        g.DrawArc(pen, GetCircleRect(x1, y1, rad), -start_angle, -(end_angle - start_angle));
+                        else
+                        {
+                            g.DrawArc(pen, rect, -arc.StartAngle, -arc.SweepAngle);
+                            if (arc.LineFromStart)
+                            {
+                                g.DrawLine(pen, x1, y1, x1 + rad * (float)Math.Cos(arc.StartAngle * Math.PI / 180d), y1 - rad * (float)Math.Sin(arc.StartAngle * Math.PI / 180d));
+                            }
+                            if (arc.LineToEnd)
+                            {
+                                var end = arc.StartAngle + arc.SweepAngle;
+                                g.DrawLine(pen, x1, y1, x1 + rad * (float)Math.Cos(end * Math.PI / 180d), y1 - rad * (float)Math.Sin(end * Math.PI / 180d));
+                            }
+                        }
                     }
                 }
             }

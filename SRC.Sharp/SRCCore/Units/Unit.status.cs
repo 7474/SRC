@@ -29,38 +29,68 @@ namespace SRCCore.Units
             return buf;
         }
 
+        // 武器の値（攻撃力・射程・命中率・ＣＴ率）の補正に実数を足す。
+        // VB は元の値から始まる Long・Integer の変数（lngWeaponPower(i) など）に実数を足して代入するので、
+        // 足すたびに「元の値＋補正＋実数」を偶数へ丸める。元の値からの差で持つ C# でも、
+        // 元の値を足してから丸めないと端数が .5 のときに結果が変わる。
+        internal static int AddRoundedCorrection(int baseValue, int correction, double value)
+        {
+            return VBMath.CLng(baseValue + correction + value) - baseValue;
+        }
+
+        // 武器強化・武器割合強化の武器指定に武器 w が当てはまるか（元の SRC の Unit.Update）。
+        // ダメージ固定武器（固）は、各指定が武器名・武器表示名・「固」のいずれかのときにだけ当てはまったとみなし、
+        // 「!」の指定・指定無し（すべての武器）の扱いはほかの武器と同じにする。
+        private static bool IsMatchWeaponPowerTarget(UnitWeapon w, IList<string> targets)
+        {
+            if (!w.IsWeaponClassifiedAs("固"))
+            {
+                return w.IsMatchFeatureTarget(targets);
+            }
+
+            var wname = w.Name;
+            var wnickname = w.WeaponNickname();
+            // 武器指定がない場合はすべての武器を強化
+            var flag = targets.Count == 0;
+            var false_count = 0;
+            foreach (var target in targets)
+            {
+                var wtype = target;
+                var with_not = Strings.Left(wtype, 1) == "!";
+                if (with_not)
+                {
+                    wtype = Strings.Mid(wtype, 2);
+                }
+
+                var found = wtype == "固" || wname == wtype || wnickname == wtype;
+                if (with_not)
+                {
+                    // !指定あり。条件を満たした場合は適用しない
+                    if (found)
+                    {
+                        flag = false;
+                        false_count++;
+                    }
+                }
+                else if (found)
+                {
+                    flag = true;
+                }
+                else
+                {
+                    false_count++;
+                }
+            }
+
+            return flag || false_count == 0;
+        }
+
         // ユニットの各種パラメータを更新するサブルーチン
         // パラメータや武器、アビリティデータ等が変化する際には必ず呼び出す必要がある。
         public void Update(bool without_refresh = false)
         {
             // 呼び出しが循環して深くなったら、プロセスを落とさずに例外にする（#1411）
             RuntimeHelpers.EnsureSufficientExecutionStack();
-            //    WeaponData[] prev_wdata;
-            //    double[] prev_wbullets;
-            //    AbilityData[] prev_adata;
-            //    double[] prev_astocks;
-            //    short l, j, i, k, num;
-            //    string ch, buf;
-            //    FeatureData fd;
-            //    Item itm;
-            //    string stype, sdata;
-            //    double slevel;
-            //    string stype2, sdata2;
-            //    double slevel2;
-            //    string wname, wnickname;
-            //    string wnskill, wclass, wtype, sname;
-            //    string fdata;
-            //    short flen;
-            //    bool found, flag;
-            //    bool[] flags;
-            //    bool with_not;
-            //    short false_count;
-            //    var uadaption = new short[5];
-            //    double hp_ratio, en_ratio;
-            //    string ubitmap;
-            //    short pmorale;
-            //    bool is_stable, is_uncontrollable, is_invisible;
-
             // ＨＰとＥＮの値を記録
             var hp_ratio = 100 * HP / (double)MaxHP;
             var en_ratio = 100 * EN / (double)MaxEN;
@@ -68,8 +98,8 @@ namespace SRCCore.Units
             var hasMaxHP = lngMaxHP > 0;
             var hasMaxEN = intMaxEN > 0;
 
-            //    // ユニット用画像ファイル名を記録しておく
-            //    ubitmap = get_Bitmap(false);
+            // ユニット用画像ファイル名を記録しておく
+            var ubitmap = get_Bitmap(false);
 
             // 非表示かどうか記録しておく
             var is_invisible = IsFeatureAvailable("非表示");
@@ -392,67 +422,26 @@ namespace SRCCore.Units
             // パイロット用特殊能力の付加＆強化が完了したので必要技能の判定が可能になった。
             UpdateFeatures();
 
-            //    // アイテムが必要技能を満たすか再度チェック。
-            //    found = false;
-            //    foreach (Item currentItm1 in colItem)
-            //    {
-            //        itm = currentItm1;
-            //        if (itm.Activated != itm.IsAvailable(this))
-            //        {
-            //            found = true;
-            //            break;
-            //        }
-            //    }
+            // アイテムが必要技能を満たすか再度チェック。
+            if (colItem.List.Any(itm => itm.Activated != itm.IsAvailable(this)))
+            {
+                // アイテムの使用可否が変化したので最初からやり直す
+                goto TryAgain;
+            }
 
-            //    if (found)
-            //    {
-            //        // アイテムの使用可否が変化したので最初からやり直す
-            //        goto TryAgain;
-            //    }
-
-            //    // ランクアップするか再度チェック。
-            //    {
-            //        var withBlock6 = Data;
-            //        if (withBlock6.IsFeatureAvailable("ランクアップ"))
-            //        {
-            //            if (Rank >= withBlock6.FeatureLevel("ランクアップ"))
-            //            {
-            //                if (IsNecessarySkillSatisfied(withBlock6.FeatureNecessarySkill(argIndex18), p: null))
-            //                {
-            //                    // ランクアップが可能になったので最初からやり直す
-            //                    goto TryAgain;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    if (CountPilot() > 0)
-            //    {
-            //        // パイロット能力をアップデート
-            //        var loopTo5 = CountPilot();
-            //        for (i = 2; i <= loopTo5; i++)
-            //        {
-            //            Pilot localPilot1() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //            localPilot1().Update();
-            //        }
-
-            //        var loopTo6 = CountSupport();
-            //        for (i = 1; i <= loopTo6; i++)
-            //        {
-            //            Pilot localSupport1() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //            localSupport1().Update();
-            //        }
-
-            //        // メインパイロットは他のパイロットのサポートを受ける関係上
-            //        // 最後にアップデートする
-            //        Pilot(1).Update();
-            //        if (!ReferenceEquals(MainPilot(), Pilot(1)))
-            //        {
-            //            MainPilot().Update();
-            //        }
-            //    }
+            // ランクアップするか再度チェック。
+            if (Data.IsFeatureAvailable("ランクアップ"))
+            {
+                var fd = Data.Feature("ランクアップ");
+                if (Rank >= fd.FeatureLevel)
+                {
+                    if (IsNecessarySkillSatisfied(fd.NecessarySkill))
+                    {
+                        // ランクアップが可能になったので最初からやり直す
+                        goto TryAgain;
+                    }
+                }
+            }
 
             // パイロット能力をアップデート
             if (CountPilot() > 0)
@@ -475,52 +464,41 @@ namespace SRCCore.Units
                 }
             }
 
-            //    // ユニット画像用ファイル名に変化がある場合はユニット画像を更新
-            //    if (BitmapID != 0)
-            //    {
-            //        if ((ubitmap ?? "") != (get_Bitmap(false) ?? ""))
-            //        {
-            //            BitmapID = GUI.MakeUnitBitmap(this);
-            //            var loopTo7 = CountOtherForm();
-            //            for (i = 1; i <= loopTo7; i++)
-            //            {
-            //                Unit localOtherForm() { object argIndex1 = i; var ret = OtherForm(argIndex1); return ret; }
+            // ユニット画像用ファイル名に変化がある場合はユニット画像を更新
+            // （元の SRC の BitmapID の作り直しは、SRC# では描画のときに画像を引くので要らない。描き直しだけを行う）
+            if ((ubitmap ?? "") != (get_Bitmap(false) ?? ""))
+            {
+                if (!without_refresh)
+                {
+                    if (Status == "出撃")
+                    {
+                        if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
+                        {
+                            GUI.PaintUnitBitmap(this);
+                        }
+                    }
+                }
+            }
 
-            //                localOtherForm().BitmapID = 0;
-            //            }
-
-            //            if (!without_refresh)
-            //            {
-            //                if (Status == "出撃")
-            //                {
-            //                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
-            //                    {
-            //                        GUI.PaintUnitBitmap(this);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    // ユニットの表示、非表示が切り替わった場合
-            //    if (is_invisible != IsFeatureAvailable("非表示"))
-            //    {
-            //        if (Status == "出撃")
-            //        {
-            //            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
-            //            {
-            //                BitmapID = GUI.MakeUnitBitmap(this);
-            //                if (IsFeatureAvailable("非表示"))
-            //                {
-            //                    GUI.EraseUnitBitmap(x, y, !without_refresh);
-            //                }
-            //                else if (!without_refresh)
-            //                {
-            //                    GUI.PaintUnitBitmap(this);
-            //                }
-            //            }
-            //        }
-            //    }
+            // ユニットの表示、非表示が切り替わった場合
+            // （元の SRC の BitmapID の作り直しは、SRC# では描画のときに画像を引くので要らない）
+            if (is_invisible != IsFeatureAvailable("非表示"))
+            {
+                if (Status == "出撃")
+                {
+                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
+                    {
+                        if (IsFeatureAvailable("非表示"))
+                        {
+                            GUI.EraseUnitBitmap(x, y, !without_refresh);
+                        }
+                        else if (!without_refresh)
+                        {
+                            GUI.PaintUnitBitmap(this);
+                        }
+                    }
+                }
+            }
 
             // 各種パラメータ
             lngMaxHP = Data.HP + 200 * Rank;
@@ -576,7 +554,7 @@ namespace SRCCore.Units
                 {
                     case 1:
                         {
-                            lngMaxHP = (int)(lngMaxHP + 0.5d * Data.HP);
+                            lngMaxHP = VBMath.CLng(lngMaxHP + 0.5d * Data.HP);
                             break;
                         }
 
@@ -660,7 +638,7 @@ namespace SRCCore.Units
             {
                 if (CountPilot() > 0)
                 {
-                    lngMaxHP = GeneralLib.MinLng((int)(lngMaxHP / 100d * (100 + this.MainPilot().Level)), 9999999);
+                    lngMaxHP = GeneralLib.MinLng(VBMath.CLng(lngMaxHP / 100d * (100 + this.MainPilot().Level)), 9999999);
                 }
             }
 
@@ -669,7 +647,7 @@ namespace SRCCore.Units
             {
                 if (CountPilot() > 0)
                 {
-                    intMaxEN = GeneralLib.MinLng((int)(intMaxEN / 100d * (100 + this.MainPilot().Level)), 9999);
+                    intMaxEN = GeneralLib.MinLng(VBMath.CLng(intMaxEN / 100d * (100 + this.MainPilot().Level)), 9999);
                 }
             }
 
@@ -693,7 +671,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                lngMaxHP = (int)(lngMaxHP + 200d * fd.Level);
+                                lngMaxHP = VBMath.CLng(lngMaxHP + 200d * fd.Level);
                             }
 
                             break;
@@ -703,7 +681,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intMaxEN = (int)(intMaxEN + 10d * fd.Level);
+                                intMaxEN = VBMath.CLng(intMaxEN + 10d * fd.Level);
                             }
 
                             break;
@@ -713,7 +691,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                lngArmor = (int)(lngArmor + 100d * fd.Level);
+                                lngArmor = VBMath.CLng(lngArmor + 100d * fd.Level);
                             }
 
                             break;
@@ -723,7 +701,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intMobility = (int)(intMobility + 5d * fd.Level);
+                                intMobility = VBMath.CLng(intMobility + 5d * fd.Level);
                             }
 
                             break;
@@ -733,7 +711,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intSpeed = (int)(intSpeed + fd.Level);
+                                intSpeed = VBMath.CLng(intSpeed + fd.Level);
                             }
 
                             break;
@@ -743,7 +721,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                lngMaxHP = (int)(lngMaxHP + (long)(Data.HP * fd.Level) / 20L);
+                                lngMaxHP = (int)(lngMaxHP + VBMath.IntDiv(Data.HP * fd.Level, 20));
                             }
 
                             break;
@@ -753,7 +731,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intMaxEN = (int)(intMaxEN + (long)(Data.EN * fd.Level) / 20L);
+                                intMaxEN = (int)(intMaxEN + VBMath.IntDiv(Data.EN * fd.Level, 20));
                             }
 
                             break;
@@ -763,7 +741,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                lngArmor = (int)(lngArmor + (long)(Data.Armor * fd.Level) / 20L);
+                                lngArmor = (int)(lngArmor + VBMath.IntDiv(Data.Armor * fd.Level, 20));
                             }
 
                             break;
@@ -773,7 +751,7 @@ namespace SRCCore.Units
                         {
                             if (pmorale >= GeneralLib.StrToLng(GeneralLib.LIndex(fd.StrData, 2)))
                             {
-                                intMobility = (int)(intMobility + (long)(Data.Mobility * fd.Level) / 20L);
+                                intMobility = (int)(intMobility + VBMath.IntDiv(Data.Mobility * fd.Level, 20));
                             }
 
                             break;
@@ -855,7 +833,7 @@ namespace SRCCore.Units
                     {
                         if ((Area ?? "") == (GeneralLib.LIndex(fd.StrData, 2) ?? ""))
                         {
-                            intSpeed = (int)(intSpeed + fd.Level);
+                            intSpeed = VBMath.CLng(intSpeed + fd.Level);
                         }
                     }
                 }
@@ -1049,43 +1027,31 @@ namespace SRCCore.Units
                 }
             }
 
-            //    // 空中に留まることが出来るかチェック
-            //    if (Status == "出撃" && Area == "空中" && !IsTransAvailable("空"))
-            //    {
-            //        // 地上(水中)に戻す
-            //        switch (Map.TerrainClass(x, y) ?? "")
-            //        {
-            //            case "陸":
-            //            case "屋内":
-            //                {
-            //                    Area = "地上";
-            //                    break;
-            //                }
+            // 空中に留まることが出来るかチェック
+            if (Status == "出撃" && Area == "空中" && !IsTransAvailable("空"))
+            {
+                // 地上(水中)に戻す
+                switch (Map.Terrain(x, y)?.Class ?? "")
+                {
+                    case "陸":
+                    case "屋内":
+                        Area = "地上";
+                        break;
 
-            //            case "水":
-            //            case "深水":
-            //                {
-            //                    if (IsTransAvailable("水上"))
-            //                    {
-            //                        Area = "水上";
-            //                    }
-            //                    else
-            //                    {
-            //                        Area = "水中";
-            //                    }
+                    case "水":
+                    case "深水":
+                        Area = IsTransAvailable("水上") ? "水上" : "水中";
+                        break;
+                }
 
-            //                    break;
-            //                }
-            //        }
-
-            //        if (!without_refresh)
-            //        {
-            //            if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
-            //            {
-            //                GUI.PaintUnitBitmap(this);
-            //            }
-            //        }
-            //    }
+                if (!without_refresh)
+                {
+                    if (!GUI.IsPictureVisible && !string.IsNullOrEmpty(Map.MapFileName))
+                    {
+                        GUI.PaintUnitBitmap(this);
+                    }
+                }
+            }
 
             // 攻撃への耐性を更新
             strAbsorb = "";
@@ -1352,21 +1318,9 @@ namespace SRCCore.Units
                             fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
                         }
 
-                        if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
+                        if (IsMatchWeaponPowerTarget(w, GeneralLib.ToL(fdata)))
                         {
-                            if (w.IsWeaponClassifiedAs("固"))
-                            {
-                                // ダメージ固定武器は武器指定が武器名、武器表示名、「固」の
-                                // いずれかで行われた場合にのみ強化
-                                if (GeneralLib.ToL(fdata).Any(x => x == "固" || x == w.Name || x == w.WeaponNickname()))
-                                {
-                                    correction = (int)(correction + 100d * fd.FeatureLevel);
-                                }
-                            }
-                            else
-                            {
-                                correction = (int)(correction + 100d * fd.FeatureLevel);
-                            }
+                            correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * fd.FeatureLevel);
                         }
                     }
                 }
@@ -1383,21 +1337,9 @@ namespace SRCCore.Units
                             fdata = Strings.Mid(fdata, 2, Strings.Len(fdata) - 2);
                         }
 
-                        if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
+                        if (IsMatchWeaponPowerTarget(w, GeneralLib.ToL(fdata)))
                         {
-                            if (w.IsWeaponClassifiedAs("固"))
-                            {
-                                // ダメージ固定武器は武器指定が武器名、武器表示名、「固」の
-                                // いずれかで行われた場合にのみ強化
-                                if (GeneralLib.ToL(fdata).Any(x => x == "固" || x == w.Name || x == w.WeaponNickname()))
-                                {
-                                    correction = (int)(correction + w.WeaponData.Power * fd.FeatureLevel / 20);
-                                }
-                            }
-                            else
-                            {
-                                correction = (int)(correction + w.WeaponData.Power * fd.FeatureLevel / 20);
-                            }
+                            correction = (int)(correction + VBMath.IntDiv(w.WeaponData.Power * fd.FeatureLevel, 20));
                         }
                     }
                 }
@@ -1405,8 +1347,8 @@ namespace SRCCore.Units
                 // ダメージ固定武器
                 if (w.IsWeaponClassifiedAs("固"))
                 {
-                    // 適用して次へ
-                    w.SetPowerCorrection(correction);
+                    // 適用して次へ（元の SRC は GoTo NextWeapon で、最高値 99999・最低値 1 を適用しない）
+                    w.SetPowerCorrection(correction, applyLimits: false);
                     continue;
                 }
 
@@ -1416,22 +1358,22 @@ namespace SRCCore.Units
                     if (w.IsWeaponLevelSpecified("Ｒ"))
                     {
                         // レベル設定されている場合、増加量をレベル×１０×ランクにする
-                        correction = (int)(correction + 10d * w.WeaponLevel("Ｒ") * (Rank + vupNum));
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * w.WeaponLevel("Ｒ") * (Rank + vupNum));
                         // オ・シ・超と併用した場合
                         if (w.IsWeaponClassifiedAs("オ") || w.IsWeaponClassifiedAs("超") || w.IsWeaponClassifiedAs("シ"))
                         {
-                            correction = (int)(correction + 10d * (10d - w.WeaponLevel("Ｒ")) * (Rank + vupNum));
+                            correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * (10d - w.WeaponLevel("Ｒ")) * (Rank + vupNum));
 
                             // オーラ技
                             if (w.IsWeaponClassifiedAs("オ"))
                             {
-                                correction = (int)(correction + 10d * w.WeaponLevel("Ｒ") * AuraLevel());
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * w.WeaponLevel("Ｒ") * AuraLevel());
                             }
 
                             // サイキック攻撃
                             if (w.IsWeaponClassifiedAs("超"))
                             {
-                                correction = (int)(correction + 10d * w.WeaponLevel("Ｒ") * PsychicLevel());
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * w.WeaponLevel("Ｒ") * PsychicLevel());
                             }
 
                             // 同調率対象攻撃
@@ -1441,7 +1383,7 @@ namespace SRCCore.Units
                                 {
                                     if (MainPilot().SynchroRate() > 0)
                                     {
-                                        correction = (int)(correction + (long)(15d * w.WeaponLevel("Ｒ") * (SyncLevel() - 50d)) / 10L);
+                                        correction = (int)(correction + VBMath.IntDiv(15d * w.WeaponLevel("Ｒ") * (SyncLevel() - 50d), 10));
                                     }
                                 }
                             }
@@ -1460,13 +1402,13 @@ namespace SRCCore.Units
                             // オーラ技
                             if (w.IsWeaponClassifiedAs("オ"))
                             {
-                                correction = (int)(correction + 50d * AuraLevel());
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 50d * AuraLevel());
                             }
 
                             // サイキック攻撃
                             if (w.IsWeaponClassifiedAs("超"))
                             {
-                                correction = (int)(correction + 50d * PsychicLevel());
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 50d * PsychicLevel());
                             }
 
                             // 同調率対象攻撃
@@ -1476,7 +1418,7 @@ namespace SRCCore.Units
                                 {
                                     if (MainPilot().SynchroRate() > 0)
                                     {
-                                        correction = (int)(correction + (long)(15d * (SyncLevel() - 50d)) / 2L);
+                                        correction = (int)(correction + VBMath.IntDiv(15d * (SyncLevel() - 50d), 2));
                                     }
                                 }
                             }
@@ -1489,7 +1431,7 @@ namespace SRCCore.Units
                     if (w.IsWeaponLevelSpecified("改"))
                     {
                         // レベル設定されている場合、増加量をレベル×１０×ランクにする
-                        correction = (int)(correction + 10d * w.WeaponLevel("改") * (Rank + vupNum));
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 10d * w.WeaponLevel("改") * (Rank + vupNum));
                     }
                     else
                     {
@@ -1500,13 +1442,13 @@ namespace SRCCore.Units
                     // オーラ技
                     if (w.IsWeaponClassifiedAs("オ"))
                     {
-                        correction = (int)(correction + 100d * AuraLevel());
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * AuraLevel());
                     }
 
                     // サイキック攻撃
                     if (w.IsWeaponClassifiedAs("超"))
                     {
-                        correction = (int)(correction + 100d * PsychicLevel());
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * PsychicLevel());
                     }
 
                     // 同調率対象攻撃
@@ -1516,7 +1458,7 @@ namespace SRCCore.Units
                         {
                             if (MainPilot().SynchroRate() > 0)
                             {
-                                correction = (int)(correction + 15d * (SyncLevel() - 50d));
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 15d * (SyncLevel() - 50d));
                             }
                         }
                     }
@@ -1529,13 +1471,13 @@ namespace SRCCore.Units
                     // オーラ技
                     if (w.IsWeaponClassifiedAs("オ"))
                     {
-                        correction = (int)(correction + 100d * AuraLevel());
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * AuraLevel());
                     }
 
                     // サイキック攻撃
                     if (w.IsWeaponClassifiedAs("超"))
                     {
-                        correction = (int)(correction + 100d * PsychicLevel());
+                        correction = AddRoundedCorrection(w.WeaponData.Power, correction, 100d * PsychicLevel());
                     }
 
                     // 同調率対象攻撃
@@ -1545,7 +1487,7 @@ namespace SRCCore.Units
                         {
                             if (MainPilot().SynchroRate() > 0)
                             {
-                                correction = (int)(correction + 15d * (SyncLevel() - 50d));
+                                correction = AddRoundedCorrection(w.WeaponData.Power, correction, 15d * (SyncLevel() - 50d));
                             }
                         }
                     }
@@ -1568,6 +1510,7 @@ namespace SRCCore.Units
                 // 最大射程がもともと１ならそれ以上変化しない
                 if (w.WeaponData.MaxRange == 1)
                 {
+                    w.SetMaxRangeCorrection(0, applyMinimum: false);
                     continue;
                 }
 
@@ -1577,15 +1520,18 @@ namespace SRCCore.Units
                     if (CountPilot() > 0)
                     {
                         var p = MainPilot();
+                        // VB: .SkillLevel("超感覚") \ 4 + .SkillLevel("知覚強化") \ 4（それぞれを整数除算）
                         correction = (int)(correction
-                            + p.SkillLevel("超感覚", ref_mode: "") / 4
-                            + p.SkillLevel("知覚強化", ref_mode: "") / 4);
+                            + VBMath.IntDiv(p.SkillLevel("超感覚", ref_mode: ""), 4)
+                            + VBMath.IntDiv(p.SkillLevel("知覚強化", ref_mode: ""), 4));
                     }
                 }
 
+                // 以下の武器には射程延長と最低値を適用しない（思念誘導攻撃の射程延長は残る）
                 // マップ攻撃には適用されない
                 if (w.IsWeaponClassifiedAs("Ｍ"))
                 {
+                    w.SetMaxRangeCorrection(correction, applyMinimum: false);
                     continue;
                 }
 
@@ -1594,12 +1540,14 @@ namespace SRCCore.Units
                     || w.IsWeaponClassifiedAs("突")
                     || w.IsWeaponClassifiedAs("接"))
                 {
+                    w.SetMaxRangeCorrection(correction, applyMinimum: false);
                     continue;
                 }
 
                 // 有線式誘導攻撃には適用されない
                 if (w.IsWeaponClassifiedAs("有"))
                 {
+                    w.SetMaxRangeCorrection(correction, applyMinimum: false);
                     continue;
                 }
 
@@ -1617,10 +1565,11 @@ namespace SRCCore.Units
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
                         {
-                            correction = (int)(correction + fd.FeatureLevel);
+                            correction = AddRoundedCorrection(w.WeaponData.MaxRange, correction, fd.FeatureLevel);
                         }
                     }
                 }
+                // 最低値は1
                 w.SetMaxRangeCorrection(correction);
             }
 
@@ -1643,7 +1592,7 @@ namespace SRCCore.Units
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
                         {
-                            correction = (int)(correction + 5d * fd.FeatureLevel);
+                            correction = AddRoundedCorrection(w.WeaponData.Precision, correction, 5d * fd.FeatureLevel);
                         }
                     }
                 }
@@ -1669,7 +1618,7 @@ namespace SRCCore.Units
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
                         {
-                            correction = (int)(correction + 5d * fd.FeatureLevel);
+                            correction = AddRoundedCorrection(w.WeaponData.Critical, correction, 5d * fd.FeatureLevel);
                         }
                     }
                 }
@@ -1688,7 +1637,7 @@ namespace SRCCore.Units
 
                         if (w.IsMatchFeatureTarget(GeneralLib.ToL(fdata)))
                         {
-                            correction = (int)(correction + 5d * fd.FeatureLevel);
+                            correction = AddRoundedCorrection(w.WeaponData.Critical, correction, 5d * fd.FeatureLevel);
                         }
                     }
                 }
@@ -1698,8 +1647,6 @@ namespace SRCCore.Units
             // 最大弾数を更新
             foreach (var w in Weapons)
             {
-                //intMaxBullet[i] = Weapon(i).Bullet;
-
                 // 最大弾数の増加率
                 var maxBulletRate = 0d;
 
@@ -1731,24 +1678,8 @@ namespace SRCCore.Units
             }
 
             // 弾数を更新
-            // UnitWeapon の構築で引き継ぎしている
-            //Array.Resize(dblBullet, CountWeapon() + 1);
-            //flags = new bool[Information.UBound(prev_wdata) + 1];
-            //var loopTo55 = CountWeapon();
-            //for (i = 1; i <= loopTo55; i++)
-            //{
-            //    dblBullet[i] = 1d;
-            //    var loopTo56 = Information.UBound(prev_wdata);
-            //    for (j = 1; j <= loopTo56; j++)
-            //    {
-            //        if (ReferenceEquals(WData[i], prev_wdata[j]) && !flags[j])
-            //        {
-            //            dblBullet[i] = prev_wbullets[j];
-            //            flags[j] = true;
-            //            break;
-            //        }
-            //    }
-            //}
+            // 武器データの構築（UnitWeapon.NewOrRef）で引き継いでいる。
+            // 同じ武器データのものを 1 つずつ引き継ぎ、新しい武器は弾数を最大にする
 
             // アビリティデータを更新
             // 使用回数は同じアビリティデータのものを引き継ぎ、新しいアビリティは最大にする
@@ -1769,155 +1700,49 @@ namespace SRCCore.Units
                     ua.SetStockFull();
                     return ua;
                 }).ToList();
-            //    prev_adata = new AbilityData[Information.UBound(adata) + 1];
-            //    prev_astocks = new double[Information.UBound(adata) + 1];
-            //    var loopTo57 = Information.UBound(adata);
-            //    for (i = 1; i <= loopTo57; i++)
-            //    {
-            //        prev_adata[i] = adata[i];
-            //        prev_astocks[i] = dblStock[i];
-            //    }
+            // 使用回数を更新
+            // 上のアビリティの構築で引き継いでいる（同じアビリティデータのものを 1 つずつ引き継ぎ、新しいアビリティは最大にする）
 
-            //    {
-            //        var withBlock25 = Data;
-            //        adata = new AbilityData[(withBlock25.CountAbility() + 1)];
-            //        var loopTo58 = withBlock25.CountAbility();
-            //        for (i = 1; i <= loopTo58; i++)
-            //        {
-            //            adata[i] = withBlock25.Ability(i);
-            //        }
-            //    }
+            if (Status != "出撃")
+            {
+                return;
+            }
 
-            //    if (CountPilot() > 0)
-            //    {
-            //        {
-            //            var withBlock26 = MainPilot().Data;
-            //            var loopTo59 = withBlock26.CountAbility();
-            //            for (i = 1; i <= loopTo59; i++)
-            //            {
-            //                Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                adata[Information.UBound(adata)] = withBlock26.Ability(i);
-            //            }
-            //        }
+            // 制御不能？
+            if (IsFeatureAvailable("制御不可"))
+            {
+                if (!is_uncontrollable)
+                {
+                    AddCondition("暴走", -1, cdata: "");
+                }
+            }
+            else if (is_uncontrollable)
+            {
+                if (IsConditionSatisfied("暴走"))
+                {
+                    DeleteCondition("暴走");
+                }
+            }
 
-            //        var loopTo60 = CountPilot();
-            //        for (i = 2; i <= loopTo60; i++)
-            //        {
-            //            Pilot localPilot3() { object argIndex1 = i; var ret = Pilot(argIndex1); return ret; }
-
-            //            {
-            //                var withBlock27 = localPilot3().Data;
-            //                var loopTo61 = withBlock27.CountAbility();
-            //                for (j = 1; j <= loopTo61; j++)
-            //                {
-            //                    Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                    adata[Information.UBound(adata)] = withBlock27.Ability(j);
-            //                }
-            //            }
-            //        }
-
-            //        var loopTo62 = CountSupport();
-            //        for (i = 1; i <= loopTo62; i++)
-            //        {
-            //            Pilot localSupport3() { object argIndex1 = i; var ret = Support(argIndex1); return ret; }
-
-            //            {
-            //                var withBlock28 = localSupport3().Data;
-            //                var loopTo63 = withBlock28.CountAbility();
-            //                for (j = 1; j <= loopTo63; j++)
-            //                {
-            //                    Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                    adata[Information.UBound(adata)] = withBlock28.Ability(j);
-            //                }
-            //            }
-            //        }
-
-            //        if (IsFeatureAvailable("追加サポート"))
-            //        {
-            //            {
-            //                var withBlock29 = AdditionalSupport().Data;
-            //                var loopTo64 = withBlock29.CountAbility();
-            //                for (i = 1; i <= loopTo64; i++)
-            //                {
-            //                    Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                    adata[Information.UBound(adata)] = withBlock29.Ability(i);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    foreach (Item currentItm6 in colItem)
-            //    {
-            //        itm = currentItm6;
-            //        if (itm.Activated)
-            //        {
-            //            var loopTo65 = itm.CountAbility();
-            //            for (i = 1; i <= loopTo65; i++)
-            //            {
-            //                Array.Resize(adata, Information.UBound(adata) + 1 + 1);
-            //                adata[Information.UBound(adata)] = itm.Ability(i);
-            //            }
-            //        }
-            //    }
-
-            //    // 使用回数を更新
-            //    Array.Resize(dblStock, CountAbility() + 1);
-            //    flags = new bool[Information.UBound(prev_adata) + 1];
-            //    var loopTo66 = CountAbility();
-            //    for (i = 1; i <= loopTo66; i++)
-            //    {
-            //        dblStock[i] = 1d;
-            //        var loopTo67 = Information.UBound(prev_adata);
-            //        for (j = 1; j <= loopTo67; j++)
-            //        {
-            //            if (ReferenceEquals(adata[i], prev_adata[j]) && !flags[j])
-            //            {
-            //                dblStock[i] = prev_astocks[j];
-            //                flags[j] = true;
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    if (Status != "出撃")
-            //    {
-            //        return;
-            //    }
-
-            //    // 制御不能？
-            //    if (IsFeatureAvailable("制御不可"))
-            //    {
-            //        if (!is_uncontrollable)
-            //        {
-            //            AddCondition("暴走", -1, cdata: "");
-            //        }
-            //    }
-            //    else if (is_uncontrollable)
-            //    {
-            //        if (IsConditionSatisfied("暴走"))
-            //        {
-            //            DeleteCondition("暴走");
-            //        }
-            //    }
-
-            //    // 不安定？
-            //    if (IsFeatureAvailable("不安定"))
-            //    {
-            //        if (!is_stable)
-            //        {
-            //            if (HP <= MaxHP / 4)
-            //            {
-            //                AddCondition("暴走", -1, cdata: "");
-            //            }
-            //        }
-            //    }
-            //    else if (is_stable)
-            //    {
-            //        if (IsConditionSatisfied("暴走"))
-            //        {
-            //            DeleteCondition("暴走");
-            //        }
-            //    }
+            // 不安定？
+            if (IsFeatureAvailable("不安定"))
+            {
+                if (!is_stable)
+                {
+                    // VB: HP <= MaxHP \ 4（整数除算）
+                    if (HP <= MaxHP / 4)
+                    {
+                        AddCondition("暴走", -1, cdata: "");
+                    }
+                }
+            }
+            else if (is_stable)
+            {
+                if (IsConditionSatisfied("暴走"))
+                {
+                    DeleteCondition("暴走");
+                }
+            }
         }
 
         // 特殊能力仕様文字列（"タイプLv1=データ" 形式）を解析する

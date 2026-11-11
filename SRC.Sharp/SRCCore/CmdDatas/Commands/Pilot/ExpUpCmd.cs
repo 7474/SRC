@@ -1,6 +1,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Pilots;
+using SRCCore.VB;
 using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
@@ -72,8 +73,8 @@ namespace SRCCore.CmdDatas.Commands
                 {
                     var u = p.Unit;
                     u.Update();
-                    u.HP = ((int)(u.MaxHP * hp_ratio / 100d));
-                    u.EN = ((int)(u.MaxEN * en_ratio / 100d));
+                    u.HP = VBMath.CLng(u.MaxHP * hp_ratio / 100d);
+                    u.EN = VBMath.CLng(u.MaxEN * en_ratio / 100d);
                 }
 
                 SRC.PList.UpdateSupportMod(p.Unit);

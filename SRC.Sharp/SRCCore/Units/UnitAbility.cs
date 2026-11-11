@@ -54,7 +54,7 @@ namespace SRCCore.Units
             int AbilityMinRangeRet = Data.MinRange;
             if (IsAbilityClassifiedAs("小"))
             {
-                AbilityMinRangeRet = GeneralLib.MinLng((int)(AbilityMinRangeRet + AbilityLevel("小")), Data.MaxRange);
+                AbilityMinRangeRet = GeneralLib.MinLng(VBMath.CLng(AbilityMinRangeRet + AbilityLevel("小")), Data.MaxRange);
             }
 
             return AbilityMinRangeRet;
@@ -96,55 +96,55 @@ namespace SRCCore.Units
 
                             case 2d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.9d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.9d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 3d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.8d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.8d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 4d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.7d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.7d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 5d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.6d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.6d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 6d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.5d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.5d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 7d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.45d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.45d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 8d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.4d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.4d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 9d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.35d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.35d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case var @case when @case >= 10d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.3d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.3d * AbilityENConsumptionRet);
                                     break;
                                 }
                         }
@@ -165,55 +165,55 @@ namespace SRCCore.Units
 
                             case 2d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.9d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.9d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 3d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.8d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.8d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 4d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.7d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.7d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 5d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.6d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.6d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 6d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.5d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.5d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 7d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.45d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.45d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 8d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.4d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.4d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case 9d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.35d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.35d * AbilityENConsumptionRet);
                                     break;
                                 }
 
                             case var case1 when case1 >= 10d:
                                 {
-                                    AbilityENConsumptionRet = (int)(0.3d * AbilityENConsumptionRet);
+                                    AbilityENConsumptionRet = VBMath.CLng(0.3d * AbilityENConsumptionRet);
                                     break;
                                 }
                         }
@@ -226,9 +226,10 @@ namespace SRCCore.Units
                 rate = 1d;
                 if (Unit.IsFeatureAvailable("ＥＮ消費減少"))
                 {
+                    // VB の FeatureLevel はレベル指定の無い特殊能力を 1 とする
                     foreach (var f in Unit.Features.Where(x => x.Name == "ＥＮ消費減少"))
                     {
-                        rate = rate - 0.1d * f.Level;
+                        rate = rate - 0.1d * f.FeatureLevel;
                     }
                 }
 
@@ -237,7 +238,7 @@ namespace SRCCore.Units
                     rate = 0.1d;
                 }
 
-                AbilityENConsumptionRet = (int)(rate * AbilityENConsumptionRet);
+                AbilityENConsumptionRet = VBMath.CLng(rate * AbilityENConsumptionRet);
             }
 
             return AbilityENConsumptionRet;
@@ -305,11 +306,21 @@ namespace SRCCore.Units
                 }
             EndLoop:
 
-                return Conversions.ToDouble(Strings.Mid(aclass, start_idx, i - start_idx));
+                // 元の SRC の CDbl は数値として読めない文字列（「霊L」の後に数字が無いなど）でエラーになり、
+                // エラーメッセージを出して 0 を返す
+                var lvText = Strings.Mid(aclass, start_idx, i - start_idx);
+                if (!double.TryParse(lvText,
+                    System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowTrailingSign,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out var lv))
+                {
+                    throw new FormatException(lvText);
+                }
+                return lv;
             }
             catch
             {
-                GUI.ErrorMessage(Data.Name + "の" + "アビリティ「" + Data.Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
+                GUI.ErrorMessage(Unit.Name + "の" + "アビリティ「" + Data.Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
                 return 0d;
             }
         }
@@ -666,7 +677,7 @@ namespace SRCCore.Units
             // 共有武器＆アビリティが充填中の場合も使用不可
             if (IsAbilityClassifiedAs("共"))
             {
-                int lv = (int)AbilityLevel("共");
+                int lv = VBMath.CLng(AbilityLevel("共"));
                 if (Unit.Weapons
                     .Where(x => x.IsWeaponClassifiedAs("共"))
                     .Where(x => x.WeaponLevel("共") == lv)
@@ -1286,7 +1297,9 @@ namespace SRCCore.Units
                 var p = t.MainPilot();
                 if (IsAbilityClassifiedAs("対"))
                 {
-                    if (p.Level % AbilityLevel("対") != 0d)
+                    // VB の Mod は実数を偶数丸めで整数にしてから割る（0 で割ると VB は実行時エラー。ここでは適用できないとする）
+                    var lv_div = VBMath.CLng(AbilityLevel("対"));
+                    if (lv_div == 0 || p.Level % lv_div != 0)
                     {
                         return false;
                     }
@@ -1407,17 +1420,19 @@ namespace SRCCore.Units
                 Unit.EN = Unit.EN - AbilityENConsumption();
             }
 
-            // 弾数消費
-            if (Data.Stock > 0 && !IsAbilityClassifiedAs("永"))
+            // 使用回数消費（VB の UseAbility は「永」を見ない。「永」が効くのは武器の弾数だけ）
+            if (Data.Stock > 0)
             {
                 SetStock((Stock() - 1));
 
                 // 一斉使用
                 if (IsAbilityClassifiedAs("斉"))
                 {
+                    // VB: SetStock i, MinLng(MaxStock(i) * Stock(a) \ MaxStock(a), Stock(i))
+                    // 残りの割合を写すのではなく、整数の商と今の回数の小さいほうにする（自分自身も含む）
                     foreach (var ua in Unit.Abilities)
                     {
-                        ua.SetStockRate(dblStock);
+                        ua.SetStock(GeneralLib.MinLng(ua.MaxStock() * Stock() / MaxStock(), ua.Stock()));
                     }
                 }
                 else
@@ -1426,8 +1441,9 @@ namespace SRCCore.Units
                     {
                         if (ua.IsAbilityClassifiedAs("斉"))
                         {
-                            // XXX これどういう式なのかいまいち分からん
-                            ua.SetStock(GeneralLib.MinLng((int)(ua.MaxStock() * dblStock + 0.49999d), ua.Stock()));
+                            // VB: SetStock i, MinLng(CInt(MaxStock(i) * Stock(a) \ MaxStock(a) + 0.49999), Stock(i))
+                            // \ は + より先に計算するので、整数の商に 0.49999 を足して CInt で丸める（商がそのまま残る）
+                            ua.SetStock(GeneralLib.MinLng(VBMath.CLng(ua.MaxStock() * Stock() / MaxStock() + 0.49999d), ua.Stock()));
                         }
                     }
                 }
@@ -1453,29 +1469,29 @@ namespace SRCCore.Units
 
             if (AbilityLevel("Ａ") > 0d)
             {
-                Unit.AddCondition(AbilityNickname() + "充填中", (int)AbilityLevel("Ａ"), cdata: "");
+                Unit.AddCondition(AbilityNickname() + "充填中", VBMath.CLng(AbilityLevel("Ａ")), cdata: "");
             }
 
             if (IsAbilityClassifiedAs("気"))
             {
-                Unit.IncreaseMorale((int)(-5 * AbilityLevel("気")));
+                Unit.IncreaseMorale(VBMath.CLng(-5 * AbilityLevel("気")));
             }
 
             if (IsAbilityClassifiedAs("霊"))
             {
                 hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
                 en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
-                Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * AbilityLevel("霊"));
-                Unit.HP = (int)(Unit.MaxHP * hp_ratio / 100d);
-                Unit.EN = (int)(Unit.MaxEN * en_ratio / 100d);
+                Unit.MainPilot().Plana = VBMath.CLng(Unit.MainPilot().Plana - 5d * AbilityLevel("霊"));
+                Unit.HP = VBMath.CLng(Unit.MaxHP * hp_ratio / 100d);
+                Unit.EN = VBMath.CLng(Unit.MaxEN * en_ratio / 100d);
             }
             else if (IsAbilityClassifiedAs("プ"))
             {
                 hp_ratio = 100 * Unit.HP / (double)Unit.MaxHP;
                 en_ratio = 100 * Unit.EN / (double)Unit.MaxEN;
-                Unit.MainPilot().Plana = (int)(Unit.MainPilot().Plana - 5d * AbilityLevel("プ"));
-                Unit.HP = (int)(Unit.MaxHP * hp_ratio / 100d);
-                Unit.EN = (int)(Unit.MaxEN * en_ratio / 100d);
+                Unit.MainPilot().Plana = VBMath.CLng(Unit.MainPilot().Plana - 5d * AbilityLevel("プ"));
+                Unit.HP = VBMath.CLng(Unit.MaxHP * hp_ratio / 100d);
+                Unit.EN = VBMath.CLng(Unit.MaxEN * en_ratio / 100d);
             }
 
             if (Unit.Party == "味方")
@@ -1488,7 +1504,7 @@ namespace SRCCore.Units
 
             if (IsAbilityClassifiedAs("失"))
             {
-                Unit.HP = GeneralLib.MaxLng((int)(Unit.HP - (long)(Unit.MaxHP * AbilityLevel("失")) / 10L), 0);
+                Unit.HP = GeneralLib.MaxLng((int)(Unit.HP - VBMath.IntDiv(Unit.MaxHP * AbilityLevel("失"), 10L)), 0);
             }
         }
 
@@ -1496,7 +1512,7 @@ namespace SRCCore.Units
         public int Stock()
         {
             int StockRet = default;
-            StockRet = (int)(dblStock * MaxStock());
+            StockRet = VBMath.CLng(dblStock * MaxStock());
             return StockRet;
         }
 
@@ -1506,7 +1522,7 @@ namespace SRCCore.Units
             int MaxStockRet = default;
             if (Unit.BossRank > 0)
             {
-                MaxStockRet = (int)(Data.Stock * (5 + Unit.BossRank) / 5d);
+                MaxStockRet = VBMath.CLng(Data.Stock * (5 + Unit.BossRank) / 5d);
             }
             else
             {
@@ -1533,11 +1549,6 @@ namespace SRCCore.Units
             }
         }
 
-        private void SetStockRate(double new_stock)
-        {
-            dblStock = new_stock;
-        }
-
         public void SetStockFull()
         {
             dblStock = 1d;
@@ -1554,10 +1565,18 @@ namespace SRCCore.Units
             }
             else if (AbilityMaxRange() == 1 && !IsAbilityClassifiedAs("Ｍ"))
             {
-                // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
-                partners = Map.AdjacentUnit(Unit)
-                    .Where(t => Unit.IsEnemy(t))
-                    .Select(t => CombinationPartner(t.x, t.y))
+                // 射程１の場合は自分の周りのいずれかの味方ユニットに対して合体技が使えればＯＫ
+                // VB と同じく左・右・上・下の順に調べる（最初に見つかった組が SelectedPartners に残る）。
+                // VB は下を調べる条件が y > MapHeight（常に偽）で下のユニットを調べないが、誤記とみなして調べる
+                partners = new[]
+                    {
+                        Map.UnitAtPoint(Unit.x - 1, Unit.y),
+                        Map.UnitAtPoint(Unit.x + 1, Unit.y),
+                        Map.UnitAtPoint(Unit.x, Unit.y - 1),
+                        Map.UnitAtPoint(Unit.x, Unit.y + 1),
+                    }
+                    .Where(t => t != null && Unit.IsAlly(t))
+                    .Select(t => CombinationPartner(t.x, t.y, check_formation))
                     .FirstOrDefault(x => x.Count > 0) ?? new List<Unit>();
             }
             else
@@ -1576,7 +1595,7 @@ namespace SRCCore.Units
             // 必要技能を満たさない武器は表示しない
             var baseCondition = !Unit.IsDisabled(Data.Name)
                 && IsAbilityMastered()
-                // XXX 条件によって check_formation 見直す
+                // 元の SRC の一覧（GUI.bas の WeaponListBox・AbilityListBox、Status.bas）は、どの表示でも check_formation に True を渡す
                 && !(IsAbilityClassifiedAs("合") && !IsCombinationAbilityAvailable(true))
                 ;
             return baseCondition;
@@ -1624,7 +1643,8 @@ namespace SRCCore.Units
                 cmorale,
                 cplana,
                 crange,
-                tx, ty, check_formation
+                tx, ty, check_formation,
+                "アビリティ"
                 );
         }
     }

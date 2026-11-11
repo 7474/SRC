@@ -1,6 +1,8 @@
 using SRCCore.Events;
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -12,7 +14,8 @@ namespace SRCCore.CmdDatas.Commands
         {
             without_cr = false;
 
-            // TODO PaintString文の処理の高速化のため、あらかじめ構文解析しておく
+            // 元の SRC は PaintString の引数を構文解析のとき（CmdData.cls の Parse）に整理していた。
+            // SRC# は同じ解釈を ExecInternal で行う（引数の数による分け方・座標指定が確定しているかの判定）。
             // 「;」を含む場合は改めて項に分解
             // (正しくリストの処理が行えないため)
             var orgEdata = eventData.Data;
@@ -28,222 +31,11 @@ namespace SRCCore.CmdDatas.Commands
                 }
                 SetEventData(new EventDataLine(eventData.ID, eventData.Source, eventData.File, eventData.LineNum, edata));
             }
-
-            //switch (ArgNum)
-            //{
-            //    case 2:
-            //        {
-            //            // 引数が１個の場合
-            //            ArgNum = 2;
-            //            strArgs = new string[3];
-            //            lngArgs = new int[3];
-            //            dblArgs = new double[3];
-            //            ArgsType = new Expressions.ValueType[3];
-            //            buf = list[2];
-
-            //            // 表示文字列が式の場合にも対応
-            //            if (Strings.Left(buf, 1) == "\"" && Strings.Right(buf, 1) == "\"")
-            //            {
-            //                if (Strings.InStr(buf, "$(") > 0)
-            //                {
-            //                    strArgs[2] = buf;
-            //                }
-            //                else
-            //                {
-            //                    strArgs[2] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-            //                    ArgsType[2] = Expressions.ValueType.StringType;
-            //                }
-            //            }
-            //            else if (Strings.Left(buf, 1) == "`" && Strings.Right(buf, 1) == "`")
-            //            {
-            //                strArgs[2] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-            //                ArgsType[2] = Expressions.ValueType.StringType;
-            //            }
-            //            else if (Strings.InStr(buf, "$(") > 0)
-            //            {
-            //                strArgs[2] = "\"" + buf + "\"";
-            //            }
-            //            else
-            //            {
-            //                strArgs[2] = buf;
-            //            }
-
-            //            break;
-            //        }
-
-            //    case 3:
-            //        {
-            //            // 引数が２個の場合
-            //            ArgNum = 2;
-            //            strArgs = new string[3];
-            //            lngArgs = new int[3];
-            //            dblArgs = new double[3];
-            //            ArgsType = new Expressions.ValueType[3];
-
-            //            // 表示文字列は必ず文字列
-            //            buf = GeneralLib.ListTail(edata, 2);
-            //            if (Strings.InStr(buf, "$(") > 0)
-            //            {
-            //                strArgs[2] = "\"" + buf + "\"";
-            //            }
-            //            else
-            //            {
-            //                strArgs[2] = buf;
-            //                ArgsType[2] = Expressions.ValueType.StringType;
-            //            }
-
-            //            break;
-            //        }
-
-            //    case 4:
-            //        {
-            //            // 引数が３個の場合
-
-            //            // 座標指定があるかどうかが確定しているか？
-            //            if ((list[2] == "-" || Information.IsNumeric(list[2]) || Expression.IsExpr(list[2])) && (list[3] == "-" || Information.IsNumeric(list[3]) || Expression.IsExpr(list[3])))
-            //            {
-            //                // 座標指定があることが確定
-            //                ArgNum = 4;
-            //                strArgs = new string[5];
-            //                lngArgs = new int[5];
-            //                dblArgs = new double[5];
-            //                ArgsType = new Expressions.ValueType[5];
-            //                strArgs[2] = list[2];
-            //                strArgs[3] = list[3];
-            //                if (!Expression.IsExpr(list[2]))
-            //                {
-            //                    ArgsType[2] = Expressions.ValueType.StringType;
-            //                }
-
-            //                if (!Expression.IsExpr(list[3]))
-            //                {
-            //                    ArgsType[3] = Expressions.ValueType.StringType;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                // 実行時まで座標指定があるかどうか不明
-            //                ArgNum = 5;
-            //                strArgs = new string[6];
-            //                lngArgs = new int[6];
-            //                dblArgs = new double[6];
-            //                ArgsType = new Expressions.ValueType[6];
-            //                strArgs[2] = list[2];
-            //                strArgs[3] = list[3];
-
-            //                // 座標指定がなかった場合の表示文字列
-            //                buf = GeneralLib.ListTail(edata, 2);
-            //                if (Strings.InStr(buf, "$(") > 0)
-            //                {
-            //                    strArgs[5] = "\"" + buf + "\"";
-            //                }
-            //                else
-            //                {
-            //                    strArgs[5] = buf;
-            //                    ArgsType[5] = Expressions.ValueType.StringType;
-            //                }
-            //            }
-
-            //            // 座標指定があった場合の表示文字列
-            //            buf = list[4];
-            //            if (Strings.Left(buf, 1) == "\"" && Strings.Right(buf, 1) == "\"")
-            //            {
-            //                if (Strings.InStr(buf, "$(") > 0)
-            //                {
-            //                    strArgs[4] = buf;
-            //                }
-            //                else
-            //                {
-            //                    strArgs[4] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-            //                    ArgsType[4] = Expressions.ValueType.StringType;
-            //                }
-            //            }
-            //            else if (Strings.Left(buf, 1) == "`" && Strings.Right(buf, 1) == "`")
-            //            {
-            //                strArgs[4] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-            //                ArgsType[4] = Expressions.ValueType.StringType;
-            //            }
-            //            else if (Strings.InStr(buf, "$(") > 0)
-            //            {
-            //                strArgs[4] = "\"" + buf + "\"";
-            //            }
-            //            else
-            //            {
-            //                strArgs[4] = buf;
-            //            }
-
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 引数が４個以上の場合
-
-            //            // 座標指定があるかどうかが確定しているか？
-            //            if ((list[2] == "-" || Information.IsNumeric(list[2]) || Expression.IsExpr(list[2])) && (list[3] == "-" || Information.IsNumeric(list[3]) || Expression.IsExpr(list[3])))
-            //            {
-            //                // 座標指定があることが確定
-            //                ArgNum = 4;
-            //                strArgs = new string[5];
-            //                lngArgs = new int[5];
-            //                dblArgs = new double[5];
-            //                ArgsType = new Expressions.ValueType[5];
-            //                strArgs[2] = list[2];
-            //                strArgs[3] = list[3];
-            //                if (!Expression.IsExpr(list[2]))
-            //                {
-            //                    ArgsType[2] = Expressions.ValueType.StringType;
-            //                }
-
-            //                if (!Expression.IsExpr(list[3]))
-            //                {
-            //                    ArgsType[3] = Expressions.ValueType.StringType;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                // 実行時まで座標指定があるかどうか不明
-            //                ArgNum = 5;
-            //                strArgs = new string[6];
-            //                lngArgs = new int[6];
-            //                dblArgs = new double[6];
-            //                ArgsType = new Expressions.ValueType[6];
-            //                strArgs[2] = list[2];
-            //                strArgs[3] = list[3];
-
-            //                // 座標指定がなかった場合の表示文字列
-            //                buf = GeneralLib.ListTail(edata, 2);
-            //                if (Strings.InStr(buf, "$(") > 0)
-            //                {
-            //                    strArgs[5] = "\"" + buf + "\"";
-            //                }
-            //                else
-            //                {
-            //                    strArgs[5] = buf;
-            //                    ArgsType[5] = Expressions.ValueType.StringType;
-            //                }
-            //            }
-
-            //            // 座標指定があった場合の表示文字列
-            //            buf = GeneralLib.ListTail(edata, 4);
-            //            if (Strings.InStr(buf, "$(") > 0)
-            //            {
-            //                strArgs[4] = "\"" + buf + "\"";
-            //            }
-            //            else
-            //            {
-            //                strArgs[4] = buf;
-            //                ArgsType[4] = Expressions.ValueType.StringType;
-            //            }
-
-            //            break;
-            //        }
-            //}
         }
 
         protected override int ExecInternal()
         {
-            // VB版では構文解析時に引数を整理していた（上のコメントアウト部分）。
+            // VB版では構文解析時に引数を整理していた（CmdData.cls の Parse）。
             // ここでは実行時に同じ解釈を行う。
             switch (ArgNum)
             {
@@ -264,10 +56,26 @@ namespace SRCCore.CmdDatas.Commands
                             break;
                         }
 
-                        // 最初の2引数が有効な座標指定かどうかで判断する
-                        var sx = GetArgAsString(2);
-                        var sy = GetArgAsString(3);
-                        if ((Information.IsNumeric(sx) || sx == "-") && (Information.IsNumeric(sy) || sy == "-"))
+                        // 元の SRC は構文解析のときに、最初の 2 つの項がどちらも「-」・数値・式（「$」「(」で始まる）なら
+                        // 座標指定があることが確定したとみなす。そのときは値が数値でなければ CInt の実行時エラーになる
+                        var raw2 = GetArgRaw(2).RawArg ?? "";
+                        var raw3 = GetArgRaw(3).RawArg ?? "";
+                        var fixedCoord = IsCoordinateTerm(raw2) && IsCoordinateTerm(raw3);
+                        string sx, sy;
+                        if (fixedCoord)
+                        {
+                            // 式でない項は書いたままの文字列として扱う
+                            sx = IsExpr(raw2) ? GetArgAsString(2) : raw2;
+                            sy = IsExpr(raw3) ? GetArgAsString(3) : raw3;
+                        }
+                        else
+                        {
+                            // 実行時まで座標指定があるかどうか不明。最初の2引数が有効な座標指定かどうかで判断する
+                            sx = GetArgAsString(2);
+                            sy = GetArgAsString(3);
+                        }
+
+                        if (fixedCoord || ((Information.IsNumeric(sx) || sx == "-") && (Information.IsNumeric(sy) || sy == "-")))
                         {
                             int xx, yy;
                             if (sx == "-")
@@ -278,7 +86,7 @@ namespace SRCCore.CmdDatas.Commands
                             else
                             {
                                 GUI.HCentering = false;
-                                xx = Conversions.ToInteger(sx) + Event.BaseX;
+                                xx = CInt(sx) + Event.BaseX;
                             }
 
                             if (sy == "-")
@@ -289,7 +97,7 @@ namespace SRCCore.CmdDatas.Commands
                             else
                             {
                                 GUI.VCentering = false;
-                                yy = Conversions.ToInteger(sy) + Event.BaseY;
+                                yy = CInt(sy) + Event.BaseY;
                             }
 
                             // 座標指定があった場合の表示文字列
@@ -309,17 +117,46 @@ namespace SRCCore.CmdDatas.Commands
             return EventData.NextID;
         }
 
-        // idx 番目の引数を表示文字列として返す。
-        // 引用符で囲まれていない引数に式置換が含まれる場合は文字列として式置換を行う（VB版の構文解析時の処理）
+        // 元の SRC の IsExpr（先頭が「$」か「(」）
+        private static bool IsExpr(string term)
+        {
+            return term.StartsWith("$", StringComparison.Ordinal) || term.StartsWith("(", StringComparison.Ordinal);
+        }
+
+        // 座標指定があることが確定する項か（「-」・数値・式）
+        private static bool IsCoordinateTerm(string term)
+        {
+            return term == "-" || Information.IsNumeric(term) || IsExpr(term);
+        }
+
+        // 元の SRC の CInt。数値でなければ実行時エラー（「イベントデータが不正です」）
+        private int CInt(string value)
+        {
+            if (!Information.IsNumeric(value))
+            {
+                throw new EventErrorException(this, "イベントデータが不正です");
+            }
+            return Conversions.ToInteger(value);
+        }
+
+        // idx 番目の引数を表示文字列として返す（VB版の構文解析時の処理）
         private string ArgString(int idx)
         {
             var raw = GetArgRaw(idx).RawArg ?? "";
-            if (Strings.Left(raw, 1) != "\"" && Strings.Left(raw, 1) != "`" && Strings.InStr(raw, "$(") > 0)
+            if ((Strings.Left(raw, 1) == "\"" && Strings.Right(raw, 1) == "\"")
+                || (Strings.Left(raw, 1) == "`" && Strings.Right(raw, 1) == "`"))
             {
+                // 引用符で囲まれた文字列（式置換を含む場合は式置換を行う）
+                return GetArgAsString(idx);
+            }
+            if (Strings.InStr(raw, "$(") > 0)
+            {
+                // 引用符で囲まれていない引数に式置換が含まれる場合は文字列として式置換を行う
                 Expression.ReplaceSubExpression(ref raw);
                 return raw;
             }
-            return GetArgAsString(idx);
+            // VB版は型を未定にし直して項として評価する（数値も書いたままの文字列になる）
+            return Expression.GetValueAsString(raw, true);
         }
 
         // idx 番目以降の引数を空白で区切られたままひとつの文字列として返す（式置換は行う）

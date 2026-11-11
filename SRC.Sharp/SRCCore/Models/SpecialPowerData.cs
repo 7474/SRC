@@ -18,28 +18,28 @@ namespace SRCCore.Models
     public class SpecialPowerData
     {
         // スペシャルパワー名
-        public string Name;
+        public string Name = "";
         // スペシャルパワー名の読み仮名
-        public string KanaName;
+        public string KanaName = "";
         // スペシャルパワー名の短縮形
-        public string ShortName;
+        public string ShortName = "";
         // 消費ＳＰ
         public int SPConsumption;
         // 対象
-        public string TargetType;
+        public string TargetType = "";
         // 効果時間
-        public string Duration;
+        public string Duration = "";
         // 適用条件
-        public string NecessaryCondition;
+        public string NecessaryCondition = "";
         // アニメ
-        public string Animation;
+        public string Animation = "";
 
         // 効果
         private IList<SpecialPowerEffect> effects = new List<SpecialPowerEffect>();
         public IList<SpecialPowerEffect> Effects => effects;
 
         // 解説
-        public string Comment;
+        public string Comment = "";
 
         private SRC SRC;
         private Commands.Command Commands => SRC.Commands;
@@ -55,16 +55,28 @@ namespace SRCCore.Models
         // スペシャルパワーに効果を追加
         public void SetEffect(string elist)
         {
-            var list = GeneralLib.ToList(elist.Trim());
-            foreach (var item in list)
+            // VB は ReDim で効果を作り直す（追加ではなく置き換える）
+            effects.Clear();
+            // VB: ReDim strEffectType(ListLength(elist))、TrimString elist、For i = 1 To ListLength(elist)、buf = ListIndex(elist, i)。
+            // 括弧・クォートの対応が取れていない（ListLength が -1）と ReDim (-1) が実行時エラーになり、
+            // Load の ErrorHandler が原因を書かないデータエラーとして読み込みを打ち切る。
+            // ここでは FormatException を投げ、読み込む側（SpecialPowerDataList）でデータエラーにする
+            elist = GeneralLib.TrimString(elist);
+            var num = GeneralLib.ListLength(elist);
+            if (num < 0)
             {
-                var buf = item;
+                throw new FormatException("効果の括弧・クォートの対応が取れていません: " + elist);
+            }
+            for (var i = 1; i <= num; i++)
+            {
+                var buf = GeneralLib.ListIndex(elist, i);
                 string elevel, etype, edata;
                 var j = Strings.InStr(buf, "Lv");
                 var k = Strings.InStr(buf, "=");
                 string strEffectType;
                 double dblEffectLevel = 0d;
-                string strEffectData = null;
+                // VB の String 配列の既定値は ""
+                string strEffectData = "";
                 if (j > 0 && (k == 0 || j < k))
                 {
                     // レベル指定のある効果(データ指定を伴うものを含む)
@@ -193,30 +205,6 @@ namespace SRCCore.Models
         {
             return effects.Count;
         }
-
-        //        // idx番目の特殊効果タイプ
-        //        public string EffectType(int idx)
-        //        {
-        //            string EffectTypeRet = default;
-        //            EffectTypeRet = strEffectType[idx];
-        //            return EffectTypeRet;
-        //        }
-
-        //        // idx番目の特殊効果レベル
-        //        public double EffectLevel(int idx)
-        //        {
-        //            double EffectLevelRet = default;
-        //            EffectLevelRet = dblEffectLevel[idx];
-        //            return EffectLevelRet;
-        //        }
-
-        //        // idx番目の特殊効果データ
-        //        public string EffectData(int idx)
-        //        {
-        //            string EffectDataRet = default;
-        //            EffectDataRet = strEffectData[idx];
-        //            return EffectDataRet;
-        //        }
 
         // 特殊効果 ename を持っているか
         public bool IsEffectAvailable(string ename)
@@ -348,7 +336,7 @@ namespace SRCCore.Models
                                     case "味方":
                                     case "ＮＰＣ":
                                         {
-                                            if (withBlock2.Party == "味方" && withBlock2.Party0 == "味方" || withBlock2.Party == "ＮＰＣ" && withBlock2.Party0 == "ＮＰＣ")
+                                            if ((withBlock2.Party == "味方" && withBlock2.Party0 == "味方") || (withBlock2.Party == "ＮＰＣ" && withBlock2.Party0 == "ＮＰＣ"))
                                             {
                                                 goto NextUnit3;
                                             }
@@ -655,7 +643,8 @@ namespace SRCCore.Models
                             }
                             else
                             {
-                                if (t.Conditions.Any(x => x.Name.EndsWith("属性使用不能") && x.Lifetime > 0))
+                                // VB は名前が 6 文字より長いものだけを見る（「属性使用不能」そのものは対象外）
+                                if (t.Conditions.Any(x => Strings.Len(x.Name) > 6 && Strings.Right(x.Name, 6) == "属性使用不能" && t.ConditionLifetime(x.Name) > 0))
                                 {
                                     EffectiveRet = true;
                                     goto ExitFunc;
@@ -776,7 +765,6 @@ namespace SRCCore.Models
         ExitFunc:
             ;
 
-
             // Unitが変化してしまった場合は元に戻しておく
             if (!ReferenceEquals(my_unit, p.Unit))
             {
@@ -785,7 +773,6 @@ namespace SRCCore.Models
 
             return EffectiveRet;
         }
-
 
         // スペシャルパワーを使用する
         // (パイロット p が使用した場合)
@@ -833,11 +820,10 @@ namespace SRCCore.Models
                             }
                             Apply(p, u, is_event);
                         }
-
-                        if (!is_event)
-                        {
-                            SRC.GUI.Sleep(300);
-                        }
+                    }
+                    if (!is_event)
+                    {
+                        SRC.GUI.Sleep(300);
                     }
                     break;
 
@@ -1058,7 +1044,7 @@ namespace SRCCore.Models
                             var tmp = t.HP;
                             if (effect.strEffectType == "ＨＰ増加")
                             {
-                                t.HP = (int)(t.HP + 1000d * effect.dblEffectLevel);
+                                t.HP = VBMath.CLng(t.HP + 1000d * effect.dblEffectLevel);
                             }
                             else
                             {
@@ -1149,7 +1135,7 @@ namespace SRCCore.Models
                             var tmp = t.EN;
                             if (effect.strEffectType == "ＥＮ増加")
                             {
-                                t.EN = (int)(t.EN + 10d * effect.dblEffectLevel);
+                                t.EN = VBMath.CLng(t.EN + 10d * effect.dblEffectLevel);
                             }
                             else
                             {
@@ -1242,11 +1228,11 @@ namespace SRCCore.Models
                                 var tmp = withBlock2.Plana;
                                 if (effect.strEffectType == "霊力増加")
                                 {
-                                    withBlock2.Plana = (int)(withBlock2.Plana + 10d * effect.dblEffectLevel);
+                                    withBlock2.Plana = VBMath.CLng(withBlock2.Plana + 10d * effect.dblEffectLevel);
                                 }
                                 else
                                 {
-                                    withBlock2.Plana = (int)(withBlock2.Plana + (long)(withBlock2.MaxPlana() * effect.dblEffectLevel) / 10L);
+                                    withBlock2.Plana = (int)(withBlock2.Plana + VBMath.IntDiv(withBlock2.MaxPlana() * effect.dblEffectLevel, 10L));
                                 }
 
                                 if (!is_event)
@@ -1331,7 +1317,7 @@ namespace SRCCore.Models
                             {
                                 // メインパイロットのみのＳＰを回復
                                 var tmp = t.MainPilot().SP;
-                                t.MainPilot().SP = (int)(t.MainPilot().SP + 10d * effect.dblEffectLevel);
+                                t.MainPilot().SP = VBMath.CLng(t.MainPilot().SP + 10d * effect.dblEffectLevel);
                                 if (!is_event)
                                 {
                                     if (!displayed_string)
@@ -1359,10 +1345,13 @@ namespace SRCCore.Models
                             }
                             else
                             {
+                                // VB はメインパイロットのあと、サブ・サポート・追加サポートは
+                                // ＳＰが変わったときだけメッセージを出す
+                                var is_main = true;
                                 foreach (var tp in t.AllPilots)
                                 {
                                     var tmp = tp.SP;
-                                    tp.SP = (int)(tp.SP + 2d * effect.dblEffectLevel + (long)(10d * effect.dblEffectLevel) / n);
+                                    tp.SP = VBMath.CLng(tp.SP + 2d * effect.dblEffectLevel + VBMath.IntDiv(10d * effect.dblEffectLevel, n));
                                     if (!is_event)
                                     {
                                         if (!displayed_string)
@@ -1378,15 +1367,19 @@ namespace SRCCore.Models
                                         }
 
                                         displayed_string = true;
-                                        if (effect.dblEffectLevel >= 0d)
+                                        if (is_main || tp.SP != tmp)
                                         {
-                                            GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tp.SP - tmp) + "回復した。");
-                                        }
-                                        else
-                                        {
-                                            GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - tp.SP) + "減少した。");
+                                            if (effect.dblEffectLevel >= 0d)
+                                            {
+                                                GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tp.SP - tmp) + "回復した。");
+                                            }
+                                            else
+                                            {
+                                                GUI.DisplaySysMessage(tp.get_Nickname(false) + "の" + Expression.Term("ＳＰ", t) + "が" + SrcFormatter.Format(tmp - tp.SP) + "減少した。");
+                                            }
                                         }
                                     }
+                                    is_main = false;
                                 }
                             }
 
@@ -1470,7 +1463,7 @@ namespace SRCCore.Models
                                 && t.ConditionLifetime("術使用不能") <= 0
                                 && t.ConditionLifetime("技使用不能") <= 0
                                 // 弱、効属性は状態回復から除外。
-                                && t.Conditions.Where(x => Strings.Right(x.Name, 6) == "属性使用不能").All(x =>
+                                && t.Conditions.Where(x => Strings.Len(x.Name) > 6 && Strings.Right(x.Name, 6) == "属性使用不能").All(x =>
                                 {
                                     return t.ConditionLifetime(x.Name) <= 0;
                                 }))
@@ -1628,12 +1621,11 @@ namespace SRCCore.Models
                             }
 
                             // 弱、効属性は状態回復から除外。
-                            foreach (var condition in t.Conditions.Where(x => Strings.Right(x.Name, 6) == "属性使用不能").Where(x =>
+                            foreach (var condition in t.Conditions.Where(x => Strings.Len(x.Name) > 6 && Strings.Right(x.Name, 6) == "属性使用不能").Where(x =>
                             {
                                 return t.ConditionLifetime(x.Name) > 0;
                             }).ToList())
                             {
-
                                 t.DeleteCondition(condition.Name);
                             }
 
@@ -1745,7 +1737,7 @@ namespace SRCCore.Models
 
                             // 気力を増加させる
                             var tmp = t.MainPilot().Morale;
-                            t.IncreaseMorale((int)(10d * effect.dblEffectLevel));
+                            t.IncreaseMorale(VBMath.CLng(10d * effect.dblEffectLevel));
                             if (!is_event)
                             {
                                 if (!displayed_string)
@@ -1775,7 +1767,7 @@ namespace SRCCore.Models
 
                             // 気力を低下させる
                             var tmp = t.MainPilot().Morale;
-                            t.IncreaseMorale((int)(-10 * effect.dblEffectLevel));
+                            t.IncreaseMorale(VBMath.CLng(-10 * effect.dblEffectLevel));
                             if (!is_event)
                             {
                                 if (TargetType == "敵" || TargetType == "全敵")
@@ -1825,7 +1817,7 @@ namespace SRCCore.Models
 
                             // ダメージを与える
                             var tmp = t.HP;
-                            t.HP = GeneralLib.MaxLng(t.HP - 10 * GeneralLib.Dice((int)(10d * effect.dblEffectLevel)), 10);
+                            t.HP = GeneralLib.MaxLng(t.HP - 10 * GeneralLib.Dice(VBMath.CLng(10d * effect.dblEffectLevel)), 10);
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -1897,8 +1889,8 @@ namespace SRCCore.Models
 
                             // ＨＰを減少させる
                             var tmp = t.HP;
-                            // XXX キャスト位置、ダメージを切り捨てでいいか。
-                            t.HP = (t.HP - (int)(t.HP * effect.dblEffectLevel / 10L));
+                            // VB: .HP = .HP - .HP * EffectLevel(i) \ 10（被除数を偶数丸めしてから整数除算）
+                            t.HP = (int)(t.HP - VBMath.IntDiv(t.HP * effect.dblEffectLevel, 10L));
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -1977,7 +1969,7 @@ namespace SRCCore.Models
 
                             // ＥＮを減少させる
                             var tmp = t.EN;
-                            t.EN = (t.EN - (int)((t.EN * effect.dblEffectLevel) / 10L));
+                            t.EN = (int)(t.EN - VBMath.IntDiv(t.EN * effect.dblEffectLevel, 10L));
                             if (TargetType == "全敵")
                             {
                                 GUI.Sleep(150);
@@ -2200,7 +2192,6 @@ namespace SRCCore.Models
             return displayed_string;
         }
 
-
         // スペシャルパワーが有効なターゲットの総数を返す
         // (パイロット p が使用した場合)
         public int CountTarget(Pilot p)
@@ -2313,7 +2304,7 @@ namespace SRCCore.Models
                                 case "味方":
                                 case "ＮＰＣ":
                                     {
-                                        if (u.Party == "味方" && u.Party0 == "味方" || u.Party == "ＮＰＣ" && u.Party0 == "ＮＰＣ")
+                                        if ((u.Party == "味方" && u.Party0 == "味方") || (u.Party == "ＮＰＣ" && u.Party0 == "ＮＰＣ"))
                                         {
                                             goto NextUnit3;
                                         }
@@ -2371,19 +2362,6 @@ namespace SRCCore.Models
         // スペシャルパワーのアニメーションを表示
         public bool PlayAnimation()
         {
-            //string anime;
-            //string[] animes;
-            //int anime_head;
-            //var buf = default(string);
-            //var ret = default(double);
-            //int i, j;
-            //string expr;
-            //int wait_time = 0;
-            //Color prev_obj_color;
-            //Color prev_obj_fill_color;
-            //HatchStyle prev_obj_fill_style;
-            //int prev_obj_draw_width;
-            //string prev_obj_draw_option;
             if (!SRC.SpecialPowerAnimation)
             {
                 return false;
@@ -2518,7 +2496,7 @@ namespace SRCCore.Models
                     // ウェイト？
                     if (Information.IsNumeric(anime))
                     {
-                        wait_time = (int)(100d * Conversions.ToDouble(anime));
+                        wait_time = VBMath.CLng(100d * Conversions.ToDouble(anime));
                         goto NextAnime;
                     }
 

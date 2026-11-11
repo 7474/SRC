@@ -58,7 +58,8 @@ namespace SRCCore.Lib.Tests
         {
             using var reader = CreateReader("data // this is a comment");
             var line = reader.GetLine();
-            Assert.AreEqual("data ", line);
+            // 元の SRC と同じく、コメントを除いてから前後の空白を取り除く（7474/SRC#1498）
+            Assert.AreEqual("data", line);
         }
 
         [TestMethod]

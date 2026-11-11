@@ -3,22 +3,34 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.VB;
+
 namespace SRCCore.Models
 {
     // ノンパイロットデータのクラス
     public class NonPilotData
     {
         // 名称
-        public string Name;
+        public string Name = "";
+
+        private SRC SRC;
+
+        public NonPilotData()
+        {
+        }
+
+        public NonPilotData(SRC src)
+        {
+            SRC = src;
+        }
 
         // 愛称
-        private string strNickname;
+        private string strNickname = "";
 
         // ビットマップ名
-        private string proBitmap;
+        private string proBitmap = "";
         // ビットマップが存在するか
         public bool IsBitmapMissing;
-
 
         // 愛称
         public string Nickname0 => strNickname;
@@ -27,74 +39,68 @@ namespace SRCCore.Models
         {
             get
             {
-                string NicknameRet = default;
-                string pname;
-                int idx;
-                NicknameRet = strNickname;
+                var nickname = strNickname;
+                // SRC を持たない（テストなどで直接作った）データは、置き換えをせずに返す
+                if (SRC == null)
+                {
+                    return nickname;
+                }
 
-                // Impl
-                //// イベントで愛称が変更されている？
-                //if (Strings.InStr(NicknameRet, "主人公") == 1 || Strings.InStr(NicknameRet, "ヒロイン") == 1)
-                //{
-                //    NicknameRet = Expression.GetValueAsString(ref NicknameRet + "愛称");
-                //}
+                // イベントで愛称が変更されている？
+                if (Strings.InStr(nickname, "主人公") == 1 || Strings.InStr(nickname, "ヒロイン") == 1)
+                {
+                    nickname = SRC.Expression.GetValueAsString(nickname + "愛称");
+                }
 
-                //Expression.ReplaceSubExpression(ref NicknameRet);
+                SRC.Expression.ReplaceSubExpression(ref nickname);
 
-                //// 表情パターンの場合
-                //idx = Strings.InStr(Name, "(");
-                //if (idx > 1)
-                //{
-                //    // パイロット本来の名称or愛称を切り出し
-                //    pname = Strings.Left(Name, idx - 1);
+                // 表情パターンの場合
+                var idx = Strings.InStr(Name, "(");
+                if (idx > 1)
+                {
+                    // パイロット本来の名称or愛称を切り出し
+                    var pname = Strings.Left(Name, idx - 1);
 
-                //    // そのパイロットが作成されている？
-                //    bool localIsDefined() { object argIndex1 = pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+                    // そのパイロットが作成されている？
+                    if (!SRC.PList.IsDefined(pname))
+                    {
+                        return nickname;
+                    }
 
-                //    if (!localIsDefined())
-                //    {
-                //        return default;
-                //    }
+                    // パイロットがユニットに乗っている？
+                    var u = SRC.PList.Item(pname).Unit;
+                    if (u is null)
+                    {
+                        return nickname;
+                    }
 
-                //    {
-                //        var withBlock = SRC.PList.Item(ref pname);
-                //        // パイロットがユニットに乗っている？
-                //        if (withBlock.Unit is null)
-                //        {
-                //            return default;
-                //        }
+                    // 念のため……
+                    if (u.CountPilot() == 0)
+                    {
+                        return nickname;
+                    }
 
-                //        {
-                //            var withBlock1 = withBlock.Unit;
-                //            // 念のため……
-                //            if (withBlock1.CountPilot() == 0)
-                //            {
-                //                return default;
-                //            }
+                    // パイロットはメインパイロット？
+                    var mp = u.MainPilot();
+                    if (pname != mp.Name && pname != mp.Data?.Nickname)
+                    {
+                        return nickname;
+                    }
 
-                //            // パイロットはメインパイロット？
-                //            if ((pname ?? "") != (withBlock1.MainPilot().Name ?? "") && (pname ?? "") != (withBlock1.MainPilot().Data.Nickname ?? ""))
-                //            {
-                //                return default;
-                //            }
+                    // パイロット愛称変更能力を適用
+                    if (u.IsFeatureAvailable("パイロット愛称"))
+                    {
+                        pname = u.FeatureData("パイロット愛称");
+                        idx = Strings.InStr(pname, "$(愛称)");
+                        if (idx > 0)
+                        {
+                            pname = Strings.Left(pname, idx - 1) + nickname + Strings.Mid(pname, idx + 5);
+                        }
+                        nickname = pname;
+                    }
+                }
 
-                //            // パイロット愛称変更能力を適用
-                //            if (withBlock1.IsFeatureAvailable(ref "パイロット愛称"))
-                //            {
-                //                pname = withBlock1.FeatureData(ref "パイロット愛称");
-                //                idx = Strings.InStr(pname, "$(愛称)");
-                //                if (idx > 0)
-                //                {
-                //                    pname = Strings.Left(pname, idx - 1) + NicknameRet + Strings.Mid(pname, idx + 5);
-                //                }
-
-                //                NicknameRet = pname;
-                //            }
-                //        }
-                //    }
-                //}
-
-                return NicknameRet;
+                return nickname;
             }
 
             set

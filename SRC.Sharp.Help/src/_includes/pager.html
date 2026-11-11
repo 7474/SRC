@@ -1,0 +1,39 @@
+{%- comment -%}
+  頁の下の「前の頁」「次の頁」。元の SRC のヘルプ（WinHelp）の「<<」「>>」と同じく、目次（_data/menu.yml）の順に前後の頁へ進む。
+  目次の頁の名前（page）と頁の title が同じものを今の頁とする（menu.html の今いる頁の印と同じ）。目次に無い頁には出さない。
+{%- endcomment -%}
+{%- assign pager_list = "" -%}
+{%- for item in site.data.menu.toc -%}
+  {%- if item.url -%}{%- assign pager_list = pager_list | append: item.url | append: "¤" | append: item.page | append: "¶" -%}{%- endif -%}
+  {%- for entry in item.subfolderitems -%}
+    {%- if entry.url -%}{%- assign pager_list = pager_list | append: entry.url | append: "¤" | append: entry.page | append: "¶" -%}{%- endif -%}
+    {%- for entry2 in entry.subfolderitems -%}
+      {%- if entry2.url -%}{%- assign pager_list = pager_list | append: entry2.url | append: "¤" | append: entry2.page | append: "¶" -%}{%- endif -%}
+      {%- for entry3 in entry2.subfolderitems -%}
+        {%- if entry3.url -%}{%- assign pager_list = pager_list | append: entry3.url | append: "¤" | append: entry3.page | append: "¶" -%}{%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- assign pager_items = pager_list | split: "¶" -%}
+{%- assign pager_index = -1 -%}
+{%- for line in pager_items -%}
+  {%- assign pager_cols = line | split: "¤" -%}
+  {%- if pager_index == -1 and pager_cols[1] == page.title -%}{%- assign pager_index = forloop.index0 -%}{%- endif -%}
+{%- endfor -%}
+{%- if pager_index != -1 -%}
+  {%- assign pager_prev = pager_index | minus: 1 -%}
+  {%- assign pager_next = pager_index | plus: 1 -%}
+  <nav class="pager" aria-label="前後の頁">
+    {%- if pager_prev >= 0 -%}
+      {%- assign pager_cols = pager_items[pager_prev] | split: "¤" -%}
+      <a class="pager-prev" href="{{ pager_cols[0] | relative_url }}" rel="prev"><span class="pager-label">« 前の頁</span><span class="pager-title">{{ pager_cols[1] }}</span></a>
+    {%- else -%}
+      <span></span>
+    {%- endif -%}
+    {%- if pager_next < pager_items.size -%}
+      {%- assign pager_cols = pager_items[pager_next] | split: "¤" -%}
+      <a class="pager-next" href="{{ pager_cols[0] | relative_url }}" rel="next"><span class="pager-label">次の頁 »</span><span class="pager-title">{{ pager_cols[1] }}</span></a>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

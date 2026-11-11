@@ -32,7 +32,6 @@ namespace SRCRender
         private readonly SKTypeface typeface;
         private readonly SKFont font;
         private readonly SKFont boldFont;
-        private readonly SKFont largeFont;
 
         /// <summary>
         /// 既定で使うフォント。SRC のリストは等幅（ＭＳ 明朝）で桁を空白で揃えるため等幅フォントにする。
@@ -45,7 +44,6 @@ namespace SRCRender
             this.typeface = typeface ?? ResolveTypeface();
             font = new SKFont(this.typeface, 16);
             boldFont = new SKFont(this.typeface, 16) { Embolden = true };
-            largeFont = new SKFont(this.typeface, 28) { Embolden = true };
         }
 
         /// <summary>描画に使っているフォント</summary>
@@ -60,7 +58,6 @@ namespace SRCRender
         {
             font.Dispose();
             boldFont.Dispose();
-            largeFont.Dispose();
         }
 
         public SKSize MeasureText(string text)
@@ -104,10 +101,10 @@ namespace SRCRender
                     DrawMapCursor(canvas, cursor);
                 }
             }
-            if (!string.IsNullOrEmpty(state.Splash))
+            if (state.NowLoading != null)
             {
                 // 元の SRC の frmNowLoading は画面の中央。メインウィンドウを表示していればマップの中央に出す
-                DrawCenteredText(canvas, state.MainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height), state.Splash, largeFont);
+                DrawNowLoading(canvas, state.MainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height), state.NowLoading);
             }
             if (state.Title != null)
             {
@@ -179,7 +176,12 @@ namespace SRCRender
         /// <summary>
         /// マップ全体の背景（地形）を描画した画像を作る。
         /// </summary>
-        public SKBitmap BuildBackground(SRC src, ImageCache images)
+        /// <param name="filter">
+        /// マップの描画モードで色を変える処理（第 2 引数はレイヤーの画像か）。元の SRC の SetupBackground と同じく、
+        /// 地形の画像とレイヤーの画像に別々にかける（レイヤーは背景色を白として透過で処理する）。
+        /// マス目の線は描かない（呼び出し側が描画モードをかけたあとに引く）
+        /// </param>
+        public SKBitmap BuildBackground(SRC src, ImageCache images, Func<SKBitmap, bool, SKBitmap> filter = null)
         {
             var map = src.Map;
             var bitmap = new SKBitmap(Math.Max(1, map.MapWidth * ScreenLayout.CellPx), Math.Max(1, map.MapHeight * ScreenLayout.CellPx));
@@ -193,46 +195,77 @@ namespace SRCRender
                 {
                     for (var y = 1; y <= map.MapHeight; y++)
                     {
-                        var cell = map.MapData[x, y];
                         var rect = SKRect.Create((x - 1) * ScreenLayout.CellPx, (y - 1) * ScreenLayout.CellPx, ScreenLayout.CellPx, ScreenLayout.CellPx);
-                        var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
-                        if (image != null)
-                        {
-                            canvas.DrawBitmap(image, rect, SKSamplingOptions.Default);
-                        }
-                        else
-                        {
-                            // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
-                            paint.Style = SKPaintStyle.Fill;
-                            paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
-                            canvas.DrawRect(rect, paint);
-                            paint.Style = SKPaintStyle.Stroke;
-                            paint.Color = new SKColor(0, 0, 0, 0x40);
-                            canvas.DrawRect(SKRect.Create(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1), paint);
-                            paint.Style = SKPaintStyle.Fill;
-                        }
-                        var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
-                        if (layer != null)
-                        {
-                            canvas.DrawBitmap(layer, rect, SKSamplingOptions.Default);
-                        }
-                    }
-                }
-                if (src.ShowSquareLine)
-                {
-                    paint.Color = new SKColor(0, 0, 0, 0x60);
-                    paint.Style = SKPaintStyle.Stroke;
-                    for (var x = 1; x < map.MapWidth; x++)
-                    {
-                        canvas.DrawLine(x * ScreenLayout.CellPx, 0, x * ScreenLayout.CellPx, bitmap.Height, paint);
-                    }
-                    for (var y = 1; y < map.MapHeight; y++)
-                    {
-                        canvas.DrawLine(0, y * ScreenLayout.CellPx, bitmap.Width, y * ScreenLayout.CellPx, paint);
+                        DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, found, filter);
                     }
                 }
             }
             return bitmap;
+        }
+
+        /// <summary>
+        /// マップの (x, y) のマス 1 つ分の背景（地形とレイヤー）を描画した画像を作る。
+        /// <see cref="BuildBackground"/> のそのマスと同じ絵になる（ChangeTerrain・ChangeLayer でそのマスだけを描き直すのに使う）。
+        /// マス目の線は描かない（呼び出し側が引く）。
+        /// </summary>
+        public SKBitmap BuildMapCell(SRC src, ImageCache images, int x, int y, Func<SKBitmap, bool, SKBitmap> filter = null)
+        {
+            var map = src.Map;
+            var bitmap = new SKBitmap(ScreenLayout.CellPx, ScreenLayout.CellPx);
+            using (var canvas = new SKCanvas(bitmap))
+            using (var paint = new SKPaint())
+            {
+                canvas.Clear(BackColor);
+                var rect = SKRect.Create(0, 0, ScreenLayout.CellPx, ScreenLayout.CellPx);
+                DrawMapCell(canvas, paint, map, images, map.MapData[x, y], rect, null, filter);
+            }
+            return bitmap;
+        }
+
+        private void DrawMapCell(SKCanvas canvas, SKPaint paint, Map map, ImageCache images, MapCell cell, SKRect rect,
+            IDictionary<(string Name, int No), string> found, Func<SKBitmap, bool, SKBitmap> filter)
+        {
+            // 地形の画像（描画モードをかけるときは 1 マス分の画像にしてからかける）
+            using (var tile = new SKBitmap(ScreenLayout.CellPx, ScreenLayout.CellPx, SKColorType.Bgra8888, SKAlphaType.Premul))
+            {
+                using (var tileCanvas = new SKCanvas(tile))
+                {
+                    tileCanvas.Clear(BackColor);
+                    var tileRect = SKRect.Create(0, 0, ScreenLayout.CellPx, ScreenLayout.CellPx);
+                    var image = images.Get(SafeSearch(() => map.SearchTerrainImageFile(cell, found)));
+                    if (image != null)
+                    {
+                        tileCanvas.DrawBitmap(image, tileRect, SKSamplingOptions.Default);
+                    }
+                    else
+                    {
+                        // 画像が無い場合は地形の種類の色で塗り、地形番号ごとに明度を変えて枠を付ける
+                        paint.Style = SKPaintStyle.Fill;
+                        paint.Color = Shade(TerrainColor(cell), (cell.TerrainType % 4) * 0.12f - 0.18f);
+                        tileCanvas.DrawRect(tileRect, paint);
+                        paint.Style = SKPaintStyle.Stroke;
+                        paint.Color = new SKColor(0, 0, 0, 0x40);
+                        tileCanvas.DrawRect(SKRect.Create(0.5f, 0.5f, tileRect.Width - 1, tileRect.Height - 1), paint);
+                        paint.Style = SKPaintStyle.Fill;
+                    }
+                }
+                using (var filtered = filter == null ? null : filter(ImageFilters.Copy(tile), false))
+                {
+                    canvas.DrawBitmap(filtered ?? tile, rect, SKSamplingOptions.Default);
+                }
+            }
+            // レイヤーの画像は「通常」「画像限定」のマスだけ描く（元の SRC の SetupBackground）
+            if (cell.IsLayerBitmapVisible)
+            {
+                var layer = images.GetTransparent(SafeSearch(() => map.SearchLayerImageFile(cell, found)));
+                if (layer != null)
+                {
+                    using (var filtered = filter == null ? null : filter(ImageFilters.Copy(layer), true))
+                    {
+                        canvas.DrawBitmap(filtered ?? layer, rect, SKSamplingOptions.Default);
+                    }
+                }
+            }
         }
 
         private static string SafeSearch(Func<string> search)
@@ -396,18 +429,38 @@ namespace SRCRender
             canvas.Restore();
         }
 
+        // 元の SRC の frmTelop（Telop.frm）: 枠の無い白い窓（幅 5670 twip。高さは 1 行なら 800、「.」で改行すれば 1170）に、
+        // ラベル（左 120・上 240・幅 5355 twip、中央揃え、折り返し）で ＭＳ Ｐ明朝 15.75pt の太字・斜体・黒の文字を書く
+        private const int TelopWidth = 378;
+        private const int TelopHeight = 53;
+        private const int TelopTwoLineHeight = 78;
+        private const int TelopLabelLeft = 8;
+        private const int TelopLabelTop = 16;
+        private const int TelopLabelWidth = 357;
+
         private void DrawTelop(SKCanvas canvas, string telop, bool mainFormVisible)
         {
-            using (var paint = new SKPaint())
+            using (var paint = new SKPaint { IsAntialias = true })
+            using (var telopFont = Compat.SkiaFonts.Create("ＭＳ Ｐ明朝", 15.75f * 96f / 72f, true, true))
             {
                 // 元の SRC（GUI.bas の DisplayTelop）と同じく、メインウィンドウを表示していればマップの中央、隠していれば画面の中央
                 var area = mainFormVisible ? ScreenLayout.MapArea : new SKRectI(0, 0, ScreenLayout.Width, ScreenLayout.Height);
-                var width = Math.Min(area.Width - 32, largeFont.MeasureText(telop) + 48);
-                var box = SKRect.Create(area.Left + (area.Width - width) / 2, area.MidY - 32, width, 64);
-                DrawPanel(canvas, box, paint);
-                paint.Style = SKPaintStyle.Fill;
-                paint.Color = TextColor;
-                canvas.DrawText(telop, box.MidX, box.MidY + largeFont.Size / 2 - 4, SKTextAlign.Center, largeFont, paint);
+                var height = telop.Contains('\n') ? TelopTwoLineHeight : TelopHeight;
+                var box = SKRect.Create(area.Left + (area.Width - TelopWidth) / 2, area.Top + (area.Height - height) / 2, TelopWidth, height);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(box, paint);
+
+                canvas.Save();
+                canvas.ClipRect(box);
+                paint.Color = SKColors.Black;
+                var lineHeight = Compat.SkiaFonts.LineHeight(telopFont);
+                var y = box.Top + TelopLabelTop + Compat.SkiaFonts.Ascent(telopFont);
+                foreach (var line in WrapText(telop, TelopLabelWidth, telopFont))
+                {
+                    canvas.DrawText(line, box.Left + TelopLabelLeft + TelopLabelWidth / 2f, y, SKTextAlign.Center, telopFont, paint);
+                    y += lineHeight;
+                }
+                canvas.Restore();
             }
         }
 
@@ -469,10 +522,13 @@ namespace SRCRender
                         DrawLabel(canvas, cw.labMP3Volume, paint);
                         DrawTextBox(canvas, cw.txtMP3Volume, paint);
                         DrawScrollBar(canvas, cw.hscMP3Volume, paint);
+                        DrawLabel(canvas, cw.labMessageSpeed, paint);
                         foreach (var button in cw.Buttons)
                         {
                             DrawButton(canvas, button, paint);
                         }
+                        // 開いた選択肢はほかの部品の上に重ねる
+                        DrawComboBox(canvas, cw.cboMessageSpeed, paint);
                         break;
                     case Compat.MultiSelectListWindow sw:
                         DrawTextBox(canvas, sw.lblCaption, paint);
@@ -490,7 +546,11 @@ namespace SRCRender
 
         private static readonly Compat.Font TooltipFont = new Compat.Font("ＭＳ Ｐゴシック", 9F);
 
-        /// <summary>ツールチップ（カーソルの右下に表示し、画面からはみ出さないようにする）</summary>
+        /// <summary>
+        /// ツールチップ（ToolTip.frm の ShowToolTip）。文字の幅＋6・高さ＋4 の大きさで、カーソルの 24 ピクセル下に出す。
+        /// 枠は上と左が灰色（RGB(200, 200, 200)）、下と右が黒。文字は (3, 2) から書く。
+        /// 元の SRC は画面からはみ出しても構わず出すが、SRC# は画面の中に収める
+        /// </summary>
         private static void DrawTooltip(SKCanvas canvas, TooltipState tooltip)
         {
             using (var font = TooltipFont.ToSKFont())
@@ -498,22 +558,25 @@ namespace SRCRender
             {
                 var lines = (tooltip.Text ?? "").Replace("\r\n", "\n").Split('\n');
                 var lineHeight = Compat.SkiaFonts.LineHeight(font);
-                var width = lines.Max(x => font.MeasureText(x)) + 8;
-                var height = lineHeight * lines.Length + 6;
-                var left = Math.Min(tooltip.X + 12, ScreenLayout.Width - width - 1);
-                var top = Math.Min(tooltip.Y + 20, ScreenLayout.Height - height - 1);
-                var rect = SKRect.Create(Math.Max(0, left), Math.Max(0, top), width, height);
+                var width = (float)Math.Ceiling(lines.Max(x => font.MeasureText(x))) + 6;
+                var height = lineHeight * lines.Length + 4;
+                var left = Math.Min(tooltip.X, ScreenLayout.Width - width);
+                var top = Math.Min(tooltip.Y + 24, ScreenLayout.Height - height);
+                var rect = SKRect.Create((float)Math.Floor(Math.Max(0, left)), (float)Math.Floor(Math.Max(0, top)), width, height);
                 paint.Color = new SKColor(255, 255, 225);
                 canvas.DrawRect(rect, paint);
-                paint.Style = SKPaintStyle.Stroke;
+                // 上と左は灰色、下と右は黒
+                paint.Color = new SKColor(200, 200, 200);
+                canvas.DrawRect(rect.Left, rect.Top, rect.Width, 1, paint);
+                canvas.DrawRect(rect.Left, rect.Top, 1, rect.Height, paint);
                 paint.Color = SKColors.Black;
-                canvas.DrawRect(rect.Left + 0.5f, rect.Top + 0.5f, rect.Width - 1, rect.Height - 1, paint);
-                paint.Style = SKPaintStyle.Fill;
+                canvas.DrawRect(rect.Left, rect.Bottom - 1, rect.Width, 1, paint);
+                canvas.DrawRect(rect.Right - 1, rect.Top, 1, rect.Height, paint);
                 paint.IsAntialias = true;
-                var y = rect.Top + 3;
+                var y = rect.Top + 2;
                 foreach (var line in lines)
                 {
-                    canvas.DrawText(line, rect.Left + 4, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    canvas.DrawText(line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     y += lineHeight;
                 }
             }
@@ -555,6 +618,70 @@ namespace SRCRender
                 paint.IsAntialias = true;
                 canvas.DrawText(check.Text ?? "", rect.Right + 5, check.Top + (check.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                 paint.IsAntialias = false;
+            }
+        }
+
+        /// <summary>ComboBox（白地の欄と ▼ のボタン。開いていれば下に選択肢）</summary>
+        private static void DrawComboBox(SKCanvas canvas, Compat.ComboBox combo, SKPaint paint)
+        {
+            if (!combo.Visible)
+            {
+                return;
+            }
+            var rect = SKRect.Create(combo.Left, combo.Top, combo.Width, combo.Height);
+            paint.Color = SKColors.White;
+            canvas.DrawRect(rect, paint);
+            DrawSunkenEdge(canvas, rect, paint);
+            var buttonWidth = 16;
+            var button = SKRect.Create(rect.Right - 2 - buttonWidth, rect.Top + 2, buttonWidth, rect.Height - 4);
+            paint.Color = new SKColor(192, 192, 192);
+            canvas.DrawRect(button, paint);
+            DrawBevel(canvas, button, raised: true, paint);
+            paint.Color = SKColors.Black;
+            using (var builder = new SKPathBuilder())
+            {
+                builder.MoveTo(button.MidX - 4, button.MidY - 2);
+                builder.LineTo(button.MidX + 4, button.MidY - 2);
+                builder.LineTo(button.MidX, button.MidY + 2);
+                builder.Close();
+                using var path = builder.Detach();
+                canvas.DrawPath(path, paint);
+            }
+            using (var font = combo.Font.ToSKFont())
+            {
+                var lineHeight = Compat.SkiaFonts.LineHeight(font);
+                paint.IsAntialias = true;
+                canvas.Save();
+                canvas.ClipRect(SKRect.Create(rect.Left + 2, rect.Top + 2, button.Left - rect.Left - 2, rect.Height - 4));
+                canvas.DrawText(combo.Text, rect.Left + 4, rect.Top + (rect.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                canvas.Restore();
+                paint.IsAntialias = false;
+                if (!combo.DroppedDown)
+                {
+                    return;
+                }
+                // 開いた選択肢（選んでいる項目を反転する）
+                var drop = combo.DropDownRect;
+                var list = SKRect.Create(drop.Left, drop.Top, drop.Width, drop.Height);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(list, paint);
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = SKColors.Black;
+                canvas.DrawRect(list.Left + 0.5f, list.Top + 0.5f, list.Width - 1, list.Height - 1, paint);
+                paint.Style = SKPaintStyle.Fill;
+                for (var i = 0; i < combo.Items.Count; i++)
+                {
+                    var item = SKRect.Create(list.Left + 1, list.Top + 1 + i * Compat.ComboBox.ItemHeight, list.Width - 2, Compat.ComboBox.ItemHeight);
+                    if (i == combo.SelectedIndex)
+                    {
+                        paint.Color = WindowsHighlight;
+                        canvas.DrawRect(item, paint);
+                    }
+                    paint.Color = i == combo.SelectedIndex ? SKColors.White : SKColors.Black;
+                    paint.IsAntialias = true;
+                    canvas.DrawText(combo.Items[i], item.Left + 3, item.Top + (item.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    paint.IsAntialias = false;
+                }
             }
         }
 
@@ -893,6 +1020,79 @@ namespace SRCRender
             }
         }
 
+        // NowLoading.frm（SRC#Form の Forms/NowLoading.Designer.cs）の配置。ClientWidth 3210・ClientHeight 1320（Twip）
+        private static readonly SKSizeI NowLoadingClientSize = new SKSizeI(214, 88);
+        // Label1: Left 360・Top 240（Twip）
+        private static readonly SKPointI NowLoadingLabelOrigin = new SKPointI(24, 16);
+        // picBar: Left 240・Top 840・Width 2745・Height 195（Twip）。3D の枠（2 ピクセル）の内側が ScaleWidth 179・ScaleHeight 9
+        private static readonly SKRectI NowLoadingBar = SKRectI.Create(16, 56, 183, 13);
+        // picBar の FillColor &H00800000&（BGR）
+        private static readonly SKColor NowLoadingBarColor = new SKColor(0x00, 0x00, 0x80);
+
+        /// <summary>
+        /// 「Now Loading ...」の画面（元の SRC の NowLoading.frm）。灰色のダイアログに「Now Loading ...」と進み具合のバーを描く。
+        /// バーは Progress と同じく picBar.Line (0, 0)-(ScaleWidth * Value \ Size, ScaleHeight), , BF で塗る（両端を含む）。
+        /// </summary>
+        private static void DrawNowLoading(SKCanvas canvas, SKRectI area, NowLoadingState loading)
+        {
+            var outerHeight = NowLoadingClientSize.Height + Compat.Form.TitleBarHeight;
+            var box = SKRect.Create(area.Left + (area.Width - NowLoadingClientSize.Width) / 2, area.Top + (area.Height - outerHeight) / 2, NowLoadingClientSize.Width, outerHeight);
+            using (var paint = new SKPaint { IsAntialias = false })
+            {
+                // 枠とタイトルバー（Caption "SRC"。リストボックスなどのウィンドウと同じ描き方）
+                paint.Color = FormGray;
+                canvas.DrawRect(box, paint);
+                paint.Color = WindowsHighlight;
+                canvas.DrawRect(box.Left + 1, box.Top + 1, box.Width - 2, Compat.Form.TitleBarHeight - 2, paint);
+                DrawBevel(canvas, box, raised: true, paint);
+                using (var titleFont = ListTitleFont.ToSKFont())
+                {
+                    paint.Color = SKColors.White;
+                    paint.IsAntialias = true;
+                    canvas.DrawText("SRC", box.Left + 6, box.Top + (Compat.Form.TitleBarHeight - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                    paint.IsAntialias = false;
+                }
+
+                var left = box.Left;
+                var top = box.Top + Compat.Form.TitleBarHeight;
+
+                // Label1: Times New Roman 18 ポイントの太字。Times New Roman は SRCRender の環境（ブラウザ・Linux）に無く、
+                // 日本語の字形が無い書体は SkiaFonts が選ばない（Times New Roman を指定するとゴシック体になる）。
+                // そのため、どの環境にもある明朝体の代替フォント（SerifFamily。Noto Serif CJK JP・BIZ UDP明朝）の太字で、同じセリフ体にする。
+                // 代替フォントの英字は Times New Roman より幅が広い（Noto Serif CJK JP で 190 ピクセル）ので、
+                // Times New Roman の幅（Times New Roman と字の幅が同じ Liberation Serif の太字で測って 162 ピクセル）まで横を縮める
+                using (var font = Compat.SkiaFonts.Create(Compat.SkiaFonts.SerifFamily, 18f * 96f / 72f, bold: true, italic: false))
+                {
+                    const string text = "Now Loading ...";
+                    const float timesNewRomanWidth = 162f;
+                    var measured = font.MeasureText(text);
+                    if (measured > timesNewRomanWidth)
+                    {
+                        font.ScaleX = timesNewRomanWidth / measured;
+                    }
+                    paint.Color = SKColors.Black;
+                    paint.IsAntialias = true;
+                    canvas.DrawText(text, left +NowLoadingLabelOrigin.X, top + NowLoadingLabelOrigin.Y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    paint.IsAntialias = false;
+                }
+
+                // picBar: 白地に、済んだ数の割合だけ塗る（総数を超えても枠の内側まで）
+                var bar = SKRect.Create(left + NowLoadingBar.Left, top + NowLoadingBar.Top, NowLoadingBar.Width, NowLoadingBar.Height);
+                var client = SKRect.Create(bar.Left + 2, bar.Top + 2, bar.Width - 4, bar.Height - 4);
+                paint.Color = SKColors.White;
+                canvas.DrawRect(client, paint);
+                if (loading.Value > 0 && loading.Size > 0)
+                {
+                    var scaleWidth = (int)client.Width;
+                    var x2 = (long)scaleWidth * loading.Value / loading.Size;
+                    var width = (int)Math.Min(scaleWidth, x2 + 1);
+                    paint.Color = NowLoadingBarColor;
+                    canvas.DrawRect(client.Left, client.Top, width, client.Height, paint);
+                }
+                DrawSunkenEdge(canvas, bar, paint);
+            }
+        }
+
         private static void DrawPanel(SKCanvas canvas, SKRect box, SKPaint paint)
         {
             paint.Style = SKPaintStyle.Fill;
@@ -903,14 +1103,6 @@ namespace SRCRender
             paint.Color = PanelBorderColor;
             canvas.DrawRoundRect(box, 6, 6, paint);
             paint.StrokeWidth = 1;
-        }
-
-        private static void DrawCenteredText(SKCanvas canvas, SKRectI area, string text, SKFont textFont)
-        {
-            using (var paint = new SKPaint { Color = TextColor })
-            {
-                canvas.DrawText(text, area.MidX, area.MidY, SKTextAlign.Center, textFont, paint);
-            }
         }
 
         #endregion

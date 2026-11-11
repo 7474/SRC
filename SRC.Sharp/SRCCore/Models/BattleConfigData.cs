@@ -10,10 +10,10 @@ namespace SRCCore.Models
     public class BattleConfigData
     {
         // 名称
-        public string Name;
+        public string Name = "";
 
         // 計算式
-        public string ConfigCalc;
+        public string ConfigCalc = "";
 
         private SRC SRC { get; }
         public BattleConfigData(SRC src)

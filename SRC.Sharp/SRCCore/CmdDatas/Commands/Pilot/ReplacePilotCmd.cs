@@ -66,7 +66,9 @@ namespace SRCCore.CmdDatas.Commands
                     u.ReplacePilot(p1, p2);
                 }
 
-                SRC.PList.UpdateSupportMod(u);
+                // 元の SRC は乗せ換えのあとの p1.Unit（ReplacePilot・ReplaceSupport で Nothing になる）を渡すので、
+                // 全パイロットの支援効果を更新する（前のパイロットの指揮の範囲にいたユニットも更新される）
+                SRC.PList.UpdateSupportMod(p1.Unit);
             }
 
             p1.Alive = false;

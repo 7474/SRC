@@ -98,13 +98,12 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         [TestMethod]
-        public void IfCmd_NoThenExitGoto_ParsesAsNop()
+        public void IfCmd_NoThenExitGoto_TerminatesSRC()
         {
-            // Then/Exit/GoTo がない → PrepareArgs がコンストラクタで例外
-            // CmdParser.Parse がそれを捕捉して NopCmd を返す
+            // Then/Exit/GoTo がない → VB 版と同じくエラーを表示して SRC を終了する（#1503）
             var src = CreateSrc();
-            var cmds = BuildEvent(src, "If x y z");
-            Assert.IsNotInstanceOfType(cmds[0], typeof(IfCmd));
+            BuildEvent(src, "If x y z");
+            Assert.IsTrue(((MockGUI)src.GUI).TerminateCalled);
         }
 
         // ──────────────────────────────────────────────

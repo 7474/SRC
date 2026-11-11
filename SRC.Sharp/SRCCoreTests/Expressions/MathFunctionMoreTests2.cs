@@ -37,7 +37,7 @@ namespace SRCCore.Expressions.Tests
         public void Sin_Pi_ReturnsZero()
         {
             var exp = Create();
-            var pi = System.Math.PI.ToString("R");
+            var pi = System.Math.PI.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
             Assert.AreEqual(0d, exp.GetValueAsDouble($"Sin({pi})"), 1e-10);
         }
 
@@ -45,7 +45,7 @@ namespace SRCCore.Expressions.Tests
         public void Cos_Pi_ReturnsMinusOne()
         {
             var exp = Create();
-            var pi = System.Math.PI.ToString("R");
+            var pi = System.Math.PI.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
             Assert.AreEqual(-1d, exp.GetValueAsDouble($"Cos({pi})"), 1e-10);
         }
 

@@ -128,7 +128,8 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         [TestMethod]
         public void SysMessage_AppendsAdditionalMessageAndCancelsOnDash()
         {
-            // add_msg はメッセージの後ろに連結される。メッセージが「-」なら表示しない
+            // add_msg はメッセージの後ろに「.」を挟んで連結される（元の SRC の SysMessage は msg & "." & add_msg）。
+            // メッセージが「-」なら表示しない
             var f = new UnitMessageAnimeFixture();
             var u = f.CreateUnit();
             var md = f.Src.EDList.Add("汎用");
@@ -138,7 +139,7 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
             u.SysMessage("回復", "", "（+100）");
             u.SysMessage("消滅");
 
-            CollectionAssert.AreEqual(new[] { ("-", "ＨＰが回復した（+100）") }, f.Messages);
+            CollectionAssert.AreEqual(new[] { ("-", "ＨＰが回復した.（+100）") }, f.Messages);
         }
 
         [TestMethod]

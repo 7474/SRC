@@ -16,11 +16,11 @@ namespace SRCCore.Models
         // 識別番号
         public int ID = -1;
         // 名称
-        public string Name;
+        public string Name = "";
         // ビットマップ名
-        public string Bitmap;
+        public string Bitmap = "";
         // 地形タイプ
-        public string Class;
+        public string Class = "";
         // 移動コスト
         public int MoveCost;
         // 命中修正
@@ -35,7 +35,7 @@ namespace SRCCore.Models
         public void AddFeature(string fdef)
         {
             FeatureData fd;
-            string ftype, fdata = default;
+            string ftype, fdata = "";
             double flevel;
             int i, j;
             string buf;
@@ -103,12 +103,12 @@ namespace SRCCore.Models
 
         public int EffectForHPRecover()
         {
-            return (int)(10 * FeatureLevel("ＨＰ回復"));
+            return VBMath.CLng(10 * FeatureLevel("ＨＰ回復"));
         }
 
         public int EffectForENRecover()
         {
-            return (int)(10 * FeatureLevel("ＥＮ回復"));
+            return VBMath.CLng(10 * FeatureLevel("ＥＮ回復"));
         }
 
         public bool HasMoveStop()
@@ -122,28 +122,6 @@ namespace SRCCore.Models
                 // 互換性維持のため残している
                 || IsFeatureAvailable("侵入禁止");
         }
-
-        //// 地形効果の名称
-        //public string FeatureName(string Index)
-        //{
-        //    string FeatureNameRet = default;
-        //    FeatureData fd;
-        //    fd = (FeatureData)colFeature[Index];
-        //    if (Strings.Len(fd.StrData) > 0)
-        //    {
-        //        FeatureNameRet = GeneralLib.ListIndex(fd.StrData, 1);
-        //    }
-        //    else if (fd.Level != Constants.DEFAULT_LEVEL)
-        //    {
-        //        FeatureNameRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
-        //    }
-        //    else
-        //    {
-        //        FeatureNameRet = fd.Name;
-        //    }
-
-        //    return FeatureNameRet;
-        //}
 
         // 地形効果のレベル
         public double FeatureLevel(string Index)
@@ -164,63 +142,18 @@ namespace SRCCore.Models
             }
         }
 
-        //// 地形効果のデータ
-        //public string FeatureData(string Index)
-        //{
-        //    string FeatureDataRet = default;
-        //    FeatureData fd;
-        //    fd = (FeatureData)colFeature[Index];
-        //    FeatureDataRet = fd.StrData;
-        //    return FeatureDataRet;
-        //    ErrorHandler:
-        //    ;
-        //    FeatureDataRet = "";
-        //}
+        // データをクリア
+        // VB と同じく番号と地形効果だけを消す（名称などは残る）
+        public void Clear()
+        {
+            ID = -1;
+            colFeature.Clear();
+        }
 
         // 指定した地形効果を持っているか？
         public bool IsFeatureAvailable(string fname)
         {
             return colFeature.Values.Any(x => (x.Name ?? "") == (fname ?? ""));
         }
-
-        //// 指定した地形効果はレベル指定がされているか？
-        //public bool IsFeatureLevelSpecified(string Index)
-        //{
-        //    bool IsFeatureLevelSpecifiedRet = default;
-        //    FeatureData fd;
-        //    fd = (FeatureData)colFeature[Index];
-        //    if (fd.Level == Constants.DEFAULT_LEVEL)
-        //    {
-        //        IsFeatureLevelSpecifiedRet = false;
-        //    }
-        //    else
-        //    {
-        //        IsFeatureLevelSpecifiedRet = true;
-        //    }
-
-        //    return IsFeatureLevelSpecifiedRet;
-        //    ErrorHandler:
-        //    ;
-        //    IsFeatureLevelSpecifiedRet = false;
-        //}
-
-        //// データをクリア
-        //public void Clear()
-        //{
-
-        //    int i;
-        //    ID = -1;
-        //    if (colFeature is object)
-        //    {
-        //        {
-        //            var withBlock = colFeature;
-        //            var loopTo = withBlock.Count;
-        //            for (i = 1; i <= loopTo; i++)
-        //                withBlock.Remove(1);
-        //        }
-        //        // UPGRADE_NOTE: オブジェクト colFeature をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //        colFeature = null;
-        //    }
-        //}
     }
 }

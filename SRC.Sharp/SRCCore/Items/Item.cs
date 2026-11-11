@@ -19,14 +19,16 @@ namespace SRCCore.Items
     {
         // 識別子
         [JsonProperty]
-        public string ID;
+        public string ID = "";
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "VB の Data（オブジェクトの参照。初めは Nothing）を名前で持つ。null は Nothing に当たる")]
         [JsonProperty]
         public string ItemName { get; set; }
         // アイテムデータへのポインタ
         public ItemData Data { get => SRC.IDList.Item(ItemName); set { ItemName = value?.Name; } }
         public IList<AbilityData> Abilities => Data.Abilities;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Porting", "SRCP003", Justification = "VB の Unit（オブジェクトの参照。装備していなければ Nothing）を ID で持つ。null は Nothing に当たる")]
         [JsonProperty]
         public string UnitId { get; set; }
         // アイテムを装備しているユニット
@@ -68,12 +70,12 @@ namespace SRCCore.Items
         {
             var partName = Part();
             return slotName == partName
-                   || (partName == "片手" || partName == "両手" || partName == "盾")
-                       && (slotName == "右手" || slotName == "左手")
-                   || (partName == "肩" || partName == "両肩")
-                       && (slotName == "右肩" || slotName == "左肩")
-                   || (partName == "アイテム" || partName == "強化パーツ")
-                       && (slotName == "アイテム" || slotName == "強化パーツ");
+                   || ((partName == "片手" || partName == "両手" || partName == "盾")
+                       && (slotName == "右手" || slotName == "左手"))
+                   || ((partName == "肩" || partName == "両肩")
+                       && (slotName == "右肩" || slotName == "左肩"))
+                   || ((partName == "アイテム" || partName == "強化パーツ")
+                       && (slotName == "アイテム" || slotName == "強化パーツ"));
         }
 
         // 名称
@@ -270,9 +272,8 @@ namespace SRCCore.Items
         // 特殊能力の必要技能
         public string FeatureNecessarySkill(string Index)
         {
-            string FeatureNecessarySkillRet = default;
-            FeatureNecessarySkillRet = Data.Feature(Index).NecessarySkill;
-            return FeatureNecessarySkillRet;
+            // VB の ItemData.FeatureNecessarySkill は、無い特殊能力なら On Error で "" を返す
+            return Data.Feature(Index)?.NecessarySkill ?? "";
         }
 
         // 指定した特殊能力を持っているか？

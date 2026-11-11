@@ -249,7 +249,9 @@ namespace SRCCore.Lib.Tests
         [TestMethod]
         public void IsSpace_SpaceAndNonSpace_ReturnsFalse()
         {
-            Assert.IsFalse(GeneralLib.IsSpace(" a "));
+            // 元の SRC の IsSpace は先頭の文字だけを見る（7474/SRC#1498）
+            Assert.IsTrue(GeneralLib.IsSpace(" a "));
+            Assert.IsFalse(GeneralLib.IsSpace("a "));
         }
     }
 }

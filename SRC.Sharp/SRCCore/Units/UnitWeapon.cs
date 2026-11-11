@@ -35,7 +35,7 @@ namespace SRCCore.Units
         private double dblBulletRate;
 
         // 更新後ステータス
-        private string strWeaponClass;
+        private string strWeaponClass = "";
         private int lngWeaponPower;
         private int intWeaponMaxRange;
         private int intWeaponPrecision;
@@ -55,7 +55,7 @@ namespace SRCCore.Units
         }
 
         // 簡易的に最強武器かを判断する
-        // XXX アイテムとかでの追加があるとそっちが最強になっちゃうんじゃねぇか？
+        // 元の SRC（COM の TryMapAttack の w = .CountWeapon）と同じく最後の武器とする（アイテムの武器が最後にあればそれになる）
         public bool IsLastWeapon()
         {
             return WeaponNo() == Unit.Weapons.Count;
@@ -100,14 +100,14 @@ namespace SRCCore.Units
         {
             SetWeaponClass(WeaponData.Class);
             SetPowerCorrection(0);
-            SetMaxRangeCorrection(0);
+            SetMaxRangeCorrection(0, applyMinimum: false);
             SetPrecisionCorrection(0);
             SetCriticalCorrection(0);
             SetMaxBulletRate(1d);
         }
 
         [JsonProperty]
-        public string Name { get; private set; }
+        public string Name { get; private set; } = "";
 
         // 武器の愛称
         public string WeaponNickname()
@@ -129,7 +129,6 @@ namespace SRCCore.Units
         // tarea は敵のいる地形
         public int WeaponPower(string tarea)
         {
-            //// 攻撃補正一時保存
             int WeaponPowerRet = lngWeaponPower;
 
             // 「体」属性を持つ武器は残りＨＰに応じて攻撃力が増える
@@ -240,7 +239,7 @@ namespace SRCCore.Units
                     // 事前にデータを登録
                     BCVariable.DataReset();
                     BCVariable.MeUnit = Unit;
-                    // UPGRADE_NOTE: オブジェクト BCVariable.DefUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+                    BCVariable.AtkUnit = Unit;
                     BCVariable.DefUnit = null;
                     BCVariable.WeaponNumber = WeaponNo();
                     BCVariable.AttackExp = pat;
@@ -326,14 +325,18 @@ namespace SRCCore.Units
 
             return WeaponPowerRet;
         }
-        public void SetPowerCorrection(int correction)
+        // applyLimits が false のときは最高値・最低値を適用しない
+        // （元の SRC の Unit.Update は、ダメージ固定武器（固）に最高値・最低値を適用しない）
+        public void SetPowerCorrection(int correction, bool applyLimits = true)
         {
             // もともと攻撃力が0の武器は0に固定
             // 攻撃力の最高値は99999
             // 最低値は1
             lngWeaponPower = WeaponData.Power == 0
                 ? 0
-                : Math.Min(99999, Math.Max(1, WeaponData.Power + correction));
+                : applyLimits
+                    ? Math.Min(99999, Math.Max(1, WeaponData.Power + correction))
+                    : WeaponData.Power + correction;
         }
 
         // 武器 w の地形 tarea におけるダメージ修正値
@@ -509,7 +512,7 @@ namespace SRCCore.Units
                             // ジャンプ攻撃
                             if (IsWeaponClassifiedAs("Ｊ"))
                             {
-                                uad = (int)(uad + WeaponLevel("Ｊ"));
+                                uad = VBMath.CLng(uad + WeaponLevel("Ｊ"));
                             }
 
                             break;
@@ -533,7 +536,7 @@ namespace SRCCore.Units
                     case "水上":
                         {
                             // 水中専用ユニットが水上のユニットに格闘戦をしかけられるようにする
-                            uad = (int)GeneralLib.MaxDbl(Unit.get_Adaption(2), Unit.get_Adaption(3));
+                            uad = VBMath.CLng(GeneralLib.MaxDbl(Unit.get_Adaption(2), Unit.get_Adaption(3)));
                             if (uad <= 0)
                             {
                                 // 空中専用ユニットが地上のユニットに格闘戦をしかけられるようにする
@@ -557,7 +560,7 @@ namespace SRCCore.Units
                                 // 月面からのジャンプ攻撃
                                 if (IsWeaponClassifiedAs("Ｊ"))
                                 {
-                                    uad = (int)(uad + WeaponLevel("Ｊ"));
+                                    uad = VBMath.CLng(uad + WeaponLevel("Ｊ"));
                                 }
                             }
 
@@ -599,7 +602,6 @@ namespace SRCCore.Units
 
         CalcAdaption:
             ;
-
 
             // Optionコマンドの設定に従って地形適応値を算出
             if (Expression.IsOptionDefined("地形適応修正緩和"))
@@ -811,14 +813,17 @@ namespace SRCCore.Units
             // スペシャルパワーによる射程延長
             if (Unit.IsUnderSpecialPowerEffect("射程延長"))
             {
-                WeaponMaxRangeRet = (int)(WeaponMaxRangeRet + Unit.SpecialPowerEffectLevel("射程延長"));
+                WeaponMaxRangeRet = VBMath.CLng(WeaponMaxRangeRet + Unit.SpecialPowerEffectLevel("射程延長"));
             }
 
             return WeaponMaxRangeRet;
         }
-        public void SetMaxRangeCorrection(int correction)
+        // 元の SRC（Unit.Update）では、射程の補正を適用した武器の最大射程の最低値は 1（最小射程ではない）。
+        // 補正の対象外の武器（最大射程 1・Ｍ・武/突/接・有）は最低値を適用しないので applyMinimum に false を渡す。
+        public void SetMaxRangeCorrection(int correction, bool applyMinimum = true)
         {
-            intWeaponMaxRange = Math.Max(WeaponMinRange(), WeaponData.MaxRange + correction);
+            var range = WeaponData.MaxRange + correction;
+            intWeaponMaxRange = applyMinimum && range <= 0 ? 1 : range;
         }
 
         // 武器 w の消費ＥＮ
@@ -1053,6 +1058,7 @@ namespace SRCCore.Units
             }
 
             // 条件が複雑な場合
+            // 元の SRC は最大射程を補正前の武器データの値（Weapon(w).MaxRange）で判定する
             switch (attr ?? "")
             {
                 case "格闘系":
@@ -1065,7 +1071,7 @@ namespace SRCCore.Units
                         {
                             IsWeaponClassifiedAsRet = false;
                         }
-                        else if (WeaponMaxRange() == 1)
+                        else if (WeaponData.MaxRange == 1)
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
@@ -1087,7 +1093,7 @@ namespace SRCCore.Units
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
-                        else if (WeaponMaxRange() == 1)
+                        else if (WeaponData.MaxRange == 1)
                         {
                             IsWeaponClassifiedAsRet = false;
                         }
@@ -1107,7 +1113,7 @@ namespace SRCCore.Units
                         {
                             IsWeaponClassifiedAsRet = true;
                         }
-                        else if (WeaponMaxRange() == 1)
+                        else if (WeaponData.MaxRange == 1)
                         {
                             if (GeneralLib.InStrNotNest(WeaponClass(), "Ｑ") == 0)
                             {
@@ -1161,7 +1167,7 @@ namespace SRCCore.Units
 
                     var code = Strings.Asc(c);
                     // "-", ".", 0-9 以外が現れたらそこで終わり
-                    if (!(45 <= code && code <= 46 || 48 <= code && code <= 57))
+                    if (!((45 <= code && code <= 46) || (48 <= code && code <= 57)))
                     {
                         break;
                     }
@@ -1169,12 +1175,21 @@ namespace SRCCore.Units
                     i = (i + 1);
                 }
 
-                WeaponLevelRet = Conversions.ToDouble(Strings.Mid(WeaponClass(), start_idx, i - start_idx));
+                // 元の SRC の CDbl は数値として読めない文字列（「体L」の後に数字が無いなど）でエラーになり、
+                // エラーメッセージを出して 0 を返す
+                var lvText = Strings.Mid(WeaponClass(), start_idx, i - start_idx);
+                if (!double.TryParse(lvText,
+                    System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowTrailingSign,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out WeaponLevelRet))
+                {
+                    throw new FormatException(lvText);
+                }
             }
             catch
             {
-                GUI.ErrorMessage(Name + "の" + "武装「" + Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
-
+                WeaponLevelRet = 0d;
+                GUI.ErrorMessage(Unit.Name + "の" + "武装「" + Name + "」の" + "属性「" + attr + "」のレベル指定が不正です");
             }
             return WeaponLevelRet;
         }
@@ -1434,11 +1449,15 @@ namespace SRCCore.Units
                 }
             }
 
-            foreach (var condition in Unit.Conditions.Where(x => x.Name.EndsWith("属性使用不能")))
+            foreach (var condition in Unit.Conditions)
             {
-                if (GeneralLib.InStrNotNest(WeaponClass(), condition.Name.Replace("属性使用不能", "")) > 0)
+                var cname = condition.Name;
+                if (Strings.Len(cname) > 6 && Strings.Right(cname, 6) == "属性使用不能")
                 {
-                    return false;
+                    if (GeneralLib.InStrNotNest(WeaponClass(), Strings.Left(cname, Strings.Len(cname) - 6)) > 0)
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -1516,17 +1535,7 @@ namespace SRCCore.Units
             // 変形技の場合は今いる地形で変形できる必要あり
             if (GeneralLib.InStrNotNest(WeaponClass(), "変") > 0)
             {
-                if (Unit.IsConditionSatisfied("形態固定"))
-                {
-                    return false;
-                }
-
-                if (Unit.IsConditionSatisfied("機体固定"))
-                {
-                    return false;
-                }
-
-                // XXX 変形技が妥当に定義されていなかった場合
+                // 変形先が見つからない場合は元の SRC も実行時エラーになる
                 if (Unit.IsFeatureAvailable("変形技"))
                 {
                     foreach (var feature in Unit.Features
@@ -1545,6 +1554,16 @@ namespace SRCCore.Units
                     {
                         return false;
                     }
+                }
+
+                if (Unit.IsConditionSatisfied("形態固定"))
+                {
+                    return false;
+                }
+
+                if (Unit.IsConditionSatisfied("機体固定"))
+                {
+                    return false;
                 }
             }
 
@@ -1565,7 +1584,7 @@ namespace SRCCore.Units
             // 共有武器＆アビリティが充填中の場合も使用不可
             if (GeneralLib.InStrNotNest(WeaponClass(), "共") > 0)
             {
-                int lv = (int)WeaponLevel("共");
+                int lv = VBMath.CLng(WeaponLevel("共"));
                 if (Unit.Weapons
                     .Where(x => x.IsWeaponClassifiedAs("共"))
                     .Where(x => x.WeaponLevel("共") == lv)
@@ -1739,7 +1758,7 @@ namespace SRCCore.Units
             max_range = WeaponMaxRange();
 
             // 投下型マップ攻撃は効果範囲が広い
-            max_range = (int)(max_range + WeaponLevel("Ｍ投"));
+            max_range = VBMath.CLng(max_range + WeaponLevel("Ｍ投"));
 
             // 敵の存在判定
             var loopTo = GeneralLib.MinLng(Unit.x + max_range, Map.MapWidth);
@@ -1834,7 +1853,7 @@ namespace SRCCore.Units
             distance = (Math.Abs((Unit.x - t.x)) + Math.Abs((Unit.y - t.y)));
 
             // Ｍ投武器は目標地点からさらに効果範囲が伸びるので射程修正を行う
-            range_mod = (int)WeaponLevel("Ｍ投");
+            range_mod = VBMath.CLng(WeaponLevel("Ｍ投"));
 
             // 最大射程チェック
             max_range = WeaponMaxRange();
@@ -1852,10 +1871,11 @@ namespace SRCCore.Units
             // 敵がステルスの場合
             if (t.IsFeatureAvailable("ステルス"))
             {
-                double lv;
+                // VB では lv は Integer なので、レベルは偶数丸めで整数にしてから比べる
+                int lv;
                 if (t.IsFeatureLevelSpecified("ステルス"))
                 {
-                    lv = t.FeatureLevel("ステルス");
+                    lv = VBMath.CLng(t.FeatureLevel("ステルス"));
                 }
                 else
                 {
@@ -1928,7 +1948,7 @@ namespace SRCCore.Units
             {
                 if (t.IsFeatureLevelSpecified("ステルス"))
                 {
-                    max_range = GeneralLib.MinLng(max_range, (int)(t.FeatureLevel("ステルス") + 1d));
+                    max_range = GeneralLib.MinLng(max_range, VBMath.CLng(t.FeatureLevel("ステルス") + 1d));
                 }
                 else
                 {
@@ -2179,8 +2199,8 @@ namespace SRCCore.Units
                         break;
                     }
                 default:
-                    // XXX 元は処理してない
-                    ed_size = 1d;
+                    // 元の SRC と同じく、未知のサイズ（サイズ変更の値の誤りなど）は 0 倍
+                    ed_size = 0d;
                     break;
             }
 
@@ -2422,11 +2442,11 @@ namespace SRCCore.Units
                 // ホーミング攻撃はＥＣＭの影響を強く受ける
                 if (GeneralLib.InStrNotNest(WeaponClass(), "Ｈ") > 0)
                 {
-                    prob = ((int)(prob * (100d - 10d * effective_ecm_lv)) / 100);
+                    prob = (int)VBMath.IntDiv(prob * (100d - 10d * effective_ecm_lv), 100);
                 }
                 else
                 {
-                    prob = ((int)(prob * (100d - 5d * effective_ecm_lv)) / 100);
+                    prob = (int)VBMath.IntDiv(prob * (100d - 5d * effective_ecm_lv), 100);
                 }
             }
 
@@ -2483,32 +2503,17 @@ namespace SRCCore.Units
             }
 
             // 局地戦能力
+            // 1 つ目の要素は能力の名称なので、2 つ目以降の地形と比べる。地形適応ごとに -10
             if (t.IsFeatureAvailable("地形適応"))
             {
-                if (t.Features.Where(x => x.Name == "地形適応")
-                    //.Where(x => x.DataL.Skip(1).Any(x => Map.Terrain(t.x, t.y).Name == x))
-                    .Where(x => x.DataL.Any(x => Map.Terrain(t.x, t.y).Name == x))
-                    .Any())
+                var tname = Map.Terrain(t.x, t.y).Name;
+                foreach (var fd in t.Features.Where(x => x.Name == "地形適応"))
                 {
-                    prob = prob - 10;
+                    if (fd.DataL.Skip(1).Any(x => x == tname))
+                    {
+                        prob = prob - 10;
+                    }
                 }
-                // XXX これなんで1つ目飛ばしてるんだ？
-                //for (i = 1; i <= loopTo2; i++)
-                //{
-                //    if (t.Feature(i) == "地形適応")
-                //    {
-                //        buf = t.FeatureData(i);
-                //        var loopTo3 = GeneralLib.LLength(buf);
-                //        for (j = 2; j <= loopTo3; j++)
-                //        {
-                //            if (( ?? "") == (GeneralLib.LIndex(buf, j) ?? ""))
-                //            {
-                //                prob = prob - 10;
-                //                break;
-                //            }
-                //        }
-                //    }
-                //}
             }
 
             // 攻撃回避
@@ -2541,7 +2546,7 @@ namespace SRCCore.Units
                     }
                 }
 
-                prob = ((int)(prob * (10d - prob_mod)) / 10);
+                prob = (int)VBMath.IntDiv(prob * (10d - prob_mod), 10);
             }
 
             // 動けなければ絶対に命中
@@ -2674,7 +2679,7 @@ namespace SRCCore.Units
 
                 if (Unit.IsUnderSpecialPowerEffect("命中率低下"))
                 {
-                    prob = ((int)(prob * (10d - Unit.SpecialPowerEffectLevel("命中率低下"))) / 10);
+                    prob = (int)VBMath.IntDiv(prob * (10d - Unit.SpecialPowerEffectLevel("命中率低下")), 10);
                 }
             }
 
@@ -2921,7 +2926,7 @@ namespace SRCCore.Units
             {
                 if (IsWeaponLevelSpecified("貫"))
                 {
-                    arm = (int)(arm * (10d - WeaponLevel("貫"))) / 10;
+                    arm = (int)VBMath.IntDiv(arm * (10d - WeaponLevel("貫")), 10);
                 }
                 else
                 {
@@ -3199,7 +3204,6 @@ namespace SRCCore.Units
         SkipDamageMod:
             ;
 
-
             // 封印攻撃は弱点もしくは有効を持つユニット以外には効かない
             if (GeneralLib.InStrNotNest(WeaponClass(), "封") > 0)
             {
@@ -3258,7 +3262,9 @@ namespace SRCCore.Units
             // 特定レベル限定攻撃
             if (WeaponLevel("対") > 0d)
             {
-                if (t.MainPilot().Level % WeaponLevel("対") != 0d)
+                // VB の Mod は実数を偶数丸めで整数にしてから割る
+                var lv_div = VBMath.CLng(WeaponLevel("対"));
+                if (lv_div == 0 || t.MainPilot().Level % lv_div != 0)
                 {
                     DamageRet = 0;
                     return DamageRet;
@@ -3424,7 +3430,7 @@ namespace SRCCore.Units
 
                         if (j <= GeneralLib.LLength(sdata))
                         {
-                            DamageRet = ((int)((10d + Unit.MainPilot().SkillLevel(i)) * DamageRet) / 10);
+                            DamageRet = (int)VBMath.IntDiv((10d + Unit.MainPilot().SkillLevel(i)) * DamageRet, 10);
                             break;
                         }
                     }
@@ -3447,7 +3453,7 @@ namespace SRCCore.Units
 
                     if (i <= GeneralLib.LLength(sdata))
                     {
-                        DamageRet = ((int)((10d + Unit.MainPilot().SkillLevel("ハンター", ref_mode: "")) * DamageRet) / 10);
+                        DamageRet = (int)VBMath.IntDiv((10d + Unit.MainPilot().SkillLevel("ハンター", ref_mode: "")) * DamageRet, 10);
                     }
                 }
             }
@@ -3557,8 +3563,7 @@ namespace SRCCore.Units
                 }
             }
 
-
-            DamageRet = (int)(DamageRet * (100d - dmg_mod)) / 100;
+            DamageRet = (int)VBMath.IntDiv(DamageRet * (100d - dmg_mod), 100);
         SkipResist:
             ;
             if (SRC.BCList.IsDefined("最終ダメージ"))
@@ -4017,7 +4022,9 @@ namespace SRCCore.Units
                 // 特定レベル限定攻撃
                 if (GeneralLib.InStrNotNest(WeaponClass(), "対") > 0)
                 {
-                    if (t.MainPilot().Level % WeaponLevel("対") != 0d)
+                    // VB の Mod は実数を偶数丸めで整数にしてから割る（Damage と同じ）
+                    var lv_div = VBMath.CLng(WeaponLevel("対"));
+                    if (lv_div == 0 || t.MainPilot().Level % lv_div != 0)
                     {
                         CriticalProbabilityRet = 0;
                         return CriticalProbabilityRet;
@@ -4918,7 +4925,7 @@ namespace SRCCore.Units
                 if (t.EN >= ecost && t.MainPilot().Morale >= nmorale && localIsAttributeClassified2() && !neautralize)
                 {
                     // プロテクション発動
-                    dmg = ((int)(dmg * (100d - 10d * flevel - slevel)) / 100);
+                    dmg = (int)VBMath.IntDiv(dmg * (100d - 10d * flevel - slevel), 100);
                     if (dmg <= 0)
                     {
                         return WeaponNo();
@@ -4983,7 +4990,6 @@ namespace SRCCore.Units
             return ExpDamageRet;
         }
 
-
         // 武器の使用によるＥＮ、弾薬の消費等を行う
         public void UseWeapon()
         {
@@ -5015,7 +5021,7 @@ namespace SRCCore.Units
                     {
                         if (uw.IsWeaponClassifiedAs("斉"))
                         {
-                            // XXX これどういう式なのかいまいち分からん
+                            // 斉属性の武器の弾数を、使った武器の残りの割合以下にする（元の SRC と同じく 0.49999 を足してから丸める）
                             uw.SetBullet(GeneralLib.MinLng(VBMath.CLng(uw.MaxBullet() * dblBulletRate + 0.49999d), uw.Bullet()));
                         }
                     }
@@ -5042,7 +5048,7 @@ namespace SRCCore.Units
 
             if (WeaponLevel("Ａ") > 0d)
             {
-                Unit.AddCondition(WeaponNickname() + "充填中", (int)WeaponLevel("Ａ"), cdata: "");
+                Unit.AddCondition(WeaponNickname() + "充填中", VBMath.CLng(WeaponLevel("Ａ")), cdata: "");
             }
 
             if (IsWeaponClassifiedAs("気"))
@@ -5080,11 +5086,7 @@ namespace SRCCore.Units
                 Unit.HP = GeneralLib.MaxLng(Unit.HP - VBMath.CLng(Unit.MaxHP * WeaponLevel("失")) / 10, 0);
             }
 
-            // XXX いつの仕様だろ
-            // '合体技は１ターンに１回だけ使用可能
-            // If IsWeaponClassifiedAs(w, "合") Then
-            // AddCondition "合体技使用不可", 1, 0, "非表示"
-            // End If
+            // 元の SRC でもコメントアウトされている処理
         }
 
         // 弾数
@@ -5270,7 +5272,8 @@ namespace SRCCore.Units
                 cmorale,
                 cplana,
                 crange,
-                tx, ty, check_formation
+                tx, ty, check_formation,
+                "武装"
                 );
         }
 
@@ -5286,9 +5289,16 @@ namespace SRCCore.Units
             else if (WeaponMaxRange() == 1 && !IsWeaponClassifiedAs("Ｍ"))
             {
                 // 射程１の場合は自分の周りのいずれかの敵ユニットに対して合体技が使えればＯＫ
-                partners = Map.AdjacentUnit(Unit)
-                    .Where(t => Unit.IsEnemy(t))
-                    .Select(t => CombinationPartner(t.x, t.y))
+                // VB と同じく左・右・上・下の順に調べる（最初に見つかった組が SelectedPartners に残る）
+                partners = new[]
+                    {
+                        Map.UnitAtPoint(Unit.x - 1, Unit.y),
+                        Map.UnitAtPoint(Unit.x + 1, Unit.y),
+                        Map.UnitAtPoint(Unit.x, Unit.y - 1),
+                        Map.UnitAtPoint(Unit.x, Unit.y + 1),
+                    }
+                    .Where(t => t != null && Unit.IsEnemy(t))
+                    .Select(t => CombinationPartner(t.x, t.y, check_formation))
                     .FirstOrDefault(x => x.Count > 0) ?? new List<Unit>();
             }
             else
@@ -5319,7 +5329,7 @@ namespace SRCCore.Units
             // Disableコマンドで使用不可にされた武器と使用できない合体技は表示しない
             // 必要技能を満たさない武器は表示しない
             var baseCondition = IsEnable()
-                // XXX 条件によって check_formation 見直す
+                // 元の SRC の一覧（GUI.bas の WeaponListBox・AbilityListBox、Status.bas）は、どの表示でも check_formation に True を渡す
                 && !(IsWeaponClassifiedAs("合") && !IsCombinationAttackAvailable(true))
                 ;
             return baseCondition;
@@ -5330,7 +5340,7 @@ namespace SRCCore.Units
         {
             return IsWeaponAvailable("移動後")
                 && IsWeaponClassifiedAs("射撃系")
-                && (WeaponData.Bullet >= 10 || WeaponData.Bullet == 0 && WeaponData.ENConsumption <= 5);
+                && (WeaponData.Bullet >= 10 || (WeaponData.Bullet == 0 && WeaponData.ENConsumption <= 5));
         }
 
         public bool CanUseFor(WeaponListMode mode, Unit targetUnit)
@@ -5357,14 +5367,14 @@ namespace SRCCore.Units
                         && !IsWeaponClassifiedAs("合")
                         // ダメージを与えられる
                         // 特殊効果を与えられる
-                        && (Damage(targetUnit, true) > 0) || (!IsNormalWeapon() && CriticalProbability(targetUnit) > 0)
-                        ;
+                        // （GUI.bas の WeaponListBox の ElseIf の連なりと同じく、ここまでの条件を満たすときだけ）
+                        && (Damage(targetUnit, true) > 0
+                            || (!IsNormalWeapon() && CriticalProbability(targetUnit) > 0));
 
                 default:
                     throw new NotSupportedException();
             }
         }
-
     }
 
     public enum WeaponListMode

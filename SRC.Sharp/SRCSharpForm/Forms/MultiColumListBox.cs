@@ -128,7 +128,13 @@ namespace SRCSharpForm
             // カーソルがあるアイテムを算出
             var point = _lstItems.PointToClient(Cursor.Position);
             int index = _lstItems.IndexFromPoint(point);
-            if (index >= 0 && index != _lstItems.SelectedIndex)
+            if (index < 0)
+            {
+                // 項目の無いところではどの項目もハイライトしない（VB の lstItems_MouseMove は ListIndex = -1）
+                _lstItems.SelectedIndex = -1;
+                return;
+            }
+            if (index != _lstItems.SelectedIndex)
             {
                 // カーソルがあるアイテムをハイライト表示
                 _lstItems.SelectedIndex = index;

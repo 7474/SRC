@@ -52,6 +52,20 @@ namespace SRCAuthoring.Analysis
 
         public bool FileExists(params string[] paths) => TryGetOverlay(paths, out _) || inner.FileExists(paths);
 
+        // 重ねたファイルを先に探し、無ければ下のファイルシステムで（フォルダの順番を優先して）探す
+        public string FindFirstFile(IEnumerable<string> candidates)
+        {
+            var list = candidates as IList<string> ?? new List<string>(candidates);
+            foreach (var candidate in list)
+            {
+                if (!string.IsNullOrEmpty(candidate) && TryGetOverlay(new[] { candidate }, out _))
+                {
+                    return candidate;
+                }
+            }
+            return inner.FindFirstFile(list);
+        }
+
         public Stream Open(params string[] paths)
         {
             if (TryGetOverlay(paths, out var text))

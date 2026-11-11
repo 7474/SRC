@@ -294,6 +294,44 @@ namespace SRCCore.Coverage.Tests.CommandsCoverage
         }
 
         [TestMethod]
+        public void CommandSelect_TeleportCostWrittenAs00_KeepsNormalMove()
+        {
+            // VB: Command.bas 859-865 は LIndex(.FeatureData("テレポート"), 2) = "0" と文字列で比べるので、
+            // コストを "00" と書いたテレポートでは通常移動は置き換わらない
+            var f = CreateWithAlly(out var ally, 4, "テレポート=瞬間移動 00");
+            f.Commands.CommandState = "ユニット選択";
+
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+
+            var ids = Ids(f.LastUnitCommandMenu());
+            CollectionAssert.Contains(ids, Command.TeleportCmdID);
+            CollectionAssert.Contains(ids, Command.MoveCmdID);
+        }
+
+        [TestMethod]
+        public void CommandSelect_HyperModeFractionalLevel_RoundsMoraleThresholdToEven()
+        {
+            // VB: Command.bas 1269 は .MainPilot.Morale >= CInt(10# * .FeatureLevel("ハイパーモード")) + 100。
+            // Lv1.25 では CInt(12.5) = 12 なので気力 112 で表示する（丸めずに比べると 112.5 に届かない）
+            var f = new CommandAttackProcessFixture();
+            var ud = f.AddUnitData("通常機", 4, "ハイパーモードLv1.25=スーパーモード 超形態");
+            f.AddWeapon(ud, "ビームサーベル");
+            var hud = f.AddUnitData("超形態", 4, "ノーマルモード=通常機");
+            f.AddWeapon(hud, "ビームサーベル");
+            var ally = f.Deploy("通常機", "主人公", "味方", 5, 5);
+
+            ally.MainPilot().Morale = 111;
+            f.Commands.CommandState = "ユニット選択";
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+            CollectionAssert.DoesNotContain(Ids(f.LastUnitCommandMenu()), Command.HyperModeCmdID);
+
+            ally.MainPilot().Morale = 112;
+            f.Commands.CommandState = "ユニット選択";
+            f.Commands.ProceedInput(GuiButton.Left, f.SRC.Map.MapData[5, 5], ally);
+            Assert.AreEqual("スーパーモード", Label(f.LastUnitCommandMenu(), Command.HyperModeCmdID));
+        }
+
+        [TestMethod]
         public void CommandSelect_JumpWithoutCost_ReplacesNormalMove()
         {
             // コスト指定の無いジャンプは常に使え、通常移動がジャンプになる

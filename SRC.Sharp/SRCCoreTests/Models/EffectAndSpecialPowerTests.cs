@@ -14,10 +14,10 @@ namespace SRCCore.Models.Tests
         // ──────────────────────────────────────────────
 
         [TestMethod]
-        public void AbilityEffect_DefaultValues_NameIsNull()
+        public void AbilityEffect_DefaultValues_NameIsEmpty()
         {
             var ae = new AbilityEffect();
-            Assert.IsNull(ae.Name);
+            Assert.AreEqual("", ae.Name);
         }
 
         [TestMethod]
@@ -28,10 +28,10 @@ namespace SRCCore.Models.Tests
         }
 
         [TestMethod]
-        public void AbilityEffect_DefaultValues_DataIsNull()
+        public void AbilityEffect_DefaultValues_DataIsEmpty()
         {
             var ae = new AbilityEffect();
-            Assert.IsNull(ae.Data);
+            Assert.AreEqual("", ae.Data);
         }
 
         [TestMethod]

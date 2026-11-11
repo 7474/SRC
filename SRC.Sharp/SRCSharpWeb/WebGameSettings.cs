@@ -15,6 +15,8 @@ namespace SRCSharpWeb
         /// <summary>localStorage のキー</summary>
         public const string StorageKey = "srcweb.gameSettings";
 
+        /// <summary>メッセージスピード（メッセージのウェイト。前の版で保存した設定に無ければ「普通」）</summary>
+        public int MessageWait { get; set; } = MessageSpeeds.DefaultWait;
         public bool BattleAnimation { get; set; }
         public bool ExtendedAnimation { get; set; }
         public bool WeaponAnimation { get; set; }
@@ -32,6 +34,7 @@ namespace SRCSharpWeb
         {
             return new WebGameSettings
             {
+                MessageWait = config.MessageWait,
                 BattleAnimation = config.BattleAnimation,
                 ExtendedAnimation = config.ExtendedAnimation,
                 WeaponAnimation = config.WeaponAnimation,
@@ -49,6 +52,7 @@ namespace SRCSharpWeb
         /// <summary>設定（srcs.json）に書く。ファイルには保存しない</summary>
         public void ApplyTo(ISystemConfig config)
         {
+            config.MessageWait = MessageWait;
             config.BattleAnimation = BattleAnimation;
             config.ExtendedAnimation = ExtendedAnimation;
             config.WeaponAnimation = WeaponAnimation;

@@ -367,6 +367,47 @@ namespace SRCRender.Tests
         }
 
         [TestMethod]
+        public void PlayScenario_HoldingLeftButton_AdvancesMessagesWithWait()
+        {
+            workspace.Write("hold.eve",
+                "プロローグ:",
+                "Talk システム",
+                "一つ目",
+                "End",
+                "Talk システム",
+                "二つ目",
+                "End",
+                "Talk システム",
+                "三つ目",
+                "End",
+                "Quit",
+                "");
+            using (var runner = new ScreenScenarioRunner(workspace.AppPath))
+            {
+                runner.Start(Path.Combine(workspace.AppPath, "hold.eve"));
+                Assert.AreEqual("一つ目", runner.WaitForMessage());
+                runner.GUI.MessageWait = 100;
+
+                // 元の SRC と同じく、左ボタンを押しっぱなしにすると、ウェイトを置いてメッセージを送る
+                var area = ScreenLayout.MessageArea;
+                runner.GUI.PointerPressed(area.MidX, area.MidY, SRCCore.GuiButton.Left);
+                runner.WaitFor(s => s.Message.Waiting && string.Join("\n", s.Message.Lines) == "二つ目", "second message");
+                var shown = DateTime.UtcNow;
+                runner.WaitFor(s => s.Message.Waiting && string.Join("\n", s.Message.Lines) == "三つ目", "third message while holding");
+                // すぐには送らない（ウェイト付き）
+                Assert.IsTrue(DateTime.UtcNow - shown >= TimeSpan.FromMilliseconds(500), "advanced without wait");
+                runner.GUI.PointerReleased(area.MidX, area.MidY, SRCCore.GuiButton.Left);
+
+                // 離したら送らない
+                Thread.Sleep(1500);
+                Assert.AreEqual("三つ目", string.Join("\n", runner.State.Message.Lines));
+                Assert.IsTrue(runner.State.Message.Waiting);
+                runner.ClickMessage();
+                runner.WaitForTermination();
+            }
+        }
+
+        [TestMethod]
         public void PlayScenario_RightClickOnAskWithoutCancelOption_ShowsListAgain()
         {
             using (var runner = new ScreenScenarioRunner(workspace.AppPath))

@@ -2,8 +2,6 @@
 layout: default
 title: Splitコマンド
 ---
-** 内容はSRC2.2.33のものです **
-
 **Splitコマンド**
 
 ユニットを分離
