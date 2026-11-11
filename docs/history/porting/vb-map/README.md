@@ -3,7 +3,7 @@
 VB 版（`SRC/SRC_20121125`）の手続き（Function・Sub・Property）を、C# の対応するメソッドと 1 つずつ突き合わせるための表（7474/SRC#1498）。
 
 - 表は `python3 tools/vb_port_map.py` で作る。作り直しても、手で書いた「C#」「状態」「メモ」は残る。行番号は VB 版の行
-- CI（`port-map-check`）の `python3 tools/vb_port_map.py --check` で、VB のすべての手続きが表にあり、状態の書き方が正しいかを確かめる
+- CI（`port-map-check`）の `python3 tools/vb_port_map.py --check` で、VB のすべての手続きが表にあり、状態の書き方が正しいか、[TODO・コメントアウトの一覧](todo.md)に「未確認」が無いかを確かめる
 - 対象は `SRC/SRC_20121125` の `*.bas`・`*.cls`・`*.frm` のすべての手続き。選んで外した手続きは無い（手続きの外にあるものは下の「表に載っていないもの」）
 - 「C#」の候補は名前だけで選んでいる。`（見つからない）` は名前の違う C# に移したか、移していないもの。突き合わせのときに直す
 

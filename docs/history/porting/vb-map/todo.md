@@ -4,6 +4,7 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 
 - 種類: `TODO`・`XXX`・`FIXME` はコメント、`コード` はコメントアウトされたコード（続いた行は 1 つにまとめ、最初の行と行数を書く）
 - 状態: `未確認`・`直した`（PR の番号）・`SRC#で不要`（理由）・`Issue`（番号）
+- 「未確認」の行があると CI（`port-map-check`）が落ちる。TODO・XXX・コメントアウトされたコードを足したら、直すか、この表に状態とメモを書く（7474/SRC#1555）
 
 | 場所 | 種類 | 本文 | 状態 | メモ |
 |---|---|---|---|---|
@@ -19,7 +20,7 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Maps/Map.cs:476` | XXX | XXX 1というよりは0にしたいが0長配列は作れない | SRC#で不要 | VB の ClearMap も MapWidth・MapHeight を 1 にする |
 | `SRCCore/Models/PilotData.cs:495` | XXX | XXX Readonlyにするとか | SRC#で不要 | SRC# で足した DefinedSpecialPowers の設計のメモ。VB に当たるコードは無い |
 | `SRCCore/Models/PilotData.cs:688` | XXX | XXX 例外処理要らんの？ | SRC#で不要 | VB の Feature にもエラーの処理は無く、無ければ実行時エラーになる |
-| `SRCCore/Pilots/Pilot.cs:74` | XXX | XXX こうしてるところシリアライズの時だけID解決のほうがいいかな。 | SRC#で不要 | Unit を UnitId から引くという SRC# の保存の設計についての覚え書き。VB の動作とは関係しない |
+| `SRCCore/Pilots/Pilot.cs:76` | XXX | XXX こうしてるところシリアライズの時だけID解決のほうがいいかな。 | SRC#で不要 | Unit を UnitId から引くという SRC# の保存の設計についての覚え書き。VB の動作とは関係しない |
 | `SRCCore/Pilots/Pilot.unit.cs:135` | XXX | XXX 外から操作したいものではない | SRC#で不要 | 作りについてのメモ。VB の `Set MapDataForUnit(.X, .Y) = Nothing` と同じ動作 |
 | `SRCCore/Pilots/Pilots.cs:209` | XXX | XXX Clone List | SRC#で不要 | C# は列挙中にコレクションを変えられないので、写してから回す。VB と同じく全員を見る |
 | `SRCCore/Units/Unit.ability.cs:32` | XXX | XXX 攻撃同様にしたけれど、UnitXxxを用意するならそっちが持ってるべきだったかもしれない。 | SRC#で不要 | メソッドの置き場所の設計のメモで、動作に関係しない |
