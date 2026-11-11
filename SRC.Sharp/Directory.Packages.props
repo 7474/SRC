@@ -17,13 +17,13 @@
     <PackageVersion Include="Markdig" Version="1.6.0" />
     <PackageVersion Include="Melanchall.DryWetMidi" Version="8.0.3" />
     <PackageVersion Include="MeltySynth" Version="2.4.1" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.14" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.14" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.15" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.15" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.14" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.14" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.14" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.15" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.15" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.15" />
     <PackageVersion Include="Microsoft.ML.OnnxRuntime" Version="1.31.1" />
     <PackageVersion Include="Microsoft.ML.Tokenizers" Version="2.0.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
@@ -46,6 +46,6 @@
     <PackageVersion Include="System.Collections.Specialized" Version="4.3.0" />
     <PackageVersion Include="System.Drawing.Common" Version="10.0.14" />
     <PackageVersion Include="System.Runtime.Caching" Version="10.0.14" />
-    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.14" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.15" />
   </ItemGroup>
 </Project>
