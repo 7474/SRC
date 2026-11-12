@@ -107,15 +107,16 @@ jobs:
           # 開発版の版（例: 0.5.6-dev.123）になっている
           out/tool/srcsharp --version | tee version.txt
           grep -q -- "-dev.$SRCSHARP_DEV_BUILD" version.txt
-          # 問題の無いシナリオは 0、問題のあるもの（共通の SP を持たない battle-basic）は件数を出して 1 で終わる
+          # 問題の無いシナリオは 0、問題のあるもの（実機との比較のデータの誤りのケース。ユニットのサイズが無い）は件数を出して 1 で終わる。
+          # battle-basic は定義していないスペシャルパワーを除いた（7ce4be55）ので、問題の無いデータになった
           out/tool/srcsharp lint SRC.Sharp/E2E/unit-cmd-map
           set +e
-          out/tool/srcsharp lint SRC.Sharp/E2E/battle-basic/Data > lint.txt 2>&1
+          out/tool/srcsharp lint SRC.Sharp/Compat/probe-errors/unit-missing-size/Data > lint.txt 2>&1
           code=$?
           set -e
           cat lint.txt
           test "$code" -eq 1
-          grep -q 'スペシャルパワーは存在しません' lint.txt
+          grep -q 'サイズの設定が抜けています' lint.txt
       - uses: actions/upload-artifact@v7
         with:
           name: srcsharp-nupkg
