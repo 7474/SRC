@@ -87,5 +87,20 @@ namespace SRCAuthoring.Tests
                 Assert.AreEqual(0, analysis.Diagnostics.Count, string.Join("\n", analysis.Diagnostics));
             }
         }
+
+        [TestMethod]
+        public void Analyze_DoesNotThrowOnCommandsWithoutArguments()
+        {
+            // 引数の無いコマンドの 2 番目の引数を読むと CmdData.GetArgRaw は例外を投げる（元の SRC と同じく実行時のエラーにするため。#1511）。
+            // 書きかけのシナリオで、解析そのものが止まらないこと
+            using (var scenario = new TestScenario())
+            {
+                var eve = scenario.Write("test.eve", "スタート:", "Set", "Local", "Global", "Require", "Call", "Goto", "Exit");
+
+                var analysis = new ScenarioAnalyzer().Analyze(eve);
+
+                Assert.IsFalse(analysis.Diagnostics.Any(x => x.Message.Contains("ラベル「")), string.Join("\n", analysis.Diagnostics));
+            }
+        }
     }
 }

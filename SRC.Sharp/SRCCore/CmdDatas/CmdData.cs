@@ -105,12 +105,9 @@ namespace SRCCore.CmdDatas
         // idx番目の引数を返す
         public CmdArgument GetArgRaw(int idx)
         {
-            // VB 版の Parse は、引数の無いコマンドでは引数の配列（strArgs(2 To ArgNum)）を作らないので、
-            // 引数を読むと実行時エラー（「イベントデータが不正です」）になる。
-            // 元の SRC の実機で、引数の無い Incr・Ride・UnSet がこのエラーになることを確かめた（probe-bounds。#1511・#1550）
-            if (idx >= 2 && ArgNum == 1)
+            if (idx >= 2)
             {
-                throw new IndexOutOfRangeException($"引数の無いコマンドの {idx} 番目の引数を読んだ");
+                ThrowIfNoArgsArray(idx);
             }
             if (idx - 1 < args.Count)
             {
@@ -120,6 +117,20 @@ namespace SRCCore.CmdDatas
             else
             {
                 return CmdArgument.Empty;
+            }
+        }
+
+        // VB 版の Parse は、引数の無いコマンドでは引数の配列（strArgs(2 To ArgNum)）を作らないので、
+        // 引数を読むと実行時エラー（「イベントデータが不正です」）になる。
+        // 元の SRC の実機で、引数の無い Incr・Ride・UnSet がこのエラーになることを確かめた（probe-bounds。#1511・#1550）。
+        // SRC# の引数の 1 番目はコマンド名なので GetArgRaw(1) は読めるが、元の SRC の strArgs(1) は無い。
+        // 元の SRC が引数の数を確かめずに GetArgAsString(ArgNum) を読むコマンド（Create・Launch・MapAttack）は、
+        // 読む前にこれを呼んで、引数の無いときのエラーを合わせる
+        protected void ThrowIfNoArgsArray(int idx)
+        {
+            if (ArgNum == 1)
+            {
+                throw new IndexOutOfRangeException($"引数の無いコマンドの {idx} 番目の引数を読んだ");
             }
         }
 

@@ -6,7 +6,7 @@ VB 版の `SRC/SRC_20121125/TerrainDataList.cls` の手続きと、C# の対応�
 |---|---|---|---|---|---|
 | Sub Class_Initialize | 31 | 7 | `SRCCore/Models/TerrainDataList.cs` TerrainDataList | 一致 | VB は全番号に空の TerrainData を作る。C# は null のままで、Item は null を返し、Map 側がそれを扱う |
 | Sub Class_Terminate | 40 | 7 | （なし） | SRC#で不要 | GC が受け持つ |
-| Function IsDefined | 50 | 7 | `SRCCore/Models/TerrainDataList.cs` TerrainDataList.IsDefined | 修正済み | 範囲外の番号で、Item が EmptyTerrain を返すので True になっていた。番号が範囲の中にあり、ID が 0 以上のときだけ True にした（#1498）。VB の範囲外は BoundsCheck を外しているので不定 |
+| Function IsDefined | 50 | 7 | `SRCCore/Models/TerrainDataList.cs` TerrainDataList.IsDefined | 修正済み | 範囲外の番号で、Item が EmptyTerrain を返すので True になっていた。番号が範囲の中にあり、ID が 0 以上のときだけ True にした（#1498）。VB の範囲外は BoundsCheck を外しているので不定と考えられる（実機では確かめていない） |
 | Function Item | 60 | 3 | `SRCCore/Models/TerrainDataList.cs` TerrainDataList.Item・TerrainDataList.ItemByName | 修正済み | #1503 の手がかり: VB は名前で探すとき（ChangeTerrain・ChangeLayer・GUI のビットマップ）に OrderedID の順で探す。C# の ItemByName は番号の小さい順だったので、登録の順にした（#1498）。範囲外の番号で EmptyTerrain を返すのは SRC# の都合 |
 | Function Name | 65 | 3 | `SRCCore/Models/TerrainData.cs` TerrainData.Name | 一致 | Item(ID).Name |
 | Function Bitmap | 70 | 3 | `SRCCore/Models/TerrainData.cs` TerrainData.Bitmap | 一致 | Item(ID).Bitmap |

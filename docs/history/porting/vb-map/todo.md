@@ -29,4 +29,3 @@ VB 版との突き合わせ（[対応表](README.md)）のときに、その手�
 | `SRCCore/Units/UnitWeapon.cs:162` | XXX | XXX この辺の参照考えると UnitWeapon として切り出したのイマイチだったかもなぁ。 | SRC#で不要 | 設計の感想で、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:3968` | XXX | XXX この辺の判断切り出せそうな気はする | SRC#で不要 | 処理の切り出しの覚え書きで、動作に関係しない |
 | `SRCCore/Units/UnitWeapon.cs:4288` | XXX | XXX 処理簡便にしておきたい | SRC#で不要 | バリア・フィールド・プロテクションの整理の覚え書きで、動作に関係しない |
-| `SRCCore/VB/Information.cs:25` | XXX | XXX VB の IsNumeric は &H・&O・括弧（(1)）・通貨記号も数値とみなすが、ここでは読まない（7474/SRC#1545）。 | Issue | #1545。指数表記は #1534 で、読み方の固定は #1554 で直した。&H・&O・括弧の負の数・通貨記号が残る |

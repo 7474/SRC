@@ -145,6 +145,9 @@ namespace SRCRender.Tests
                 using (var runner = new ScreenScenarioRunner(app))
                 {
                     var script = new PlayScript(runner);
+                    // 乱数の種を決める。必ず当たる武器でもクリティカルは最低 1% 出る（元の SRC の CriticalProbability）ので、
+                    // 種が毎回変わると戦闘のダメージの項目がまれに 1.5 倍になって落ちる。乱数の系列は元の SRC と合わせない
+                    runner.Session.SRC.InitialRndSeed = 1;
                     runner.Start(Path.Combine(scenario, eve));
                     try
                     {
