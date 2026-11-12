@@ -51,7 +51,12 @@ namespace SRCCore.Events
             // 保存したものより多いラベルは有効にする（#1529）
             if (data.EventLabelEnabled != null)
             {
-                var i = 0;
+                // 元の SRC の形式では、保存したラベルが今のラベルより多ければ、多い分は先頭にあったとみなして後ろからそろえる。
+                // 元の SRC は本体の Lib（スペシャルパワー.eve・汎用戦闘アニメ\include.eve の「*プロローグ:」など）のイベントのラベルを
+                // シナリオのラベルより前に並べるので、本体に汎用戦闘アニメなどを入れた環境で保存したデータは、それの無い環境では
+                // シナリオのラベルの位置がずれる（元の SRC の実機の中断データで分かった。#1577）
+                var offset = data.AlignEventLabelsToEnd ? System.Math.Max(0, data.EventLabelEnabled.Count - colEventLabelList.Count) : 0;
+                var i = offset;
                 foreach (var lab in colEventLabelList.List)
                 {
                     lab.Enable = i < data.EventLabelEnabled.Count ? data.EventLabelEnabled[i] : true;

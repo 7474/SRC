@@ -124,21 +124,27 @@ namespace SRCRender.Tests
                 });
                 // データセーブは保存のダイアログの後で UList.Update（追加パイロットを消す）をしてから書くので、書いた後の状態から作る
                 var clearSample = SampleOrWrite("clear.src", scenario, () => new VbSaveDataWriter().SaveData(runner.Session.SRC).ToBytes());
-                var saved = Digest(runner.Session.SRC, clear: true);
+                var saved = Digest(runner.Session.SRC, new[] { "セーブデータファイル名" }, clear: true);
 
                 // 同じシナリオのフォルダで、JSON と元の SRC の形式を新しく読んで比べる
                 var json = LoadHeadless(scenario, src => src.RestoreData(Path.Combine(scenario, "suspend.srcq"), SRCSaveKind.Suspend));
                 var original = LoadHeadless(scenario, src => src.RestoreData(suspendSample, SRCSaveKind.Suspend));
-                AssertSameState(Digest(json), Digest(original), "中断データ（JSON と元の SRC の形式）");
+                // セーブデータファイル名は、ステージの初めに元の SRC は「～までクリア.src」、SRC# は「～までクリア.srcs」にする。
+                // 元の SRC の形式から読んだ値はそのまま残し、保存するときに SRC# の拡張子にする（GeneralLib.ToSaveFileName）
+                var saveFileName = new[] { "セーブデータファイル名" };
+                AssertSameState(Digest(json, saveFileName), Digest(original, saveFileName), "中断データ（JSON と元の SRC の形式）");
+                Assert.AreEqual(
+                    SRCCore.Lib.GeneralLib.ToSaveFileName(json.Expression.GetValueAsString("セーブデータファイル名"), "srcs"),
+                    SRCCore.Lib.GeneralLib.ToSaveFileName(original.Expression.GetValueAsString("セーブデータファイル名"), "srcs"));
                 Assert.AreEqual("局所の値", original.Event.LocalVariableList["見本の局所"].StringValue);
                 Assert.IsTrue(original.Event.colEventLabelList.List.Any(x => x.Data == "ターン 1 味方" && !x.Enable));
 
                 // クリアデータは、JSON から読んだ状態と、元の SRC の形式から読んだ状態を比べる。
                 // データセーブしたときの状態とも比べる
-                json = LoadHeadless(scenario, src => src.LoadData(File.OpenRead(Path.Combine(scenario, "clear.srcs"))));
-                original = LoadHeadless(scenario, src => src.LoadData(File.OpenRead(clearSample)));
-                AssertSameState(Digest(json, clear: true), Digest(original, clear: true), "クリアデータ（JSON と元の SRC の形式）");
-                AssertSameState(saved, Digest(original, clear: true), "クリアデータ（データセーブしたときと、元の SRC の形式から読んだ後）");
+                json = LoadHeadless(scenario, src => src.LoadData(new MemoryStream(File.ReadAllBytes(Path.Combine(scenario, "clear.srcs")))));
+                original = LoadHeadless(scenario, src => src.LoadData(new MemoryStream(File.ReadAllBytes(clearSample))));
+                AssertSameState(Digest(json, saveFileName, clear: true), Digest(original, saveFileName, clear: true), "クリアデータ（JSON と元の SRC の形式）");
+                AssertSameState(saved, Digest(original, saveFileName, clear: true), "クリアデータ（データセーブしたときと、元の SRC の形式から読んだ後）");
                 Assert.AreEqual("savedata.eve", original.Expression.GetValueAsString("次ステージ"));
             });
         }
