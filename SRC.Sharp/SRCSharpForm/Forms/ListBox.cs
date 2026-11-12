@@ -622,8 +622,11 @@ namespace SRCSharpForm
         {
             // リストボックスを常に手前に表示
             TopMost = true;
-            HorizontalSize = "M";
-            VerticalSize = "M";
+            // VB の Form_Load は HorizontalSize・VerticalSize を "M" にするが、VB では frmListBox に初めて触れた時点
+            // （EnlargeListBoxHeight などで大きさを変える前）に走る。WinForms の Load は最初に表示するときなので、
+            // ここで "M" に戻すと、表示する前に広げた分を忘れてしまう（中断データから再開したプロセスで、一覧を
+            // 一度も出さずにインターミッションへ進むと、次のステージで一覧が縮まず、次のインターミッションでさらに広がった。#1552）。
+            // "M" は宣言で入れてある
         }
 
         // リストボックスを閉じる
