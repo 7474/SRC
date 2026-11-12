@@ -3,7 +3,8 @@
 ## 0.5.7
 
 - The version follows the SRC# library version (srcsharp 0.5.7).
-<!-- TODO: list the changes of the extension, or remove this line -->
+- No changes to the extension's features. Dependency vulnerabilities reported by npm audit were removed.
+- srcsharp 0.5.7 includes the changes listed in the SRC# 3.5.7 release notes. Some data that 0.5.6 accepted is now reported as an error, as in the original SRC (for example, pilot names that differ only in case). The language server no longer stops on incomplete lines such as `Set` or `Call` without arguments.
 
 ## 0.5.6
 
