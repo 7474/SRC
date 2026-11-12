@@ -18,7 +18,7 @@
 14-filter-monotone	画面	Monotone	クリックで進め、「場面 14」のメッセージを閉じる
 15-filter-water	画面	Water	クリックで進め、「場面 15」のメッセージを閉じる
 16-filter-color	画面	ColorFilter（#FF0000・50%）	クリックで進め、「場面 16」のメッセージを閉じる
-snd-1	音	StartBGM cp_map.mid	クリックで進め、「音 1」のメッセージを閉じる（曲の頭から 10 秒ほど聞いてから次へ）
+snd-1	音	StartBGM cp_map.mid	クリックで進め、「音 1」のメッセージを閉じる（鳴り始めて 4 秒ほどで次へ。cp_map.mid は約 7.3 秒の節を 2 回くり返すので、節の途中で指定し直さないと頭に戻ったか聞き分けにくい）
 snd-2	音	同じ BGM の StartBGM	クリックで進め、「音 2」のメッセージを閉じる
 snd-3	音	PlaySound cp_levelup.wav	クリックで進め、「音 3」のメッセージを閉じる
 snd-4	音	PlayMIDI cp_boss.mid	クリックで進め、「音 4」のメッセージを閉じる（終わりまで聞く）
