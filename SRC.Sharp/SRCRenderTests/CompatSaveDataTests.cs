@@ -24,6 +24,9 @@ namespace SRCRender.Tests
     /// </list>
     /// </summary>
     [TestClass]
+    // 乱数（GeneralLib の Rnd）はプロセスで 1 つなので、ほかのテストと並べて流すと系列が乱れ、
+    // 戦闘の結果（クリティカルなど）で各話の expect が揺れる。種を compat_play.py と同じ 1 にして、並べずに流す
+    [DoNotParallelize]
     public class CompatSaveDataTests
     {
         private const string StopMarker = "# ここから最後まで自動で進める";
@@ -268,6 +271,7 @@ namespace SRCRender.Tests
                     {
                         SnapshotDirectory = Path.Combine(AppContext.BaseDirectory, "TestResults", "e2e", "compat-savedata-" + Path.GetFileNameWithoutExtension(eveFile)),
                     };
+                    runner.Session.SRC.InitialRndSeed = 1;
                     runner.Start(Path.Combine(scenario, eveFile));
                     try
                     {
