@@ -33,6 +33,26 @@ public static class CaptureWin32 {
   [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
   [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
   [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
+  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
+  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint pid);
+  public delegate bool EnumProc(IntPtr hWnd, IntPtr lParam);
+  [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc f, IntPtr lParam);
+  // プロセスの見えているトップレベルのウィンドウのうち、いちばん大きいもの。
+  // Src.exe（VB5）の MainWindowHandle は隠れた 0x0 のウィンドウ（ThunderRT5Main）なので使えない。
+  // マップの場面はメインのウィンドウ、インターミッションはコマンドの一覧のウィンドウになる
+  public static IntPtr LargestWindow(uint pid) {
+    IntPtr best = IntPtr.Zero; long area = 0;
+    EnumWindows((h, l) => {
+      uint p; GetWindowThreadProcessId(h, out p);
+      if (p == pid && IsWindowVisible(h)) {
+        RECT r; GetWindowRect(h, out r);
+        long a = (long)(r.Right - r.Left) * (r.Bottom - r.Top);
+        if (a > area) { area = a; best = h; }
+      }
+      return true;
+    }, IntPtr.Zero);
+    return best;
+  }
 }
 "@
 [CaptureWin32]::SetProcessDPIAware() | Out-Null
@@ -43,9 +63,9 @@ $scenes = @(
 )
 
 function Get-TargetWindow {
-  $p = Get-Process -Name $ProcessName -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 } | Select-Object -First 1
+  $p = Get-Process -Name $ProcessName -ErrorAction SilentlyContinue | Select-Object -First 1
   if ($p -eq $null) { return [IntPtr]::Zero }
-  return $p.MainWindowHandle
+  return [CaptureWin32]::LargestWindow([uint32]$p.Id)
 }
 
 function Save-Window([string]$path) {
@@ -74,7 +94,12 @@ function Save-Window([string]$path) {
 if ($SrcExe -ne "") {
   $eve = Join-Path $here "screens\screens.eve"
   Write-Host "$SrcExe で $eve を開きます"
-  Start-Process -FilePath $SrcExe -ArgumentList ('"' + $eve + '"') -WorkingDirectory (Split-Path -Parent $SrcExe) | Out-Null
+  # Start-Process はコマンドラインの末尾に空白を足し、元の SRC の Main が .eve と判定できずにファイルの選択ダイアログになる。
+  # ProcessStartInfo で開く（run_probe_auto.ps1 と同じ）
+  $psi = New-Object System.Diagnostics.ProcessStartInfo $SrcExe, ('"' + $eve + '"')
+  $psi.UseShellExecute = $false
+  $psi.WorkingDirectory = Split-Path -Parent $SrcExe
+  [System.Diagnostics.Process]::Start($psi) | Out-Null
 }
 
 Write-Host ""

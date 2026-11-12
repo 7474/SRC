@@ -253,6 +253,9 @@ namespace SRCRender
             }
             else if (w.lstItems.Items.Count > 0)
             {
+                // キーボードでそのまま決定できるよう、先頭の項目を選んでおく。元の SRC（GUI.bas の ListBox）は
+                // 複数列のときのほかは ListIndex = -1（どの項目も選ばない。実機の画面で確かめた。#1553）。
+                // ヘルプの SRCとの互換性の「操作」に載せた違い
                 w.lstItems.SelectedIndex = 0;
             }
 
@@ -1008,8 +1011,10 @@ namespace SRCRender
             {
                 Items = commands.Select(x => x.Label).ToList(),
                 Checked = commands.Select(x => x.IsChecked).ToList(),
+                // Command.bas: マップコマンドは PopupMenu ..., MouseX, MouseY + 6、ユニットコマンドは MouseY - 6
+                // （キャンセルで開き直すときの MouseY + 5 は区別しない）。X は横の中心（ScreenRenderer.LayoutMenu）
                 X = (int)MouseX,
-                Y = (int)MouseY + 6,
+                Y = (int)MouseY + (isUnit ? -6 : 6),
                 // キー操作で開いたときは、そのまま決定できるよう先頭の項目を選んでおく
                 Highlight = keyOperating ? 0 : -1,
             };

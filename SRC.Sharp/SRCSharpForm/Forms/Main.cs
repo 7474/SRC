@@ -232,7 +232,15 @@ namespace SRCSharpForm
                 Width = 172,
                 Tag = x,
             }).ToArray());
-            mnuUnitCommand.Show(picMain, new Point((int)GUI.MouseX, (int)GUI.MouseY));
+            ShowPopupMenu(mnuUnitCommand, -6);
+        }
+
+        // Command.bas は PopupMenu を vbPopupMenuCenterAlign（フラグ 6）で開く。マウスの X を横の中心にし、
+        // Y はマップコマンドが MouseY + 6、ユニットコマンドが MouseY - 6（元の SRC の実機の画面で確かめた。#1553）
+        private void ShowPopupMenu(ContextMenuStrip menu, int offsetY)
+        {
+            var width = menu.GetPreferredSize(Size.Empty).Width;
+            menu.Show(picMain, new Point((int)GUI.MouseX - width / 2, (int)GUI.MouseY + offsetY));
         }
 
         public void ShowMapCommandMenu(IList<UiCommand> commands)
@@ -248,7 +256,7 @@ namespace SRCSharpForm
                 Width = 172,
                 Tag = x,
             }).ToArray());
-            mnuMapCommand.Show(picMain, new Point((int)GUI.MouseX, (int)GUI.MouseY));
+            ShowPopupMenu(mnuMapCommand, 6);
         }
 
         // ステータスウィンドウのパイロット画像上をクリック
