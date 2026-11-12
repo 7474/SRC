@@ -667,16 +667,25 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            var opts = new string[]
+                            // VB と同じく、後ろの引数から順にオプションを読み飛ばす。「終了」があれば選択肢を続けて書かない形。
+                            // 括弧の閉じていない行（ArgNum = -1）はループに入らず、選択肢の始まりとして扱う
+                            // （VB: Event.bas の LoadEventData の Case AskCmd）
+                            var i = command.ArgNum;
+                            while (i > 1)
                             {
-                                "通常",
-                                "拡大",
-                                "連続表示",
-                                "キャンセル可",
-                            };
-                            var args = command.GetArgs().Reverse().SkipWhile(x => opts.Contains(x.strArg)).ToList();
-                            if (args.Count < 3
-                                && !command.GetArgs().Select(x => x.strArg).Contains("終了"))
+                                var opt = command.GetArg(i);
+                                if (opt == "通常" || opt == "拡大" || opt == "連続表示" || opt == "キャンセル可")
+                                {
+                                    i--;
+                                    continue;
+                                }
+                                if (opt == "終了")
+                                {
+                                    i = 3;
+                                }
+                                break;
+                            }
+                            if (i < 3)
                             {
                                 cmdStack.Push(CmdType.AskCmd);
                                 cmdPosStack.Push(command.EventData.ID);

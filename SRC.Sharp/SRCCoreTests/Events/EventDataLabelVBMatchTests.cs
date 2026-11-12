@@ -279,5 +279,53 @@ namespace SRCCore.Events.Tests
             Assert.AreEqual(LabelType.TalkEventLabel, ld.Name);
             Assert.AreEqual("", ld.Para(2));
         }
+        // VB: 括弧の閉じていない行（ArgNum = -1）は「括弧の対応が取れていません」を出す。Ask の行なら、
+        // 後ろの引数を読むループに入らず、選択肢の始まり（End で閉じる）として扱う（Event.bas の LoadEventData）
+        [TestMethod]
+        [Timeout(20000)]
+        public void LoadEventData_AskWithUnbalancedParen_ReportsErrorAndKeepsBlock()
+        {
+            var (src, gui) = Load(
+                "スタート:",
+                "Ask (選んでください",
+                "はい",
+                "いいえ",
+                "End",
+                "Exit");
+
+            CollectionAssert.AreEqual(new[] { "括弧の対応が取れていません" }, ErrorMessages(src));
+            Assert.AreEqual("Ask (選んでください", src.DataErrors[0].line_buf);
+            Assert.IsTrue(gui.TerminateCalled);
+        }
+
+        // VB: Ask の後ろのオプションを読み飛ばし、「終了」があれば選択肢を続けて書かない形（End は要らない）
+        [TestMethod]
+        [Timeout(20000)]
+        public void LoadEventData_AskWithEndOptionAfterOptions_DoesNotOpenBlock()
+        {
+            var (src, gui) = Load(
+                "スタート:",
+                "Ask 選んでください 終了 通常 キャンセル可",
+                "Exit");
+
+            CollectionAssert.AreEqual(new string[0], ErrorMessages(src));
+            Assert.IsFalse(gui.TerminateCalled);
+        }
+
+        // VB: オプションだけの Ask は選択肢の始まり。選択肢の次に半角だけのコマンドが来ると、End が無いとみなす
+        // （メッセージは Ask でも「Talkに対応するEndがありません」。Event.bas の LoadEventData の NopCmd）
+        [TestMethod]
+        [Timeout(20000)]
+        public void LoadEventData_AskWithOptionsOnly_RequiresEnd()
+        {
+            var (src, _) = Load(
+                "スタート:",
+                "Ask 選んでください 通常",
+                "はい",
+                "Exit");
+
+            CollectionAssert.AreEqual(new[] { "Talkに対応するEndがありません" }, ErrorMessages(src));
+            Assert.AreEqual("Ask 選んでください 通常", src.DataErrors[0].line_buf);
+        }
     }
 }
