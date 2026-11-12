@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.7
+
+- The version follows the SRC# library version (srcsharp 0.5.7).
+<!-- TODO: list the changes of the extension, or remove this line -->
+
 ## 0.5.6
 
 - The version follows the SRC# library version (srcsharp 0.5.6).

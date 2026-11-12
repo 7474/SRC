@@ -1,0 +1,2196 @@
+{
+  "GlobalVariableList": {
+    "次ステージ": {
+      "Name": "次ステージ",
+      "VariableType": 1,
+      "StringValue": "",
+      "NumericValue": 0.0
+    },
+    "セーブデータファイル名": {
+      "Name": "セーブデータファイル名",
+      "VariableType": 1,
+      "StringValue": "nextまでクリア.srcs",
+      "NumericValue": 0.0
+    },
+    "引き継ぎ": {
+      "Name": "引き継ぎ",
+      "VariableType": 2,
+      "StringValue": "",
+      "NumericValue": 42.0
+    }
+  },
+  "ScenarioFileName": "next.eve",
+  "Turn": 0,
+  "LocalVariableList": {
+    "ステージ": {
+      "Name": "ステージ",
+      "VariableType": 1,
+      "StringValue": "next.eve",
+      "NumericValue": 0.0
+    }
+  },
+  "DisableEventLabels": [],
+  "EventLabelEnabled": [
+    true,
+    true
+  ],
+  "AdditionalEventFileNames": [],
+  "Map": {
+    "MapWidth": 15,
+    "MapHeight": 15,
+    "MapDrawMode": "",
+    "MapDrawFilterColor": "Black",
+    "MapDrawFilterTransPercent": 0.0,
+    "MapDrawIsMapOnly": false,
+    "MapData": {
+      "x": 15,
+      "y": 15,
+      "data": [
+        [
+          {
+            "X": 1,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 1,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 2,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 2,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 3,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 3,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 4,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 4,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 5,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 5,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 6,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 6,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 7,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 7,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 8,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 8,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 9,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 9,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 10,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 10,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 11,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 11,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 12,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 12,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 13,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 13,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 14,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 14,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ],
+        [
+          {
+            "X": 15,
+            "Y": 1,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 2,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 3,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 4,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 5,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 6,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 7,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 8,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 9,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 10,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 11,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 12,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 13,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 14,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          },
+          {
+            "X": 15,
+            "Y": 15,
+            "TerrainType": 0,
+            "BitmapNo": 0,
+            "LayerType": 10000,
+            "LayerBitmapNo": 10000,
+            "BoxType": 1
+          }
+        ]
+      ]
+    },
+    "MapFileName": ""
+  },
+  "MapX": 8,
+  "MapY": 8,
+  "BGMFileName": "",
+  "RepeatMode": false,
+  "KeepBGM": false,
+  "BossBGM": false,
+  "RndSeed": 689503,
+  "RndIndex": 0,
+  "Version": "15.0.0.0",
+  "Kind": 3,
+  "Titles": [
+    "テスト"
+  ],
+  "NextStage": "",
+  "TotalTurn": 2,
+  "Money": 0,
+  "PList": {
+    "colPilots": {
+      "テストパイロット": {
+        "ID": "テストパイロット",
+        "Party": "味方",
+        "Alive": true,
+        "Away": false,
+        "IsAdditionalPilot": false,
+        "IsAdditionalSupport": false,
+        "SupportIndex": 0,
+        "proLevel": 1,
+        "proEXP": 104,
+        "proSP": 52,
+        "proMorale": 100,
+        "proPlana": 0,
+        "PilotName": "テストパイロット",
+        "UnitId": "テスト機:1"
+      }
+    }
+  },
+  "UList": {
+    "IDCount": 2,
+    "colUnits": {
+      "テスト機:1": {
+        "ID": "テスト機:1",
+        "x": 3,
+        "y": 3,
+        "Area": "地上",
+        "UsedAction": 0,
+        "strMode": "通常",
+        "Status": "待機",
+        "colSpecialPowerInEffect": {},
+        "UsedSupportAttack": 0,
+        "UsedSupportGuard": 0,
+        "UsedSyncAttack": 0,
+        "UsedCounterAttack": 0,
+        "strName": "テスト機",
+        "strParty": "味方",
+        "intRank": 0,
+        "intBossRank": -1,
+        "lngHP": 1000,
+        "intEN": 100,
+        "colCondition": {},
+        "WData": [
+          {
+            "dblBulletRate": 1.0,
+            "Name": "テストビーム"
+          }
+        ],
+        "PreviousSummonerId": null,
+        "LinkData": {
+          "OtherFormIds": [],
+          "PilotIds": [
+            "テストパイロット"
+          ],
+          "SupportIds": [],
+          "ItemIds": [],
+          "MasterId": null,
+          "SummonerId": null,
+          "UnitOnBoardIds": [],
+          "ServantIds": [],
+          "AdditionalSupportId": null,
+          "AbilityStocks": []
+        },
+        "UnitName": "テスト機"
+      }
+    }
+  },
+  "IList": {
+    "IDCount": 0,
+    "colItems": {}
+  }
+}
