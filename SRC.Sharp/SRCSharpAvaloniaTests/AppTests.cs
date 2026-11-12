@@ -167,6 +167,35 @@ namespace SRCSharpAvalonia.Tests
         }
 
         [TestMethod]
+        public void Quit_ClosesWindowAndStopsGameThread()
+        {
+            // シナリオの終了（TerminateSRC。中断・ゲームクリア・Quit）。元の SRC は後始末をしてから End する。
+            // ゲームスレッドから Environment.Exit するとネイティブのコードで落ちた（0xC0000409）ので、
+            // ゲームスレッドを止めてウィンドウを閉じ、通常の終了で後始末をする
+            using (var workspace = new ScenarioWorkspace())
+            {
+                var file = workspace.Write("quit.eve", "プロローグ:", "Quit", "");
+                Run(() =>
+                {
+                    var app = new App();
+                    var window = new MainWindow();
+                    var closed = false;
+                    window.Closed += (s, e) => closed = true;
+                    // App が開くウィンドウと同じく、シナリオの終了でウィンドウを閉じる（設定する前に Quit に届くとテストのプロセスが終わるので、先に設定する）
+                    window.TerminateHandler = () => app.TerminateScenario(window);
+                    window.Show();
+                    _ = app.StartAsync(window, new[] { file }, code => { });
+                    PumpUntil(() => app.Session != null, "session");
+                    var session = app.Session;
+                    PumpUntil(() => closed, "window closed");
+                    PumpUntil(() => !session.Game.IsRunning, "game thread stopped");
+                    Assert.AreEqual(0, session.SRC.DataErrors.Count, string.Join(",", session.SRC.DataErrors.Select(x => x.msg)));
+                    app.Stop();
+                });
+            }
+        }
+
+        [TestMethod]
         public void SwitchScenario_StopsCurrentAndStartsAnother()
         {
             using (var workspace = new ScenarioWorkspace())
