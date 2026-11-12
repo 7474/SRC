@@ -40,7 +40,7 @@ namespace SRCRender.Tests
             Play("torres-ep03.play", "ep03.eve", "compat-ep03");
         }
 
-        /// <summary>第四話を単体で始め、テレポート・ジャンプ・ハイパーモードとノーマルモード・追加パイロット・暴走時パイロット・必要技能までを進める</summary>
+        /// <summary>第四話を単体で始め、テレポート・ジャンプ・ハイパーモードとノーマルモード・追加パイロット・暴走・必要技能までを進める</summary>
         [TestMethod]
         public void FourthEpisode_PlaysSkyCorridor()
         {

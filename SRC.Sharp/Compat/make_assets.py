@@ -473,7 +473,6 @@ FACES = [
     ("cp_guard", (110, 70, 50), None, "G", "machine"),
     ("cp_chrome", (60, 60, 70), None, "C", "machine"),
     ("cp_noa_res", (230, 150, 200), (250, 240, 210), "N", "smile"),
-    ("cp_daichi_rage", (170, 70, 40), (30, 30, 30), "D", "angry"),
     ("cp_drone", (60, 90, 120), None, "D", "machine"),
     ("cp_mother", (150, 40, 60), None, "M", "machine"),
 ]
