@@ -16,7 +16,8 @@ export: テキスト（*.eve・*.txt・*.map・*.ini）は export_sjis.py と同
         書き出したフォルダの中の並びは、このフォルダと同じ（probe\\probe.eve・probe-bounds\\incr.eve・probe-errors\\<ケース>\\probe.eve・
         screens\\screens.eve）。screens の PlayScript（*.play。SRC# のテストだけで使う）は書き出さない。
         run_probe.bat（プローブを順に流し、続けて見比べを始める）・run_screens.bat（見比べだけ）と、
-        capture_screens.ps1（場面ごとに Src.exe の画面を撮る。このフォルダの capture_screens.ps1 に screens-scenes.txt の場面を埋める）も書く。
+        capture_screens.ps1（場面ごとに Src.exe の画面を撮る。このフォルダの capture_screens.ps1 に screens-scenes.txt の場面を埋める）、
+        run_probe_auto.ps1（プローブを自動で流し、エラーのフォームの文言を errors_*.txt に書く）も書く。
 import: シナリオが書いた out_<イベント>.txt（Shift_JIS）と、エラーのダイアログを書き写した errors_<イベント>.txt を、
         probe-expected/<フォルダ>/<イベント>.txt・<イベント>.errors.txt に写す。
         probe-bounds・probe-errors で errors_*.txt が無いケースは、ダイアログが出なかったものとして空の .errors.txt を作る
@@ -118,7 +119,8 @@ def export(argv):
             with open(out, "wb") as f:
                 f.write(data)
     for name, data in [("run_probe.bat", make_batch()), ("run_screens.bat", make_screens_batch()),
-                       ("run_savedata.bat", make_savedata_batch()), ("capture_screens.ps1", make_capture_script())]:
+                       ("run_savedata.bat", make_savedata_batch()), ("capture_screens.ps1", make_capture_script()),
+                       ("run_probe_auto.ps1", make_ps1("run_probe_auto.ps1"))]:
         with open(os.path.join(dest, name), "wb") as f:
             f.write(data)
         files.append((name, data))
@@ -221,6 +223,13 @@ def read_scenes():
     return scenes
 
 
+def make_ps1(name):
+    """このフォルダの PowerShell のスクリプトを、Windows PowerShell 5.1 が日本語を読めるように UTF-8 の BOM 付き・CRLF で書く"""
+    with open(os.path.join(HERE, name), encoding="utf-8-sig") as f:
+        script = f.read().replace("\r\n", "\n")
+    return b"\xef\xbb\xbf" + script.replace("\n", "\r\n").encode("utf-8")
+
+
 def make_capture_script():
     """
     capture_screens.ps1 の「@@SCENES@@」の行に screens-scenes.txt の場面を埋める。
@@ -250,6 +259,25 @@ def read_text(path):
     return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
+def strip_error_folders(text):
+    """エラーのダイアログの 1 行目（「ファイル名：n行目」）のファイル名から、フォルダを除く。
+    Windows で流した場所（ユーザー名を含むことがある）をリポジトリに残さないため。比べるとき（CompatProbeTests）も同じく除く"""
+    lines = text.split("\n")
+    first = True
+    for i, line in enumerate(lines):
+        if line.strip() == "----":
+            first = True
+            continue
+        if first and line.strip():
+            colon = line.find("：")
+            if colon > 0:
+                file = line[:colon]
+                cut = max(file.rfind("\\"), file.rfind("/"))
+                lines[i] = file[cut + 1:] + line[colon:]
+            first = False
+    return "\n".join(lines)
+
+
 def import_results(argv):
     if not argv:
         print("持ち帰ったフォルダ（export で書き出し、Windows で流したもの）を指定する", file=sys.stderr)
@@ -275,7 +303,7 @@ def import_results(argv):
         dest_err = os.path.join(dest_dir, f"{name}.errors.txt")
         if os.path.exists(err_path):
             with open(dest_err, "w", encoding="utf-8", newline="\n") as f:
-                f.write(read_text(err_path))
+                f.write(strip_error_folders(read_text(err_path)))
         elif folder != "probe":
             open(dest_err, "w", encoding="utf-8", newline="\n").close()
         count += 1
