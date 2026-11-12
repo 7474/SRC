@@ -76,6 +76,12 @@ namespace SRCCore.CmdDatas
                 SRC.EventLog.LogWarning("未対応のコマンド {File}({Line}): {Data}", EventData.File, EventData.LineNum, EventData.Data);
                 return EventData.NextID;
             }
+            catch (OperationCanceledException)
+            {
+                // ゲームスレッドを止める合図（シナリオの終了・画面を閉じたときの待ちのループ）。
+                // イベントのエラーにせずに外へ通し、GameThread に受け止めさせる（#1552）
+                throw;
+            }
             catch (Exception ex)
             {
                 SRC.EventLog.LogError(ex, "コマンドの実行中のエラー {File}({Line}): {Data}", EventData.File, EventData.LineNum, EventData.Data);

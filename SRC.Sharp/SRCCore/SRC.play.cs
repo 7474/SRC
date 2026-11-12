@@ -31,6 +31,8 @@ namespace SRCCore
             {
                 GUI.ErrorMessage(fname + "が見つかりません");
                 TerminateSRC();
+                // 元の SRC の TerminateSRC は End で戻らない。SRC# の Web・Avalonia はプロセスを終えずに戻るので、ここで抜ける
+                return;
             }
 
             // ウィンドウのタイトルは、下でシナリオのファイル名を付けるときに「SRC# - 」から設定する
@@ -127,6 +129,7 @@ namespace SRCCore
             {
                 GUI.ErrorMessage("スタートイベントが定義されていません");
                 TerminateSRC();
+                return;
             }
 
             GUI.IsPictureVisible = false;
@@ -863,6 +866,7 @@ namespace SRCCore
             {
                 // GameOver.eveが無ければそのまま終了
                 TerminateSRC();
+                return;
             }
 
             var nonPilotFile = FileSystem.PathCombine(Path.GetDirectoryName(gameOverFile), "non_pilot.txt");
@@ -879,6 +883,7 @@ namespace SRCCore
             {
                 GUI.ErrorMessage(gameOverFile + "中にプロローグイベントが定義されていません");
                 TerminateSRC();
+                return;
             }
 
             // GameOver.eveのプロローグイベントを実施
@@ -908,8 +913,11 @@ namespace SRCCore
             var exitFile = exitFiles.FirstOrDefault(x => FileSystem.FileExists(x));
             if (string.IsNullOrEmpty(exitFile))
             {
-                // 終了用のイベントファイル Exit.eve が無ければそのまま終了
+                // 終了用のイベントファイル Exit.eve が無ければそのまま終了。
+                // 元の SRC の TerminateSRC は End で戻らない。SRC# の Web・Avalonia はプロセスを終えずに戻るので、ここで抜ける
+                // （抜けないと、空のファイル名で Exit.eve を読もうとして「中にプロローグイベントが定義されていません」が出た。#1552）
                 TerminateSRC();
+                return;
             }
 
             var nonPilotFile = FileSystem.PathCombine(Path.GetDirectoryName(exitFile), "non_pilot.txt");
@@ -926,6 +934,7 @@ namespace SRCCore
             {
                 GUI.ErrorMessage(exitFile + "中にプロローグイベントが定義されていません");
                 TerminateSRC();
+                return;
             }
 
             // 終了用のイベントファイル Exit.eve のプロローグイベントを実施
