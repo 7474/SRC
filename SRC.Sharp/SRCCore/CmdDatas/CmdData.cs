@@ -99,7 +99,8 @@ namespace SRCCore.CmdDatas
 
         public IEnumerable<CmdArgument> GetArgs()
         {
-            return Enumerable.Range(1, ArgNum).Select(x => GetArgRaw(x));
+            // 括弧の閉じていない行（ArgNum = -1）は、コマンド名だけを返す（list(1) だけがある VB の Parse と同じ）
+            return Enumerable.Range(1, Math.Max(ArgNum, 1)).Select(x => GetArgRaw(x));
         }
 
         // idx番目の引数を返す
