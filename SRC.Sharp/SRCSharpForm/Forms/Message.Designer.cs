@@ -267,6 +267,8 @@ namespace SRCSharpForm
             this.labHP2.Location = new System.Drawing.Point(296, 8);
             this.labHP2.Name = "labHP2";
             this.labHP2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // VB のラベルは 1 語の文字を折り返さずに描く。WinForms は幅 22 に収まらない「HP」を折り返して「H」だけを見せるので、文字の幅に合わせる（#1553）
+            this.labHP2.AutoSize = true;
             this.labHP2.Size = new System.Drawing.Size(22, 17);
             this.labHP2.TabIndex = 12;
             this.labHP2.Text = "HP";
@@ -279,6 +281,8 @@ namespace SRCSharpForm
             this.labEN2.Location = new System.Drawing.Point(417, 8);
             this.labEN2.Name = "labEN2";
             this.labEN2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // VB のラベルは 1 語の文字を折り返さずに描く。WinForms は幅 22 に収まらない「HP」を折り返して「H」だけを見せるので、文字の幅に合わせる（#1553）
+            this.labEN2.AutoSize = true;
             this.labEN2.Size = new System.Drawing.Size(22, 17);
             this.labEN2.TabIndex = 11;
             this.labEN2.Text = "EN";
@@ -291,6 +295,8 @@ namespace SRCSharpForm
             this.labEN1.Location = new System.Drawing.Point(165, 8);
             this.labEN1.Name = "labEN1";
             this.labEN1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // VB のラベルは 1 語の文字を折り返さずに描く。WinForms は幅 22 に収まらない「HP」を折り返して「H」だけを見せるので、文字の幅に合わせる（#1553）
+            this.labEN1.AutoSize = true;
             this.labEN1.Size = new System.Drawing.Size(22, 17);
             this.labEN1.TabIndex = 4;
             this.labEN1.Text = "EN";
@@ -303,6 +309,8 @@ namespace SRCSharpForm
             this.labHP1.Location = new System.Drawing.Point(44, 8);
             this.labHP1.Name = "labHP1";
             this.labHP1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // VB のラベルは 1 語の文字を折り返さずに描く。WinForms は幅 22 に収まらない「HP」を折り返して「H」だけを見せるので、文字の幅に合わせる（#1553）
+            this.labHP1.AutoSize = true;
             this.labHP1.Size = new System.Drawing.Size(22, 17);
             this.labHP1.TabIndex = 1;
             this.labHP1.Text = "HP";
