@@ -62,14 +62,14 @@ ID と実機での操作は `screens-scenes.txt`。種類が「画面」のも�
 | `snd-2` | もう一度 `StartBGM cp_map.mid` | 同じ BGM を演奏中なら、やり直さずに続く（`Sound.bas` の `StartBGM`） | なし（続く） |
 | `snd-3` | `PlaySound cp_levelup.wav` | 1 回鳴る。BGM は止まらない | `cp_levelup.wav` |
 | `snd-4` | `PlayMIDI cp_boss.mid` | 切り替わり、終わったら繰り返さない（`StartBGM fname, False`） | 停止 → `cp_boss.mid` を開始（1 回） |
-| `snd-5` | `StopBGM` | 止まる | 停止 |
+| `snd-5` | `StartBGM cp_map.mid`・`Wait 30`・`StopBGM` | 3 秒鳴ってから止まる（前の `snd-4` の曲は繰り返さずに終わるので、止まったと分かるように鳴らし直す） | 停止 → `cp_map.mid` を開始（繰り返す）→ 停止 |
 | `snd-6` | 味方のフェイズの初め | `Map1` の BGM（`RenameBGM` で `cp_map.mid`）。繰り返す | `cp_map.mid` を開始（繰り返す） |
 | `23-weapon-list` | 攻撃のコマンドで武器の一覧を出す | パイロットの BGM（`cp_boss.mid`）に切り替わる（`Command.bas` の `StartAttackCommand`・`GUI.bas` の `WeaponListBox`） | 停止 → `cp_boss.mid` を開始（繰り返す） |
 | `24`〜`29` | 攻撃をやめて、ほかのコマンド | （読んでいない。`cp_boss.mid` のままか、`cp_map.mid` に戻るかを聞く） | なし（`cp_boss.mid` のまま） |
 | `snd-7` | 敵のフェイズの初め | `Map2` の BGM（`cp_enemy.mid`） | 停止 → `cp_enemy.mid` を開始（繰り返す） |
 | `30-intermission` | インターミッション | `Intermission` の BGM（`cp_intermission.mid`。`Intermission.bas`） | 停止 → `cp_intermission.mid` を開始（繰り返す） |
 | `31`・`32` | ユニットステータスから戻る | 本体の `Lib\ユニットステータス表示.eve` による | 停止 → 戻ると `cp_intermission.mid` を開始 |
-| `snd-8` | 次のステージ（`screens_end.eve`） | 「次のステージへ」で `StopBGM`。プロローグの前に `Briefing`（`RenameBGM` の `cp_briefing.mid`） | 停止 → `cp_briefing.mid` を開始（繰り返す） |
+| `snd-8` | 次のステージ（`screens_end.eve`） | 「次のステージへ」で `StopBGM`。プロローグの前に `Briefing`（`RenameBGM` の `cp_briefing.mid`。最初のプロローグと同じ曲） | 停止 → `cp_briefing.mid` を開始（繰り返す） |
 
 ## SRC# で流す
 
@@ -125,3 +125,5 @@ CI の `test-srccore-linux` は、`CompatScreensTests` の後に `screens_report
 | `23`〜`29` | 武器の一覧を出すと別の曲（パイロットの BGM）に変わり、攻撃をやめても `cp_map.mid` に戻らない（#1553 の「実機で確かめる点」） |
 | `snd-7` | 敵のフェイズの初めに `cp_enemy.mid` |
 | `snd-8` | 次のステージへ進むと、別の曲が鳴る（曲の名前は聞き分けていない） |
+
+`snd-2`・`snd-5`・`snd-8` は、聞き分けられるようにシナリオを直した（`snd-1` で 10 秒ほど聞いてから進める・`snd-5` の前に繰り返す曲を鳴らし直す・`snd-8` のメッセージに聞く曲を出す）。次に Windows で流すときに聞き直す（#1553）。
