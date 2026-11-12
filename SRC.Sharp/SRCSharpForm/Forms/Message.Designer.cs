@@ -281,7 +281,7 @@ namespace SRCSharpForm
             this.labEN2.Location = new System.Drawing.Point(417, 8);
             this.labEN2.Name = "labEN2";
             this.labEN2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            // VB のラベルは 1 語の文字を折り返さずに描く。WinForms は幅 22 に収まらない「HP」を折り返して「H」だけを見せるので、文字の幅に合わせる（#1553）
+            // VB のラベルは 1 語の文字を折り返さずに描く。WinForms は幅 22 に収まらない「EN」を折り返して「E」だけを見せるので、文字の幅に合わせる（#1553）
             this.labEN2.AutoSize = true;
             this.labEN2.Size = new System.Drawing.Size(22, 17);
             this.labEN2.TabIndex = 11;
@@ -295,7 +295,7 @@ namespace SRCSharpForm
             this.labEN1.Location = new System.Drawing.Point(165, 8);
             this.labEN1.Name = "labEN1";
             this.labEN1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            // VB のラベルは 1 語の文字を折り返さずに描く。WinForms は幅 22 に収まらない「HP」を折り返して「H」だけを見せるので、文字の幅に合わせる（#1553）
+            // VB のラベルは 1 語の文字を折り返さずに描く。WinForms は幅 22 に収まらない「EN」を折り返して「E」だけを見せるので、文字の幅に合わせる（#1553）
             this.labEN1.AutoSize = true;
             this.labEN1.Size = new System.Drawing.Size(22, 17);
             this.labEN1.TabIndex = 4;
