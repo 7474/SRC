@@ -48,6 +48,9 @@ namespace SRCCore
         public IList<string> DisableEventLabels { get; set; }
         // イベントラベルの有効・無効を colEventLabelList の順に持つ（VB: DumpEventData の lab.Enable、#1529）
         public IList<bool> EventLabelEnabled { get; set; }
+        // 元の SRC の形式から読んだとき、保存したラベルが多ければ後ろからそろえる（Event.Restore。JSON には書かない）
+        [Newtonsoft.Json.JsonIgnore]
+        public bool AlignEventLabelsToEnd { get; set; }
         public IList<string> AdditionalEventFileNames { get; set; }
         public Maps.Map Map { get; set; }
         public int MapX { get; set; }

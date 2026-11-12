@@ -124,22 +124,81 @@ namespace SRCRender.Tests
                 });
                 // データセーブは保存のダイアログの後で UList.Update（追加パイロットを消す）をしてから書くので、書いた後の状態から作る
                 var clearSample = SampleOrWrite("clear.src", scenario, () => new VbSaveDataWriter().SaveData(runner.Session.SRC).ToBytes());
-                var saved = Digest(runner.Session.SRC, clear: true);
+                var saved = Digest(runner.Session.SRC, new[] { "セーブデータファイル名" }, clear: true);
 
                 // 同じシナリオのフォルダで、JSON と元の SRC の形式を新しく読んで比べる
                 var json = LoadHeadless(scenario, src => src.RestoreData(Path.Combine(scenario, "suspend.srcq"), SRCSaveKind.Suspend));
                 var original = LoadHeadless(scenario, src => src.RestoreData(suspendSample, SRCSaveKind.Suspend));
-                AssertSameState(Digest(json), Digest(original), "中断データ（JSON と元の SRC の形式）");
+                // セーブデータファイル名は、ステージの初めに元の SRC は「～までクリア.src」、SRC# は「～までクリア.srcs」にする。
+                // 元の SRC の形式から読んだ値はそのまま残し、保存するときに SRC# の拡張子にする（GeneralLib.ToSaveFileName）
+                var saveFileName = new[] { "セーブデータファイル名" };
+                AssertSameState(Digest(json, saveFileName), Digest(original, saveFileName), "中断データ（JSON と元の SRC の形式）");
+                Assert.AreEqual(
+                    SRCCore.Lib.GeneralLib.ToSaveFileName(json.Expression.GetValueAsString("セーブデータファイル名"), "srcs"),
+                    SRCCore.Lib.GeneralLib.ToSaveFileName(original.Expression.GetValueAsString("セーブデータファイル名"), "srcs"));
                 Assert.AreEqual("局所の値", original.Event.LocalVariableList["見本の局所"].StringValue);
                 Assert.IsTrue(original.Event.colEventLabelList.List.Any(x => x.Data == "ターン 1 味方" && !x.Enable));
 
                 // クリアデータは、JSON から読んだ状態と、元の SRC の形式から読んだ状態を比べる。
                 // データセーブしたときの状態とも比べる
-                json = LoadHeadless(scenario, src => src.LoadData(File.OpenRead(Path.Combine(scenario, "clear.srcs"))));
-                original = LoadHeadless(scenario, src => src.LoadData(File.OpenRead(clearSample)));
-                AssertSameState(Digest(json, clear: true), Digest(original, clear: true), "クリアデータ（JSON と元の SRC の形式）");
-                AssertSameState(saved, Digest(original, clear: true), "クリアデータ（データセーブしたときと、元の SRC の形式から読んだ後）");
+                json = LoadHeadless(scenario, src => src.LoadData(new MemoryStream(File.ReadAllBytes(Path.Combine(scenario, "clear.srcs")))));
+                original = LoadHeadless(scenario, src => src.LoadData(new MemoryStream(File.ReadAllBytes(clearSample))));
+                AssertSameState(Digest(json, saveFileName, clear: true), Digest(original, saveFileName, clear: true), "クリアデータ（JSON と元の SRC の形式）");
+                AssertSameState(saved, Digest(original, saveFileName, clear: true), "クリアデータ（データセーブしたときと、元の SRC の形式から読んだ後）");
                 Assert.AreEqual("savedata.eve", original.Expression.GetValueAsString("次ステージ"));
+            });
+        }
+
+        /// <summary>
+        /// 元の SRC の実機で torres を通したとき（#1549）に保存した中断データ（Compat/savedata-expected/torres）から再開する。
+        /// 再開のイベントが起き、マップのコマンドを待つところまでイベントのエラーが出ないこと、
+        /// 実機の Lib（汎用戦闘アニメなど）のラベルの分だけ多く保存したイベントのラベルが後ろからそろい、
+        /// 中断の前に起きた 1 回だけのラベル（「*」の無いもの）が無効になっていることを確かめる
+        /// </summary>
+        [TestMethod]
+        [DataRow("ep01を中断.src", 1, "破壊 錆蟲(ザコ);攻撃 カイ 敵;行動終了 ノア")]
+        [DataRow("ep02を中断.src", 2, "行動終了 ダイチ")]
+        [DataRow("ep07を中断.src", 1, "")]
+        public void Torres_OriginalSuspend_Resumes(string file, int resumed, string disabledLabels)
+        {
+            Run(file, (runner, script, scenario) =>
+            {
+                script.Run(new[]
+                {
+                    "wait message 試験を再開します",
+                    $"expect eval 再開記録 = {resumed}",
+                    "auto 60",
+                    "expect error none",
+                });
+                var disabled = runner.Session.SRC.Event.colEventLabelList.List.Where(x => !x.Enable).Select(x => x.Data);
+                Assert.AreEqual(disabledLabels, string.Join(";", disabled), file);
+            });
+        }
+
+        /// <summary>
+        /// 元の SRC の実機で torres を通したとき（#1549）に保存したクリアデータ（Compat/savedata-expected/torres）を読んで、
+        /// インターミッションから次の話を始め、前の話の部隊と記録を引き継いでいること（単体で始めたときの部隊を作らないこと）を確かめる
+        /// </summary>
+        [TestMethod]
+        [DataRow("ep01までクリア.src", "ep02.eve", "第一話の試験;")]
+        [DataRow("ep02までクリア.src", "ep03.eve", "第一話の試験;第二話の調査;")]
+        [DataRow("ep03までクリア.src", "ep04.eve", "第一話の試験;第二話の調査;第三話の測量;")]
+        [DataRow("ep04までクリア.src", "ep05.eve", "第一話の試験（省略）;第二話の調査（省略）;第三話の測量（省略）;第四話の飛行;")]
+        public void Torres_OriginalClear_StartsNextStage(string file, string next, string record)
+        {
+            Run(file, (runner, script, scenario) =>
+            {
+                script.Run(new[]
+                {
+                    "wait list コマンド",
+                    $"expect eval 次ステージ = {next}",
+                    $"expect eval 試験記録 = \"{record}\"",
+                    "expect eval IsDefined(湊カイ, パイロット) = 1",
+                    "list 次のステージへ",
+                    "auto 60",
+                    $"expect eval 試験記録 = \"{record}\"",
+                    "expect error none",
+                });
             });
         }
 
@@ -198,7 +257,8 @@ namespace SRCRender.Tests
             {
                 E2ECorpusTests.CopyDirectory(Path.Combine(SharpDirectory, "Content", "basic-data"), app);
                 E2ECorpusTests.CopyDirectory(Path.Combine(CompatDirectory, "torres"), scenario);
-                foreach (var file in Directory.GetFiles(Path.Combine(CompatDirectory, "savedata"), "*.eve"))
+                foreach (var file in Directory.GetFiles(Path.Combine(CompatDirectory, "savedata"), "*.eve")
+                    .Concat(Directory.GetFiles(Path.Combine(ExpectedDirectory, "torres"), "*.src")))
                 {
                     File.Copy(file, Path.Combine(scenario, Path.GetFileName(file)));
                 }

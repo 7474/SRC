@@ -20,7 +20,7 @@
 | `probe-expected/` | 実機の出力（期待値）を置く。`probe_pack.py import` で取り込む。`known-differences.txt` に理由のある違いを書く |
 | `probe_pack.py` | 元の SRC に渡す形（Shift_JIS・CRLF。`export_sjis.py` と同じ変換）に書き出す（`export`）。Windows から持ち帰った結果を `probe-expected/` に取り込む（`import`）。画面と音の見比べ（`screens/`。#1553。[SCREENS.md](SCREENS.md)）も一緒に書き出し、スクリーンショットと音のメモを `screens-expected/`・`screens-form/` に取り込む。セーブデータの見本（#1577）を作る `torres/` と `savedata/savedata.eve` も書き出し、持ち帰った見本を `savedata-expected/` に取り込む |
 | `savedata/savedata.eve` | 元の SRC のセーブデータ（中断データ・クリアデータ）の見本を作るシナリオ（#1577）。`torres/` のデータを使うので、書き出すときと SRC# のテストでは `torres/` に置く。乱数を使わないので、元の SRC と SRC# で同じ状態になる |
-| `savedata-expected/` | 実機で作ったセーブデータの見本（`suspend.src`・`clear.src`。Shift_JIS のまま）。`probe_pack.py import` で取り込む。`SRCRenderTests` の `CompatSaveDataTests` が SRC# で読み、SRC# が同じ所で書いた状態と比べる（見本が無ければ、元の SRC の書き出しを写した `VbSaveDataWriter` で書いたものを読む） |
+| `savedata-expected/` | 実機で作ったセーブデータの見本（`suspend.src`・`clear.src`。Shift_JIS のまま）。`probe_pack.py import` で取り込む。`SRCRenderTests` の `CompatSaveDataTests` が SRC# で読み、SRC# が同じ所で書いた状態と比べる（見本が無ければ、元の SRC の書き出しを写した `VbSaveDataWriter` で書いたものを読む）。`torres/` には、元の SRC で torres を通したとき（#1549）に保存した中断データ・クリアデータを置く（手で写す）。中断データからは再開し、クリアデータからは次の話を始める |
 
 `probe/` は `Data` を持つので、CI の `test-compat-scenario`（`tools/compat_play.py`）が `srcsharp lint` と SRCDataLinter に掛ける。`probe-bounds/`・`probe-errors/` は誤りをわざと入れているので、`Data` を直下に置かず、lint に掛からないようにしている。
 

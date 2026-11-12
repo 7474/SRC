@@ -51,6 +51,7 @@ namespace SRCCore.Events
             {
                 AdditionalEventFileNames = files,
                 EventLabelEnabled = label_enabled,
+                AlignEventLabelsToEnd = true,
             });
         }
 
