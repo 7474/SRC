@@ -221,13 +221,13 @@ Noon
 # 音の場面（耳で確かめる。スクリーンショットは要らない）
 #---------------------------------------------------------------
 Talk システム
-音 1：StartBGM cp_map.mid（切り替わって繰り返す）
+音 1：StartBGM cp_map.mid（切り替わって繰り返す。音 2 のために、曲の頭から 10 秒ほど聞いてから進める）
 End
 StartBGM cp_map.mid
 Wait Click
 
 Talk システム
-音 2：もう一度 StartBGM cp_map.mid（やり直さずに続く）
+音 2：もう一度 StartBGM cp_map.mid（やり直さずに続く。曲の頭に戻ったかを聞く）
 End
 StartBGM cp_map.mid
 Wait Click
@@ -245,8 +245,10 @@ PlayMIDI cp_boss.mid
 Wait Click
 
 Talk システム
-音 5：StopBGM（BGM が止まる）
+音 5：StopBGM（cp_map.mid を 3 秒鳴らしてから止める）
 End
+StartBGM cp_map.mid
+Wait 30
 StopBGM
 Wait Click
 
