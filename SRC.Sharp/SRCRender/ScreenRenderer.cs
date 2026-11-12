@@ -1193,7 +1193,9 @@ namespace SRCRender
             }
             var width = Math.Max(MenuMinWidth, (int)Math.Ceiling(textWidth) + MenuTextLeft + 24);
             var height = menu.Items.Count * MenuItemHeight + 6;
-            var left = Math.Min(Math.Max(0, menu.X), ScreenLayout.Width - width);
+            // Command.bas は PopupMenu を vbPopupMenuCenterAlign（フラグ 6）で開く。X はメニューの横の中心
+            // （元の SRC の実機の画面で確かめた。#1553）
+            var left = Math.Min(Math.Max(0, menu.X - width / 2), ScreenLayout.Width - width);
             var top = Math.Min(Math.Max(0, menu.Y), ScreenLayout.Height - height);
             return SKRect.Create(left, top, width, height);
         }

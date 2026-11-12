@@ -16,6 +16,9 @@ namespace SRCRender.Tests
     /// （実機の出力を置けば、そのまま比べる。手順は SRC.Sharp/Compat/PROBE.md）。
     /// </summary>
     [TestClass]
+    // 乱数（GeneralLib の Rnd）はプロセスで 1 つなので、ほかのテストと並べて流すと種を固定しても系列が乱れ、
+    // 戦闘のダメージの項目がまれにクリティカル（1.5 倍）になる。並べずに流す
+    [DoNotParallelize]
     public class CompatProbeTests
     {
         /// <summary>比べない項目（実行する環境で変わるもの）の項目名の頭</summary>

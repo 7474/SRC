@@ -397,10 +397,15 @@ namespace SRCSharpForm
                 {
                     lstItems.TopIndex = GeneralLib.MaxLng(GeneralLib.MinLng(GUI.TopItem - 1, lstItems.Items.Count - 1), 0);
                 }
-                lstItems.SelectedIndex = Math.Min(lstItems.Items.Count, GUI.TopItem) - 1;
+                if (lstItems.MultiColumn)
+                {
+                    lstItems.SelectedIndex = Math.Min(lstItems.Items.Count, GUI.TopItem) - 1;
+                }
             }
-            else if (lstItems.Items.Count > 0)
+            else if (lstItems.MultiColumn && lstItems.Items.Count > 0)
             {
+                // GUI.bas の ListBox は、複数列（.lstItems.Columns）のときだけ先頭の項目を選ぶ。
+                // ほかは ListIndex = -1 のまま（元の SRC の実機の画面で確かめた。#1553）
                 lstItems.SelectedIndex = 0;
             }
 
