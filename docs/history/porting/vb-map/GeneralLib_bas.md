@@ -33,7 +33,7 @@ VB 版の `SRC/SRC_20121125/GeneralLib.bas` の手続きと、C# の対応（[�
 | Function FileExists | 936 | 5 | `SRCCore/Filesystem/LocalFilesystem.cs` LocalFileSystem.FileExists | SRC#で不要 | ファイルの有無は IFileSystem が受け持つ（zip の中や大文字・小文字の解決も含む） |
 | Sub GetLine | 948 | 35 | `SRCCore/Lib/SrcDataReader.cs` SrcDataReader.GetLine | 修正済み | VB の順にした: 「#」は空白を取り除く前の行の先頭で見る、コメントを除いてから TrimString、行末の「_」も空白を取り除く前の行で見る。先に Trim していたので「data // c」が末尾の空白付きで返り、「abc _ 」が結合されていた（#1498）。Ctrl+Z を取り除く・LF だけの改行も読むのは SRC# の便利さ |
 | Function GetWinVersion | 986 | 17 | （なし） | SRC#で不要 | Windows の版。MCI の種類を選ぶためだけに使う |
-| Function FormatNum | 1006 | 7 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.FormatNum | 一致 | .NET のカスタム書式も VB の Format$ と同じく 15 桁で丸める（0.1+0.2 → 0.3）。無限大の表記だけは違う |
-| Function IsNumber | 1016 | 12 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.IsNumber | 一致 |  |
+| Function FormatNum | 1006 | 7 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.FormatNum | 一致 | .NET のカスタム書式も VB の Format$ と同じく 15 桁で丸める（0.1+0.2 → 0.3）。無限大・非数は、元の SRC の実機では式がエラーになり（#1550。[説明](README.md#実機で確かめた結果)）、C# も演算の側（VBMath.Checked）でエラーにするので、ここには来ない |
+| Function IsNumber | 1016 | 12 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.IsNumber | 一致 | VB の IsNumeric（ランタイムの関数）が「1e5」「1d5」「&H10」「&O17」「(1)」「￥100」「1-」などを数値とみなすことを VB5 の実機で確かめた（#1550 の VB5.数値.*）。C# は Information.IsNumeric・Conversions.TryParseVbNumber で同じに読む。「(」で始まるものを数値としないのはこの手続き |
 | Function GetClassBundle | 1037 | 35 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.GetClassBundle | 一致 |  |
 | Function InStrNotNest | 1074 | 25 | `SRCCore/Lib/GeneralLib.cs` GeneralLib.InStrNotNest | 一致 |  |
