@@ -44,7 +44,7 @@
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="4.155.0" />
     <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.155.0" />
     <PackageVersion Include="System.Collections.Specialized" Version="4.3.0" />
-    <PackageVersion Include="System.Drawing.Common" Version="10.0.14" />
+    <PackageVersion Include="System.Drawing.Common" Version="11.0.0" />
     <PackageVersion Include="System.Runtime.Caching" Version="10.0.14" />
     <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.15" />
   </ItemGroup>
