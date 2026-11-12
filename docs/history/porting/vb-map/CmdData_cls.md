@@ -9,7 +9,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function Parse | 48 | 831 | `SRCCore/CmdDatas/CmdParser.cs` CmdParser.Parse<br>`SRCCore/CmdDatas/CmdData.cs` CmdData.ParseArgs<br>`SRCCore/CmdDatas/Commands/Control/AIfCmd.cs` AIfCmd.PrepareArgs | 修正済み | 分割を ListSplitStrict に（閉じていない行は ArgNum=-1）。代入式の判定を ArgNum で。解析のエラーは書式エラーの文言を行付きで出し、構文チェックの後に終了する。If の項数・Goto のラベル・Then の無い行を VB に合わせた。PaintString の引用符の無い 1 引数を項として評価する。PaintString の座標指定の確定の判定は ExecPaintStringCmd の行を見る |
 | Sub DebugMsg | 880 | 11 | `SRCCore/CmdDatas/CmdData.cs` CmdData.Exec | SRC#で不要 | VB は Debug.Print だけで、呼び出しもコメントアウトされている |
 | Function Exec | 893 | 418 | `SRCCore/CmdDatas/CmdData.cs` CmdData.Exec | 修正済み | End・Suspend を単体で実行したら「…というコマンドは存在しません」にした。GUINotImplementedException を警告にして進むのとデバッガのフックは SRC# の利便性 |
-| Function GetArg | 1314 | 3 | `SRCCore/CmdDatas/CmdData.cs` CmdData.GetArg | 違いあり | 範囲外の参照で VB は「イベントデータが不正です」、C# は空文字列（#1511） |
+| Function GetArg | 1314 | 3 | `SRCCore/CmdDatas/CmdData.cs` CmdData.GetArg | 修正済み | VB の引数の配列は strArgs(2 To ArgNum) で、Parse は ArgNum > 1 のときだけ ReDim する。(1) 引数の無いコマンド（ArgNum = 1）は配列が無いので、引数を読むと実行時エラー（「イベントデータが不正です」）。元の SRC の実機で、引数の無い Incr・Ride・UnSet がこのエラーになり、Src.exe は落ちないことを確かめた（#1550 の probe-bounds）。C# の GetArgRaw は idx ≥ 2 で例外を投げる（#1580）。C# の 1 番目の引数はコマンド名で読めるので、VB が GetArgAsString(ArgNum) を確かめずに読む Create・Launch・MapAttack は ThrowIfNoArgsArray で合わせた（#1511）。(2) 引数はあって番号だけが範囲外（ArgNum ≥ 2 で idx > ArgNum か idx < 2）は、範囲チェックをしない（SRC.VBP の BoundsCheck=-1）ので VB は隣のメモリを読む（Args 関数の Args(0)・Args(-1) が前の値を返すのと同じ。#1550）。値が定まらず再現できないので、SRC# は idx > ArgNum を空文字列にする（idx = 1 はコマンド名、idx ≤ 0 は例外で「イベントデータが不正です」）。SRC# の違いとして残す（#1511） |
 | Function GetArgAsString | 1319 | 10 | `SRCCore/CmdDatas/CmdData.cs` CmdData.GetArgAsString | 一致 | 範囲外は GetArg と同じ（#1511） |
 | Function GetArgAsLong | 1331 | 10 | `SRCCore/CmdDatas/CmdData.cs` CmdData.GetArgAsLong | 一致 | 範囲外は GetArg と同じ（#1511） |
 | Function GetArgAsDouble | 1343 | 10 | `SRCCore/CmdDatas/CmdData.cs` CmdData.GetArgAsDouble | 一致 | 範囲外は GetArg と同じ（#1511） |
@@ -56,7 +56,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecContinueCmd | 4132 | 162 | `SRCCore/CmdDatas/Commands/Stage/ContinueCmd.cs` ContinueCmd | 一致 |  |
 | Function ExecCopyArrayCmd | 4295 | 113 | `SRCCore/CmdDatas/Commands/Variable/CopyArrayCmd.cs` CopyArrayCmd | 一致 | コピー先が「$」で始まると name1 が上書きされる VB の書き誤り（`name1 = Mid$(name2, 2)`）も写している。直すかは要判断 |
 | Function ExecCopyFileCmd | 4409 | 46 | `SRCCore/CmdDatas/Commands/File/CopyFileCmd.cs` CopyFileCmd | 一致 |  |
-| Function ExecCreateCmd | 4456 | 135 | `SRCCore/CmdDatas/Commands/Unit/CreateCmd.cs` CreateCmd | 修正済み | Center・RefreshScreen を、VB と同じく FullRecover・StandBy の前にした |
+| Function ExecCreateCmd | 4456 | 135 | `SRCCore/CmdDatas/Commands/Unit/CreateCmd.cs` CreateCmd | 修正済み | Center・RefreshScreen を、VB と同じく FullRecover・StandBy の前にした。引数が無いとき、VB は GetArgAsString(ArgNum)（strArgs(1)。配列が無い）を読んで「イベントデータが不正です」になるのに、C# は「引数の数が違います」だったのを合わせた（#1511） |
 | Function ExecCreateFolderCmd | 4592 | 29 | `SRCCore/CmdDatas/Commands/File/CreateFolderCmd.cs` CreateFolderCmd | 一致 |  |
 | Function ExecDebugCmd | 4622 | 13 | `SRCCore/CmdDatas/Commands/Other/DebugCmd.cs` DebugCmd | SRC#で不要 | VB の Debug.Print はコンパイルした実行ファイルでは何もしない。SRC# はログに出す（利便性） |
 | Function ExecDestroyCmd | 4636 | 73 | `SRCCore/CmdDatas/Commands/Unit/DestroyCmd.cs` DestroyCmd | 一致 |  |
@@ -94,7 +94,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecHotPointCmd | 6573 | 37 | `SRCCore/CmdDatas/Commands/Screan/HotPointCmd.cs` HotPointCmd | 一致 |  |
 | Function ExecIfCmd | 6611 | 201 | `SRCCore/CmdDatas/Commands/Control/IfCmd.cs` IfCmd | 修正済み | `If … Goto` でラベルが見つからないとき、式として評価した値でも探す（VB の FindLabel(GetArgAsString(5))） |
 | Function ExecElseCmd | 6813 | 25 | `SRCCore/CmdDatas/Commands/Control/AIfCmd.cs` AIfCmd.ToEnd | 一致 | Else・ElseIf のどちらからも呼ぶ |
-| Function ExecIncrCmd | 6839 | 17 | `SRCCore/CmdDatas/Commands/Variable/IncrCmd.cs` IncrCmd | 一致 |  |
+| Function ExecIncrCmd | 6839 | 17 | `SRCCore/CmdDatas/Commands/Variable/IncrCmd.cs` IncrCmd | 一致 | 引数の無い Incr は VB も C# も「イベントデータが不正です」（VB5 の実機で確かめた。#1550 の probe-bounds） |
 | Function ExecIncreaseMoraleCmd | 6857 | 25 | `SRCCore/CmdDatas/Commands/Pilot/IncreaseMoraleCmd.cs` IncreaseMoraleCmd | 一致 |  |
 | Function ExecInputCmd | 6883 | 18 | `SRCCore/CmdDatas/Commands/Input/InputCmd.cs` InputCmd | 一致 |  |
 | Function ExecIntermissionCommandCmd | 6904 | 31 | `SRCCore/CmdDatas/Commands/Other/IntermissionCommandCmd.cs` IntermissionCommandCmd | 一致 |  |
@@ -102,7 +102,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecJoinCmd | 6955 | 66 | `SRCCore/CmdDatas/Commands/Unit/JoinCmd.cs` JoinCmd | 修正済み | ユニット名で探したユニットのいまの形態の名前が違えば何もしない（VB の Set u = Nothing）。ID 指定・見つからないときの VB の実行時エラー（Set の抜け・Nothing の参照）は再現しない |
 | Function ExecKeepBGMCmd | 7022 | 10 | `SRCCore/CmdDatas/Commands/Sound/KeepBGMCmd.cs` KeepBGMCmd | 一致 |  |
 | Function ExecLandCmd | 7033 | 28 | `SRCCore/CmdDatas/Commands/Unit/LandCmd.cs` LandCmd | 一致 |  |
-| Function ExecLaunchCmd | 7062 | 89 | `SRCCore/CmdDatas/Commands/Unit/LaunchCmd.cs` LaunchCmd | 一致 |  |
+| Function ExecLaunchCmd | 7062 | 89 | `SRCCore/CmdDatas/Commands/Unit/LaunchCmd.cs` LaunchCmd | 修正済み | 引数が無いとき、VB は GetArgAsString(ArgNum)（strArgs(1)。配列が無い）を読んで「イベントデータが不正です」になるのに、C# は「引数の数が違います」だったのを合わせた（#1511） |
 | Function ExecLeaveCmd | 7152 | 81 | `SRCCore/CmdDatas/Commands/Unit/LeaveCmd.cs` LeaveCmd | 修正済み | ユニット名で探したユニットのいまの形態の名前が違えば u を null に（VB と同じく「イベントデータが不正です」） |
 | Function ExecLevelUpCmd | 7234 | 65 | `SRCCore/CmdDatas/Commands/Pilot/LevelUpCmd.cs` LevelUpCmd | 一致 |  |
 | Function ExecLineCmd | 7300 | 119 | `SRCCore/CmdDatas/Commands/Screan/LineCmd.cs` LineCmd | 一致 | 色の「#RGB」も受け付ける（SRC# の利便性） |
@@ -112,7 +112,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecMakePilotListCmd | 7646 | 260 | `SRCCore/CmdDatas/Commands/Other/MakePilotListCmd.cs` MakePilotListCmd | 修正済み | 並べ替えを VB と同じ選択ソートに（同じ値の並び）。名称は vbTextCompare と同じ比較。追加パイロットはユニットの FeatureData("追加パイロット") の名前で判断。能力値は並べ替えのときの値を表示 |
 | Function ExecMakeUnitListCmd | 7907 | 5 | `SRCCore/CmdDatas/Commands/Other/MakeUnitListCmd.cs` MakeUnitListCmd | 一致 | 本体は Event.MakeUnitList（Event.bas の行で見る） |
 | Function ExecMapAbilityCmd | 7913 | 84 | `SRCCore/CmdDatas/Commands/Unit/MapAbilityCmd.cs` MapAbilityCmd | 一致 |  |
-| Function ExecMapAttackCmd | 7998 | 114 | `SRCCore/CmdDatas/Commands/Unit/MapAttackCmd.cs` MapAttackCmd | 一致 |  |
+| Function ExecMapAttackCmd | 7998 | 114 | `SRCCore/CmdDatas/Commands/Unit/MapAttackCmd.cs` MapAttackCmd | 修正済み | 引数が無いとき、VB は GetArgAsString(ArgNum)（strArgs(1)。配列が無い）を読んで「イベントデータが不正です」になるのに、C# は「引数の数が違います」だったのを合わせた（#1511） |
 | Function ExecMoneyCmd | 8113 | 10 | `SRCCore/CmdDatas/Commands/Other/MoneyCmd.cs` MoneyCmd | 一致 |  |
 | Function ExecMonotoneCmd | 8124 | 57 | `SRCCore/CmdDatas/Commands/Map/MonotoneCmd.cs` MonotoneCmd | 修正済み | SetupBackground の後に表示位置を戻す（ColorFilter と同じ） |
 | Function ExecMoveCmd | 8182 | 78 | `SRCCore/CmdDatas/Commands/Unit/MoveCmd.cs` MoveCmd | 一致 |  |
@@ -154,7 +154,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecReplacePilotCmd | 10565 | 63 | `SRCCore/CmdDatas/Commands/Pilot/ReplacePilotCmd.cs` ReplacePilotCmd | 修正済み | 乗せ換えの後に全パイロットの支援効果を更新する（VB は Nothing を渡す）。追加サポートを指定したときの VB のエラー 5 は再現しない |
 | Function ExecRequireCmd | 10629 | 86 | `SRCCore/CmdDatas/Commands/Other/RequireCmd.cs` RequireCmd | 一致 | 読み込み・ラベルの登録・構文解析は Load と共通（#1518） |
 | Function ExecRestoreEventCmd | 10716 | 10 | `SRCCore/CmdDatas/Commands/Event/RestoreEventCmd.cs` RestoreEventCmd | 一致 |  |
-| Function ExecRideCmd | 10727 | 138 | `SRCCore/CmdDatas/Commands/Pilot/RideCmd.cs` RideCmd | 一致 |  |
+| Function ExecRideCmd | 10727 | 138 | `SRCCore/CmdDatas/Commands/Pilot/RideCmd.cs` RideCmd | 一致 | 引数の無い Ride は VB も C# も「イベントデータが不正です」（VB5 の実機で確かめた。#1550 の probe-bounds） |
 | Function ExecSaveDataCmd | 10866 | 51 | `SRCCore/CmdDatas/Commands/Other/SaveDataCmd.cs` SaveDataCmd | 修正済み | ファイル名が空ならセーブしない（例外になっていた）。相対パスの起点は SRC# ではシナリオのフォルダ |
 | Function ExecSelectCmd | 10918 | 10 | `SRCCore/CmdDatas/Commands/Unit/SelectCmd.cs` SelectCmd | 一致 |  |
 | Function ExecSelectTargetCmd | 10929 | 12 | `SRCCore/CmdDatas/Commands/Unit/SelectTargetCmd.cs` SelectTargetCmd | 一致 |  |
@@ -170,7 +170,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecSetWindowColor | 11516 | 76 | `SRCCore/CmdDatas/Commands/Other/SetWindowColorCmd.cs` SetWindowColorCmd | 一致 | 変数の保存は同じ。VB で色が効くのは新ＧＵＩのときだけで、SRC# は新ＧＵＩに対応しない（#1520 は #1537 で閉じた） |
 | Function ExecSetWindowFrameWidth | 11593 | 19 | `SRCCore/CmdDatas/Commands/Other/SetWindowFrameWidthCmd.cs` SetWindowFrameWidthCmd | 一致 | 変数の保存は同じ。VB で枠の幅が効くのは新ＧＵＩのときだけで、SRC# は新ＧＵＩに対応しない（#1520 は #1537 で閉じた）。VB の引数エラーの文言「SetWindowColorコマンドの…」の書き誤りは再現しない |
 | Function ExecShowCmd | 11614 | 15 | `SRCCore/CmdDatas/Commands/Screan/ShowCmd.cs` ShowCmd | 一致 |  |
-| Function ExecShowImageCmd | 11631 | 32 | `SRCCore/CmdDatas/Commands/Screan/ShowImageCmd.cs` ShowImageCmd | 一致 | 実装済み（ヘルプの「未実装」を直した）。引数 1・3 個のとき VB は範囲外の引数を読む（範囲チェックなしで値が定まらない） |
+| Function ExecShowImageCmd | 11631 | 32 | `SRCCore/CmdDatas/Commands/Screan/ShowImageCmd.cs` ShowImageCmd | 修正済み | 実装済み（ヘルプの「未実装」を直した）。引数の無いとき VB は引数の数を確かめずに GetArgAsString(2) を読んで「イベントデータが不正です」になるのに、C# は先に「ShowImageコマンドの引数の数が違います」を出していたのを合わせた（#1511）。引数が 2 個（ファイル名と幅）のとき VB は範囲外の strArgs(4) を読む（範囲チェックなしで値が定まらない。C# は幅・高さを既定にする） |
 | Function ExecShowUnitStatusCmd | 11664 | 25 | `SRCCore/CmdDatas/Commands/Unit/ShowUnitStatusCmd.cs` ShowUnitStatusCmd | 一致 |  |
 | Function ExecSkipCmd | 11690 | 21 | `SRCCore/CmdDatas/Commands/Control/SkipCmd.cs` SkipCmd | 一致 |  |
 | Function ExecSortCmd | 11712 | 239 | `SRCCore/CmdDatas/Commands/Variable/SortCmd.cs` SortCmd | 修正済み | VB と同じ交換ソート（同じ値の順）。文字の比較は vbTextCompare 相当、全角の数字も数値として読む、配列名の前方一致は大文字・小文字を区別する |
@@ -188,7 +188,7 @@ VB 版の `SRC/SRC_20121125/CmdData.cls` の手続きと、C# の対応（[説�
 | Function ExecTelopCmd | 12625 | 25 | `SRCCore/CmdDatas/Commands/Screan/TelopCmd.cs` TelopCmd | 一致 |  |
 | Function ExecTransformCmd | 12651 | 43 | `SRCCore/CmdDatas/Commands/Unit/TransformCmd.cs` TransformCmd | 一致 | 退避した選択も更新するのは、VB の RestoreSelections が .CurrentForm で戻すことの代わり |
 | Function ExecUnitCmd | 12695 | 30 | `SRCCore/CmdDatas/Commands/Unit/UnitCmd.cs` UnitCmd | 修正済み | 「のユニットデータが不正です」のエラーにユニット名を付ける |
-| Function ExecUnsetCmd | 12726 | 5 | `SRCCore/CmdDatas/Commands/Variable/UnSetCmd.cs` UnSetCmd | 一致 |  |
+| Function ExecUnsetCmd | 12726 | 5 | `SRCCore/CmdDatas/Commands/Variable/UnSetCmd.cs` UnSetCmd | 一致 | 引数の無い UnSet は VB も C# も「イベントデータが不正です」（VB5 の実機で確かめた。#1550 の probe-bounds） |
 | Function ExecUpgradeCmd | 12732 | 181 | `SRCCore/CmdDatas/Commands/Unit/UpgradeCmd.cs` UpgradeCmd | 修正済み | 格納中のユニットは母艦から降ろし、Land で格納し直す（状態「格納」・座標・地形が設定されていなかった） |
 | Function ExecUpvarCmd | 12914 | 4 | `SRCCore/CmdDatas/Commands/Control/UpVarCmd.cs` UpVarCmd | 一致 |  |
 | Function ExecUseAbilityCmd | 12919 | 98 | `SRCCore/CmdDatas/Commands/Unit/UseAbilityCmd.cs` UseAbilityCmd | 一致 |  |
