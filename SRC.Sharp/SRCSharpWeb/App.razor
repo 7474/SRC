@@ -1840,6 +1840,9 @@ else
             return sf2 == null ? null : new MeltySynth.SoundFont(sf2);
         });
         session = new ScreenSession(host, ScenarioArchive.AppPath, soundPlayer: player, loggerFactory: LoggerFactory);
+        // シナリオが終了したら、ゲームスレッドに止まる合図を出す。次の待ち（DoEvents）で処理を抜けて、スレッドが終わる
+        var game = session.Game;
+        host.Terminating += () => game.Stop();
         // シナリオの設定ファイルのログの設定（Log セクション）
         WebLogging.ApplyConfig(session.SRC.SystemConfig);
         // ゲームがセーブデータを書き終えたら、UI のスレッドでブラウザに保存する

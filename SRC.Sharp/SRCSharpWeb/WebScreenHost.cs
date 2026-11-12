@@ -93,10 +93,15 @@ namespace SRCSharpWeb
             Volatile.Write(ref this.title, string.IsNullOrEmpty(title) ? WebInterop.AppTitle : title + " - " + WebInterop.AppTitle);
         }
 
+        /// <summary>シナリオが終了した（Terminate が呼ばれた）ときに呼ばれる。ゲームスレッドから呼ばれる</summary>
+        public event Action Terminating;
+
         public bool Terminate()
         {
             Terminated = true;
-            // Environment.Exit は呼ばせない
+            // 元の SRC の TerminateSRC は End で戻らないが、Environment.Exit は呼ばせないので処理が戻ってくる。
+            // 受け取った側でゲームスレッドを止め、GameClear などの後でイベントやマップの処理（オートプレイなど）が続かないようにする（#1552）
+            Terminating?.Invoke();
             return false;
         }
 

@@ -1085,7 +1085,15 @@ namespace SRCRender
 
         public bool Terminate()
         {
-            return host.Terminate();
+            var exit = host.Terminate();
+            // 元の SRC の TerminateSRC は End で戻らない。ホストがプロセスを終えずにゲームスレッドを止めた（SRC#Web）ときは、
+            // ここで止める合図を投げて、GameClear などの後でイベントやマップの処理（オートプレイなど）が続かないようにする（#1552）。
+            // 合図は GameThread が受け止めて、スレッドを静かに終える
+            if (!exit && game.IsCurrentThread && game.IsStopping)
+            {
+                throw new OperationCanceledException("The scenario was terminated.");
+            }
+            return exit;
         }
 
         public int MainWidth { get; set; }
