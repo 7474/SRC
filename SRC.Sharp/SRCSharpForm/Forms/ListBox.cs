@@ -29,10 +29,13 @@ namespace SRCSharpForm
         private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
 
         // リストボックスのサイズ (通常:M 大型:L)
+        // VB の frmListBox は Load の時点（位置を決める前）で Form_Load が "M" にする。
+        // WinForms の Load は最初に表示するときなので、宣言で "M" にしておく（最初の一覧がメインのウィンドウの
+        // 下端ではなく中央に出ていた。元の SRC の実機の画面と見比べて分かった。#1553）
         // 幅
-        public string HorizontalSize;
+        public string HorizontalSize = "M";
         // 高さ
-        public string VerticalSize;
+        public string VerticalSize = "M";
 
         // Questionコマンド用変数
         public int CurrentTime;

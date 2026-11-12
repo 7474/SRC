@@ -73,7 +73,7 @@
    powershell -NoProfile -ExecutionPolicy Bypass -File capture_screens.ps1 -SrcExe <SRCSharpForm.exe の場所> -ProcessName SRCSharpForm -OutDir screens-form-shots
    ```
 
-   で、同じ手順で `screens-form-shots\<ID>.png` と `screens-form-shots\sounds.txt` を作る（SRC#Form は Shift_JIS のシナリオも読める）
+   で、同じ手順で `screens-form-shots\<ID>.png` と `screens-form-shots\sounds.txt` を作る（SRC#Form は Shift_JIS のシナリオも読める）。SRC#Form は実行ファイルのフォルダを SRC のフォルダにするので、ビルドした SRC#Form のフォルダに `SRC.Sharp/Content/basic-data` の中身を写し、空の `Bitmap\Event` フォルダを作っておく（無いと「Bitmapフォルダがありません」などで止まる）。SRC#Form の確かめのダイアログ（ターン終了など）は Windows の標準のダイアログではないので、OK をクリックする
 8. **回収する**。`C:\probe-pack` のフォルダをまとめて zip にして持ち帰る（要るのは各フォルダの `out_*.txt`・`errors_*.txt` と、`screens-shots\`・`screens-sounds.txt`・`screens-form-shots\`、`torres\suspend.src`・`torres\clear.src`）。あわせて、Windows の版・画面の拡大率・Src.exe の版（タイトル画面かバージョン情報）・本体の `Lib` と `Midi`・`Sound` の有無・流した日を控える
 9. **リポジトリに置く**。持ち帰った zip を展開し、リポジトリのルートで
 
