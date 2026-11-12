@@ -15,10 +15,10 @@ VB 版の `SRC/SRC_20121125/Items.cls` の手続きと、C# の対応（[説明]
 | Function IsDefined2 | 135 | 11 | `SRCCore/Items/Items.cs` Items.IsDefined2 | 一致 |  |
 | Sub Update | 148 | 21 | `SRCCore/Items/Items.cs` Items.Update | 一致 | 破棄されたアイテムは複製した一覧を回して消す。C# では Item.Unit がいつも UList から引くので、リンクの付け直しは同じ結果になる。Units.Update で消したユニットのアイテムは、VB では Items.Update までユニットを指したまま、C# では消した時点で空になるが、間の PList.Update はアイテムのユニットを見ないので影響は無い |
 | Sub Save | 172 | 16 | `SRCCore/SRC.save.cs` SRC.SaveData | SRC#で不要 | JSON のセーブ形式。IDCount と colItems（ID・名前・UnitId）を保存する |
-| Sub Load | 190 | 34 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | JSON のセーブ形式。読み込んだ後の状態（名前・ID・装備しているユニット）は VB の Load と Units.LoadLinkInfo の結果と同じ。アイテムのデータが定義されていないとき、VB は「…のデータが定義されていません」で止まり、C# は「ロード中にエラーが発生しました」で止まる（メッセージだけの違い） |
+| Sub Load | 190 | 34 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | JSON のセーブ形式。読み込んだ後の状態（名前・ID・装備しているユニット）は VB の Load と Units.LoadLinkInfo の結果と同じ。装備しているユニットは、VB と同じく JSON の UnitId を使わず、ユニットが装備しているアイテムから付け直す（#1579）。アイテムのデータが定義されていないとき、VB は「…のデータが定義されていません」で止まり、C# は「ロード中にエラーが発生しました」で止まる（メッセージだけの違い） |
 | Sub LoadLinkInfo | 226 | 19 | （なし） | SRC#で不要 | VB も読み飛ばすだけ（アイテムとユニットのリンクは Units.LoadLinkInfo が付ける） |
 | Sub Dump | 248 | 8 | `SRCCore/SRC.save.cs` SRC.DumpData | SRC#で不要 | JSON のセーブ形式 |
 | Sub Restore | 258 | 20 | `SRCCore/Items/Items.cs` Items.Restore | SRC#で不要 | JSON から読み込み、各アイテムの SRC の参照を戻す |
-| Sub RestoreLinkInfo | 280 | 10 | （なし） | SRC#で不要 | JSON の Item.UnitId で引くので要らない |
+| Sub RestoreLinkInfo | 280 | 10 | （なし） | SRC#で不要 | JSON の Item.UnitId で引くので要らない。その後の Unit.RestoreLinkInfo の AddItem0 に当たる設定は Unit.Restore で行う（#1579） |
 | Sub RestoreParameter | 292 | 10 | （なし） | SRC#で不要 | VB も読み飛ばすだけ |
 | Sub Clear | 305 | 7 | `SRCCore/Items/Items.cs` Items.Clear | 一致 | IDCount は VB と同じく戻さない |

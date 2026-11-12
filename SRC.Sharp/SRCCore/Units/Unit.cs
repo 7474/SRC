@@ -45,7 +45,17 @@ namespace SRCCore.Units
             linkData.PilotIds.ForEach(x => colPilot.Add(SRC.PList.Item(x), x));
             // VB の AddSupport と同じくパイロットの名前をキーにする（Support(名前) で引けるように）
             linkData.SupportIds.ForEach(x => AddSupport(SRC.PList.Item(x)));
-            linkData.ItemIds.ForEach(x => colItem.Add(SRC.IList.Item(x), x));
+            // 元の SRC と同じく、装備しているアイテムの持ち主をこのユニットにする（VB: RestoreLinkInfo・LoadLinkInfo の AddItem0）。
+            // 合体した後などは Item.Unit が空のまま装備していることがあり（元の SRC も同じ）、読むときに設定し直す（#1579）
+            linkData.ItemIds.ForEach(x =>
+            {
+                var itm = SRC.IList.Item(x);
+                colItem.Add(itm, x);
+                if (itm != null)
+                {
+                    itm.Unit = this;
+                }
+            });
             if (!string.IsNullOrEmpty(linkData.MasterId))
                 Master = SRC.UList.Item(linkData.MasterId);
             if (!string.IsNullOrEmpty(linkData.SummonerId))

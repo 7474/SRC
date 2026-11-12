@@ -77,6 +77,68 @@ namespace SRCCore.Coverage.Tests.UnitsCoverage
         }
 
         [TestMethod]
+        public void Combine_ItemOwnerIsCombinedUnit()
+        {
+            // 元の SRC は１番目のユニットの CurrentForm のアイテムを合体後のユニットに AddItem で装備させ（Item.Unit が合体後のユニットになる）、
+            // その後で１番目のユニットの DeleteItem で外す。DeleteItem は Item.Unit が自分のときだけ Nothing にするので、持ち主は合体後のユニットのまま（#1579）
+            var f = new UnitMapActionFixture();
+            f.AddUnitData("合体機", features: "分離=分離 機体A 機体B").ItemNum = 2;
+            f.AddUnitData("機体A", features: "合体=合体 合体機 機体B").ItemNum = 1;
+            f.AddUnitData("機体B", features: "合体=合体 合体機 機体A").ItemNum = 1;
+            var c = f.CreateUnit("合体機");
+            c.Status = "他形態";
+            var a = f.CreateUnit("機体A");
+            var b = f.CreateUnit("機体B");
+            a.Status = "待機";
+            b.Status = "待機";
+            var item = CreateItem(f, "パーツ");
+            a.AddItem(item);
+
+            a.Combine("合体機", true);
+
+            Assert.AreEqual(0, a.CountItem());
+            Assert.AreEqual(1, c.CountItem());
+            Assert.AreSame(item, c.Item(1));
+            Assert.AreSame(c, item.Unit);
+        }
+
+        [TestMethod]
+        public void Combine_FromTransformedForm_ItemOwnerBecomesEmptyLikeVb()
+        {
+            // 変形した形態から合体したとき（torres の第二話。トビウオの滑空形態からミカヅチ）。元の SRC の Combine は
+            //   1. rarray(1).CurrentForm（変形後の形態）のアイテムを合体後のユニットに AddItem で装備させる（Item.Unit は合体後のユニット）
+            //   2. 「デフォルトの形態に変形させておく」で rarray(1).CurrentForm.Transform。Transform は AddItem0 で
+            //      変形前の形態（rarray(1)）にもアイテムを渡す（Item.Unit は rarray(1)）
+            //   3. 「１番目のユニットのアイテムを外す」で rarray(1).DeleteItem。DeleteItem は Item.Unit が自分なので Nothing にする
+            // ので、合体後のユニットが装備したまま Item.Unit は空になる。持ち主はセーブデータを読むときに設定し直す（#1579）
+            var f = new UnitMapActionFixture();
+            f.AddUnitData("合体機", features: "分離=分離 機体A 機体B").ItemNum = 2;
+            f.AddUnitData("機体A", features: new[] { "変形=変形 機体A変形", "合体=合体 合体機 機体B" }).ItemNum = 1;
+            f.AddUnitData("機体A変形", features: new[] { "変形=変形 機体A", "合体=合体 合体機 機体B" }).ItemNum = 1;
+            f.AddUnitData("機体B", features: "合体=合体 合体機 機体A").ItemNum = 1;
+            var c = f.CreateUnit("合体機");
+            c.Status = "他形態";
+            var a = f.CreateUnit("機体A");
+            var b = f.CreateUnit("機体B");
+            a.Status = "待機";
+            b.Status = "待機";
+            var item = CreateItem(f, "パーツ");
+            a.AddItem(item);
+            a.Transform("機体A変形");
+            var a2 = a.CurrentForm();
+            Assert.AreEqual("機体A変形", a2.Name);
+            Assert.AreSame(a2, item.Unit);
+
+            a2.Combine("合体機", true);
+
+            Assert.AreEqual(0, a.CountItem());
+            Assert.AreEqual(0, a2.CountItem());
+            Assert.AreEqual(1, c.CountItem());
+            Assert.AreSame(item, c.Item(1));
+            Assert.IsNull(item.Unit);
+        }
+
+        [TestMethod]
         public void Split_FirstUnitEquipsItemsWithAddItem()
         {
             // 元の SRC は分離後の１番機に AddItem で装備させるので、装備個所が足りなければ前のアイテムを外す
