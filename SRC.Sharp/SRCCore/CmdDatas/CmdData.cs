@@ -105,6 +105,13 @@ namespace SRCCore.CmdDatas
         // idx番目の引数を返す
         public CmdArgument GetArgRaw(int idx)
         {
+            // VB 版の Parse は、引数の無いコマンドでは引数の配列（strArgs(2 To ArgNum)）を作らないので、
+            // 引数を読むと実行時エラー（「イベントデータが不正です」）になる。
+            // 元の SRC の実機で、引数の無い Incr・Ride・UnSet がこのエラーになることを確かめた（probe-bounds。#1511・#1550）
+            if (idx >= 2 && ArgNum == 1)
+            {
+                throw new IndexOutOfRangeException($"引数の無いコマンドの {idx} 番目の引数を読んだ");
+            }
             if (idx - 1 < args.Count)
             {
                 // オフセット分引いた値を返す

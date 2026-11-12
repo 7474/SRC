@@ -37,7 +37,8 @@ namespace SRCCore.CmdDatas.Commands
 
             if (u is object)
             {
-                u.IncreaseMorale(Conversions.ToInteger(num), true);
+                // VB 版の Unit.IncreaseMorale の引数は Integer。範囲を超えるとあふれ（エラー）
+                u.IncreaseMorale(VBMath.CInt(Conversions.ToInteger(num)), true);
                 u.CurrentForm().CheckAutoHyperMode();
                 u.CurrentForm().CheckAutoNormalMode();
             }

@@ -34,7 +34,7 @@
 | 6 | Unit.cls CheckShieldFeature | 105 | 3 | — | 一致 | 一致（dmg は ByVal で、呼び出し元のダメージは変わらない。VB も C# も同じ） | 無し | — |
 | 7 | Unit.cls IsTargetReachable | 70 | 1 | — | 一致 | 一致（`Abs(.y - i)` の誤りも同じ） | 無し | — |
 | 8 | Unit.cls MaxSkillLevel | 69 | 0 | — | 一致 | 一致（メインパイロットが追加パイロットのとき Pilot(1) を見ないのも同じ） | 無し | — |
-| 9 | Unit.cls UpdateCondition | 59 | 0 | — | 一致（For Each の中の Remove は推定） | 一致。For Each の中で Collection から消す動作は VB5 の実機で確かめていない（#1550） | 無し | — |
+| 9 | Unit.cls UpdateCondition | 59 | 0 | — | 一致 | 一致。For Each の中で Collection から消す動作（すべて消え、次の要素を飛ばさない）は VB5 の実機で確かめた（#1550） | 無し | — |
 | 10 | CmdData.cls ExecChangeLayerCmd | 177 | 1 | × | 一致（引数の数のエラーの文言は VB の誤りとして再現しない） | 同じ違いを見つけた。ほかに、引数を評価する順（VB は Y 座標を X 座標の範囲の確認より先に評価する）が違うが、引数の式にエラーや副作用があるときだけの違い | 無し | — |
 | 11 | CmdData.cls ExecExecCmd | 169 | 1 | × | 一致 | 一致 | 無し | — |
 | 12 | CmdData.cls ExecSetSkillCmd | 150 | 3 | × | 一致 | 一致 | 無し | — |
@@ -70,7 +70,7 @@
 | 42 | Pilots.cls UpdateSupportMod | 93 | 38 | — | 一致 | 一致 | 無し | — |
 | 43 | SpecialPowerData.cls Useful | 109 | 12 | — | 一致 | 一致 | 無し | — |
 | 44 | SpecialPowerData.cls CountTarget | 106 | 12 | — | 一致 | 一致 | 無し | — |
-| 45 | Units.cls Update | 332 | 0 | — | 一致 | 一致。For Each の中で Delete する動作は VB5 の実機で確かめていない（#1550） | 無し | — |
+| 45 | Units.cls Update | 332 | 0 | — | 一致 | 一致。For Each の中で Delete する動作は VB5 の実機で確かめていない（#1550 で確かめたのは UpdateCondition・Unit.Escape の Remove） | 無し | — |
 | 46 | Sound.bas PlayWave | 150 | 0 | — | 一致（null.mp3 と MP3 の効果音で MP3 の BGM を止める動作は合わせない） | 同じ違いを見つけた | 無し | — |
 | 47 | SRC.bas SearchDataFolder | 61 | 8 | — | 一致 | 一致 | 無し | — |
 | 48 | Event.bas SearchLabel | 273 | 30 | — | 一致 | 一致（入れ替えて比べ直す流れは関数に分けたが、結果は同じ） | 無し | — |
@@ -100,4 +100,4 @@
 
 - 「一致」には、上の表のように、理由を付けてわざと残した違いを含むものがある（50 件のうち 6 件）。状態の意味（「分岐ごとに突き合わせ、違いが無い」）とは少しずれるが、メモから引けるので、状態は変えない
 - 食い違いの 2 件は、C# の本体（SRCCore の分岐）ではなく、GUI のプロジェクトにある処理と、数値の変換の関数の選び方だった。分岐の読み比べだけでは見落としやすい。同じ型の誤り（Conversions.ToDouble と StrToDbl の取り違え）が SRCCore のほかの場所にあるかは、別に grep で確かめるとよい
-- For Each の中で Collection から消す動作（UpdateCondition・Units.Update・UndefineVariable）は、VB5 の実機で確かめるまで推定のまま（#1550）
+- For Each の中で Collection から消す動作は、UpdateCondition と Unit.Escape を VB5 の実機で確かめた（すべて消え、次の要素を飛ばさない。#1550。SRC.Sharp/Compat/PROBE.md の VB5.ForEach.*）。Units.Update・UndefineVariable は同じ VB5 の Collection の動作なので同じと読むが、直には確かめていない

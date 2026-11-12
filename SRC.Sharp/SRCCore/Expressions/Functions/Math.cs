@@ -1,4 +1,5 @@
 using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 using System.Linq;
 
@@ -281,7 +282,7 @@ namespace SRCCore.Expressions.Functions
             str_result = "";
             num_result = 0d;
 
-            num_result = Math.Sqrt(SRC.Expression.GetValueAsDouble(@params[1], is_term[1]));
+            num_result = VBMath.Checked(Math.Sqrt(SRC.Expression.GetValueAsDouble(@params[1], is_term[1])));
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);

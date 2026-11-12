@@ -20,9 +20,10 @@ namespace SRCCore.VB
     ///   種類が決まった後の、ほかの種類の書式文字は文字のまま書く
     /// - 文字列の引数は、書式の種類に合わせて数値・日付に変換する。変換できなければ、文字列をそのまま返す
     ///
-    /// 資料に無い細部は推定（実機との比較 #1550 の項目。SRC.Sharp/Compat/PROBE.md）:
-    /// Currency の通貨記号（Shift_JIS の 0x5C。SRC# では「\」）と負の数の形（-\1,235）、Medium Date（yy/mm/dd）、
-    /// Medium Time（hh:mm 午前/午後）、Yes/No・True/False・On/Off の文言（英語）、和暦（令和を含む）、
+    /// 資料に無い細部は、日本語版の Windows の元の SRC の実機の出力に合わせた（実機との比較 #1550。SRC.Sharp/Compat/PROBE.md）:
+    /// Currency の通貨記号（Shift_JIS の 0x5C。SRC# では「\」）と負の数の形（-\1,235）、Medium Date（yy-mm-dd）、
+    /// Medium Time（hh:mm 午前/午後）、Long Time などの時刻の終わりの空白、Yes/No・True/False・On/Off の文言（英語）、
+    /// ddd・dddd・mmm・mmmm（英語）、和暦（令和は無い）、空の書式、日付の書式の中の 0・#（エラー）、
     /// 書式の種類の決め方（OLE Automation の VarFormat の実装として Wine の varformat.c を参考にした）。
     /// </summary>
     public static class VbFormat
@@ -38,18 +39,23 @@ namespace SRCCore.VB
         // 日本語版の Windows の地域の設定（日本）
         private const string ShortDatePattern = "yyyy/MM/dd";
         private const string LongDatePattern = "yyyy年M月d日";
-        private const string MediumDatePattern = "yy/MM/dd";   // 推定
+        private const string MediumDatePattern = "yy-MM-dd";   // 元の SRC の実機（#1550）
         private const string LongTimePattern = "H:mm:ss";
         private const string CurrencySymbol = "\\";            // 推定（Shift_JIS の 0x5C。円記号の字形）
         private const string AMDesignator = "午前";
         private const string PMDesignator = "午後";
         private static readonly string[] DayNamesShort = { "日", "月", "火", "水", "木", "金", "土" };
         private static readonly string[] DayNames = { "日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日" };
+        // ddd・dddd・mmm・mmmm は、日本語版の Windows でも英語の名前（元の SRC の実機。#1550）。aaa・aaaa は日本語
+        private static readonly string[] DayNamesShortEnglish = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+        private static readonly string[] DayNamesEnglish = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+        private static readonly string[] MonthNamesShortEnglish = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        private static readonly string[] MonthNamesEnglish = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
-        // 和暦の年号（開始日・頭文字・漢字の 1 文字・名前）
+        // 和暦の年号（開始日・頭文字・漢字の 1 文字・名前）。
+        // VB5 のランタイムは令和を知らない（元の SRC の実機で 2019/05/01 は「平成31年」。#1550）
         private static readonly (DateTime start, string initial, string shortName, string name)[] Eras =
         {
-            (new DateTime(2019, 5, 1), "R", "令", "令和"),
             (new DateTime(1989, 1, 8), "H", "平", "平成"),
             (new DateTime(1926, 12, 25), "S", "昭", "昭和"),
             (new DateTime(1912, 7, 30), "T", "大", "大正"),
@@ -64,10 +70,11 @@ namespace SRCCore.VB
             expression = expression ?? "";
             format = format ?? "";
 
-            // 書式が無ければ、文字列をそのまま返す
+            // 書式が無ければ、数値の文字列は数値として書き（元の SRC の実機で Format("01.50","") は「1.5」。#1550）、
+            // ほかの文字列はそのまま返す
             if (format.Length == 0)
             {
-                return expression;
+                return WithNumber(expression, x => x.ToString("G15", CultureInfo.InvariantCulture));
             }
 
             var named = FormatNamed(expression, format);
@@ -81,12 +88,18 @@ namespace SRCCore.VB
                 case FormatType.String:
                     return FormatAsString(expression, format);
                 case FormatType.Date:
+                    // 日付の書式の中の数値の書式文字（0・#）はエラー（元の SRC の実機で Format(5,"No.0")・Format(5,"Level 0") は
+                    // 実行時エラー。#1550）
+                    if (HasNumberPlaceholder(format))
+                    {
+                        throw new ArgumentException("プロシージャの呼び出し、または引数が不正です。");
+                    }
                     return TryToDate(expression, out var date) ? FormatDate(date, FirstSection(format)) : expression;
                 default:
                     // 数値の書式。書式文字の無い書式（文字だけ）も、以前の SRC# と同じく数値なら .NET の書式で書く
                     // （SrcFormatter は .NET のカスタム数値書式。0・#・.・,・%・E+・;・\・引用符は VB と同じ意味）
                     return Information.IsNumeric(expression)
-                        ? SrcFormatter.Format(Conversions.ToDouble(expression), format)
+                        ? FormatNumber(Conversions.ToDouble(expression), format)
                         : expression;
             }
         }
@@ -129,7 +142,7 @@ namespace SRCCore.VB
                 case "short date":
                     return WithDate(expression, x => x.ToString(ShortDatePattern, CultureInfo.InvariantCulture));
                 case "long time":
-                    return WithDate(expression, x => x.ToString(LongTimePattern, CultureInfo.InvariantCulture));
+                    return WithDate(expression, LongTime);
                 case "medium time":
                     return WithDate(expression, x => Hour12(x).ToString("00", CultureInfo.InvariantCulture)
                         + ":" + x.Minute.ToString("00", CultureInfo.InvariantCulture)
@@ -139,6 +152,30 @@ namespace SRCCore.VB
                 default:
                     return null;
             }
+        }
+
+        // ユーザー定義の数値の書式。負の数が丸めて 0 になるとき、VB は「-」を付けない
+        // （元の SRC の実機で Format(-0.4,"0") は「0」。.NET は「-0」。#1550）
+        private static string FormatNumber(double x, string format)
+        {
+            if (x < 0d && format.IndexOf(';') < 0)
+            {
+                var abs = SrcFormatter.Format(-x, format);
+                var hasNonZeroDigit = false;
+                foreach (var c in abs)
+                {
+                    if (c >= '1' && c <= '9')
+                    {
+                        hasNonZeroDigit = true;
+                        break;
+                    }
+                }
+                if (!hasNonZeroDigit)
+                {
+                    return SrcFormatter.Format(0d, format);
+                }
+            }
+            return SrcFormatter.Format(x, format);
         }
 
         private static string WithNumber(string expression, Func<double, string> f)
@@ -160,9 +197,38 @@ namespace SRCCore.VB
             }
             if (x.Date == VBDateZero)
             {
-                return x.ToString(LongTimePattern, CultureInfo.InvariantCulture);
+                return LongTime(x);
             }
-            return x.ToString(ShortDatePattern, CultureInfo.InvariantCulture) + " " + x.ToString(LongTimePattern, CultureInfo.InvariantCulture);
+            return x.ToString(ShortDatePattern, CultureInfo.InvariantCulture) + " " + LongTime(x);
+        }
+
+        // Long Time・ttttt・General Date の時刻。日本語版の Windows の元の SRC の実機では、終わりに空白が 1 つ付く（「13:04:05 」。#1550）
+        private static string LongTime(DateTime x)
+        {
+            return x.ToString(LongTimePattern, CultureInfo.InvariantCulture) + " ";
+        }
+
+        // 書式（引用符の中と \ の次の 1 文字を除く）に数値の書式文字 0・# があるか
+        private static bool HasNumberPlaceholder(string format)
+        {
+            for (var i = 0; i < format.Length; i++)
+            {
+                var c = format[i];
+                if (c == '\\')
+                {
+                    i++;
+                }
+                else if (c == '"')
+                {
+                    var end = format.IndexOf('"', i + 1);
+                    i = end < 0 ? format.Length : end;
+                }
+                else if (c == '0' || c == '#')
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion
@@ -430,8 +496,8 @@ namespace SRCCore.VB
                             {
                                 case 1: sb.Append(Num(x.Day)); break;
                                 case 2: sb.Append(x.Day.ToString("00", CultureInfo.InvariantCulture)); break;
-                                case 3: sb.Append(DayNamesShort[(int)x.DayOfWeek]); break;
-                                case 4: sb.Append(DayNames[(int)x.DayOfWeek]); break;
+                                case 3: sb.Append(DayNamesShortEnglish[(int)x.DayOfWeek]); break;
+                                case 4: sb.Append(DayNamesEnglish[(int)x.DayOfWeek]); break;
                                 case 5: sb.Append(x.ToString(ShortDatePattern, CultureInfo.InvariantCulture)); break;
                                 default: sb.Append(x.ToString(LongDatePattern, CultureInfo.InvariantCulture)); break;
                             }
@@ -462,8 +528,8 @@ namespace SRCCore.VB
                                 {
                                     case 1: sb.Append(Num(x.Month)); break;
                                     case 2: sb.Append(x.Month.ToString("00", CultureInfo.InvariantCulture)); break;
-                                    case 3: sb.Append(Num(x.Month)); break;          // 日本の月の省略名は数字だけ
-                                    default: sb.Append(Num(x.Month)).Append('月'); break;
+                                    case 3: sb.Append(MonthNamesShortEnglish[x.Month - 1]); break;
+                                    default: sb.Append(MonthNamesEnglish[x.Month - 1]); break;
                                 }
                             }
                             i2 += n;
@@ -523,7 +589,7 @@ namespace SRCCore.VB
                     case 't':
                         if (StartsWithIgnoreCase(format, i2, "ttttt"))
                         {
-                            sb.Append(x.ToString(LongTimePattern, CultureInfo.InvariantCulture));
+                            sb.Append(LongTime(x));
                             i2 += 5;
                         }
                         else
