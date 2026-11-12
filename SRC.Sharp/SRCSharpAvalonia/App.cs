@@ -74,6 +74,7 @@ namespace SRCSharpAvalonia
                 var window = new MainWindow();
                 desktop.MainWindow = window;
                 desktop.Exit += (s, e) => Stop();
+                window.TerminateHandler = () => TerminateScenario(window);
                 var savedScale = ReadDisplayScale(config);
                 if (savedScale.HasValue)
                 {
@@ -350,6 +351,19 @@ namespace SRCSharpAvalonia
         {
             session?.Dispose();
             session?.SRC.Sound.Player.Dispose();
+        }
+
+        /// <summary>
+        /// シナリオの終了（TerminateSRC。中断・ゲームクリア・Quit など）。元の SRC はウィンドウを閉じ、音を止めるなどの後始末をしてから End する。
+        /// ゲームスレッドから Environment.Exit すると、描画と音が動いたままプロセスを終えようとして、ネイティブのコードで落ちる（0xC0000409）。
+        /// そこで、ゲームスレッドに止まる合図を出してウィンドウを閉じ、通常の終了（desktop.Exit から Stop）で後始末をして終える。
+        /// false を返すので、ゲームスレッドは TerminateSRC から戻らずに止まる（ScreenGUI.Terminate）
+        /// </summary>
+        internal bool TerminateScenario(MainWindow window)
+        {
+            session?.Game.Stop();
+            Avalonia.Threading.Dispatcher.UIThread.Post(window.Close);
+            return false;
         }
 
         /// <summary>
