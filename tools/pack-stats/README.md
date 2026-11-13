@@ -1,6 +1,12 @@
 # GSC データパックの実態の集計 / Data-Pack Statistics
 
-GSC データパックの実態（格の目安ごとの能力値・SP・性格、ユニットの能力値、数値の刻み、マップ兵器）を集計する。[7474/SRC-Data](https://github.com/7474/SRC-Data) の `docs/データ作成ガイドライン.md` の表は、このプログラムの出力から作っている。srcsharp の機能ではなく、ソリューション・CI には入れない。
+GSC データパックの実態（格の目安ごとの能力値・SP・性格、ユニットの能力値、数値の刻み、マップ兵器）を集計する。[7474/SRC-Data](https://github.com/7474/SRC-Data) の `docs/データ作成ガイドライン.md` の表は、このプログラムの出力から作っている。srcsharp の機能ではなく、ソリューションには入れない（CI での確かめは下の「位置づけ」）。
+
+## 位置づけ
+
+- 使われている先: [7474/SRC-Data](https://github.com/7474/SRC-Data) の GitHub Pages（`site/build.sh`・`.github/workflows/pages.yml`）が、毎週と、データが変わったときに、SRC の master のこのプログラムをビルドして使う。データ作成ガイドラインの表と手順もこのプログラムを指している
+- 機能は足さない。誤りを見つける規則は `srcsharp lint` の規則（`docs/tools/authoring.md`）に、パックの水準との比較と組の評価を srcsharp に入れることは https://github.com/7474/SRC/issues/1607 で扱う。SRC-Data の集計に要る修正だけを行う（[判断の記録](../../docs/decisions/2026-11-13-authoring-tools-convergence.md)）
+- CI（`test-pack-tools`）で、ビルドできて、リポジトリの中の小さなデータで SRC-Data が使うコマンドが落ちないことを確かめる（`tools/pack_tools_check.sh`）
 
 ## 再現
 

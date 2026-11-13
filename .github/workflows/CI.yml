@@ -484,6 +484,27 @@ jobs:
         path: compat-results/
         if-no-files-found: ignore
 
+  # GSC データパックの集計と組の評価の試作（tools/pack-stats・tools/pack-analysis）。srcsharp の機能ではないが、
+  # 7474/SRC-Data の GitHub Pages が master のものをビルドして使うので、ビルドできて小さなデータで落ちないことを確かめる（#1616）
+  test-pack-tools:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 10.0.x
+        cache: true
+        cache-dependency-path: SRC.Sharp/Directory.Packages.props
+
+    - name: Build and run pack tools
+      run: tools/pack_tools_check.sh "$RUNNER_TEMP/pack-tools"
+
   # 検証用のイメージ（koudenpa/srcdatalinter）。従来の lint と srcsharp（自動プレイ・バランス集計）が動くことを確かめる
   docker-srcdatalinter:
     needs: changes
@@ -589,7 +610,7 @@ jobs:
   # ブランチ保護の必須チェック。どれかのジョブが失敗・取り消しなら失敗する（省いたジョブは成功として扱う）
   ci-passed:
     if: always()
-    needs: [changes, release-check, port-map-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-viewer, test-lint, test-compat-scenario, docker-srcdatalinter, build-and-test-srcs, build-help]
+    needs: [changes, release-check, port-map-check, test-srccore-linux, test-tools-linux, test-web, test-web-aot, test-viewer, test-lint, test-compat-scenario, test-pack-tools, docker-srcdatalinter, build-and-test-srcs, build-help]
     runs-on: ubuntu-24.04
     steps:
     - name: Check results

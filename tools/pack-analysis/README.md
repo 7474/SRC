@@ -1,6 +1,12 @@
 # 準拠データパックの分析の試作 / Data-Pack Analysis Prototype
 
-[準拠データパックに応じたバランスの検査（設計）](../../docs/tools/balance-pack.md) の「役割と格の決め方」「組の評価」を試しに実装したもの。GSC データパックにかけた結果は [試作結果](../../docs/tools/balance-pack-analysis.md) にある。srcsharp の機能ではなく、ソリューション・CI には入れない。
+[準拠データパックに応じたバランスの検査（設計）](../../docs/tools/balance-pack.md) の「役割と格の決め方」「組の評価」を試しに実装したもの。GSC データパックにかけた結果は [試作結果](../../docs/tools/balance-pack-analysis.md) にある。srcsharp の機能ではなく、ソリューションには入れない（CI での確かめは下の「位置づけ」）。
+
+## 位置づけ
+
+- 使われている先: [7474/SRC-Data](https://github.com/7474/SRC-Data) の GitHub Pages（`site/build.sh`・`.github/workflows/pages.yml`）が、毎週と、データが変わったときに、SRC の master のこのプログラムをビルドして使う。データ作成ガイドラインの表と手順もこのプログラムを指している
+- 機能は足さない。誤りを見つける規則は `srcsharp lint` の規則（`docs/tools/authoring.md`）に、パックの水準との比較と組の評価を srcsharp に入れることは https://github.com/7474/SRC/issues/1607 で扱う。SRC-Data の集計に要る修正だけを行う（[判断の記録](../../docs/decisions/2026-11-13-authoring-tools-convergence.md)）
+- CI（`test-pack-tools`）で、ビルドできて、リポジトリの中の小さなデータで SRC-Data が使うコマンドが落ちないことを確かめる（`tools/pack_tools_check.sh`）
 
 ## 再現
 
