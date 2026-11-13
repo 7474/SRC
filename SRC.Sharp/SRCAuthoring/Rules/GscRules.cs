@@ -6,7 +6,7 @@ namespace SRCAuthoring.Rules
 {
     /// <summary>
     /// GSC データパックのロボ基準・拡張基準の書き方の決まり（グループ gsc-robo・gsc-ext。選んだときだけ動く）（7474/SRC#1612）。
-    /// 規則と重さは docs/tools/balance-pack.md の「規則」、数値の刻みと SP は tools/pack-stats の check（データ作成ガイドライン）による
+    /// 規則と重さは docs/history/tools/balance-pack.md の「規則」、数値の刻みと SP は tools/pack-stats の check（データ作成ガイドライン）による
     /// </summary>
     public static class GscRules
     {

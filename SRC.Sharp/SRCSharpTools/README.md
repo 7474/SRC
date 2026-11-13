@@ -5,6 +5,7 @@ SRC# のデータ・シナリオの作成支援ツールです。設計は [docs
 ```sh
 dotnet tool install -g SRCSharpTools
 srcsharp lint path/to/scenario
+srcsharp lint path/to/scenario --rules src,gsc-ext   # 書き間違いを見つける規則のグループを選ぶ（既定は src。--list-rules で一覧）
 srcsharp play path/to/scenario/test.eve --script test.play --out snapshots
 srcsharp balance path/to/data --output balance.md
 srcsharp help Askコマンド              # SRC# のヘルプ（リファレンス）を引く

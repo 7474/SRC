@@ -1,6 +1,6 @@
 # 準拠データパックの分析の試作 / Data-Pack Analysis Prototype
 
-[準拠データパックに応じたバランスの検査（設計）](../../docs/tools/balance-pack.md) の「役割と格の決め方」「組の評価」を試しに実装したもの。GSC データパックにかけた結果は [試作結果](../../docs/tools/balance-pack-analysis.md) にある。srcsharp の機能ではなく、ソリューションには入れない（CI での確かめは下の「位置づけ」）。
+[準拠データパックに応じたバランスの検査（設計）](../../docs/history/tools/balance-pack.md) の「役割と格の決め方」「組の評価」を試しに実装したもの。GSC データパックにかけた結果は [試作結果](../../docs/history/tools/balance-pack-analysis.md) にある。srcsharp の機能ではなく、ソリューションには入れない（CI での確かめは下の「位置づけ」）。
 
 ## 位置づけ
 

@@ -1,4 +1,4 @@
-// 準拠データパックの分析の試作。docs/tools/balance-pack.md の「役割と格の決め方」「組の評価」を、
+// 準拠データパックの分析の試作。docs/history/tools/balance-pack.md の「役割と格の決め方」「組の評価」を、
 // GSC データパック（7474/SRC-Data の GSCデータパック）にかけて Markdown を出す。
 // srcsharp の機能ではない。使い方と再現の手順は README.md。
 using SRCCore;

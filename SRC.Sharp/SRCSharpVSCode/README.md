@@ -7,6 +7,7 @@ SRC のシナリオ（`*.eve`）の編集支援と、イベントのデバッガ
 - 構文の色分け（コマンド・ラベル・include・文字列・`$(...)`）
 - データファイル（`robot.txt`・`unit.txt`・`pilot.txt` など SRC のデータのファイル名）の `#` のコメントの色分け。ほかのファイルは `files.associations` で `src-data` に結び付ける（[Language identifiers](https://code.visualstudio.com/docs/languages/identifiers)）
 - 診断（イベントの読み込みエラー、Call・Goto の飛び先のラベルが無い、include するファイルが無い）。保存前の内容で調べる
+- データ（`robot.txt`・`pilot.txt` など）の診断。開いた・保存したときに、シナリオの `Data` のフォルダを `srcsharp lint` と同じく調べる（読み込みの誤りと、書き間違いを見つける規則。規則のグループは `srcsharp.rules`）
 - アウトライン（ラベル）、定義へ移動（ラベル・include）、ホバー、補完（コマンド・ラベル）
 - デバッガ：ブレークポイント、ステップ実行、Call のスタック、変数、式の評価、イベントのエラーで止める。シナリオは srcsharp の中で動き、入力は画面のタブの操作（`interactive`）か `.play` スクリプト、自動の入力（メッセージを送り、選択肢は先頭を選び、味方フェイズを自動で動かす）で与える
 - 画面：デバッグ中のシナリオを「SRC# 画面」のタブで遊ぶ。画面をクリック・キーで操作し、ブレークポイントで止まればゲームも止まる
@@ -84,6 +85,7 @@ VS Code の拡張機能ビューの「…」→「Install from VSIX...」でも�
 | `srcsharp.serverPath` | `srcsharp` | 動かすコマンド。既定なら PATH と `~/.dotnet/tools` から探す。dll を動かす場合は `dotnet` |
 | `srcsharp.serverArgs` | `[]` | `lsp`・`dap` などのコマンドの前に付ける引数（dll のパスなど） |
 | `srcsharp.appPath` | 空 | SRC 本体のフォルダ。Lib や共通の Data を探す。空ならシナリオのフォルダの親から探す |
+| `srcsharp.rules` | `["src"]` | データの診断に動かす規則のグループ。`src`（SRC の仕様と食い違うデータ）・`gsc-robo`・`gsc-ext`（GSC データパックの書き方の決まり）・`robodun`（ロボダンの UnitChecker.eve の観点）。空なら規則を動かさない（[作成支援ツールの「データの規則」](../../docs/tools/authoring.md#データの規則)） |
 | `srcsharp.language` | 空 | srcsharp の表示言語（`ja`・`en`・`auto` など）。環境変数 `SRCSHARP_LANG` として渡す |
 | `srcsharp.screen.autoOpen` | `true` | デバッグを始めたら画面のビューを開く |
 | `srcsharp.hotReload` | `onChange` | ホットリロード。`onChange`（ファイルが変わったら）・`manual`（「読み直す」を押した時）・`off` |
