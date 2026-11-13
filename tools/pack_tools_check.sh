@@ -22,6 +22,8 @@ mkdir -p "$WORK/pack"
 cp -r "$DATA" "$WORK/pack/ロボ"
 cp -r "$DATA" "$WORK/pack/拡張"
 ls "$WORK/pack/拡張" | grep -v '^System$' | grep -v '\.txt$' > "$WORK/works.txt" || true
+# パックの直下のデータ（小さなデータのパイロット・ユニットはここにある）は、パックのフォルダの名前の作品として扱われる
+printf 'ロボ\n拡張\n' >> "$WORK/works.txt"
 
 run() {
   echo "== $*"
@@ -33,8 +35,36 @@ run dotnet "$PS" bands "$WORK/pack/拡張"
 run dotnet "$PS" check "$WORK/pack/拡張" "$DATA"
 run dotnet "$PA" "$WORK/pack/拡張" 拡張 "$ROOT/tools/pack-analysis/roles-ext.csv" "$WORK/works.txt" --tiers "$ROOT/tools/pack-stats/tiers-ext.tsv" --sample 5 --cards 1
 cp "$WORK/out.txt" "$WORK/拡張.md"
-run dotnet "$PA" "$WORK/pack/ロボ" ロボ "$ROOT/tools/pack-analysis/roles-robo.csv" "$WORK/works.txt" --tiers "$ROOT/tools/pack-stats/tiers-robo.tsv" --sample 5 --cards 1
+run dotnet "$PA" "$WORK/pack/ロボ" ロボ "$ROOT/tools/pack-analysis/roles-robo.csv" "$WORK/works.txt" --tiers "$ROOT/tools/pack-stats/tiers-robo.tsv" --sample 5 --cards 1 --json "$WORK/pairs-ロボ.json"
 cp "$WORK/out.txt" "$WORK/ロボ.md"
+# 組の評価の JSON（データビューアの「比べる」が読む）の形を確かめる
+echo "== json"
+python3 - "$WORK/pairs-ロボ.json" <<'PY'
+import json, sys
+d = json.load(open(sys.argv[1], encoding="utf-8"))
+for k in ("format", "pack", "generatedAt", "uses", "indices", "bands", "opponents", "works", "pairs"):
+    assert k in d, k
+assert d["format"] == 1 and d["pack"] == "ロボ"
+assert d["pairs"], "組が無い"
+for p in d["pairs"]:
+    for k in ("work", "how", "band", "role", "rank", "pilot", "unit", "evaluated"):
+        assert k in p, k
+    assert p["pilot"]["name"] and p["unit"]["name"]
+    if p["evaluated"]:
+        assert set(p["grades"]) == set(d["uses"]), p["grades"]
+        assert set(p["indices"]) == set(d["indices"]), p["indices"]
+print("json:", len(d["pairs"]), "組")
+PY
+
+# 役割表・格の一覧・対象作品の名前の確かめと、役割表のひな形
+# 小さなデータには GSC の役割表の名前が無いので、名前の無いものを知らせる（終了コード 1）ことを確かめる
+if dotnet "$PA" "$WORK/pack/ロボ" ロボ "$ROOT/tools/pack-analysis/roles-robo.csv" "$WORK/works.txt" --check-roles 1 > "$WORK/check-roles.txt"; then
+  echo "役割表の名前の確かめが、無い名前を知らせない" >&2; exit 1
+fi
+grep -q 'roles-robo.csv([0-9]*): warning: パイロット' "$WORK/check-roles.txt" || { cat "$WORK/check-roles.txt"; echo "役割表の名前の確かめの書式が違う" >&2; exit 1; }
+dotnet "$PA" "$WORK/pack/拡張" 拡張 - "$WORK/works.txt" --roles-template "$(head -1 "$WORK/works.txt")" > "$WORK/template.csv"
+grep -q '^# 種類,名前,役割,格,系統,乗るユニット' "$WORK/template.csv" || { echo "役割表のひな形が出ない" >&2; exit 1; }
+
 echo "== site"
 rm -rf "$WORK/site"
 dotnet "$PS" site "$WORK/site" "$WORK/pack" --analysis "$WORK/拡張.md" "$WORK/ロボ.md" > /dev/null

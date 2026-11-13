@@ -27,3 +27,4 @@
 | 2026-10-31 | [リグレッションを防ぐことを最優先にした品質保証の改善](./2026-10-31-regression-first-qa-plan.md) | 採用 |
 | 2026-11-01 | [SRC#Avalonia に SoundFont（TimGM6mb）を同梱する](./2026-11-01-bundle-soundfont.md) | 採用 |
 | 2026-11-13 | [データ検証の補強を規則の検査に絞り、作成支援ツールを収束させる](./2026-11-13-authoring-tools-convergence.md) | 採用（完了） |
+| 2026-11-14 | [データの比較を、楽しむための道具として整える](./2026-11-14-data-comparison.md) | 採用 |
