@@ -2731,12 +2731,19 @@ namespace SRCRender
 
         #region 画面の状態（テスト・自動プレイ用）
 
+        /// <summary>
+        /// メッセージがクリックを待ち始めたとき。表示の行を "/" でつないだものを渡す（ゲームスレッドから呼ばれる）。
+        /// 自動プレイがメッセージを見る前に、押したままのボタンで進むことがあるので、表示したときに記録するのに使う（7474/SRC#1623）
+        /// </summary>
+        public event Action<string> MessageWaitBegan;
+
         private void BeginMessageWait()
         {
             State.Message.Visible = frmMessage.Visible;
             State.Message.Waiting = true;
             State.Message.WaitCount++;
             State.Message.AutoMode = AutoMessageMode;
+            MessageWaitBegan?.Invoke(string.Join("/", State.Message.Lines));
             Present();
         }
 
