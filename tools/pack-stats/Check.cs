@@ -1,4 +1,6 @@
 // 作品のデータを、パックの実態と比べて総合的に評価する（check）
+using SRCAuthoring;
+using SRCAuthoring.Rules;
 using SRCCore.Models;
 using System;
 using System.Collections.Generic;
@@ -51,6 +53,21 @@ namespace PackStats
         // 直前の Check の件数（site の一覧に出す）
         private static (int pilots, int units, int must, int info) lastCheck;
         private static string lastTerms = "";
+
+        // srcsharp lint の規則で確かめる「要確認」（SRCAuthoring/Rules の GscRules・SrcRules）
+        private static readonly string[] CheckRuleIds = { "number-rounding", "weapon-range2-shooting", "pilot-sp-duplicate", "pilot-sp-count", "pilot-sp-level-pattern" };
+
+        private static Dictionary<string, List<SrcDiagnostic>> RuleFindings(Data t, IReadOnlyList<UnitData> units, IReadOnlyList<PilotData> pilots)
+        {
+            var context = new DataRuleContext { Src = t.Src, Units = units, Pilots = pilots };
+            var rules = DataRuleCatalog.All.Where(x => CheckRuleIds.Contains(x.Id));
+            return DataRuleCatalog.Run(rules, context)
+                .GroupBy(x => x.Source ?? "")
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+
+        private static IEnumerable<string> RulesFor(Dictionary<string, List<SrcDiagnostic>> findings, string name, params string[] ids)
+            => findings.TryGetValue(name, out var list) ? list.Where(x => ids.Contains(x.RuleId)).Select(x => $"{x.Message}（{x.RuleId}）") : Enumerable.Empty<string>();
 
         private static void Check(Data pack, string dir)
         {
@@ -154,6 +171,8 @@ namespace PackStats
                 }
                 return r;
             }
+            // データだけで決まる「要確認」は srcsharp lint の規則（SRCAuthoring）を使う（7474/SRC#1617）。定義を 1 か所にするため
+            var ruleFindings = RuleFindings(t, Units(t), tPilots);
             foreach (var p in tPilots.Where(p => p.DefinedSpecialPowers().Any()))
             {
                 var b = PilotBand(p);
@@ -173,23 +192,18 @@ namespace PackStats
                 Console.WriteLine($"| {p.Name} | {string.Join("・", cells)} | {Cell(sps.Count, s.SpCount)} | {hd} | {(IsNamed(p) ? Cell(cats.Count, s.Cats) : cats.Count.ToString())} | {Cell(cost, s.Cost)} |");
 
                 foreach (var x in sps.Where(x => !t.Src.SPDList.IsDefined(x.Name))) Add("要確認", p.Name, $"SP「{x.Name}」が sp.txt に無い");
-                var dup = sps.GroupBy(x => x.Name).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
-                if (dup.Any()) Add("要確認", p.Name, $"同じ SP を重ねて持つ: {string.Join("、", dup)}");
+                foreach (var d in RulesFor(ruleFindings, p.Name, "pilot-sp-duplicate")) Add("要確認", p.Name, d);
                 if (!IsNamed(p))
                 {
                     if (sps.Count > 3) Add("要確認", p.Name, $"{b}で SP が {sps.Count} 個（{b}の SP の数は {Iqr(s.SpCount)}）");
                     continue;
                 }
                 var cp = Pctl(s.SpCount, sps.Count);
-                if (sps.Count != 6) Add("要確認", p.Name, $"名前付きの SP が {sps.Count} 個（名前付きは 6 つにそろえる。同じ層は {Iqr(s.SpCount)}）");
+                foreach (var d in RulesFor(ruleFindings, p.Name, "pilot-sp-count")) Add("要確認", p.Name, $"{d}（同じ層は {Iqr(s.SpCount)}）");
                 if (hd >= 3) Add("要確認", p.Name, $"命中・回避に効く SP が {hd} 個（{string.Join("・", sps.Where(x => IsHitDodge(t, x.Name)).Select(x => x.Name))}）。3 つ以上はパックで {Pct(hdRef.Count(n => n >= 3), hdRef.Count)}");
                 var ctp = Pctl(s.Cats, cats.Count);
                 if (ctp < 5) Add("参考", p.Name, $"SP の分類が {cats.Count} 種類（{string.Join("・", cats)}）で、用途が偏っている（同じ層は {Iqr(s.Cats)}）");
-                var later = sps.Where(x => x.NecessaryLevel > 1).ToList();
-                if (later.Count >= 3 && later.All(x => x.NecessaryLevel % 5 == 0)) Add("要確認", p.Name, "レベル 1 以外の SP を覚えるレベルが全て 5 の倍数（パックで 1% ほど）");
-                var lvs = sps.Select(x => x.NecessaryLevel).OrderBy(x => x).ToList();
-                var gaps = lvs.Zip(lvs.Skip(1), (a, c) => c - a).Where(g => g > 0).ToList();
-                if (gaps.Count >= 3 && gaps.Distinct().Count() == 1) Add("要確認", p.Name, $"SP を覚えるレベルの間隔が全て {gaps[0]}（一定にしない）");
+                foreach (var d in RulesFor(ruleFindings, p.Name, "pilot-sp-level-pattern")) Add("要確認", p.Name, d);
                 foreach (var x in sps)
                 {
                     var lv = LvRef(x.Name);
@@ -241,10 +255,7 @@ namespace PackStats
                 var uses = topW == null ? "-" : Uses(u, topW) < 0 ? "制限なし" : Uses(u, topW).ToString();
                 Console.WriteLine($"| {u.Name} | {u.ExpValue} | " + string.Join(" | ", ustat.Select((f, i) => Cell(f(u), s.Stats[i]))) + $" | {UType(u)} | {uses} |");
 
-                if (u.HP % 100 != 0) Add("要確認", u.Name, $"HP {u.HP} が 100 刻みでない");
-                if (u.EN % 10 != 0) Add("要確認", u.Name, $"EN {u.EN} が 10 刻みでない");
-                if (u.Armor % 50 != 0) Add("要確認", u.Name, $"装甲 {u.Armor} が 100（細かくても 50）刻みでない");
-                if (u.Mobility % 5 != 0) Add("要確認", u.Name, $"運動性 {u.Mobility} が 5 刻みでない");
+                foreach (var d in RulesFor(ruleFindings, u.Name, "number-rounding", "weapon-range2-shooting")) Add("要確認", u.Name, d);
                 for (var i = 0; i < ustat.Length; i++)
                 {
                     var p = Pctl(s.Stats[i], ustat[i](u));
@@ -252,9 +263,6 @@ namespace PackStats
                 }
                 foreach (var w in u.Weapons)
                 {
-                    if (w.Power % 100 != 0) Add("要確認", u.Name, $"{w.Name}の攻撃力 {w.Power} が 100 刻みでない");
-                    if (w.ENConsumption % 5 != 0) Add("要確認", u.Name, $"{w.Name}の消費 EN {w.ENConsumption} が 5 刻みでない");
-                    if (!IsMap(w) && w.MaxRange >= 2 && w.Class.Contains("射")) Add("要確認", u.Name, $"{w.Name}は射程 2 以上なのに「射」がある");
                     if (!IsMap(w) && w.MaxRange == 2 && w.Power > 0 && !w.Class.Contains("Ｐ")) Add("参考", u.Name, $"{w.Name}は射程 2 で移動後に使えない（射程 2 の武器は拡張で 78%、ロボで 89% が Ｐ を持つ）");
                 }
             }

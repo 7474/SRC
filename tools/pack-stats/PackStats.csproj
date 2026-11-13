@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <ProjectReference Include="../../SRC.Sharp/SRCCore/SRCCore.csproj" />
+    <!-- check の「要確認」のうち、データだけで決まるものは srcsharp lint の規則を使う（7474/SRC#1617） -->
+    <ProjectReference Include="../../SRC.Sharp/SRCAuthoring/SRCAuthoring.csproj" />
   </ItemGroup>
 
 </Project>

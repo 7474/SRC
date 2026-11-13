@@ -94,7 +94,7 @@ dotnet tools/pack-stats/bin/Release/net10.0/PackStats.dll check ../SRC-Data/GSC�
 | メッセージ | パイロットごとの行数と、シチュエーションの数 |
 | 指摘 | 要確認（ガイドラインの目安から外れているもの）と参考（外れ値の情報） |
 
-要確認にするもの:
+要確認にするもの（数値の刻み・射程 2 以上の射・SP の重複・名前付きの SP の数・SP を覚えるレベルは、`srcsharp lint` の規則（SRCAuthoring の `number-rounding`・`weapon-range2-shooting`・`pilot-sp-duplicate`・`pilot-sp-count`・`pilot-sp-level-pattern`）を呼んで判定する。文面の後ろに規則の ID を付ける。メッセージのシチュエーションはパック全体の武器名と比べるので、ここで判定する）:
 
 - 数値の刻み（HP 100、EN 10、装甲 50、運動性 5、武器の攻撃力 100、消費 EN 5）に合わない
 - 名前付きで、得意も苦手も無い
