@@ -256,6 +256,31 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual(2, Lint("gsc-robo", robot).Count(x => x.RuleId == "weapon-range1-infight"));
         }
 
+        /// <summary>
+        /// srcsharp lint（DataLinter）と Language Server（LintDataAsync）が、同じデータに同じ規則の診断を出す（7474/SRC#1615）。
+        /// ブラウザの lint（SRCLintWeb）も同じ DataLinter で、SRCSharpWeb.E2E の lint.spec.js が同じデータの ID と行を確かめる
+        /// </summary>
+        [TestMethod]
+        public void CliAndLanguageServerReportSameRuleDiagnostics()
+        {
+            using (var scenario = new TestScenario())
+            {
+                scenario.Write(Path.Combine("Data", "robot.txt"), Unit("海の機体", trans: "陸海", adaption: "-AAA",
+                    weapons: new[] { Weapon("パンチ", 1, "格突"), Weapon("ミサイル", 5, "射") }));
+                scenario.Write(Path.Combine("Data", "pilot.txt"), Pilot("強い人", stats: "170, 140, 100, 100, 100, 100, 普通"));
+                var groups = RuleGroups.Parse("src,gsc-ext,robodun");
+                string Key(SrcDiagnostic d) => $"{d.RuleId} {Path.GetFileName(d.File)}:{d.Line} {d.Severity} {d.Message}";
+
+                var cli = new DataLinter { RuleGroups = groups }.LintAsync(new[] { Path.Combine(scenario.Root, "Data") }, scenario.Root).Result;
+                var lsp = new SRCAuthoring.Lsp.LspServer(new MemoryStream(), new MemoryStream()) { RuleGroups = groups }
+                    .LintDataAsync(Path.Combine(scenario.Root, "Data")).Result;
+
+                var expected = cli.Diagnostics.Where(x => x.RuleId != null).Select(Key).OrderBy(x => x).ToList();
+                Assert.IsTrue(expected.Count >= 6, string.Join("\n", expected));
+                CollectionAssert.AreEqual(expected, lsp.Diagnostics.Where(x => x.RuleId != null).Select(Key).OrderBy(x => x).ToList());
+            }
+        }
+
         [TestMethod]
         public void Robodun_AndSrcTogetherRunSharedRuleOnce()
         {
