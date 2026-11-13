@@ -72,10 +72,11 @@ namespace SRCLintWeb
 
         /// <summary>
         /// 検査して結果を JSON で返す。scenarioRoot はシナリオのフォルダ（scenario/ からの相対。イベントの include の基準）。
-        /// 結果: { "diagnostics": [{ "file", "line", "severity"（error|warning|info）, "message", "source" }], "checkedFiles": 数 }
+        /// rules はデータに動かす規則のグループ（"src,gsc-ext" など。none で動かさない。srcsharp lint --rules と同じ）。
+        /// 結果: { "diagnostics": [{ "file", "line", "severity"（error|warning|info）, "message", "source", "ruleId" }], "checkedFiles": 数 }
         /// </summary>
         [JSExport]
-        internal static async Task<string> LintAsync(string scenarioRoot)
+        internal static async Task<string> LintAsync(string scenarioRoot, string rules)
         {
             Directory.CreateDirectory(ScenarioDir);
             Directory.CreateDirectory(AppDir);
@@ -84,7 +85,11 @@ namespace SRCLintWeb
                 ? Directory.EnumerateFiles(systemDir, "*.txt", SearchOption.AllDirectories).ToList()
                 : new System.Collections.Generic.List<string>();
             var scenarioPath = Path.Combine(ScenarioDir, scenarioRoot ?? "");
-            var linter = new DataLinter { Progress = (file, done, total) => ReportProgress("data", Relative(file), done - 1, total) };
+            var linter = new DataLinter
+            {
+                Progress = (file, done, total) => ReportProgress("data", Relative(file), done - 1, total),
+                RuleGroups = SRCAuthoring.Rules.RuleGroups.Parse(rules),
+            };
             var result = await linter.LintAsync(new[] { ScenarioDir }, scenarioPath, system);
 
             // 静的解析（Call・Goto の飛び先のラベル、include するファイル）。汎用データの Lib を本体のフォルダとして読む
@@ -133,6 +138,10 @@ namespace SRCLintWeb
                     if (!string.IsNullOrEmpty(d.Source))
                     {
                         w.WriteString("source", d.Source);
+                    }
+                    if (!string.IsNullOrEmpty(d.RuleId))
+                    {
+                        w.WriteString("ruleId", d.RuleId);
                     }
                     w.WriteEndObject();
                 }
