@@ -1,7 +1,7 @@
 # 準拠データパックに応じたバランスの検査（設計） / Data-Pack Balance Rules (Design)
 
-- 状態: 設計（未実装）
-- 関係する Issue: https://github.com/7474/SRC/issues/1388
+- 状態: 設計（未実装）。#1388 で実装するのは規則の検査だけで、進め方は [判断の記録](../decisions/2026-11-13-authoring-tools-convergence.md) の段階に置き換えた。数値の比較・役割表・組の評価・パック定義は https://github.com/7474/SRC/issues/1607 に切り出した
+- 関係する Issue: https://github.com/7474/SRC/issues/1388 、https://github.com/7474/SRC/issues/1607
 
 `srcsharp balance` に、シナリオが準拠しているデータパックを指定するオプションを加える。データの基準の実態は GSC（SRC 総合支援センター）のデータパックの「ロボ基準」と「拡張基準」なので、この 2 つを組み込みのパックとして持つ。
 
