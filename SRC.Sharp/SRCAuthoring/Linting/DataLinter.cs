@@ -1,6 +1,7 @@
 using ShiftJISExtension;
 using SRCCore.Exceptions;
 using SRCCore.Filesystem;
+using SRCAuthoring.Rules;
 using SRCCore.TestLib;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,12 @@ namespace SRCAuthoring.Linting
 
         /// <summary>1 ファイル検査するごとに呼ぶ（検査したファイル、何件目（1 始まり）、全体の件数）。進み具合の表示に使う</summary>
         public Action<string, int, int> Progress { get; set; }
+
+        /// <summary>動かす規則のグループ（RuleGroups）。既定は src。空なら規則を動かさない</summary>
+        public IReadOnlyList<string> RuleGroups { get; set; } = Rules.RuleGroups.Default;
+
+        /// <summary>規則を選ぶ元（省くと組み込みの規則。テストで差し替える）</summary>
+        public IReadOnlyList<IDataRule> AvailableRules { get; set; }
 
         /// <summary>ディレクトリ（中の *.txt と *.eve）またはファイルを検査する</summary>
         /// <param name="systemFiles">先に読み込む汎用データ（Data\System の sp.txt・alias.txt など）。検査の対象にせず、問題も報告しない。
@@ -85,7 +92,32 @@ namespace SRCAuthoring.Linting
                     }
                 }
             }
+            RunRules(src, result);
             return result;
+        }
+
+        /// <summary>読み込めたデータに、選んだグループの規則をかける。対象は検査したファイルで定義されたデータだけ</summary>
+        private void RunRules(SRCCore.SRC src, LintResult result)
+        {
+            var selected = DataRuleCatalog.Select(RuleGroups ?? Array.Empty<string>(), AvailableRules);
+            if (!selected.Any())
+            {
+                return;
+            }
+            var targets = new HashSet<string>(result.CheckedFiles, StringComparer.Ordinal);
+            bool IsTarget(SRCCore.Models.DataLocation location) => location != null && targets.Contains(Path.GetFullPath(location.FileName));
+            var context = new DataRuleContext
+            {
+                Src = src,
+                Units = src.UDList.Items.Where(x => IsTarget(x.Location)).ToList(),
+                Pilots = src.PDList.Items.Where(x => IsTarget(x.Location)).ToList(),
+                Messages = src.MDList.Items.Where(x => IsTarget(x.Location)).ToList(),
+                ResolveFile = x => string.IsNullOrEmpty(x) ? x : Path.GetFullPath(x),
+            };
+            var diagnostics = DataRuleCatalog.Run(selected, context);
+            result.Diagnostics.AddRange(diagnostics);
+            // 「情報」は問題に数えない（版を上げただけで lint の終了コードを変えない）
+            result.HasError |= diagnostics.Any(x => x.Severity != DiagnosticSeverity.Information);
         }
 
         private static async Task<Stream> OpenUtf8Async(SRCCore.SRC src, FileInfo file)
@@ -155,16 +187,16 @@ namespace SRCAuthoring.Linting
 
         private static readonly LintProcDef[] LintProcs = new LintProcDef[]
         {
-            new LintProcDef("^sp.txt$|^mind.txt$", async (src, file, _) => src.SPDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^alias.txt$", async (src, file, _) => src.ALDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^unit.txt$|^robot.txt$", async (src, file, _) => src.UDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot.txt$", async (src, file, _) => src.PDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^non_pilot.txt$", async (src, file, _) => src.NPDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot_message.txt$", async (src, file, _) => src.MDList.Load(file.Name, false, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot_dialog.txt$", async (src, file, _) => src.DDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^effect.txt$", async (src, file, _) => src.EDList.Load(file.Name, true, await OpenUtf8Async(src, file))),
-            new LintProcDef("^animation.txt$", async (src, file, _) => src.ADList.Load(file.Name, false, await OpenUtf8Async(src, file))),
-            new LintProcDef("^item.txt$", async (src, file, _) => src.IDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef("^sp.txt$|^mind.txt$", async (src, file, _) => src.SPDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^alias.txt$", async (src, file, _) => src.ALDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^unit.txt$|^robot.txt$", async (src, file, _) => src.UDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot.txt$", async (src, file, _) => src.PDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^non_pilot.txt$", async (src, file, _) => src.NPDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot_message.txt$", async (src, file, _) => src.MDList.Load(file.FullName, false, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot_dialog.txt$", async (src, file, _) => src.DDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^effect.txt$", async (src, file, _) => src.EDList.Load(file.FullName, true, await OpenUtf8Async(src, file))),
+            new LintProcDef("^animation.txt$", async (src, file, _) => src.ADList.Load(file.FullName, false, await OpenUtf8Async(src, file))),
+            new LintProcDef("^item.txt$", async (src, file, _) => src.IDList.Load(file.FullName, await OpenUtf8Async(src, file))),
             new LintProcDef(".*", (src, file, result) =>
             {
                 if (file.Name.ToLowerInvariant().EndsWith(".eve"))

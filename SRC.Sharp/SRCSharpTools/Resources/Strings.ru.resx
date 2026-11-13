@@ -17,7 +17,7 @@
     <value>srcsharp: инструменты для создания данных и сценариев SRC#
 
 Использование:
-  srcsharp lint &lt;каталог или файл&gt;... [--format text|sarif] [--output файл]
+  srcsharp lint &lt;каталог или файл&gt;... [--format text|sarif] [--output файл] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
       Проверить данные (*.txt) и события (*.eve). При ошибках код возврата 1
   srcsharp play &lt;файл события&gt; [--script файл.play] [--out каталог] [--app-path папка SRC] [--scenario-root папка сценария] [--steps число] [--skip-wait]
       Запустить сценарий без экрана. Без --script сообщения пролистываются, выбирается первый вариант. С --skip-wait пропускаются фиксированные ожидания (анимации, сообщения, Wait). --scenario-root задаёт папку сценария (основа для Data, Lib и Continue); по умолчанию файл события в подпапке без Data использует ближайшую родительскую папку с Data.
@@ -47,6 +47,9 @@
   </data>
   <data name="LintSummary" xml:space="preserve">
     <value>Проверено файлов: {0}, проблем: {1}</value>
+  </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Неизвестная группа правил: {0} (допустимо {1})</value>
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Укажите ровно один файл события</value>

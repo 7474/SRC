@@ -44,5 +44,7 @@ namespace SRCSharpTools.Resources
         public static string UnknownSearchMethod(string method) => Format(nameof(UnknownSearchMethod), method);
 
         public static string LintSummary(int files, int problems) => Format(nameof(LintSummary), files, problems);
+
+        public static string UnknownRuleGroup(string value, string groups) => Format(nameof(UnknownRuleGroup), value, groups);
     }
 }

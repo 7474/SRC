@@ -17,7 +17,7 @@
     <value>srcsharp: narzędzia do tworzenia danych i scenariuszy SRC#
 
 Użycie:
-  srcsharp lint &lt;katalog lub plik&gt;... [--format text|sarif] [--output plik]
+  srcsharp lint &lt;katalog lub plik&gt;... [--format text|sarif] [--output plik] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
       Sprawdza dane (*.txt) i zdarzenia (*.eve). Kod wyjścia 1, jeśli są problemy
   srcsharp play &lt;plik zdarzeń&gt; [--script plik.play] [--out katalog] [--app-path folder SRC] [--scenario-root folder scenariusza] [--steps liczba] [--skip-wait]
       Uruchamia scenariusz bez ekranu. Bez --script przewija komunikaty i wybiera pierwszą opcję. Z --skip-wait pomija stałe oczekiwania (animacje, komunikaty, Wait). --scenario-root wskazuje folder scenariusza (podstawę dla Data, Lib i Continue); domyślnie plik zdarzeń w podfolderze bez Data używa najbliższego folderu nadrzędnego z Data.
@@ -47,6 +47,9 @@ Opcje wspólne:
   </data>
   <data name="LintSummary" xml:space="preserve">
     <value>Sprawdzone pliki: {0}, problemy: {1}</value>
+  </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Nieznana grupa reguł: {0} (dozwolone: {1})</value>
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Podaj dokładnie jeden plik zdarzeń</value>

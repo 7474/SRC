@@ -17,7 +17,7 @@
     <value>srcsharp: เครื่องมือช่วยสร้างข้อมูลและซีนาริโอของ SRC#
 
 วิธีใช้:
-  srcsharp lint &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format text|sarif] [--output ไฟล์]
+  srcsharp lint &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format text|sarif] [--output ไฟล์] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
       ตรวจสอบข้อมูล (*.txt) และอีเวนต์ (*.eve) หากพบปัญหาจะจบด้วยโค้ด 1
   srcsharp play &lt;ไฟล์อีเวนต์&gt; [--script ไฟล์.play] [--out ไดเรกทอรี] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ซีนาริโอ] [--steps จำนวน] [--skip-wait]
       รันซีนาริโอโดยไม่แสดงหน้าจอ หากไม่ระบุ --script จะเลื่อนข้อความและเลือกตัวเลือกแรกไปเรื่อย ๆ เมื่อใช้ --skip-wait จะข้ามการรอตามเวลาที่กำหนด (แอนิเมชัน ข้อความ Wait) --scenario-root กำหนดโฟลเดอร์ซีนาริโอ (ฐานของ Data, Lib และ Continue) หากไม่ระบุ ไฟล์อีเวนต์ในโฟลเดอร์ย่อยที่ไม่มี Data จะใช้โฟลเดอร์แม่ที่ใกล้ที่สุดที่มี Data
@@ -47,6 +47,9 @@
   </data>
   <data name="LintSummary" xml:space="preserve">
     <value>ตรวจสอบ {0} ไฟล์ พบปัญหา {1} รายการ</value>
+  </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>ไม่รู้จักกลุ่มกฎ: {0} (ต้องเป็นหนึ่งใน {1})</value>
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>โปรดระบุไฟล์อีเวนต์ 1 ไฟล์</value>

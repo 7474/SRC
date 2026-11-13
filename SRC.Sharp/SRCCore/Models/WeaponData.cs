@@ -13,6 +13,8 @@ namespace SRCCore.Models
     {
         // 武器名
         public string Name = "";
+        // 定義のあるファイルと行（SRC# の作成支援ツール用。元の SRC には無い）
+        public DataLocation Location;
         // 攻撃力
         public int Power;
         // 最小射程

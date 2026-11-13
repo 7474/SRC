@@ -139,6 +139,7 @@ namespace SRCCore.Models
                     {
                         md = Add(data_name);
                     }
+                    md.Location ??= new DataLocation(reader.FileName, reader.LineNumber);
 
                     line_buf = reader.GetLine();
                     while (Strings.Len(line_buf) > 0)
@@ -156,7 +157,7 @@ namespace SRCCore.Models
                             throw reader.InvalidDataException("シチュエーションの指定が抜けています。", data_name);
                         }
 
-                        md.AddMessage(sname, msg);
+                        md.AddMessage(sname, msg).Location = new DataLocation(reader.FileName, reader.LineNumber);
 
                         if (!reader.HasMore)
                         {
