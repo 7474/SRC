@@ -9,6 +9,12 @@ import { ScreenView } from './screen';
 import { installServer, resolveServer, serverCommand, ServerInfo, serverVersion } from './server';
 import { SettingsView } from './settings';
 
+/** データに動かす規則のグループ（設定 srcsharp.rules）。空なら none */
+export function ruleGroups(): string[] {
+  const rules = vscode.workspace.getConfiguration('srcsharp').get<string[]>('rules', ['src']);
+  return rules.length ? rules : ['none'];
+}
+
 /** srcsharp と Language Server の状態 */
 export class Controller implements vscode.Disposable {
   server: ServerInfo = resolveServer();
@@ -40,9 +46,14 @@ export class Controller implements vscode.Disposable {
     const lsp = serverCommand(this.server, 'lsp');
     const serverOptions: ServerOptions = { command: lsp.command, args: lsp.args, options: { env: this.server.env } };
     const clientOptions: LanguageClientOptions = {
-      documentSelector: [{ scheme: 'file', language: 'src-eve' }],
+      documentSelector: [
+        { scheme: 'file', language: 'src-eve' },
+        { scheme: 'file', language: 'src-data' },
+      ],
       initializationOptions: {
         appPath: vscode.workspace.getConfiguration('srcsharp').get<string>('appPath') || undefined,
+        // データに動かす規則のグループ（空なら none。srcsharp lint --rules と同じ）
+        rules: ruleGroups(),
         logLevel: vscode.workspace.getConfiguration('srcsharp').get<string>('logLevel') || undefined,
       },
       // Language Server のログ（window/logMessage）も同じ出力パネルに出す
@@ -321,7 +332,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   let restartTimer: NodeJS.Timeout | undefined;
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((e) => {
-      if (!['srcsharp.serverPath', 'srcsharp.serverArgs', 'srcsharp.appPath', 'srcsharp.language', 'srcsharp.logLevel'].some((k) => e.affectsConfiguration(k))) {
+      if (!['srcsharp.serverPath', 'srcsharp.serverArgs', 'srcsharp.appPath', 'srcsharp.rules', 'srcsharp.language', 'srcsharp.logLevel'].some((k) => e.affectsConfiguration(k))) {
         return;
       }
       // 設定画面の保存は複数の値を続けて書くため、まとめて 1 度だけ起動し直す

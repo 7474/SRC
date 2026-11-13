@@ -1,7 +1,9 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SRCAuthoring.Analysis;
+using SRCAuthoring.Linting;
 using SRCAuthoring.Protocol;
+using SRCAuthoring.Rules;
 using SRCCore.Events;
 using SRCCore.Logging;
 using System;
@@ -16,7 +18,8 @@ using System.Threading.Tasks;
 namespace SRCAuthoring.Lsp
 {
     /// <summary>
-    /// イベントファイル（*.eve）の Language Server。
+    /// イベントファイル（*.eve）とデータ（robot.txt・pilot.txt など）の Language Server。
+    /// データは保存した内容で、シナリオの Data のフォルダ全体を DataLinter（srcsharp lint と同じ）で調べる。
     /// https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/
     /// </summary>
     public sealed class LspServer
@@ -27,6 +30,11 @@ namespace SRCAuthoring.Lsp
         private readonly ConcurrentDictionary<string, ScenarioAnalysis> analyses = new ConcurrentDictionary<string, ScenarioAnalysis>(StringComparer.OrdinalIgnoreCase);
         private readonly ConcurrentDictionary<string, CancellationTokenSource> pending = new ConcurrentDictionary<string, CancellationTokenSource>(StringComparer.OrdinalIgnoreCase);
         private bool shutdown;
+        // データの診断を送ったファイル（Data のフォルダ → ファイル）。直ったファイルの診断を消すのに使う
+        private readonly ConcurrentDictionary<string, HashSet<string>> dataPublished = new ConcurrentDictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>データに動かす規則のグループ（初期化オプションの rules。VS Code 拡張の srcsharp.rules）</summary>
+        public IReadOnlyList<string> RuleGroups { get; set; } = Rules.RuleGroups.Default;
         private readonly ILogger log;
         private readonly Action<LogLevel?> setLogLevel;
 
@@ -122,7 +130,22 @@ namespace SRCAuthoring.Lsp
                     {
                         setLogLevel?.Invoke(logLevel);
                     }
-                    log.LogInformation("Language Server を開始 SRC のフォルダ: {AppPath}", analyzer.AppPath ?? "");
+                    // 規則のグループ（VS Code 拡張の srcsharp.rules。文字列か配列）
+                    var rules = @params?["initializationOptions"]?["rules"];
+                    if (rules != null)
+                    {
+                        try
+                        {
+                            RuleGroups = Rules.RuleGroups.Parse(rules is JsonArray array
+                                ? string.Join(",", array.Select(x => x?.GetValue<string>()))
+                                : rules.GetValue<string>());
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            log.LogWarning("規則のグループを読めません: {Message}", ex.Message);
+                        }
+                    }
+                    log.LogInformation("Language Server を開始 SRC のフォルダ: {AppPath} 規則: {Rules}", analyzer.AppPath ?? "", string.Join(",", RuleGroups));
                     return new JsonObject
                     {
                         ["capabilities"] = new JsonObject
@@ -144,7 +167,14 @@ namespace SRCAuthoring.Lsp
                         var doc = @params["textDocument"];
                         var path = UriToPath(doc["uri"].GetValue<string>());
                         documents[path] = doc["text"].GetValue<string>();
-                        Schedule(path, TimeSpan.Zero);
+                        if (DataLinter.IsDataFileName(path))
+                        {
+                            ScheduleData(path);
+                        }
+                        else
+                        {
+                            Schedule(path, TimeSpan.Zero);
+                        }
                         return null;
                     }
                 case "textDocument/didChange":
@@ -152,13 +182,24 @@ namespace SRCAuthoring.Lsp
                         var path = UriToPath(@params["textDocument"]["uri"].GetValue<string>());
                         var changes = @params["contentChanges"].AsArray();
                         documents[path] = changes[changes.Count - 1]["text"].GetValue<string>();
-                        Schedule(path, Debounce);
+                        // データは保存した内容で調べる
+                        if (!DataLinter.IsDataFileName(path))
+                        {
+                            Schedule(path, Debounce);
+                        }
                         return null;
                     }
                 case "textDocument/didSave":
                     {
                         var path = UriToPath(@params["textDocument"]["uri"].GetValue<string>());
-                        Schedule(path, TimeSpan.Zero);
+                        if (DataLinter.IsDataFileName(path))
+                        {
+                            ScheduleData(path);
+                        }
+                        else
+                        {
+                            Schedule(path, TimeSpan.Zero);
+                        }
                         return null;
                     }
                 case "textDocument/didClose":
@@ -166,7 +207,11 @@ namespace SRCAuthoring.Lsp
                         var path = UriToPath(@params["textDocument"]["uri"].GetValue<string>());
                         documents.TryRemove(path, out _);
                         analyses.TryRemove(path, out _);
-                        _ = PublishAsync(path, new List<SrcDiagnostic>());
+                        // データの診断はフォルダ全体のものなので、閉じても消さない
+                        if (!DataLinter.IsDataFileName(path))
+                        {
+                            _ = PublishAsync(path, new List<SrcDiagnostic>());
+                        }
                         return null;
                     }
                 case "textDocument/documentSymbol":
@@ -243,6 +288,92 @@ namespace SRCAuthoring.Lsp
             });
         }
 
+        /// <summary>データのファイルのある Data のフォルダ（いちばん近い親の Data。無ければファイルのあるフォルダ）</summary>
+        public static string DataRootOf(string file)
+        {
+            for (var d = Path.GetDirectoryName(file); !string.IsNullOrEmpty(d); d = Path.GetDirectoryName(d))
+            {
+                if (string.Equals(Path.GetFileName(d), "Data", StringComparison.OrdinalIgnoreCase))
+                {
+                    return d;
+                }
+            }
+            return Path.GetDirectoryName(file);
+        }
+
+        private void ScheduleData(string path)
+        {
+            var root = DataRootOf(path);
+            var key = "data:" + root;
+            var cts = new CancellationTokenSource();
+            if (pending.TryRemove(key, out var old))
+            {
+                old.Cancel();
+            }
+            pending[key] = cts;
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await analyzing.WaitAsync(cts.Token);
+                    LintResult result;
+                    try
+                    {
+                        cts.Token.ThrowIfCancellationRequested();
+                        result = await LintDataAsync(root);
+                    }
+                    finally
+                    {
+                        analyzing.Release();
+                    }
+                    if (!cts.IsCancellationRequested)
+                    {
+                        await PublishDataAsync(root, result);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    log.LogError(ex, "データを調べられません {Path}", root);
+                }
+            });
+        }
+
+        /// <summary>Data のフォルダを srcsharp lint と同じく調べる。SRC 本体の Data\System のデータを先に読む</summary>
+        public Task<LintResult> LintDataAsync(string dataRoot)
+        {
+            var scenarioRoot = Path.GetDirectoryName(dataRoot);
+            var appPath = analyzer.AppPath ?? ScenarioAnalyzer.FindAppPath(scenarioRoot);
+            var system = new List<string>();
+            var systemDir = appPath == null ? null : Path.Combine(appPath, "Data", "System");
+            if (systemDir != null && Directory.Exists(systemDir) && !ScenarioAnalysis.SamePath(Path.GetFullPath(systemDir), Path.GetFullPath(Path.Combine(dataRoot, "System"))))
+            {
+                system.AddRange(Directory.EnumerateFiles(systemDir, "*.txt"));
+            }
+            return new DataLinter { RuleGroups = RuleGroups }.LintAsync(new[] { dataRoot }, scenarioRoot, system);
+        }
+
+        private async Task PublishDataAsync(string dataRoot, LintResult result)
+        {
+            // データのファイルの診断だけを送る（イベントの診断はイベントの解析が送る）
+            var byFile = result.Diagnostics
+                .Where(x => !string.IsNullOrEmpty(x.File) && DataLinter.IsDataFileName(x.File))
+                .GroupBy(x => OverlayFileSystem.Normalize(x.File), StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.ToList(), StringComparer.OrdinalIgnoreCase);
+            var previous = dataPublished.TryGetValue(dataRoot, out var p) ? p : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var file in previous.Where(x => !byFile.ContainsKey(x)))
+            {
+                await PublishAsync(file, new List<SrcDiagnostic>());
+            }
+            foreach (var (file, diagnostics) in byFile)
+            {
+                await PublishAsync(file, diagnostics);
+            }
+            dataPublished[dataRoot] = new HashSet<string>(byFile.Keys, StringComparer.OrdinalIgnoreCase);
+        }
+
         /// <summary>path を開いている内容で解析し、結果を覚えておく</summary>
         public ScenarioAnalysis Analyze(string path)
         {
@@ -261,13 +392,19 @@ namespace SRCAuthoring.Lsp
             var items = new JsonArray();
             foreach (var d in diagnostics)
             {
-                items.Add(new JsonObject
+                var item = new JsonObject
                 {
                     ["range"] = LineRange(d.Line),
                     ["severity"] = d.Severity switch { DiagnosticSeverity.Error => 1, DiagnosticSeverity.Warning => 2, _ => 3 },
                     ["source"] = "srcsharp",
-                    ["message"] = d.Message,
-                });
+                    // データの診断には、どのデータか（ユニット・パイロットの名前）を付ける
+                    ["message"] = d.Message + (string.IsNullOrEmpty(d.Source) || !DataLinter.IsDataFileName(path) ? "" : $" [{d.Source}]"),
+                };
+                if (!string.IsNullOrEmpty(d.RuleId))
+                {
+                    item["code"] = d.RuleId;
+                }
+                items.Add(item);
             }
             return stream.WriteAsync(new JsonObject
             {

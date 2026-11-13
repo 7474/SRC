@@ -172,6 +172,8 @@ namespace SRCAuthoring.Linting
                 this.lintProc = lintProc;
             }
 
+            public bool Matches(string fileName) => filePattern.IsMatch(fileName);
+
             /// <summary>対象のファイルなら検査して true</summary>
             public async Task<bool> ExecuteAsync(SRCCore.SRC src, FileInfo file, LintResult result)
             {
@@ -206,6 +208,13 @@ namespace SRCAuthoring.Linting
                 src.ClearDataError();
                 return true;
             }
+        }
+
+        /// <summary>データのファイル（種類ごとの読み込み処理で検査するもの）の名前か</summary>
+        public static bool IsDataFileName(string fileName)
+        {
+            var name = Path.GetFileName(fileName ?? "");
+            return LintProcs.Take(LintProcs.Length - 1).Any(x => x.Matches(name));
         }
 
         private static readonly LintProcDef[] LintProcs = new LintProcDef[]

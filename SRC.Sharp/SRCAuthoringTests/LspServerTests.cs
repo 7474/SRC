@@ -33,6 +33,56 @@ namespace SRCAuthoring.Tests
         };
 
         [TestMethod]
+        public void Lsp_DataFileDiagnosticsWithRules()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                var robot = scenario.Write(System.IO.Path.Combine("Data", "robot.txt"),
+                    "海の機体", "海の機体, うみのきたい, 汎用, 1, 2", "陸海, 4, M, 1000, 100", "特殊能力なし", "3000, 100, 600, 60", "AAAA, -.bmp",
+                    "パンチ, 1000, 1, 1, +0, -, -, -, AAAA, +0, 格突", "");
+                var uri = LspServer.PathToUri(robot);
+                var server = new LspServer(client.ServerInput, client.ServerOutput);
+                var run = Task.Run(() => server.RunAsync());
+
+                Request(client, "initialize", new JsonObject
+                {
+                    ["capabilities"] = new JsonObject(),
+                    ["initializationOptions"] = new JsonObject { ["rules"] = new JsonArray("src", "gsc-robo") },
+                });
+                Notify(client, "initialized", new JsonObject());
+                Notify(client, "textDocument/didOpen", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri, ["languageId"] = "src-data", ["version"] = 1, ["text"] = System.IO.File.ReadAllText(robot) },
+                });
+
+                var diagnostics = client.WaitFor(x => x["method"]?.GetValue<string>() == "textDocument/publishDiagnostics"
+                    && x["params"]["uri"].GetValue<string>() == uri, "publishDiagnostics");
+                var items = diagnostics["params"]["diagnostics"].AsArray();
+                var codes = items.Select(x => x["code"]?.GetValue<string>()).ToList();
+                CollectionAssert.Contains(codes, "unit-transportation-invalid", diagnostics.ToJsonString());
+                CollectionAssert.Contains(codes, "weapon-range1-infight", diagnostics.ToJsonString());
+                var invalid = items.First(x => x["code"]?.GetValue<string>() == "unit-transportation-invalid");
+                // 3 行目（0 始まりで 2）の移動可能地形。情報（3）。どのユニットか
+                Assert.AreEqual(2, invalid["range"]["start"]["line"].GetValue<int>());
+                Assert.AreEqual(3, invalid["severity"].GetValue<int>());
+                StringAssert.EndsWith(invalid["message"].GetValue<string>(), "[海の機体]");
+
+                // 直して保存すると、診断が消える
+                System.IO.File.WriteAllText(robot, string.Join("\n",
+                    "海の機体", "海の機体, うみのきたい, 汎用, 1, 2", "陸, 4, M, 1000, 100", "特殊能力なし", "3000, 100, 600, 60", "AAAA, -.bmp", ""));
+                Notify(client, "textDocument/didSave", new JsonObject { ["textDocument"] = new JsonObject { ["uri"] = uri } });
+                var cleared = client.WaitFor(x => x["method"]?.GetValue<string>() == "textDocument/publishDiagnostics"
+                    && x["params"]["uri"].GetValue<string>() == uri && x["params"]["diagnostics"].AsArray().Count == 0, "cleared");
+                Assert.IsNotNull(cleared);
+
+                Request(client, "shutdown", null);
+                Notify(client, "exit", null);
+                Assert.AreEqual(0, run.Result);
+            }
+        }
+
+        [TestMethod]
         public void Lsp_DiagnosticsSymbolsDefinitionAndCompletion()
         {
             using (var scenario = new TestScenario())
