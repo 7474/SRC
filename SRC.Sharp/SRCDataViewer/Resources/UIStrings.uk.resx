@@ -193,4 +193,97 @@
   <data name="BgmNotFound" xml:space="preserve">
     <value>Цієї BGM немає у відкритому архіві</value>
   </data>
+  <data name="Compare" xml:space="preserve">
+    <value>Порівняння</value>
+  </data>
+  <data name="CompareIntro" xml:space="preserve">
+    <value>Порівняння пар пілот–юніт, оцінених тими самими розрахунками, що й у грі (7474/SRC-Data). Індекси дорівнюють 100 на медіані того самого щабля досвіду.</value>
+  </data>
+  <data name="CompareLoading" xml:space="preserve">
+    <value>Завантаження оцінок…</value>
+  </data>
+  <data name="CompareLoadFailed" xml:space="preserve">
+    <value>Не вдалося завантажити оцінки: {0}</value>
+  </data>
+  <data name="CompareGenerated" xml:space="preserve">
+    <value>Дата оцінки: {0}</value>
+  </data>
+  <data name="CompareRanking" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="CompareSideBySide" xml:space="preserve">
+    <value>Поруч</value>
+  </data>
+  <data name="CompareWorks" xml:space="preserve">
+    <value>Твори</value>
+  </data>
+  <data name="ComparePosition" xml:space="preserve">
+    <value>Положення</value>
+  </data>
+  <data name="CompareAll" xml:space="preserve">
+    <value>Усі</value>
+  </data>
+  <data name="CompareSection" xml:space="preserve">
+    <value>Розділ</value>
+  </data>
+  <data name="CompareBand" xml:space="preserve">
+    <value>Щабель</value>
+  </data>
+  <data name="CompareRank" xml:space="preserve">
+    <value>Ранг</value>
+  </data>
+  <data name="CompareMetric" xml:space="preserve">
+    <value>Значення</value>
+  </data>
+  <data name="CompareEffective" xml:space="preserve">
+    <value>Ефективне</value>
+  </data>
+  <data name="CompareSimple" xml:space="preserve">
+    <value>Просте</value>
+  </data>
+  <data name="CompareGrades" xml:space="preserve">
+    <value>Оцінки</value>
+  </data>
+  <data name="CompareNoRank" xml:space="preserve">
+    <value>Без рангу</value>
+  </data>
+  <data name="CompareAdd" xml:space="preserve">
+    <value>Додати до порівняння</value>
+  </data>
+  <data name="CompareRemove" xml:space="preserve">
+    <value>Прибрати</value>
+  </data>
+  <data name="CompareSelectHint" xml:space="preserve">
+    <value>Виберіть пари в рейтингу (до 4), щоб поставити їх поруч.</value>
+  </data>
+  <data name="CompareShowMore" xml:space="preserve">
+    <value>Показати ще</value>
+  </data>
+  <data name="CompareOnlyNoRoles" xml:space="preserve">
+    <value>Лише твори без таблиці ролей</value>
+  </data>
+  <data name="ComparePairs" xml:space="preserve">
+    <value>Пари</value>
+  </data>
+  <data name="CompareDeclared" xml:space="preserve">
+    <value>Таблиця ролей</value>
+  </data>
+  <data name="CompareMedian" xml:space="preserve">
+    <value>Медіана</value>
+  </data>
+  <data name="CompareMax" xml:space="preserve">
+    <value>Макс.</value>
+  </data>
+  <data name="CompareBest" xml:space="preserve">
+    <value>Найкраща пара</value>
+  </data>
+  <data name="ComparePositionHint" xml:space="preserve">
+    <value>Положення серед пар інших розділів того самого щабля, у відсотках згори (менше — сильніше). Ваші дані — розділ Sharp (або вибраний розділ).</value>
+  </data>
+  <data name="CompareShare" xml:space="preserve">
+    <value>URL цього вигляду</value>
+  </data>
+  <data name="CompareRadarHint" xml:space="preserve">
+    <value>Суцільна лінія — ефективне, пунктир — просте. Сіра лінія — медіана (100).</value>
+  </data>
 </root>

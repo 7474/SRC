@@ -193,4 +193,97 @@
   <data name="BgmNotFound" xml:space="preserve">
     <value>打开的归档中没有此 BGM</value>
   </data>
+  <data name="Compare" xml:space="preserve">
+    <value>比较</value>
+  </data>
+  <data name="CompareIntro" xml:space="preserve">
+    <value>比较以与游戏相同的计算评估的驾驶员与机体组合（7474/SRC-Data）。指数以同一经验值区间的中位数为 100。</value>
+  </data>
+  <data name="CompareLoading" xml:space="preserve">
+    <value>正在读取评估…</value>
+  </data>
+  <data name="CompareLoadFailed" xml:space="preserve">
+    <value>无法读取评估：{0}</value>
+  </data>
+  <data name="CompareGenerated" xml:space="preserve">
+    <value>评估时间：{0}</value>
+  </data>
+  <data name="CompareRanking" xml:space="preserve">
+    <value>排行</value>
+  </data>
+  <data name="CompareSideBySide" xml:space="preserve">
+    <value>并排</value>
+  </data>
+  <data name="CompareWorks" xml:space="preserve">
+    <value>作品</value>
+  </data>
+  <data name="ComparePosition" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="CompareAll" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="CompareSection" xml:space="preserve">
+    <value>分类</value>
+  </data>
+  <data name="CompareBand" xml:space="preserve">
+    <value>区间</value>
+  </data>
+  <data name="CompareRank" xml:space="preserve">
+    <value>格</value>
+  </data>
+  <data name="CompareMetric" xml:space="preserve">
+    <value>比较值</value>
+  </data>
+  <data name="CompareEffective" xml:space="preserve">
+    <value>实效性能</value>
+  </data>
+  <data name="CompareSimple" xml:space="preserve">
+    <value>单纯数值</value>
+  </data>
+  <data name="CompareGrades" xml:space="preserve">
+    <value>评价</value>
+  </data>
+  <data name="CompareNoRank" xml:space="preserve">
+    <value>无格</value>
+  </data>
+  <data name="CompareAdd" xml:space="preserve">
+    <value>加入并排</value>
+  </data>
+  <data name="CompareRemove" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="CompareSelectHint" xml:space="preserve">
+    <value>在排行中选择组合（最多 4 组）即可在此并排。</value>
+  </data>
+  <data name="CompareShowMore" xml:space="preserve">
+    <value>显示更多</value>
+  </data>
+  <data name="CompareOnlyNoRoles" xml:space="preserve">
+    <value>仅显示没有角色表的作品</value>
+  </data>
+  <data name="ComparePairs" xml:space="preserve">
+    <value>组合</value>
+  </data>
+  <data name="CompareDeclared" xml:space="preserve">
+    <value>角色表</value>
+  </data>
+  <data name="CompareMedian" xml:space="preserve">
+    <value>中位数</value>
+  </data>
+  <data name="CompareMax" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="CompareBest" xml:space="preserve">
+    <value>最佳组合</value>
+  </data>
+  <data name="ComparePositionHint" xml:space="preserve">
+    <value>在同一区间其他分类的组合中处于前百分之几（越小越强）。自己的数据为 Sharp 分类（或所选分类）。</value>
+  </data>
+  <data name="CompareShare" xml:space="preserve">
+    <value>此视图的 URL</value>
+  </data>
+  <data name="CompareRadarHint" xml:space="preserve">
+    <value>实线为实效性能，虚线为单纯数值。灰线为中位数（100）。</value>
+  </data>
 </root>

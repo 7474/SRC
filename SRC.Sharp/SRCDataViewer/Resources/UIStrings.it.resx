@@ -193,4 +193,97 @@
   <data name="BgmNotFound" xml:space="preserve">
     <value>Questa BGM non è nell'archivio aperto</value>
   </data>
+  <data name="Compare" xml:space="preserve">
+    <value>Confronta</value>
+  </data>
+  <data name="CompareIntro" xml:space="preserve">
+    <value>Confronta coppie pilota-unità valutate con gli stessi calcoli del gioco (7474/SRC-Data). Gli indici valgono 100 alla mediana della stessa fascia di esperienza.</value>
+  </data>
+  <data name="CompareLoading" xml:space="preserve">
+    <value>Caricamento delle valutazioni…</value>
+  </data>
+  <data name="CompareLoadFailed" xml:space="preserve">
+    <value>Impossibile caricare le valutazioni: {0}</value>
+  </data>
+  <data name="CompareGenerated" xml:space="preserve">
+    <value>Valutato il: {0}</value>
+  </data>
+  <data name="CompareRanking" xml:space="preserve">
+    <value>Classifica</value>
+  </data>
+  <data name="CompareSideBySide" xml:space="preserve">
+    <value>Affiancati</value>
+  </data>
+  <data name="CompareWorks" xml:space="preserve">
+    <value>Titoli</value>
+  </data>
+  <data name="ComparePosition" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="CompareAll" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="CompareSection" xml:space="preserve">
+    <value>Sezione</value>
+  </data>
+  <data name="CompareBand" xml:space="preserve">
+    <value>Fascia</value>
+  </data>
+  <data name="CompareRank" xml:space="preserve">
+    <value>Rango</value>
+  </data>
+  <data name="CompareMetric" xml:space="preserve">
+    <value>Valore</value>
+  </data>
+  <data name="CompareEffective" xml:space="preserve">
+    <value>Effettivo</value>
+  </data>
+  <data name="CompareSimple" xml:space="preserve">
+    <value>Semplice</value>
+  </data>
+  <data name="CompareGrades" xml:space="preserve">
+    <value>Voti</value>
+  </data>
+  <data name="CompareNoRank" xml:space="preserve">
+    <value>Senza rango</value>
+  </data>
+  <data name="CompareAdd" xml:space="preserve">
+    <value>Aggiungi agli affiancati</value>
+  </data>
+  <data name="CompareRemove" xml:space="preserve">
+    <value>Rimuovi</value>
+  </data>
+  <data name="CompareSelectHint" xml:space="preserve">
+    <value>Scegli le coppie nella classifica (fino a 4) per affiancarle qui.</value>
+  </data>
+  <data name="CompareShowMore" xml:space="preserve">
+    <value>Mostra altro</value>
+  </data>
+  <data name="CompareOnlyNoRoles" xml:space="preserve">
+    <value>Solo titoli senza tabella dei ruoli</value>
+  </data>
+  <data name="ComparePairs" xml:space="preserve">
+    <value>Coppie</value>
+  </data>
+  <data name="CompareDeclared" xml:space="preserve">
+    <value>Tabella dei ruoli</value>
+  </data>
+  <data name="CompareMedian" xml:space="preserve">
+    <value>Mediana</value>
+  </data>
+  <data name="CompareMax" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="CompareBest" xml:space="preserve">
+    <value>Coppia migliore</value>
+  </data>
+  <data name="ComparePositionHint" xml:space="preserve">
+    <value>Posizione tra le coppie delle altre sezioni nella stessa fascia, come percentuale dall’alto (più piccola è più forte). I tuoi dati sono la sezione Sharp (o la sezione scelta).</value>
+  </data>
+  <data name="CompareShare" xml:space="preserve">
+    <value>URL di questa vista</value>
+  </data>
+  <data name="CompareRadarHint" xml:space="preserve">
+    <value>Linea continua: effettivo; tratteggiata: semplice. La linea grigia è la mediana (100).</value>
+  </data>
 </root>

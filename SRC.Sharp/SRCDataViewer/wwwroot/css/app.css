@@ -21779,3 +21779,64 @@ main.container {
   right: 0.75rem;
   top: 0.5rem;
 }
+
+/* 比べる（ComparePage） */
+.src-compare-thumb {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.src-compare-grades {
+    font-family: monospace;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}
+
+.src-compare-images img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.src-radar {
+    width: 100%;
+    max-width: 420px;
+}
+
+.src-radar-grid {
+    fill: none;
+    stroke: #dbdbdb;
+    stroke-width: 1;
+}
+
+.src-radar-median {
+    fill: none;
+    stroke: #7a7a7a;
+    stroke-width: 1.5;
+}
+
+.src-radar-label {
+    font-size: 11px;
+    fill: currentColor;
+}
+
+/* 位置: 左が弱く、右が強い。印が上位何 % の位置 */
+.src-compare-bar {
+    position: relative;
+    width: 60px;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #f5f5f5, #3273dc);
+}
+
+.src-compare-bar span {
+    position: absolute;
+    top: -3px;
+    width: 3px;
+    height: 12px;
+    margin-left: -1px;
+    background: #e8590c;
+}

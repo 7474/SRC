@@ -13,6 +13,8 @@ namespace SRCDataViewer.Models
     {
         /// <summary>アーカイブの一覧（ArchiveIndex）の URL。相対ならデータビューアの置き場所から</summary>
         public ICollection<string> ArchiveIndexes { get; set; }
+        /// <summary>組の評価の一覧（analysis/index.json）の URL。無ければ 7474/SRC-Data の Pages（「比べる」の頁）</summary>
+        public string AnalysisIndex { get; set; }
     }
 
     /// <summary>サイトが公開している zip（シナリオ・素材・パック）の一覧</summary>

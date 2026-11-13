@@ -193,4 +193,97 @@
   <data name="BgmNotFound" xml:space="preserve">
     <value>Tego BGM nie ma w otwartym archiwum</value>
   </data>
+  <data name="Compare" xml:space="preserve">
+    <value>Porównaj</value>
+  </data>
+  <data name="CompareIntro" xml:space="preserve">
+    <value>Porównuje pary pilot–jednostka ocenione tymi samymi obliczeniami co gra (7474/SRC-Data). Indeksy wynoszą 100 przy medianie tego samego przedziału doświadczenia.</value>
+  </data>
+  <data name="CompareLoading" xml:space="preserve">
+    <value>Wczytywanie ocen…</value>
+  </data>
+  <data name="CompareLoadFailed" xml:space="preserve">
+    <value>Nie udało się wczytać ocen: {0}</value>
+  </data>
+  <data name="CompareGenerated" xml:space="preserve">
+    <value>Data oceny: {0}</value>
+  </data>
+  <data name="CompareRanking" xml:space="preserve">
+    <value>Ranking</value>
+  </data>
+  <data name="CompareSideBySide" xml:space="preserve">
+    <value>Obok siebie</value>
+  </data>
+  <data name="CompareWorks" xml:space="preserve">
+    <value>Tytuły</value>
+  </data>
+  <data name="ComparePosition" xml:space="preserve">
+    <value>Pozycja</value>
+  </data>
+  <data name="CompareAll" xml:space="preserve">
+    <value>Wszystkie</value>
+  </data>
+  <data name="CompareSection" xml:space="preserve">
+    <value>Sekcja</value>
+  </data>
+  <data name="CompareBand" xml:space="preserve">
+    <value>Przedział</value>
+  </data>
+  <data name="CompareRank" xml:space="preserve">
+    <value>Ranga</value>
+  </data>
+  <data name="CompareMetric" xml:space="preserve">
+    <value>Wartość</value>
+  </data>
+  <data name="CompareEffective" xml:space="preserve">
+    <value>Efektywna</value>
+  </data>
+  <data name="CompareSimple" xml:space="preserve">
+    <value>Prosta</value>
+  </data>
+  <data name="CompareGrades" xml:space="preserve">
+    <value>Oceny</value>
+  </data>
+  <data name="CompareNoRank" xml:space="preserve">
+    <value>Bez rangi</value>
+  </data>
+  <data name="CompareAdd" xml:space="preserve">
+    <value>Dodaj do porównania</value>
+  </data>
+  <data name="CompareRemove" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="CompareSelectHint" xml:space="preserve">
+    <value>Wybierz pary w rankingu (do 4), aby ustawić je tutaj obok siebie.</value>
+  </data>
+  <data name="CompareShowMore" xml:space="preserve">
+    <value>Pokaż więcej</value>
+  </data>
+  <data name="CompareOnlyNoRoles" xml:space="preserve">
+    <value>Tylko tytuły bez tabeli ról</value>
+  </data>
+  <data name="ComparePairs" xml:space="preserve">
+    <value>Pary</value>
+  </data>
+  <data name="CompareDeclared" xml:space="preserve">
+    <value>Tabela ról</value>
+  </data>
+  <data name="CompareMedian" xml:space="preserve">
+    <value>Mediana</value>
+  </data>
+  <data name="CompareMax" xml:space="preserve">
+    <value>Maks.</value>
+  </data>
+  <data name="CompareBest" xml:space="preserve">
+    <value>Najlepsza para</value>
+  </data>
+  <data name="ComparePositionHint" xml:space="preserve">
+    <value>Pozycja wśród par z innych sekcji w tym samym przedziale, jako procent od góry (mniej = silniej). Twoje dane to sekcja Sharp (lub wybrana sekcja).</value>
+  </data>
+  <data name="CompareShare" xml:space="preserve">
+    <value>URL tego widoku</value>
+  </data>
+  <data name="CompareRadarHint" xml:space="preserve">
+    <value>Linia ciągła: efektywna, przerywana: prosta. Szara linia to mediana (100).</value>
+  </data>
 </root>

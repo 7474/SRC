@@ -193,4 +193,97 @@
   <data name="BgmNotFound" xml:space="preserve">
     <value>ไม่มี BGM นี้ในคลังไฟล์ที่เปิดอยู่</value>
   </data>
+  <data name="Compare" xml:space="preserve">
+    <value>เปรียบเทียบ</value>
+  </data>
+  <data name="CompareIntro" xml:space="preserve">
+    <value>เปรียบเทียบคู่นักบินกับยูนิตที่ประเมินด้วยการคำนวณเดียวกับในเกม (7474/SRC-Data) ดัชนีเท่ากับ 100 ที่ค่ามัธยฐานของช่วงประสบการณ์เดียวกัน</value>
+  </data>
+  <data name="CompareLoading" xml:space="preserve">
+    <value>กำลังโหลดผลการประเมิน…</value>
+  </data>
+  <data name="CompareLoadFailed" xml:space="preserve">
+    <value>โหลดผลการประเมินไม่ได้: {0}</value>
+  </data>
+  <data name="CompareGenerated" xml:space="preserve">
+    <value>ประเมินเมื่อ: {0}</value>
+  </data>
+  <data name="CompareRanking" xml:space="preserve">
+    <value>อันดับ</value>
+  </data>
+  <data name="CompareSideBySide" xml:space="preserve">
+    <value>เทียบข้างกัน</value>
+  </data>
+  <data name="CompareWorks" xml:space="preserve">
+    <value>ผลงาน</value>
+  </data>
+  <data name="ComparePosition" xml:space="preserve">
+    <value>ตำแหน่ง</value>
+  </data>
+  <data name="CompareAll" xml:space="preserve">
+    <value>ทั้งหมด</value>
+  </data>
+  <data name="CompareSection" xml:space="preserve">
+    <value>หมวด</value>
+  </data>
+  <data name="CompareBand" xml:space="preserve">
+    <value>ช่วง</value>
+  </data>
+  <data name="CompareRank" xml:space="preserve">
+    <value>ระดับ</value>
+  </data>
+  <data name="CompareMetric" xml:space="preserve">
+    <value>ค่าที่ใช้เรียง</value>
+  </data>
+  <data name="CompareEffective" xml:space="preserve">
+    <value>ประสิทธิภาพจริง</value>
+  </data>
+  <data name="CompareSimple" xml:space="preserve">
+    <value>ตัวเลขล้วน</value>
+  </data>
+  <data name="CompareGrades" xml:space="preserve">
+    <value>เกรด</value>
+  </data>
+  <data name="CompareNoRank" xml:space="preserve">
+    <value>ไม่มีระดับ</value>
+  </data>
+  <data name="CompareAdd" xml:space="preserve">
+    <value>เพิ่มในการเทียบ</value>
+  </data>
+  <data name="CompareRemove" xml:space="preserve">
+    <value>นำออก</value>
+  </data>
+  <data name="CompareSelectHint" xml:space="preserve">
+    <value>เลือกคู่จากอันดับ (สูงสุด 4 คู่) เพื่อเทียบข้างกันที่นี่</value>
+  </data>
+  <data name="CompareShowMore" xml:space="preserve">
+    <value>แสดงเพิ่ม</value>
+  </data>
+  <data name="CompareOnlyNoRoles" xml:space="preserve">
+    <value>เฉพาะผลงานที่ไม่มีตารางบทบาท</value>
+  </data>
+  <data name="ComparePairs" xml:space="preserve">
+    <value>คู่</value>
+  </data>
+  <data name="CompareDeclared" xml:space="preserve">
+    <value>ตารางบทบาท</value>
+  </data>
+  <data name="CompareMedian" xml:space="preserve">
+    <value>มัธยฐาน</value>
+  </data>
+  <data name="CompareMax" xml:space="preserve">
+    <value>สูงสุด</value>
+  </data>
+  <data name="CompareBest" xml:space="preserve">
+    <value>คู่ที่ดีที่สุด</value>
+  </data>
+  <data name="ComparePositionHint" xml:space="preserve">
+    <value>ตำแหน่งในบรรดาคู่ของหมวดอื่นในช่วงเดียวกัน เป็นเปอร์เซ็นต์จากด้านบน (น้อยกว่าแข็งแกร่งกว่า) ข้อมูลของคุณคือหมวด Sharp (หรือหมวดที่เลือก)</value>
+  </data>
+  <data name="CompareShare" xml:space="preserve">
+    <value>URL ของมุมมองนี้</value>
+  </data>
+  <data name="CompareRadarHint" xml:space="preserve">
+    <value>เส้นทึบคือประสิทธิภาพจริง เส้นประคือตัวเลขล้วน เส้นสีเทาคือค่ามัธยฐาน (100)</value>
+  </data>
 </root>

@@ -11,4 +11,12 @@ namespace SRCDataViewer.Models
     internal partial class SrcJsonContext : JsonSerializerContext
     {
     }
+
+    // 組の評価（tools/pack-analysis --json）。項目は camelCase
+    [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
+    [JsonSerializable(typeof(AnalysisIndex))]
+    [JsonSerializable(typeof(AnalysisSet))]
+    internal partial class AnalysisJsonContext : JsonSerializerContext
+    {
+    }
 }
