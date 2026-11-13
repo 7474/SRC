@@ -17,8 +17,8 @@
     <value>srcsharp: authoring tools for SRC# data and scenarios
 
 Usage:
-  srcsharp lint &lt;directory or file&gt;... [--format text|sarif] [--output file]
-      Check data (*.txt) and events (*.eve). Exit code 1 if problems are found
+  srcsharp lint &lt;directory or file&gt;... [--format text|sarif] [--output file] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+      Check data (*.txt) and events (*.eve). Exit code 1 if problems are found. --rules selects rule groups (default src; rule findings of the information level do not affect the exit code). --list-rules lists the rules
   srcsharp play &lt;event file&gt; [--script file.play] [--out directory] [--app-path SRC folder] [--scenario-root scenario folder] [--steps count] [--skip-wait]
       Run a scenario without a screen. Without --script, advance messages and pick the first choice. With --skip-wait, fixed waits (animations, messages, Wait) are skipped. --scenario-root sets the scenario folder (the base of Data, Lib and Continue); by default, an event file in a subfolder without Data uses the nearest parent folder with Data.
   srcsharp balance &lt;directory or file&gt;... [--format md|csv] [--output file]
@@ -47,6 +47,10 @@ Common options:
   </data>
   <data name="LintSummary" xml:space="preserve">
     <value>Checked {0} files, {1} problems</value>
+  </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Unknown rule group: {0} (one of {1})</value>
+    <comment>{0}: the given value, {1}: the allowed groups</comment>
   </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Specify exactly one event file</value>

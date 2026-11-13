@@ -1,4 +1,6 @@
+using SRCAuthoring;
 using SRCAuthoring.Balance;
+using SRCAuthoring.Rules;
 using SRCDebugAdapter;
 using SRCHelpSearch;
 using SRCAuthoring.Linting;
@@ -113,11 +115,27 @@ namespace SRCSharpTools
 
         private static async Task<int> LintAsync(List<string> paths, Dictionary<string, string> options)
         {
+            IReadOnlyList<string> groups;
+            options.TryGetValue("rules", out var rules);
+            try
+            {
+                groups = RuleGroups.Parse(rules);
+            }
+            catch (ArgumentException)
+            {
+                Console.Error.WriteLine(Strings.UnknownRuleGroup(rules, string.Join(", ", RuleGroups.All.Append("none"))));
+                return 2;
+            }
+            if (options.ContainsKey("list-rules"))
+            {
+                WriteOutput(ListRules(groups, options.ContainsKey("rules")), options);
+                return 0;
+            }
             if (paths.Count == 0)
             {
                 paths.Add(Environment.CurrentDirectory);
             }
-            var result = await new DataLinter().LintAsync(paths);
+            var result = await new DataLinter { RuleGroups = groups }.LintAsync(paths);
             if (options.TryGetValue("format", out var format) && format == "sarif")
             {
                 WriteOutput(SarifWriter.Write(result.Diagnostics, Environment.CurrentDirectory), options);
@@ -131,6 +149,27 @@ namespace SRCSharpTools
                 Console.WriteLine(Strings.LintSummary(result.CheckedFiles.Count, result.Diagnostics.Count));
             }
             return result.HasError ? 1 : 0;
+        }
+
+        /// <summary>規則の一覧（ID・グループ・重さ・説明・出どころをタブで区切る）。--rules があればそのグループの規則だけ</summary>
+        private static string ListRules(IReadOnlyList<string> groups, bool filtered)
+        {
+            var sb = new StringBuilder();
+            foreach (var group in RuleGroups.All)
+            {
+                sb.Append("# ").Append(group).Append('\t').AppendLine(RuleGroups.Describe(group));
+            }
+            var rules = filtered ? DataRuleCatalog.Select(groups) : DataRuleCatalog.All;
+            foreach (var rule in rules)
+            {
+                var severity = rule.Severity switch { DiagnosticSeverity.Error => "error", DiagnosticSeverity.Warning => "warning", _ => "info" };
+                sb.Append(rule.Id).Append('\t')
+                    .Append(string.Join(",", rule.Groups)).Append('\t')
+                    .Append(severity).Append('\t')
+                    .Append(rule.Description).Append('\t')
+                    .AppendLine(rule.Origin);
+            }
+            return sb.ToString();
         }
 
         private static int Play(List<string> paths, Dictionary<string, string> options)

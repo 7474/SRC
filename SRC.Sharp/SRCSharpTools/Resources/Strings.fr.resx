@@ -17,7 +17,7 @@
     <value>srcsharp: outils de création de données et de scénarios pour SRC#
 
 Utilisation :
-  srcsharp lint &lt;dossier ou fichier&gt;... [--format text|sarif] [--output fichier]
+  srcsharp lint &lt;dossier ou fichier&gt;... [--format text|sarif] [--output fichier] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
       Vérifie les données (*.txt) et les événements (*.eve). Code de sortie 1 en cas de problème
   srcsharp play &lt;fichier d'événements&gt; [--script fichier.play] [--out dossier] [--app-path dossier SRC] [--scenario-root dossier du scénario] [--steps nombre] [--skip-wait]
       Exécute un scénario sans affichage. Sans --script, fait défiler les messages et choisit la première option. Avec --skip-wait, les attentes fixes (animations, messages, Wait) sont ignorées. --scenario-root indique le dossier du scénario (base de Data, Lib et Continue) ; par défaut, un fichier d'événements dans un sous-dossier sans Data utilise le dossier parent le plus proche contenant Data.
