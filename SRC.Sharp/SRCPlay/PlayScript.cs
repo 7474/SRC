@@ -88,6 +88,18 @@ namespace SRCPlay
                     battleMessages.Add(msg);
                 }
             };
+            // クリックを待つメッセージも、表示したときに記録する。auto が見て進める前に、停滞時に押したままのボタン（stall）や
+            // スクリプトの click で進むと、auto の記録（Messages）には残らないため（7474/SRC#1623）
+            gui.MessageWaitBegan += text =>
+            {
+                lock (shownMessages)
+                {
+                    if (shownMessages.Count == 0 || shownMessages[shownMessages.Count - 1] != text)
+                    {
+                        shownMessages.Add(text);
+                    }
+                }
+            };
             // エラーのダイアログ（イベントのエラーなど）。ダイアログは auto が OK を押して進めるので、出たことを覚えておく（expect error none で見る）
             gui.ErrorShown += msg =>
             {
@@ -146,6 +158,20 @@ namespace SRCPlay
         public IList<string> Messages => auto.Messages;
 
         private readonly List<string> battleMessages = new List<string>();
+
+        private readonly List<string> shownMessages = new List<string>();
+
+        /// <summary>クリックを待ったメッセージ（表示の行を "/" でつないだもの）。進めたのが auto でもほかの入力でも記録する</summary>
+        public IList<string> ShownMessages
+        {
+            get
+            {
+                lock (shownMessages)
+                {
+                    return shownMessages.ToList();
+                }
+            }
+        }
 
         /// <summary>これまでに表示された戦闘中のメッセージ（DisplayBattleMessage の区切りごと）</summary>
         public IList<string> BattleMessages
@@ -458,10 +484,11 @@ namespace SRCPlay
                 case "message":
                     // メッセージは表示の行を "/" でつないで記録しているので、行の折り返しをまたぐ文字列も探す。
                     // 戦闘中のメッセージ（クリックを待たない）も探す
-                    if (!Messages.Any(x => x.Contains(text) || x.Replace("/", "").Contains(text))
+                    var shown = Messages.Concat(ShownMessages).ToList();
+                    if (!shown.Any(x => x.Contains(text) || x.Replace("/", "").Contains(text))
                         && !BattleMessages.Any(x => x.Contains(text)))
                     {
-                        throw new PlayScriptException($"メッセージ「{text}」が表示されていません: {string.Join(" / ", Messages.Concat(BattleMessages))}");
+                        throw new PlayScriptException($"メッセージ「{text}」が表示されていません: {string.Join(" / ", shown.Distinct().Concat(BattleMessages))}");
                     }
                     break;
                 case "log":
