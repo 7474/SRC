@@ -1,0 +1,566 @@
+@page "/compare"
+@using System.Globalization
+@implements IDisposable
+
+<section class="mt-5 mb-5 src-compare">
+    <h1 class="title">@L["Compare"]</h1>
+    <p class="mb-3">@L["CompareIntro"]</p>
+
+    @if (!Store.Loaded)
+    {
+        <p class="src-compare-loading">@L["CompareLoading"]</p>
+    }
+    else if (Store.Error != null)
+    {
+        <div class="notification is-warning src-compare-error">@L["CompareLoadFailed", Store.Error]</div>
+    }
+    else
+    {
+        <p class="is-size-7 has-text-grey mb-3">@L["CompareGenerated", Store.GeneratedAt ?? "-"]</p>
+        <div class="tabs">
+            <ul>
+                @foreach (var (tab, label) in Tabs)
+                {
+                    <li class="@(currentTab == tab ? "is-active" : "")">
+                        <a data-tab="@tab" @onclick:preventDefault @onclick="@(() => SetTab(tab))">
+                            @label
+                            @if (tab == "side" && selected.Count > 0)
+                            {
+                                <span class="tag is-info ml-1">@selected.Count</span>
+                            }
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        @if (currentTab != "side")
+        {
+            <div class="field is-grouped is-grouped-multiline src-compare-filters">
+                <div class="control">
+                    <label class="label is-small">@L["CompareSection"]</label>
+                    <div class="select is-small">
+                        <select @bind="section" @bind:after="Reset">
+                            <option value="">@L["CompareAll"]</option>
+                            @foreach (var s in Store.Sets.Keys)
+                            {
+                                <option value="@s">@s</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                @if (currentTab == "ranking")
+                {
+                    <div class="control">
+                        <label class="label is-small">@L["CompareBand"]</label>
+                        <div class="select is-small">
+                            <select @bind="band" @bind:after="Reset">
+                                <option value="">@L["CompareAll"]</option>
+                                @foreach (var b in Store.Bands)
+                                {
+                                    <option value="@b">@b</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <label class="label is-small">@L["CompareRank"]</label>
+                        <div class="select is-small">
+                            <select @bind="rank" @bind:after="Reset">
+                                <option value="">@L["CompareAll"]</option>
+                                @foreach (var r in Ranks)
+                                {
+                                    <option value="@r">@(r == NoRank ? L["CompareNoRank"] : r)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                }
+                @if (currentTab != "position")
+                {
+                    <div class="control">
+                        <label class="label is-small">@L["CompareMetric"]</label>
+                        <div class="select is-small">
+                            <select class="src-compare-metric" @bind="metric" @bind:after="Reset">
+                                @foreach (var m in Store.Indices)
+                                {
+                                    <option value="@("i:" + m)">@m</option>
+                                }
+                                @foreach (var u in Store.Uses)
+                                {
+                                    <option value="@("u:" + u)">@L["CompareGrades"]: @u</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <label class="label is-small">&nbsp;</label>
+                        <div class="buttons has-addons">
+                            <button class="button is-small @(effective ? "is-selected is-info" : "")" @onclick="@(() => SetEffective(true))">@L["CompareEffective"]</button>
+                            <button class="button is-small @(!effective ? "is-selected is-info" : "")" @onclick="@(() => SetEffective(false))">@L["CompareSimple"]</button>
+                        </div>
+                    </div>
+                }
+                <div class="control is-expanded">
+                    <label class="label is-small">&nbsp;</label>
+                    <input class="input is-small src-compare-filter" type="search" placeholder="@L["Filter"]" @bind="filter" @bind:event="oninput" @bind:after="Reset" />
+                </div>
+                @if (currentTab == "works")
+                {
+                    <div class="control">
+                        <label class="label is-small">&nbsp;</label>
+                        <label class="checkbox is-size-7"><input type="checkbox" @bind="onlyNoRoles" /> @L["CompareOnlyNoRoles"]</label>
+                    </div>
+                }
+            </div>
+        }
+
+        @switch (currentTab)
+        {
+            case "ranking":
+                {
+                    var rows = RankingRows().ToList();
+                    <table class="table is-narrow is-hoverable is-fullwidth src-compare-ranking">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th></th>
+                                <th>@L["ComparePairs"]</th>
+                                <th>@L["CompareWorks"]</th>
+                                <th>@L["CompareBand"]</th>
+                                <th>@L["CompareRank"]</th>
+                                <th class="has-text-right">@MetricLabel</th>
+                                <th>@L["CompareGrades"]<br /><span class="is-size-7 has-text-grey">@string.Join("・", Store.Uses)</span></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Math.Min(shown, rows.Count); i++)
+                            {
+                                var p = rows[i];
+                                <tr class="@(selected.Contains(p.Key) ? "is-selected" : "")">
+                                    <td>@(i + 1)</td>
+                                    <td><img class="src-compare-thumb" src="@PilotImage(p)" alt="" loading="lazy" /></td>
+                                    <td>
+                                        <span class="has-text-weight-semibold">@(p.Pilot?.Name)</span><br />
+                                        <span class="is-size-7">@(p.Unit?.Name)</span>
+                                    </td>
+                                    <td><span class="tag is-light">@p.Section</span> @p.Work</td>
+                                    <td class="is-size-7">@p.Band</td>
+                                    <td class="is-size-7">@p.Rank</td>
+                                    <td class="has-text-right has-text-weight-semibold">@Format(MetricValue(p))</td>
+                                    <td class="src-compare-grades">@p.GradeString(Store.Uses)</td>
+                                    <td>@SelectButton(p)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @if (rows.Count > shown)
+                    {
+                        <button class="button is-small" @onclick="@(() => shown += 100)">@L["CompareShowMore"] (@(rows.Count - shown))</button>
+                    }
+                    break;
+                }
+            case "side":
+                {
+                    var pairs = selected.Select(Store.Find).Where(x => x != null).ToList();
+                    if (pairs.Count == 0)
+                    {
+                        <p class="src-compare-side-empty">@L["CompareSelectHint"]</p>
+                        break;
+                    }
+                    <div class="columns is-multiline">
+                        <div class="column is-12-tablet is-5-desktop">
+                            <RadarChart Axes="Store.Indices" Series="RadarSeries(pairs)" Title="@L["CompareSideBySide"]" />
+                            <p class="is-size-7 has-text-grey">@L["CompareRadarHint"]</p>
+                            <p class="is-size-7 mt-2"><a href="@NavigationManager.Uri">@L["CompareShare"]</a></p>
+                        </div>
+                        <div class="column is-12-tablet is-7-desktop">
+                            <div class="table-container">
+                                <table class="table is-narrow is-fullwidth src-compare-side">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            @for (var i = 0; i < pairs.Count; i++)
+                                            {
+                                                var p = pairs[i];
+                                                <th style="border-bottom: 3px solid @RadarChart.Colors[i % RadarChart.Colors.Length]">
+                                                    <div class="src-compare-images">
+                                                        <img src="@PilotImage(p)" alt="" />
+                                                        <img src="@UnitImage(p)" alt="" />
+                                                    </div>
+                                                    <span class="has-text-weight-semibold">@(p.Pilot?.Name)</span><br />
+                                                    <span class="is-size-7">@(p.Unit?.Name)</span><br />
+                                                    <span class="is-size-7 has-text-grey">@p.Work（@p.Section）</span><br />
+                                                    @* 組の決め方（役割表・名前の一致・クラスの一致など）。役割表に無い組は、役割表を足すと原作に沿う *@
+                                                    <span class="tag is-light is-small src-compare-how">@p.How</span><br />
+                                                    <button class="button is-small is-light mt-1" @onclick="@(() => Toggle(p))">@L["CompareRemove"]</button>
+                                                </th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><th>@L["CompareBand"]</th>@foreach (var p in pairs) { <td class="is-size-7">@p.Band</td> }</tr>
+                                        <tr><th>@L["CompareRank"]</th>@foreach (var p in pairs) { <td class="is-size-7">@p.Rank</td> }</tr>
+                                        @foreach (var m in Store.Indices)
+                                        {
+                                            <tr>
+                                                <th class="is-size-7">@m</th>
+                                                @foreach (var p in pairs)
+                                                {
+                                                    <td>@Format(p.IndexOf(m, true)) <span class="has-text-grey is-size-7">／@Format(p.IndexOf(m, false))</span></td>
+                                                }
+                                            </tr>
+                                        }
+                                        @foreach (var u in Store.Uses)
+                                        {
+                                            <tr>
+                                                <th class="is-size-7">@L["CompareGrades"]: @u</th>
+                                                @foreach (var p in pairs)
+                                                {
+                                                    <td>@(p.Grades != null && p.Grades.TryGetValue(u, out var g) ? g : "-")
+                                                        @if (p.Percentiles != null && p.Percentiles.TryGetValue(u, out var pct))
+                                                        {
+                                                            <span class="has-text-grey is-size-7">（@pct.ToString("0", CultureInfo.InvariantCulture)%）</span>
+                                                        }
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                        @foreach (var stat in StatKeys)
+                                        {
+                                            <tr><th class="is-size-7">@stat</th>@foreach (var p in pairs) { <td>@(p.Pilot?.Stats != null && p.Pilot.Stats.TryGetValue(stat, out var v) ? v : 0)</td> }</tr>
+                                        }
+                                        <tr><th class="is-size-7">SP</th>@foreach (var p in pairs) { <td class="is-size-7">@(p.Pilot?.Sp) @string.Join("・", p.Pilot?.SpecialPowers ?? new List<string>())</td> }</tr>
+                                        <tr><th class="is-size-7">HP・EN</th>@foreach (var p in pairs) { <td>@(p.Unit?.Hp)・@(p.Unit?.En)</td> }</tr>
+                                        <tr><th class="is-size-7">装甲・運動性・移動力</th>@foreach (var p in pairs) { <td>@(p.Unit?.Armor)・@(p.Unit?.Mobility)・@(p.Unit?.Speed)</td> }</tr>
+                                        <tr><th class="is-size-7">最強武器</th>@foreach (var p in pairs) { <td class="is-size-7">@(p.Unit?.TopWeapon?.Name) @(p.Unit?.TopWeapon?.Power)（@(p.Unit?.TopWeapon?.MinRange)〜@(p.Unit?.TopWeapon?.MaxRange)）</td> }</tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                }
+            case "works":
+                {
+                    var rows = WorkRows().ToList();
+                    <table class="table is-narrow is-hoverable is-fullwidth src-compare-works">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>@L["CompareWorks"]</th>
+                                <th class="has-text-right">@L["ComparePairs"]</th>
+                                <th class="has-text-right">@L["CompareDeclared"]</th>
+                                <th class="has-text-right">@MetricLabel @L["CompareMedian"]</th>
+                                <th class="has-text-right">@L["CompareMax"]</th>
+                                <th>@L["CompareBest"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Math.Min(shown, rows.Count); i++)
+                            {
+                                var w = rows[i];
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td><span class="tag is-light">@w.Section</span> <a @onclick:preventDefault @onclick="@(() => ShowWork(w.Name))" href="">@w.Name</a></td>
+                                    <td class="has-text-right">@w.Pairs</td>
+                                    <td class="has-text-right @(w.Declared == 0 ? "has-text-danger" : "")">@w.Declared</td>
+                                    <td class="has-text-right">@Format(w.Median)</td>
+                                    <td class="has-text-right has-text-weight-semibold">@Format(w.Max)</td>
+                                    <td class="is-size-7">@(w.Best?.Label)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @if (rows.Count > shown)
+                    {
+                        <button class="button is-small" @onclick="@(() => shown += 100)">@L["CompareShowMore"] (@(rows.Count - shown))</button>
+                    }
+                    break;
+                }
+            case "position":
+                {
+                    var mine = PositionRows().ToList();
+                    <p class="mb-3 is-size-7">@L["ComparePositionHint"]</p>
+                    <div class="table-container">
+                        <table class="table is-narrow is-fullwidth src-compare-position">
+                            <thead>
+                                <tr>
+                                    <th>@L["ComparePairs"]</th>
+                                    <th>@L["CompareBand"]</th>
+                                    @foreach (var m in Store.Indices)
+                                    {
+                                        <th class="is-size-7">@m</th>
+                                    }
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var (p, positions) in mine.Take(shown))
+                                {
+                                    <tr>
+                                        <td><span class="has-text-weight-semibold">@(p.Pilot?.Name)</span><br /><span class="is-size-7">@(p.Unit?.Name)（@p.Work）</span></td>
+                                        <td class="is-size-7">@p.Band</td>
+                                        @foreach (var pos in positions)
+                                        {
+                                            <td>
+                                                @if (pos.HasValue)
+                                                {
+                                                    <div class="src-compare-bar" title="@pos.Value.ToString("0", CultureInfo.InvariantCulture)%">
+                                                        <span style="left: @((100 - pos.Value).ToString("0.#", CultureInfo.InvariantCulture))%"></span>
+                                                    </div>
+                                                    <span class="is-size-7">@pos.Value.ToString("0", CultureInfo.InvariantCulture)%</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="has-text-grey">-</span>
+                                                }
+                                            </td>
+                                        }
+                                        <td>@SelectButton(p)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    break;
+                }
+        }
+    }
+</section>
+
+@code {
+    [Inject] private HttpClient Http { get; set; }
+    [Inject] private AnalysisStore Store { get; set; }
+    [Inject] private ArchiveCatalog Catalog { get; set; }
+    [Inject] private SrcDataContainer DataContainer { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; }
+
+    [SupplyParameterFromQuery(Name = "tab")] public string TabParam { get; set; }
+    [SupplyParameterFromQuery(Name = "pairs")] public string PairsParam { get; set; }
+    [SupplyParameterFromQuery(Name = "q")] public string QueryParam { get; set; }
+    [SupplyParameterFromQuery(Name = "section")] public string SectionParam { get; set; }
+    [SupplyParameterFromQuery(Name = "band")] public string BandParam { get; set; }
+
+    private const string NoRank = "-";
+    private const int MaxSelected = 4;
+    private static readonly string[] StatKeys = { "格闘", "射撃", "命中", "回避", "技量", "反応" };
+
+    private string currentTab = "ranking";
+    private string section = "";
+    private string band;
+    private string rank = "";
+    private string metric = "";
+    private bool effective = true;
+    private string filter = "";
+    private bool onlyNoRoles;
+    private int shown = 100;
+    private readonly List<string> selected = new List<string>();
+
+    private IEnumerable<(string tab, string label)> Tabs => new[]
+    {
+        ("ranking", L["CompareRanking"].Value),
+        ("side", L["CompareSideBySide"].Value),
+        ("works", L["CompareWorks"].Value),
+        ("position", L["ComparePosition"].Value),
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        DataContainer.OnChange += StateHasChanged;
+        await Catalog.EnsureLoadedAsync(Http);
+        await Store.EnsureLoadedAsync(Http, Catalog.AnalysisIndex);
+        if (string.IsNullOrEmpty(metric) && Store.Indices.Count > 0)
+        {
+            metric = "i:" + Store.Indices[0];
+        }
+        // 指数は帯の中の比べ方なので、既定は最上位の帯（帯を混ぜると、名前なしの帯の外れ値が上に並ぶ）
+        if (band == null)
+        {
+            band = Store.Bands.FirstOrDefault() ?? "";
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(TabParam)) currentTab = TabParam;
+        if (QueryParam != null) filter = QueryParam;
+        if (SectionParam != null) section = SectionParam;
+        if (BandParam != null) band = BandParam;
+        selected.Clear();
+        selected.AddRange((PairsParam ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries).Select(Uri.UnescapeDataString).Take(MaxSelected));
+    }
+
+    public void Dispose()
+    {
+        DataContainer.OnChange -= StateHasChanged;
+    }
+
+    private void Reset() => shown = 100;
+
+    private void SetTab(string tab)
+    {
+        currentTab = tab;
+        Reset();
+        UpdateUri();
+    }
+
+    private void SetEffective(bool value)
+    {
+        effective = value;
+        Reset();
+    }
+
+    private void ShowWork(string work)
+    {
+        filter = work;
+        currentTab = "ranking";
+        Reset();
+        UpdateUri();
+    }
+
+    /// <summary>タブと選んだ組を URL に残す（共有できる）</summary>
+    private void UpdateUri()
+    {
+        var query = new Dictionary<string, object>
+        {
+            ["tab"] = currentTab,
+            ["pairs"] = selected.Count == 0 ? null : string.Join(",", selected.Select(Uri.EscapeDataString)),
+        };
+        NavigationManager.NavigateTo(NavigationManager.GetUriWithQueryParameters(query), replace: true);
+    }
+
+    private void Toggle(AnalysisPair p)
+    {
+        if (!selected.Remove(p.Key) && selected.Count < MaxSelected)
+        {
+            selected.Add(p.Key);
+        }
+        UpdateUri();
+    }
+
+    private RenderFragment SelectButton(AnalysisPair p) => __builder =>
+    {
+        var on = selected.Contains(p.Key);
+        <button class="button is-small @(on ? "is-info" : "")" disabled="@(!on && selected.Count >= MaxSelected)" title="@(on ? L["CompareRemove"] : L["CompareAdd"])" @onclick="@(() => Toggle(p))">
+            <span class="icon is-small"><i class="fas @(on ? "fa-check" : "fa-plus")"></i></span>
+        </button>
+    };
+
+    private IEnumerable<string> Ranks => Store.Pairs.Select(x => string.IsNullOrEmpty(x.Rank) ? NoRank : x.Rank).Distinct().OrderBy(x => x == NoRank ? 1 : 0).ThenBy(x => x);
+
+    private bool IsUse => metric.StartsWith("u:");
+    private string MetricName => metric.Length > 2 ? metric.Substring(2) : "";
+    private string MetricLabel => IsUse ? $"{L["CompareGrades"]}: {MetricName}（%）" : $"{MetricName}（{(effective ? L["CompareEffective"] : L["CompareSimple"])}）";
+
+    /// <summary>並べる値。指数はそのまま（大きいほど強い）、評価は上位何 % か（小さいほど強い）</summary>
+    private double? MetricValue(AnalysisPair p)
+    {
+        if (IsUse)
+        {
+            return p.Percentiles != null && p.Percentiles.TryGetValue(MetricName, out var pct) ? pct : null;
+        }
+        return p.IndexOf(MetricName, effective);
+    }
+
+    private static string Format(double? v) => v.HasValue ? v.Value.ToString("0", CultureInfo.InvariantCulture) : "-";
+
+    private bool Matches(AnalysisPair p)
+    {
+        if (section != "" && p.Section != section) return false;
+        if (filter == "") return true;
+        var words = filter.Split(new[] { ' ', '　' }, StringSplitOptions.RemoveEmptyEntries);
+        var text = string.Join(" ", p.Work, p.Pilot?.Name, p.Pilot?.Nickname, p.Unit?.Name, p.Unit?.Nickname, p.Rank);
+        return words.All(w => text.Contains(w, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private IEnumerable<AnalysisPair> RankingRows()
+    {
+        var rows = Store.Pairs.Where(p => p.Evaluated && Matches(p)
+            && (string.IsNullOrEmpty(band) || p.Band == band)
+            && (rank == "" || (rank == NoRank ? string.IsNullOrEmpty(p.Rank) : p.Rank == rank)))
+            .Select(p => (p, v: MetricValue(p)))
+            .Where(x => x.v.HasValue);
+        rows = IsUse ? rows.OrderBy(x => x.v) : rows.OrderByDescending(x => x.v);
+        return rows.Select(x => x.p);
+    }
+
+    private sealed class WorkRow
+    {
+        public string Section;
+        public string Name;
+        public int Pairs;
+        public int Declared;
+        public double? Median;
+        public double? Max;
+        public AnalysisPair Best;
+    }
+
+    private IEnumerable<WorkRow> WorkRows()
+    {
+        var rows = new List<WorkRow>();
+        foreach (var (name, set) in Store.Sets)
+        {
+            if (section != "" && name != section) continue;
+            foreach (var work in set.Works)
+            {
+                if (filter != "" && !work.Name.Contains(filter, StringComparison.OrdinalIgnoreCase)) continue;
+                if (onlyNoRoles && work.Declared > 0) continue;
+                var values = set.Pairs.Where(p => p.Work == work.Name && p.Evaluated)
+                    .Select(p => (p, v: MetricValue(p))).Where(x => x.v.HasValue).ToList();
+                var sorted = values.Select(x => x.v.Value).OrderBy(x => x).ToList();
+                var best = IsUse ? values.OrderBy(x => x.v).FirstOrDefault() : values.OrderByDescending(x => x.v).FirstOrDefault();
+                rows.Add(new WorkRow
+                {
+                    Section = name,
+                    Name = work.Name,
+                    Pairs = work.Pairs,
+                    Declared = work.Declared,
+                    Median = sorted.Count == 0 ? null : sorted[sorted.Count / 2],
+                    Max = best.p == null ? null : best.v,
+                    Best = best.p,
+                });
+            }
+        }
+        return IsUse ? rows.OrderBy(x => x.Max ?? double.MaxValue) : rows.OrderByDescending(x => x.Max ?? double.MinValue);
+    }
+
+    /// <summary>
+    /// 自分のデータ（既定は区分 Sharp。区分を選べばその区分）の組が、同じ帯のほかの区分の組の中で上から何 % の位置か（指数ごと）
+    /// </summary>
+    private IEnumerable<(AnalysisPair p, List<double?> positions)> PositionRows()
+    {
+        var mine = section != "" ? section : (Store.Sets.ContainsKey("Sharp") ? "Sharp" : Store.Sets.Keys.LastOrDefault());
+        var others = Store.Pairs.Where(p => p.Section != mine && p.Evaluated).ToList();
+        foreach (var p in Store.Pairs.Where(p => p.Section == mine && p.Evaluated && Matches(p)))
+        {
+            var peers = others.Where(o => o.Band == p.Band).ToList();
+            var positions = Store.Indices.Select(m =>
+            {
+                var v = p.IndexOf(m, effective);
+                var values = peers.Select(o => o.IndexOf(m, effective)).Where(x => x.HasValue).Select(x => x.Value).ToList();
+                if (!v.HasValue || values.Count == 0) return (double?)null;
+                return 100.0 * (values.Count(x => x > v.Value) + 0.5 * values.Count(x => x == v.Value)) / values.Count;
+            }).ToList();
+            yield return (p, positions);
+        }
+    }
+
+    private IReadOnlyList<RadarChart.RadarSeries> RadarSeries(IEnumerable<AnalysisPair> pairs) =>
+        pairs.Select(p => new RadarChart.RadarSeries
+        {
+            Name = p.Label,
+            Effective = Store.Indices.Select(m => p.IndexOf(m, true)).ToList(),
+            Simple = Store.Indices.Select(m => p.IndexOf(m, false)).ToList(),
+        }).ToList();
+
+    private string PilotImage(AnalysisPair p) => Image("Pilot", p.Pilot?.Bitmap);
+    private string UnitImage(AnalysisPair p) => Image("Unit", p.Unit?.Bitmap);
+
+    private string Image(string category, string bitmap)
+    {
+        if (string.IsNullOrEmpty(bitmap) || DataContainer.BitmapIndex == null) return "images/-.png";
+        return DataContainer.BitmapIndex.GetBitmapUri(category, bitmap) ?? "images/-.png";
+    }
+}

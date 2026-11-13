@@ -201,4 +201,97 @@
   <data name="BgmNotFound" xml:space="preserve">
     <value>開いているアーカイブにこの BGM がありません</value>
   </data>
+  <data name="Compare" xml:space="preserve">
+    <value>比べる</value>
+  </data>
+  <data name="CompareIntro" xml:space="preserve">
+    <value>ユニットとパイロットの組を、ゲームと同じ計算で評価した結果（7474/SRC-Data）を比べます。指数は、同じ経験値の帯の中央値を 100 とします。</value>
+  </data>
+  <data name="CompareLoading" xml:space="preserve">
+    <value>評価を読み込んでいます…</value>
+  </data>
+  <data name="CompareLoadFailed" xml:space="preserve">
+    <value>評価を読み込めませんでした: {0}</value>
+  </data>
+  <data name="CompareGenerated" xml:space="preserve">
+    <value>評価を作った日時: {0}</value>
+  </data>
+  <data name="CompareRanking" xml:space="preserve">
+    <value>ランキング</value>
+  </data>
+  <data name="CompareSideBySide" xml:space="preserve">
+    <value>横並べ</value>
+  </data>
+  <data name="CompareWorks" xml:space="preserve">
+    <value>作品</value>
+  </data>
+  <data name="ComparePosition" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="CompareAll" xml:space="preserve">
+    <value>すべて</value>
+  </data>
+  <data name="CompareSection" xml:space="preserve">
+    <value>区分</value>
+  </data>
+  <data name="CompareBand" xml:space="preserve">
+    <value>帯</value>
+  </data>
+  <data name="CompareRank" xml:space="preserve">
+    <value>格</value>
+  </data>
+  <data name="CompareMetric" xml:space="preserve">
+    <value>並べる値</value>
+  </data>
+  <data name="CompareEffective" xml:space="preserve">
+    <value>実効性能</value>
+  </data>
+  <data name="CompareSimple" xml:space="preserve">
+    <value>単純数字</value>
+  </data>
+  <data name="CompareGrades" xml:space="preserve">
+    <value>評価</value>
+  </data>
+  <data name="CompareNoRank" xml:space="preserve">
+    <value>格なし</value>
+  </data>
+  <data name="CompareAdd" xml:space="preserve">
+    <value>横並べに足す</value>
+  </data>
+  <data name="CompareRemove" xml:space="preserve">
+    <value>外す</value>
+  </data>
+  <data name="CompareSelectHint" xml:space="preserve">
+    <value>ランキングで組を選ぶと（4 組まで）、ここに並びます。</value>
+  </data>
+  <data name="CompareShowMore" xml:space="preserve">
+    <value>さらに表示</value>
+  </data>
+  <data name="CompareOnlyNoRoles" xml:space="preserve">
+    <value>役割表の無い作品だけ</value>
+  </data>
+  <data name="ComparePairs" xml:space="preserve">
+    <value>組</value>
+  </data>
+  <data name="CompareDeclared" xml:space="preserve">
+    <value>役割表</value>
+  </data>
+  <data name="CompareMedian" xml:space="preserve">
+    <value>中央値</value>
+  </data>
+  <data name="CompareMax" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="CompareBest" xml:space="preserve">
+    <value>いちばんの組</value>
+  </data>
+  <data name="ComparePositionHint" xml:space="preserve">
+    <value>同じ帯のほかの区分の組の中で、上から何 % の位置か（小さいほど強い）。自分のデータは区分 Sharp（区分を選べばその区分）。</value>
+  </data>
+  <data name="CompareShare" xml:space="preserve">
+    <value>この並びの URL</value>
+  </data>
+  <data name="CompareRadarHint" xml:space="preserve">
+    <value>実線は実効性能、破線は単純数字。灰色の線が中央値（100）。</value>
+  </data>
 </root>

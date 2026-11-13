@@ -103,7 +103,7 @@ namespace PackAnalysis
             w.WriteStartObject("pilot");
             w.WriteString("name", p.Name);
             w.WriteString("nickname", p.Nickname ?? "");
-            w.WriteString("bitmap", p.Bitmap ?? "");
+            w.WriteString("bitmap", p.Bitmap0 ?? "");
             w.WriteString("class", p.Class ?? "");
             w.WriteNumber("exp", p.ExpValue);
             w.WriteNumber("sp", p.SP);
@@ -120,7 +120,7 @@ namespace PackAnalysis
             w.WriteStartObject("unit");
             w.WriteString("name", u.Name);
             w.WriteString("nickname", u.Nickname ?? "");
-            w.WriteString("bitmap", u.Bitmap ?? "");
+            w.WriteString("bitmap", u.Bitmap0 ?? "");
             w.WriteString("class", u.Class ?? "");
             w.WriteNumber("exp", u.ExpValue);
             w.WriteNumber("hp", u.HP);

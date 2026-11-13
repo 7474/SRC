@@ -13,6 +13,10 @@
                     <p class="title is-4">@Data.Name</p>
                     <p class="subtitle is-6">@Data.Nickname</p>
                     <BgmButton Bgm="@Data.Features.FirstOrDefault(x => x.Name == "ＢＧＭ")?.Data" />
+                    @* 組の評価（「比べる」の頁）で、この名前の組を探す。帯は絞らない *@
+                    <a class="is-size-7 src-compare-link" href="@($"compare?band=&q={Uri.EscapeDataString(Data.Name)}")">
+                        <span class="icon is-small"><i class="fas fa-balance-scale"></i></span> @L["Compare"]
+                    </a>
                 </div>
             </div>
         </div>

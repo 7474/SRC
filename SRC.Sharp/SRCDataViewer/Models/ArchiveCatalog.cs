@@ -16,6 +16,9 @@ namespace SRCDataViewer.Models
     {
         public const string ConfigPath = "viewer.json";
 
+        /// <summary>viewer.json の analysisIndex（組の評価の一覧の URL）。無ければ null</summary>
+        public string AnalysisIndex { get; private set; }
+
         private readonly SemaphoreSlim loadLock = new SemaphoreSlim(1, 1);
         private readonly Dictionary<string, Task<IReadOnlyList<ArchiveFile>>> files = new Dictionary<string, Task<IReadOnlyList<ArchiveFile>>>();
         private bool loaded;
@@ -48,6 +51,7 @@ namespace SRCDataViewer.Models
                     archives.AddRange(await LoadIndexAsync(http, new Uri(http.BaseAddress, indexUri)));
                 }
                 Archives = archives;
+                AnalysisIndex = config?.AnalysisIndex;
                 Enabled = config?.ArchiveIndexes?.Any() ?? false;
                 loaded = true;
             }

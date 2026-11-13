@@ -76,3 +76,41 @@ test('音のタブで、効果音と MIDI が並び、MIDI を合成して鳴ら
   await page.getByRole('button', { name: '合成して鳴らす' }).first().click();
   await expect(page.locator('.src-bgm-bar')).toBeVisible({ timeout: 60 * 1000 });
 });
+
+test('比べる: 組の評価を並べ替え、横並べにし、作品と自分のデータの位置を見る（#1628）', async ({ page }) => {
+  await page.goto('./');
+  await page.locator('a.navbar-item[href="compare"]').click();
+  const ranking = page.locator('.src-compare-ranking');
+  await expect(ranking).toBeVisible({ timeout: 60 * 1000 });
+  // 既定は初動火力の実効性能の大きい順。いちばん上は主人公／主役機
+  await expect(ranking.locator('tbody tr').first()).toContainText('主人公');
+  await expect(ranking.locator('tbody tr')).toHaveCount(4);
+  // 区分で絞る
+  await page.locator('.src-compare-filters select').first().selectOption('Sharp');
+  await expect(ranking.locator('tbody tr')).toHaveCount(1);
+  await page.locator('.src-compare-filters select').first().selectOption('');
+  // 2 組を横並べに足す
+  await ranking.locator('tbody tr').nth(0).locator('button').click();
+  await ranking.locator('tbody tr').nth(1).locator('button').click();
+  await page.locator('a[data-tab="side"]').click();
+  const side = page.locator('.src-compare-side');
+  await expect(side).toBeVisible();
+  await expect(side.locator('thead th')).toHaveCount(3);
+  await expect(page.locator('svg.src-radar polygon[fill-opacity]')).toHaveCount(2);
+  // URL に選んだ組が残る（読み直しても同じ並び）
+  expect(page.url()).toContain('pairs=');
+  await page.reload();
+  await expect(page.locator('.src-compare-side thead th')).toHaveCount(3, { timeout: 60 * 1000 });
+  // 作品: 役割表の無い作品だけに絞る
+  await page.locator('a[data-tab="works"]').click();
+  const works = page.locator('.src-compare-works');
+  await expect(works.locator('tbody tr')).toHaveCount(3);
+  await page.getByLabel(/役割表の無い作品だけ|Only titles without a role table/).check();
+  await expect(works.locator('tbody tr')).toHaveCount(2);
+  // 位置: 自分のデータ（Sharp）の組が、ほかの区分の中でどこにいるか
+  await page.locator('a[data-tab="position"]').click();
+  const position = page.locator('.src-compare-position');
+  await expect(position.locator('tbody tr')).toHaveCount(1);
+  await expect(position).toContainText('自作の主人公');
+  await expect(position.locator('.src-compare-bar').first()).toBeVisible();
+});
