@@ -70,6 +70,11 @@ namespace SRCAuthoring.Rules
         public IReadOnlyList<UnitData> Units { get; set; } = Array.Empty<UnitData>();
         public IReadOnlyList<PilotData> Pilots { get; set; } = Array.Empty<PilotData>();
         public IReadOnlyList<MessageData> Messages { get; set; } = Array.Empty<MessageData>();
+        /// <summary>
+        /// 読み込んだデータの武器・アビリティ・特殊能力の名前（同じ名前のデータが後のファイルで置き換えられたものも含む）。
+        /// 空なら、規則は今のデータから集める
+        /// </summary>
+        public ISet<string> ActionNames { get; set; } = new HashSet<string>();
         /// <summary>DataLocation.FileName（読み込みに渡した名前）から、診断に書くパス</summary>
         public Func<string, string> ResolveFile { get; set; } = x => x;
     }
@@ -113,9 +118,10 @@ namespace SRCAuthoring.Rules
     /// <summary>組み込みの規則の一覧</summary>
     public static class DataRuleCatalog
     {
-        private static readonly IDataRule[] rules = new IDataRule[]
-        {
-        };
+        private static readonly IDataRule[] rules = SrcRules.All
+            .Concat(GscRules.All)
+            .Concat(RobodunRules.All)
+            .ToArray();
 
         public static IReadOnlyList<IDataRule> All => rules;
 

@@ -66,6 +66,7 @@ namespace SRCAuthoring.Linting
                 .Concat(targets.Where(x => File.Exists(x)))
                 .ToList();
 
+            actionNames = new HashSet<string>();
             foreach (var file in (systemFiles ?? Enumerable.Empty<string>()).Where(x => File.Exists(x) && !x.EndsWith(".eve", StringComparison.OrdinalIgnoreCase)))
             {
                 var ignored = new LintResult();
@@ -73,6 +74,7 @@ namespace SRCAuthoring.Linting
                 {
                     if (await proc.ExecuteAsync(src, new FileInfo(file), ignored))
                     {
+                        CollectActionNames(src, file);
                         break;
                     }
                 }
@@ -87,6 +89,7 @@ namespace SRCAuthoring.Linting
                     if (await proc.ExecuteAsync(src, new FileInfo(file), result))
                     {
                         processed.Add(file);
+                        CollectActionNames(src, file);
                         result.CheckedFiles.Add(Path.GetFullPath(file));
                         Progress?.Invoke(file, processed.Count, files.Count);
                     }
@@ -94,6 +97,25 @@ namespace SRCAuthoring.Linting
             }
             RunRules(src, result);
             return result;
+        }
+
+        private HashSet<string> actionNames = new HashSet<string>();
+
+        /// <summary>
+        /// 読み込んだファイルのユニット・パイロット・アイテムの武器・アビリティ・特殊能力の名前を集める。
+        /// 同じ名前のデータを後のファイルが置き換えても、前のファイルの名前を残す（多くの作品をまとめて調べるとき）
+        /// </summary>
+        private void CollectActionNames(SRCCore.SRC src, string file)
+        {
+            var path = Path.GetFullPath(file);
+            bool InFile(SRCCore.Models.DataLocation location) => location != null && location.FileName == path;
+            var names = src.UDList.Items.Where(x => InFile(x.Location))
+                    .SelectMany(u => u.Weapons.Select(w => w.Name).Concat(u.Abilities.Select(a => a.Name)).Concat(u.Features.Select(f => f.Name)))
+                .Concat(src.PDList.Items.Where(x => InFile(x.Location))
+                    .SelectMany(p => p.Weapons.Select(w => w.Name).Concat(p.Abilities.Select(a => a.Name)).Concat(p.Features.Select(f => f.Name))))
+                .Concat(src.IDList.Items
+                    .SelectMany(i => i.Weapons.Select(w => w.Name).Concat(i.Abilities.Select(a => a.Name)).Concat(i.Features.Select(f => f.Name))));
+            actionNames.UnionWith(names.Where(x => !string.IsNullOrEmpty(x)));
         }
 
         /// <summary>読み込めたデータに、選んだグループの規則をかける。対象は検査したファイルで定義されたデータだけ</summary>
@@ -113,6 +135,7 @@ namespace SRCAuthoring.Linting
                 Pilots = src.PDList.Items.Where(x => IsTarget(x.Location)).ToList(),
                 Messages = src.MDList.Items.Where(x => IsTarget(x.Location)).ToList(),
                 ResolveFile = x => string.IsNullOrEmpty(x) ? x : Path.GetFullPath(x),
+                ActionNames = actionNames,
             };
             var diagnostics = DataRuleCatalog.Run(selected, context);
             result.Diagnostics.AddRange(diagnostics);
