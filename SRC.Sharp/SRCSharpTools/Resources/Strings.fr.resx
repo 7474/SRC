@@ -48,6 +48,9 @@ Options communes :
   <data name="LintSummary" xml:space="preserve">
     <value>{0} fichiers vérifiés, {1} problèmes</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Groupe de règles inconnu : {0} (l’un de : {1})</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Indiquez un seul fichier d'événements</value>
   </data>

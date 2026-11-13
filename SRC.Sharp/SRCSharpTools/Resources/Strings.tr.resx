@@ -48,6 +48,9 @@ Ortak seçenekler:
   <data name="LintSummary" xml:space="preserve">
     <value>{0} dosya denetlendi, {1} sorun</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Bilinmeyen kural grubu: {0} ({1} değerlerinden biri olmalı)</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Tam olarak bir olay dosyası belirtin</value>
   </data>

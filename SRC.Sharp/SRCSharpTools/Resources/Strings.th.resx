@@ -48,6 +48,9 @@
   <data name="LintSummary" xml:space="preserve">
     <value>ตรวจสอบ {0} ไฟล์ พบปัญหา {1} รายการ</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>ไม่รู้จักกลุ่มกฎ: {0} (ต้องเป็นหนึ่งใน {1})</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>โปรดระบุไฟล์อีเวนต์ 1 ไฟล์</value>
   </data>

@@ -48,6 +48,9 @@
   <data name="LintSummary" xml:space="preserve">
     <value>已检查 {0} 个文件，发现 {1} 个问题</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>未知的规则组：{0}（应为 {1} 之一）</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>请指定一个事件文件</value>
   </data>

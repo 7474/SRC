@@ -48,6 +48,9 @@
   <data name="LintSummary" xml:space="preserve">
     <value>파일 {0}개 검사, 문제 {1}건</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>알 수 없는 규칙 그룹: {0} ({1} 중 하나)</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>이벤트 파일을 하나 지정해 주세요</value>
   </data>

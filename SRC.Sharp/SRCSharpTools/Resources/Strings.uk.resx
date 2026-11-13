@@ -48,6 +48,9 @@
   <data name="LintSummary" xml:space="preserve">
     <value>Перевірено файлів: {0}, проблем: {1}</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Невідома група правил: {0} (допустимо {1})</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Вкажіть рівно один файл події</value>
   </data>
