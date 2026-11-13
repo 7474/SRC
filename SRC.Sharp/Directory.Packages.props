@@ -26,10 +26,10 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.15" />
     <PackageVersion Include="Microsoft.ML.OnnxRuntime" Version="1.31.1" />
     <PackageVersion Include="Microsoft.ML.Tokenizers" Version="3.0.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
-    <PackageVersion Include="MSTest.TestAdapter" Version="4.5.2" />
-    <PackageVersion Include="MSTest.TestFramework" Version="4.5.2" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="4.5.3" />
+    <PackageVersion Include="MSTest.TestFramework" Version="4.5.3" />
     <PackageVersion Include="NAudio" Version="3.3.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="NLayer" Version="3.0.1" />
@@ -40,12 +40,12 @@
     <PackageVersion Include="ShiftJISExtension" Version="1.1.0" />
     <PackageVersion Include="Silk.NET.OpenAL" Version="2.23.0" />
     <PackageVersion Include="Silk.NET.OpenAL.Soft.Native" Version="1.23.1" />
-    <PackageVersion Include="SkiaSharp" Version="4.155.0" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="4.155.0" />
+    <PackageVersion Include="SkiaSharp" Version="4.156.0" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="4.156.0" />
     <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.155.0" />
     <PackageVersion Include="System.Collections.Specialized" Version="4.3.0" />
-    <PackageVersion Include="System.Drawing.Common" Version="10.0.14" />
-    <PackageVersion Include="System.Runtime.Caching" Version="10.0.14" />
+    <PackageVersion Include="System.Drawing.Common" Version="10.0.15" />
+    <PackageVersion Include="System.Runtime.Caching" Version="10.0.15" />
     <PackageVersion Include="System.Text.Encoding.CodePages" Version="10.0.15" />
   </ItemGroup>
 </Project>
