@@ -186,6 +186,7 @@ namespace SRCCore.Models
                 {
                     ud = Add(data_name);
                 }
+                ud.Location = new DataLocation(reader.FileName, reader.LineNumber);
                 // 読み仮名
                 ret = Strings.InStr(buf, ",");
                 if (ret > 0)
@@ -323,6 +324,7 @@ namespace SRCCore.Models
 
                 // 移動可能地形, 移動力, サイズ, 修理費, 経験値
                 line_buf = reader.GetLine();
+                ud.Location.SetFieldLine("移動可能地形", reader.LineNumber);
 
                 // 移動可能地形
                 ret = Strings.InStr(line_buf, ",");
@@ -427,6 +429,7 @@ namespace SRCCore.Models
 
                 // 特殊能力データ
                 line_buf = LoadFeatureOuter(data_name, ud, reader, SRC);
+                ud.Location.SetFieldLine("最大ＨＰ", reader.LineNumber);
 
                 // 最大ＨＰ
                 ret = Strings.InStr(line_buf, ",");
@@ -502,6 +505,7 @@ namespace SRCCore.Models
 
                 // 地形適応, ビットマップ
                 line_buf = reader.GetLine();
+                ud.Location.SetFieldLine("地形適応", reader.LineNumber);
 
                 // 地形適応
                 ret = Strings.InStr(line_buf, ",");
@@ -802,6 +806,7 @@ namespace SRCCore.Models
 
                 // 武器を登録
                 WeaponData wd = ud.AddWeapon(wname);
+                wd.Location = new DataLocation(reader.FileName, reader.LineNumber);
 
                 // 攻撃力
                 ret = Strings.InStr(buf, ",");
@@ -1153,6 +1158,7 @@ namespace SRCCore.Models
 
                 // アビリティを登録
                 AbilityData sd = ud.AddAbility(sname);
+                sd.Location = new DataLocation(reader.FileName, reader.LineNumber);
 
                 // 効果
                 ret = Strings.InStr(buf, ",");

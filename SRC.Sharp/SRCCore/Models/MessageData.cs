@@ -18,6 +18,8 @@ namespace SRCCore.Models
     {
         public string Situation { get; }
         public string Message { get; }
+        // 定義のあるファイルと行（SRC# の作成支援ツール用。元の SRC には無い）
+        public DataLocation Location { get; set; }
 
         public MessageDataItem(string situation, string message)
         {
@@ -39,6 +41,8 @@ namespace SRCCore.Models
         // データのパイロット名
         // 戦闘アニメデータ及び特殊効果データの場合はユニット名またはユニットクラス
         public string Name = "";
+        // 定義のあるファイルと行（SRC# の作成支援ツール用。元の SRC には無い）
+        public DataLocation Location;
 
         public IList<MessageDataItem> Items { get; } = new List<MessageDataItem>();
 
@@ -51,9 +55,11 @@ namespace SRCCore.Models
         }
 
         // メッセージを追加
-        public void AddMessage(string sit, string msg)
+        public MessageDataItem AddMessage(string sit, string msg)
         {
-            Items.Add(new MessageDataItem(sit, msg));
+            var item = new MessageDataItem(sit, msg);
+            Items.Add(item);
+            return item;
         }
 
         // ユニット u のシチュエーション msg_situation におけるメッセージを選択

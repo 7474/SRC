@@ -16,6 +16,8 @@ namespace SRCCore.Models
     {
         // 名称
         public string Name = "";
+        // 定義のあるファイルと行（SRC# の作成支援ツール用。元の SRC には無い）
+        public DataLocation Location;
         // 使用可能回数
         public int Stock;
         // ＥＮ消費量

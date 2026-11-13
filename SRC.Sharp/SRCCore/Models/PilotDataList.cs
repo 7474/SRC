@@ -208,6 +208,7 @@ namespace SRCCore.Models
                 {
                     pd = Add(data_name);
                 }
+                pd.Location = new DataLocation(reader.FileName, reader.LineNumber);
 
                 // 愛称, 読み仮名, 性別, クラス, 地形適応, 経験値
                 line_buf = reader.GetLine();
@@ -766,6 +767,7 @@ namespace SRCCore.Models
                 }
 
                 // 格闘
+                pd.Location.SetFieldLine("格闘", reader.LineNumber);
                 if (Strings.Len(line_buf) == 0)
                 {
                     throw reader.InvalidDataException(@"格闘攻撃力の設定が抜けています。", data_name);
@@ -902,6 +904,7 @@ namespace SRCCore.Models
 
                 // スペシャルパワー
                 line_buf = reader.GetLine();
+                pd.Location.SetFieldLine("スペシャルパワー", reader.LineNumber);
                 switch (line_buf ?? "")
                 {
                     // スペシャルパワーを持っていない

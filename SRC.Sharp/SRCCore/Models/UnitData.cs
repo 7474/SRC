@@ -44,6 +44,9 @@ namespace SRCCore.Models
         // 経験値
         public int ExpValue;
 
+        // 定義のあるファイルと行（SRC# の作成支援ツール用。元の SRC には無い）
+        public DataLocation Location;
+
         // 愛称
         private string proNickname = "";
         // 読み仮名
