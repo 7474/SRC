@@ -23,7 +23,7 @@ namespace PackAnalysis
         {
             if (args.Length < 4)
             {
-                Console.Error.WriteLine("使い方: PackAnalysis <パックのフォルダ> <ロボ|拡張> <役割表.csv|-> <対象作品.txt> [--sample 数] [--seed 数] [--level 数] [--tiers 格の一覧.tsv] [--cards 1]");
+                Console.Error.WriteLine("使い方: PackAnalysis <パックのフォルダ> <ロボ|拡張> <役割表.csv|-> <対象作品.txt> [--sample 数] [--seed 数] [--level 数] [--tiers 格の一覧.tsv] [--cards 1] [--json ファイル] [--check-roles 1] [--roles-template 作品]");
                 return 1;
             }
             var options = new Options
@@ -42,9 +42,23 @@ namespace PackAnalysis
                     case "--level": options.Level = int.Parse(args[i + 1]); break;
                     case "--tiers": options.TiersFile = args[i + 1]; break;
                     case "--cards": options.Cards = args[i + 1] != "0"; break;
+                    case "--json": options.JsonFile = args[i + 1]; break;
+                    case "--check-roles": options.CheckRoles = args[i + 1] != "0"; break;
+                    case "--roles-template": options.RolesTemplate = args[i + 1]; break;
                 }
             }
-            new Analysis(options).Run(Console.Out);
+            var analysis = new Analysis(options);
+            if (options.CheckRoles)
+            {
+                // 評価をせずに、役割表と格の一覧の名前がデータにあるかだけを確かめる
+                return analysis.CheckRoles(Console.Out) ? 0 : 1;
+            }
+            if (options.RolesTemplate != null)
+            {
+                analysis.WriteRolesTemplate(Console.Out);
+                return 0;
+            }
+            analysis.Run(Console.Out);
             return 0;
         }
     }
@@ -60,6 +74,11 @@ namespace PackAnalysis
         public int Level = 30;
         public string TiersFile;
         public bool Cards;
+        /// <summary>組の評価を書く JSON のファイル（データビューアの「比べる」が読む）</summary>
+        public string JsonFile;
+        public bool CheckRoles;
+        /// <summary>この作品の、自動で組んだ組を役割表の形で出す</summary>
+        public string RolesTemplate;
     }
 
     /// <summary>役割表の 1 行</summary>
@@ -71,6 +90,8 @@ namespace PackAnalysis
         public string Rank;
         public string Line;
         public string Unit;
+        /// <summary>役割表のファイルの行（1 始まり）</summary>
+        public int LineNo;
     }
 
     internal sealed class Pair
@@ -80,7 +101,7 @@ namespace PackAnalysis
         public string How;
     }
 
-    internal sealed class Analysis
+    internal sealed partial class Analysis
     {
         private const int MapWidth = 12;
         private const int MapHeight = 3;
@@ -125,6 +146,10 @@ namespace PackAnalysis
             ChooseOpponents();
             BuildReference();
             Write(output);
+            if (opt.JsonFile != null)
+            {
+                WriteJson(opt.JsonFile);
+            }
         }
 
         // ---- 入力 ----
@@ -151,14 +176,16 @@ namespace PackAnalysis
             {
                 return;
             }
+            var lineNo = 1;
             foreach (var line in File.ReadLines(opt.RolesCsv).Skip(1))
             {
+                lineNo++;
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
                 {
                     continue;
                 }
                 var c = line.Split(',');
-                roles.Add(new RoleEntry { Kind = c[0], Name = c[1], Role = c[2], Rank = c[3], Line = c[4], Unit = c.Length > 5 ? c[5] : "" });
+                roles.Add(new RoleEntry { Kind = c[0], Name = c[1], Role = c[2], Rank = c[3], Line = c[4], Unit = c.Length > 5 ? c[5] : "", LineNo = lineNo });
             }
         }
 
@@ -984,6 +1011,12 @@ namespace PackAnalysis
             }
         }
 
+        /// <summary>作品の、評価を出す組（戦闘・名前なしの役割。役割表の組を先に、経験値の高い順に 14 組まで）</summary>
+        private List<Pair> WorkPairs(string w) =>
+            TargetPairs().Where(t => pilotWork[t.Pilot.Name] == w && (PilotRole(t.Pilot) == "戦闘" || PilotRole(t.Pilot) == "名前なし"))
+                .OrderBy(t => t.How == "役割表" ? 0 : 1).ThenByDescending(t => IsZako(t.Pilot) ? -1 : t.Pilot.ExpValue)
+                .ThenBy(t => t.Pilot.Name, StringComparer.Ordinal).Take(14).ToList();
+
         private IEnumerable<Pair> TargetPairs() =>
             pairs.Where(x => pilotWork.TryGetValue(x.Pilot.Name, out var w) && works.Contains(w));
 
@@ -1021,9 +1054,7 @@ namespace PackAnalysis
                 o.WriteLine();
                 o.WriteLine($"### {w}");
                 o.WriteLine();
-                var tp = TargetPairs().Where(t => pilotWork[t.Pilot.Name] == w && (PilotRole(t.Pilot) == "戦闘" || PilotRole(t.Pilot) == "名前なし"))
-                    .OrderBy(t => t.How == "役割表" ? 0 : 1).ThenByDescending(t => IsZako(t.Pilot) ? -1 : t.Pilot.ExpValue)
-                    .ThenBy(t => t.Pilot.Name, StringComparer.Ordinal).Take(14).ToList();
+                var tp = WorkPairs(w);
                 if (tp.Count == 0)
                 {
                     o.WriteLine("（組が無い）");
