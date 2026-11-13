@@ -192,6 +192,8 @@
                                                     <span class="has-text-weight-semibold">@(p.Pilot?.Name)</span><br />
                                                     <span class="is-size-7">@(p.Unit?.Name)</span><br />
                                                     <span class="is-size-7 has-text-grey">@p.Work（@p.Section）</span><br />
+                                                    @* 組の決め方（役割表・名前の一致・クラスの一致など）。役割表に無い組は、役割表を足すと原作に沿う *@
+                                                    <span class="tag is-light is-small src-compare-how">@p.How</span><br />
                                                     <button class="button is-small is-light mt-1" @onclick="@(() => Toggle(p))">@L["CompareRemove"]</button>
                                                 </th>
                                             }
