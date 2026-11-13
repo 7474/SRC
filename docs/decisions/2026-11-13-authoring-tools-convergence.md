@@ -9,7 +9,7 @@
 
 | できたもの | 内容 |
 |---|---|
-| 設計 | [準拠データパックに応じたバランスの検査](../tools/balance-pack.md)（規則 12 個、数値の比較、組の評価、パック定義。進め方は 9 段階） |
+| 設計 | [準拠データパックに応じたバランスの検査](../history/tools/balance-pack.md)（規則 12 個、数値の比較、組の評価、パック定義。進め方は 9 段階） |
 | 試作 | `tools/pack-stats`（17 コマンド）・`tools/pack-analysis`。ソリューションと CI の外 |
 | 文書 | 利用者向けの説明（実装前の下書き）、試作結果（719KB）、読み物 |
 | SRC-Data | データ作成ガイドラインと、作品ごとの評価を出す GitHub Pages |
@@ -168,7 +168,7 @@ flowchart LR
 | 文書 | 行き先 |
 |---|---|
 | `docs/tools/authoring.md` | 規則の一覧・組の選び方・データの診断を書く。「未対応」の表を今に合わせる |
-| `docs/tools/balance-pack-guide.md` | 消す。実装した分（書き間違いに気づく・パックの書き方の決まり）は `authoring.md` に書く |
+| `docs/tools/balance-pack-guide.md` | `docs/history/tools/` へ移す（#1607 の下書きとして残す）。実装した分（書き間違いに気づく・パックの書き方の決まり）は `authoring.md` に書く |
 | `docs/tools/balance-pack.md` | `docs/history/tools/` へ移す。続きは #1607 |
 | `docs/tools/balance-pack-analysis.md`・`balance-pack-reading.md` | `docs/history/tools/` へ移す。SRC-Data のガイドラインがコマンドの例で `docs/tools/balance-pack-analysis.md` を指しているので、合わせて直す |
 | `SRCSharpTools`・`SRCSharpVSCode` の README、拡張の CHANGELOG、リリースの案内 | 規則と `--rules`・`srcsharp.rules` を書く |
@@ -204,6 +204,6 @@ flowchart LR
 ## 参照
 
 - #1388（データ検証の補強）、#1607（切り出した先）
-- [準拠データパックに応じたバランスの検査（設計）](../tools/balance-pack.md)
+- [準拠データパックに応じたバランスの検査（設計）](../history/tools/balance-pack.md)
 - [作成支援ツール](../tools/authoring.md)
 - [役目を終えたコード・ツール・ワークフローを消す](./2026-10-31-repository-cleanup.md)

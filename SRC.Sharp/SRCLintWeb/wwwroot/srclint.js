@@ -4,10 +4,11 @@
 //   const result = await lintZip(file, {
 //     systemArchives: ['/files/packs/src-basic/xxxx.zip'],
 //     assets: true,
+//     rules: ['src'], // データに動かす規則のグループ（既定。srcsharp lint --rules と同じ）
 //     onProgress: p => console.log(p.phase, p.file, p.done, p.total),
 //     signal: abortController.signal,
 //   });
-//   // result.diagnostics: [{ file, line, severity: 'error' | 'warning' | 'info', message, source }]
+//   // result.diagnostics: [{ file, line, severity: 'error' | 'warning' | 'info', message, source, ruleId }]
 //
 // 検査は Web Worker で動かす（ページが固まらない）。Worker を作れない環境では、ページのスレッドで動かす。
 // zip の目次を読み、*.eve と *.txt だけを取り出して検査する（画像や音は読まない）。
@@ -65,7 +66,7 @@ export function preload() {
 /**
  * zip（Blob・File）を検査する。
  * @param {Blob} zip
- * @param {{ systemArchives?: (string | Blob)[], assets?: boolean, onProgress?: (p: Progress) => void, signal?: AbortSignal }} options
+ * @param {{ systemArchives?: (string | Blob)[], assets?: boolean, rules?: string[], onProgress?: (p: Progress) => void, signal?: AbortSignal }} options
  *   systemArchives: 汎用データの zip。URL（Range 要求に応えること）か Blob。assets: 素材の参照も確かめる。
  *   onProgress: 進み具合。signal: 中止（中止すると AbortError で終わる）
  * @returns {Promise<{ diagnostics: { file: string, line: number, severity: 'error' | 'warning' | 'info', message: string, source?: string }[], checkedFiles: number, root: string, systemErrors: string[] }>}

@@ -28,6 +28,7 @@ interface Values {
   serverPath: string;
   serverArgs: string[];
   appPath: string;
+  rules: string[];
   language: string;
   screenAutoOpen: boolean;
   hotReload: string;
@@ -72,6 +73,7 @@ export class SettingsView implements vscode.Disposable {
       serverPath: config.get<string>('serverPath', 'srcsharp'),
       serverArgs: config.get<string[]>('serverArgs', []),
       appPath: config.get<string>('appPath', ''),
+      rules: config.get<string[]>('rules', ['src']),
       language: config.get<string>('language', ''),
       screenAutoOpen: config.get<boolean>('screen.autoOpen', true),
       hotReload: config.get<string>('hotReload', 'onChange'),
@@ -108,6 +110,7 @@ export class SettingsView implements vscode.Disposable {
         await config.update('serverPath', v.serverPath.trim() && v.serverPath.trim() !== 'srcsharp' ? v.serverPath.trim() : undefined, target);
         await config.update('serverArgs', v.serverArgs.length ? v.serverArgs : undefined, target);
         await config.update('appPath', v.appPath.trim() || undefined, target);
+        await config.update('rules', v.rules.length === 1 && v.rules[0] === 'src' ? undefined : v.rules, target);
         await config.update('language', v.language || undefined, target);
         await config.update('screen.autoOpen', v.screenAutoOpen ? undefined : false, target);
         await config.update('hotReload', v.hotReload === 'onChange' ? undefined : v.hotReload, target);
@@ -185,6 +188,13 @@ label.check { display: flex; gap: 6px; align-items: center; }
 </div>
 <p class="help muted" id="candidateHelp">Lib や共通の Data のあるフォルダ。システムのラベル（汎用戦闘アニメなど）をここから読みます。</p>
 
+<h2>データの規則</h2>
+<label class="check"><input type="checkbox" class="rule" value="src"> SRC の仕様と食い違うデータ（src。既定）</label>
+<label class="check"><input type="checkbox" class="rule" value="gsc-robo"> GSC データパックのロボ基準の書き方の決まり（gsc-robo）</label>
+<label class="check"><input type="checkbox" class="rule" value="gsc-ext"> GSC データパックの拡張基準の書き方の決まり（gsc-ext）</label>
+<label class="check"><input type="checkbox" class="rule" value="robodun"> ロボダンの UnitChecker.eve の観点（robodun。ロボダンの基準）</label>
+<p class="help muted">データ（robot.txt・pilot.txt など）を保存したときに調べる規則のグループ。srcsharp lint --rules と同じです。</p>
+
 <h2>表示言語</h2>
 <div class="row"><select id="language" aria-label="表示言語">${languages}</select></div>
 <p class="help muted">lint・バランスレポート・自動プレイの出力の言語（環境変数 SRCSHARP_LANG）。</p>
@@ -234,6 +244,7 @@ function setValues(v) {
   if (v.serverPath !== undefined) $('serverPath').value = v.serverPath === 'srcsharp' ? '' : v.serverPath;
   if (v.serverArgs !== undefined) $('serverArgs').value = v.serverArgs.join('\\n');
   if (v.appPath !== undefined) $('appPath').value = v.appPath;
+  if (v.rules !== undefined) document.querySelectorAll('.rule').forEach((x) => (x.checked = v.rules.includes(x.value)));
   if (v.language !== undefined) $('language').value = v.language;
   if (v.screenAutoOpen !== undefined) $('screenAutoOpen').checked = v.screenAutoOpen;
   if (v.hotReload !== undefined) $('hotReload').value = v.hotReload;
@@ -280,6 +291,7 @@ $('save').addEventListener('click', () => vscode.postMessage({
     serverPath: $('serverPath').value,
     serverArgs: $('serverArgs').value.split(/\\r?\\n/).map((x) => x.trim()).filter((x) => x),
     appPath: $('appPath').value,
+    rules: Array.from(document.querySelectorAll('.rule')).filter((x) => x.checked).map((x) => x.value),
     language: $('language').value,
     screenAutoOpen: $('screenAutoOpen').checked,
     hotReload: $('hotReload').value,

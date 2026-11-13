@@ -121,6 +121,29 @@
           "default": "",
           "description": "SRC 本体のフォルダ（Lib や共通の Data を探す）。空ならシナリオのフォルダの親から探す"
         },
+        "srcsharp.rules": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "src",
+              "gsc-robo",
+              "gsc-ext",
+              "robodun"
+            ],
+            "enumDescriptions": [
+              "SRC の仕様と食い違うデータ（既定）",
+              "GSC データパックのロボ基準の書き方の決まり",
+              "GSC データパックの拡張基準の書き方の決まり",
+              "ロボダン（ロボッとダンジョンＢ！）の UnitChecker.eve の観点（ロボダンの基準）"
+            ]
+          },
+          "uniqueItems": true,
+          "default": [
+            "src"
+          ],
+          "description": "データ（robot.txt・pilot.txt など）に動かす規則のグループ。保存したときに、シナリオの Data のフォルダを srcsharp lint --rules と同じく調べ、エディタと問題パネルに出す。空なら規則を動かさない（読み込みの誤りは出す）"
+        },
         "srcsharp.language": {
           "type": "string",
           "default": "",

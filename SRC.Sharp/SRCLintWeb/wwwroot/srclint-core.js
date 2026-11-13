@@ -31,9 +31,10 @@ export function preload() {
 /**
  * zip（Blob・File）を検査する。
  * @param {Blob} zip
- * @param {{ systemArchives?: (string | Blob)[], assets?: boolean, onProgress?: (p: Progress) => void }} options systemArchives: 汎用データの zip。URL（Range 要求に応えること）か Blob。
- *   assets: 素材の参照も確かめる。onProgress: 進み具合（srclint.js の Progress）
- * @returns {Promise<{ diagnostics: { file: string, line: number, severity: 'error' | 'warning' | 'info', message: string, source?: string }[], checkedFiles: number, root: string, systemErrors: string[] }>}
+ * @param {{ systemArchives?: (string | Blob)[], assets?: boolean, rules?: string[], onProgress?: (p: Progress) => void }} options systemArchives: 汎用データの zip。URL（Range 要求に応えること）か Blob。
+ *   assets: 素材の参照も確かめる。rules: データに動かす規則のグループ（既定は ['src']。空の配列なら動かさない。srcsharp lint --rules と同じ）。
+ *   onProgress: 進み具合（srclint.js の Progress）
+ * @returns {Promise<{ diagnostics: { file: string, line: number, severity: 'error' | 'warning' | 'info', message: string, source?: string, ruleId?: string }[], checkedFiles: number, root: string, systemErrors: string[] }>}
  */
 export async function lintZip(zip, options = {}) {
   const progress = options.onProgress ?? (() => {});
@@ -107,7 +108,8 @@ export async function lintZip(zip, options = {}) {
   }
   reportProgress = progress;
   try {
-    const result = JSON.parse(await lint.LintAsync(root));
+    const rules = options.rules ?? ['src'];
+    const result = JSON.parse(await lint.LintAsync(root, rules.length ? rules.join(',') : 'none'));
     return { ...result, root, systemErrors };
   } finally {
     reportProgress = () => {};

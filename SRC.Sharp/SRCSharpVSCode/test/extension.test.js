@@ -37,4 +37,8 @@ describe('SRC# Authoring', () => {
     const document = await vscode.workspace.openTextDocument(vscode.Uri.parse('untitled:robot.txt'));
     assert.strictEqual(document.languageId, 'src-data');
   });
+
+  it('データの規則のグループ（srcsharp.rules）の既定は src だけ', () => {
+    assert.deepStrictEqual(vscode.workspace.getConfiguration('srcsharp').get('rules'), ['src']);
+  });
 });

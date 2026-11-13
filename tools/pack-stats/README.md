@@ -1,6 +1,12 @@
 # GSC データパックの実態の集計 / Data-Pack Statistics
 
-GSC データパックの実態（格の目安ごとの能力値・SP・性格、ユニットの能力値、数値の刻み、マップ兵器）を集計する。[7474/SRC-Data](https://github.com/7474/SRC-Data) の `docs/データ作成ガイドライン.md` の表は、このプログラムの出力から作っている。srcsharp の機能ではなく、ソリューション・CI には入れない。
+GSC データパックの実態（格の目安ごとの能力値・SP・性格、ユニットの能力値、数値の刻み、マップ兵器）を集計する。[7474/SRC-Data](https://github.com/7474/SRC-Data) の `docs/データ作成ガイドライン.md` の表は、このプログラムの出力から作っている。srcsharp の機能ではなく、ソリューションには入れない（CI での確かめは下の「位置づけ」）。
+
+## 位置づけ
+
+- 使われている先: [7474/SRC-Data](https://github.com/7474/SRC-Data) の GitHub Pages（`site/build.sh`・`.github/workflows/pages.yml`）が、毎週と、データが変わったときに、SRC の master のこのプログラムをビルドして使う。データ作成ガイドラインの表と手順もこのプログラムを指している
+- 機能は足さない。誤りを見つける規則は `srcsharp lint` の規則（`docs/tools/authoring.md`）に、パックの水準との比較と組の評価を srcsharp に入れることは https://github.com/7474/SRC/issues/1607 で扱う。SRC-Data の集計に要る修正だけを行う（[判断の記録](../../docs/decisions/2026-11-13-authoring-tools-convergence.md)）
+- CI（`test-pack-tools`）で、ビルドできて、リポジトリの中の小さなデータで SRC-Data が使うコマンドが落ちないことを確かめる（`tools/pack_tools_check.sh`）
 
 ## 再現
 
@@ -88,7 +94,7 @@ dotnet tools/pack-stats/bin/Release/net10.0/PackStats.dll check ../SRC-Data/GSC�
 | メッセージ | パイロットごとの行数と、シチュエーションの数 |
 | 指摘 | 要確認（ガイドラインの目安から外れているもの）と参考（外れ値の情報） |
 
-要確認にするもの:
+要確認にするもの（数値の刻み・射程 2 以上の射・SP の重複・名前付きの SP の数・SP を覚えるレベルは、`srcsharp lint` の規則（SRCAuthoring の `number-rounding`・`weapon-range2-shooting`・`pilot-sp-duplicate`・`pilot-sp-count`・`pilot-sp-level-pattern`）を呼んで判定する。文面の後ろに規則の ID を付ける。メッセージのシチュエーションはパック全体の武器名と比べるので、ここで判定する）:
 
 - 数値の刻み（HP 100、EN 10、装甲 50、運動性 5、武器の攻撃力 100、消費 EN 5）に合わない
 - 名前付きで、得意も苦手も無い
