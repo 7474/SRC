@@ -13,7 +13,7 @@ namespace SRCCore.VB.Tests
     [TestClass]
     public class InformationExponentVBTests
     {
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("1e5", 100000d)]
         [DataRow("1E5", 100000d)]
         [DataRow("1e+5", 100000d)]
@@ -32,7 +32,7 @@ namespace SRCCore.VB.Tests
             Assert.AreEqual(expected, Conversions.ToDouble(text), 1e-9, text);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("1e")]
         [DataRow("1e+")]
         [DataRow("e5")]

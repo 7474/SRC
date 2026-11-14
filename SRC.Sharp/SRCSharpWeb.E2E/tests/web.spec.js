@@ -628,13 +628,14 @@ test('UTF-8 の印の無い zip（macOS・Linux の zip）の日本語のファ�
  */
 async function isolateWithHeaders(page) {
   await page.route('**/*', async route => {
-    // 前のテストの直後などに、テスト用のサーバーへの接続が切られる（socket hang up）ことがあるため、取り直す
+    // 前のテストの直後などに、テスト用のサーバーへの接続が切られる（socket hang up）ことがあるため、取り直す。
+    // 応答が返らないまま止まることもあり、そのときはテストの時間切れまで待ってしまうので、時間を区切って取り直す
     let status;
     let headers;
     let body;
     for (let attempt = 1; ; attempt++) {
       try {
-        const response = await route.fetch();
+        const response = await route.fetch({ timeout: 30 * 1000 });
         status = response.status();
         headers = response.headers();
         body = await response.body();
