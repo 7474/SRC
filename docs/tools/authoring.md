@@ -296,6 +296,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | バランス：期待ダメージの表 | パイロットとユニットの組み合わせで、COM.SelectWeapon・ExpDamage による期待ダメージを一覧にする |
 | エディタ：解析の高速化 | システムの Lib など、変わらない部分の解析結果を使い回す |
 | 画面：音 | `interactive` で、効果音・BGM を Webview の Web Audio で鳴らす |
+| データビューアの「このデータを元にする」 | データビューアで見つけたユニット・パイロットのデータを、自分のデータのファイルに写す（[作成環境の補完](../decisions/2026-11-14-authoring-environment.md) の「始める」） |
 | マップ作成ツール：言語 | 画面の文字列は日本語と英語だけ（ほかの言語は英語） |
 | 拡張の公開 | Open VSX への公開（7474/SRC#1175）。`Publish-VSCode.yml` は Secrets に `OVSX_PAT` があるときだけ出す |
 | SRC#Web | Monaco と同じ LSP でブラウザ上の編集支援（[SRC#Web](../gui/web.md) の外部コンテンツ管理と合わせて） |

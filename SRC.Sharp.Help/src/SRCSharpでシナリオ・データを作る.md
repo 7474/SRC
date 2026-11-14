@@ -14,6 +14,7 @@ SRC# でシナリオやデータを作るときの道具と、作り始めてか
 | SRC#Studio（マップ作成ツール） | マップ（`.map`）を描く。ブラウザで [https://7474.github.io/SRC/studio/](https://7474.github.io/SRC/studio/) を開くか、VS Code で `.map` のファイルを開く。詳しくは「[マップデータ](マップデータ.md)」 |
 | `srcsharp`（コマンドライン） | ひな形を作る（`new`）、データとイベントを検査する（`lint`）、画面なしで最後まで自動で遊ぶ（`play`）、能力値の一覧（`balance`）、このヘルプを引く（`help`） |
 | SRC#Avalonia・SRC#Web | 作ったシナリオを遊ぶ（「[SRC#のインストール](SRCSharpのインストール.md)」） |
+| データビューア | 公開されているデータ（[SRC-Data](https://github.com/7474/SRC-Data) の GSC データパックなど）を、画像付きで見る・ユニットとパイロットを比べる（[https://7474.github.io/SRC/](https://7474.github.io/SRC/)）。データを作るときの参考に |
 
 VS Code 拡張と `srcsharp` は、.NET 10 SDK を入れてから入れます。
 
