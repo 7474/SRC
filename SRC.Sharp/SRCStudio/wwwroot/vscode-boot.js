@@ -5,5 +5,7 @@
   window.srcsharpVsCode = vscode;
   window.addEventListener('error', function (ev) { vscode.postMessage({ type: 'error', message: String(ev.message || ev.error) }); });
   window.addEventListener('unhandledrejection', function (ev) { vscode.postMessage({ type: 'error', message: String((ev.reason && ev.reason.stack) || ev.reason) }); });
-  import('./vscode.js').catch(function (e) { vscode.postMessage({ type: 'error', message: 'vscode.js: ' + String((e && e.stack) || e) }); });
+  // 読み込むモジュール（マップ作成ツールは vscode.js、データのプレビューは vscode-preview.js）
+  var module = (document.currentScript && document.currentScript.dataset.module) || 'vscode.js';
+  import('./' + module).catch(function (e) { vscode.postMessage({ type: 'error', message: module + ': ' + String((e && e.stack) || e) }); });
 })();

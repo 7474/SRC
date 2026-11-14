@@ -29,22 +29,9 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider {
       enableScripts: true,
       localResourceRoots: [this.studioRoot],
     };
-    const html = path.join(this.studioRoot.fsPath, 'vscode.html');
-    if (!fs.existsSync(html)) {
-      webview.html = `<p>SRC#Studio が拡張に入っていません（tools/studio_bundle.sh で studio/ に置いてから拡張を作ります）。</p>`;
+    if (!setStudioHtml(webview, this.studioRoot, 'vscode.html')) {
       return;
     }
-    const csp = [
-      "default-src 'none'",
-      `img-src ${webview.cspSource} blob: data:`,
-      `style-src ${webview.cspSource} 'unsafe-inline'`,
-      // .NET の WebAssembly の実行環境
-      `script-src ${webview.cspSource} 'wasm-unsafe-eval'`,
-      `connect-src ${webview.cspSource}`,
-    ].join('; ');
-    webview.html = fs.readFileSync(html, 'utf8')
-      .replace(/\{\{csp\}\}/g, csp)
-      .replace(/\{\{base\}\}/g, webview.asWebviewUri(this.studioRoot).toString() + '/');
 
     let applying = false;
     const files = new Map<number, Promise<string[]>>();
@@ -67,21 +54,9 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider {
             text: document.getText(),
           });
           break;
-        case 'read': {
-          const root = roots[msg.root];
-          const full = root && path.resolve(root.dir, msg.path);
-          if (!root || !full.startsWith(path.resolve(root.dir) + path.sep)) {
-            await webview.postMessage({ type: 'fileError', id: msg.id, message: 'bad path' });
-            break;
-          }
-          try {
-            const bytes = await vscode.workspace.fs.readFile(vscode.Uri.file(full));
-            await webview.postMessage({ type: 'file', id: msg.id, bytes: Array.from(bytes) });
-          } catch (e) {
-            await webview.postMessage({ type: 'fileError', id: msg.id, message: String(e) });
-          }
+        case 'read':
+          await answerRead(webview, roots, msg);
           break;
-        }
         case 'edit': {
           if (msg.text === document.getText()) {
             break;
@@ -127,7 +102,46 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider {
   }
 }
 
-interface FolderRoot {
+/**
+ * SRC#Studio の頁（studio/ の vscode.html など）を Webview に出す。無ければ（拡張に入っていなければ）その旨を出して false。
+ * 内容のセキュリティポリシーは、.NET の WebAssembly の実行環境に要るもの（wasm-unsafe-eval）だけを足す
+ */
+export function setStudioHtml(webview: vscode.Webview, studioRoot: vscode.Uri, page: string): boolean {
+  const html = path.join(studioRoot.fsPath, page);
+  if (!fs.existsSync(html)) {
+    webview.html = `<p>SRC#Studio が拡張に入っていません（tools/studio_bundle.sh で studio/ に置いてから拡張を作ります）。</p>`;
+    return false;
+  }
+  const csp = [
+    "default-src 'none'",
+    `img-src ${webview.cspSource} blob: data:`,
+    `style-src ${webview.cspSource} 'unsafe-inline'`,
+    `script-src ${webview.cspSource} 'wasm-unsafe-eval'`,
+    `connect-src ${webview.cspSource}`,
+  ].join('; ');
+  webview.html = fs.readFileSync(html, 'utf8')
+    .replace(/\{\{csp\}\}/g, csp)
+    .replace(/\{\{base\}\}/g, webview.asWebviewUri(studioRoot).toString() + '/');
+  return true;
+}
+
+/** Webview の read（フォルダの番号と相対パス）に答える */
+export async function answerRead(webview: vscode.Webview, roots: FolderRoot[], msg: { id: number; root: number; path: string }): Promise<void> {
+  const root = roots[msg.root];
+  const full = root && path.resolve(root.dir, msg.path);
+  if (!root || !full.startsWith(path.resolve(root.dir) + path.sep)) {
+    await webview.postMessage({ type: 'fileError', id: msg.id, message: 'bad path' });
+    return;
+  }
+  try {
+    const bytes = await vscode.workspace.fs.readFile(vscode.Uri.file(full));
+    await webview.postMessage({ type: 'file', id: msg.id, bytes: Array.from(bytes) });
+  } catch (e) {
+    await webview.postMessage({ type: 'fileError', id: msg.id, message: String(e) });
+  }
+}
+
+export interface FolderRoot {
   name: string;
   dir: string;
 }
@@ -159,7 +173,7 @@ export function folderRoots(mapFile: string, basicData: string): FolderRoot[] {
   return roots;
 }
 
-/** 地形データ・マップの画像・マップだけを一覧にする（SRC#Studio の folders.js の wanted と同じ） */
+/** 地形データ・スペシャルパワー・データ・画像（マップ・ユニット・パイロット）・マップだけを一覧にする（SRC#Studio の folders.js の wanted と同じ） */
 export async function listWanted(dir: string): Promise<string[]> {
   const result: string[] = [];
   const skip = ['sound', 'midi', 'music', 'save', '.git', 'node_modules'];
@@ -175,10 +189,13 @@ export async function listWanted(dir: string): Promise<string[]> {
       const lower = p.toLowerCase();
       if (type & vscode.FileType.Directory) {
         const top = lower.split('/')[0];
-        if (top === 'bitmap' ? lower === 'bitmap' || lower === 'bitmap/map' || lower.startsWith('bitmap/map/') : !skip.includes(top)) {
+        if (top === 'bitmap' ? lower === 'bitmap' || /^bitmap\/(map|unit|pilot)(\/|$)/.test(lower) : !skip.includes(top)) {
           await walk(p);
         }
-      } else if (lower === 'data/system/terrain.txt' || (lower.startsWith('bitmap/map/') && /\.(bmp|png)$/.test(lower)) || lower.endsWith('.map')) {
+      } else if (lower === 'data/system/terrain.txt' || lower === 'data/system/sp.txt'
+        || (lower.startsWith('data/') && /(^|\/)(robot|unit|pilot|sp)\.txt$/.test(lower))
+        || (/^bitmap\/(map|unit|pilot)\//.test(lower) && /\.(bmp|png|jpg|gif)$/.test(lower))
+        || lower.endsWith('.map')) {
         result.push(p);
       }
     }

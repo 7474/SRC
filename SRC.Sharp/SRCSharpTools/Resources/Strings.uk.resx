@@ -25,6 +25,8 @@
       Таблиця характеристик юнітів і викиди
   srcsharp new &lt;тека&gt; [--title назва] [--app-path тека SRC] [--force]
       Створює шаблон нового сценарію (подія, мапа й дані першого епізоду, сценарій автогри, налаштування VS Code, CI). Наявні файли не перезаписуються (--force перезаписує)
+  srcsharp trial &lt;тека сценарію&gt; [--unit юніт] [--pilot пілот] [--enemy юніт] [--enemy-pilot пілот] [--level n] [--enemies n] [--list]
+      Створює в .srcsharp/trial/ пробний бій юнітів і пілотів із даних сценарію проти ворога та виводить шлях (запускайте через play або налагоджувач). --list виводить юнітів і пілотів у JSON
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Пропущено наявні файли: {0} (--force для перезапису)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Вкажіть одну теку сценарію</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Пробний бій створено: {0}/{1} проти {2}/{3}</value>
   </data>
 </root>

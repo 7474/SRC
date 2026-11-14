@@ -1,5 +1,6 @@
 // SRC#Studio のスタンドアロン（index.html）。フォルダを開き、マップを選んでマップ作成ツールで編集し、保存する
-import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, studioCore } from './studio-core.js';
+import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, studioCore, decodeText, previewData, findFile } from './studio-core.js';
+import { DataPreview } from './preview.js';
 import { MapEditor, newMap } from './map-editor.js';
 import { basicData, canWriteFolders, download, fromFileList, pickFolder } from './folders.js';
 import { language, t } from './i18n.js';
@@ -29,6 +30,66 @@ async function loadImage(bitmap, no) {
   const bytes = await state.roots[found.root].read(found.path);
   return createImageBitmap(new Blob([bytes]));
 }
+
+// ---- データのプレビュー（7474/SRC#1643） ----
+
+const preview = new DataPreview($('#preview'), { loadImage: loadDataImage });
+
+/** ユニット・パイロットの画像（SRC と同じく Bitmap/Unit・Bitmap/Pilot、次に Bitmap の直下） */
+async function loadDataImage(kind, bitmap) {
+  const folder = kind === 'pilot' ? 'Pilot' : 'Unit';
+  const found = await findFile([`Bitmap/${folder}/${bitmap}`, `Bitmap/${bitmap}`]);
+  if (!found) {
+    return null;
+  }
+  return createImageBitmap(new Blob([await state.roots[found.root].read(found.path)]));
+}
+
+function dataFiles() {
+  return (state.scenario?.files ?? []).filter(f => /(^|\/)(robot|unit|pilot)\.txt$/i.test(f) && /^data\//i.test(f));
+}
+
+function renderDataFiles() {
+  const select = $('#data-files');
+  select.innerHTML = dataFiles().map(f => `<option>${f.replace(/[&<>]/g, '')}</option>`).join('');
+  if (select.value) {
+    showData(select.value);
+  } else {
+    preview.show({ kind: '', entries: [], errors: [] });
+  }
+}
+
+/** 汎用データとシナリオの sp.txt を先に読む（スペシャルパワーの参照を解く） */
+async function systemTexts() {
+  const result = [];
+  for (const root of [...state.roots].reverse()) {
+    for (const f of root.files.filter(x => /(^|\/)sp\.txt$/i.test(x))) {
+      result.push({ name: `${root.name}/${f}`, text: decodeText(await root.read(f)) });
+    }
+  }
+  return result;
+}
+
+async function showData(path) {
+  const text = decodeText(await state.scenario.read(path));
+  preview.show(await previewData(path.split('/').at(-1), text, await systemTexts()));
+}
+
+$('#data-files').addEventListener('change', ev => showData(ev.target.value));
+
+function selectTab(tab) {
+  $('#tab-map').setAttribute('aria-selected', String(tab === 'map'));
+  $('#tab-data').setAttribute('aria-selected', String(tab === 'data'));
+  $('#map-section').hidden = tab !== 'map';
+  $('#data-section').hidden = tab !== 'data';
+  $('.files').hidden = tab !== 'map';
+  if (tab === 'data') {
+    renderDataFiles();
+  }
+}
+
+$('#tab-map').addEventListener('click', () => selectTab('map'));
+$('#tab-data').addEventListener('click', () => selectTab('data'));
 
 function setDirty(dirty) {
   state.dirty = dirty;
@@ -60,6 +121,9 @@ async function reloadWorkspace() {
   editor.images.clear();
   editor.setTerrains(result.terrains);
   renderMapList();
+  if (!$('#data-section').hidden) {
+    renderDataFiles();
+  }
 }
 
 function showMessage(text, kind = 'warning') {

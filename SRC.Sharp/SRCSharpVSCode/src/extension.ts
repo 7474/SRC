@@ -4,7 +4,8 @@ import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { pickAppPath, suggestAppPath } from './appPath';
 import { MapEditorProvider } from './mapEditor';
-import { HotReload } from './hotReload';
+import { DataPreviewPanel } from './preview';
+import { HotReload, scenarioRoot } from './hotReload';
 import { PanelProvider } from './panel';
 import { ScreenView } from './screen';
 import { installServer, resolveServer, serverCommand, ServerInfo, serverVersion } from './server';
@@ -164,6 +165,15 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.window.registerCustomEditorProvider(MapEditorProvider.viewType, mapEditor, { webviewOptions: { retainContextWhenHidden: true } }),
     // テスト用（画面の WebAssembly が動き、地形とマップを読めたか）。package.json には出さない
     vscode.commands.registerCommand('srcsharp._mapEditorStatus', (uri: vscode.Uri) => mapEditor.loaded.get(uri.toString())),
+  );
+
+  // データのプレビュー（SRC#Studio。7474/SRC#1643）
+  const dataPreview = new DataPreviewPanel(context);
+  context.subscriptions.push(
+    dataPreview,
+    vscode.commands.registerCommand('srcsharp.showPreview', () => dataPreview.show()),
+    // テスト用（プレビューに出したもの）。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._previewStatus', () => dataPreview.lastShown),
   );
 
   // 操作パネル
@@ -330,6 +340,63 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       if (open) {
         await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(folder));
       }
+    }),
+    // 試し戦闘（srcsharp trial。7474/SRC#1643）。データのユニット・パイロットを選び、敵と戦うイベントを作って画面付きで動かす
+    vscode.commands.registerCommand('srcsharp.trialBattle', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const file = editor?.document.uri.scheme === 'file' ? editor.document.uri.fsPath : vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+      if (!file) {
+        vscode.window.showErrorMessage('SRC#: シナリオのデータかイベントを開いてください。');
+        return;
+      }
+      const root = scenarioRoot(editor ? file : path.join(file, 'x'));
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const appArgs = appPath ? ['--app-path', appPath] : [];
+      const listed = await run('trial', [root, '--list', ...appArgs], root);
+      if (listed === undefined) {
+        return;
+      }
+      let data: { units: string[]; pilots: string[] };
+      try {
+        data = JSON.parse(listed.trim().split('\n').pop() ?? '{}');
+      } catch {
+        vscode.window.showErrorMessage('SRC#: シナリオのデータを読めませんでした。');
+        return;
+      }
+      if (data.units.length === 0 || data.pilots.length === 0) {
+        vscode.window.showErrorMessage('SRC#: シナリオのデータにユニットとパイロットが要ります。');
+        return;
+      }
+      // カーソルのあるユニット（データのプレビューと同じく、その行より前のいちばん近い名前）を先頭に
+      const near = (names: string[]): string[] => {
+        if (!editor) {
+          return names;
+        }
+        const lines = editor.document.getText().split(/\r?\n/).slice(0, editor.selection.active.line + 1).reverse().map((x) => x.trim());
+        const hit = lines.find((x) => names.includes(x));
+        return hit ? [hit, ...names.filter((x) => x !== hit)] : names;
+      };
+      const pick = (items: string[], title: string) => vscode.window.showQuickPick(items, { title: `SRC# 試し戦闘: ${title}` });
+      const unit = await pick(near(data.units), '味方のユニット');
+      const pilot = unit && (await pick(near(data.pilots), '味方のパイロット'));
+      const enemy = pilot && (await pick([unit, ...data.units.filter((x) => x !== unit)], '敵のユニット'));
+      const generic = data.pilots.filter((x) => x !== pilot);
+      const enemyPilot = enemy && (await pick([...generic.filter((x) => /\((ザコ|汎用)\)/.test(x)), ...generic.filter((x) => !/\((ザコ|汎用)\)/.test(x))], '敵のパイロット（ザコか汎用）'));
+      if (!enemyPilot) {
+        return;
+      }
+      const created = await run('trial', [root, '--unit', unit, '--pilot', pilot, '--enemy', enemy, '--enemy-pilot', enemyPilot, ...appArgs], root);
+      const eve = created?.trim().split('\n').pop();
+      if (!eve) {
+        return;
+      }
+      await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(root)), {
+        type: 'srcsharp',
+        request: 'launch',
+        name: 'SRC# 試し戦闘',
+        program: eve,
+        interactive: true,
+      });
     }),
     vscode.commands.registerCommand('srcsharp.balance', async () => {
       const dir = workspaceDir();

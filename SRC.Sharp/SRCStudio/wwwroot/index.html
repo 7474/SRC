@@ -28,7 +28,16 @@
     <div id="message" hidden></div>
     <p id="loading" data-t="loading" hidden></p>
   </header>
-  <main>
+  <div class="studio-tabs" role="tablist">
+    <button type="button" role="tab" id="tab-map" aria-selected="true" data-t="studio.tabMap"></button>
+    <button type="button" role="tab" id="tab-data" aria-selected="false" data-t="studio.tabData"></button>
+  </div>
+  <section id="data-section" hidden>
+    <p data-t="studio.dataHint"></p>
+    <label><span data-t="studio.dataFiles"></span> <select id="data-files"></select></label>
+    <div id="preview"></div>
+  </section>
+  <main id="map-section">
     <nav id="maps-section" hidden>
       <h2 data-t="studio.maps"></h2>
       <ul id="maps"></ul>

@@ -25,6 +25,8 @@
       유닛 데이터 능력치 목록과 이상치
   srcsharp new &lt;폴더&gt; [--title 제목] [--app-path SRC 폴더] [--force]
       새 시나리오 템플릿(첫 화의 이벤트·맵·데이터, 자동 플레이 절차, VS Code 설정, CI)을 만든다. 이미 있는 파일은 덮어쓰지 않는다(--force로 덮어쓰기)
+  srcsharp trial &lt;시나리오 폴더&gt; [--unit 유닛] [--pilot 파일럿] [--enemy 유닛] [--enemy-pilot 파일럿] [--level 수] [--enemies 수] [--list]
+      시나리오 데이터의 유닛·파일럿을 적과 싸우게 하는 시험 전투 이벤트를 .srcsharp/trial/에 만들고 경로를 출력한다(play나 디버거로 실행). --list로 데이터의 유닛·파일럿을 JSON으로 출력
   srcsharp lsp
       Language Server(표준 입출력)
   srcsharp dap
@@ -82,5 +84,11 @@
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>이미 있어서 쓰지 않았습니다: {0}(--force로 덮어쓰기)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>시나리오 폴더를 하나 지정하십시오</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>시험 전투를 만들었습니다: {0}/{1} 대 {2}/{3}</value>
   </data>
 </root>

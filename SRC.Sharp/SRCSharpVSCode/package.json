@@ -438,6 +438,18 @@
         "category": "SRC#"
       },
       {
+        "command": "srcsharp.showPreview",
+        "title": "データのプレビュー",
+        "category": "SRC#",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "srcsharp.trialBattle",
+        "title": "試し戦闘",
+        "category": "SRC#",
+        "icon": "$(debug-alt)"
+      },
+      {
         "command": "srcsharp.lint",
         "title": "ワークスペースを lint する",
         "category": "SRC#"
@@ -528,6 +540,18 @@
         {
           "command": "srcsharp.cancelReload",
           "when": "debugType == srcsharp"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "srcsharp.showPreview",
+          "when": "resourceFilename =~ /^(robot|unit|pilot)\\.txt$/i",
+          "group": "navigation"
+        },
+        {
+          "command": "srcsharp.trialBattle",
+          "when": "resourceFilename =~ /^(robot|unit|pilot)\\.txt$/i",
+          "group": "navigation"
         }
       ]
     },

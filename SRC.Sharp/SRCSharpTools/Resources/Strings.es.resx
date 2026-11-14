@@ -25,6 +25,8 @@ Uso:
       Lista los atributos de los datos de unidades y los valores atípicos
   srcsharp new &lt;carpeta&gt; [--title título] [--app-path carpeta de SRC] [--force]
       Crea una plantilla de escenario nueva (evento, mapa y datos del primer episodio, guion de juego automático, ajustes de VS Code, CI). No sobrescribe archivos existentes (--force los sobrescribe)
+  srcsharp trial &lt;carpeta del escenario&gt; [--unit unidad] [--pilot piloto] [--enemy unidad] [--enemy-pilot piloto] [--level n] [--enemies n] [--list]
+      Crea en .srcsharp/trial/ un combate de prueba con unidades y pilotos de los datos del escenario contra un enemigo e imprime su ruta (ejecútalo con play o el depurador). --list imprime las unidades y los pilotos en JSON
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@ Opciones comunes:
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Archivos existentes omitidos: {0} (usa --force para sobrescribir)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Indica una carpeta de escenario</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Combate de prueba creado: {0}/{1} contra {2}/{3}</value>
   </data>
 </root>

@@ -60,6 +60,8 @@ namespace SRCSharpTools
                     return Balance(positional, options);
                 case "new":
                     return New(positional, options);
+                case "trial":
+                    return await TrialAsync(positional, options);
                 case "help":
                     return Help(positional, options);
                 case "lsp":
@@ -379,6 +381,61 @@ namespace SRCSharpTools
             {
                 Console.Error.WriteLine(Strings.NewSkipped(string.Join(", ", skipped)));
             }
+            return 0;
+        }
+
+        /// <summary>
+        /// 試し戦闘のイベントをシナリオのフォルダの .srcsharp/trial/ に作る（7474/SRC#1643）。--list でデータのユニット・パイロットを JSON で出す
+        /// （VS Code の「試し戦闘」が選ばせるのに使う）
+        /// </summary>
+        private static async Task<int> TrialAsync(List<string> positional, Dictionary<string, string> options)
+        {
+            if (positional.Count != 1 || !Directory.Exists(positional[0]))
+            {
+                Console.Error.WriteLine(Strings.TrialRequiresFolder);
+                return 2;
+            }
+            var root = Path.GetFullPath(positional[0]);
+            var data = Path.Combine(root, "Data");
+            options.TryGetValue("app-path", out var appPath);
+            appPath ??= SRCAuthoring.Analysis.ScenarioAnalyzer.FindAppPath(root);
+            var system = appPath == null || !Directory.Exists(Path.Combine(appPath, "Data", "System"))
+                ? new List<string>()
+                : Directory.GetFiles(Path.Combine(appPath, "Data", "System"), "*.txt").OrderBy(x => x, StringComparer.Ordinal).ToList();
+            var lint = await new DataLinter { RuleGroups = Array.Empty<string>() }.LintAsync(Directory.Exists(data) ? new[] { data } : Array.Empty<string>(), root, system);
+            var catalog = lint.Catalog;
+            if (options.ContainsKey("list"))
+            {
+                var json = new System.Text.Json.Nodes.JsonObject
+                {
+                    ["units"] = new System.Text.Json.Nodes.JsonArray(catalog.Entries.Where(e => e.Kind == SRCAuthoring.Analysis.DataKind.Unit).Select(e => (System.Text.Json.Nodes.JsonNode)e.Name).ToArray()),
+                    ["pilots"] = new System.Text.Json.Nodes.JsonArray(catalog.Entries.Where(e => e.Kind == SRCAuthoring.Analysis.DataKind.Pilot).Select(e => (System.Text.Json.Nodes.JsonNode)e.Name).ToArray()),
+                };
+                Console.WriteLine(json.ToJsonString(new System.Text.Json.JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
+                return 0;
+            }
+            options.TryGetValue("unit", out var unit);
+            options.TryGetValue("pilot", out var pilot);
+            options.TryGetValue("enemy", out var enemy);
+            options.TryGetValue("enemy-pilot", out var enemyPilot);
+            var setup = TrialTemplate.Complete(new TrialSetup
+            {
+                Unit = unit,
+                Pilot = pilot,
+                EnemyUnit = enemy,
+                EnemyPilot = enemyPilot,
+                Level = options.TryGetValue("level", out var level) && int.TryParse(level, out var l) ? l : 30,
+                Enemies = options.TryGetValue("enemies", out var enemies) && int.TryParse(enemies, out var n) ? n : 1,
+            }, catalog);
+            var problem = TrialTemplate.Validate(setup, catalog);
+            if (problem != null)
+            {
+                Console.Error.WriteLine(problem);
+                return 1;
+            }
+            var eve = TrialTemplate.Write(root, setup);
+            Console.WriteLine(eve);
+            Console.Error.WriteLine(Strings.TrialCreated(setup.Unit, setup.Pilot, setup.EnemyUnit, setup.EnemyPilot));
             return 0;
         }
 

@@ -97,6 +97,24 @@ namespace SRCAuthoring.Tests
                 (exitCode, stdout, stderr) = Run("play", Path.Combine(folder, "第1話.eve"), "--script", Path.Combine(folder, "第1話.play"), "--app-path", basicData, "--skip-wait", "--seed", "1");
                 Assert.AreEqual(0, exitCode, stdout + stderr);
 
+                // 試し戦闘（7474/SRC#1643）: データのユニット・パイロットの一覧と、敵と戦うイベント。最後まで自動で遊べる
+                (exitCode, stdout, stderr) = Run("trial", folder, "--list", "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "\"units\":[\"見習い機\",\"偵察機\"]");
+                (exitCode, stdout, stderr) = Run("trial", folder, "--unit", "偵察機", "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stderr);
+                var trial = stdout.Trim();
+                StringAssert.EndsWith(trial, "試し戦闘.eve");
+                StringAssert.Contains(File.ReadAllText(trial), "Create 味方 \"偵察機\" 0 \"主人公\" 30");
+                StringAssert.Contains(File.ReadAllText(trial), "Create 敵 \"偵察機\" 0 \"敵兵(ザコ)\"");
+                var trialPlay = Path.Combine(folder, "trial.play");
+                File.WriteAllText(trialPlay, "auto 200\nturns 15\nexpect finished\nexpect error none\n");
+                (exitCode, stdout, stderr) = Run("play", trial, "--script", trialPlay, "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+                (exitCode, _, stderr) = Run("trial", folder, "--unit", "無い機体", "--app-path", basicData);
+                Assert.AreEqual(1, exitCode);
+                StringAssert.Contains(stderr, "無い機体");
+
                 // 既にあるファイルは上書きしない
                 File.WriteAllText(Path.Combine(folder, "第1話.eve"), "書き換えた");
                 (exitCode, _, stderr) = Run("new", folder);

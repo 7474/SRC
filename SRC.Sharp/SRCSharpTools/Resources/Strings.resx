@@ -25,6 +25,8 @@
       ユニットデータの能力値の一覧と外れ値
   srcsharp new &lt;フォルダ&gt; [--title タイトル] [--app-path SRCのフォルダ] [--force]
       新しいシナリオのひな形（最初の話のイベント・マップ・データ、自動プレイの手順、VS Code の設定、CI）を作る。既にあるファイルは上書きしない（--force で上書き）
+  srcsharp trial &lt;シナリオのフォルダ&gt; [--unit ユニット] [--pilot パイロット] [--enemy ユニット] [--enemy-pilot パイロット] [--level 数] [--enemies 数] [--list]
+      シナリオのデータのユニット・パイロットを敵と戦わせる試し戦闘のイベントを .srcsharp/trial/ に作り、そのパスを出す（play・デバッガで動かす）。--list でデータのユニット・パイロットを JSON で出す
   srcsharp lsp
       Language Server（標準入出力）
   srcsharp dap
@@ -90,5 +92,11 @@
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>既にあるので書きませんでした: {0}（--force で上書き）</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>シナリオのフォルダを 1 つ指定してください</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>試し戦闘を作りました: {0}／{1} 対 {2}／{3}</value>
   </data>
 </root>

@@ -18,6 +18,10 @@ function scenarioFolder() {
   fs.mkdirSync(path.join(scenario, 'stage'), { recursive: true });
   fs.copyFileSync(path.join(lantern, '01_灯の港.map'), path.join(scenario, 'harbor.map'));
   fs.copyFileSync(path.join(lantern, 'ステージ', '02_霧の渓谷.map'), path.join(scenario, 'stage', 'valley.map'));
+  fs.mkdirSync(path.join(scenario, 'Data', 'team'), { recursive: true });
+  for (const name of ['unit.txt', 'pilot.txt']) {
+    fs.copyFileSync(path.join(lantern, 'Data', 'ランタン', name), path.join(scenario, 'Data', 'team', name));
+  }
   return scenario;
 }
 
@@ -131,4 +135,22 @@ test('シナリオのフォルダ（ランタン号）を開き、マップを�
   await page.mouse.move(box.x + 4.5 * 32, box.y + 4.5 * 32);
   await expect(page.locator('.me-status')).toContainText('(5,5)');
   await expect(page.locator('.me-status')).toContainText('レイヤー: 21 街');
+});
+
+test('データのプレビュー: シナリオのユニット・パイロットを、汎用データのスペシャルパワーと一緒に見る（7474/SRC#1643）', async ({ page }) => {
+  await open(page);
+  await page.locator('#scenario-input').setInputFiles(scenarioFolder());
+  await page.locator('#tab-data').click();
+  await expect(page.locator('#data-files option')).toHaveText(['Data/team/pilot.txt', 'Data/team/unit.txt']);
+  // パイロット: 最小の汎用データの sp.txt でスペシャルパワーを解く
+  await expect(page.locator('.dp-list li').first()).toHaveText('ソラ');
+  await expect(page.locator('.dp-card h2')).toHaveText('ソラ');
+  await expect(page.locator('.dp-card')).toContainText('加速（Lv1）');
+  await expect(page.locator('.dp-errors')).toBeHidden();
+  // ユニット: 能力値と武器
+  await page.locator('#data-files').selectOption('Data/team/unit.txt');
+  await expect(page.locator('.dp-card .dp-weapons')).toBeVisible();
+  await page.locator('.dp-list li').nth(1).click();
+  await expect(page.locator('.dp-card h2')).toHaveText(await page.locator('.dp-list li').nth(1).textContent());
+  await expect(page.locator('.dp-card .dp-stats')).toContainText('HP');
 });

@@ -59,6 +59,35 @@ describe('SRC# Authoring', () => {
     await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
   });
 
+  it('データのプレビューが、カーソルのあるユニットを出す（7474/SRC#1643）', async function () {
+    this.timeout(90 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    const document = await vscode.workspace.openTextDocument(path.join(folder, 'Data', 'robot.txt'));
+    const editor = await vscode.window.showTextDocument(document);
+    await vscode.commands.executeCommand('srcsharp.showPreview');
+    const wait = async (check) => {
+      let status;
+      for (let i = 0; i < 100; i++) {
+        status = await vscode.commands.executeCommand('srcsharp._previewStatus');
+        if (status && check(status)) {
+          return status;
+        }
+        await new Promise((r) => setTimeout(r, 500));
+      }
+      assert.fail(`プレビューが出ない: ${JSON.stringify(status)}`);
+    };
+    let status = await wait((s) => s.entries.length === 2);
+    assert.deepStrictEqual(status.entries, ['試作機', '量産機']);
+    assert.strictEqual(status.selected, '試作機');
+    // 2 つ目のユニットの行へ動くと、プレビューも移る
+    await vscode.window.showTextDocument(document, editor.viewColumn);
+    const pos = new vscode.Position(11, 0);
+    vscode.window.activeTextEditor.selection = new vscode.Selection(pos, pos);
+    status = await wait((s) => s.selected === '量産機');
+    assert.deepStrictEqual(status.errors, []);
+    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+  });
+
   it('データの規則のグループ（srcsharp.rules）の既定は src だけ', () => {
     assert.deepStrictEqual(vscode.workspace.getConfiguration('srcsharp').get('rules'), ['src']);
   });

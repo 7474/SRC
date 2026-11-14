@@ -25,6 +25,8 @@ Uso:
       Lista os atributos dos dados de unidades e os valores atípicos
   srcsharp new &lt;pasta&gt; [--title título] [--app-path pasta do SRC] [--force]
       Cria um novo modelo de cenário (evento, mapa e dados do primeiro episódio, roteiro de jogo automático, configurações do VS Code, CI). Arquivos existentes são mantidos (--force sobrescreve)
+  srcsharp trial &lt;pasta do cenário&gt; [--unit unidade] [--pilot piloto] [--enemy unidade] [--enemy-pilot piloto] [--level n] [--enemies n] [--list]
+      Cria em .srcsharp/trial/ uma batalha de teste com unidades e pilotos dos dados do cenário contra um inimigo e imprime o caminho (execute com play ou o depurador). --list imprime as unidades e os pilotos em JSON
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@ Opções comuns:
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Arquivos existentes ignorados: {0} (use --force para sobrescrever)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Informe uma pasta de cenário</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Batalha de teste criada: {0}/{1} contra {2}/{3}</value>
   </data>
 </root>

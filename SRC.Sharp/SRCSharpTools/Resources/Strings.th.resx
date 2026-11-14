@@ -25,6 +25,8 @@
       แสดงรายการค่าสถานะในข้อมูลยูนิตและค่าที่ผิดปกติ
   srcsharp new &lt;โฟลเดอร์&gt; [--title ชื่อเรื่อง] [--app-path โฟลเดอร์ SRC] [--force]
       สร้างแม่แบบฉากใหม่ (อีเวนต์ แผนที่ และข้อมูลของตอนแรก ขั้นตอนเล่นอัตโนมัติ การตั้งค่า VS Code และ CI) ไฟล์ที่มีอยู่แล้วจะไม่ถูกเขียนทับ (--force เพื่อเขียนทับ)
+  srcsharp trial &lt;โฟลเดอร์ฉาก&gt; [--unit ยูนิต] [--pilot นักบิน] [--enemy ยูนิต] [--enemy-pilot นักบิน] [--level จำนวน] [--enemies จำนวน] [--list]
+      สร้างอีเวนต์การต่อสู้ทดลองที่ให้ยูนิตและนักบินจากข้อมูลฉากสู้กับศัตรูใน .srcsharp/trial/ แล้วแสดงพาธ (รันด้วย play หรือดีบักเกอร์) --list แสดงยูนิตและนักบินเป็น JSON
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>ข้ามไฟล์ที่มีอยู่แล้ว: {0} (ใช้ --force เพื่อเขียนทับ)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>ระบุโฟลเดอร์ฉากหนึ่งโฟลเดอร์</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>สร้างการต่อสู้ทดลองแล้ว: {0}/{1} ปะทะ {2}/{3}</value>
   </data>
 </root>

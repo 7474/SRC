@@ -63,6 +63,7 @@ SRCCore には、デバッガ用のフック `IEventDebugger`（`Event.Debugger`
 dotnet tool install -g SRCSharpTools
 
 srcsharp new <フォルダ> [--title 題名] [--app-path SRCのフォルダ] [--force]
+srcsharp trial <シナリオのフォルダ> [--unit ユニット] [--pilot パイロット] [--enemy ユニット] [--enemy-pilot パイロット] [--level 数] [--enemies 数] [--app-path SRCのフォルダ] [--list]
 srcsharp lint <ディレクトリかファイル>... [--format text|sarif] [--output ファイル] [--rules グループ,...|none] [--list-rules] [--app-path SRCのフォルダ]
 srcsharp play <イベントファイル> [--script ファイル.play] [--out ディレクトリ] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ] [--steps 数] [--skip-wait] [--seed 数] [--state ファイル]
 srcsharp balance <ディレクトリかファイル>... [--format md|csv|weapons-csv] [--output ファイル]
@@ -75,6 +76,7 @@ srcsharp --version
 | コマンド | 内容 |
 |---|---|
 | `new` | 新しいシナリオのひな形を作る（SRCAuthoring の `ScenarioTemplate`。7474/SRC#1640）。最小の汎用データで遊べる 1 話（`第1話.eve`・`第1話.map`・`Data/robot.txt`・`Data/pilot.txt`）、最後まで自動で遊ぶ手順（`第1話.play`）、VS Code のデバッガの構成（`.vscode/launch.json`。`--app-path` があれば `.vscode/settings.json` の `srcsharp.appPath` も）、作者のリポジトリの CI（`.github/workflows/src-check.yml`。最小の汎用データで `lint`（SARIF をコードスキャンに渡す）と `play`）、README・.gitignore。既にあるファイルは上書きしない（`--force` で上書き）。VS Code のコマンド「新しいシナリオを作る」も同じ |
+| `trial` | 試し戦闘（SRCAuthoring の `TrialTemplate`。7474/SRC#1643）。シナリオのデータのユニット・パイロットを、小さなマップ（16×11）で敵と戦わせるイベントを、シナリオのフォルダの `.srcsharp/trial/試し戦闘.eve` に作り（毎回上書き）、そのパスを標準出力に出す。シナリオのフォルダで動くのでシナリオのデータをそのまま使い、デバッガのホットリロードでデータを直しながら戦える。省いた組は、味方のユニットはデータの最初、パイロットは最初の名前付き、敵は味方と同じユニットとザコか汎用のパイロット。`--list` はデータのユニット・パイロットを JSON で出す（VS Code の「試し戦闘」が使う） |
 | `lint` | SRCDataLinter と同じ処理で検査する（データは種類ごとの読み込み処理、イベントは読み込みと構文の検査）。読み込めたデータには、`--rules` で選んだグループの規則もかける（下の「[データの規則](#データの規則)」。既定は `src`）。`--list-rules` は規則の一覧（ID・グループ・重さ・説明・出どころをタブで区切る）。`--format sarif` で GitHub のコードスキャンに渡せる（[SARIF support for code scanning](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning)。規則ごとに `rules` を出し、グループは `properties.tags`）。エラーか警告があれば終了コード 1（規則の「情報」は数えない）。`--app-path` を付けると、そのフォルダの `Data/System/*.txt`（`sp.txt` など）を先に読み、参照の先として使う（検査はしない。シナリオに無いスペシャルパワーを汎用データから使うときに要る） |
 | `play` | シナリオを画面なしで動かす。`--script` の書式は [E2E テスト](../gui/e2e-testing.md) の PlayScript。無ければメッセージを送り、選択肢は先頭を選んで進める。`--out` にスナップショットを保存する。`--skip-wait` を付けると、決まった時間だけ待つ処理（戦闘アニメ、メッセージの表示時間、ユニットの移動、`Wait` や `Telop` など）を眠らずに飛ばし、その分だけ時計（`GeneralLib.timeGetTime`）を進める。入力を待つポーリングは実時間のまま。`--scenario-root` はシナリオのフォルダ（`Data`・`Lib`・`Continue` の基準）。無ければイベントファイルのあるフォルダで、そこに `Data`・`src.ini` が無ければ、それを持ついちばん近い親（`Data\System` のある SRC 本体のフォルダは除く）。シナリオのサブフォルダに置いた章を単体で動かすのに使う。`--seed` は乱数の種（省くと起動のたびに変わる）。同じ種・同じスクリプトなら毎回同じ結果になる。`--state` には、各話（イベントファイル）の終わりの状態（資金・ユニットとパイロットの一覧・グローバル変数・イベントのエラー）を書く（互換性の検証用のシナリオのゴールデンに使う。`SRC.Sharp/Compat/README.md`） |
 | `help` | 同梱の [SRC# のヘルプ](../../SRC.Sharp.Help/README.md)（`SRC.Sharp.Help/src` の `*.md`、ビルドで srcsharp に埋め込む）を引く。項目はファイル名（`Askコマンド`・ページの中のリンク先の `Askコマンド.md#…` でもよい）か見出しで、大文字・小文字は区別しない。一致が無ければ前方一致（`Ask` → `Askコマンド`）、部分一致で探し、候補が複数なら一覧を出して終了コード 1。`--list` は項目の一覧（名前と見出しをタブで区切る）、`--search` は関連の高い順にページを出す（下の「ヘルプの検索」。ページごとに `項目<TAB>見出し<TAB>スコア` と、関係する行を `  行: 内容` で最大 3 行。`--limit` で件数、既定 10）、`--grep` は文字列を含む行を `項目:行: 内容` で出す、`--export` はすべてのページを元のファイル名で書き出す（AI のエージェントなどにリファレンスとして読ませる）。本文は日本語で、`--lang` では変わらない。項目を省くと使い方を出す |
@@ -250,6 +252,17 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | 書き出し | 読んだファイルの書き方（改行・1 行目・予約行）を保つ。変えていないマップは変わらない |
 | スタンドアロン | Chrome・Edge はフォルダを直接読み書き（File System Access API）。ほかのブラウザは読み込みとダウンロード |
 | VS Code | SRC 本体のフォルダは `srcsharp.appPath`、無ければシナリオの親のうち Lib か Data/System のあるもの、それも無ければ最小の汎用データ。保存・元に戻す・未保存の印は VS Code のもの。SRC のマップでない `.map`（JavaScript のソースマップなど）は「テキストとして開く」で開き直せる |
+
+## データのプレビュー（SRC#Studio）
+
+データのファイル（`robot.txt`・`unit.txt`・`pilot.txt`）のユニット・パイロットを、SRCCore の読み込み処理で読んで、画像・能力値・特殊能力・武器・アビリティ・スペシャルパワーで見せる（SRCAuthoring の `DataPreview`。7474/SRC#1643）。スペシャルパワーは SRC 本体（とシナリオ）の `Data/System/sp.txt` を先に読んで解く。読み込みの誤りは行と一緒に出す。
+
+| 場所 | 内容 |
+|---|---|
+| VS Code | データのファイルを開いて「SRC#: データのプレビュー」（エディタの右上のボタン）。横に開き、カーソルのあるユニット・パイロットを、打つたびに（保存しなくても）出す。一覧で選ぶとその行へ移る |
+| スタンドアロン | 「データのプレビュー」のタブ。シナリオのフォルダを開き、データのファイルを選ぶ |
+
+試し戦闘は VS Code の「SRC#: 試し戦闘」（エディタの右上のボタン）。味方と敵のユニット・パイロットを選ぶと `srcsharp trial` でイベントを作り、デバッガの画面付き（`interactive`）で動かす。カーソルのあるユニットを先頭に出す。
 
 ## VS Code 拡張
 

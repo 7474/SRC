@@ -25,6 +25,8 @@ Uso:
       Elenca le statistiche dei dati delle unità e i valori anomali
   srcsharp new &lt;cartella&gt; [--title titolo] [--app-path cartella di SRC] [--force]
       Crea un nuovo modello di scenario (evento, mappa e dati del primo episodio, script di gioco automatico, impostazioni di VS Code, CI). I file esistenti vengono mantenuti (--force li sovrascrive)
+  srcsharp trial &lt;cartella dello scenario&gt; [--unit unità] [--pilot pilota] [--enemy unità] [--enemy-pilot pilota] [--level n] [--enemies n] [--list]
+      Crea in .srcsharp/trial/ uno scontro di prova tra unità e piloti dei dati dello scenario e un nemico, e ne stampa il percorso (da eseguire con play o il debugger). --list stampa unità e piloti in JSON
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@ Opzioni comuni:
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>File esistenti saltati: {0} (usa --force per sovrascrivere)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Specifica una cartella dello scenario</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Scontro di prova creato: {0}/{1} contro {2}/{3}</value>
   </data>
 </root>

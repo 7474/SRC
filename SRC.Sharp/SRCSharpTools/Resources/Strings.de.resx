@@ -25,6 +25,8 @@ Verwendung:
       Listet Werte der Einheitendaten und Ausreißer auf
   srcsharp new &lt;Ordner&gt; [--title Titel] [--app-path SRC-Ordner] [--force]
       Erstellt eine neue Szenariovorlage (Ereignis, Karte und Daten der ersten Episode, Autoplay-Skript, VS-Code-Einstellungen, CI). Vorhandene Dateien bleiben erhalten (--force überschreibt)
+  srcsharp trial &lt;Szenarioordner&gt; [--unit Einheit] [--pilot Pilot] [--enemy Einheit] [--enemy-pilot Pilot] [--level n] [--enemies n] [--list]
+      Erstellt in .srcsharp/trial/ ein Probegefecht, in dem Einheiten und Piloten aus den Szenariodaten gegen einen Gegner kämpfen, und gibt den Pfad aus (mit play oder dem Debugger ausführen). --list gibt Einheiten und Piloten als JSON aus
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@ Allgemeine Optionen:
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Vorhandene Dateien übersprungen: {0} (--force zum Überschreiben)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Geben Sie genau einen Szenarioordner an</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Probegefecht erstellt: {0}/{1} gegen {2}/{3}</value>
   </data>
 </root>

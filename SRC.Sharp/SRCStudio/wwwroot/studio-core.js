@@ -63,3 +63,32 @@ export async function serializeMap(map) {
   const core = await studioCore();
   return core.SerializeMap(map.width, map.height, map.tiles, map.layer ?? [], map.template ?? 0);
 }
+
+/** バイト列を文字列にする（UTF-8 として読めなければ Shift_JIS。SRC のデータは両方ある） */
+export function decodeText(bytes) {
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(bytes).replace(/^﻿/, '');
+  } catch {
+    return new TextDecoder('shift_jis').decode(bytes);
+  }
+}
+
+/**
+ * データのプレビュー（7474/SRC#1643）。name・text はデータのファイル、before は先に読むデータ（[{ name, text }]。汎用データの sp.txt など）。
+ * { kind: 'unit'|'pilot'|'', entries: [...], errors: [...] }
+ */
+export async function previewData(name, text, before = []) {
+  const core = await studioCore();
+  return JSON.parse(core.PreviewData(name, text, before.map(b => b.name), before.map(b => b.text)));
+}
+
+/** 候補のファイルのうち、フォルダ（loadWorkspace の順）にある最初のもの。{ root, path } か null */
+export async function findFile(candidates) {
+  const core = await studioCore();
+  const found = core.FindFile(candidates);
+  if (!found) {
+    return null;
+  }
+  const i = found.indexOf(':');
+  return { root: Number(found.slice(0, i)), path: found.slice(i + 1) };
+}
