@@ -67,6 +67,8 @@ namespace SRCSharpTools
                     using (var logHost = CreateLogHost("lsp", LogOutputs.None))
                     {
                         var server = new LspServer(Console.OpenStandardInput(), Console.OpenStandardOutput(), logHost.LoggerFactory, logHost.OverrideLevel);
+                        // コマンド・特殊能力・属性のホバーと補完に、同梱のヘルプを使う（7474/SRC#1642）
+                        server.Help = new HelpReference(HelpDocument.Topics.Select(x => (x.Name, x.Body)));
                         logHost.LogStartup(logHost.LoggerFactory.CreateLogger("SRCSharp.Tools"), "srcsharp lsp", args);
                         return await server.RunAsync();
                     }
