@@ -40,6 +40,35 @@ flowchart LR
   CI["GitHub Actions"] --> CLI
 ```
 
+## VS Code 拡張と、単独で使える部品
+
+**VS Code 拡張（SRC# Authoring）を主（プライマリ）の作成環境にする。** 書く・見る・描く・試す・検査するが 1 つの画面でつながり、機能はまず VS Code で使える形で出す。そのうえで、**機能は部品として単独でも使えるようにする。** VS Code 拡張は部品を束ねる薄い層で、機能そのものは部品に置く（拡張だけにある機能は作らない）。
+
+```mermaid
+flowchart TB
+  VSCode["VS Code 拡張（主）<br/>部品を束ねる"]
+  subgraph Parts["単独でも使える部品"]
+    CLI["srcsharp<br/>new・lint・play・trial・balance・help"]
+    LSP["srcsharp lsp<br/>診断・補完・ホバー・定義へ移動"]
+    DAP["srcsharp dap<br/>デバッガ・画面・ホットリロード"]
+    Studio["SRC#Studio<br/>マップ作成ツール・データのプレビュー<br/>表で直す・比べる"]
+  end
+  VSCode --> CLI & LSP & DAP & Studio
+  Parts --> Core["SRCAuthoring・SRCPlay・SRCCore（計算はゲームと同じ）"]
+```
+
+| 部品 | VS Code 拡張での使い方 | 単独での使い方 |
+|---|---|---|
+| `srcsharp`（CLI） | コマンド（新しいシナリオ・lint・バランス・試し戦闘） | コマンドライン・CI（ひな形の GitHub Actions） |
+| Language Server（`srcsharp lsp`） | イベント・データの編集 | LSP に対応したほかのエディタ |
+| デバッガ（`srcsharp dap`） | F5・画面のタブ・ホットリロード・試し戦闘 | DAP に対応したほかのエディタ。画面なしの自動プレイは `srcsharp play` |
+| SRC#Studio | `.map` のカスタムエディタ、データのプレビュー（横に開く） | ブラウザ（[https://7474.github.io/SRC/studio/](https://7474.github.io/SRC/studio/)）。インストールが要らない |
+| ブラウザの lint（SRCLintWeb） | ―（VS Code は Language Server） | 投稿サイト（7474/SRC-Site）がアップロードの前に使う |
+
+- 新しい機能は、計算を部品（SRCAuthoring・SRCStudio など）に置き、VS Code 拡張から使う形を最初に作る。単独での使い方（CLI の引数・SRC#Studio の画面）は同じ部品で足す
+- SRC#Studio は、VS Code を使わない人の入口と、VS Code の中の画面の両方を兼ねる。画面は 1 つで、ファイルの読み書きだけを場所ごとに替える
+- 単独では無いもの: 試し戦闘の画面付きのプレイは VS Code（デバッガ）だけ。コマンドラインでは `srcsharp trial` でイベントを作り、`srcsharp play` で自動で動かすか、SRC#Avalonia・SRC#Web で遊ぶ
+
 ## 構成
 
 | プロジェクト | 内容 |

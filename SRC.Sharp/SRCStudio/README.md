@@ -2,7 +2,7 @@
 
 データ・シナリオの作成支援の画面（判断は [docs/decisions/2026-11-14-authoring-environment.md](../../docs/decisions/2026-11-14-authoring-environment.md)）。マップ作成ツール（7474/SRC#1641）とデータのプレビュー（7474/SRC#1643）を持つ。
 
-同じ画面を 2 か所で動かす。
+作成環境の主は VS Code 拡張で、SRC#Studio はその中の画面であると同時に、VS Code を使わずに単独でも使える部品（[作成支援ツール](../../docs/tools/authoring.md) の「VS Code 拡張と、単独で使える部品」）。同じ画面を 2 か所で動かす。
 
 | 動かし方 | 場所 | ファイルの読み書き |
 |---|---|---|
