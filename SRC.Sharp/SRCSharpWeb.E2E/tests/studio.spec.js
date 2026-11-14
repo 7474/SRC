@@ -28,6 +28,8 @@ function scenarioFolder() {
 /** フォルダの読み書き（File System Access API）を使わず、<input webkitdirectory> とダウンロードで動かす */
 async function open(page) {
   page.on('pageerror', e => console.log('pageerror:', e.message));
+  // 「比べる」が読む 7474/SRC-Data の評価には行かない（比べるのテストは、後から足す route で代わりを返す）
+  await page.route('https://7474.github.io/SRC-Data/**', route => route.abort());
   const res = await page.goto(base + 'index.html?fs=input&lang=ja');
   test.skip(res?.status() === 404 && !process.env.STUDIO_REQUIRED, 'SRC#Studio が置かれていない（tools/studio_bundle.sh）');
   await expect(page.locator('body[data-ready="true"]')).toHaveCount(1, { timeout: 60 * 1000 });
@@ -152,7 +154,7 @@ test('データのプレビュー: シナリオのユニット・パイロット
   await expect(page.locator('.dp-card .dp-weapons')).toBeVisible();
   await page.locator('.dp-list li').nth(1).click();
   await expect(page.locator('.dp-card h2')).toHaveText(await page.locator('.dp-list li').nth(1).textContent());
-  await expect(page.locator('.dp-card .dp-stats')).toContainText('HP');
+  await expect(page.locator('.dp-card > .dp-stats')).toContainText('HP');
 });
 
 test('表で直す: 武器の欄を直すと、その欄だけが変わり、並べ替えもできる（7474/SRC#1644）', async ({ page }) => {
@@ -204,12 +206,12 @@ test('比べる: 書いているユニットとパイロットを、データパ
   };
   const units = Array.from({ length: 10 }, (_, i) => ({ name: `u${i}`, hp: (i + 1) * 1000, en: 100, armor: 1000, mobility: 100, speed: 5, values: { 最大攻撃力: (i + 1) * 300 } }));
   const pilots = Array.from({ length: 4 }, (_, i) => ({ name: `p${i}`, band: '経験値120-159', sp: 50 + i * 10, stats: { 格闘: 120 + i * 20, 射撃: 120, 命中: 120, 回避: 120, 技量: 120, 反応: 120 } }));
+  await open(page);
   await page.route('https://7474.github.io/SRC-Data/analysis/**', route => {
     const url = route.request().url();
     const body = url.endsWith('index.json') ? analysis : { format: 2, pairs: [], units, pilots };
     return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(body) });
   });
-  await open(page);
   await page.locator('#scenario-input').setInputFiles(scenarioFolder());
   await page.locator('#tab-data').click();
   const compare = page.locator('.dp-compare');
