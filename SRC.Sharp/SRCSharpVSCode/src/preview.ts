@@ -47,7 +47,8 @@ export class DataPreviewPanel implements vscode.Disposable {
         this.document = undefined;
       });
       this.panel.webview.onDidReceiveMessage((msg) => this.receive(msg));
-      setStudioHtml(this.panel.webview, studioRoot, 'vscode-preview.html');
+      // 「比べる」は 7474/SRC-Data の Pages の評価の JSON を読む
+      setStudioHtml(this.panel.webview, studioRoot, 'vscode-preview.html', ['https://7474.github.io']);
     } else {
       this.panel.reveal(vscode.ViewColumn.Beside, true);
     }
@@ -129,6 +130,19 @@ export class DataPreviewPanel implements vscode.Disposable {
           await answerRead(this.panel.webview, this.roots, msg as unknown as { id: number; root: number; path: string });
         }
         break;
+      case 'editLines': {
+        const document = this.document;
+        if (document) {
+          const edit = new vscode.WorkspaceEdit();
+          for (const e of msg.edits as { line: number; text: string }[]) {
+            if (e.line >= 1 && e.line <= document.lineCount) {
+              edit.replace(document.uri, document.lineAt(e.line - 1).range, e.text);
+            }
+          }
+          await vscode.workspace.applyEdit(edit);
+        }
+        break;
+      }
       case 'shown':
         this.lastShown = msg as unknown as DataPreviewPanel['lastShown'];
         break;

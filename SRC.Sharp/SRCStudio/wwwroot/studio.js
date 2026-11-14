@@ -33,7 +33,24 @@ async function loadImage(bitmap, no) {
 
 // ---- データのプレビュー（7474/SRC#1643） ----
 
-const preview = new DataPreview($('#preview'), { loadImage: loadDataImage });
+const data = { path: null, text: null, dirty: false };
+const preview = new DataPreview($('#preview'), {
+  loadImage: loadDataImage,
+  compare: true,
+  lines: () => (data.text ?? '').split(/\r?\n/),
+  // 表で直した行を書き換え、プレビューを作り直す（保存は「データを保存」）
+  editLines: async edits => {
+    const eol = data.text.includes('\r\n') ? '\r\n' : '\n';
+    const lines = data.text.split(/\r?\n/);
+    for (const e of edits) {
+      lines[e.line - 1] = e.text;
+    }
+    data.text = lines.join(eol);
+    data.dirty = true;
+    $('#save-data').disabled = false;
+    await renderData();
+  },
+});
 
 /** ユニット・パイロットの画像（SRC と同じく Bitmap/Unit・Bitmap/Pilot、次に Bitmap の直下） */
 async function loadDataImage(kind, bitmap) {
@@ -71,9 +88,32 @@ async function systemTexts() {
 }
 
 async function showData(path) {
-  const text = decodeText(await state.scenario.read(path));
-  preview.show(await previewData(path.split('/').at(-1), text, await systemTexts()));
+  if (data.dirty && !confirm(t('studio.unsaved'))) {
+    $('#data-files').value = data.path;
+    return;
+  }
+  data.path = path;
+  data.text = decodeText(await state.scenario.read(path));
+  data.dirty = false;
+  $('#save-data').disabled = true;
+  await renderData();
 }
+
+async function renderData() {
+  preview.show(await previewData(data.path.split('/').at(-1), data.text, await systemTexts()));
+}
+
+$('#save-data').addEventListener('click', async () => {
+  const bytes = new TextEncoder().encode(data.text);
+  if (state.scenario?.write) {
+    await state.scenario.write(data.path, bytes);
+    showMessage(t('studio.saved', `${state.scenario.name}/${data.path}`), 'info');
+  } else {
+    download(data.path, bytes);
+  }
+  data.dirty = false;
+  $('#save-data').disabled = true;
+});
 
 $('#data-files').addEventListener('change', ev => showData(ev.target.value));
 
@@ -98,7 +138,7 @@ function setDirty(dirty) {
 }
 
 window.addEventListener('beforeunload', ev => {
-  if (state.dirty) {
+  if (state.dirty || data.dirty) {
     ev.preventDefault();
   }
 });

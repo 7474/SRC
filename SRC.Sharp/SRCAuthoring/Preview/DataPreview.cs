@@ -189,6 +189,10 @@ namespace SRCAuthoring.Preview
                 w.WriteNumber("stock", a.Stock);
                 w.WriteNumber("en", a.ENConsumption);
                 w.WriteString("class", a.Class);
+                if (a.Location != null)
+                {
+                    w.WriteNumber("line", a.Location.Line);
+                }
                 w.WriteEndObject();
             }
             w.WriteEndArray();

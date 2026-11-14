@@ -106,7 +106,7 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider {
  * SRC#Studio の頁（studio/ の vscode.html など）を Webview に出す。無ければ（拡張に入っていなければ）その旨を出して false。
  * 内容のセキュリティポリシーは、.NET の WebAssembly の実行環境に要るもの（wasm-unsafe-eval）だけを足す
  */
-export function setStudioHtml(webview: vscode.Webview, studioRoot: vscode.Uri, page: string): boolean {
+export function setStudioHtml(webview: vscode.Webview, studioRoot: vscode.Uri, page: string, connect: string[] = []): boolean {
   const html = path.join(studioRoot.fsPath, page);
   if (!fs.existsSync(html)) {
     webview.html = `<p>SRC#Studio が拡張に入っていません（tools/studio_bundle.sh で studio/ に置いてから拡張を作ります）。</p>`;
@@ -117,7 +117,7 @@ export function setStudioHtml(webview: vscode.Webview, studioRoot: vscode.Uri, p
     `img-src ${webview.cspSource} blob: data:`,
     `style-src ${webview.cspSource} 'unsafe-inline'`,
     `script-src ${webview.cspSource} 'wasm-unsafe-eval'`,
-    `connect-src ${webview.cspSource}`,
+    `connect-src ${[webview.cspSource, ...connect].join(' ')}`,
   ].join('; ');
   webview.html = fs.readFileSync(html, 'utf8')
     .replace(/\{\{csp\}\}/g, csp)

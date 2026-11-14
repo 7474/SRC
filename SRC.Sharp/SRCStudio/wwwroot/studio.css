@@ -116,3 +116,18 @@ main { display: flex; gap: 16px; align-items: flex-start; }
   .dp-list { width: 100%; max-height: 30vh; }
   .dp-weapons { display: block; overflow-x: auto; }
 }
+
+/* 表で直す・比べる（7474/SRC#1644） */
+.dp-table-toggle { margin: 6px 0; }
+.dp-table-edit { overflow-x: auto; }
+.dp-edit { border-collapse: collapse; margin: 6px 0; }
+.dp-edit caption { text-align: left; font-weight: 600; }
+.dp-edit th { font-weight: normal; color: var(--muted); text-align: left; padding: 0 4px; white-space: nowrap; }
+.dp-edit td { padding: 1px 2px; }
+.dp-edit input { width: auto; min-width: 3ch; padding: 1px 3px; }
+.dp-move { white-space: nowrap; }
+.dp-move button { padding: 0 4px; }
+.dp-compare select { margin-left: 6px; }
+.dp-bar-cell { white-space: nowrap; color: var(--muted); }
+.dp-bar { display: inline-block; width: 120px; height: 8px; background: var(--border); border-radius: 4px; vertical-align: middle; overflow: hidden; }
+.dp-bar span { display: block; height: 100%; background: var(--accent); }

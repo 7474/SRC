@@ -1,9 +1,16 @@
 // SRC#Studio のデータのプレビュー（7474/SRC#1643）。データのファイル（robot.txt・unit.txt・pilot.txt）のユニット・パイロットを、
 // 画像・能力値・特殊能力・武器・アビリティ・スペシャルパワーで見せる。ファイルの読み書きは使う側（studio.js・vscode-preview.js）が行う。
 //
-// const preview = new DataPreview(element, { loadImage: async (kind, bitmap) => ImageBitmap | null, onSelect: entry => {} });
+// const preview = new DataPreview(element, {
+//   loadImage: async (kind, bitmap) => ImageBitmap | null,
+//   onSelect: entry => {},
+//   lines: () => string[],                       // 表で直すときの、いまのファイルの行（無ければ表で直せない）
+//   editLines: edits => {},                      // 表で直した行 [{ line（1 始まり）, text }] を書き換える
+// });
 // preview.show(result, line);   // result は studio-core.js の previewData の結果。line（1 始まり）を含むデータを選ぶ
 import { t } from './i18n.js';
+import { WEAPON_FIELDS, ABILITY_FIELDS, splitLine, replaceField, isContinued } from './table-edit.js';
+import { compareUnit, comparePilot, analysisSections } from './compare.js';
 
 export class DataPreview {
   constructor(element, options) {
@@ -64,6 +71,8 @@ export class DataPreview {
       return;
     }
     card.innerHTML = this.result.kind === 'pilot' ? pilotCard(entry) : unitCard(entry);
+    this.setupTable(card, entry);
+    this.setupCompare(card, entry);
     const canvas = card.querySelector('canvas');
     if (canvas && entry.bitmap && entry.bitmap !== '-.bmp') {
       this.options.loadImage?.(this.result.kind, entry.bitmap).then(img => {
@@ -77,6 +86,138 @@ export class DataPreview {
     }
   }
 }
+
+// ---- 表で直す（7474/SRC#1644） ----
+
+DataPreview.prototype.setupTable = function (card, entry) {
+  const lines = this.options.lines?.();
+  if (!lines || this.result.kind !== 'unit') {
+    return;
+  }
+  const rows = [
+    ...entry.weapons.filter(w => w.line).map(w => ({ kind: 'weapon', line: w.line })),
+    ...entry.abilities.filter(a => a.line).map(a => ({ kind: 'ability', line: a.line })),
+  ];
+  if (rows.length === 0) {
+    return;
+  }
+  // 表で直している間は、直すたびにプレビューを作り直しても表を開いたままにする
+  const openTable = () => {
+    this.tableOpenFor = entry.name;
+    return renderTable(rows, this.options.lines(), edits => this.options.editLines(edits));
+  };
+  const weaponsTable = card.querySelector('.dp-weapons');
+  if (this.tableOpenFor === entry.name) {
+    if (weaponsTable) {
+      weaponsTable.before(openTable());
+    } else {
+      card.append(openTable());
+    }
+    return;
+  }
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'dp-table-toggle';
+  button.textContent = t('table.edit');
+  if (weaponsTable) {
+    weaponsTable.before(button);
+  } else {
+    card.append(button);
+  }
+  button.addEventListener('click', () => button.replaceWith(openTable()));
+};
+
+/** 武器・アビリティの行を、欄ごとの入力欄の表にする */
+function renderTable(rows, lines, editLines) {
+  const box = document.createElement('div');
+  box.className = 'dp-table-edit';
+  for (const kind of ['weapon', 'ability']) {
+    const list = rows.filter(r => r.kind === kind);
+    if (list.length === 0) {
+      continue;
+    }
+    const fields = kind === 'weapon' ? WEAPON_FIELDS : ABILITY_FIELDS;
+    const table = document.createElement('table');
+    table.className = 'dp-edit';
+    table.innerHTML = `<caption>${t(kind === 'weapon' ? 'preview.weapons' : 'preview.abilities')}</caption><thead><tr><th></th>${fields.map(f => `<th>${esc(t(`table.${kind}.${f}`))}</th>`).join('')}</tr></thead>`;
+    const body = document.createElement('tbody');
+    list.forEach((row, i) => {
+      const tr = document.createElement('tr');
+      const text = lines[row.line - 1] ?? '';
+      const locked = isContinued(lines, row.line);
+      const move = document.createElement('td');
+      move.className = 'dp-move';
+      for (const [label, delta] of [['↑', -1], ['↓', 1]]) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = label;
+        b.title = t(delta < 0 ? 'table.up' : 'table.down');
+        const other = list[i + delta];
+        b.disabled = locked || !other || isContinued(lines, other.line);
+        // 並べ替え: 隣の行と入れ替える
+        b.addEventListener('click', () => editLines([{ line: row.line, text: lines[other.line - 1] }, { line: other.line, text }]));
+        move.append(b);
+      }
+      tr.append(move);
+      const { fields: values } = splitLine(text);
+      fields.forEach((f, index) => {
+        const td = document.createElement('td');
+        const input = document.createElement('input');
+        input.value = values[index] ?? '';
+        input.disabled = locked || index >= values.length;
+        input.dataset.field = f;
+        input.size = Math.max(3, Math.min(14, input.value.length + 1));
+        input.title = locked ? t('table.continued') : `${row.line}${t('preview.line')}`;
+        input.addEventListener('change', () => {
+          const current = lines[row.line - 1] ?? '';
+          editLines([{ line: row.line, text: replaceField(current, index, input.value.trim()) }]);
+        });
+        td.append(input);
+        tr.append(td);
+      });
+      body.append(tr);
+    });
+    table.append(body);
+    box.append(table);
+  }
+  const note = document.createElement('p');
+  note.className = 'dp-none';
+  note.textContent = t('table.note');
+  box.append(note);
+  return box;
+}
+
+// ---- 比べる（7474/SRC#1644） ----
+
+DataPreview.prototype.setupCompare = function (card, entry) {
+  if (!this.options.compare) {
+    return;
+  }
+  const section = document.createElement('section');
+  section.className = 'dp-compare';
+  section.innerHTML = `<h3>${t('compare.title')}</h3><p class="dp-none">${t('compare.hint')}</p>`;
+  const select = document.createElement('select');
+  const run = async () => {
+    const body = section.querySelector('.dp-compare-body') ?? section.appendChild(document.createElement('div'));
+    body.className = 'dp-compare-body';
+    body.textContent = t('loading');
+    try {
+      const rows = this.result.kind === 'pilot' ? await comparePilot(entry, select.value) : await compareUnit(entry, select.value);
+      body.innerHTML = `<table class="dp-stats">${rows.map(r => `<tr><th>${esc(r.label)}</th><td>${esc(r.value)}</td><td class="dp-bar-cell">${r.percentile == null ? '-' : `<span class="dp-bar"><span style="width:${(100 - r.percentile).toFixed(0)}%"></span></span> ${t('compare.top', r.percentile.toFixed(0))}`}</td></tr>`).join('')}</table><p class="dp-none">${esc(rows.note ?? '')}</p>`;
+    } catch (e) {
+      body.textContent = t('compare.failed', String(e.message ?? e));
+    }
+  };
+  analysisSections().then(sections => {
+    select.innerHTML = sections.map(s => `<option>${esc(s)}</option>`).join('');
+    select.addEventListener('change', run);
+    section.querySelector('h3').append(' ', select);
+    run();
+  }, e => {
+    section.querySelector('.dp-none').textContent = t('compare.failed', String(e.message ?? e));
+  });
+  card.append(section);
+};
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
