@@ -27,6 +27,12 @@ namespace SRCDataViewer.Models
         /// <summary>すべての区分の組</summary>
         public IReadOnlyList<AnalysisPair> Pairs { get; private set; } = Array.Empty<AnalysisPair>();
 
+        /// <summary>すべての区分のパイロット（組にしない比較）</summary>
+        public IReadOnlyList<AnalysisPilot> Pilots { get; private set; } = Array.Empty<AnalysisPilot>();
+
+        /// <summary>すべての区分のユニット（組にしない比較）</summary>
+        public IReadOnlyList<AnalysisUnit> Units { get; private set; } = Array.Empty<AnalysisUnit>();
+
         public IReadOnlyList<string> Uses { get; private set; } = Array.Empty<string>();
         public IReadOnlyList<string> Indices { get; private set; } = Array.Empty<string>();
         public IReadOnlyList<string> Bands { get; private set; } = Array.Empty<string>();
@@ -52,6 +58,14 @@ namespace SRCDataViewer.Models
                     {
                         pair.Section = file.Section;
                     }
+                    foreach (var x in set.Pilots ?? new List<AnalysisPilot>())
+                    {
+                        x.Section = file.Section;
+                    }
+                    foreach (var x in set.Units ?? new List<AnalysisUnit>())
+                    {
+                        x.Section = file.Section;
+                    }
                     sets[file.Section] = set;
                 }
                 Load(sets, index?.GeneratedAt);
@@ -70,8 +84,11 @@ namespace SRCDataViewer.Models
         public void Load(Dictionary<string, AnalysisSet> sets, string generatedAt)
         {
             Sets = sets;
+            medians.Clear();
             GeneratedAt = generatedAt;
             Pairs = sets.Values.SelectMany(x => x.Pairs).ToList();
+            Pilots = sets.Values.SelectMany(x => x.Pilots ?? new List<AnalysisPilot>()).ToList();
+            Units = sets.Values.SelectMany(x => x.Units ?? new List<AnalysisUnit>()).ToList();
             var first = sets.Values.FirstOrDefault();
             Uses = first?.Uses ?? new List<string>();
             Indices = first?.Indices ?? new List<string>();
@@ -79,5 +96,33 @@ namespace SRCDataViewer.Models
         }
 
         public AnalysisPair Find(string key) => Pairs.FirstOrDefault(x => x.Key == key);
+
+        /// <summary>パイロットかユニットを鍵で引く</summary>
+        public AnalysisSingle FindSingle(string mode, string key) =>
+            mode == "unit" ? Units.FirstOrDefault(x => x.Key == key) : Pilots.FirstOrDefault(x => x.Key == key);
+
+        /// <summary>
+        /// 組にしない比較の指数（同じ区分・同じ帯の、0 より大きい値の中央値 = 100）。ユニットは帯を問わず同じ区分の中央値。
+        /// 中央値が無ければ null
+        /// </summary>
+        public double? SingleIndex(AnalysisSingle x, string metric)
+        {
+            var v = x.ValueOf(metric);
+            if (!v.HasValue) return null;
+            var unit = x is AnalysisUnit;
+            var key = string.Join("|", unit ? "unit" : "pilot", x.Section, unit ? "" : x.Band, metric);
+            if (!medians.TryGetValue(key, out var m))
+            {
+                IEnumerable<AnalysisSingle> peers = unit
+                    ? Units.Where(u => u.Section == x.Section)
+                    : Pilots.Where(p => p.Section == x.Section && p.Band == x.Band);
+                var values = peers.Select(p => p.ValueOf(metric)).Where(y => y > 0).Select(y => y.Value).OrderBy(y => y).ToList();
+                m = values.Count == 0 ? 0 : values[values.Count / 2];
+                medians[key] = m;
+            }
+            return m <= 0 ? null : 100 * v.Value / m;
+        }
+
+        private readonly Dictionary<string, double> medians = new Dictionary<string, double>();
     }
 }

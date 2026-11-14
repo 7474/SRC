@@ -12,7 +12,7 @@ namespace PackAnalysis
     internal sealed partial class Analysis
     {
         /// <summary>JSON の書式の版。項目を変えたら上げる（データビューアの「比べる」が見る）</summary>
-        public const int JsonFormat = 1;
+        public const int JsonFormat = 2;
 
         /// <summary>格（役割表の格、無ければ格の一覧の格）</summary>
         private string RankOf(Pair t)
@@ -84,23 +84,14 @@ namespace PackAnalysis
                 }
             }
             w.WriteEndArray();
+            WriteSingles(w);
             w.WriteEndObject();
         }
 
-        private void WritePair(Utf8JsonWriter w, string work, Pair t)
+        /// <summary>パイロットの主な値を書く（組の pilot と、pilots の 1 件）。extra で項目を足せる</summary>
+        private static void WritePilot(Utf8JsonWriter w, PilotData p, Action extra = null)
         {
-            var e = Evaluate(t.Pilot, t.Unit);
-            var band = Band(t.Pilot);
-            var p = t.Pilot;
-            var u = t.Unit;
             w.WriteStartObject();
-            w.WriteString("work", work);
-            w.WriteString("how", t.How);
-            w.WriteString("band", band);
-            w.WriteString("role", PilotRole(p));
-            w.WriteString("rank", RankOf(t));
-
-            w.WriteStartObject("pilot");
             w.WriteString("name", p.Name);
             w.WriteString("nickname", p.Nickname ?? "");
             w.WriteString("bitmap", p.Bitmap0 ?? "");
@@ -115,9 +106,14 @@ namespace PackAnalysis
             }
             w.WriteEndObject();
             WriteStrings(w, "specialPowers", p.DefinedSpecialPowers().Select(x => x.Name));
+            extra?.Invoke();
             w.WriteEndObject();
+        }
 
-            w.WriteStartObject("unit");
+        /// <summary>ユニットの主な値を書く（組の unit と、units の 1 件）。extra で項目を足せる</summary>
+        private static void WriteUnit(Utf8JsonWriter w, UnitData u, Action extra = null)
+        {
+            w.WriteStartObject();
             w.WriteString("name", u.Name);
             w.WriteString("nickname", u.Nickname ?? "");
             w.WriteString("bitmap", u.Bitmap0 ?? "");
@@ -139,7 +135,78 @@ namespace PackAnalysis
                 w.WriteNumber("maxRange", top.MaxRange);
                 w.WriteEndObject();
             }
+            extra?.Invoke();
             w.WriteEndObject();
+        }
+
+        /// <summary>
+        /// 組にしない比較（#1636）のための、対象作品の全パイロット・全ユニット。評価（実効性能）はせず、データの数字だけを書く。
+        /// 実効性能は相手（乗る・乗せる）が決まらないと出せないので、組の評価で見る
+        /// </summary>
+        private void WriteSingles(Utf8JsonWriter w)
+        {
+            var pairOfPilot = TargetPairs().GroupBy(x => x.Pilot.Name).ToDictionary(g => g.Key, g => g.First());
+            var pilotsOfUnit = TargetPairs().GroupBy(x => x.Unit.Name).ToDictionary(g => g.Key, g => g.Select(x => x.Pilot.Name).ToList());
+            w.WriteStartArray("pilots");
+            foreach (var p in src.PDList.Items.Where(p => pilotWork.TryGetValue(p.Name, out var wk) && works.Contains(wk) && !additionalPilots.Contains(p.Name)))
+            {
+                WritePilot(w, p, () =>
+                {
+                    w.WriteString("work", pilotWork[p.Name]);
+                    w.WriteString("band", Band(p));
+                    w.WriteString("role", PilotRole(p));
+                    if (pairOfPilot.TryGetValue(p.Name, out var t))
+                    {
+                        w.WriteString("unit", t.Unit.Name);
+                        w.WriteString("confidence", Confidence(t.How));
+                    }
+                });
+            }
+            w.WriteEndArray();
+            w.WriteStartArray("units");
+            foreach (var u in src.UDList.Items.Where(u => unitWork.TryGetValue(u.Name, out var wk) && works.Contains(wk)))
+            {
+                WriteUnit(w, u, () =>
+                {
+                    w.WriteString("work", unitWork[u.Name]);
+                    // 組んだパイロットの帯（組が無ければ書かない）。帯はパイロットの経験値で決まる
+                    if (pilotsOfUnit.TryGetValue(u.Name, out var ps))
+                    {
+                        WriteStrings(w, "pilots", ps);
+                        w.WriteString("band", Band(src.PDList.Item(ps[0])));
+                    }
+                    // データの数字（攻撃力はパイロットの能力を掛けない）
+                    w.WriteStartObject("values");
+                    var weapons = u.Weapons.Where(x => x.Power > 0).ToList();
+                    w.WriteNumber("最大攻撃力", weapons.Where(x => !IsMap(x)).Select(x => x.Power).DefaultIfEmpty(0).Max());
+                    w.WriteNumber("移動後攻撃力", weapons.Where(x => !IsMap(x) && (x.MaxRange <= 1 || (x.Class ?? "").Contains("Ｐ"))).Select(x => x.Power).DefaultIfEmpty(0).Max());
+                    w.WriteNumber("最大射程", weapons.Where(x => !IsMap(x)).Select(x => x.MaxRange).DefaultIfEmpty(0).Max());
+                    w.WriteNumber("マップ兵器", weapons.Where(IsMap).Select(x => x.Power).DefaultIfEmpty(0).Max());
+                    w.WriteEndObject();
+                });
+            }
+            w.WriteEndArray();
+        }
+
+        private void WritePair(Utf8JsonWriter w, string work, Pair t)
+        {
+            var e = Evaluate(t.Pilot, t.Unit);
+            var band = Band(t.Pilot);
+            var p = t.Pilot;
+            var u = t.Unit;
+            w.WriteStartObject();
+            w.WriteString("work", work);
+            w.WriteString("how", t.How);
+            // 組の決め方の確からしさ（確か・推定）。推定（クラスの一致）は、クラスが共通の作品ではあてにならない（#1635）
+            w.WriteString("confidence", Confidence(t.How));
+            w.WriteString("band", band);
+            w.WriteString("role", PilotRole(p));
+            w.WriteString("rank", RankOf(t));
+
+            w.WritePropertyName("pilot");
+            WritePilot(w, p);
+            w.WritePropertyName("unit");
+            WriteUnit(w, u);
 
             if (subPilots.TryGetValue(u.Name, out var subs))
             {

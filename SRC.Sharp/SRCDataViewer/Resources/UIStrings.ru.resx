@@ -286,4 +286,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>Сплошная линия — эффективное, пунктир — простое. Серая линия — медиана (100).</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>Пары</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>Юниты</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>Пилоты</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>Только подтверждённые пары</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>Предположение</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>Пара составлена по классу. Может отличаться от оригинала</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>Фильтры</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>Без пары</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>Сравнивает только числа из данных, без пар (эффективность смотрите в парах). Индексы относительно медианы того же раздела (и диапазона, для пилотов) = 100</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>Партнёр</value>
+  </data>
 </root>

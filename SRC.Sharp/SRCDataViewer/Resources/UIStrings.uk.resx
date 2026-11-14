@@ -286,4 +286,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>Суцільна лінія — ефективне, пунктир — просте. Сіра лінія — медіана (100).</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>Пари</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>Юніти</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>Пілоти</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>Лише підтверджені пари</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>Припущення</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>Пару складено за класом. Може відрізнятися від оригіналу</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>Фільтри</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>Без пари</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>Порівнює лише числа з даних, без пар (ефективність дивіться в парах). Індекси відносно медіани того самого розділу (і діапазону, для пілотів) = 100</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>Партнер</value>
+  </data>
 </root>

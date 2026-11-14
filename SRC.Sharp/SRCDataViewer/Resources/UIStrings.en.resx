@@ -286,4 +286,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>Solid lines are effective, dashed lines are simple. The gray line is the median (100).</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>Pairs</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>Units</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>Pilots</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>Confirmed pairs only</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>Guess</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>Paired by class. It may differ from the original work</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>No pair</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>Compares the data numbers alone, without pairing (see pairs for effective performance). Indices are relative to the median of the same section (and band, for pilots) = 100</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>Partner</value>
+  </data>
 </root>

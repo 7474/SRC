@@ -286,4 +286,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>实线为实效性能，虚线为单纯数值。灰线为中位数（100）。</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>组合</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>机体</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>驾驶员</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>仅显示确定的组合</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>推测</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>按类别匹配的组合，可能与原作不同</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>无组合</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>不组合，仅用数据数值比较（实际性能请看组合）。指数以同一分区（驾驶员为同一档）的中位数为 100</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>组合对象</value>
+  </data>
 </root>

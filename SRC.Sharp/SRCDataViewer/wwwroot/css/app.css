@@ -21840,3 +21840,26 @@ main.container {
     margin-left: -1px;
     background: #e8590c;
 }
+
+/* 狭い画面（スマートフォン）で、本文の左右に余白を取り、横にはみ出さない（7474/SRC#1634） */
+@media screen and (max-width: 768px) {
+    main.container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .src-compare .tabs ul {
+        flex-wrap: wrap;
+    }
+
+    .src-compare table td,
+    .src-compare table th {
+        word-break: break-word;
+    }
+
+    .src-compare-side .src-compare-images img {
+        width: 48px;
+        height: 48px;
+    }
+}
+

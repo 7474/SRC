@@ -265,6 +265,34 @@ namespace PackAnalysis
             return "経験値120未満";
         }
 
+        /// <summary>
+        /// ユニットの名前に含まれていれば、そのパイロットの機体とみなす名前（愛称と、「＝」の前の名前。2 文字以上）
+        /// </summary>
+        private static List<string> NameKeys(PilotData p)
+        {
+            var keys = new List<string>();
+            foreach (var s in new[] { BaseName(p.Nickname), BaseName(p.Name).Split('＝')[0] })
+            {
+                if (!string.IsNullOrEmpty(s) && s.Length >= 2 && !keys.Contains(s)) keys.Add(s);
+            }
+            return keys;
+        }
+
+        /// <summary>
+        /// ユニットの名前がパイロットの名前を含むか。名前の一部が偶然一致するもの（「ファ」と「コアファイター」）を除くため、
+        /// 括弧の中・名前の先頭・名前の末尾にあるときだけ数える（「ザク(シャア専用)」「アベル艦」「メカ胡蝶鬼」）
+        /// </summary>
+        private static bool NamesPilot(string unitName, string key)
+        {
+            var open = unitName.IndexOf('(');
+            if (open >= 0 && unitName.IndexOf(key, open, StringComparison.Ordinal) >= 0) return true;
+            var main = open >= 0 ? unitName[..open] : unitName;
+            return main.StartsWith(key, StringComparison.Ordinal) || main.EndsWith(key, StringComparison.Ordinal);
+        }
+
+        /// <summary>組の決め方の確からしさ。確か（役割表・名前の一致・推奨ユニット・名前を含むユニット）か推定（クラスの一致）</summary>
+        private static string Confidence(string how) => how == "クラスの一致" ? "推定" : "確か";
+
         private static string BaseName(string s) => Regex.Replace(s ?? "", @"[\(（].*$", "").Trim();
 
         /// <summary>自動で組にするユニットか（追加パイロット・暴走時パイロットを持つものは、乗る人が分からないので除く）</summary>
@@ -353,7 +381,20 @@ namespace PackAnalysis
                 {
                     if (!unitsByWork.TryGetValue(g.Key, out var candidates)) continue;
                     var used = pairs.Select(x => x.Unit.Name).ToHashSet();
+                    // パイロットの名前・愛称を含むユニット（「ゲルググ(シャア専用)」など）を先に組む（#1635）
                     foreach (var p in g.Where(p => !IsZako(p)).OrderByDescending(p => p.ExpValue))
+                    {
+                        var keys = NameKeys(p);
+                        if (keys.Count == 0) continue;
+                        var own = candidates
+                            .Where(u => !used.Contains(u.Name) && (PilotRole(p) == "艦長") == u.IsFeatureAvailable("母艦") && keys.Any(k => NamesPilot(u.Name, k)))
+                            .OrderByDescending(u => u.ExpValue).FirstOrDefault();
+                        if (own == null) continue;
+                        used.Add(own.Name);
+                        paired.Add(p.Name);
+                        pairs.Add(new Pair { Pilot = p, Unit = own, How = "名前を含むユニット" });
+                    }
+                    foreach (var p in g.Where(p => !IsZako(p) && !paired.Contains(p.Name)).OrderByDescending(p => p.ExpValue))
                     {
                         var classes = (p.Class ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries);
                         var pick = candidates

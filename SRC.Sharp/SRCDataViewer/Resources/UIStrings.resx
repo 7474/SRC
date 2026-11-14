@@ -294,4 +294,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>実線は実効性能、破線は単純数字。灰色の線が中央値（100）。</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>組</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>ユニット</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>パイロット</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>確かな組だけ</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>推定</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>クラスの一致で組んだ組です。原作と違う組のことがあります</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>絞り込み</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>組なし</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>組にせず、データの数字だけで比べます（実効性能は組で見ます）。指数は、同じ区分（パイロットは同じ帯）の中央値を 100 とした値です</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>組の相手</value>
+  </data>
 </root>
