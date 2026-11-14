@@ -17,12 +17,14 @@
     <value>srcsharp: เครื่องมือช่วยสร้างข้อมูลและซีนาริโอของ SRC#
 
 วิธีใช้:
-  srcsharp lint &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format text|sarif] [--output ไฟล์] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format text|sarif] [--output ไฟล์] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path โฟลเดอร์ SRC]
       ตรวจสอบข้อมูล (*.txt) และอีเวนต์ (*.eve) หากพบปัญหาจะจบด้วยโค้ด 1
   srcsharp play &lt;ไฟล์อีเวนต์&gt; [--script ไฟล์.play] [--out ไดเรกทอรี] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ซีนาริโอ] [--steps จำนวน] [--skip-wait]
       รันซีนาริโอโดยไม่แสดงหน้าจอ หากไม่ระบุ --script จะเลื่อนข้อความและเลือกตัวเลือกแรกไปเรื่อย ๆ เมื่อใช้ --skip-wait จะข้ามการรอตามเวลาที่กำหนด (แอนิเมชัน ข้อความ Wait) --scenario-root กำหนดโฟลเดอร์ซีนาริโอ (ฐานของ Data, Lib และ Continue) หากไม่ระบุ ไฟล์อีเวนต์ในโฟลเดอร์ย่อยที่ไม่มี Data จะใช้โฟลเดอร์แม่ที่ใกล้ที่สุดที่มี Data
   srcsharp balance &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format md|csv] [--output ไฟล์]
       แสดงรายการค่าสถานะในข้อมูลยูนิตและค่าที่ผิดปกติ
+  srcsharp new &lt;โฟลเดอร์&gt; [--title ชื่อเรื่อง] [--app-path โฟลเดอร์ SRC] [--force]
+      สร้างแม่แบบฉากใหม่ (อีเวนต์ แผนที่ และข้อมูลของตอนแรก ขั้นตอนเล่นอัตโนมัติ การตั้งค่า VS Code และ CI) ไฟล์ที่มีอยู่แล้วจะไม่ถูกเขียนทับ (--force เพื่อเขียนทับ)
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -71,5 +73,14 @@
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>ไม่รู้จักวิธีค้นหา: {0} (hybrid, bm25 หรือ vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>ระบุโฟลเดอร์หนึ่งโฟลเดอร์สำหรับสร้างฉาก</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>สร้างแม่แบบใน {0} แล้ว ({1} ไฟล์)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>ข้ามไฟล์ที่มีอยู่แล้ว: {0} (ใช้ --force เพื่อเขียนทับ)</value>
   </data>
 </root>

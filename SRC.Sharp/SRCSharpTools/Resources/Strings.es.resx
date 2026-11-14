@@ -17,12 +17,14 @@
     <value>srcsharp: herramientas para crear datos y escenarios de SRC#
 
 Uso:
-  srcsharp lint &lt;directorio o archivo&gt;... [--format text|sarif] [--output archivo] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;directorio o archivo&gt;... [--format text|sarif] [--output archivo] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path carpeta de SRC]
       Revisa los datos (*.txt) y los eventos (*.eve). Código de salida 1 si hay problemas
   srcsharp play &lt;archivo de evento&gt; [--script archivo.play] [--out directorio] [--app-path carpeta de SRC] [--scenario-root carpeta del escenario] [--steps número] [--skip-wait]
       Ejecuta un escenario sin pantalla. Sin --script, avanza los mensajes y elige la primera opción. Con --skip-wait, se omiten las esperas fijas (animaciones, mensajes, Wait). --scenario-root indica la carpeta del escenario (base de Data, Lib y Continue); por defecto, un archivo de evento en una subcarpeta sin Data usa la carpeta superior más cercana con Data.
   srcsharp balance &lt;directorio o archivo&gt;... [--format md|csv] [--output archivo]
       Lista los atributos de los datos de unidades y los valores atípicos
+  srcsharp new &lt;carpeta&gt; [--title título] [--app-path carpeta de SRC] [--force]
+      Crea una plantilla de escenario nueva (evento, mapa y datos del primer episodio, guion de juego automático, ajustes de VS Code, CI). No sobrescribe archivos existentes (--force los sobrescribe)
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -71,5 +73,14 @@ Opciones comunes:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Método de búsqueda desconocido: {0} (hybrid, bm25 o vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Indica una carpeta para crear el escenario</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Plantilla creada en {0} ({1} archivos)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Archivos existentes omitidos: {0} (usa --force para sobrescribir)</value>
   </data>
 </root>

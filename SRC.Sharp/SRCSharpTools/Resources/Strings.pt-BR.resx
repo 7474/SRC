@@ -17,12 +17,14 @@
     <value>srcsharp: ferramentas para criar dados e cenários do SRC#
 
 Uso:
-  srcsharp lint &lt;diretório ou arquivo&gt;... [--format text|sarif] [--output arquivo] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;diretório ou arquivo&gt;... [--format text|sarif] [--output arquivo] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path pasta do SRC]
       Verifica dados (*.txt) e eventos (*.eve). Código de saída 1 se houver problemas
   srcsharp play &lt;arquivo de evento&gt; [--script arquivo.play] [--out diretório] [--app-path pasta do SRC] [--scenario-root pasta do cenário] [--steps número] [--skip-wait]
       Executa um cenário sem tela. Sem --script, avança as mensagens e escolhe a primeira opção. Com --skip-wait, pula as esperas fixas (animações, mensagens, Wait). --scenario-root indica a pasta do cenário (base de Data, Lib e Continue); por padrão, um arquivo de evento em uma subpasta sem Data usa a pasta superior mais próxima com Data.
   srcsharp balance &lt;diretório ou arquivo&gt;... [--format md|csv] [--output arquivo]
       Lista os atributos dos dados de unidades e os valores atípicos
+  srcsharp new &lt;pasta&gt; [--title título] [--app-path pasta do SRC] [--force]
+      Cria um novo modelo de cenário (evento, mapa e dados do primeiro episódio, roteiro de jogo automático, configurações do VS Code, CI). Arquivos existentes são mantidos (--force sobrescreve)
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -71,5 +73,14 @@ Opções comuns:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Método de busca desconhecido: {0} (hybrid, bm25 ou vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Informe uma pasta para criar o cenário</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Modelo criado em {0} ({1} arquivos)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Arquivos existentes ignorados: {0} (use --force para sobrescrever)</value>
   </data>
 </root>

@@ -74,6 +74,7 @@ export class PanelProvider implements vscode.TreeDataProvider<Node> {
 
   private actions(): vscode.TreeItem[] {
     return [
+      item('新しいシナリオを作る', 'new-folder', 'srcsharp.newScenario'),
       item('開いているイベントを実行（画面で操作）', 'play', 'srcsharp.runFile'),
       item('開いているイベントをデバッグ（最初で止める）', 'debug-alt', 'srcsharp.debugFile'),
       item('画面を表示', 'device-desktop', 'srcsharp.showScreen'),

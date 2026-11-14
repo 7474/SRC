@@ -17,12 +17,14 @@
     <value>srcsharp: strumenti per creare dati e scenari di SRC#
 
 Uso:
-  srcsharp lint &lt;cartella o file&gt;... [--format text|sarif] [--output file] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;cartella o file&gt;... [--format text|sarif] [--output file] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path cartella di SRC]
       Controlla i dati (*.txt) e gli eventi (*.eve). Codice di uscita 1 se ci sono problemi
   srcsharp play &lt;file evento&gt; [--script file.play] [--out cartella] [--app-path cartella di SRC] [--scenario-root cartella dello scenario] [--steps numero] [--skip-wait]
       Esegue uno scenario senza schermo. Senza --script, fa avanzare i messaggi e sceglie la prima opzione. Con --skip-wait salta le attese fisse (animazioni, messaggi, Wait). --scenario-root indica la cartella dello scenario (base di Data, Lib e Continue); per impostazione predefinita, un file evento in una sottocartella senza Data usa la cartella superiore più vicina con Data.
   srcsharp balance &lt;cartella o file&gt;... [--format md|csv] [--output file]
       Elenca le statistiche dei dati delle unità e i valori anomali
+  srcsharp new &lt;cartella&gt; [--title titolo] [--app-path cartella di SRC] [--force]
+      Crea un nuovo modello di scenario (evento, mappa e dati del primo episodio, script di gioco automatico, impostazioni di VS Code, CI). I file esistenti vengono mantenuti (--force li sovrascrive)
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -71,5 +73,14 @@ Opzioni comuni:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Metodo di ricerca sconosciuto: {0} (hybrid, bm25 o vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Specifica una cartella in cui creare lo scenario</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Modello creato in {0} ({1} file)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>File esistenti saltati: {0} (usa --force per sovrascrivere)</value>
   </data>
 </root>

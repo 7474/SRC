@@ -17,12 +17,14 @@
     <value>srcsharp: narzędzia do tworzenia danych i scenariuszy SRC#
 
 Użycie:
-  srcsharp lint &lt;katalog lub plik&gt;... [--format text|sarif] [--output plik] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;katalog lub plik&gt;... [--format text|sarif] [--output plik] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path folder SRC]
       Sprawdza dane (*.txt) i zdarzenia (*.eve). Kod wyjścia 1, jeśli są problemy
   srcsharp play &lt;plik zdarzeń&gt; [--script plik.play] [--out katalog] [--app-path folder SRC] [--scenario-root folder scenariusza] [--steps liczba] [--skip-wait]
       Uruchamia scenariusz bez ekranu. Bez --script przewija komunikaty i wybiera pierwszą opcję. Z --skip-wait pomija stałe oczekiwania (animacje, komunikaty, Wait). --scenario-root wskazuje folder scenariusza (podstawę dla Data, Lib i Continue); domyślnie plik zdarzeń w podfolderze bez Data używa najbliższego folderu nadrzędnego z Data.
   srcsharp balance &lt;katalog lub plik&gt;... [--format md|csv] [--output plik]
       Zestawienie statystyk jednostek i wartości odstające
+  srcsharp new &lt;folder&gt; [--title tytuł] [--app-path folder SRC] [--force]
+      Tworzy nowy szablon scenariusza (zdarzenie, mapa i dane pierwszego odcinka, skrypt autogry, ustawienia VS Code, CI). Istniejące pliki są zachowywane (--force je nadpisuje)
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -71,5 +73,14 @@ Opcje wspólne:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Nieznana metoda wyszukiwania: {0} (hybrid, bm25 lub vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Podaj jeden folder, w którym ma powstać scenariusz</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Utworzono szablon w {0} ({1} plików)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Pominięto istniejące pliki: {0} (--force, aby nadpisać)</value>
   </data>
 </root>

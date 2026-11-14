@@ -304,6 +304,33 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         await run('lint', [dir], dir);
       }
     }),
+    // 新しいシナリオのひな形（srcsharp new。7474/SRC#1640）。作ったフォルダを開く
+    vscode.commands.registerCommand('srcsharp.newScenario', async () => {
+      const picked = await vscode.window.showOpenDialog({
+        canSelectFolders: true,
+        canSelectFiles: false,
+        canSelectMany: false,
+        openLabel: 'ここにシナリオを作る',
+        title: 'SRC#: 新しいシナリオを作るフォルダ（空のフォルダを選ぶか作る）',
+      });
+      if (!picked?.[0]) {
+        return;
+      }
+      const folder = picked[0].fsPath;
+      const title = await vscode.window.showInputBox({ title: 'SRC#: シナリオの題名', value: path.basename(folder) });
+      if (title === undefined) {
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const args = [folder, '--title', title, ...(appPath ? ['--app-path', appPath] : [])];
+      if ((await run('new', args, folder)) === undefined) {
+        return;
+      }
+      const open = await vscode.window.showInformationMessage(`SRC#: ${folder} にシナリオのひな形を作りました。`, 'フォルダを開く');
+      if (open) {
+        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(folder));
+      }
+    }),
     vscode.commands.registerCommand('srcsharp.balance', async () => {
       const dir = workspaceDir();
       if (!dir) {

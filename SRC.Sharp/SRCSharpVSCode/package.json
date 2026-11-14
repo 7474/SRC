@@ -37,7 +37,8 @@
   "activationEvents": [
     "onDebugResolve:srcsharp",
     "workspaceContains:**/*.eve",
-    "onCustomEditor:srcsharp.mapEditor"
+    "onCustomEditor:srcsharp.mapEditor",
+    "onCommand:srcsharp.newScenario"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -430,6 +431,11 @@
         "title": "Language Server を起動し直す",
         "category": "SRC#",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "srcsharp.newScenario",
+        "title": "新しいシナリオを作る",
+        "category": "SRC#"
       },
       {
         "command": "srcsharp.lint",

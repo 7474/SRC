@@ -45,6 +45,12 @@ namespace SRCSharpTools.Resources
 
         public static string LintSummary(int files, int problems) => Format(nameof(LintSummary), files, problems);
 
+        public static string NewRequiresFolder => Get(nameof(NewRequiresFolder));
+
+        public static string NewCreated(string folder, int count) => Format(nameof(NewCreated), folder, count);
+
+        public static string NewSkipped(string files) => Format(nameof(NewSkipped), files);
+
         public static string UnknownRuleGroup(string value, string groups) => Format(nameof(UnknownRuleGroup), value, groups);
     }
 }

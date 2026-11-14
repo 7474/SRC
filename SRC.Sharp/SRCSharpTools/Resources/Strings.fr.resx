@@ -17,12 +17,14 @@
     <value>srcsharp: outils de création de données et de scénarios pour SRC#
 
 Utilisation :
-  srcsharp lint &lt;dossier ou fichier&gt;... [--format text|sarif] [--output fichier] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;dossier ou fichier&gt;... [--format text|sarif] [--output fichier] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path dossier de SRC]
       Vérifie les données (*.txt) et les événements (*.eve). Code de sortie 1 en cas de problème
   srcsharp play &lt;fichier d'événements&gt; [--script fichier.play] [--out dossier] [--app-path dossier SRC] [--scenario-root dossier du scénario] [--steps nombre] [--skip-wait]
       Exécute un scénario sans affichage. Sans --script, fait défiler les messages et choisit la première option. Avec --skip-wait, les attentes fixes (animations, messages, Wait) sont ignorées. --scenario-root indique le dossier du scénario (base de Data, Lib et Continue) ; par défaut, un fichier d'événements dans un sous-dossier sans Data utilise le dossier parent le plus proche contenant Data.
   srcsharp balance &lt;dossier ou fichier&gt;... [--format md|csv] [--output fichier]
       Liste les statistiques des unités et les valeurs aberrantes
+  srcsharp new &lt;dossier&gt; [--title titre] [--app-path dossier de SRC] [--force]
+      Crée un nouveau modèle de scénario (événement, carte et données du premier épisode, script de jeu automatique, réglages VS Code, CI). Les fichiers existants sont conservés (--force les écrase)
   srcsharp lsp
       Language Server (entrée/sortie standard)
   srcsharp dap
@@ -71,5 +73,14 @@ Options communes :
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Méthode de recherche inconnue : {0} (hybrid, bm25 ou vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Indiquez un dossier où créer le scénario</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Modèle créé dans {0} ({1} fichiers)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Fichiers existants ignorés : {0} (--force pour écraser)</value>
   </data>
 </root>
