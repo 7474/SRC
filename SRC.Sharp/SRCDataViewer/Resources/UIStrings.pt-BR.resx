@@ -286,4 +286,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>Linha cheia: efetivo; tracejada: simples. A linha cinza é a mediana (100).</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>Pares</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>Unidades</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>Pilotos</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>Somente pares confirmados</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>Suposto</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>Par formado por classe. Pode diferir da obra original</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>Filtros</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>Sem par</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>Compara apenas os números dos dados, sem formar pares (o desempenho efetivo está nos pares). Os índices são relativos à mediana da mesma seção (e faixa, para pilotos) = 100</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>Parceiro</value>
+  </data>
 </root>

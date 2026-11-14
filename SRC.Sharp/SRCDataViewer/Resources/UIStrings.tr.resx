@@ -286,4 +286,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>Düz çizgi etkin, kesikli çizgi basit. Gri çizgi medyandır (100).</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>Eşler</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>Birimler</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>Pilotlar</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>Yalnızca kesin eşler</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>Tahmini</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>Sınıfa göre eşlendi. Orijinal eserden farklı olabilir</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>Filtreler</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>Eşi yok</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>Eşleştirmeden yalnızca veri sayılarını karşılaştırır (etkin performans eşlerde). Endeksler aynı bölümün (pilotlarda aynı aralığın) medyanına = 100 göredir</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>Eş</value>
+  </data>
 </root>

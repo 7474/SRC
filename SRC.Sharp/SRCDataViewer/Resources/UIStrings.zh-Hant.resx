@@ -286,4 +286,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>實線為實效性能，虛線為單純數值。灰線為中位數（100）。</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>組合</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>機體</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>駕駛員</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>僅顯示確定的組合</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>推測</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>依類別配對的組合，可能與原作不同</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>篩選</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>無組合</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>不組合，僅用資料數值比較（實際性能請看組合）。指數以同一分區（駕駛員為同一檔）的中位數為 100</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>組合對象</value>
+  </data>
 </root>

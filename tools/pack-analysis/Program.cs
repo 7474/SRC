@@ -104,6 +104,8 @@ namespace PackAnalysis
     internal sealed partial class Analysis
     {
         private const int MapWidth = 12;
+        /// <summary>耐えられる回数の上限（相手の 10 ターン分の攻撃）。これを超える組は「落ちない」とみなす（#1633）</summary>
+        private const double MaxEndure = 30;
         private const int MapHeight = 3;
         private static readonly string[] Uses = { "ボス戦", "ザコ掃討", "回避・囮", "遊撃", "長距離", "支援" };
         private static readonly string[] Bands = { "経験値200以上", "経験値180-199", "経験値160-179", "経験値120-159", "経験値120未満", "名前なし" };
@@ -263,6 +265,34 @@ namespace PackAnalysis
             return "経験値120未満";
         }
 
+        /// <summary>
+        /// ユニットの名前に含まれていれば、そのパイロットの機体とみなす名前（愛称と、「＝」の前の名前。2 文字以上）
+        /// </summary>
+        private static List<string> NameKeys(PilotData p)
+        {
+            var keys = new List<string>();
+            foreach (var s in new[] { BaseName(p.Nickname), BaseName(p.Name).Split('＝')[0] })
+            {
+                if (!string.IsNullOrEmpty(s) && s.Length >= 2 && !keys.Contains(s)) keys.Add(s);
+            }
+            return keys;
+        }
+
+        /// <summary>
+        /// ユニットの名前がパイロットの名前を含むか。名前の一部が偶然一致するもの（「ファ」と「コアファイター」）を除くため、
+        /// 括弧の中・名前の先頭・名前の末尾にあるときだけ数える（「ザク(シャア専用)」「アベル艦」「メカ胡蝶鬼」）
+        /// </summary>
+        private static bool NamesPilot(string unitName, string key)
+        {
+            var open = unitName.IndexOf('(');
+            if (open >= 0 && unitName.IndexOf(key, open, StringComparison.Ordinal) >= 0) return true;
+            var main = open >= 0 ? unitName[..open] : unitName;
+            return main.StartsWith(key, StringComparison.Ordinal) || main.EndsWith(key, StringComparison.Ordinal);
+        }
+
+        /// <summary>組の決め方の確からしさ。確か（役割表・名前の一致・推奨ユニット・名前を含むユニット）か推定（クラスの一致）</summary>
+        private static string Confidence(string how) => how == "クラスの一致" ? "推定" : "確か";
+
         private static string BaseName(string s) => Regex.Replace(s ?? "", @"[\(（].*$", "").Trim();
 
         /// <summary>自動で組にするユニットか（追加パイロット・暴走時パイロットを持つものは、乗る人が分からないので除く）</summary>
@@ -351,7 +381,20 @@ namespace PackAnalysis
                 {
                     if (!unitsByWork.TryGetValue(g.Key, out var candidates)) continue;
                     var used = pairs.Select(x => x.Unit.Name).ToHashSet();
+                    // パイロットの名前・愛称を含むユニット（「ゲルググ(シャア専用)」など）を先に組む（#1635）
                     foreach (var p in g.Where(p => !IsZako(p)).OrderByDescending(p => p.ExpValue))
+                    {
+                        var keys = NameKeys(p);
+                        if (keys.Count == 0) continue;
+                        var own = candidates
+                            .Where(u => !used.Contains(u.Name) && (PilotRole(p) == "艦長") == u.IsFeatureAvailable("母艦") && keys.Any(k => NamesPilot(u.Name, k)))
+                            .OrderByDescending(u => u.ExpValue).FirstOrDefault();
+                        if (own == null) continue;
+                        used.Add(own.Name);
+                        paired.Add(p.Name);
+                        pairs.Add(new Pair { Pilot = p, Unit = own, How = "名前を含むユニット" });
+                    }
+                    foreach (var p in g.Where(p => !IsZako(p) && !paired.Contains(p.Name)).OrderByDescending(p => p.ExpValue))
                     {
                         var classes = (p.Class ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries);
                         var pick = candidates
@@ -771,7 +814,9 @@ namespace PackAnalysis
                 hits = afterTurn <= 0 ? hp / Math.Max(1, od) : 3 + afterTurn / Math.Max(1, od0);
                 r["相手の命中率"] = oh;
                 r["相手の命中率(SPなし)"] = oh0;
-                r["回避・囮"] = hits + absoluteEvasion;
+                // 受けるダメージがほぼ 0 か命中率 0% だと上限なく大きくなるので、MaxEndure 回で頭打ちにする（「落ちない」。#1633）
+                r["耐久力の頭打ち"] = hits + absoluteEvasion > MaxEndure ? 1 : 0;
+                r["回避・囮"] = Math.Min(MaxEndure, hits + absoluteEvasion);
                 r["絶対回避の回数"] = absoluteEvasion;
                 DespawnAll();
 
@@ -787,7 +832,7 @@ namespace PackAnalysis
                 var oppRaw = RawMax(opp.p, opp.u, w => !IsMap(w));
                 r["初動火力(単純)"] = RawMax(pd, ud, w => !IsMap(w) && w.NecessaryMorale <= 100);
                 r["ボス火力(単純)"] = RawMax(pd, ud, w => !IsMap(w));
-                r["耐久力(単純)"] = ud.HP / Math.Max(100.0, oppRaw - ud.Armor);
+                r["耐久力(単純)"] = Math.Min(MaxEndure, ud.HP / Math.Max(100.0, oppRaw - ud.Armor));
                 r["回避(単純)"] = ud.Mobility + pd.Dodge;
                 r["遊撃(単純)"] = RawMax(pd, ud, w => !IsMap(w) && (w.MaxRange <= 1 || (w.Class ?? "").Contains("Ｐ"))) * ud.Speed / 4.0;
                 r["長距離(単純)"] = RawMax(pd, ud, w => !IsMap(w) && w.MaxRange >= 3);

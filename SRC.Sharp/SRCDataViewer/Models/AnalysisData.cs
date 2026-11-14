@@ -35,6 +35,10 @@ namespace SRCDataViewer.Models
         public List<string> Bands { get; set; } = new List<string>();
         public List<AnalysisWork> Works { get; set; } = new List<AnalysisWork>();
         public List<AnalysisPair> Pairs { get; set; } = new List<AnalysisPair>();
+        /// <summary>対象作品の全パイロット（組にしない比較。書式 2 から）</summary>
+        public List<AnalysisPilot> Pilots { get; set; } = new List<AnalysisPilot>();
+        /// <summary>対象作品の全ユニット（組にしない比較。書式 2 から）</summary>
+        public List<AnalysisUnit> Units { get; set; } = new List<AnalysisUnit>();
     }
 
     public class AnalysisWork
@@ -51,6 +55,11 @@ namespace SRCDataViewer.Models
         public string Work { get; set; }
         /// <summary>組の決め方（役割表・名前の一致・クラスの一致など）</summary>
         public string How { get; set; }
+        /// <summary>組の確からしさ（確か・推定）。推定はクラスの一致で組んだ組で、原作と違うことがある。書式 1 には無い</summary>
+        public string Confidence { get; set; }
+        /// <summary>推定の組か（クラスの一致で組んだ）</summary>
+        [JsonIgnore]
+        public bool IsGuess => Confidence == AnalysisSingle.Guess;
         public string Band { get; set; }
         public string Role { get; set; }
         /// <summary>格（役割表・格の一覧。無ければ空）</summary>
@@ -97,25 +106,67 @@ namespace SRCDataViewer.Models
         public double? Simple { get; set; }
     }
 
-    public class AnalysisPilot
+    /// <summary>組にしない比較の 1 件（パイロットかユニット）に共通の項目</summary>
+    public abstract class AnalysisSingle
     {
+        /// <summary>推定の組の confidence</summary>
+        public const string Guess = "推定";
+
         public string Name { get; set; }
         public string Nickname { get; set; }
         public string Bitmap { get; set; }
         public string Class { get; set; }
         public int Exp { get; set; }
+        /// <summary>作品（pilots・units のとき）</summary>
+        public string Work { get; set; }
+        /// <summary>帯（パイロットは経験値、ユニットは組んだパイロットの帯。組が無ければ null）</summary>
+        public string Band { get; set; }
+
+        /// <summary>区分（読み込んだときに入れる）</summary>
+        [JsonIgnore]
+        public string Section { get; set; }
+
+        /// <summary>URL に残す鍵</summary>
+        [JsonIgnore]
+        public string Key => string.Join("|", Section, Work, Name);
+
+        /// <summary>比べる値（指標の名前）。無ければ null</summary>
+        public abstract double? ValueOf(string metric);
+
+        /// <summary>組の相手の名前（組が無ければ空）</summary>
+        [JsonIgnore]
+        public abstract string Partner { get; }
+    }
+
+    public class AnalysisPilot : AnalysisSingle
+    {
+        /// <summary>比べる値の名前（並びの順）</summary>
+        public static readonly string[] Metrics = { "格闘", "射撃", "命中", "回避", "技量", "反応", "SP", "経験値" };
+
         public int Sp { get; set; }
         public Dictionary<string, int> Stats { get; set; } = new Dictionary<string, int>();
         public List<string> SpecialPowers { get; set; } = new List<string>();
+        public string Role { get; set; }
+        /// <summary>組んだユニット（pilots のとき。組が無ければ null）</summary>
+        public string Unit { get; set; }
+        /// <summary>その組の確からしさ</summary>
+        public string Confidence { get; set; }
+
+        public override string Partner => Unit ?? "";
+
+        public override double? ValueOf(string metric) => metric switch
+        {
+            "SP" => Sp,
+            "経験値" => Exp,
+            _ => Stats != null && Stats.TryGetValue(metric, out var v) ? v : null,
+        };
     }
 
-    public class AnalysisUnit
+    public class AnalysisUnit : AnalysisSingle
     {
-        public string Name { get; set; }
-        public string Nickname { get; set; }
-        public string Bitmap { get; set; }
-        public string Class { get; set; }
-        public int Exp { get; set; }
+        /// <summary>比べる値の名前（並びの順）</summary>
+        public static readonly string[] Metrics = { "HP", "EN", "装甲", "運動性", "移動力", "最大攻撃力", "移動後攻撃力", "最大射程", "マップ兵器", "経験値" };
+
         public int Hp { get; set; }
         public int En { get; set; }
         public int Armor { get; set; }
@@ -123,6 +174,23 @@ namespace SRCDataViewer.Models
         public int Speed { get; set; }
         public string Size { get; set; }
         public AnalysisWeapon TopWeapon { get; set; }
+        /// <summary>組んだパイロット（units のとき）</summary>
+        public List<string> Pilots { get; set; }
+        /// <summary>データの数字（最大攻撃力・移動後攻撃力・最大射程・マップ兵器）</summary>
+        public Dictionary<string, double> Values { get; set; } = new Dictionary<string, double>();
+
+        public override string Partner => Pilots == null ? "" : string.Join("・", Pilots);
+
+        public override double? ValueOf(string metric) => metric switch
+        {
+            "HP" => Hp,
+            "EN" => En,
+            "装甲" => Armor,
+            "運動性" => Mobility,
+            "移動力" => Speed,
+            "経験値" => Exp,
+            _ => Values != null && Values.TryGetValue(metric, out var v) ? v : null,
+        };
     }
 
     public class AnalysisWeapon

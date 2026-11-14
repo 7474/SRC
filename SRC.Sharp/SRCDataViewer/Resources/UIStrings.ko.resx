@@ -286,4 +286,34 @@
   <data name="CompareRadarHint" xml:space="preserve">
     <value>실선은 실효 성능, 점선은 단순 수치. 회색 선은 중앙값(100).</value>
   </data>
+  <data name="CompareModePairs" xml:space="preserve">
+    <value>조</value>
+  </data>
+  <data name="CompareModeUnits" xml:space="preserve">
+    <value>유닛</value>
+  </data>
+  <data name="CompareModePilots" xml:space="preserve">
+    <value>파일럿</value>
+  </data>
+  <data name="CompareSureOnly" xml:space="preserve">
+    <value>확실한 조만</value>
+  </data>
+  <data name="CompareGuess" xml:space="preserve">
+    <value>추정</value>
+  </data>
+  <data name="CompareGuessHint" xml:space="preserve">
+    <value>클래스 일치로 짠 조입니다. 원작과 다를 수 있습니다</value>
+  </data>
+  <data name="CompareFilters" xml:space="preserve">
+    <value>필터</value>
+  </data>
+  <data name="CompareNoBand" xml:space="preserve">
+    <value>조 없음</value>
+  </data>
+  <data name="CompareSingleHint" xml:space="preserve">
+    <value>조를 짜지 않고 데이터 수치만으로 비교합니다(실효 성능은 조에서 봅니다). 지수는 같은 구분(파일럿은 같은 대역)의 중앙값을 100으로 한 값입니다</value>
+  </data>
+  <data name="ComparePartner" xml:space="preserve">
+    <value>조의 상대</value>
+  </data>
 </root>

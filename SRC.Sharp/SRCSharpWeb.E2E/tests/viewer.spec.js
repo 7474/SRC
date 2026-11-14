@@ -114,3 +114,52 @@ test('比べる: 組の評価を並べ替え、横並べにし、作品と自分
   await expect(position).toContainText('自作の主人公');
   await expect(position.locator('.src-compare-bar').first()).toBeVisible();
 });
+
+test('比べる: 推定の組を外し、ユニット・パイロットだけでも比べる（#1635・#1636）', async ({ page }) => {
+  await page.goto('./compare');
+  const ranking = page.locator('.src-compare-ranking');
+  await expect(ranking).toBeVisible({ timeout: 60 * 1000 });
+  // 既定は確かな組だけ。推定の組を含めると、いちばん強い推定の組が上に来て、印が付く
+  await expect(ranking).not.toContainText('推定の隊長');
+  await page.locator('.src-compare-sure input').uncheck();
+  await expect(ranking.locator('tbody tr')).toHaveCount(5);
+  await expect(ranking.locator('tbody tr').first()).toContainText('推定の隊長');
+  await expect(ranking.locator('tbody tr').first().locator('.src-compare-guess')).toBeVisible();
+  expect(page.url()).toContain('guess=1');
+  // ユニットだけ: 組の無いユニットも並ぶ。HP の大きい順
+  await page.locator('.src-compare-mode button[data-mode="unit"]').click();
+  const single = page.locator('.src-compare-single');
+  await expect(single.locator('tbody tr')).toHaveCount(6);
+  await expect(single.locator('tbody tr').first()).toContainText('乗り手の無い機体');
+  await single.locator('tbody tr').nth(0).locator('button').click();
+  await single.locator('tbody tr').nth(1).locator('button').click();
+  await page.locator('a[data-tab="side"]').click();
+  await expect(page.locator('.src-compare-single-side thead th')).toHaveCount(3);
+  await expect(page.locator('svg.src-radar polygon[fill-opacity]')).toHaveCount(2);
+  expect(page.url()).toContain('mode=unit');
+  expect(page.url()).toContain('units=');
+  // パイロットだけ: 格闘の大きい順（帯は既定の最上位）
+  await page.locator('.src-compare-mode button[data-mode="pilot"]').click();
+  await page.locator('a[data-tab="ranking"]').click();
+  await expect(single.locator('tbody tr')).toHaveCount(5);
+  await expect(single.locator('tbody tr').first()).toContainText('推定の隊長');
+});
+
+test('比べる: スマートフォンの幅で横にはみ出さない（#1634）', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./compare');
+  const ranking = page.locator('.src-compare-ranking');
+  await expect(ranking).toBeVisible({ timeout: 60 * 1000 });
+  // 絞り込みは畳まれていて、ボタンで開く
+  await expect(page.locator('.src-compare-filters')).toBeHidden();
+  await page.locator('.src-compare-filters-toggle').click();
+  await expect(page.locator('.src-compare-filters')).toBeVisible();
+  for (const mode of ['pair', 'unit', 'pilot']) {
+    await page.locator(`.src-compare-mode button[data-mode="${mode}"]`).click();
+    const width = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(width, mode).toBeLessThanOrEqual(390);
+  }
+  // 本文の左右に余白がある
+  const box = await page.locator('.src-compare h1').boundingBox();
+  expect(box.x).toBeGreaterThanOrEqual(12);
+});

@@ -42,18 +42,26 @@ echo "== json"
 python3 - "$WORK/pairs-ロボ.json" <<'PY'
 import json, sys
 d = json.load(open(sys.argv[1], encoding="utf-8"))
-for k in ("format", "pack", "generatedAt", "uses", "indices", "bands", "opponents", "works", "pairs"):
+for k in ("format", "pack", "generatedAt", "uses", "indices", "bands", "opponents", "works", "pairs", "pilots", "units"):
     assert k in d, k
-assert d["format"] == 1 and d["pack"] == "ロボ"
+assert d["format"] == 2 and d["pack"] == "ロボ"
 assert d["pairs"], "組が無い"
 for p in d["pairs"]:
-    for k in ("work", "how", "band", "role", "rank", "pilot", "unit", "evaluated"):
+    for k in ("work", "how", "confidence", "band", "role", "rank", "pilot", "unit", "evaluated"):
         assert k in p, k
     assert p["pilot"]["name"] and p["unit"]["name"]
     if p["evaluated"]:
         assert set(p["grades"]) == set(d["uses"]), p["grades"]
         assert set(p["indices"]) == set(d["indices"]), p["indices"]
-print("json:", len(d["pairs"]), "組")
+    assert p["confidence"] in ("確か", "推定"), p["confidence"]
+assert d["pilots"] and d["units"], "パイロット・ユニットが無い"
+for p in d["pilots"]:
+    for k in ("name", "work", "band", "stats", "sp"):
+        assert k in p, k
+for u in d["units"]:
+    for k in ("name", "work", "hp", "en", "armor", "mobility", "speed", "values"):
+        assert k in u, k
+print("json:", len(d["pairs"]), "組", len(d["pilots"]), "パイロット", len(d["units"]), "ユニット")
 PY
 
 # 役割表・格の一覧・対象作品の名前の確かめと、役割表のひな形
