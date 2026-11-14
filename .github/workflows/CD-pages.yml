@@ -61,6 +61,10 @@ jobs:
           sed -i "s|<base href=\"/\" />|<base href=\"${BASE_PATH}/web/\" />|" ${{ env.PUBLISH_DIR }}/web/index.html
           grep -n "<base href" ${{ env.PUBLISH_DIR }}/web/index.html
 
+      # SRC#Studio（マップ作成ツール。7474/SRC#1641）を studio/ に置く。頁は相対パスで読み込むので base は書き換えない
+      - name: Place SRC#Studio under studio/
+        run: tools/studio_bundle.sh ${{ env.PUBLISH_DIR }}/studio
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:

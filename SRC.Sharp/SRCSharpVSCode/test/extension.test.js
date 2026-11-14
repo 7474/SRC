@@ -38,6 +38,27 @@ describe('SRC# Authoring', () => {
     assert.strictEqual(document.languageId, 'src-data');
   });
 
+  it('.map をマップ作成ツール（SRC#Studio）で開ける（7474/SRC#1641）', async function () {
+    this.timeout(90 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    const uri = vscode.Uri.file(path.join(folder, 'test.map'));
+    await vscode.commands.executeCommand('vscode.openWith', uri, 'srcsharp.mapEditor');
+    const tab = vscode.window.tabGroups.activeTabGroup.activeTab;
+    assert.ok(tab.input instanceof vscode.TabInputCustom, '開いたタブがカスタムエディタでない');
+    assert.strictEqual(tab.input.viewType, 'srcsharp.mapEditor');
+    // 画面（SRC#Studio の WebAssembly）が地形（拡張に入れた最小の汎用データ）とマップを読めた
+    let status;
+    for (let i = 0; i < 100 && !(status && status.terrains !== undefined) && !(status && status.errors); i++) {
+      await new Promise((r) => setTimeout(r, 500));
+      status = await vscode.commands.executeCommand('srcsharp._mapEditorStatus', uri);
+    }
+    assert.ok(status && status.terrains !== undefined, `マップ作成ツールの画面が読み込みを終えない: ${JSON.stringify(status)}`);
+    assert.deepStrictEqual(status.errors ?? [], [], '画面のエラー');
+    assert.ok(status.terrains > 0, '地形が無い');
+    assert.deepStrictEqual([status.width, status.height], [2, 1]);
+    await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+  });
+
   it('データの規則のグループ（srcsharp.rules）の既定は src だけ', () => {
     assert.deepStrictEqual(vscode.workspace.getConfiguration('srcsharp').get('rules'), ['src']);
   });

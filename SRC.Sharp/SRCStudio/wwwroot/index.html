@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SRC#Studio</title>
+  <link rel="stylesheet" href="studio.css" />
+  <script type="module" src="studio.js"></script>
+</head>
+<body>
+  <header>
+    <h1>SRC#Studio</h1>
+    <p data-t="studio.intro"></p>
+    <div class="folders">
+      <button type="button" id="open-app" data-t="studio.openApp"></button>
+      <input type="file" id="app-input" webkitdirectory multiple hidden />
+      <span id="app-folder"></span>
+      <button type="button" id="open-scenario" data-t="studio.openScenario"></button>
+      <input type="file" id="scenario-input" webkitdirectory multiple hidden />
+      <span id="scenario-folder"></span>
+    </div>
+    <div class="files">
+      <button type="button" id="new-map" data-t="studio.newMap"></button>
+      <button type="button" id="save" data-t="studio.save" disabled></button>
+      <button type="button" id="download" data-t="studio.download"></button>
+      <span id="file-name"></span>
+    </div>
+    <div id="message" hidden></div>
+    <p id="loading" data-t="loading" hidden></p>
+  </header>
+  <main>
+    <nav id="maps-section" hidden>
+      <h2 data-t="studio.maps"></h2>
+      <ul id="maps"></ul>
+    </nav>
+    <section id="editor" hidden></section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,85 @@
+/* SRC#Studio の画面。スタンドアロン（index.html）と VS Code の Webview（vscode.html）で共通。VS Code では VS Code の色を使う */
+:root {
+  --bg: var(--vscode-editor-background, #ffffff);
+  --fg: var(--vscode-editor-foreground, #1f2328);
+  --muted: var(--vscode-descriptionForeground, #59636e);
+  --border: var(--vscode-panel-border, #d1d9e0);
+  --accent: var(--vscode-focusBorder, #0969da);
+  --button-bg: var(--vscode-button-secondaryBackground, #f6f8fa);
+  --button-fg: var(--vscode-button-secondaryForeground, #1f2328);
+  --selected: var(--vscode-list-activeSelectionBackground, #ddf4ff);
+  --warning: #9a6700;
+  --error: #d1242f;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--vscode-editor-background, #0d1117);
+    --fg: var(--vscode-editor-foreground, #e6edf3);
+    --muted: var(--vscode-descriptionForeground, #9198a1);
+    --border: var(--vscode-panel-border, #3d444d);
+    --button-bg: var(--vscode-button-secondaryBackground, #212830);
+    --button-fg: var(--vscode-button-secondaryForeground, #e6edf3);
+    --selected: var(--vscode-list-activeSelectionBackground, #1f3a5f);
+    --warning: #d29922;
+    --error: #f85149;
+  }
+}
+body {
+  margin: 0;
+  padding: 12px 16px;
+  background: var(--bg);
+  color: var(--fg);
+  font: 14px/1.5 system-ui, sans-serif;
+}
+h1 { font-size: 1.4rem; margin: 0 0 4px; }
+h2 { font-size: 1rem; margin: 8px 0 4px; }
+header p { margin: 4px 0 8px; color: var(--muted); }
+button {
+  background: var(--button-bg);
+  color: var(--button-fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+button:disabled { opacity: 0.5; cursor: default; }
+input, select { font: inherit; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; }
+.folders, .files { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin: 6px 0; }
+.folders span, .files span { color: var(--muted); }
+#message { margin: 6px 0; padding: 6px 10px; border-left: 3px solid var(--accent); white-space: pre-wrap; }
+#message.warning { border-color: var(--warning); }
+#message.error { border-color: var(--error); color: var(--error); }
+main { display: flex; gap: 16px; align-items: flex-start; }
+#maps-section { min-width: 160px; max-width: 220px; }
+#maps { list-style: none; padding: 0; margin: 0; word-break: break-all; }
+#maps a { color: var(--accent); }
+#editor { flex: 1; min-width: 0; }
+
+/* マップ作成ツール */
+.map-editor { outline: none; }
+.me-toolbar { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-bottom: 6px; }
+.me-group { display: inline-flex; gap: 4px; align-items: center; }
+.me-body { display: flex; gap: 10px; align-items: flex-start; }
+.me-canvas-wrap { flex: 1; min-width: 0; overflow: auto; max-height: calc(100vh - 220px); border: 1px solid var(--border); }
+.me-canvas { display: block; image-rendering: pixelated; cursor: crosshair; touch-action: none; }
+.me-palette { width: 220px; flex: none; display: flex; flex-direction: column; gap: 6px; }
+.me-current { display: flex; gap: 6px; align-items: center; }
+.me-current canvas, .me-bitmaps canvas { image-rendering: pixelated; border: 1px solid var(--border); }
+.me-terrains { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow: auto; border: 1px solid var(--border); }
+.me-terrains li { padding: 1px 6px; cursor: pointer; }
+.me-terrains li[aria-selected="true"] { background: var(--selected); }
+.me-bitmaps { display: flex; flex-wrap: wrap; gap: 3px; max-height: 200px; overflow: auto; }
+.me-bitmaps canvas { cursor: pointer; }
+.me-bitmaps canvas[aria-selected="true"] { outline: 2px solid var(--accent); }
+.me-status { min-height: 1.5em; color: var(--muted); margin-top: 4px; }
+.me-resize-dialog { background: var(--bg); color: var(--fg); border: 1px solid var(--border); max-width: 420px; }
+.me-resize-dialog label { display: block; margin: 4px 0; }
+.me-resize-dialog menu { display: flex; gap: 6px; justify-content: flex-end; padding: 0; }
+@media (max-width: 720px) {
+  main, .me-body { flex-direction: column; }
+  .me-palette { width: 100%; }
+  #maps-section { max-width: none; }
+}

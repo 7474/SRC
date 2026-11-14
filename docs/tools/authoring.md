@@ -52,6 +52,7 @@ flowchart LR
 | `SRC.Sharp/SRCAuthoringTests` | SRCAuthoring・SRCDebugAdapter のテスト（LSP・DAP はパイプでつないで確かめる） |
 | `SRC.Sharp/SRCDataLinter` | 従来の lint の CLI と Docker イメージ。検査は SRCAuthoring の `DataLinter`（`srcsharp lint` と共通）で、出力の書式は従来どおり |
 | `SRC.Sharp/SRCLintWeb` | ブラウザで動く lint（WebAssembly、スレッドなし）。`srcsharp lint` と同じ `DataLinter` と、LSP と同じ静的解析（`ScenarioAnalyzer`。ラベル・include）と素材の参照（`AssetReferenceChecker`。画像・音・マップのファイルがあるか）で zip を検査する。投稿サイト（7474/SRC-Site）がアップロードの前に使う（`SRC.Sharp/SRCLintWeb/README.md`） |
+| `SRC.Sharp/SRCStudio` | SRC#Studio（作成支援の画面。今はマップ作成ツール）。.NET の WebAssembly と HTML・JavaScript の画面で、スタンドアロン（GitHub Pages の `/SRC/studio/`）と VS Code 拡張（`.map` のカスタムエディタ）で動く（`SRC.Sharp/SRCStudio/README.md`）。マップの読み書きと地形データは SRCAuthoring の `Maps` |
 | `SRC.Sharp/SRCSharpVSCode` | VS Code 拡張 |
 
 SRCCore には、デバッガ用のフック `IEventDebugger`（`Event.Debugger`）がある。`CmdData.Exec` の先頭と、イベントのエラーを表示する時に呼ばれる。設定しなければ null の判定だけで、通常の実行には影響しない。
@@ -233,6 +234,18 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 }
 ```
 
+## マップ作成ツール（SRC#Studio）
+
+マップ（`.map`）を作る。スタンドアロンの Web アプリ（[`https://7474.github.io/SRC/studio/`](https://7474.github.io/SRC/studio/)）と、VS Code 拡張の `.map` のカスタムエディタで、同じ画面が動く（判断は [作成環境の補完](../decisions/2026-11-14-authoring-environment.md)、詳細は `SRC.Sharp/SRCStudio/README.md`）。
+
+| 内容 | |
+|---|---|
+| 地形・画像 | SRCCore と同じ処理。SRC 本体の `Data/System/terrain.txt` にシナリオのものを重ね、画像はシナリオ → SRC 本体の順に `Bitmap/Map` を探す。SRC 本体のフォルダが無ければ最小の汎用データ |
+| 操作 | 描く（右クリックはスポイト）・四角・塗りつぶし・スポイト・写す・貼る、地形とレイヤー、元に戻す・やり直す、拡大・縮小、マス目、大きさ（1〜50） |
+| 書き出し | 読んだファイルの書き方（改行・1 行目・予約行）を保つ。変えていないマップは変わらない |
+| スタンドアロン | Chrome・Edge はフォルダを直接読み書き（File System Access API）。ほかのブラウザは読み込みとダウンロード |
+| VS Code | SRC 本体のフォルダは `srcsharp.appPath`、無ければシナリオの親のうち Lib か Data/System のあるもの、それも無ければ最小の汎用データ。保存・元に戻す・未保存の印は VS Code のもの。SRC のマップでない `.map`（JavaScript のソースマップなど）は「テキストとして開く」で開き直せる |
+
 ## VS Code 拡張
 
 | 内容 | |
@@ -263,5 +276,6 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | エディタ：データの名前 | ユニット・パイロット・アイテムの名前の補完・ホバー・定義へ移動（データの読み込みを伴う） |
 | エディタ：解析の高速化 | システムの Lib など、変わらない部分の解析結果を使い回す |
 | 画面：音 | `interactive` で、効果音・BGM を Webview の Web Audio で鳴らす |
+| マップ作成ツール：言語 | 画面の文字列は日本語と英語だけ（ほかの言語は英語） |
 | 拡張の公開 | Open VSX への公開（7474/SRC#1175）。`Publish-VSCode.yml` は Secrets に `OVSX_PAT` があるときだけ出す |
 | SRC#Web | Monaco と同じ LSP でブラウザ上の編集支援（[SRC#Web](../gui/web.md) の外部コンテンツ管理と合わせて） |

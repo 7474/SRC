@@ -176,10 +176,13 @@ jobs:
       with:
         node-version: 22
 
-    # VS Code 拡張（Language Server とデバッガのクライアント）。esbuild でまとめ、.vsix を作る
+    # VS Code 拡張（Language Server とデバッガのクライアント）。esbuild でまとめ、.vsix を作る。
+    # マップのカスタムエディタは SRC#Studio の画面と WebAssembly を studio/ に入れて使う（tools/studio_bundle.sh。7474/SRC#1641）
     - name: Build VS Code extension
       working-directory: SRC.Sharp/SRCSharpVSCode
       run: |
+        dotnet workload install wasm-tools --skip-manifest-update
+        ../../tools/studio_bundle.sh studio
         # 拡張の版がライブラリ（srcsharp）の版と同じかは release-check で確かめる（docs/versioning.md）
         npm ci
         npm run package
@@ -390,7 +393,7 @@ jobs:
           SRC.Sharp/SRCSharpWeb.E2E/test-results/
         if-no-files-found: ignore
 
-  # ブラウザで動く lint（SRCLintWeb。スレッドを使わない別の WebAssembly）。test-web と並べて動かし、待ち時間を減らす
+  # ブラウザで動く lint（SRCLintWeb）と SRC#Studio（マップ作成ツール）。どちらもスレッドを使わない別の WebAssembly。test-web と並べて動かし、待ち時間を減らす
   test-lint:
     needs: changes
     if: needs.changes.outputs.code == 'true'
@@ -411,6 +414,10 @@ jobs:
         dotnet workload install wasm-tools --skip-manifest-update
         dotnet publish SRC.Sharp/SRCLintWeb/SRCLintWeb.csproj -c Release -o SRC.Sharp/SRCLintWeb/bin/web
 
+    # SRC#Studio（マップ作成ツール。同じくスレッドを使わない WebAssembly。7474/SRC#1641）
+    - name: Build SRC#Studio
+      run: tools/studio_bundle.sh SRC.Sharp/SRCLintWeb/bin/pages-test/studio
+
     - name: Setup Node.js
       uses: actions/setup-node@v7
       with:
@@ -423,12 +430,13 @@ jobs:
         SRCWEB_ROOT: ../SRCLintWeb/bin/pages-test
         SRCWEB_BASE: /lint/
         SRCLINT_REQUIRED: 1
+        STUDIO_REQUIRED: 1
       run: |
         mkdir -p ${SRCWEB_ROOT}/lint
         cp -r ../SRCLintWeb/bin/web/wwwroot/. ${SRCWEB_ROOT}/lint/
         npm ci
         npx playwright install --with-deps chromium
-        npx playwright test tests/lint.spec.js
+        npx playwright test tests/lint.spec.js tests/studio.spec.js
 
     - name: Summarize SRCLintWeb tests
       if: always()

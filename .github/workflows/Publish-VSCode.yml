@@ -79,9 +79,16 @@ jobs:
         with:
           node-version: 22
 
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
       - name: Package
         id: package
         run: |
+          # マップのカスタムエディタが使う SRC#Studio（7474/SRC#1641）
+          dotnet workload install wasm-tools --skip-manifest-update
+          ../../tools/studio_bundle.sh studio
           npm ci
           version=$(jq -r .version package.json)
           vsix="src-vscode-${version}.vsix"
