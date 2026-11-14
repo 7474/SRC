@@ -25,6 +25,8 @@
       Таблица характеристик юнитов и выбросы
   srcsharp new &lt;папка&gt; [--title название] [--app-path папка SRC] [--force]
       Создаёт шаблон нового сценария (событие, карта и данные первого эпизода, сценарий автоигры, настройки VS Code, CI). Существующие файлы не перезаписываются (--force перезаписывает)
+  srcsharp trial &lt;папка сценария&gt; [--unit юнит] [--pilot пилот] [--enemy юнит] [--enemy-pilot пилот] [--level n] [--enemies n] [--list]
+      Создаёт в .srcsharp/trial/ пробный бой юнитов и пилотов из данных сценария против врага и выводит путь (запускайте через play или отладчик). --list выводит юнитов и пилотов в JSON
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Пропущены существующие файлы: {0} (--force для перезаписи)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Укажите одну папку сценария</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Пробный бой создан: {0}/{1} против {2}/{3}</value>
   </data>
 </root>

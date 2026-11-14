@@ -25,6 +25,8 @@
       列出單位資料的能力值與異常值
   srcsharp new &lt;資料夾&gt; [--title 標題] [--app-path SRC 資料夾] [--force]
       建立新劇本的範本（第一話的事件、地圖與資料，自動遊玩步驟，VS Code 設定，CI）。已有的檔案不覆寫（--force 覆寫）
+  srcsharp trial &lt;劇本資料夾&gt; [--unit 機體] [--pilot 駕駛員] [--enemy 機體] [--enemy-pilot 駕駛員] [--level 數] [--enemies 數] [--list]
+      在 .srcsharp/trial/ 建立讓劇本資料中的機體與駕駛員和敵人戰鬥的試戰事件，並輸出其路徑（以 play 或除錯器執行）。--list 以 JSON 輸出資料中的機體與駕駛員
   srcsharp lsp
       Language Server（標準輸入輸出）
   srcsharp dap
@@ -82,5 +84,11 @@
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>已略過既有檔案：{0}（使用 --force 覆寫）</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>請指定一個劇本資料夾</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>已建立試戰：{0}/{1} 對 {2}/{3}</value>
   </data>
 </root>

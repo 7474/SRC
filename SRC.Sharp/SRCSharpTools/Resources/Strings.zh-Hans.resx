@@ -25,6 +25,8 @@
       列出单位数据的能力值及异常值
   srcsharp new &lt;文件夹&gt; [--title 标题] [--app-path SRC 文件夹] [--force]
       创建新剧本的模板（第一话的事件、地图和数据，自动游玩步骤，VS Code 设置，CI）。已有的文件不覆盖（--force 覆盖）
+  srcsharp trial &lt;剧本文件夹&gt; [--unit 机体] [--pilot 驾驶员] [--enemy 机体] [--enemy-pilot 驾驶员] [--level 数] [--enemies 数] [--list]
+      在 .srcsharp/trial/ 创建让剧本数据中的机体和驾驶员与敌人战斗的试战事件，并输出其路径（用 play 或调试器运行）。--list 以 JSON 输出数据中的机体和驾驶员
   srcsharp lsp
       Language Server（标准输入输出）
   srcsharp dap
@@ -82,5 +84,11 @@
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>已跳过已有文件：{0}（使用 --force 覆盖）</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>请指定一个剧本文件夹</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>已创建试战：{0}/{1} 对 {2}/{3}</value>
   </data>
 </root>

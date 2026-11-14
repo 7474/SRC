@@ -25,6 +25,8 @@ Użycie:
       Zestawienie statystyk jednostek i wartości odstające
   srcsharp new &lt;folder&gt; [--title tytuł] [--app-path folder SRC] [--force]
       Tworzy nowy szablon scenariusza (zdarzenie, mapa i dane pierwszego odcinka, skrypt autogry, ustawienia VS Code, CI). Istniejące pliki są zachowywane (--force je nadpisuje)
+  srcsharp trial &lt;folder scenariusza&gt; [--unit jednostka] [--pilot pilot] [--enemy jednostka] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
+      Tworzy w .srcsharp/trial/ walkę próbną jednostek i pilotów z danych scenariusza z wrogiem i wypisuje jej ścieżkę (uruchom przez play lub debuger). --list wypisuje jednostki i pilotów jako JSON
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@ Opcje wspólne:
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Pominięto istniejące pliki: {0} (--force, aby nadpisać)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Podaj jeden folder scenariusza</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Utworzono walkę próbną: {0}/{1} przeciw {2}/{3}</value>
   </data>
 </root>

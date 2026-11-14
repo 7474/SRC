@@ -1,4 +1,5 @@
 using SRCAuthoring.Maps;
+using SRCAuthoring.Preview;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -158,6 +159,33 @@ namespace SRCStudio
             templates.TryGetValue(template, out var t);
             var doc = MapDocument.FromRows(width, height, tiles, layer == null || layer.Length == 0 ? null : layer, t);
             return doc.Serialize();
+        }
+
+        /// <summary>
+        /// データのプレビュー（7474/SRC#1643）。name・text はプレビューするデータのファイル（robot.txt・pilot.txt など）、
+        /// beforeNames・beforeTexts は先に読むデータ（汎用データの sp.txt など）。結果は SRCAuthoring.Preview.DataPreview の JSON
+        /// </summary>
+        [JSExport]
+        internal static string PreviewData(string name, string text, string[] beforeNames, string[] beforeTexts)
+        {
+            return DataPreview.ToJson(name, text, beforeNames.Select((n, i) => (n, beforeTexts[i])).ToList());
+        }
+
+        /// <summary>候補のファイル（相対パス）のうち、画像を探すフォルダ（足した順）にある最初のもの。"フォルダの番号:パス" か空</summary>
+        [JSExport]
+        internal static string FindFile(string[] candidates)
+        {
+            for (var r = 0; r < imageRoots.Count; r++)
+            {
+                foreach (var c in candidates)
+                {
+                    if (imageRoots[r].TryGet(c, out var actual))
+                    {
+                        return r + ":" + actual;
+                    }
+                }
+            }
+            return "";
         }
 
         private static void WriteInts(Utf8JsonWriter w, string name, int[] values)

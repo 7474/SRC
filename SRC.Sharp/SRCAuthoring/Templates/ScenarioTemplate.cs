@@ -35,7 +35,7 @@ namespace SRCAuthoring.Templates
                 ["README.md"] = Readme(title, episode),
                 [".vscode/launch.json"] = Launch(episode),
                 [".github/workflows/src-check.yml"] = Workflow(episode),
-                [".gitignore"] = Lines("# SRC のセーブデータ・ログ", "*.src", "Save/", "Logs/", "srcsharp-logs/"),
+                [".gitignore"] = Lines("# SRC のセーブデータ・ログ", "*.src", "Save/", "Logs/", "srcsharp-logs/", "# 試し戦闘（srcsharp trial・VS Code の「試し戦闘」が作る）", ".srcsharp/"),
             };
             if (!string.IsNullOrEmpty(appPath))
             {

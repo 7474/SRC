@@ -25,6 +25,8 @@ Utilisation :
       Liste les statistiques des unités et les valeurs aberrantes
   srcsharp new &lt;dossier&gt; [--title titre] [--app-path dossier de SRC] [--force]
       Crée un nouveau modèle de scénario (événement, carte et données du premier épisode, script de jeu automatique, réglages VS Code, CI). Les fichiers existants sont conservés (--force les écrase)
+  srcsharp trial &lt;dossier du scénario&gt; [--unit unité] [--pilot pilote] [--enemy unité] [--enemy-pilot pilote] [--level n] [--enemies n] [--list]
+      Crée dans .srcsharp/trial/ un combat d’essai opposant des unités et pilotes des données du scénario à un ennemi, et affiche son chemin (à lancer avec play ou le débogueur). --list affiche les unités et pilotes en JSON
   srcsharp lsp
       Language Server (entrée/sortie standard)
   srcsharp dap
@@ -82,5 +84,11 @@ Options communes :
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Fichiers existants ignorés : {0} (--force pour écraser)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Indiquez un dossier de scénario</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Combat d’essai créé : {0}/{1} contre {2}/{3}</value>
   </data>
 </root>

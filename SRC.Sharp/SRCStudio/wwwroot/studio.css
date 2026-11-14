@@ -25,6 +25,7 @@
     --error: #f85149;
   }
 }
+[hidden] { display: none !important; }
 body {
   margin: 0;
   padding: 12px 16px;
@@ -83,3 +84,50 @@ main { display: flex; gap: 16px; align-items: flex-start; }
   .me-palette { width: 100%; }
   #maps-section { max-width: none; }
 }
+
+/* タブ（スタンドアロン） */
+.studio-tabs { display: flex; gap: 4px; margin: 8px 0; border-bottom: 1px solid var(--border); }
+.studio-tabs button { border-bottom: none; border-radius: 4px 4px 0 0; }
+.studio-tabs button[aria-selected="true"] { background: var(--selected); }
+
+/* データのプレビュー */
+.data-preview .dp-errors { color: var(--error); white-space: pre-wrap; margin-bottom: 6px; }
+.dp-body { display: flex; gap: 12px; align-items: flex-start; }
+.dp-list { list-style: none; margin: 0; padding: 0; min-width: 140px; max-height: 70vh; overflow: auto; border: 1px solid var(--border); }
+.dp-list li { padding: 2px 8px; cursor: pointer; }
+.dp-list li[aria-selected="true"] { background: var(--selected); }
+.dp-list li.dp-empty { color: var(--muted); cursor: default; }
+.dp-card { flex: 1; min-width: 0; }
+.dp-card header { display: flex; gap: 10px; align-items: center; }
+.dp-card h2 { margin: 0; font-size: 1.2rem; }
+.dp-card h3 { font-size: 0.95rem; margin: 10px 0 4px; }
+.dp-card header p { margin: 2px 0; color: var(--muted); }
+.dp-image { image-rendering: pixelated; max-width: 96px; max-height: 96px; }
+.dp-stats { border-collapse: collapse; }
+.dp-stats th, .dp-stats td { padding: 1px 10px 1px 0; text-align: left; }
+.dp-stats th { color: var(--muted); font-weight: normal; }
+.dp-weapons { border-collapse: collapse; width: 100%; font-size: 0.9em; }
+.dp-weapons th, .dp-weapons td { border-bottom: 1px solid var(--border); padding: 2px 6px; text-align: left; white-space: nowrap; }
+.dp-tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+.dp-tags li { border: 1px solid var(--border); border-radius: 3px; padding: 0 6px; }
+.dp-none { color: var(--muted); margin: 0; }
+@media (max-width: 720px) {
+  .dp-body { flex-direction: column; }
+  .dp-list { width: 100%; max-height: 30vh; }
+  .dp-weapons { display: block; overflow-x: auto; }
+}
+
+/* 表で直す・比べる（7474/SRC#1644） */
+.dp-table-toggle { margin: 6px 0; }
+.dp-table-edit { overflow-x: auto; }
+.dp-edit { border-collapse: collapse; margin: 6px 0; }
+.dp-edit caption { text-align: left; font-weight: 600; }
+.dp-edit th { font-weight: normal; color: var(--muted); text-align: left; padding: 0 4px; white-space: nowrap; }
+.dp-edit td { padding: 1px 2px; }
+.dp-edit input { width: auto; min-width: 3ch; padding: 1px 3px; }
+.dp-move { white-space: nowrap; }
+.dp-move button { padding: 0 4px; }
+.dp-compare select { margin-left: 6px; }
+.dp-bar-cell { white-space: nowrap; color: var(--muted); }
+.dp-bar { display: inline-block; width: 120px; height: 8px; background: var(--border); border-radius: 4px; vertical-align: middle; overflow: hidden; }
+.dp-bar span { display: block; height: 100%; background: var(--accent); }

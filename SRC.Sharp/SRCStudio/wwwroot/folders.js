@@ -11,19 +11,24 @@ export function canWriteFolders() {
 
 /**
  * フォルダの中で読むファイルを絞る。SRC 本体のフォルダは大きい（Bitmap に数万のファイル）ので、
- * 地形データ（Data/System/terrain.txt）・マップの画像（Bitmap/Map）・マップ（*.map）だけを見る
+ * 地形データ（Data/System/terrain.txt）・スペシャルパワー（sp.txt）・データ（robot.txt・unit.txt・pilot.txt）・
+ * 画像（Bitmap/Map・Bitmap/Unit・Bitmap/Pilot）・マップ（*.map）だけを見る
  */
 function wanted(path, isDir) {
   const p = path.toLowerCase();
   if (isDir) {
     const top = p.split('/')[0];
     if (top === 'bitmap') {
-      return p === 'bitmap' || p === 'bitmap/map' || p.startsWith('bitmap/map/');
+      return p === 'bitmap' || /^bitmap\/(map|unit|pilot)(\/|$)/.test(p);
     }
     // 音・セーブなどは見ない
     return !['sound', 'midi', 'music', 'save', '.git', 'node_modules'].includes(top);
   }
-  return p === 'data/system/terrain.txt' || (p.startsWith('bitmap/map/') && /\.(bmp|png)$/.test(p)) || p.endsWith('.map');
+  return p === 'data/system/terrain.txt' || p === 'data/system/sp.txt'
+    // データのファイル（プレビュー）と、ユニット・パイロットの画像
+    || (p.startsWith('data/') && /(^|\/)(robot|unit|pilot|sp)\.txt$/.test(p))
+    || (/^bitmap\/(map|unit|pilot)\//.test(p) && /\.(bmp|png|jpg|gif)$/.test(p))
+    || p.endsWith('.map');
 }
 
 /** showDirectoryPicker で選んだフォルダ */

@@ -25,6 +25,8 @@ Usage:
       List unit data stats and outliers
   srcsharp new &lt;folder&gt; [--title title] [--app-path SRC folder] [--force]
       Create a new scenario template (first episode event, map and data, autoplay script, VS Code settings, CI). Existing files are kept (--force overwrites)
+  srcsharp trial &lt;scenario folder&gt; [--unit unit] [--pilot pilot] [--enemy unit] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
+      Create a trial battle event in .srcsharp/trial/ that fights units and pilots from the scenario data against an enemy, and print its path (run it with play or the debugger). --list prints the units and pilots as JSON
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -83,5 +85,11 @@ Common options:
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Skipped existing files: {0} (use --force to overwrite)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Specify one scenario folder</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Created a trial battle: {0}/{1} vs {2}/{3}</value>
   </data>
 </root>

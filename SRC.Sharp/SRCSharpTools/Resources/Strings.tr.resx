@@ -25,6 +25,8 @@ Kullanım:
       Birim verilerinin istatistik listesi ve aykırı değerler
   srcsharp new &lt;klasör&gt; [--title başlık] [--app-path SRC klasörü] [--force]
       Yeni bir senaryo şablonu oluşturur (ilk bölümün olayı, haritası ve verileri, otomatik oynama betiği, VS Code ayarları, CI). Var olan dosyalar korunur (--force üzerine yazar)
+  srcsharp trial &lt;senaryo klasörü&gt; [--unit birim] [--pilot pilot] [--enemy birim] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
+      Senaryo verilerindeki birim ve pilotları bir düşmanla savaştıran deneme savaşını .srcsharp/trial/ içinde oluşturur ve yolunu yazdırır (play veya hata ayıklayıcıyla çalıştırın). --list birim ve pilotları JSON olarak yazdırır
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -82,5 +84,11 @@ Ortak seçenekler:
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Var olan dosyalar atlandı: {0} (üzerine yazmak için --force)</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Bir senaryo klasörü belirtin</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Deneme savaşı oluşturuldu: {0}/{1} - {2}/{3}</value>
   </data>
 </root>
