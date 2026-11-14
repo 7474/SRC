@@ -537,12 +537,12 @@ namespace SRCRender
         /// </summary>
         private static void DrawTextTop(SKCanvas canvas, string text, float x, float y, SKFont font, SKPaint paint)
         {
-            canvas.DrawText(text ?? "", x, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+            Compat.SkiaFonts.DrawText(canvas, text ?? "", x, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
         }
 
         private static SKSize MeasureText(string text, SKFont font)
         {
-            return new SKSize(font.MeasureText(text ?? ""), Compat.SkiaFonts.LineHeight(font));
+            return new SKSize(Compat.SkiaFonts.MeasureText(font, text ?? ""), Compat.SkiaFonts.LineHeight(font));
         }
 
         public void DrawString(string msg, int X, int Y, bool without_cr = false)

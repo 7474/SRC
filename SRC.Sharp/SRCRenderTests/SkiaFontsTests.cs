@@ -77,6 +77,72 @@ namespace SRCRenderTests
             }
         }
 
+        /// <summary>
+        /// 等幅の指定は、文字ごとに Shift_JIS のバイト数の升目（半角 = 全角の半分）に並べる。
+        /// 代わりの書体（Noto Sans Mono CJK JP など）が半角でも全角でもない幅で描く文字（ギリシャ文字・°・引用符など）でも桁がずれない（7474/SRC#1650）
+        /// </summary>
+        [TestMethod]
+        [DataRow("α")]
+        [DataRow("Ω")]
+        [DataRow("Ж")]
+        [DataRow("°")]
+        [DataRow("“")]
+        [DataRow("’")]
+        [DataRow("あ")]
+        [DataRow("×")]
+        public void FixedPitchFont_DoubleByteCharactersTakeTwoCells(string ch)
+        {
+            using (var font = SkiaFonts.Create("ＭＳ 明朝", 16, false, false))
+            {
+                Assert.IsTrue(SkiaFonts.IsFixedPitch(font));
+                Assert.AreEqual(16f, SkiaFonts.MeasureText(font, ch), 0.01f);
+                Assert.AreEqual(SkiaFonts.MeasureText(font, ch + "1000"), SkiaFonts.MeasureText(font, "      "), 0.01f);
+            }
+        }
+
+        [TestMethod]
+        public void ProportionalFont_UsesTypefaceWidths()
+        {
+            using (var font = SkiaFonts.Create("ＭＳ Ｐ明朝", 16, false, false))
+            {
+                Assert.IsFalse(SkiaFonts.IsFixedPitch(font));
+                Assert.AreEqual(font.MeasureText("αi"), SkiaFonts.MeasureText(font, "αi"), 0.01f);
+            }
+        }
+
+        /// <summary>升目に置いて描くと、次の文字は升目の境から始まる（幅の違う文字の後でも位置がずれない）</summary>
+        [TestMethod]
+        public void FixedPitchFont_DrawsEachCharacterInItsCell()
+        {
+            using (var font = SkiaFonts.Create("ＭＳ 明朝", 16, false, false))
+            using (var bitmap = new SKBitmap(64, 24))
+            using (var canvas = new SKCanvas(bitmap))
+            using (var paint = new SKPaint { Color = SKColors.Black, IsAntialias = false })
+            {
+                if (!SkiaFonts.HasJapaneseFont())
+                {
+                    Assert.Inconclusive("日本語の書体が無い環境");
+                }
+                canvas.Clear(SKColors.White);
+                // 「°」（2 升）の後の「W」（1 升）は、x = 16〜24 の升目に描かれる
+                SkiaFonts.DrawText(canvas, "°W", 0, 18, SKTextAlign.Left, font, paint);
+                var inked = new System.Collections.Generic.List<int>();
+                for (var x = 16; x < 64; x++)
+                {
+                    for (var y = 0; y < 24; y++)
+                    {
+                        if (bitmap.GetPixel(x, y).Red < 200)
+                        {
+                            inked.Add(x);
+                            break;
+                        }
+                    }
+                }
+                Assert.IsTrue(inked.Count > 0, "「W」が描かれていない");
+                Assert.IsTrue(inked.TrueForAll(x => x >= 16 && x < 24), string.Join(",", inked));
+            }
+        }
+
         [TestMethod]
         public void LineHeight_IsOneEmForNotoCjk()
         {
