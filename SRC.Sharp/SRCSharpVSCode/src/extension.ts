@@ -3,6 +3,7 @@ import { spawn } from 'child_process';
 import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { pickAppPath, suggestAppPath } from './appPath';
+import { MapEditorProvider } from './mapEditor';
 import { HotReload } from './hotReload';
 import { PanelProvider } from './panel';
 import { ScreenView } from './screen';
@@ -156,6 +157,14 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   };
   context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(showStatus));
   showStatus();
+
+  // マップ（.map）のカスタムエディタ（SRC#Studio のマップ作成ツール。7474/SRC#1641）
+  const mapEditor = new MapEditorProvider(context);
+  context.subscriptions.push(
+    vscode.window.registerCustomEditorProvider(MapEditorProvider.viewType, mapEditor, { webviewOptions: { retainContextWhenHidden: true } }),
+    // テスト用（画面の WebAssembly が動き、地形とマップを読めたか）。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._mapEditorStatus', (uri: vscode.Uri) => mapEditor.loaded.get(uri.toString())),
+  );
 
   // 操作パネル
   context.subscriptions.push(vscode.window.registerTreeDataProvider('srcsharp.panel', new PanelProvider(controller)));

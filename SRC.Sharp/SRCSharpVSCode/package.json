@@ -36,7 +36,8 @@
   },
   "activationEvents": [
     "onDebugResolve:srcsharp",
-    "workspaceContains:**/*.eve"
+    "workspaceContains:**/*.eve",
+    "onCustomEditor:srcsharp.mapEditor"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -523,7 +524,19 @@
           "when": "debugType == srcsharp"
         }
       ]
-    }
+    },
+    "customEditors": [
+      {
+        "viewType": "srcsharp.mapEditor",
+        "displayName": "SRC#Studio マップ作成ツール",
+        "selector": [
+          {
+            "filenamePattern": "*.map"
+          }
+        ],
+        "priority": "default"
+      }
+    ]
   },
   "scripts": {
     "check-types": "tsc -p ./ --noEmit",
