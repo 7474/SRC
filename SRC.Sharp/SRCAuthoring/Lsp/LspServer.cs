@@ -46,6 +46,12 @@ namespace SRCAuthoring.Lsp
 
         /// <param name="loggerFactory">ログの出力先。ログは window/logMessage でクライアントにも送る</param>
         /// <param name="setLogLevel">初期化オプションの logLevel を反映する</param>
+        /// <summary>ヘルプの説明（コマンド・特殊能力・属性のホバーと補完）。srcsharp が同梱のヘルプから作って渡す</summary>
+        public HelpReference Help { get; set; } = HelpReference.Empty;
+
+        /// <summary>シナリオのフォルダごとの、データの名前の一覧（データを調べたときに作り直す）</summary>
+        private readonly ConcurrentDictionary<string, DataCatalog> catalogs = new ConcurrentDictionary<string, DataCatalog>(StringComparer.OrdinalIgnoreCase);
+
         public LspServer(Stream input, Stream output, ILoggerFactory loggerFactory = null, Action<LogLevel?> setLogLevel = null)
         {
             stream = new MessageStream(input, output);
@@ -326,6 +332,7 @@ namespace SRCAuthoring.Lsp
                     {
                         analyzing.Release();
                     }
+                    catalogs[Path.GetDirectoryName(root)] = result.Catalog;
                     if (!cts.IsCancellationRequested)
                     {
                         await PublishDataAsync(root, result);
@@ -378,8 +385,46 @@ namespace SRCAuthoring.Lsp
         public ScenarioAnalysis Analyze(string path)
         {
             var analysis = analyzer.Analyze(path, documents.ToDictionary(x => x.Key, x => x.Value));
+            // イベントのコマンドが名前で指すデータ（ユニット・パイロット・アイテム）が、シナリオのデータにあるか（7474/SRC#1642）
+            var catalog = CatalogFor(analysis.ScenarioRoot);
+            analysis.Diagnostics.AddRange(DataReferenceChecker.Check(DataReferenceChecker.Find(path, DocumentText(path)), catalog));
             analyses[path] = analysis;
             return analysis;
+        }
+
+        /// <summary>シナリオのデータの名前の一覧。まだ無ければ Data のフォルダを調べて作る</summary>
+        public DataCatalog CatalogFor(string scenarioRoot)
+        {
+            if (string.IsNullOrEmpty(scenarioRoot))
+            {
+                return DataCatalog.Empty;
+            }
+            return catalogs.GetOrAdd(scenarioRoot, root =>
+            {
+                var data = Path.Combine(root, "Data");
+                if (!Directory.Exists(data))
+                {
+                    return DataCatalog.Empty;
+                }
+                try
+                {
+                    return LintDataAsync(data).GetAwaiter().GetResult().Catalog;
+                }
+                catch (Exception ex)
+                {
+                    log.LogWarning(ex, "データを読めません {Path}", data);
+                    return DataCatalog.Empty;
+                }
+            });
+        }
+
+        private string DocumentText(string path)
+        {
+            if (documents.TryGetValue(path, out var text))
+            {
+                return text;
+            }
+            return File.Exists(path) ? DataReferenceText.Read(path) : "";
         }
 
         private ScenarioAnalysis AnalysisFor(string path)
@@ -497,8 +542,40 @@ namespace SRCAuthoring.Lsp
             }
             var word = WordAt(LineText(path, line), character);
             var label = analysis.Labels.FirstOrDefault(x => x.Name == word);
-            return label == null ? null : Location(label.File, label.Line);
+            if (label != null)
+            {
+                return Location(label.File, label.Line);
+            }
+            // データの名前（Create・Unit・Pilot・Item の引数）からデータの定義へ
+            var entry = DataAt(path, line, character, analysis);
+            return entry?.File == null ? null : Location(entry.File, entry.Line);
         }
+
+        /// <summary>イベントの line 行（0 始まり）の character の位置にある、データの名前の参照が指すデータ</summary>
+        private DataEntry DataAt(string path, int line, int character, ScenarioAnalysis analysis)
+        {
+            var reference = DataReferenceChecker.Find(path, DocumentText(path))
+                .FirstOrDefault(r => r.Line == line + 1 && character >= r.Column && character <= r.Column + r.Length);
+            return reference == null ? null : CatalogFor(analysis.ScenarioRoot).Find(reference.Kind, reference.Name);
+        }
+
+        /// <summary>行の最初の語（コマンド）にカーソルがあれば、その語</summary>
+        private static string CommandAt(string text, int character)
+        {
+            var trimmed = text.TrimStart();
+            var start = text.Length - trimmed.Length;
+            var end = start;
+            while (end < text.Length && !char.IsWhiteSpace(text[end]))
+            {
+                end++;
+            }
+            return character >= start && character <= end && end > start ? text.Substring(start, end - start) : null;
+        }
+
+        private static JsonObject Markdown(string value) => new JsonObject
+        {
+            ["contents"] = new JsonObject { ["kind"] = "markdown", ["value"] = value },
+        };
 
         private static JsonObject Location(string file, int line)
         {
@@ -508,21 +585,27 @@ namespace SRCAuthoring.Lsp
         private JsonNode Hover(JsonNode @params)
         {
             var (path, line, character) = Position(@params);
-            var analysis = AnalysisFor(path);
-            var word = WordAt(LineText(path, line), character);
-            var label = analysis.Labels.FirstOrDefault(x => x.Name == word);
-            if (label == null)
+            var text = LineText(path, line);
+            // データのファイル: 特殊能力・武器の属性の説明（ヘルプ）
+            if (DataLinter.IsDataFileName(path))
             {
-                return null;
+                var keyword = Help.Keyword(WordAt(text, character));
+                return keyword == null ? null : Markdown(keyword);
             }
-            return new JsonObject
+            var analysis = AnalysisFor(path);
+            var word = WordAt(text, character);
+            var label = analysis.Labels.FirstOrDefault(x => x.Name == word);
+            if (label != null)
             {
-                ["contents"] = new JsonObject
-                {
-                    ["kind"] = "markdown",
-                    ["value"] = $"ラベル `{label.Name}`  \n{Path.GetFileName(label.File)}:{label.Line}",
-                },
-            };
+                return Markdown($"ラベル `{label.Name}`  \n{Path.GetFileName(label.File)}:{label.Line}");
+            }
+            var entry = DataAt(path, line, character, analysis);
+            if (entry != null)
+            {
+                return Markdown(entry.Summary + (entry.File == null ? "" : $"  \n{Path.GetFileName(entry.File)}:{entry.Line}"));
+            }
+            var command = Help.Command(CommandAt(text, character));
+            return command == null ? null : Markdown(command);
         }
 
         /// <summary>イベントコマンドの名前（CmdType から）</summary>
@@ -539,10 +622,31 @@ namespace SRCAuthoring.Lsp
         {
             var (path, _, _) = Position(@params);
             var items = new JsonArray();
+            // データのファイル: 特殊能力・武器の属性（ヘルプにあるもの）
+            if (DataLinter.IsDataFileName(path))
+            {
+                foreach (var keyword in Help.Keywords.OrderBy(x => x, StringComparer.Ordinal))
+                {
+                    // 14: Keyword
+                    items.Add(new JsonObject
+                    {
+                        ["label"] = keyword,
+                        ["kind"] = 14,
+                        ["documentation"] = new JsonObject { ["kind"] = "markdown", ["value"] = Help.Keyword(keyword) },
+                    });
+                }
+                return items;
+            }
             foreach (var name in CommandNames())
             {
                 // 14: Keyword
-                items.Add(new JsonObject { ["label"] = name, ["kind"] = 14 });
+                var item = new JsonObject { ["label"] = name, ["kind"] = 14 };
+                var doc = Help.Command(name);
+                if (doc != null)
+                {
+                    item["documentation"] = new JsonObject { ["kind"] = "markdown", ["value"] = doc };
+                }
+                items.Add(item);
             }
             if (analyses.TryGetValue(path, out var analysis))
             {
@@ -550,6 +654,17 @@ namespace SRCAuthoring.Lsp
                 {
                     // 3: Function
                     items.Add(new JsonObject { ["label"] = label, ["kind"] = 3, ["detail"] = "ラベル" });
+                }
+                // シナリオのデータの名前（12: Value）
+                foreach (var entry in CatalogFor(analysis.ScenarioRoot).Entries)
+                {
+                    items.Add(new JsonObject
+                    {
+                        ["label"] = entry.Name,
+                        ["kind"] = 12,
+                        ["detail"] = DataReferenceChecker.KindName(entry.Kind),
+                        ["documentation"] = new JsonObject { ["kind"] = "markdown", ["value"] = entry.Summary },
+                    });
                 }
             }
             return items;

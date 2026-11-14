@@ -17,12 +17,14 @@
     <value>srcsharp: authoring tools for SRC# data and scenarios
 
 Usage:
-  srcsharp lint &lt;directory or file&gt;... [--format text|sarif] [--output file] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;directory or file&gt;... [--format text|sarif] [--output file] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path SRC folder]
       Check data (*.txt) and events (*.eve). Exit code 1 if problems are found. --rules selects rule groups (default src; rule findings of the information level do not affect the exit code). --list-rules lists the rules
   srcsharp play &lt;event file&gt; [--script file.play] [--out directory] [--app-path SRC folder] [--scenario-root scenario folder] [--steps count] [--skip-wait]
       Run a scenario without a screen. Without --script, advance messages and pick the first choice. With --skip-wait, fixed waits (animations, messages, Wait) are skipped. --scenario-root sets the scenario folder (the base of Data, Lib and Continue); by default, an event file in a subfolder without Data uses the nearest parent folder with Data.
   srcsharp balance &lt;directory or file&gt;... [--format md|csv] [--output file]
       List unit data stats and outliers
+  srcsharp new &lt;folder&gt; [--title title] [--app-path SRC folder] [--force]
+      Create a new scenario template (first episode event, map and data, autoplay script, VS Code settings, CI). Existing files are kept (--force overwrites)
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -72,5 +74,14 @@ Common options:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Unknown search method: {0} (hybrid, bm25, or vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Specify one folder to create the scenario in</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Created the template in {0} ({1} files)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Skipped existing files: {0} (use --force to overwrite)</value>
   </data>
 </root>

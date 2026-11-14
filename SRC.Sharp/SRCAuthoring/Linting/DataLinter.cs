@@ -22,6 +22,8 @@ namespace SRCAuthoring.Linting
         public List<string> NotSupportedFiles { get; } = new List<string>();
         /// <summary>問題があったか（警告を含む。SRCDataLinter の終了コードと同じ判定）</summary>
         public bool HasError { get; set; }
+        /// <summary>読み込んだデータの名前の一覧（イベントの参照の検査・エディタの補完に使う）</summary>
+        public Analysis.DataCatalog Catalog { get; set; } = Analysis.DataCatalog.Empty;
     }
 
     /// <summary>
@@ -96,7 +98,33 @@ namespace SRCAuthoring.Linting
                 }
             }
             RunRules(src, result);
+            CheckDataReferences(src, files, result);
             return result;
+        }
+
+        /// <summary>
+        /// イベントのコマンドが名前で指すユニット・パイロット・アイテムが、読み込んだデータにあるか（7474/SRC#1642）。
+        /// その種類のデータが 1 つも無ければ調べない（ほかの場所のデータを使うシナリオがあるため）
+        /// </summary>
+        private static void CheckDataReferences(SRCCore.SRC src, IReadOnlyCollection<string> files, LintResult result)
+        {
+            var catalog = Analysis.DataCatalog.FromSrc(src, files.Select(Path.GetFullPath));
+            result.Catalog = catalog;
+            foreach (var file in files.Where(x => x.EndsWith(".eve", StringComparison.OrdinalIgnoreCase)))
+            {
+                string text;
+                try
+                {
+                    text = Analysis.DataReferenceText.Read(file);
+                }
+                catch (IOException)
+                {
+                    continue;
+                }
+                var diagnostics = Analysis.DataReferenceChecker.Check(Analysis.DataReferenceChecker.Find(file, text), catalog).ToList();
+                result.Diagnostics.AddRange(diagnostics);
+                result.HasError |= diagnostics.Count > 0;
+            }
         }
 
         private HashSet<string> actionNames = new HashSet<string>();

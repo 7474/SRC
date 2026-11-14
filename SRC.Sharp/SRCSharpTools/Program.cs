@@ -5,6 +5,7 @@ using SRCDebugAdapter;
 using SRCHelpSearch;
 using SRCAuthoring.Linting;
 using SRCAuthoring.Lsp;
+using SRCAuthoring.Templates;
 using SRCCore.Logging;
 using SRCLogging;
 using SRCPlay;
@@ -57,6 +58,8 @@ namespace SRCSharpTools
                     return Play(positional, options);
                 case "balance":
                     return Balance(positional, options);
+                case "new":
+                    return New(positional, options);
                 case "help":
                     return Help(positional, options);
                 case "lsp":
@@ -64,6 +67,8 @@ namespace SRCSharpTools
                     using (var logHost = CreateLogHost("lsp", LogOutputs.None))
                     {
                         var server = new LspServer(Console.OpenStandardInput(), Console.OpenStandardOutput(), logHost.LoggerFactory, logHost.OverrideLevel);
+                        // コマンド・特殊能力・属性のホバーと補完に、同梱のヘルプを使う（7474/SRC#1642）
+                        server.Help = new HelpReference(HelpDocument.Topics.Select(x => (x.Name, x.Body)));
                         logHost.LogStartup(logHost.LoggerFactory.CreateLogger("SRCSharp.Tools"), "srcsharp lsp", args);
                         return await server.RunAsync();
                     }
@@ -135,7 +140,14 @@ namespace SRCSharpTools
             {
                 paths.Add(Environment.CurrentDirectory);
             }
-            var result = await new DataLinter { RuleGroups = groups }.LintAsync(paths);
+            // --app-path: SRC 本体（か最小の汎用データ）の Data/System のデータ（sp.txt など）を先に読む。検査はせず、参照の先として使う
+            IEnumerable<string> systemFiles = null;
+            if (options.TryGetValue("app-path", out var appPath))
+            {
+                var system = Path.Combine(Path.GetFullPath(appPath), "Data", "System");
+                systemFiles = Directory.Exists(system) ? Directory.GetFiles(system, "*.txt").OrderBy(x => x, StringComparer.Ordinal).ToList() : new List<string>();
+            }
+            var result = await new DataLinter { RuleGroups = groups }.LintAsync(paths, systemFiles: systemFiles);
             if (options.TryGetValue("format", out var format) && format == "sarif")
             {
                 WriteOutput(SarifWriter.Write(result.Diagnostics, Environment.CurrentDirectory), options);
@@ -344,6 +356,30 @@ namespace SRCSharpTools
                 Console.Error.WriteLine("  " + (topic.Title == topic.Name ? topic.Name : topic.Name + "\t" + topic.Title));
             }
             return 1;
+        }
+
+        /// <summary>新しいシナリオのひな形を作る（7474/SRC#1640）。既にあるファイルは上書きしない（--force で上書き）</summary>
+        private static int New(List<string> positional, Dictionary<string, string> options)
+        {
+            if (positional.Count != 1)
+            {
+                Console.Error.WriteLine(Strings.NewRequiresFolder);
+                return 2;
+            }
+            var folder = Path.GetFullPath(positional[0]);
+            options.TryGetValue("title", out var title);
+            options.TryGetValue("app-path", out var appPath);
+            var written = ScenarioTemplate.Write(folder, title ?? Path.GetFileName(folder.TrimEnd(Path.DirectorySeparatorChar)), appPath == null ? null : Path.GetFullPath(appPath), options.ContainsKey("force"), out var skipped);
+            foreach (var path in written)
+            {
+                Console.WriteLine("  " + path);
+            }
+            Console.WriteLine(Strings.NewCreated(folder, written.Count));
+            if (skipped.Count > 0)
+            {
+                Console.Error.WriteLine(Strings.NewSkipped(string.Join(", ", skipped)));
+            }
+            return 0;
         }
 
         private static int Balance(List<string> paths, Dictionary<string, string> options)

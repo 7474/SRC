@@ -17,12 +17,14 @@
     <value>srcsharp: інструменти для створення даних і сценаріїв SRC#
 
 Використання:
-  srcsharp lint &lt;каталог або файл&gt;... [--format text|sarif] [--output файл] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;каталог або файл&gt;... [--format text|sarif] [--output файл] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path тека SRC]
       Перевірити дані (*.txt) і події (*.eve). Якщо є проблеми, код виходу 1
   srcsharp play &lt;файл події&gt; [--script файл.play] [--out каталог] [--app-path тека SRC] [--scenario-root тека сценарію] [--steps кількість] [--skip-wait]
       Запустити сценарій без екрана. Без --script повідомлення гортаються, обирається перший варіант. З --skip-wait пропускаються фіксовані очікування (анімації, повідомлення, Wait). --scenario-root задає теку сценарію (основа для Data, Lib і Continue); типово файл події в підтеці без Data використовує найближчу батьківську теку з Data.
   srcsharp balance &lt;каталог або файл&gt;... [--format md|csv] [--output файл]
       Таблиця характеристик юнітів і викиди
+  srcsharp new &lt;тека&gt; [--title назва] [--app-path тека SRC] [--force]
+      Створює шаблон нового сценарію (подія, мапа й дані першого епізоду, сценарій автогри, налаштування VS Code, CI). Наявні файли не перезаписуються (--force перезаписує)
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -71,5 +73,14 @@
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Невідомий метод пошуку: {0} (hybrid, bm25 або vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Вкажіть одну теку для сценарію</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Шаблон створено в {0} (файлів: {1})</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Пропущено наявні файли: {0} (--force для перезапису)</value>
   </data>
 </root>

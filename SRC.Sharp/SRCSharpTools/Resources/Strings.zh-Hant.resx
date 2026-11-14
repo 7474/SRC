@@ -17,12 +17,14 @@
     <value>srcsharp: SRC# 資料與劇本製作輔助工具
 
 用法:
-  srcsharp lint &lt;目錄或檔案&gt;... [--format text|sarif] [--output 檔案] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;目錄或檔案&gt;... [--format text|sarif] [--output 檔案] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path SRC 資料夾]
       檢查資料（*.txt）與事件（*.eve）。發現問題時結束代碼為 1
   srcsharp play &lt;事件檔案&gt; [--script 檔案.play] [--out 目錄] [--app-path SRC資料夾] [--scenario-root 劇本資料夾] [--steps 步數] [--skip-wait]
       在無畫面狀態下執行劇本。未指定 --script 時，自動推進訊息，選項選擇第一項。指定 --skip-wait 時略過固定等待（動畫、訊息、Wait）。--scenario-root 指定劇本資料夾（Data、Lib、Continue 的基準）；未指定時，位於沒有 Data 的子資料夾中的事件檔案使用最近的含 Data 的上層資料夾。
   srcsharp balance &lt;目錄或檔案&gt;... [--format md|csv] [--output 檔案]
       列出單位資料的能力值與異常值
+  srcsharp new &lt;資料夾&gt; [--title 標題] [--app-path SRC 資料夾] [--force]
+      建立新劇本的範本（第一話的事件、地圖與資料，自動遊玩步驟，VS Code 設定，CI）。已有的檔案不覆寫（--force 覆寫）
   srcsharp lsp
       Language Server（標準輸入輸出）
   srcsharp dap
@@ -71,5 +73,14 @@
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>未知的搜尋方法：{0}（hybrid、bm25 或 vector）</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>請指定一個用於建立劇本的資料夾</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>已在 {0} 建立範本（{1} 個檔案）</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>已略過既有檔案：{0}（使用 --force 覆寫）</value>
   </data>
 </root>

@@ -17,12 +17,14 @@
     <value>srcsharp: SRC# 데이터·시나리오 제작 지원 도구
 
 사용법:
-  srcsharp lint &lt;디렉터리 또는 파일&gt;... [--format text|sarif] [--output 파일] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;디렉터리 또는 파일&gt;... [--format text|sarif] [--output 파일] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path SRC 폴더]
       데이터(*.txt)와 이벤트(*.eve)를 검사합니다. 문제가 있으면 종료 코드 1
   srcsharp play &lt;이벤트 파일&gt; [--script 파일.play] [--out 디렉터리] [--app-path SRC 폴더] [--scenario-root 시나리오 폴더] [--steps 횟수] [--skip-wait]
       화면 없이 시나리오를 실행합니다. --script가 없으면 메시지를 넘기고 선택지는 첫 번째를 골라 진행합니다. --skip-wait를 지정하면 고정 대기(애니메이션, 메시지, Wait)를 건너뜁니다. --scenario-root는 시나리오 폴더(Data, Lib, Continue의 기준)를 지정합니다. 지정하지 않으면 Data가 없는 하위 폴더의 이벤트 파일은 Data가 있는 가장 가까운 상위 폴더를 사용합니다.
   srcsharp balance &lt;디렉터리 또는 파일&gt;... [--format md|csv] [--output 파일]
       유닛 데이터 능력치 목록과 이상치
+  srcsharp new &lt;폴더&gt; [--title 제목] [--app-path SRC 폴더] [--force]
+      새 시나리오 템플릿(첫 화의 이벤트·맵·데이터, 자동 플레이 절차, VS Code 설정, CI)을 만든다. 이미 있는 파일은 덮어쓰지 않는다(--force로 덮어쓰기)
   srcsharp lsp
       Language Server(표준 입출력)
   srcsharp dap
@@ -71,5 +73,14 @@
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>알 수 없는 검색 방법: {0} (hybrid, bm25, vector 중 하나)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>시나리오를 만들 폴더를 하나 지정하십시오</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>{0}에 템플릿을 만들었습니다({1}개 파일)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>이미 있어서 쓰지 않았습니다: {0}(--force로 덮어쓰기)</value>
   </data>
 </root>

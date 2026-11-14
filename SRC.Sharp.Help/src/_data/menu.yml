@@ -157,6 +157,10 @@ toc:
             url: /パイロットステータス
           - page: ユニットステータス
             url: /ユニットステータス
+  - title: SRC#で作る
+    subfolderitems:
+      - page: SRC#でシナリオ・データを作る
+        url: /SRCSharpでシナリオ・データを作る
   - title: データの作成
     subfolderitems:
       - page: データを作成する前に

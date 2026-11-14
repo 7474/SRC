@@ -17,12 +17,14 @@
     <value>srcsharp: Werkzeuge zum Erstellen von SRC#-Daten und -Szenarien
 
 Verwendung:
-  srcsharp lint &lt;Verzeichnis oder Datei&gt;... [--format text|sarif] [--output Datei] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules]
+  srcsharp lint &lt;Verzeichnis oder Datei&gt;... [--format text|sarif] [--output Datei] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path SRC-Ordner]
       Prüft Daten (*.txt) und Events (*.eve). Exitcode 1, wenn Probleme gefunden werden
   srcsharp play &lt;Event-Datei&gt; [--script Datei.play] [--out Verzeichnis] [--app-path SRC-Ordner] [--scenario-root Szenario-Ordner] [--steps Anzahl] [--skip-wait]
       Führt ein Szenario ohne Bildschirm aus. Ohne --script werden Nachrichten weitergeschaltet und jeweils die erste Auswahl gewählt. Mit --skip-wait werden feste Wartezeiten (Animationen, Nachrichten, Wait) übersprungen. --scenario-root legt den Szenario-Ordner fest (Basis für Data, Lib und Continue); standardmäßig verwendet eine Event-Datei in einem Unterordner ohne Data den nächsten übergeordneten Ordner mit Data.
   srcsharp balance &lt;Verzeichnis oder Datei&gt;... [--format md|csv] [--output Datei]
       Listet Werte der Einheitendaten und Ausreißer auf
+  srcsharp new &lt;Ordner&gt; [--title Titel] [--app-path SRC-Ordner] [--force]
+      Erstellt eine neue Szenariovorlage (Ereignis, Karte und Daten der ersten Episode, Autoplay-Skript, VS-Code-Einstellungen, CI). Vorhandene Dateien bleiben erhalten (--force überschreibt)
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -71,5 +73,14 @@ Allgemeine Optionen:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Unbekannte Suchmethode: {0} (hybrid, bm25 oder vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Geben Sie genau einen Ordner für das Szenario an</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Vorlage in {0} erstellt ({1} Dateien)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Vorhandene Dateien übersprungen: {0} (--force zum Überschreiben)</value>
   </data>
 </root>

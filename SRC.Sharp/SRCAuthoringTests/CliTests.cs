@@ -71,6 +71,48 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>
+        /// srcsharp new のひな形は、最小の汎用データで lint が通り、最後まで自動で遊べる（7474/SRC#1640）。
+        /// 作者のリポジトリの CI（ひな形の .github/workflows/src-check.yml）と同じ手順
+        /// </summary>
+        [TestMethod]
+        public void New_TemplateLintsCleanAndPlaysToTheEnd()
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-new-" + Guid.NewGuid());
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                var (exitCode, stdout, stderr) = Run("new", folder, "--title", "テストの物語");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "第1話.eve");
+                StringAssert.Contains(File.ReadAllText(Path.Combine(folder, "README.md")), "# テストの物語");
+
+                (exitCode, stdout, stderr) = Run("lint", folder, "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+                // 汎用データを渡さなければ、汎用データのスペシャルパワーが無いと知らせる
+                (exitCode, stdout, stderr) = Run("lint", folder);
+                Assert.AreEqual(1, exitCode);
+                StringAssert.Contains(stdout + stderr, "集中");
+
+                (exitCode, stdout, stderr) = Run("play", Path.Combine(folder, "第1話.eve"), "--script", Path.Combine(folder, "第1話.play"), "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                // 既にあるファイルは上書きしない
+                File.WriteAllText(Path.Combine(folder, "第1話.eve"), "書き換えた");
+                (exitCode, _, stderr) = Run("new", folder);
+                Assert.AreEqual(0, exitCode);
+                StringAssert.Contains(stderr, "第1話.eve");
+                Assert.AreEqual("書き換えた", File.ReadAllText(Path.Combine(folder, "第1話.eve")));
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
         [TestMethod]
         public void NoArguments_PrintsUsageAndFails()
         {

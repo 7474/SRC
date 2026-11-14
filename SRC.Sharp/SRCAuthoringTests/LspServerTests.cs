@@ -141,6 +141,107 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>リポジトリの同梱のヘルプ（SRC.Sharp.Help/src）</summary>
+        private static HelpReference RepositoryHelp()
+        {
+            var dir = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (!System.IO.Directory.Exists(System.IO.Path.Combine(dir.FullName, "SRC.Sharp.Help")))
+            {
+                dir = dir.Parent;
+            }
+            var src = System.IO.Path.Combine(dir.FullName, "SRC.Sharp.Help", "src");
+            return new HelpReference(System.IO.Directory.GetFiles(src, "*.md")
+                .Select(f => (System.IO.Path.GetFileNameWithoutExtension(f), System.IO.File.ReadAllText(f))));
+        }
+
+        [TestMethod]
+        public void HelpReference_CommandsAndKeywords()
+        {
+            var help = RepositoryHelp();
+            var create = help.Command("Create");
+            StringAssert.Contains(create, "ユニットを作成");
+            StringAssert.Contains(create, "*party unit rank pilot level x y*");
+            StringAssert.Contains(create, "srcsharp help Createコマンド");
+            Assert.IsNull(help.Command("存在しない"));
+            // 特殊能力（レベル・値を付けて書いても引ける）と武器の属性
+            StringAssert.Contains(help.Keyword("ＨＰ回復Lv2"), "ＨＰ回復");
+            StringAssert.Contains(help.Keyword("不安定=擬似テレパスシステム"), "不安定");
+            StringAssert.Contains(help.Keyword("格"), "格闘型");
+            CollectionAssert.Contains(help.Keywords.ToList(), "バリア");
+            Assert.IsFalse(help.Keywords.Contains("書式"));
+        }
+
+        /// <summary>イベントのデータの名前の参照（診断・ホバー・定義へ移動・補完）とコマンドのホバー（7474/SRC#1642）</summary>
+        [TestMethod]
+        public void Lsp_DataReferencesAndCommandHelp()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                var robot = scenario.Write(System.IO.Path.Combine("Data", "robot.txt"),
+                    "試作機", "試作機, しさくき, 汎用, 1, 2", "陸, 4, M, 1000, 100", "特殊能力なし", "3000, 100, 600, 60", "AAAA, -.bmp",
+                    "パンチ, 1000, 1, 1, +0, -, -, -, AAAA, +0, 突", "===", "");
+                scenario.Write(System.IO.Path.Combine("Data", "pilot.txt"),
+                    "敵兵(ザコ)", "敵兵, てきへい, 男性, 汎用, AAAA, 60", "特殊能力なし", "100, 100, 100, 100, 100, 100, 普通", "ＳＰ, 0", "-.bmp, -.mid", "");
+                var eve = scenario.Write("test.eve", "スタート:", "Exit");
+                var uri = LspServer.PathToUri(eve);
+                var server = new LspServer(client.ServerInput, client.ServerOutput) { Debounce = TimeSpan.FromMilliseconds(10), Help = RepositoryHelp() };
+                var run = Task.Run(() => server.RunAsync());
+                Request(client, "initialize", new JsonObject { ["capabilities"] = new JsonObject() });
+                Notify(client, "initialized", new JsonObject());
+
+                // 0: スタート: / 1: Create（ある名前・括弧のある名前）/ 2: Create（無いユニット）/ 3: 変数に入れた名前・式は見ない
+                var text = "スタート:\nCreate 敵 試作機 0 敵兵(ザコ) 1 3 3\nCreate 敵 無い機体 0 敵兵 1 4 4\nSet 機体 試作機\nCreate 敵 機体 0 $(パイロット) 1 5 5\nExit";
+                Notify(client, "textDocument/didOpen", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri, ["languageId"] = "src-eve", ["version"] = 1, ["text"] = text },
+                });
+                var diagnostics = client.WaitFor(x => x["method"]?.GetValue<string>() == "textDocument/publishDiagnostics"
+                    && x["params"]["uri"].GetValue<string>() == uri, "publishDiagnostics");
+                var items = diagnostics["params"]["diagnostics"].AsArray();
+                Assert.AreEqual(1, items.Count, diagnostics.ToJsonString());
+                Assert.AreEqual(2, items[0]["range"]["start"]["line"].GetValue<int>());
+                StringAssert.Contains(items[0]["message"].GetValue<string>(), "無い機体");
+                Assert.AreEqual(2, items[0]["severity"].GetValue<int>());
+
+                // データの名前のホバー（要約）と定義へ移動（robot.txt の名前の行）
+                var hover = Request(client, "textDocument/hover", Position(uri, 1, 11));
+                StringAssert.Contains(hover["contents"]["value"].GetValue<string>(), "HP 3000");
+                var definition = Request(client, "textDocument/definition", Position(uri, 1, 11));
+                Assert.AreEqual(LspServer.PathToUri(robot), definition["uri"].GetValue<string>());
+                Assert.AreEqual(0, definition["range"]["start"]["line"].GetValue<int>());
+                // 括弧のある名前（パイロットの愛称でも引ける）
+                hover = Request(client, "textDocument/hover", Position(uri, 1, 18));
+                StringAssert.Contains(hover["contents"]["value"].GetValue<string>(), "パイロット **敵兵(ザコ)**");
+
+                // コマンドのホバー（同梱のヘルプ）
+                hover = Request(client, "textDocument/hover", Position(uri, 1, 2));
+                StringAssert.Contains(hover["contents"]["value"].GetValue<string>(), "ユニットを作成");
+
+                // 補完にデータの名前と、コマンドの説明
+                var completion = Request(client, "textDocument/completion", Position(uri, 5, 0)).AsArray();
+                var unit = completion.First(x => x["label"].GetValue<string>() == "試作機");
+                Assert.AreEqual("ユニット", unit["detail"].GetValue<string>());
+                var create = completion.First(x => x["label"].GetValue<string>() == "Create");
+                StringAssert.Contains(create["documentation"]["value"].GetValue<string>(), "ユニットを作成");
+
+                // データのファイルでは、特殊能力・属性の説明と補完
+                var robotUri = LspServer.PathToUri(robot);
+                Notify(client, "textDocument/didOpen", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = robotUri, ["languageId"] = "src-data", ["version"] = 1, ["text"] = System.IO.File.ReadAllText(robot) },
+                });
+                hover = Request(client, "textDocument/hover", Position(robotUri, 6, 44));
+                StringAssert.Contains(hover["contents"]["value"].GetValue<string>(), "突");
+                completion = Request(client, "textDocument/completion", Position(robotUri, 3, 0)).AsArray();
+                CollectionAssert.Contains(completion.Select(x => x["label"].GetValue<string>()).ToList(), "バリア");
+
+                Request(client, "shutdown", null);
+                Notify(client, "exit", null);
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
+
         [TestMethod]
         public void WordAt_SplitsOnSeparators()
         {
