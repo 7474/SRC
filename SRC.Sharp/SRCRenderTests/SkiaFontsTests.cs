@@ -77,6 +77,109 @@ namespace SRCRenderTests
             }
         }
 
+        /// <summary>
+        /// 等幅の指定は、文字ごとに Shift_JIS のバイト数の升目（半角 = 全角の半分）に並べる。
+        /// 代わりの書体（Noto Sans Mono CJK JP など）が半角でも全角でもない幅で描く文字（ギリシャ文字・°・引用符など）でも桁がずれない（7474/SRC#1650）
+        /// </summary>
+        [TestMethod]
+        [DataRow("α")]
+        [DataRow("Ω")]
+        [DataRow("Ж")]
+        [DataRow("°")]
+        [DataRow("“")]
+        [DataRow("’")]
+        [DataRow("あ")]
+        [DataRow("×")]
+        public void FixedPitchFont_DoubleByteCharactersTakeTwoCells(string ch)
+        {
+            using (var font = SkiaFonts.Create("ＭＳ 明朝", 16, false, false))
+            {
+                Assert.IsTrue(SkiaFonts.IsFixedPitch(font));
+                Assert.AreEqual(16f, SkiaFonts.MeasureText(font, ch), 0.01f);
+                Assert.AreEqual(SkiaFonts.MeasureText(font, ch + "1000"), SkiaFonts.MeasureText(font, "      "), 0.01f);
+            }
+        }
+
+        [TestMethod]
+        public void ProportionalFont_UsesTypefaceWidths()
+        {
+            using (var font = SkiaFonts.Create("ＭＳ Ｐ明朝", 16, false, false))
+            {
+                Assert.IsFalse(SkiaFonts.IsFixedPitch(font));
+                Assert.AreEqual(font.MeasureText("αi"), SkiaFonts.MeasureText(font, "αi"), 0.01f);
+            }
+        }
+
+        /// <summary>升目に置いて描くと、次の文字は自分の升目の中央に描かれる（幅の違う文字の後でも位置がずれない）</summary>
+        [TestMethod]
+        public void FixedPitchFont_DrawsEachCharacterInItsCell()
+        {
+            using (var font = SkiaFonts.Create("ＭＳ 明朝", 16, false, false))
+            using (var bitmap = new SKBitmap(64, 24))
+            using (var canvas = new SKCanvas(bitmap))
+            using (var paint = new SKPaint { Color = SKColors.Black, IsAntialias = false })
+            {
+                if (!SkiaFonts.HasJapaneseFont())
+                {
+                    Assert.Inconclusive("日本語の書体が無い環境");
+                }
+                canvas.Clear(SKColors.White);
+                // 「°」（2 升）の後の「W」（1 升）は、x = 16〜24 の升目の中央に描かれる
+                SkiaFonts.DrawText(canvas, "°W", 0, 18, SKTextAlign.Left, font, paint);
+                var inked = new System.Collections.Generic.List<int>();
+                for (var x = 16; x < 64; x++)
+                {
+                    for (var y = 0; y < 24; y++)
+                    {
+                        if (bitmap.GetPixel(x, y).Red < 200)
+                        {
+                            inked.Add(x);
+                            break;
+                        }
+                    }
+                }
+                Assert.IsTrue(inked.Count > 0, "「W」が描かれていない");
+                // 字形の幅は書体によって升目より広いことがある（Windows の代わりの書体など）ので、字形の中心が升目の中心（x = 20）にあることを見る
+                var center = (inked[0] + inked[inked.Count - 1] + 1) / 2f;
+                Assert.AreEqual(20f, center, 2f, string.Join(",", inked));
+            }
+        }
+
+        /// <summary>升目より広い字形は、横に縮めて升目に収める（等幅でない書体で描いても、隣の升目にはみ出さない）</summary>
+        [TestMethod]
+        public void FixedPitchFont_SqueezesGlyphsWiderThanTheCell()
+        {
+            using (var font = SkiaFonts.Create("ＭＳ 明朝", 16, false, false))
+            using (var bitmap = new SKBitmap(64, 24))
+            using (var canvas = new SKCanvas(bitmap))
+            using (var paint = new SKPaint { Color = SKColors.Black, IsAntialias = false })
+            {
+                if (!SkiaFonts.HasJapaneseFont())
+                {
+                    Assert.Inconclusive("日本語の書体が無い環境");
+                }
+                // 書体の幅を升目の 2 倍に見せるため、横に 2 倍に引き伸ばしたフォントで描く
+                font.ScaleX = 2;
+                canvas.Clear(SKColors.White);
+                SkiaFonts.DrawText(canvas, "WW", 0, 18, SKTextAlign.Left, font, paint);
+                var right = -1;
+                for (var x = 0; x < 64; x++)
+                {
+                    for (var y = 0; y < 24; y++)
+                    {
+                        if (bitmap.GetPixel(x, y).Red < 200)
+                        {
+                            right = x;
+                            break;
+                        }
+                    }
+                }
+                // 2 文字（2 升 = 16 ピクセル）の中に収まる
+                Assert.IsTrue(right >= 0 && right < 18, right.ToString());
+                Assert.AreEqual(2f, font.ScaleX, 0.001f);
+            }
+        }
+
         [TestMethod]
         public void LineHeight_IsOneEmForNotoCjk()
         {

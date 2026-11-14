@@ -44,6 +44,9 @@ namespace SRCRender
             this.typeface = typeface ?? ResolveTypeface();
             font = new SKFont(this.typeface, 16);
             boldFont = new SKFont(this.typeface, 16) { Embolden = true };
+            // ＭＳ 明朝（等幅）の代わりなので、Shift_JIS のバイト数の升目に並べる（7474/SRC#1650）
+            Compat.SkiaFonts.MarkFixedPitch(font);
+            Compat.SkiaFonts.MarkFixedPitch(boldFont);
         }
 
         /// <summary>描画に使っているフォント</summary>
@@ -62,7 +65,7 @@ namespace SRCRender
 
         public SKSize MeasureText(string text)
         {
-            var width = font.MeasureText(text ?? "");
+            var width = Compat.SkiaFonts.MeasureText(font, text ?? "");
             return new SKSize(width, font.Spacing);
         }
 
@@ -316,7 +319,7 @@ namespace SRCRender
             name = string.IsNullOrEmpty(name) ? "?" : name;
             using (var paint = new SKPaint { Color = TextColor, IsAntialias = true })
             {
-                canvas.DrawText(name.Substring(0, 1), dest.MidX, dest.MidY + font.Size / 2 - 2, SKTextAlign.Center, boldFont, paint);
+                Compat.SkiaFonts.DrawText(canvas, name.Substring(0, 1), dest.MidX, dest.MidY + font.Size / 2 - 2, SKTextAlign.Center, boldFont, paint);
             }
         }
 
@@ -399,7 +402,7 @@ namespace SRCRender
                     paint.Color = SKColors.White;
                     paint.IsAntialias = true;
                     var title = window.IsAutoMode ? $"{Resources.Strings.MessageWindowTitle} ({Resources.Strings.AutoAdvance})" : Resources.Strings.MessageWindowTitle;
-                    canvas.DrawText(title, rect.Left + 6, rect.Top + 1 + (ScreenLayout.MessageTitleBarPx - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                    Compat.SkiaFonts.DrawText(canvas, title, rect.Left + 6, rect.Top + 1 + (ScreenLayout.MessageTitleBarPx - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
                 }
             }
             var origin = MessageWindowOrigin(window);
@@ -421,7 +424,7 @@ namespace SRCRender
                     {
                         paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
                         paint.IsAntialias = true;
-                        canvas.DrawText(label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                        Compat.SkiaFonts.DrawText(canvas, label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                         paint.IsAntialias = false;
                     }
                 }
@@ -457,7 +460,7 @@ namespace SRCRender
                 var y = box.Top + TelopLabelTop + Compat.SkiaFonts.Ascent(telopFont);
                 foreach (var line in WrapText(telop, TelopLabelWidth, telopFont))
                 {
-                    canvas.DrawText(line, box.Left + TelopLabelLeft + TelopLabelWidth / 2f, y, SKTextAlign.Center, telopFont, paint);
+                    Compat.SkiaFonts.DrawText(canvas, line, box.Left + TelopLabelLeft + TelopLabelWidth / 2f, y, SKTextAlign.Center, telopFont, paint);
                     y += lineHeight;
                 }
                 canvas.Restore();
@@ -492,7 +495,7 @@ namespace SRCRender
                 {
                     paint.Color = SKColors.White;
                     paint.IsAntialias = true;
-                    canvas.DrawText(w.Text ?? "", 6, (Compat.Form.TitleBarHeight - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                    Compat.SkiaFonts.DrawText(canvas, w.Text ?? "", 6, (Compat.Form.TitleBarHeight - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
                     paint.IsAntialias = false;
                 }
 
@@ -558,7 +561,7 @@ namespace SRCRender
             {
                 var lines = (tooltip.Text ?? "").Replace("\r\n", "\n").Split('\n');
                 var lineHeight = Compat.SkiaFonts.LineHeight(font);
-                var width = (float)Math.Ceiling(lines.Max(x => font.MeasureText(x))) + 6;
+                var width = (float)Math.Ceiling(lines.Max(x => Compat.SkiaFonts.MeasureText(font, x))) + 6;
                 var height = lineHeight * lines.Length + 4;
                 var left = Math.Min(tooltip.X, ScreenLayout.Width - width);
                 var top = Math.Min(tooltip.Y + 24, ScreenLayout.Height - height);
@@ -576,7 +579,7 @@ namespace SRCRender
                 var y = rect.Top + 2;
                 foreach (var line in lines)
                 {
-                    canvas.DrawText(line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    Compat.SkiaFonts.DrawText(canvas, line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     y += lineHeight;
                 }
             }
@@ -616,7 +619,7 @@ namespace SRCRender
             {
                 paint.Color = check.Enabled ? SKColors.Black : WindowsShadow;
                 paint.IsAntialias = true;
-                canvas.DrawText(check.Text ?? "", rect.Right + 5, check.Top + (check.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                Compat.SkiaFonts.DrawText(canvas, check.Text ?? "", rect.Right + 5, check.Top + (check.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                 paint.IsAntialias = false;
             }
         }
@@ -653,7 +656,7 @@ namespace SRCRender
                 paint.IsAntialias = true;
                 canvas.Save();
                 canvas.ClipRect(SKRect.Create(rect.Left + 2, rect.Top + 2, button.Left - rect.Left - 2, rect.Height - 4));
-                canvas.DrawText(combo.Text, rect.Left + 4, rect.Top + (rect.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                Compat.SkiaFonts.DrawText(canvas, combo.Text, rect.Left + 4, rect.Top + (rect.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                 canvas.Restore();
                 paint.IsAntialias = false;
                 if (!combo.DroppedDown)
@@ -679,7 +682,7 @@ namespace SRCRender
                     }
                     paint.Color = i == combo.SelectedIndex ? SKColors.White : SKColors.Black;
                     paint.IsAntialias = true;
-                    canvas.DrawText(combo.Items[i], item.Left + 3, item.Top + (item.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    Compat.SkiaFonts.DrawText(canvas, combo.Items[i], item.Left + 3, item.Top + (item.Height - lineHeight) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     paint.IsAntialias = false;
                 }
             }
@@ -714,7 +717,7 @@ namespace SRCRender
             {
                 paint.Color = button.Enabled ? SKColors.Black : WindowsShadow;
                 paint.IsAntialias = true;
-                canvas.DrawText(button.Text ?? "", rect.MidX, rect.Top + (rect.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Center, font, paint);
+                Compat.SkiaFonts.DrawText(canvas, button.Text ?? "", rect.MidX, rect.Top + (rect.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Center, font, paint);
                 paint.IsAntialias = false;
             }
         }
@@ -729,7 +732,7 @@ namespace SRCRender
             {
                 paint.Color = Compat.Graphics.ToSKColor(label.ForeColor);
                 paint.IsAntialias = true;
-                canvas.DrawText(label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                Compat.SkiaFonts.DrawText(canvas, label.Text, label.Left, label.Top + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                 paint.IsAntialias = false;
             }
         }
@@ -760,7 +763,7 @@ namespace SRCRender
                 var y = lines.Length == 1 ? rect.Top + (rect.Height - lineHeight) / 2 : rect.Top + 3;
                 foreach (var line in lines)
                 {
-                    canvas.DrawText(line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    Compat.SkiaFonts.DrawText(canvas, line, rect.Left + 3, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     y += lineHeight;
                 }
                 paint.IsAntialias = false;
@@ -795,7 +798,7 @@ namespace SRCRender
                     paint.IsAntialias = true;
                     canvas.Save();
                     canvas.ClipRect(item);
-                    canvas.DrawText(box.Items[index] ?? "", item.Left + 1, item.Top + (item.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    Compat.SkiaFonts.DrawText(canvas, box.Items[index] ?? "", item.Left + 1, item.Top + (item.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     canvas.Restore();
                     paint.IsAntialias = false;
                 }
@@ -903,9 +906,9 @@ namespace SRCRender
                     var baseline = rect.Top + (rect.Height - Compat.SkiaFonts.LineHeight(font)) / 2 + Compat.SkiaFonts.Ascent(font);
                     if (i < menu.Checked.Count && menu.Checked[i])
                     {
-                        canvas.DrawText("✓", rect.Left + 4, baseline, SKTextAlign.Left, font, paint);
+                        Compat.SkiaFonts.DrawText(canvas, "✓", rect.Left + 4, baseline, SKTextAlign.Left, font, paint);
                     }
-                    canvas.DrawText(menu.Items[i] ?? "", rect.Left + MenuTextLeft, baseline, SKTextAlign.Left, font, paint);
+                    Compat.SkiaFonts.DrawText(canvas, menu.Items[i] ?? "", rect.Left + MenuTextLeft, baseline, SKTextAlign.Left, font, paint);
                     paint.IsAntialias = false;
                 }
             }
@@ -943,13 +946,13 @@ namespace SRCRender
                 canvas.DrawRect(box.Left + 2, box.Top + 2, box.Width - 4, Compat.Form.TitleBarHeight - 2, paint);
                 paint.Color = SKColors.White;
                 paint.IsAntialias = true;
-                canvas.DrawText(dialog.Title ?? "", box.Left + 6, box.Top + 2 + (Compat.Form.TitleBarHeight - 2 - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                Compat.SkiaFonts.DrawText(canvas, dialog.Title ?? "", box.Left + 6, box.Top + 2 + (Compat.Form.TitleBarHeight - 2 - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
                 paint.Color = SKColors.Black;
                 var y = box.Top + Compat.Form.TitleBarHeight + DialogPadding;
                 var lineHeight = Compat.SkiaFonts.LineHeight(font) + 2;
                 foreach (var line in layout.Lines)
                 {
-                    canvas.DrawText(line, box.Left + DialogPadding, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    Compat.SkiaFonts.DrawText(canvas, line, box.Left + DialogPadding, y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     y += lineHeight;
                 }
                 paint.IsAntialias = false;
@@ -1007,7 +1010,7 @@ namespace SRCRender
                 {
                     using (var font = new Compat.Font("Times New Roman", points).ToSKFont())
                     {
-                        canvas.DrawText(text, x, y + Compat.SkiaFonts.Ascent(font), align, font, paint);
+                        Compat.SkiaFonts.DrawText(canvas, text, x, y + Compat.SkiaFonts.Ascent(font), align, font, paint);
                     }
                 }
 
@@ -1049,7 +1052,7 @@ namespace SRCRender
                 {
                     paint.Color = SKColors.White;
                     paint.IsAntialias = true;
-                    canvas.DrawText("SRC", box.Left + 6, box.Top + (Compat.Form.TitleBarHeight - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
+                    Compat.SkiaFonts.DrawText(canvas, "SRC", box.Left + 6, box.Top + (Compat.Form.TitleBarHeight - Compat.SkiaFonts.LineHeight(titleFont)) / 2 + Compat.SkiaFonts.Ascent(titleFont), SKTextAlign.Left, titleFont, paint);
                     paint.IsAntialias = false;
                 }
 
@@ -1065,14 +1068,14 @@ namespace SRCRender
                 {
                     const string text = "Now Loading ...";
                     const float timesNewRomanWidth = 162f;
-                    var measured = font.MeasureText(text);
+                    var measured = Compat.SkiaFonts.MeasureText(font, text);
                     if (measured > timesNewRomanWidth)
                     {
                         font.ScaleX = timesNewRomanWidth / measured;
                     }
                     paint.Color = SKColors.Black;
                     paint.IsAntialias = true;
-                    canvas.DrawText(text, left +NowLoadingLabelOrigin.X, top + NowLoadingLabelOrigin.Y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
+                    Compat.SkiaFonts.DrawText(canvas, text, left +NowLoadingLabelOrigin.X, top + NowLoadingLabelOrigin.Y + Compat.SkiaFonts.Ascent(font), SKTextAlign.Left, font, paint);
                     paint.IsAntialias = false;
                 }
 
@@ -1189,7 +1192,7 @@ namespace SRCRender
             float textWidth;
             using (var font = MenuFont.ToSKFont())
             {
-                textWidth = menu.Items.Select(x => font.MeasureText(x ?? "")).DefaultIfEmpty(0).Max();
+                textWidth = menu.Items.Select(x => Compat.SkiaFonts.MeasureText(font, x ?? "")).DefaultIfEmpty(0).Max();
             }
             var width = Math.Max(MenuMinWidth, (int)Math.Ceiling(textWidth) + MenuTextLeft + 24);
             var height = menu.Items.Count * MenuItemHeight + 6;
@@ -1242,7 +1245,7 @@ namespace SRCRender
             using (var font = DialogFont.ToSKFont())
             {
                 var lines = WrapText(dialog.Text ?? "", DialogWidth - DialogPadding * 2, font);
-                var textWidth = lines.Select(x => font.MeasureText(x)).DefaultIfEmpty(0).Max();
+                var textWidth = lines.Select(x => Compat.SkiaFonts.MeasureText(font, x)).DefaultIfEmpty(0).Max();
                 var buttonsWidth = dialog.Buttons.Count * (DialogButtonWidth + 8);
                 var width = (float)Math.Ceiling(Math.Max(DialogMinWidth, Math.Max(textWidth, buttonsWidth) + DialogPadding * 2));
                 var height = Compat.Form.TitleBarHeight + DialogPadding + lines.Count * (Compat.SkiaFonts.LineHeight(font) + 2) + DialogPadding + DialogButtonHeight + 12;
@@ -1283,7 +1286,7 @@ namespace SRCRender
                 var line = "";
                 foreach (var c in paragraph)
                 {
-                    if (font.MeasureText(line + c) > width && line.Length > 0)
+                    if (Compat.SkiaFonts.MeasureText(font, line + c) > width && line.Length > 0)
                     {
                         result.Add(line);
                         line = "";
