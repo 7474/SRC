@@ -7,6 +7,10 @@ SRC#（Simulation RPG Construction Sharp）の設計・運用のドキュメン�
 
 ## 📚 ドキュメント一覧 / Document Index
 
+### 🧩 構成 / Architecture
+
+- **[コンポーネントの構成](./architecture.md)** — プロジェクトの層と参照の関係、守ること（開発者向け）
+
 ### 🖥️ GUI / GUI
 
 - **[GUI の構成](./gui/README.md)** — フロントエンド（SRC#Form・SRC#Avalonia・SRC#Web）と、共通の SRCCore・SRCRender・SRCSound の関係
