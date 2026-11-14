@@ -649,6 +649,15 @@ namespace SRCRender.Compat
                     }
                     run.Append(ch);
                 }
+                else if (advance > cell && cell > 0)
+                {
+                    // 升目より広い字形（等幅でない代わりの書体の W・M など）は、横に縮めて升目に収める（隣の文字に重ねない）
+                    Flush();
+                    var scaleX = font.ScaleX;
+                    font.ScaleX = scaleX * cell / advance;
+                    canvas.DrawText(ch, pen, y, SKTextAlign.Left, font, paint);
+                    font.ScaleX = scaleX;
+                }
                 else
                 {
                     Flush();

@@ -110,7 +110,7 @@ namespace SRCRenderTests
             }
         }
 
-        /// <summary>升目に置いて描くと、次の文字は升目の境から始まる（幅の違う文字の後でも位置がずれない）</summary>
+        /// <summary>升目に置いて描くと、次の文字は自分の升目の中央に描かれる（幅の違う文字の後でも位置がずれない）</summary>
         [TestMethod]
         public void FixedPitchFont_DrawsEachCharacterInItsCell()
         {
@@ -124,7 +124,7 @@ namespace SRCRenderTests
                     Assert.Inconclusive("日本語の書体が無い環境");
                 }
                 canvas.Clear(SKColors.White);
-                // 「°」（2 升）の後の「W」（1 升）は、x = 16〜24 の升目に描かれる
+                // 「°」（2 升）の後の「W」（1 升）は、x = 16〜24 の升目の中央に描かれる
                 SkiaFonts.DrawText(canvas, "°W", 0, 18, SKTextAlign.Left, font, paint);
                 var inked = new System.Collections.Generic.List<int>();
                 for (var x = 16; x < 64; x++)
@@ -139,7 +139,44 @@ namespace SRCRenderTests
                     }
                 }
                 Assert.IsTrue(inked.Count > 0, "「W」が描かれていない");
-                Assert.IsTrue(inked.TrueForAll(x => x >= 16 && x < 24), string.Join(",", inked));
+                // 字形の幅は書体によって升目より広いことがある（Windows の代わりの書体など）ので、字形の中心が升目の中心（x = 20）にあることを見る
+                var center = (inked[0] + inked[inked.Count - 1] + 1) / 2f;
+                Assert.AreEqual(20f, center, 2f, string.Join(",", inked));
+            }
+        }
+
+        /// <summary>升目より広い字形は、横に縮めて升目に収める（等幅でない書体で描いても、隣の升目にはみ出さない）</summary>
+        [TestMethod]
+        public void FixedPitchFont_SqueezesGlyphsWiderThanTheCell()
+        {
+            using (var font = SkiaFonts.Create("ＭＳ 明朝", 16, false, false))
+            using (var bitmap = new SKBitmap(64, 24))
+            using (var canvas = new SKCanvas(bitmap))
+            using (var paint = new SKPaint { Color = SKColors.Black, IsAntialias = false })
+            {
+                if (!SkiaFonts.HasJapaneseFont())
+                {
+                    Assert.Inconclusive("日本語の書体が無い環境");
+                }
+                // 書体の幅を升目の 2 倍に見せるため、横に 2 倍に引き伸ばしたフォントで描く
+                font.ScaleX = 2;
+                canvas.Clear(SKColors.White);
+                SkiaFonts.DrawText(canvas, "WW", 0, 18, SKTextAlign.Left, font, paint);
+                var right = -1;
+                for (var x = 0; x < 64; x++)
+                {
+                    for (var y = 0; y < 24; y++)
+                    {
+                        if (bitmap.GetPixel(x, y).Red < 200)
+                        {
+                            right = x;
+                            break;
+                        }
+                    }
+                }
+                // 2 文字（2 升 = 16 ピクセル）の中に収まる
+                Assert.IsTrue(right >= 0 && right < 18, right.ToString());
+                Assert.AreEqual(2f, font.ScaleX, 0.001f);
             }
         }
 
