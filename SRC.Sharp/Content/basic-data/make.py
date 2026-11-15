@@ -50,6 +50,19 @@ TERRAINS = [
     (48, "発電所", "powerplant", "陸", 2, 15, 15, "ＥＮ回復Lv2"),
     (49, "廃墟", "remains", "陸", 2, 20, 20, ""),
     (83, "マグマ", "lava", "陸", 3, -10, 10, "ＨＰ減少Lv3=火"),
+    # 宇宙・月面（7474/SRC#1659。かんたん作成の宇宙の場面）。番号・名前・地形タイプ・修正は汎用データと同じ
+    (5, "宇宙空間", "space", "宇宙", 1, 0, 0, ""),
+    (12, "暗礁空間", "asteroids", "宇宙", 2, 20, 20, ""),
+    (13, "残骸", "wrecks", "宇宙", 2, 20, 20, ""),
+    (28, "コロニー", "colony", "宇宙", 2, 20, 20, "ＥＮ回復Lv1"),
+    (35, "宇宙要塞", "space_fortress", "宇宙", 2, 30, 30, "ＨＰ回復Lv1 ＥＮ回復Lv2"),
+    (36, "宇宙ドック", "space_dock", "宇宙", 2, 10, 10, "ＨＰ回復Lv2 ＥＮ回復Lv3"),
+    (6, "地球", "earth", "宇宙", 1, 0, 0, ""),
+    (7, "月", "moon", "宇宙", 1, 0, 0, ""),
+    (8, "月面", "moon_ground", "月面", 1, 0, 0, ""),
+    (14, "クレーター(小)", "small_crater", "月面", 2, 20, 20, ""),
+    (24, "月面都市", "moon_city", "月面", 2, 25, 25, "ＥＮ回復Lv1"),
+    (62, "月面基地", "moon_base", "月面", 2, 30, 30, "ＨＰ回復Lv1 ＥＮ回復Lv2"),
 ]
 
 # 名称, 読み, 短縮名, 消費ＳＰ, 対象, 持続期間, 適用条件, 効果, 解説
@@ -226,9 +239,88 @@ def tile(name):
             x, y = rnd.randrange(SIZE), rnd.randrange(SIZE)
             d.ellipse([x - 3, y - 2, x + 3, y + 2], fill=rnd.choice([(248, 136, 24), (252, 200, 64)]))
         speckle(d, rnd, [(96, 24, 16)], 20, 2)
+    elif name in SPACE_TILES:
+        space_tile(name, im, d, rnd)
     else:
         raise ValueError(name)
     return im
+
+
+SPACE_TILES = {"space", "asteroids", "wrecks", "colony", "space_fortress", "space_dock", "earth", "moon",
+               "moon_ground", "small_crater", "moon_city", "moon_base"}
+
+
+def stars(d, rnd, count):
+    for _ in range(count):
+        x, y = rnd.randrange(SIZE), rnd.randrange(SIZE)
+        d.point([x, y], fill=rnd.choice([(255, 255, 255), (200, 210, 255), (255, 240, 200), (140, 150, 190)]))
+
+
+def space_tile(name, im, d, rnd):
+    """宇宙（地形タイプ 宇宙）と月面（月面）の地形の画像"""
+    if name in ("moon_ground", "small_crater", "moon_city", "moon_base"):
+        im.paste((150, 150, 156), [0, 0, SIZE, SIZE])
+        speckle(d, rnd, [(130, 130, 138), (168, 168, 174), (118, 118, 126)], 70)
+        if name == "small_crater":
+            d.ellipse([6, 8, 26, 26], fill=(120, 120, 128), outline=(96, 96, 104))
+            d.arc([6, 8, 26, 26], 200, 340, fill=(196, 196, 202), width=2)
+            d.ellipse([11, 13, 21, 21], fill=(104, 104, 112))
+        elif name == "moon_city":
+            for box in [[2, 14, 16, 30], [14, 6, 30, 22], [18, 20, 30, 32]]:
+                d.chord(box, 180, 360, fill=(176, 208, 232), outline=(80, 100, 120))
+                d.line([box[0], (box[1] + box[3]) // 2, box[2], (box[1] + box[3]) // 2], fill=(80, 100, 120))
+            for x, y in [(6, 19), (10, 20), (19, 11), (24, 12), (22, 24)]:
+                d.rectangle([x, y, x + 1, y + 1], fill=(248, 232, 120))
+        else:  # moon_base
+            d.rectangle([3, 13, 28, 29], fill=(120, 128, 136), outline=(60, 64, 72))
+            d.chord([3, 5, 28, 21], 180, 360, fill=(136, 144, 152), outline=(60, 64, 72))
+            d.rectangle([12, 20, 19, 29], fill=(56, 60, 68))
+            d.line([24, 2, 24, 8], fill=(60, 64, 72))
+            d.ellipse([21, 0, 27, 4], outline=(200, 204, 212))
+        return
+    im.paste((10, 12, 32), [0, 0, SIZE, SIZE])
+    stars(d, rnd, 14)
+    if name == "asteroids":
+        for box in [[2, 4, 13, 13], [17, 2, 28, 11], [8, 17, 22, 29], [24, 18, 31, 25]]:
+            d.ellipse(box, fill=(110, 96, 84), outline=(64, 56, 48))
+            d.arc(box, 200, 260, fill=(170, 154, 136))
+    elif name == "wrecks":
+        d.polygon([(3, 8), (14, 4), (17, 10), (6, 14)], fill=(128, 132, 140), outline=(70, 72, 80))
+        d.polygon([(18, 18), (29, 15), (30, 24), (20, 27)], fill=(112, 116, 124), outline=(70, 72, 80))
+        d.line([8, 22, 14, 28], fill=(150, 154, 162), width=2)
+        d.line([22, 5, 27, 9], fill=(150, 154, 162))
+        d.point([[12, 7], [25, 20]], fill=(248, 160, 64))
+    elif name == "colony":
+        d.rectangle([4, 9, 27, 22], fill=(180, 184, 192), outline=(90, 94, 104))
+        d.ellipse([0, 9, 8, 22], fill=(160, 164, 172), outline=(90, 94, 104))
+        d.ellipse([24, 9, 31, 22], fill=(200, 204, 212), outline=(90, 94, 104))
+        for x in range(7, 24, 4):
+            d.line([x, 10, x, 21], fill=(70, 110, 170))
+        d.polygon([(6, 9), (16, 2), (26, 9)], fill=(90, 120, 170), outline=(60, 80, 120))
+        d.polygon([(6, 22), (16, 29), (26, 22)], fill=(90, 120, 170), outline=(60, 80, 120))
+    elif name == "space_fortress":
+        d.polygon([(4, 28), (2, 16), (10, 4), (22, 4), (30, 16), (28, 28)], fill=(88, 84, 92), outline=(48, 44, 52))
+        d.polygon([(10, 20), (16, 10), (22, 20)], fill=(112, 106, 118), outline=(48, 44, 52))
+        for x, y in [(7, 14), (24, 13), (12, 24), (20, 25), (16, 7)]:
+            d.rectangle([x, y, x + 1, y + 1], fill=(248, 96, 64))
+    elif name == "space_dock":
+        d.rectangle([3, 3, 28, 6], fill=(150, 156, 166), outline=(80, 86, 96))
+        d.rectangle([3, 25, 28, 28], fill=(150, 156, 166), outline=(80, 86, 96))
+        for x in (4, 15, 26):
+            d.rectangle([x, 6, x + 2, 25], fill=(130, 136, 146), outline=(80, 86, 96))
+        for y in (10, 15, 20):
+            d.line([7, y, 25, y], fill=(110, 116, 126))
+        d.point([[9, 4], [22, 27]], fill=(120, 248, 120))
+    elif name == "earth":
+        d.ellipse([-14, 2, 30, 46], fill=(40, 96, 200), outline=(140, 190, 255))
+        d.polygon([(2, 14), (10, 10), (14, 18), (8, 24), (4, 22)], fill=(72, 148, 72))
+        d.polygon([(16, 22), (24, 20), (26, 30), (18, 31)], fill=(84, 156, 76))
+        d.arc([-6, 8, 18, 30], 180, 260, fill=(236, 240, 248))
+    elif name == "moon":
+        d.ellipse([4, 4, 28, 28], fill=(200, 200, 196), outline=(140, 140, 136))
+        for box in [[9, 10, 15, 16], [18, 15, 25, 22], [12, 20, 16, 24]]:
+            d.ellipse(box, fill=(168, 168, 164))
+    # space は星だけ
 
 
 def unit(name):

@@ -91,7 +91,7 @@ SRC#Studio は、作った zip を SRC#Web の「追加したアーカイブ」�
 |---|---|---|
 | `id` | ○ | カタログの中で一意の名前 |
 | `title`・`description`・`tags` | | 一覧に出す名前と説明 |
-| `map` | ○ | マップ（`.map`）。地形の番号は SRC の汎用データ（`Data/System/terrain.txt`）のもの |
+| `map` | ○ | マップ（`.map`）。地形の番号は SRC の汎用データ（`Data/System/terrain.txt`）のもの。どのサイトでも出せるよう、SRC# の最小の汎用データ（`SRC.Sharp/Content/basic-data`）にある地形（地上と、宇宙空間・暗礁空間・コロニー・宇宙要塞・月面など）で描く |
 | `allies`・`enemies` | | おすすめの置く位置（1 始まり）。置いたユニットをこの順に移し、足したユニットは空いている位置に置く |
 | `titles` | | 一緒に選ぶ作品（作品のデータの `index.json` の `path`） |
 | `units` | | 置くユニット（`unit`・`pilot`・`level`・`x`・`y`） |

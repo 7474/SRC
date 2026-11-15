@@ -25,7 +25,7 @@ SRC# で遊べるシナリオと、それを動かすための最小の汎用デ
 SRC のフルパッケージの汎用データは再配布できない（[素材の扱い](../../docs/assets.md)・[判断の記録](../../docs/decisions/2026-10-12-asset-redistribution.md)）。そのため、同じファイル名で差し替えられる素材を自作した。
 
 - 範囲
-  - 地形: 19 種類（ランタン号が使う分）
+  - 地形: 31 種類（ランタン号が使う分と、かんたん作成の宇宙の場面のための宇宙・月面の 12 種類）
   - ユニットの画像: 汎用データの `Bitmap/Unit` と同じ 22 種類。ランタン号は自前の画像（`lantern/Bitmap/Unit`）を使うため、汎用データの名前で画像を参照するシナリオ向け
   - スペシャルパワー: 20 種類（ランタン号が使う分）
   - 効果音（`Sound/*.wav`）: 54 種類。汎用効果音集と同じ名前で、SRC# が武器の種類などから選ぶ戦闘の効果音（Beam・Gun・Missile・Sword・Explode など）と、ランタン号が `PlaySound` で鳴らす音（Explode(Long)・Explode(Nuclear)・Transform・Sharara・Applause）。元の SRC のシナリオでも戦闘の効果音が鳴る
