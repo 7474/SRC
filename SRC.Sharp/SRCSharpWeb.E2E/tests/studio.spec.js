@@ -26,11 +26,11 @@ function scenarioFolder() {
 }
 
 /** フォルダの読み書き（File System Access API）を使わず、<input webkitdirectory> とダウンロードで動かす */
-async function open(page) {
+async function open(page, tab = 'map') {
   page.on('pageerror', e => console.log('pageerror:', e.message));
   // 「比べる」が読む 7474/SRC-Data の評価には行かない（比べるのテストは、後から足す route で代わりを返す）
   await page.route('https://7474.github.io/SRC-Data/**', route => route.abort());
-  const res = await page.goto(base + 'index.html?fs=input&lang=ja');
+  const res = await page.goto(base + `index.html?fs=input&lang=ja&tab=${tab}`);
   test.skip(res?.status() === 404 && !process.env.STUDIO_REQUIRED, 'SRC#Studio が置かれていない（tools/studio_bundle.sh）');
   await expect(page.locator('body[data-ready="true"]')).toHaveCount(1, { timeout: 60 * 1000 });
 }
@@ -221,4 +221,157 @@ test('比べる: 書いているユニットとパイロットを、データパ
   await page.locator('#data-files').selectOption('Data/team/unit.txt');
   await expect(page.locator('.dp-compare-body')).toContainText('全ユニット 10 体');
   await expect(page.locator('.dp-compare-body tr', { hasText: 'HP' })).toContainText('上位');
+});
+
+/** かんたん作成が読む 7474/SRC-Data の代わり（ランタン号のユニット・パイロットを 1 つの作品として返す） */
+async function routeSrcData(page, scenes = null) {
+  const index = {
+    titles: [
+      { title: 'ランタン', base: 'GSCデータパック/ロボ', path: 'GSCデータパック/ロボ/ランタン', tags: ['GSC', 'ロボ'], files: ['Unit.txt', 'pilot.txt', '更新履歴.txt'] },
+      { title: 'System', base: 'GSCデータパック/ロボ', path: 'GSCデータパック/ロボ/System', tags: ['GSC', 'ロボ'], files: ['alias.txt'] },
+    ],
+  };
+  const files = {
+    'GSCデータパック/ロボ/ランタン/Unit.txt': fs.readFileSync(path.join(lantern, 'Data', 'ランタン', 'unit.txt')),
+    'GSCデータパック/ロボ/ランタン/pilot.txt': fs.readFileSync(path.join(lantern, 'Data', 'ランタン', 'pilot.txt')),
+    'GSCデータパック/ロボ/System/alias.txt': Buffer.from('# 別名\r\n'),
+    'scenes/maps/harbor.map': fs.readFileSync(path.join(lantern, '01_灯の港.map')),
+  };
+  const requested = [];
+  await page.route('https://raw.githubusercontent.com/7474/SRC-Data/master/**', route => {
+    const p = decodeURIComponent(new URL(route.request().url()).pathname.replace('/7474/SRC-Data/master/', ''));
+    requested.push(p);
+    if (p === 'index.json') {
+      return route.fulfill({ json: index });
+    }
+    if (p === 'scenes/index.json' && scenes) {
+      return route.fulfill({ json: scenes });
+    }
+    return files[p] ? route.fulfill({ body: files[p] }) : route.fulfill({ status: 404 });
+  });
+  return requested;
+}
+
+test('かんたん作成: 作品を選び、味方と敵を置き、セリフを書いて zip に保存し、SRC#Web に渡す（7474/SRC#1659）', async ({ page, context }) => {
+  const requested = await routeSrcData(page);
+  await open(page, 'quick');
+  await expect(page.locator('#tab-quick')).toHaveAttribute('aria-selected', 'true');
+
+  // 1. 作品を探して選ぶ。同じデータパックの System も一緒に読み、更新履歴は読まない
+  await page.locator('.q-search').fill('ランタン');
+  await page.locator('.q-results button', { hasText: 'ランタン' }).click();
+  await expect(page.locator('.q-chosen li')).toHaveCount(1);
+  await expect(page.locator('.q-chosen li')).toContainText('ユニット');
+  expect(requested).toContain('GSCデータパック/ロボ/System/alias.txt');
+  expect(requested.some(p => p.includes('更新履歴'))).toBe(false);
+  await expect(page.locator('#q-units option[value="灯機ホタル"]')).toHaveCount(1);
+
+  // 2. 味方と敵
+  await page.locator('.q-add[data-side="allies"]').click();
+  await page.locator('tr[data-side="allies"] .q-unit').fill('灯機ホタル');
+  await page.locator('tr[data-side="allies"] .q-unit').dispatchEvent('change');
+  await page.locator('tr[data-side="allies"] .q-pilot').fill('ソラ');
+  await page.locator('tr[data-side="allies"] .q-pilot').dispatchEvent('change');
+  await page.locator('.q-add[data-side="enemies"]').click();
+  await page.locator('tr[data-side="enemies"] .q-unit').fill('灯機ホタル');
+  await page.locator('tr[data-side="enemies"] .q-unit').dispatchEvent('change');
+  await page.locator('tr[data-side="enemies"] .q-pilot').fill('リオ');
+  await page.locator('tr[data-side="enemies"] .q-pilot').dispatchEvent('change');
+
+  // 3. 場面: 味方を選んで (3,4) に動かす
+  // 題名はファイル名になる。日本語でもよいが、テストのブラウザ（headless）は日本語のダウンロードの名前を「download」にするので ASCII にする
+  await page.locator('.q-title').fill('first-battle');
+  await page.locator('.q-title').dispatchEvent('change');
+  await page.locator('tr[data-side="allies"] .q-pos').click();
+  await page.locator('.q-canvas').scrollIntoViewIfNeeded();
+  const board = await page.locator('.q-canvas').boundingBox();
+  await page.mouse.click(board.x + 2.5 * 26, board.y + 3.5 * 26);
+  await expect(page.locator('tr[data-side="allies"] .q-pos')).toHaveText('3,4');
+
+  // 4. セリフ
+  await page.locator('.q-add-line[data-scene="opening"]').click();
+  await page.locator('.q-line[data-scene="opening"] .q-speaker').selectOption('ソラ');
+  await page.locator('.q-line[data-scene="opening"] .q-text').fill('行くぞ！');
+
+  // 5. zip で保存: イベント・マップと、作品のデータ（名前は小文字）。圧縮しないので中身を文字で探せる
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('.q-save').click()]);
+  expect(download.suggestedFilename()).toBe('first-battle.zip');
+  const zip = fs.readFileSync(await download.path());
+  const text = zip.toString('utf8');
+  for (const name of ['first-battle.eve', 'first-battle.map', 'Data/ランタン/unit.txt', 'Data/ランタン/pilot.txt', 'Data/ロボ_System/alias.txt']) {
+    expect(text).toContain(name);
+  }
+  expect(text).toContain('@ロボ_System\r\n@ランタン');
+  expect(text).toContain('Create 味方 灯機ホタル 0 ソラ 10 3 4');
+  expect(text).toContain('Talk ソラ\r\n行くぞ！\r\nEnd');
+
+  // SRC#Web で遊ぶ: 同じサイトの SRC#Web の「追加したアーカイブ」に入れ、?stored= で開く（ここでは SRC#Web の代わりの頁を返す）
+  await context.route('**/web/**', route => route.fulfill({ contentType: 'text/html', body: '<p>SRC#Web</p>' }));
+  const [popup] = await Promise.all([context.waitForEvent('page'), page.locator('.q-play').click()]);
+  await expect.poll(() => popup.url()).toContain('stored=');
+  expect(decodeURIComponent(popup.url())).toContain('/web/?stored=first-battle.zip');
+  const stored = await page.evaluate(() => new Promise((resolve, reject) => {
+    const request = indexedDB.open('srcweb');
+    request.onsuccess = () => {
+      const get = request.result.transaction('archives').objectStore('archives').get('first-battle.zip');
+      get.onsuccess = () => resolve({ kind: get.result.kind, requires: get.result.requires, size: get.result.size });
+      get.onerror = () => reject(get.error);
+    };
+    request.onerror = () => reject(request.error);
+  }));
+  expect(stored.kind).toBe('scenario');
+  expect(stored.requires).toEqual(['basic-data']);
+  expect(stored.size).toBe(zip.length);
+
+  // 下書きはこのブラウザに残り、開き直すと作品を読み直す
+  await page.reload();
+  await expect(page.locator('body[data-ready="true"]')).toHaveCount(1, { timeout: 60 * 1000 });
+  await expect(page.locator('.q-chosen li')).toHaveCount(1);
+  await expect(page.locator('tr[data-side="allies"] .q-pilot')).toHaveValue('ソラ');
+  await expect(page.locator('.q-line[data-scene="opening"] .q-text')).toHaveValue('行くぞ！');
+});
+
+test('かんたん作成: 足りないものは作らずに知らせる', async ({ page }) => {
+  await routeSrcData(page);
+  await open(page, 'quick');
+  await page.locator('.q-save').click();
+  await expect(page.locator('.quick-status')).toContainText('味方のユニットがありません');
+  await expect(page.locator('.quick-status')).toContainText('敵のユニットがありません');
+});
+
+test('かんたん作成: 場面のカタログのサンプル（マップ・置く位置・作品・ユニット・セリフ）を使う', async ({ page }) => {
+  await routeSrcData(page, {
+    scenes: [{
+      id: 'harbor', title: '灯の港の戦い', description: '港での小競り合い', map: 'maps/harbor.map',
+      allies: [{ x: 3, y: 10 }, { x: 4, y: 10 }], enemies: [{ x: 15, y: 4 }],
+      titles: ['GSCデータパック/ロボ/ランタン'],
+      units: { allies: [{ unit: '灯機ホタル', pilot: 'ソラ', level: 12, x: 3, y: 10 }], enemies: [{ unit: '灯機ホタル', pilot: 'リオ', level: 8, x: 15, y: 4 }] },
+      talk: { opening: [{ speaker: 'ソラ', text: '港を守るぞ！' }] },
+    }],
+  });
+  await open(page, 'quick');
+  const option = page.locator('.q-map option', { hasText: '灯の港の戦い' });
+  await expect(option).toHaveCount(1);
+  await page.locator('.q-map').selectOption({ label: await option.textContent() });
+
+  // 何も選んでいなければ尋ねずに入れる
+  await expect(page.locator('.q-chosen li')).toContainText('ランタン');
+  await expect(page.locator('tr[data-side="allies"] .q-unit')).toHaveValue('灯機ホタル');
+  await expect(page.locator('tr[data-side="allies"] .q-pos')).toHaveText('3,10');
+  await expect(page.locator('tr[data-side="enemies"] .q-pilot')).toHaveValue('リオ');
+  await expect(page.locator('.q-line[data-scene="opening"] .q-text')).toHaveValue('港を守るぞ！');
+  await expect(page.locator('.q-title')).toHaveValue('灯の港の戦い');
+  // 足した味方は、空いているおすすめの位置に置く
+  await page.locator('.q-add[data-side="allies"]').click();
+  await expect(page.locator('tr[data-side="allies"] .q-pos').nth(1)).toHaveText('4,10');
+  await page.locator('tr[data-side="allies"] .q-remove').nth(1).click();
+
+  // zip のマップはサンプルのマップのまま（題名は ASCII にする。前のテストを参照）
+  await page.locator('.q-title').fill('harbor-battle');
+  await page.locator('.q-title').dispatchEvent('change');
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('.q-save').click()]);
+  const text = fs.readFileSync(await download.path()).toString('utf8');
+  const source = fs.readFileSync(path.join(lantern, '01_灯の港.map'), 'utf8').replace(/^\uFEFF/, '');
+  expect(text).toContain(source);
+  expect(text).toContain('ChangeMap harbor-battle.map');
 });

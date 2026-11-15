@@ -69,14 +69,14 @@ flowchart LR
 
 | 公開先 | 中身 | 更新されるとき | 版 |
 |---|---|---|---|
-| https://src.koudenpa.net/ | SRC#Web・データビューア・lint（SRCLintWeb）を組み込んだサイト | 7474/SRC-Site の配信のとき。その時点の 7474/SRC の master を取り込む（下の「7474/SRC-Site とのつながり」） | master |
+| https://src.koudenpa.net/ | SRC#Web・データビューア・lint（SRCLintWeb）・SRC#Studio を組み込んだサイト | 7474/SRC-Site の配信のとき。その時点の 7474/SRC の master を取り込む（下の「7474/SRC-Site とのつながり」） | master |
 | https://7474.github.io/SRC/ ・ `/web/` | データビューア・SRC#Web | master への push ごと | master（開発版） |
 | https://srcv.7474.jp/ ・ `/web/` | データビューア・SRC#Web | `SRC.Sharp/` を変えた master への push ごと | master（開発版） |
 | https://srch.7474.jp/ | ヘルプ | `SRC.Sharp.Help/` を変えた master への push ごと | master |
 | GitHub Releases | SRC#Form・SRC#Avalonia・SRC#Web の zip、VS Code 拡張の .vsix、リリースの案内 | タグの push | タグ |
 | NuGet | `SRCCore`・`SRCDataLinter`・`SRCSharpTools`（`srcsharp`） | タグの push | タグ |
 | Docker Hub | `koudenpa/srcdatalinter:<タグ>`・`latest` | タグの push | タグ |
-| GitHub Releases の `dev`（プレリリース） | 開発版：SRC#Avalonia・srcsharp の nupkg・VS Code 拡張の .vsix・SRC#Web・lint・データビューアの zip、`manifest.json` | `SRC.Sharp/` を変えた master への push ごと（`Packages.yml` の起動の確かめが通ったとき。添付を入れ替える） | master（開発版。[バージョンの管理](./versioning.md)の「開発版」） |
+| GitHub Releases の `dev`（プレリリース） | 開発版：SRC#Avalonia・srcsharp の nupkg・VS Code 拡張の .vsix・SRC#Web・lint・データビューア・SRC#Studio の zip、`manifest.json` | `SRC.Sharp/` を変えた master への push ごと（`Packages.yml` の起動の確かめが通ったとき。添付を入れ替える） | master（開発版。[バージョンの管理](./versioning.md)の「開発版」） |
 | Docker Hub | `koudenpa/srcdatalinter:dev` | 同上 | master（開発版） |
 | Visual Studio Marketplace・Open VSX | `koudenpa.src-vscode` | タグの push（公開済みの版なら飛ばす） | タグ |
 | Mackerel（サービス `SRCS`） | カバレッジ（行・分岐） | master への push ごと | master |
@@ -90,6 +90,7 @@ flowchart LR
 | SRC#Web（`SRCSharpWeb`） | `/play/` で遊ぶ | SRC-Site の配信（main への push・PR・手動） |
 | lint（`SRCLintWeb`） | シナリオの投稿の前の確かめ | 同上 |
 | データビューア（`SRCDataViewer`） | `/viewer/` でシナリオ・共有パックを見る | 同上 |
+| SRC#Studio（`SRCStudio.zip`） | `/studio/` でかんたん作成・マップ作成ツール。隣の `studio.json` を SRC-Site の SRC#Web（`/play/`）と素材に書き換える（[かんたん作成](./tools/quick-create.md)） | 同上 |
 | `srcsharp`（`SRCSharpTools`） | サンドボックスのシナリオを画面なしで通す | SRC-Site のサンドボックスの CI（`sandbox/` を変えたとき・毎週） |
 
 取り込む 7474/SRC の版は、SRC-Site の変数 `SRC_REF`（既定は `master`）で決まる。**7474/SRC をマージしても、src.koudenpa.net には SRC-Site が次に配信するまで入らない。** すぐに入れるには、SRC-Site の `Deploy` ワークフローを手動で動かす（配信先 `production`）。いま配信している版は https://src.koudenpa.net/play/version.txt で分かる。

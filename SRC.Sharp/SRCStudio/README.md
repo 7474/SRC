@@ -1,6 +1,6 @@
 # SRC#Studio
 
-データ・シナリオの作成支援の画面（判断は [docs/decisions/2026-11-14-authoring-environment.md](../../docs/decisions/2026-11-14-authoring-environment.md)）。マップ作成ツール（7474/SRC#1641）とデータのプレビュー（7474/SRC#1643）を持つ。
+データ・シナリオの作成支援の画面（判断は [docs/decisions/2026-11-14-authoring-environment.md](../../docs/decisions/2026-11-14-authoring-environment.md)）。かんたん作成（7474/SRC#1659。[docs/tools/quick-create.md](../../docs/tools/quick-create.md)）、マップ作成ツール（7474/SRC#1641）、データのプレビュー（7474/SRC#1643）を持つ。かんたん作成はスタンドアロンだけ（VS Code では F5 で遊ぶ）。
 
 作成環境の主は VS Code 拡張で、SRC#Studio はその中の画面であると同時に、VS Code を使わずに単独でも使える部品（[作成支援ツール](../../docs/tools/authoring.md) の「VS Code 拡張と、単独で使える部品」）。同じ画面を 2 か所で動かす。
 
@@ -22,6 +22,10 @@
 | `wwwroot/compare.js` | 比べる（7474/SRC-Data の Pages の評価の JSON の中で上位何 %） |
 | `wwwroot/vscode.html`・`vscode-boot.js`・`vscode.js` | VS Code の Webview（マップ作成ツール）。拡張とメッセージでやり取りする |
 | `wwwroot/vscode-preview.html`・`vscode-preview.js` | VS Code の Webview（データのプレビュー。拡張の `src/preview.ts`） |
+| `wwwroot/quick.js` | かんたん作成の画面（作品・ユニット・配置・セリフ・場面のサンプル・下書き） |
+| `wwwroot/zip.js` | zip を作る（圧縮しない） |
+| `wwwroot/web-handoff.js` | サイトごとの設定（`studio.json`）と、同じサイトの SRC#Web への受け渡し（IndexedDB と `?stored=`） |
+| `wwwroot/studio.json` | サイトごとの設定（SRC#Web の場所・素材・作品のデータ・場面のカタログ）。置く側が書き換える |
 | `wwwroot/i18n.js` | 画面の文字列（日本語と英語。ほかの言語は英語） |
 
 ## マップ作成ツール
@@ -43,5 +47,6 @@ tools/studio_bundle.sh out/studio
 ## テスト
 
 - `SRCAuthoringTests/MapDocumentTests.cs`: マップの読み書き（リポジトリの全てのマップが変わらない・SRCCore と同じに読める）・地形データ・画像の探し方
-- `SRCSharpWeb.E2E/tests/studio.spec.js`: スタンドアロン（`?fs=input` で、フォルダの読み込みとダウンロードの道を通す）
+- `SRCSharpWeb.E2E/tests/studio.spec.js`: スタンドアロン（`?fs=input` で、フォルダの読み込みとダウンロードの道を通す）。かんたん作成（7474/SRC-Data の代わりを返す）
+- `SRCAuthoringTests/QuickBattleTemplateTests.cs`・`CliTests.cs`: かんたん作成のイベント（作ったシナリオが lint を通り、最後まで遊べる）
 - `SRCSharpVSCode/test/extension.test.js`: VS Code でカスタムエディタが開き、画面の WebAssembly が地形とマップを読めること

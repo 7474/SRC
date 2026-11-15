@@ -39,6 +39,7 @@ SRC#（Simulation RPG Construction Sharp）の設計・運用のドキュメン�
 
 ### 🛠️ 作成支援ツール / Authoring Tools
 
+- **[かんたん作成](./tools/quick-create.md)** — SRC#Studio で、作品のキャラを選んで置き、セリフを書いて、すぐ SRC#Web で遊ぶ。サイトごとの設定（`studio.json`）と、場面のサンプルのカタログの書式
 - **[作成支援ツール](./tools/authoring.md)** — マップ作成ツール（SRC#Studio。ブラウザと VS Code）、データの lint（書き間違いを見つける規則のグループ `src`・`gsc-robo`・`gsc-ext`・`robodun`）・バランス集計、シナリオの自動プレイ・イベントのデバッガ（CLI `srcsharp`・VS Code 拡張・ブラウザの lint）
 - **[VS Code 拡張の使い方](../SRC.Sharp/SRCSharpVSCode/README.md)** — 導入・設定・デバッガの構成・文字コード・トラブルシューティング
 

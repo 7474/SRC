@@ -2,6 +2,7 @@
 import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, studioCore, decodeText, previewData, findFile } from './studio-core.js';
 import { DataPreview } from './preview.js';
 import { MapEditor, newMap } from './map-editor.js';
+import { QuickBuilder } from './quick.js';
 import { basicData, canWriteFolders, download, fromFileList, pickFolder } from './folders.js';
 import { language, t } from './i18n.js';
 
@@ -118,18 +119,41 @@ $('#save-data').addEventListener('click', async () => {
 $('#data-files').addEventListener('change', ev => showData(ev.target.value));
 
 function selectTab(tab) {
-  $('#tab-map').setAttribute('aria-selected', String(tab === 'map'));
-  $('#tab-data').setAttribute('aria-selected', String(tab === 'data'));
+  for (const name of ['quick', 'map', 'data']) {
+    $(`#tab-${name}`).setAttribute('aria-selected', String(tab === name));
+  }
   $('#map-section').hidden = tab !== 'map';
   $('#data-section').hidden = tab !== 'data';
+  $('#quick-section').hidden = tab !== 'quick';
   $('.files').hidden = tab !== 'map';
   if (tab === 'data') {
     renderDataFiles();
   }
+  if (tab === 'quick') {
+    quick.render();
+  }
+  try {
+    localStorage.setItem('srcstudio.tab', tab);
+  } catch {
+    // 残せなくても切り替える
+  }
 }
 
+$('#tab-quick').addEventListener('click', () => selectTab('quick'));
 $('#tab-map').addEventListener('click', () => selectTab('map'));
 $('#tab-data').addEventListener('click', () => selectTab('data'));
+
+// ---- かんたん作成（7474/SRC#1659） ----
+
+const quick = new QuickBuilder($('#quick-section'), {
+  systemTexts,
+  // 開いたシナリオのフォルダのマップ（マップ作成ツールで描いたもの）を場面に使える
+  maps: () => state.scenario?.files.filter(f => f.toLowerCase().endsWith('.map')) ?? [],
+  readMap: path => state.scenario.read(path),
+  parseMap,
+  terrains: () => state.terrains,
+  download,
+});
 
 function setDirty(dirty) {
   state.dirty = dirty;
@@ -287,6 +311,15 @@ $('#save').hidden = !canWriteFolders();
   await studioCore();
   state.app = await basicData();
   await reloadWorkspace();
+  // はじめて開いた人は、かんたん作成から（?tab= か、前に開いていたタブ）
+  let tab = new URLSearchParams(location.search).get('tab');
+  try {
+    tab ??= localStorage.getItem('srcstudio.tab');
+  } catch {
+    // localStorage を使えない
+  }
+  selectTab(['quick', 'map', 'data'].includes(tab) ? tab : 'quick');
+  await quick.restoreDraft();
   $('#loading').hidden = true;
   document.body.dataset.ready = 'true';
 })();

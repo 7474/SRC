@@ -12,7 +12,7 @@ import { t } from './i18n.js';
 
 const TILE = 32;
 const NO_LAYER = 10000;
-const CLASS_COLORS = { '陸': '#8db360', '屋内': '#b49a74', '月面': '#b9b9b9', '水': '#4f86c6', '深水': '#2c5a92', '空': '#bcd8f0', '宇宙': '#1b1b3a' };
+export const CLASS_COLORS = { '陸': '#8db360', '屋内': '#b49a74', '月面': '#b9b9b9', '水': '#4f86c6', '深水': '#2c5a92', '空': '#bcd8f0', '宇宙': '#1b1b3a' };
 const TOOLS = ['pen', 'rect', 'fill', 'pick', 'copy', 'paste'];
 
 export class MapEditor {

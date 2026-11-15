@@ -29,9 +29,11 @@
     <p id="loading" data-t="loading" hidden></p>
   </header>
   <div class="studio-tabs" role="tablist">
+    <button type="button" role="tab" id="tab-quick" aria-selected="false" data-t="studio.tabQuick"></button>
     <button type="button" role="tab" id="tab-map" aria-selected="true" data-t="studio.tabMap"></button>
     <button type="button" role="tab" id="tab-data" aria-selected="false" data-t="studio.tabData"></button>
   </div>
+  <section id="quick-section" hidden></section>
   <section id="data-section" hidden>
     <p data-t="studio.dataHint"></p>
     <label><span data-t="studio.dataFiles"></span> <select id="data-files"></select></label>

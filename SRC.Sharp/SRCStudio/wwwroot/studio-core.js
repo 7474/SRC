@@ -92,3 +92,9 @@ export async function findFile(candidates) {
   const i = found.indexOf(':');
   return { root: Number(found.slice(0, i)), path: found.slice(i + 1) };
 }
+
+/** かんたん作成（7474/SRC#1659）。場面の JSON から { errors: [...], files: { 相対パス: テキスト } } */
+export async function buildQuickBattle(json) {
+  const core = await studioCore();
+  return JSON.parse(core.BuildQuickBattle(json));
+}

@@ -92,7 +92,7 @@ def main():
 | srcsharp（.NET tool） | `{nupkg}`（下の手順） |
 | VS Code 拡張 | `src-vscode-{library}.vsix`（「VSIX からのインストール」） |
 | SRC#Web（外部のサイトに置く） | `SRCSharpWeb.zip` |
-| ブラウザで動く lint・データビューア | `SRCLintWeb.zip`・`SRCDataViewer.zip` |
+| ブラウザで動く lint・データビューア・SRC#Studio | `SRCLintWeb.zip`・`SRCDataViewer.zip`・`SRCStudio.zip` |
 
 ファイルの URL は `{base}/<ファイル名>` で、マージのたびに中身が変わります。他のリポジトリから使うときは、`manifest.json` の `commit` と SHA-256 を記録してください。
 

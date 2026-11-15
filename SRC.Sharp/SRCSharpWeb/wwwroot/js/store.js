@@ -35,16 +35,20 @@
         async list() {
             const items = await run('readonly', store => store.getAll());
             return items
-                .map(x => ({ name: x.name, size: x.size, added: x.added, kind: x.kind || 'scenario' }))
+                .map(x => ({ name: x.name, size: x.size, added: x.added, kind: x.kind || 'scenario', requires: x.requires || [] }))
                 .sort((a, b) => a.name.localeCompare(b.name));
         },
-        // kind: scenario（シナリオ）・asset（汎用グラフィック集などの素材。どのシナリオにも重ねる）
-        async put(name, bytes, kind) {
+        // kind: scenario（シナリオ）・asset（汎用グラフィック集などの素材。どのシナリオにも重ねる）。
+        // requires: 遊ぶ前に重ねるカタログの素材の id（SRC#Studio のかんたん作成が入れる。7474/SRC#1659）。省けば前のものを引き継ぐ
+        async put(name, bytes, kind, requires) {
             if (navigator.storage && navigator.storage.persist) {
                 // ブラウザの判断で消されないよう求める（許可されない場合もある）
                 navigator.storage.persist();
             }
-            await run('readwrite', store => store.put({ name, kind: kind || 'scenario', size: bytes.length, added: Date.now(), data: new Blob([bytes]) }));
+            if (requires === undefined || requires === null) {
+                requires = (await run('readonly', store => store.get(name)))?.requires || [];
+            }
+            await run('readwrite', store => store.put({ name, kind: kind || 'scenario', size: bytes.length, added: Date.now(), requires, data: new Blob([bytes]) }));
         },
         async get(name) {
             const item = await run('readonly', store => store.get(name));

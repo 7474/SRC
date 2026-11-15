@@ -70,7 +70,7 @@ flowchart TB
 | SRCDebugAdapter | ライブラリ | SRCAuthoring・SRCPlay・SRCLogging | DAP のサーバーとイベントのデバッガ、ホットリロード |
 | SRCHelpSearch | ライブラリ | ― | ヘルプの全文検索・ベクトル検索（`srcsharp help --search`） |
 | SRCSharpTools | アプリ（.NET tool `srcsharp`） | SRCAuthoring・SRCDebugAdapter・SRCPlay・SRCHelpSearch・SRCLogging | CLI（`new`・`lint`・`play`・`trial`・`balance`・`help`）、`lsp`・`dap`。ヘルプ（`SRC.Sharp.Help/src`）を埋め込む |
-| SRCStudio | WASM（スレッド・AOT なし、`JSExport`） | SRCAuthoring | SRC#Studio の計算。画面は `wwwroot` の HTML・JavaScript。スタンドアロン（Pages の `/studio/`）と VS Code の Webview で同じものを使う |
+| SRCStudio | WASM（スレッド・AOT なし、`JSExport`） | SRCAuthoring | SRC#Studio の計算（マップ・プレビュー・かんたん作成のイベント）。かんたん作成のシナリオは同じサイトの SRC#Web にブラウザの IndexedDB で渡す。画面は `wwwroot` の HTML・JavaScript。スタンドアロン（Pages の `/studio/`）と VS Code の Webview で同じものを使う |
 | SRCLintWeb | WASM（スレッド・AOT なし、`JSExport`） | SRCAuthoring | ブラウザの lint。投稿サイト（7474/SRC-Site）が使う |
 | SRCDataLinter | アプリ・Docker | SRCAuthoring | 従来の lint の CLI と Docker イメージ（GitHub Action） |
 | SRCPortingAnalyzers | Roslyn アナライザー | ― | VB からの移植で起きやすい誤りを、SRCCore のビルドで知らせる |
@@ -89,8 +89,8 @@ flowchart TB
 
 | リポジトリ | 関係 |
 |---|---|
-| 7474/SRC-Data | データ（GSC データパックなど）。GitHub Pages で組の評価の JSON を作る（`tools/pack-analysis`・`tools/pack-stats` を使う）。データビューア・SRC#Studio の「比べる」が読む |
-| 7474/SRC-Site | SRC#Web のリリース版のサイトと投稿（SRCLintWeb を使う） |
+| 7474/SRC-Data | データ（GSC データパックなど）。GitHub Pages で組の評価の JSON を作る（`tools/pack-analysis`・`tools/pack-stats` を使う）。データビューア・SRC#Studio の「比べる」とかんたん作成（作品のデータ・場面のカタログ）が読む |
+| 7474/SRC-Site | SRC#Web のリリース版のサイトと投稿（SRCLintWeb を使う）。SRC#Studio も `/studio/` に置く |
 | 7474/SRC-DataLinter | SRCDataLinter の GitHub Action |
 
 配布物とワークフローの関係は [運用の全体像](./operations.md)。
