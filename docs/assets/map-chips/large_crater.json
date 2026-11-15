@@ -9,7 +9,71 @@
       "kind": "edge",
       "neighbor": "crater",
       "description": "複数マスで組む大きなクレーターの縁（灰色の地面に暗い岩の稜線）。3×3 の並び（北西〜南東）と思われる",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "0": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "1": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "2": {
+          "sides": [],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "3": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "4": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "5": {
+          "sides": [],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "6": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "7": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "8": {
+          "sides": [
+            "N",
+            "E",
+            "W"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 9,
@@ -17,7 +81,38 @@
       "kind": "inner_corner",
       "neighbor": "crater",
       "description": "クレーターの内角/つなぎの部品",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "9": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "10": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "11": {
+          "sides": [
+            "W",
+            "E"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        },
+        "12": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "ground",
+          "confidence": "guess"
+        }
+      }
     }
   ],
   "rules": ""

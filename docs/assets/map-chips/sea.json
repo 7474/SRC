@@ -183,6 +183,10 @@
         "34": [
           "NE"
         ],
+        "35": [
+          "N",
+          "W"
+        ],
         "36": [
           "SW"
         ],
@@ -200,7 +204,41 @@
       "style": "default",
       "neighbor": "plain",
       "description": "暗い草地の岸の角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "38": [
+          "S",
+          "W"
+        ],
+        "39": [
+          "N",
+          "W"
+        ],
+        "40": [
+          "N",
+          "E"
+        ],
+        "41": [
+          "N",
+          "E"
+        ],
+        "42": [
+          "S",
+          "W"
+        ],
+        "43": [
+          "E",
+          "S"
+        ],
+        "44": {
+          "sides": [
+            "N",
+            "E",
+            "S"
+          ],
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 45,
@@ -225,7 +263,45 @@
       "style": "snow",
       "neighbor": "snow",
       "description": "雪・流氷に接する深海と航跡",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "500": [
+          "N",
+          "W"
+        ],
+        "501": [
+          "N",
+          "E"
+        ],
+        "502": [],
+        "503": [
+          "S",
+          "W"
+        ],
+        "504": [
+          "E",
+          "S"
+        ],
+        "505": [
+          "E"
+        ],
+        "506": [
+          "W"
+        ],
+        "507": [
+          "N"
+        ],
+        "508": [
+          "S"
+        ],
+        "509": [
+          "W"
+        ],
+        "510": [],
+        "511": [
+          "E"
+        ]
+      }
     },
     {
       "from": 1000,
@@ -233,7 +309,99 @@
       "kind": "edge",
       "style": "dark",
       "description": "暗い紫灰色の水面と斜めの堤防・影（三角の黒い縁）",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "1000": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "void"
+        },
+        "1001": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "void"
+        },
+        "1002": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "void"
+        },
+        "1003": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "void"
+        },
+        "1004": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "void"
+        },
+        "1005": {
+          "sides": [],
+          "neighbor": "void"
+        },
+        "1006": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "void"
+        },
+        "1007": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "void"
+        },
+        "1008": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "void"
+        },
+        "1009": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "void"
+        },
+        "1010": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "void"
+        },
+        "1011": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "void"
+        },
+        "1012": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "void",
+          "confidence": "guess"
+        },
+        "1013": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "void",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 1014,
@@ -272,7 +440,266 @@
       "style": "wave",
       "neighbor": "sea",
       "description": "濃い青の深みと青緑の浅瀬の境目（縦横の帯・角・草地付き）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "2500": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "2501": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "2502": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "2503": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "2504": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "S"
+            ]
+          }
+        },
+        "2505": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "2506": {
+          "sides": [
+            "NE"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "2507": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "2508": {
+          "sides": [
+            "NW"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "2509": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "deep_sea",
+          "confidence": "guess",
+          "note": "shallow corner is the remaining corner; deep covers listed sides"
+        },
+        "2510": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "deep_sea",
+          "note": "shallow corner is the remaining corner; deep covers listed sides"
+        },
+        "2511": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "S"
+            ]
+          }
+        },
+        "2512": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "deep_sea",
+          "note": "shallow corner is the remaining corner; deep covers listed sides"
+        },
+        "2513": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "deep_sea",
+          "note": "shallow corner is the remaining corner; deep covers listed sides"
+        },
+        "2514": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "N"
+            ]
+          }
+        },
+        "2515": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "N"
+            ]
+          }
+        },
+        "2516": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "W"
+            ]
+          }
+        },
+        "2517": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "W"
+            ]
+          }
+        },
+        "2518": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "E"
+            ]
+          }
+        },
+        "2519": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "E"
+            ]
+          }
+        },
+        "2520": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "N"
+            ]
+          }
+        },
+        "2521": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "N"
+            ]
+          }
+        },
+        "2522": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "S"
+            ]
+          }
+        },
+        "2523": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "S"
+            ]
+          }
+        },
+        "2524": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "W"
+            ]
+          }
+        },
+        "2525": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "W"
+            ]
+          }
+        },
+        "2526": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "E"
+            ]
+          }
+        },
+        "2527": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "deep_sea",
+          "also": {
+            "plain": [
+              "E"
+            ]
+          }
+        }
+      }
     },
     {
       "from": 3000,

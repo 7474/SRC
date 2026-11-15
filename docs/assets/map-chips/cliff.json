@@ -10,7 +10,85 @@
       "style": "default",
       "neighbor": "cliff",
       "description": "茶色の土の台地に掘られた溝・段差の縁と角（0–2 北側の縁、3–4 縦の黒い割れ目、5–9 木目状の段差の縁と角）",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "0": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "1": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "2": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "3": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "4": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "5": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "6": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "7": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "8": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        },
+        "9": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "dirt",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 10,
@@ -19,7 +97,46 @@
       "style": "default",
       "neighbor": "cliff",
       "description": "明るい緑の草地の高台の縁（10–11 縦の縁、12–14 台地の上辺の左角・中・右角）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "10": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "11": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "12": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "13": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "14": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 15,
@@ -28,7 +145,44 @@
       "style": "default",
       "neighbor": "plain",
       "description": "草地の高台から下へ落ちる崖の正面（15–17 崖面の左・中・右、18–21 崖の左右端と内角。20–21 は崖下が雪）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "15": [
+          "W",
+          "S"
+        ],
+        "16": [
+          "S"
+        ],
+        "17": [
+          "E",
+          "S"
+        ],
+        "18": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "19": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "20": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "snow"
+        },
+        "21": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "snow"
+        }
+      }
     },
     {
       "from": 22,
@@ -37,7 +191,37 @@
       "style": "default",
       "neighbor": "snow",
       "description": "雪原の中の草地高台と崖（22–23 縦の縁、24–26 台地の上辺、27–29 雪原へ落ちる崖面）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "22": [
+          "W"
+        ],
+        "23": [
+          "E"
+        ],
+        "24": [
+          "N",
+          "W"
+        ],
+        "25": [
+          "N"
+        ],
+        "26": [
+          "N",
+          "E"
+        ],
+        "27": [
+          "W",
+          "S"
+        ],
+        "28": [
+          "S"
+        ],
+        "29": [
+          "E",
+          "S"
+        ]
+      }
     },
     {
       "from": 30,
@@ -46,7 +230,108 @@
       "style": "default",
       "neighbor": "plain",
       "description": "上に草地を持つ黄土色の岩崖の組（崖面の左右端・外角・内角・丸い突き出し。39–41 は崖下が水色の水）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "30": [
+          "W"
+        ],
+        "31": [
+          "N"
+        ],
+        "32": [
+          "E"
+        ],
+        "33": [
+          "W"
+        ],
+        "34": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "35": [
+          "E"
+        ],
+        "36": [
+          "W",
+          "S"
+        ],
+        "37": [
+          "S"
+        ],
+        "38": [
+          "E",
+          "S"
+        ],
+        "39": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "sea"
+        },
+        "40": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "41": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "42": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "confidence": "guess"
+        },
+        "43": {
+          "sides": [
+            "N"
+          ],
+          "confidence": "guess"
+        },
+        "44": {
+          "sides": [
+            "NE"
+          ],
+          "confidence": "guess"
+        },
+        "45": {
+          "sides": [
+            "E"
+          ],
+          "confidence": "guess"
+        },
+        "46": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "47": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "48": [
+          "E",
+          "S"
+        ],
+        "49": [
+          "SE"
+        ],
+        "50": [
+          "SW"
+        ],
+        "51": [
+          "N",
+          "W"
+        ]
+      }
     },
     {
       "from": 52,
@@ -55,7 +340,48 @@
       "style": "default",
       "neighbor": "sea",
       "description": "崖の柱・突き出しの崖下が明るい青の水",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "52": [
+          "W"
+        ],
+        "53": [
+          "E"
+        ],
+        "54": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "plain"
+        },
+        "55": [
+          "W"
+        ],
+        "56": [
+          "E"
+        ],
+        "57": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain"
+        },
+        "58": [
+          "W",
+          "S"
+        ],
+        "59": [
+          "E",
+          "S"
+        ],
+        "60": [
+          "SE"
+        ],
+        "61": [
+          "SW"
+        ]
+      }
     },
     {
       "from": 62,
@@ -64,7 +390,54 @@
       "style": "default",
       "neighbor": "snow",
       "description": "崖の柱・突き出しの崖下が雪",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "62": [
+          "S"
+        ],
+        "63": [
+          "W"
+        ],
+        "64": [
+          "E"
+        ],
+        "65": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/snow",
+          "confidence": "guess"
+        },
+        "66": [
+          "W"
+        ],
+        "67": [
+          "E"
+        ],
+        "68": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/snow",
+          "confidence": "guess"
+        },
+        "69": [
+          "W",
+          "S"
+        ],
+        "70": [
+          "E",
+          "S"
+        ],
+        "71": [
+          "SE"
+        ],
+        "72": [
+          "SW"
+        ]
+      }
     },
     {
       "from": 73,
@@ -73,7 +446,36 @@
       "style": "default",
       "neighbor": "plain",
       "description": "崖の付け根と草地の外角・内角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "73": [
+          "SE"
+        ],
+        "74": [
+          "S"
+        ],
+        "75": [
+          "SW"
+        ],
+        "76": [
+          "SE"
+        ],
+        "77": [
+          "S"
+        ],
+        "78": [
+          "SW"
+        ],
+        "79": [
+          "SE"
+        ],
+        "80": [
+          "S"
+        ],
+        "81": [
+          "SW"
+        ]
+      }
     },
     {
       "from": 82,
@@ -90,7 +492,54 @@
       "style": "default",
       "neighbor": "sea",
       "description": "崖の根元が青緑の海（浅瀬）に接する組",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "88": [
+          "S"
+        ],
+        "89": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "90": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "91": [
+          "W"
+        ],
+        "92": [
+          "E"
+        ],
+        "93": [
+          "W"
+        ],
+        "94": [
+          "E"
+        ],
+        "95": [
+          "W",
+          "S"
+        ],
+        "96": [
+          "E",
+          "S"
+        ],
+        "97": [
+          "SE"
+        ],
+        "98": [
+          "SW"
+        ]
+      }
     },
     {
       "from": 99,
@@ -99,7 +548,37 @@
       "style": "default",
       "neighbor": "sea",
       "description": "明るい青の水の中の岩の島・岩棚（99–101 島の上辺、102–104 水面へ落ちる灰色の岩崖、105–106 縦の岩の筋）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "99": [
+          "N",
+          "W"
+        ],
+        "100": [
+          "N"
+        ],
+        "101": [
+          "N",
+          "E"
+        ],
+        "102": [
+          "W",
+          "S"
+        ],
+        "103": [
+          "S"
+        ],
+        "104": [
+          "E",
+          "S"
+        ],
+        "105": [
+          "W"
+        ],
+        "106": [
+          "E"
+        ]
+      }
     },
     {
       "from": 108,
@@ -108,7 +587,53 @@
       "style": "default",
       "neighbor": "sea",
       "description": "草地＋崖が青緑の海に接する縁と角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "108": [
+          "N",
+          "W"
+        ],
+        "109": [
+          "N"
+        ],
+        "110": [
+          "N",
+          "E"
+        ],
+        "111": [
+          "W"
+        ],
+        "113": [
+          "E"
+        ],
+        "114": [
+          "W",
+          "S"
+        ],
+        "115": [
+          "S"
+        ],
+        "116": [
+          "E",
+          "S"
+        ],
+        "117": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "118": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 119,
@@ -117,7 +642,98 @@
       "style": "default",
       "neighbor": "deep_sea",
       "description": "草地＋崖が濃紺の深海に接する縁と角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "119": [
+          "N",
+          "W"
+        ],
+        "120": [
+          "N"
+        ],
+        "121": [
+          "N",
+          "E"
+        ],
+        "122": [
+          "W"
+        ],
+        "123": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        },
+        "124": [
+          "E"
+        ],
+        "125": [
+          "W",
+          "S"
+        ],
+        "126": [
+          "S"
+        ],
+        "127": [
+          "E",
+          "S"
+        ],
+        "128": [
+          "W",
+          "S"
+        ],
+        "129": [
+          "S"
+        ],
+        "130": [
+          "E",
+          "S"
+        ],
+        "131": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        },
+        "132": [
+          "W"
+        ],
+        "133": [
+          "E"
+        ],
+        "134": [
+          "W"
+        ],
+        "135": [
+          "E"
+        ],
+        "136": [
+          "SE"
+        ],
+        "137": [
+          "SW"
+        ],
+        "138": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        },
+        "139": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 140,
@@ -126,7 +742,95 @@
       "style": "default",
       "neighbor": "plain",
       "description": "崖同士・崖と草地の継ぎ目（段の分岐・合流）",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "140": [
+          "W"
+        ],
+        "141": [
+          "E"
+        ],
+        "142": {
+          "sides": [
+            "E"
+          ],
+          "confidence": "guess"
+        },
+        "143": {
+          "sides": [
+            "NW"
+          ],
+          "confidence": "guess"
+        },
+        "144": {
+          "sides": [
+            "NE"
+          ],
+          "confidence": "guess"
+        },
+        "145": {
+          "sides": [
+            "NE"
+          ],
+          "confidence": "guess"
+        },
+        "146": [
+          "W"
+        ],
+        "147": [
+          "W",
+          "S"
+        ],
+        "148": [
+          "E",
+          "S"
+        ],
+        "149": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "confidence": "guess"
+        },
+        "150": [
+          "W",
+          "S"
+        ],
+        "151": [
+          "E",
+          "S"
+        ],
+        "152": [
+          "SE"
+        ],
+        "153": [
+          "S"
+        ],
+        "154": [
+          "SW"
+        ],
+        "155": [
+          "SE"
+        ],
+        "156": [
+          "S"
+        ],
+        "157": [
+          "SW"
+        ],
+        "158": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "159": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "160": {
+          "sides": [],
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 161,
@@ -135,7 +839,106 @@
       "style": "default",
       "neighbor": "sea",
       "description": "草地＋崖が明るい青の水に接する縁と角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "161": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "162": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "163": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "164": [
+          "S"
+        ],
+        "165": [
+          "SE"
+        ],
+        "166": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "167": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "168": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "169": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "170": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "171": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "172": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "173": {
+          "sides": [
+            "S",
+            "NW"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "174": {
+          "sides": [
+            "S",
+            "NE"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 175,
@@ -151,7 +954,106 @@
       "style": "default",
       "neighbor": "snow",
       "description": "草地＋崖が雪に接する縁と角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "176": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "snow/plain",
+          "confidence": "guess"
+        },
+        "177": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "snow/plain",
+          "confidence": "guess"
+        },
+        "178": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "snow/plain",
+          "confidence": "guess"
+        },
+        "179": [
+          "S"
+        ],
+        "180": [
+          "SE"
+        ],
+        "181": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/snow",
+          "confidence": "guess"
+        },
+        "182": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "snow/plain",
+          "confidence": "guess"
+        },
+        "183": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/snow",
+          "confidence": "guess"
+        },
+        "184": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "snow/plain",
+          "confidence": "guess"
+        },
+        "185": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "186": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "187": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/snow",
+          "confidence": "guess"
+        },
+        "188": {
+          "sides": [
+            "S",
+            "NW"
+          ],
+          "neighbor": "plain/snow",
+          "confidence": "guess"
+        },
+        "189": {
+          "sides": [
+            "S",
+            "NE"
+          ],
+          "neighbor": "plain/snow",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 190,
@@ -167,7 +1069,88 @@
       "style": "default",
       "neighbor": "sea",
       "description": "海に接する崖・草地の複合角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "191": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "192": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "193": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "194": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "195": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "196": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "197": {
+          "sides": [
+            "S",
+            "NW"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "198": {
+          "sides": [
+            "S",
+            "NE"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "199": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "200": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 201,
@@ -183,7 +1166,219 @@
       "style": "default",
       "neighbor": "sea",
       "description": "海・深海に接する崖・草地の複合角（崖の付け根が水）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "202": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "203": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        },
+        "204": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        },
+        "205": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        },
+        "206": {
+          "sides": [
+            "S",
+            "E"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        },
+        "207": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        },
+        "208": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        },
+        "209": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        },
+        "210": {
+          "sides": [
+            "S",
+            "NW"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        },
+        "211": {
+          "sides": [
+            "S",
+            "NE"
+          ],
+          "neighbor": "plain/deep_sea",
+          "confidence": "guess"
+        },
+        "212": {
+          "sides": [
+            "NE"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "213": {
+          "sides": [
+            "NW"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "214": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "215": {
+          "sides": [
+            "NW"
+          ],
+          "confidence": "guess"
+        },
+        "216": {
+          "sides": [
+            "NE"
+          ],
+          "confidence": "guess"
+        },
+        "217": {
+          "sides": [
+            "SE",
+            "NW"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "218": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "219": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "220": [
+          "S"
+        ],
+        "221": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "222": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "sea/plain",
+          "confidence": "guess"
+        },
+        "223": [
+          "S"
+        ],
+        "224": {
+          "sides": [
+            "NW"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "225": {
+          "sides": [
+            "NE"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "226": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "227": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        },
+        "228": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        },
+        "229": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "230": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "231": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "deep_sea"
+        }
+      }
     },
     {
       "from": 232,
@@ -199,7 +1394,25 @@
       "style": "default",
       "neighbor": "deep_sea",
       "description": "深海に接する崖の角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "233": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        },
+        "234": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "deep_sea/plain",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 235,
@@ -208,7 +1421,52 @@
       "style": "default",
       "neighbor": "sea",
       "description": "明るい水の中の草地の島と崖（236–238 島の上辺、242–244 水へ落ちる崖面）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "235": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "plain/sea",
+          "confidence": "guess"
+        },
+        "236": [
+          "N",
+          "W"
+        ],
+        "237": [
+          "N"
+        ],
+        "238": [
+          "N",
+          "E"
+        ],
+        "239": [
+          "W"
+        ],
+        "240": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "241": [
+          "E"
+        ],
+        "242": [
+          "W",
+          "S"
+        ],
+        "243": [
+          "S"
+        ],
+        "244": [
+          "E",
+          "S"
+        ]
+      }
     },
     {
       "from": 500,
@@ -283,7 +1541,492 @@
       "style": "rock",
       "neighbor": "void",
       "description": "黒い闇（洞窟・奈落）に接するオレンジ茶色の岩崖（上辺・下辺・縦の縁・内角/外角。1006–1008 は岩のつらら状の下辺）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "1000": [
+          "W"
+        ],
+        "1001": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1002": [
+          "E"
+        ],
+        "1003": [
+          "W"
+        ],
+        "1004": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1005": [
+          "E"
+        ],
+        "1006": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1007": [
+          "S"
+        ],
+        "1008": [
+          "E",
+          "S"
+        ],
+        "1009": [
+          "N",
+          "W"
+        ],
+        "1010": [
+          "N"
+        ],
+        "1011": [
+          "N",
+          "E"
+        ],
+        "1012": [
+          "W"
+        ],
+        "1013": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1014": [
+          "E"
+        ],
+        "1015": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1016": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1017": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1018": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1019": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1020": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1021": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1022": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "1023": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1024": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1025": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1026": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1027": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1028": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1029": {
+          "sides": [
+            "S",
+            "E"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1030": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1031": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1032": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1033": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1034": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1035": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1036": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1037": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1038": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1039": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1040": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1041": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1042": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1043": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1044": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1045": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1046": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1047": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1048": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1049": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1050": {
+          "sides": [],
+          "confidence": "guess"
+        },
+        "1051": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1052": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1053": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1054": {
+          "sides": [
+            "SE"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1055": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1056": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1057": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1058": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1059": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "void/rock_floor",
+          "confidence": "guess"
+        },
+        "1060": {
+          "sides": [
+            "SW"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1061": {
+          "sides": [
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1062": {
+          "sides": [
+            "E"
+          ],
+          "confidence": "guess"
+        },
+        "1063": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1064": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "1065": [
+          "E"
+        ],
+        "1066": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1067": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "1068": [
+          "E"
+        ],
+        "1069": [
+          "W"
+        ],
+        "1070": [
+          "E"
+        ],
+        "1071": [
+          "E"
+        ],
+        "1072": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1073": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1074": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "rock_floor",
+          "confidence": "guess"
+        },
+        "1075": [
+          "W"
+        ],
+        "1076": {
+          "sides": [
+            "NW"
+          ],
+          "confidence": "guess"
+        },
+        "1077": {
+          "sides": [
+            "W"
+          ],
+          "confidence": "guess"
+        },
+        "1078": {
+          "sides": [
+            "NE"
+          ],
+          "confidence": "guess"
+        },
+        "1079": {
+          "sides": [
+            "NE"
+          ],
+          "confidence": "guess"
+        },
+        "1080": [
+          "E"
+        ],
+        "1081": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1082": {
+          "sides": [
+            "E",
+            "NW"
+          ],
+          "confidence": "guess"
+        },
+        "1083": {
+          "sides": [
+            "E"
+          ],
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 1200,
@@ -292,7 +2035,82 @@
       "style": "rock",
       "neighbor": "sea",
       "description": "茶色の岩崖が明るい青の水に接する組",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "1200": [
+          "N",
+          "W"
+        ],
+        "1201": [
+          "N"
+        ],
+        "1202": [
+          "N",
+          "E"
+        ],
+        "1203": [
+          "W"
+        ],
+        "1204": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1205": [
+          "E"
+        ],
+        "1206": [
+          "W"
+        ],
+        "1207": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1208": [
+          "E"
+        ],
+        "1209": [
+          "W"
+        ],
+        "1210": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1211": [
+          "E"
+        ],
+        "1212": [
+          "W",
+          "S"
+        ],
+        "1213": [
+          "S"
+        ],
+        "1214": [
+          "E",
+          "S"
+        ],
+        "1215": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1216": {
+          "sides": [
+            "S"
+          ],
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 1217,
@@ -308,7 +2126,85 @@
       "style": "rock",
       "neighbor": "sea",
       "description": "茶色の岩崖と水の角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "1218": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1219": {
+          "sides": [
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1220": [
+          "SE"
+        ],
+        "1221": [
+          "SW"
+        ],
+        "1222": [
+          "SE"
+        ],
+        "1223": [
+          "SE"
+        ],
+        "1224": [
+          "SW"
+        ],
+        "1225": [
+          "SE"
+        ],
+        "1226": [
+          "SE"
+        ],
+        "1227": {
+          "sides": [
+            "W"
+          ],
+          "confidence": "guess"
+        },
+        "1228": [
+          "NW"
+        ],
+        "1229": {
+          "sides": [
+            "W"
+          ],
+          "confidence": "guess"
+        },
+        "1230": [
+          "NE"
+        ],
+        "1231": [
+          "NE"
+        ],
+        "1232": [
+          "E"
+        ],
+        "1233": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1234": {
+          "sides": [
+            "W",
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "1235": {
+          "sides": [
+            "E"
+          ],
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 1400,
@@ -317,7 +2213,79 @@
       "style": "rock",
       "neighbor": "snow",
       "description": "茶色の岩崖が雪原に接する組",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "1400": [
+          "N",
+          "W"
+        ],
+        "1401": [
+          "N"
+        ],
+        "1402": [
+          "N",
+          "E"
+        ],
+        "1403": [
+          "W"
+        ],
+        "1404": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1405": [
+          "E"
+        ],
+        "1406": [
+          "W"
+        ],
+        "1407": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "1408": [
+          "E"
+        ],
+        "1409": [
+          "W"
+        ],
+        "1410": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "1411": [
+          "E"
+        ],
+        "1412": [
+          "W",
+          "S"
+        ],
+        "1413": [
+          "S"
+        ],
+        "1414": [
+          "E",
+          "S"
+        ],
+        "1415": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1416": {
+          "sides": [
+            "S"
+          ],
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 1417,
@@ -333,7 +2301,89 @@
       "style": "rock",
       "neighbor": "snow",
       "description": "茶色の岩崖と雪の角",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "1418": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "1419": {
+          "sides": [
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "1420": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "1421": [
+          "SW"
+        ],
+        "1422": [
+          "SE"
+        ],
+        "1423": [
+          "SE"
+        ],
+        "1424": [
+          "SW"
+        ],
+        "1425": [
+          "SE"
+        ],
+        "1426": [
+          "SE"
+        ],
+        "1427": {
+          "sides": [
+            "W"
+          ],
+          "confidence": "guess"
+        },
+        "1428": [
+          "NW"
+        ],
+        "1429": {
+          "sides": [
+            "W"
+          ],
+          "confidence": "guess"
+        },
+        "1430": [
+          "NE"
+        ],
+        "1431": [
+          "NE"
+        ],
+        "1432": [
+          "E"
+        ],
+        "1433": {
+          "sides": [
+            "W",
+            "NE"
+          ],
+          "confidence": "guess"
+        },
+        "1434": {
+          "sides": [
+            "NW",
+            "SE"
+          ],
+          "confidence": "guess"
+        },
+        "1435": {
+          "sides": [
+            "E"
+          ],
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 2000,
@@ -342,7 +2392,88 @@
       "style": "rock_face",
       "neighbor": "void",
       "description": "茶色の岩の崖面のみ（黒い縁取りで上下左右の端・単独タイル）",
-      "confidence": "high"
+      "confidence": "high",
+      "tiles": {
+        "2000": [
+          "N",
+          "W"
+        ],
+        "2001": [
+          "N"
+        ],
+        "2002": [
+          "N",
+          "E"
+        ],
+        "2003": [
+          "W"
+        ],
+        "2004": [],
+        "2005": [
+          "E"
+        ],
+        "2006": [
+          "S",
+          "W"
+        ],
+        "2007": [
+          "S"
+        ],
+        "2008": [
+          "E",
+          "S"
+        ],
+        "2009": [
+          "N",
+          "S",
+          "W"
+        ],
+        "2010": [
+          "N",
+          "S"
+        ],
+        "2011": [
+          "N",
+          "E",
+          "S"
+        ],
+        "2012": [
+          "N",
+          "E",
+          "W"
+        ],
+        "2013": [
+          "N",
+          "W"
+        ],
+        "2014": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ],
+        "2015": [
+          "E",
+          "W"
+        ],
+        "2016": [
+          "W"
+        ],
+        "2017": [
+          "N",
+          "S",
+          "W"
+        ],
+        "2018": [
+          "E",
+          "S",
+          "W"
+        ],
+        "2019": [
+          "S",
+          "W"
+        ]
+      }
     },
     {
       "from": 2020,

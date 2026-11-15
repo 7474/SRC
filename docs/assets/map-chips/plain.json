@@ -586,6 +586,10 @@
       "kind": "corner",
       "style": "olive",
       "tiles": {
+        "514": {
+          "sides": [],
+          "neighbor": "none"
+        },
         "515": [
           "NW"
         ],
@@ -616,6 +620,10 @@
         "524": [
           "E"
         ],
+        "525": {
+          "sides": [],
+          "neighbor": "none"
+        },
         "526": [
           "W"
         ],
@@ -696,9 +704,101 @@
       "style": "olive",
       "neighbor": "mixed",
       "tiles": {
+        "566": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "sea"
+        },
+        "567": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "sea"
+        },
+        "568": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "sea"
+        },
+        "569": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "sea"
+        },
+        "570": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "dark_grass",
+          "confidence": "guess"
+        },
+        "571": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "sea"
+        },
+        "572": {
+          "sides": [
+            "N",
+            "S",
+            "W"
+          ],
+          "neighbor": "sea",
+          "confidence": "guess"
+        },
+        "573": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "sea"
+        },
+        "574": {
+          "sides": [
+            "N",
+            "S",
+            "E"
+          ],
+          "neighbor": "sea",
+          "confidence": "guess"
+        },
+        "575": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "sea"
+        },
+        "576": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "sea"
+        },
         "577": [
           "S"
         ],
+        "578": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "deep_sea"
+        },
+        "579": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "deep_sea"
+        },
         "580": [
           "N"
         ],
@@ -726,12 +826,26 @@
         "588": [
           "SW"
         ],
+        "589": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "rock"
+        },
         "590": [
           "NE"
         ],
         "591": [
           "NW"
-        ]
+        ],
+        "592": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "rock"
+        }
       },
       "description": "濃い緑版の岩壁の水路(566–574)、池(575–576/578–579)、沼(577,580–586: 南,北,南東,南西,東,北東,北西,西)、黒い岩場の角(587–588/590–591)、岩の出っ張り(589,592)",
       "confidence": "guess"
@@ -915,6 +1029,7 @@
         "2003": [
           "W"
         ],
+        "2004": [],
         "2005": [
           "E"
         ],

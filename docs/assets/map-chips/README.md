@@ -42,7 +42,7 @@
 | `ranges[].kind` | `base`（基本の絵）・`variant`（変種）・`edge`（辺の境目）・`corner`（外角）・`inner_corner`（内角）・`strip`・`end`・`junction`（道・川・線路などの線のつながり）・`object`（何マスかで組む大きな物の部品）・`style`（別の画風の組）・`animation`・`decoration`・`placeholder`（使えない仮の絵）・`other` |
 | `ranges[].style` | 地形に画風の組が複数あるときの組の名前（`default`・`dark`・`snow` など） |
 | `ranges[].neighbor` | 境目に接する別の地形（`plain`・`sand`・`snow`・`cliff`・`space` など）。線のつながりは `connects` |
-| `ranges[].tiles` | 番号ごとの方角。境目は別の地形がある辺・角（`N`・`E`・`S`・`W`・`NE`・`SE`・`SW`・`NW`。`N` が上）、線は抜ける方角。`{"番号": ["N", "W"]}`、または `{"番号": {"sides": [...], "neighbor": "...", "confidence": "..."}}`（番号ごとに接する地形や確かさが違うとき） |
+| `ranges[].tiles` | 番号ごとの方角。境目は別の地形がある辺・角（`N`・`E`・`S`・`W`・`NE`・`SE`・`SW`・`NW`。`N` が上）、線は抜ける方角。`{"番号": ["N", "W"]}`、または `{"番号": {"sides": [...], "neighbor": "...", "confidence": "...", "note": "...", "also": {"plain": ["S"]}}}`（番号ごとに接する地形・確かさ・補足が違うとき。`also` は 1 枚に入った 2 つ目の地形とその方角） |
 | `ranges[].object` | 大きな物の大きさ（`width`・`height`）と番号の並び |
 | `ranges[].confidence` | `high`（はっきり読めた）・`guess`（推測） |
 

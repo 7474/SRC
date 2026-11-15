@@ -22,21 +22,193 @@
       "to": 8,
       "kind": "strip",
       "description": "石の縁の黄色い木の橋：1・3〜5 横向き、2・6〜8 縦向き",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "1": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "2": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "3": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "4": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "5": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "6": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "7": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "8": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 9,
       "to": 17,
       "kind": "strip",
       "description": "茶色の木の板の橋：9〜12 横向き、13〜16 縦向き、17 レンガ",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "9": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "10": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "11": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "12": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "13": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "14": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "15": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "16": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "17": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 500,
       "to": 503,
       "kind": "strip",
       "description": "道路の橋（500・502 縦、501・503 停止線・分岐の印付き）",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "500": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "501": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "502": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "503": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 504,

@@ -23,6 +23,7 @@
         "3": [
           "W"
         ],
+        "4": [],
         "5": [
           "E"
         ],
@@ -62,6 +63,7 @@
         "12": [
           "W"
         ],
+        "13": [],
         "14": [
           "E"
         ],
@@ -94,7 +96,81 @@
       "kind": "edge",
       "style": "wave",
       "description": "うろこ波で一部が明るく抜ける境目の組",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "1003": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1004": {
+          "sides": [],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1005": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1006": {
+          "sides": [
+            "NE"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1007": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1008": {
+          "sides": [
+            "NW"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1009": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1010": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1011": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1012": {
+          "sides": [
+            "S",
+            "E"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        }
+      }
     }
   ],
   "rules": "0〜8・9〜17 は 3×3 の境目、1000 番台は別の画風"

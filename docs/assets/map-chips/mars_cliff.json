@@ -69,7 +69,99 @@
       "kind": "edge",
       "neighbor": "cliff",
       "description": "穴の無い段差/崖の線だけの組（台地の縁、曲がり角と直線の向き違い）",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "12": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "13": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "14": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "15": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "16": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "17": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "18": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "19": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "20": {
+          "sides": [
+            "W",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "21": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "22": {
+          "sides": [
+            "W",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "23": {
+          "sides": [
+            "W",
+            "N"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        }
+      }
     }
   ],
   "rules": "0–11 は黒い穴の縁、12–23 は穴なしの段差の線"

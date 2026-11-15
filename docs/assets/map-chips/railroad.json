@@ -75,7 +75,37 @@
       "to": 15,
       "kind": "junction",
       "description": "複線のカーブと分岐（2×2 マス）",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "12": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "13": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "14": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "15": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        }
+      }
     },
     {
       "from": 16,
@@ -95,6 +125,14 @@
           "E",
           "W"
         ],
+        "19": [
+          "N",
+          "E"
+        ],
+        "20": [
+          "N",
+          "W"
+        ],
         "21": [
           "N",
           "S"
@@ -109,7 +147,21 @@
       "kind": "junction",
       "neighbor": "connects",
       "description": "単線と複線の合流（22・23 横、24 縦）",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "22": [
+          "W",
+          "E"
+        ],
+        "23": [
+          "W",
+          "E"
+        ],
+        "24": [
+          "N",
+          "S"
+        ]
+      }
     },
     {
       "from": 25,
@@ -117,7 +169,162 @@
       "kind": "junction",
       "style": "sand",
       "description": "砂地の線路：直線・合流・カーブ（40・41・43・44 は複線の大きなカーブ）",
-      "confidence": "guess"
+      "confidence": "guess",
+      "tiles": {
+        "25": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "26": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "27": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "28": {
+          "sides": [
+            "W",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "29": {
+          "sides": [
+            "W",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "30": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "31": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "32": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "33": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "34": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "35": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "36": {
+          "sides": [
+            "W",
+            "E"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "37": {
+          "sides": [
+            "W",
+            "E"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "38": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "39": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "40": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "41": {
+          "sides": [
+            "W",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "42": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "43": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "44": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "45": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        }
+      }
     },
     {
       "from": 46,
