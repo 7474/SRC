@@ -277,6 +277,10 @@ test('かんたん作成: 作品を選び、味方と敵を置き、セリフを
   await page.locator('tr[data-side="enemies"] .q-unit').dispatchEvent('change');
   await page.locator('tr[data-side="enemies"] .q-pilot').fill('リオ');
   await page.locator('tr[data-side="enemies"] .q-pilot').dispatchEvent('change');
+  // 敵はランク 2・ボスランク 3 にする
+  await page.locator('tr[data-side="enemies"] .q-rank').fill('2');
+  await page.locator('tr[data-side="enemies"] .q-rank').dispatchEvent('change');
+  await page.locator('tr[data-side="enemies"] .q-boss').selectOption('3');
 
   // 3. 場面: 味方を選んで (3,4) に動かす
   // 題名はファイル名になる。日本語でもよいが、テストのブラウザ（headless）は日本語のダウンロードの名前を「download」にするので ASCII にする
@@ -303,6 +307,8 @@ test('かんたん作成: 作品を選び、味方と敵を置き、セリフを
   }
   expect(text).toContain('@ロボ_System\r\n@ランタン');
   expect(text).toContain('Create 味方 灯機ホタル 0 ソラ 10 3 4');
+  expect(text).toMatch(/Create 敵 灯機ホタル 2 リオ 5 \d+ \d+\r\nBossRank 3\r\n/);
+  expect(text.match(/BossRank/g)).toHaveLength(1);
   expect(text).toContain('Talk ソラ\r\n行くぞ！\r\nEnd');
 
   // SRC#Web で遊ぶ: 同じサイトの SRC#Web の「追加したアーカイブ」に入れ、?stored= で開く（ここでは SRC#Web の代わりの頁を返す）
@@ -329,6 +335,8 @@ test('かんたん作成: 作品を選び、味方と敵を置き、セリフを
   await expect(page.locator('.q-chosen li')).toHaveCount(1);
   await expect(page.locator('tr[data-side="allies"] .q-pilot')).toHaveValue('ソラ');
   await expect(page.locator('.q-line[data-scene="opening"] .q-text')).toHaveValue('行くぞ！');
+  await expect(page.locator('tr[data-side="enemies"] .q-rank')).toHaveValue('2');
+  await expect(page.locator('tr[data-side="enemies"] .q-boss')).toHaveValue('3');
 });
 
 test('かんたん作成: 足りないものは作らずに知らせる', async ({ page }) => {
@@ -345,12 +353,14 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
       id: 'harbor', title: '灯の港の戦い', description: '港での小競り合い', map: 'maps/harbor.map',
       allies: [{ x: 3, y: 10 }, { x: 4, y: 10 }], enemies: [{ x: 15, y: 4 }],
       titles: ['GSCデータパック/ロボ/ランタン'],
-      units: { allies: [{ unit: '灯機ホタル', pilot: 'ソラ', level: 12, x: 3, y: 10 }], enemies: [{ unit: '灯機ホタル', pilot: 'リオ', level: 8, x: 15, y: 4 }] },
+      units: { allies: [{ unit: '灯機ホタル', pilot: 'ソラ', level: 12, x: 3, y: 10 }], enemies: [{ unit: '灯機ホタル', pilot: 'リオ', level: 8, bossRank: 2, x: 15, y: 4 }] },
       talk: { opening: [{ speaker: 'ソラ', text: '港を守るぞ！' }] },
     }],
   });
   await open(page, 'quick');
-  // まだ何も置いていなければ、サンプルの場面の一覧が開いている。マップの欄でも選べる
+  // サンプルの場面の一覧は、押して開く（既定は閉じる）。マップの欄でも選べる
+  await expect(page.locator('.q-gallery')).not.toHaveAttribute('open', '');
+  await page.locator('.q-gallery summary').click();
   await expect(page.locator('.q-gallery')).toHaveAttribute('open', '');
   await expect(page.locator('.q-map option', { hasText: '灯の港の戦い' })).toHaveCount(1);
   const card = page.locator('.q-scene-card', { hasText: '灯の港の戦い' });
@@ -366,6 +376,8 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
   await expect(page.locator('tr[data-side="allies"] .q-unit')).toHaveValue('灯機ホタル');
   await expect(page.locator('tr[data-side="allies"] .q-pos')).toHaveText('3,10');
   await expect(page.locator('tr[data-side="enemies"] .q-pilot')).toHaveValue('リオ');
+  await expect(page.locator('tr[data-side="enemies"] .q-boss')).toHaveValue('2');
+  await expect(page.locator('tr[data-side="allies"] .q-boss')).toHaveValue('-1');
   await expect(page.locator('.q-line[data-scene="opening"] .q-text')).toHaveValue('港を守るぞ！');
   await expect(page.locator('.q-title')).toHaveValue('灯の港の戦い');
   // 足した味方は、空いているおすすめの位置に置く

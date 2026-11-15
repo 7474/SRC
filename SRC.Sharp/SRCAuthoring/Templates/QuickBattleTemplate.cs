@@ -6,12 +6,16 @@ using System.Text.Json;
 
 namespace SRCAuthoring.Templates
 {
-    /// <summary>かんたん作成で置くユニット（ユニット・パイロット・レベル・位置）</summary>
+    /// <summary>かんたん作成で置くユニット（ユニット・パイロット・レベル・ランク・ボスランク・位置）</summary>
     public sealed class QuickUnit
     {
         public string Unit { get; set; }
         public string Pilot { get; set; }
         public int Level { get; set; } = 1;
+        /// <summary>ユニットのランク（Create の改造段階。0 から）</summary>
+        public int Rank { get; set; }
+        /// <summary>ボスランク（BossRank。-1 はボスにしない、0〜5）</summary>
+        public int BossRank { get; set; } = -1;
         /// <summary>マップの位置（1 から）</summary>
         public int X { get; set; }
         public int Y { get; set; }
@@ -53,10 +57,12 @@ namespace SRCAuthoring.Templates
     public static class QuickBattleTemplate
     {
         public const int MaxSize = 50;
+        public const int MaxRank = 20;
+        public const int MaxBossRank = 5;
 
         /// <summary>
         /// 画面（JavaScript）から渡す JSON を読む。名前は camelCase（title・dataTitles・width・height・map・allies・enemies・opening・victory・defeat、
-        /// ユニットは unit・pilot・level・x・y、セリフは speaker・text）。WebAssembly の切り詰めでも動くよう、リフレクションを使わずに読む
+        /// ユニットは unit・pilot・level・rank・bossRank・x・y、セリフは speaker・text）。WebAssembly の切り詰めでも動くよう、リフレクションを使わずに読む
         /// </summary>
         public static QuickBattle FromJson(string json)
         {
@@ -94,6 +100,8 @@ namespace SRCAuthoring.Templates
                     Unit = Str(x, "unit"),
                     Pilot = Str(x, "pilot"),
                     Level = Int(x, "level", 1),
+                    Rank = Int(x, "rank", 0),
+                    BossRank = Int(x, "bossRank", -1),
                     X = Int(x, "x", 0),
                     Y = Int(x, "y", 0),
                 }).ToList()
@@ -140,6 +148,14 @@ namespace SRCAuthoring.Templates
                     errors.Add($"{side}のユニットかパイロットが選ばれていません");
                     continue;
                 }
+                if (u.Rank < 0 || u.Rank > MaxRank)
+                {
+                    errors.Add($"{side}の「{u.Unit}」のランクは 0〜{MaxRank} にしてください");
+                }
+                if (u.BossRank < -1 || u.BossRank > MaxBossRank)
+                {
+                    errors.Add($"{side}の「{u.Unit}」のボスランクは 0〜{MaxBossRank}（ボスにしないなら -1）にしてください");
+                }
                 if (u.X < 1 || u.Y < 1 || u.X > b.Width || u.Y > b.Height)
                 {
                     errors.Add($"{side}の「{u.Unit}」がマップの外にあります");
@@ -176,8 +192,8 @@ namespace SRCAuthoring.Templates
             lines.Add("# マップを出し、ユニットを置いて、戦闘前の会話");
             lines.Add("スタート:");
             lines.Add($"ChangeMap {name}.map");
-            lines.AddRange(b.Allies.Select(u => Create("味方", u)));
-            lines.AddRange(b.Enemies.Select(u => Create("敵", u)));
+            lines.AddRange(b.Allies.SelectMany(u => Create("味方", u)));
+            lines.AddRange(b.Enemies.SelectMany(u => Create("敵", u)));
             lines.AddRange(Talk(b.Opening));
             lines.Add("Exit");
             lines.Add("");
@@ -198,8 +214,15 @@ namespace SRCAuthoring.Templates
             };
         }
 
-        private static string Create(string side, QuickUnit u) =>
-            $"Create {side} {Quote(u.Unit)} 0 {Quote(u.Pilot)} {Math.Max(1, Math.Min(99, u.Level))} {u.X} {u.Y}";
+        /// <summary>ユニットを置く。ボスなら続けて BossRank（Create で選ばれたユニットに付く）</summary>
+        private static IEnumerable<string> Create(string side, QuickUnit u)
+        {
+            yield return $"Create {side} {Quote(u.Unit)} {Math.Max(0, Math.Min(MaxRank, u.Rank))} {Quote(u.Pilot)} {Math.Max(1, Math.Min(99, u.Level))} {u.X} {u.Y}";
+            if (u.BossRank >= 0)
+            {
+                yield return $"BossRank {Math.Min(MaxBossRank, u.BossRank)}";
+            }
+        }
 
         /// <summary>名前を引数に書く。空白・カンマ・引用符を含む名前は "…" で囲む（"" は SRC の引数で書けないので除く）</summary>
         private static string Quote(string s)

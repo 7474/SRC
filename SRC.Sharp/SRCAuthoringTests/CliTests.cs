@@ -153,7 +153,7 @@ namespace SRCAuthoring.Tests
                 var battle = SRCAuthoring.Templates.QuickBattleTemplate.FromJson(@"{
   ""title"": ""荒野の戦い"", ""dataTitles"": [""テスト作品""], ""width"": 12, ""height"": 9,
   ""allies"": [{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 20, ""x"": 3, ""y"": 5 }],
-  ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": 6, ""y"": 5 }],
+  ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""rank"": 1, ""bossRank"": 1, ""x"": 6, ""y"": 5 }],
   ""opening"": [{ ""speaker"": """", ""text"": ""荒野に風が吹く。"" }, { ""speaker"": ""主人公"", ""text"": ""行くぞ！"" }],
   ""victory"": [{ ""speaker"": ""主人公"", ""text"": ""やった！"" }],
   ""defeat"": [{ ""speaker"": ""主人公"", ""text"": ""くっ……"" }]

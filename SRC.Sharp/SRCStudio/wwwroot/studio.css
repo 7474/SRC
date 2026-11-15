@@ -183,6 +183,8 @@ main[hidden] { display: none; }
 .q-table tr.selected td { background: var(--selected); }
 .q-unit, .q-pilot { width: 14em; max-width: 40vw; }
 .q-level { width: 4.5em; }
+.q-rank { width: 4em; }
+.q-boss { width: auto; }
 .q-pos { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 3.5em; }
 .q-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
 .q-key { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-left: 8px; }
@@ -190,6 +192,7 @@ main[hidden] { display: none; }
 .q-key.allies { background: #2f6fd6; }
 .q-key.enemies { background: #d0393e; }
 .q-key.spot { border: 2px dashed var(--muted); width: 8px; height: 8px; }
+.q-key.boss { background: #ffd400; border: 1px solid #000; border-radius: 50%; width: 9px; height: 9px; }
 .q-board { overflow: auto; max-width: 100%; max-height: 75vh; border: 1px solid var(--border); display: inline-block; vertical-align: top; }
 .q-canvas { display: block; cursor: pointer; }
 .q-line { display: flex; gap: 6px; align-items: flex-start; margin: 4px 0; }
@@ -222,8 +225,8 @@ main[hidden] { display: none; }
 .quick-status button { border: none; background: none; padding: 0 6px; flex: none; }
 @media (min-width: 1100px) {
   .q-sides { grid-template-columns: 1fr 1fr; }
-  .q-unit { width: 10em; }
-  .q-pilot { width: 11em; }
+  .q-unit { width: 9em; }
+  .q-pilot { width: 10em; }
 }
 @media (max-width: 720px) {
   .q-line { flex-direction: column; align-items: stretch; }

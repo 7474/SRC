@@ -56,8 +56,8 @@ export class QuickBuilder {
     /** 読んだマップのマス（parseMap の tiles）。下書きには残さず、mapText から作り直す */
     this.mapTiles = null;
     this.selected = null;
-    /** サンプルの場面の一覧を開いているか（null なら、まだ何も置いていないときだけ開く） */
-    this.galleryOpen = null;
+    /** サンプルの場面の一覧を開いているか（既定は閉じる。開いたときに縮図を読む） */
+    this.galleryOpen = false;
     /** 場面の縮図（id → マス）と、マップの画像（"画像の名前:番号" → ImageBitmap か null） */
     this.thumbs = new Map();
     this.images = new Map();
@@ -139,7 +139,7 @@ export class QuickBuilder {
           }
         }
       }
-      const unit = u => ({ unit: u.unit ?? '', pilot: u.pilot ?? '', level: u.level ?? 10, x: u.x ?? 1, y: u.y ?? 1 });
+      const unit = u => ({ unit: u.unit ?? '', pilot: u.pilot ?? '', level: u.level ?? 10, rank: u.rank ?? 0, bossRank: u.bossRank ?? -1, x: u.x ?? 1, y: u.y ?? 1 });
       b.allies = (scene.units?.allies ?? []).map(unit);
       b.enemies = (scene.units?.enemies ?? []).map(unit);
       for (const key of ['opening', 'victory', 'defeat']) {
@@ -258,7 +258,7 @@ export class QuickBuilder {
   addUnit(side) {
     const list = this.battle[side];
     const place = this.freeCell(side);
-    list.push({ unit: '', pilot: '', level: side === 'allies' ? 10 : 5, x: place.x, y: place.y });
+    list.push({ unit: '', pilot: '', level: side === 'allies' ? 10 : 5, rank: 0, bossRank: -1, x: place.x, y: place.y });
     this.selected = { side, index: list.length - 1 };
     this.saveDraft();
     this.render();
@@ -428,17 +428,21 @@ export class QuickBuilder {
       this.loadScenes().then(() => this.render());
     }
     const chosen = this.titles.filter(x => !x.system);
-    const empty = !b.allies.length && !b.enemies.length;
-    const galleryOpen = this.galleryOpen ?? empty;
+    const galleryOpen = this.galleryOpen ?? false;
     const currentScene = scenes.find(sc => `scene:${sc.base}#${sc.id}` === b.mapSource);
     const sideTable = side => b[side].length ? `
       <table class="q-table">
-        <thead><tr><th>${esc(t('quick.unit'))}</th><th>${esc(t('quick.pilot'))}</th><th>${esc(t('quick.level'))}</th><th>${esc(t('quick.position'))}</th><th></th></tr></thead>
+        <thead><tr><th>${esc(t('quick.unit'))}</th><th>${esc(t('quick.pilot'))}</th><th>${esc(t('quick.level'))}</th><th title="${esc(t('quick.rankHint'))}">${esc(t('quick.rank'))}</th><th title="${esc(t('quick.bossRankHint'))}">${esc(t('quick.bossRank'))}</th><th>${esc(t('quick.position'))}</th><th></th></tr></thead>
         <tbody>${b[side].map((u, i) => `
           <tr data-side="${side}" data-index="${i}" class="${this.selected?.side === side && this.selected.index === i ? 'selected' : ''}">
             <td><input class="q-unit" list="q-units" value="${esc(u.unit)}" placeholder="${esc(t('quick.unit'))}" aria-label="${esc(t('quick.unit'))}"></td>
             <td><input class="q-pilot" list="q-pilots" value="${esc(u.pilot)}" placeholder="${esc(t('quick.pilot'))}" aria-label="${esc(t('quick.pilot'))}"></td>
             <td><input class="q-level" type="number" min="1" max="99" value="${u.level}" aria-label="${esc(t('quick.level'))}"></td>
+            <td><input class="q-rank" type="number" min="0" max="20" value="${u.rank ?? 0}" aria-label="${esc(t('quick.rank'))}" title="${esc(t('quick.rankHint'))}"></td>
+            <td><select class="q-boss" aria-label="${esc(t('quick.bossRank'))}" title="${esc(t('quick.bossRankHint'))}">
+              <option value="-1">${esc(t('quick.notBoss'))}</option>
+              ${[0, 1, 2, 3, 4, 5].map(n => `<option value="${n}" ${(u.bossRank ?? -1) === n ? 'selected' : ''}>${n}</option>`).join('')}
+            </select></td>
             <td class="q-pos" title="${esc(t('quick.positionHint'))}">${u.x},${u.y}</td>
             <td><button type="button" class="q-remove icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button></td>
           </tr>`).join('')}</tbody>
@@ -519,7 +523,7 @@ export class QuickBuilder {
         </div>
         ${currentScene?.description ? `<p class="q-scene-about">${esc(currentScene.description)}</p>` : ''}
         <p class="hint">${esc(t('quick.placeHint'))}</p>
-        <p class="q-legend hint"><span class="q-key allies"></span>${esc(t('quick.allies'))}<span class="q-key enemies"></span>${esc(t('quick.enemies'))}<span class="q-key spot"></span>${esc(t('quick.spot'))}</p>
+        <p class="q-legend hint"><span class="q-key allies"></span>${esc(t('quick.allies'))}<span class="q-key enemies"></span>${esc(t('quick.enemies'))}<span class="q-key spot"></span>${esc(t('quick.spot'))}<span class="q-key boss"></span>${esc(t('quick.boss'))}</p>
         <div class="q-board"><canvas class="q-canvas"></canvas></div>
       </section>
       <section class="q-step">
@@ -557,7 +561,11 @@ export class QuickBuilder {
 
   /** 場面の一覧の縮図（地形タイプの色）。マップは一度だけ読む */
   async drawThumbs() {
-    for (const canvas of this.root.querySelectorAll('.q-thumb')) {
+    if (!this.root.querySelector('.q-gallery')?.open) {
+      return;
+    }
+    // 縮図のマップはまとめて読み、読めたものから描く
+    await Promise.all([...this.root.querySelectorAll('.q-thumb')].map(async canvas => {
       const value = canvas.dataset.value;
       if (!this.thumbs.has(value)) {
         const scene = this.scenes.find(sc => `scene:${sc.base}#${sc.id}` === value);
@@ -568,14 +576,17 @@ export class QuickBuilder {
       }
       const map = await this.thumbs.get(value);
       if (!map || map.error || !canvas.isConnected) {
-        continue;
+        return;
       }
       const cell = Math.max(1, Math.floor(Math.min(96 / map.width, 72 / map.height)));
       canvas.width = map.width * cell;
       canvas.height = map.height * cell;
-      await this.loadTileImages(map.tiles);
-      this.drawTiles(canvas.getContext('2d'), map.tiles, map.width, map.height, cell);
-    }
+      const ctx = canvas.getContext('2d');
+      this.drawTiles(ctx, map.tiles, map.width, map.height, cell);
+      if (await this.loadTileImages(map.tiles) && canvas.isConnected) {
+        this.drawTiles(ctx, map.tiles, map.width, map.height, cell);
+      }
+    }));
   }
 
   /** マスの画像を読んでおく（SRC と同じ順で探す。無ければ null を覚えて色で描く） */
@@ -672,6 +683,16 @@ export class QuickBuilder {
         unit.level = Math.max(1, Math.min(99, Number(ev.target.value) || 1));
         this.saveDraft();
       });
+      row.querySelector('.q-rank').addEventListener('change', ev => {
+        unit.rank = Math.max(0, Math.min(20, Math.floor(Number(ev.target.value)) || 0));
+        ev.target.value = unit.rank;
+        this.saveDraft();
+      });
+      row.querySelector('.q-boss').addEventListener('change', ev => {
+        unit.bossRank = Number(ev.target.value);
+        this.saveDraft();
+        this.drawBoard();
+      });
       row.querySelector('.q-remove').addEventListener('click', ev => {
         ev.stopPropagation();
         this.battle[row.dataset.side].splice(Number(row.dataset.index), 1);
@@ -699,6 +720,11 @@ export class QuickBuilder {
     // 開いた・閉じたのは人が押したときだけ覚える（作り直したときの toggle は数えない）
     gallery.querySelector('summary').addEventListener('click', () => {
       this.galleryOpen = !gallery.open;
+    });
+    gallery.addEventListener('toggle', () => {
+      if (gallery.open) {
+        this.drawThumbs();
+      }
     });
     this.root.querySelectorAll('.q-scene-card').forEach(card => card.addEventListener('click', async () => {
       this.galleryOpen = false;
@@ -883,6 +909,16 @@ export class QuickBuilder {
         }
         ctx.fillStyle = '#ffffff';
         ctx.fillText((u.unit || '?').slice(0, 2), left + CELL / 2, top + CELL / 2 + 1);
+        if ((u.bossRank ?? -1) >= 0) {
+          // ボスは右上に金の印
+          ctx.fillStyle = '#ffd400';
+          ctx.beginPath();
+          ctx.arc(left + CELL - 5, top + 5, 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
       });
     }
   }
