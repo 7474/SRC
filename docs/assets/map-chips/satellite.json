@@ -1,0 +1,23 @@
+{
+  "terrain": "satellite",
+  "count": 8,
+  "exists": "0-7",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "object",
+      "description": "星の散る黒い宇宙に浮かぶ天体。0=ごつごつの小惑星,1=小惑星(別形),2=細長い岩塊,3=丸い衛星/月",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 7,
+      "kind": "style",
+      "style": "blue",
+      "description": "青い背景版（並びは 0–3 と同じ）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0–3 と 4–7 は背景違い"
+}

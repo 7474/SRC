@@ -1,0 +1,63 @@
+{
+  "terrain": "space_fortress",
+  "count": 42,
+  "exists": "0-20 1000-1020",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "object",
+      "style": "space",
+      "description": "小惑星（黒い宇宙）",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "kind": "object",
+      "style": "space",
+      "object": {
+        "width": 2,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "宇宙ステーション（横 2 マス）",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 11,
+      "kind": "object",
+      "style": "space",
+      "object": {
+        "width": 3,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "三日月形の輪の要塞（3×3 マス）",
+      "confidence": "guess"
+    },
+    {
+      "from": 12,
+      "to": 20,
+      "kind": "object",
+      "style": "space",
+      "object": {
+        "width": 3,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "巨大な球形の要塞（3×3 マス）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1020,
+      "kind": "style",
+      "style": "blue",
+      "description": "0〜20 と同じ組の青い背景版",
+      "confidence": "high"
+    }
+  ],
+  "rules": "1000 番台は青い背景の同じ組"
+}

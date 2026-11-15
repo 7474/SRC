@@ -1,0 +1,37 @@
+{
+  "terrain": "mirror",
+  "count": 9,
+  "exists": "0-8",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "object",
+      "description": "鏡（白い斜めの反射線）",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 8,
+      "kind": "other",
+      "neighbor": "frame",
+      "tiles": {
+        "1": [
+          "N"
+        ],
+        "2": [
+          "N"
+        ],
+        "7": [
+          "S"
+        ],
+        "8": [
+          "S"
+        ]
+      },
+      "description": "黒地に星の散る鏡面/宇宙の床。1–2=北に白い枠,3–5=細い横線,6=明るい星,7–8=南に白い枠",
+      "confidence": "guess"
+    }
+  ],
+  "rules": ""
+}

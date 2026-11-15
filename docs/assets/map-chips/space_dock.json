@@ -1,0 +1,15 @@
+{
+  "terrain": "space_dock",
+  "count": 8,
+  "exists": "0-7",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 7,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

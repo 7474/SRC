@@ -1,0 +1,92 @@
+{
+  "terrain": "big_tree",
+  "count": 75,
+  "exists": "0-20 50-57 70-77 90-97 110-117 1000-1005 1050-1057 1070-1077",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "object",
+      "description": "大木の幹：0〜2 うろ（穴）、3・5 樹皮、4 幹の小さな扉",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 8,
+      "kind": "object",
+      "description": "明るい草地の上の幹の根元（左・中・右）",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 11,
+      "kind": "object",
+      "description": "暗い樹皮の幹",
+      "confidence": "high"
+    },
+    {
+      "from": 12,
+      "to": 20,
+      "kind": "object",
+      "description": "草地の上の根元（12〜14・18〜20 は左・中・右、13・19 は入口の穴、15〜17 は根のみ）",
+      "confidence": "guess"
+    },
+    {
+      "from": 50,
+      "to": 57,
+      "kind": "object",
+      "neighbor": "plain",
+      "description": "明るい草地の上の緑の樹冠（周りの部品）",
+      "confidence": "guess"
+    },
+    {
+      "from": 70,
+      "to": 77,
+      "kind": "object",
+      "neighbor": "dark_grass",
+      "description": "濃い草地の上の緑の樹冠",
+      "confidence": "guess"
+    },
+    {
+      "from": 90,
+      "to": 97,
+      "kind": "object",
+      "neighbor": "plain",
+      "description": "明るい草地の上の桃色（桜）の樹冠",
+      "confidence": "guess"
+    },
+    {
+      "from": 110,
+      "to": 117,
+      "kind": "object",
+      "neighbor": "dark_grass",
+      "description": "濃い草地の上の桃色（桜）の樹冠",
+      "confidence": "guess"
+    },
+    {
+      "from": 1000,
+      "to": 1005,
+      "kind": "style",
+      "style": "transparent",
+      "description": "白（透過用）背景の根元",
+      "confidence": "high"
+    },
+    {
+      "from": 1050,
+      "to": 1057,
+      "kind": "style",
+      "style": "transparent",
+      "description": "白背景の緑の樹冠",
+      "confidence": "high"
+    },
+    {
+      "from": 1070,
+      "to": 1077,
+      "kind": "style",
+      "style": "transparent",
+      "description": "白背景の桃色の樹冠",
+      "confidence": "high"
+    }
+  ],
+  "rules": "50/70/90/110 は同じ並びの 8 枚組で地面と葉の色違い。1000 番台は背景が白（重ね用）"
+}

@@ -1,0 +1,177 @@
+{
+  "terrain": "deep_sea",
+  "count": 31,
+  "exists": "0-17 1000-1012",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 8,
+      "kind": "edge",
+      "neighbor": "shallow_sea",
+      "tiles": {
+        "0": [
+          "N",
+          "W"
+        ],
+        "1": [
+          "N"
+        ],
+        "2": [
+          "N",
+          "E"
+        ],
+        "3": [
+          "W"
+        ],
+        "4": [],
+        "5": [
+          "E"
+        ],
+        "6": [
+          "S",
+          "W"
+        ],
+        "7": [
+          "S"
+        ],
+        "8": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "暗い青緑の深海、外周が明るい浅瀬との境目の 3×3（4 は中央）",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 17,
+      "kind": "edge",
+      "style": "dark",
+      "neighbor": "shallow_sea",
+      "tiles": {
+        "9": [
+          "N",
+          "W"
+        ],
+        "10": [
+          "N"
+        ],
+        "11": [
+          "N",
+          "E"
+        ],
+        "12": [
+          "W"
+        ],
+        "13": [],
+        "14": [
+          "E"
+        ],
+        "15": [
+          "S",
+          "W"
+        ],
+        "16": [
+          "S"
+        ],
+        "17": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "濃い紺の深海と青い縁の 3×3（13 は中央）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1002,
+      "kind": "base",
+      "style": "wave",
+      "description": "濃い青のうろこ状の波模様（別の画風）",
+      "confidence": "high"
+    },
+    {
+      "from": 1003,
+      "to": 1012,
+      "kind": "edge",
+      "style": "wave",
+      "description": "うろこ波で一部が明るく抜ける境目の組",
+      "confidence": "guess",
+      "tiles": {
+        "1003": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1004": {
+          "sides": [],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1005": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1006": {
+          "sides": [
+            "NE"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1007": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1008": {
+          "sides": [
+            "NW"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1009": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1010": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1011": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        },
+        "1012": {
+          "sides": [
+            "S",
+            "E"
+          ],
+          "neighbor": "shallow_sea",
+          "confidence": "guess"
+        }
+      }
+    }
+  ],
+  "rules": "0〜8・9〜17 は 3×3 の境目、1000 番台は別の画風"
+}

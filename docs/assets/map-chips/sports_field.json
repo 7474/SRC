@@ -1,0 +1,115 @@
+{
+  "terrain": "sports_field",
+  "count": 143,
+  "exists": "0-82 500-511 513-524 1000-1017 1100-1117",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 8,
+      "kind": "edge",
+      "neighbor": "white_line",
+      "tiles": {
+        "0": [
+          "N",
+          "W"
+        ],
+        "1": [
+          "N"
+        ],
+        "2": [
+          "N",
+          "E"
+        ],
+        "3": [
+          "W"
+        ],
+        "5": [
+          "E"
+        ],
+        "6": [
+          "S",
+          "W"
+        ],
+        "7": [
+          "S"
+        ],
+        "8": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "緑の芝のグラウンドで外周の白線（3×3：0 北西角〜8 南東角）",
+      "confidence": "guess"
+    },
+    {
+      "from": 9,
+      "to": 12,
+      "kind": "edge",
+      "neighbor": "white_line",
+      "description": "外周白線の別の組（端・細い区画と推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 13,
+      "to": 19,
+      "kind": "edge",
+      "neighbor": "dark",
+      "description": "黒（場外）との斜め・直線の角（13・16・19）と白線",
+      "confidence": "guess"
+    },
+    {
+      "from": 20,
+      "to": 41,
+      "kind": "junction",
+      "neighbor": "connects",
+      "description": "白線の組み合わせ（縦・横・T字・十字・平行線。コートのライン）",
+      "confidence": "guess"
+    },
+    {
+      "from": 42,
+      "to": 54,
+      "kind": "edge",
+      "neighbor": "clay",
+      "description": "赤茶の土（内野・トラック）の区画と芝との境目",
+      "confidence": "guess"
+    },
+    {
+      "from": 55,
+      "to": 82,
+      "kind": "decoration",
+      "description": "白い円弧（センターサークル・半円）を分割した組。75–78・81 はハーフラインと円の交差",
+      "confidence": "high"
+    },
+    {
+      "from": 500,
+      "to": 519,
+      "kind": "object",
+      "description": "プール：水色の水面、灰色のプールサイド、梯子、504 手すり、514・519 飛び込み台（512 欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 520,
+      "to": 524,
+      "kind": "decoration",
+      "description": "灰色の低い仕切り（縁石）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1017,
+      "kind": "edge",
+      "neighbor": "bright_grass",
+      "description": "明るい緑と暗い緑の芝の刈り模様の境目。1004・1011・1014・1015 白い柱（ゴールポスト推測）、1016 市松の旗",
+      "confidence": "guess"
+    },
+    {
+      "from": 1100,
+      "to": 1117,
+      "kind": "style",
+      "neighbor": "olive_grass",
+      "description": "1000 番台の明るい緑をくすんだ黄緑にした版",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "1100 番台は 1000 番台の色違い"
+}

@@ -1,0 +1,43 @@
+{
+  "terrain": "colony",
+  "count": 9,
+  "exists": "0-8",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "黒い星空背景のスペースコロニー（2×2）",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "kind": "style",
+      "style": "blue",
+      "description": "青い宇宙背景の同じコロニー（上段）",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 6,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "kind": "style",
+      "style": "blue",
+      "description": "青い宇宙背景の同じコロニー（下段）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0–3 と 4–8 は背景色違い。"
+}

@@ -1,0 +1,32 @@
+{
+  "terrain": "moon_city",
+  "count": 25,
+  "exists": "0-24",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 8,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "月面の灰色の地面にある円形ドーム都市（小）、3×3 マスで組む",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 24,
+      "kind": "object",
+      "object": {
+        "width": 4,
+        "height": 4,
+        "order": "row"
+      },
+      "description": "円形ドーム都市（大）、4×4 マスで組む",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0〜8 が 3×3 の小ドーム、9〜24 が 4×4 の大ドーム（左上から行順）"
+}

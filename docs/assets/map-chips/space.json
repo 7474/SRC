@@ -1,0 +1,45 @@
+{
+  "terrain": "space",
+  "count": 52,
+  "exists": "0-17 1000-1033",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 6,
+      "kind": "base",
+      "style": "black",
+      "description": "黒地にまばらな星の宇宙（模様違い）",
+      "confidence": "high"
+    },
+    {
+      "from": 7,
+      "to": 13,
+      "kind": "variant",
+      "style": "black",
+      "description": "明るい星（十字の光）の多い宇宙",
+      "confidence": "high"
+    },
+    {
+      "from": 14,
+      "to": 17,
+      "kind": "object",
+      "style": "black",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "渦巻き銀河",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1033,
+      "kind": "style",
+      "style": "blue",
+      "description": "青い宇宙背景。星雲のもや・星の密度違いの模様",
+      "confidence": "high"
+    }
+  ],
+  "rules": "1000 番台は青い宇宙の別の画風"
+}

@@ -1,0 +1,24 @@
+{
+  "terrain": "asteroids",
+  "count": 8,
+  "exists": "0-7",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "variant",
+      "style": "black_space",
+      "description": "黒い宇宙に浮かぶ小惑星（茶色の岩塊）。0 がまばら、番号が増えるほど岩が多く大きい",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 7,
+      "kind": "style",
+      "style": "blue_space",
+      "description": "0〜3 と同じ並びの青い宇宙版（4 がまばら〜7 が密）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0〜3 は黒い宇宙、4〜7 は同じ密度順の青い宇宙版（+4 で対応）"
+}

@@ -1,0 +1,477 @@
+{
+  "terrain": "floor",
+  "count": 526,
+  "exists": "0-219 500-523 700-708 800-826 900-926 1000-1009 1050-1056 1100-1106 1200-1251 1300-1331 2000-2107 5000-5002",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "style": "blue_metal",
+      "description": "青い金属床（無地）",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 11,
+      "kind": "junction",
+      "style": "blue_metal",
+      "description": "青い金属床に黒い溝線（パネルの継ぎ目）。直線・角・T字・十字の各形",
+      "confidence": "guess"
+    },
+    {
+      "from": 12,
+      "to": 17,
+      "kind": "strip",
+      "style": "blue_metal",
+      "description": "青い金属床にはしご状のレール（線路／コンベア風）。角・直線・U字",
+      "confidence": "guess"
+    },
+    {
+      "from": 18,
+      "to": 20,
+      "kind": "edge",
+      "style": "blue_metal",
+      "neighbor": "void",
+      "description": "黒い闇（奈落）と青い金属床の境。18 は全面黒、19・20 は斜めの境",
+      "confidence": "guess"
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "kind": "base",
+      "description": "灰色の砂利／コンクリート床",
+      "confidence": "high"
+    },
+    {
+      "from": 23,
+      "to": 27,
+      "kind": "edge",
+      "neighbor": "void",
+      "description": "黒い闇と灰色床の境（23〜25 斜め、26・27 縦の境）",
+      "confidence": "guess"
+    },
+    {
+      "from": 28,
+      "to": 33,
+      "kind": "base",
+      "description": "暗い茶色の岩の洞窟床（30・31 は小石入り）",
+      "confidence": "high"
+    },
+    {
+      "from": 34,
+      "to": 35,
+      "kind": "variant",
+      "description": "洞窟床に青い水たまり",
+      "confidence": "high"
+    },
+    {
+      "from": 36,
+      "to": 40,
+      "kind": "edge",
+      "neighbor": "void",
+      "description": "黒い闇と洞窟床の境（斜め・縦）",
+      "confidence": "high"
+    },
+    {
+      "from": 41,
+      "to": 42,
+      "kind": "object",
+      "description": "紫の半透明の結晶／障壁パネル",
+      "confidence": "guess"
+    },
+    {
+      "from": 43,
+      "to": 45,
+      "kind": "base",
+      "description": "白灰色の縞模様床（43・44 横縞、45 縦縞）。シャッターや金属格子風",
+      "confidence": "high"
+    },
+    {
+      "from": 46,
+      "to": 51,
+      "kind": "variant",
+      "description": "黒っぽい石床。47 無地、48〜51 は明るい縁取り付き",
+      "confidence": "guess"
+    },
+    {
+      "from": 52,
+      "to": 52,
+      "kind": "object",
+      "description": "黒い床の中央に丸い穴",
+      "confidence": "high"
+    },
+    {
+      "from": 53,
+      "to": 56,
+      "kind": "decoration",
+      "description": "四角い宝石風の床タイル：灰・赤・青・緑",
+      "confidence": "high"
+    },
+    {
+      "from": 57,
+      "to": 65,
+      "kind": "edge",
+      "neighbor": "floor",
+      "description": "茶色のじゅうたんの 3×3 の縁取り（左上→右下の順）",
+      "confidence": "guess"
+    },
+    {
+      "from": 66,
+      "to": 68,
+      "kind": "object",
+      "description": "茶色の床の上辺に木の棚／カウンター",
+      "confidence": "high"
+    },
+    {
+      "from": 69,
+      "to": 71,
+      "kind": "object",
+      "description": "赤いじゅうたんの上辺に木の棚／カウンター",
+      "confidence": "high"
+    },
+    {
+      "from": 72,
+      "to": 80,
+      "kind": "edge",
+      "neighbor": "floor",
+      "description": "赤いじゅうたんの 3×3 の縁取り（左上→右下の順）",
+      "confidence": "guess"
+    },
+    {
+      "from": 81,
+      "to": 82,
+      "kind": "base",
+      "description": "寄せ木の木の床",
+      "confidence": "high"
+    },
+    {
+      "from": 83,
+      "to": 83,
+      "kind": "base",
+      "description": "灰色の砂利床",
+      "confidence": "high"
+    },
+    {
+      "from": 84,
+      "to": 92,
+      "kind": "edge",
+      "description": "金の模様の縁取りが付いた赤い床（3×3、左上→右下）",
+      "confidence": "guess"
+    },
+    {
+      "from": 93,
+      "to": 95,
+      "kind": "variant",
+      "description": "金の縁取りと赤い縞の床（左端・中・右端）",
+      "confidence": "guess"
+    },
+    {
+      "from": 96,
+      "to": 101,
+      "kind": "variant",
+      "description": "緑がかった畳／敷物風の床。97 は飾り付き、99 は段、100 は赤い玉座（椅子）",
+      "confidence": "high"
+    },
+    {
+      "from": 102,
+      "to": 107,
+      "kind": "variant",
+      "description": "102〜104・107 は緑の縁の畳、105・106 はこげ茶のレンガ",
+      "confidence": "high"
+    },
+    {
+      "from": 108,
+      "to": 113,
+      "kind": "variant",
+      "description": "木の板の床（108〜110 は柱付き、113 縦板）、111 桃色の座布団、112 青い座布団",
+      "confidence": "high"
+    },
+    {
+      "from": 114,
+      "to": 116,
+      "kind": "object",
+      "description": "緑の天板の長机（左端・中・右端の 3 マス）",
+      "confidence": "high"
+    },
+    {
+      "from": 117,
+      "to": 119,
+      "kind": "base",
+      "description": "117 灰色の石タイル、118 明るい灰色の無地、119 橙色のレンガ",
+      "confidence": "high"
+    },
+    {
+      "from": 120,
+      "to": 127,
+      "kind": "edge",
+      "description": "濃い灰色の金属床に丸角の縁取り線（パネルの縁・角）",
+      "confidence": "guess"
+    },
+    {
+      "from": 128,
+      "to": 131,
+      "kind": "inner_corner",
+      "neighbor": "rock",
+      "description": "黒い岩に囲まれた溶岩（角）",
+      "confidence": "guess"
+    },
+    {
+      "from": 132,
+      "to": 140,
+      "kind": "edge",
+      "neighbor": "rock",
+      "description": "溶岩だまりの 3×3（周りが黒い岩、左上→右下）",
+      "confidence": "guess"
+    },
+    {
+      "from": 141,
+      "to": 143,
+      "kind": "variant",
+      "description": "141・142 黒い岩に白い亀裂（川筋）、143 黄土色のざらざら床",
+      "confidence": "guess"
+    },
+    {
+      "from": 144,
+      "to": 146,
+      "kind": "decoration",
+      "description": "灰色のつらら／カーテン状の壁",
+      "confidence": "high"
+    },
+    {
+      "from": 147,
+      "to": 147,
+      "kind": "object",
+      "description": "洞窟の中の積まれた丸太",
+      "confidence": "high"
+    },
+    {
+      "from": 148,
+      "to": 153,
+      "kind": "object",
+      "style": "plain_grey",
+      "description": "灰色の床（148）と低い石の塀・木箱（149〜153）",
+      "confidence": "high"
+    },
+    {
+      "from": 154,
+      "to": 170,
+      "kind": "edge",
+      "style": "plain_grey",
+      "neighbor": "wall",
+      "description": "灰色の床に白い縁や赤茶の手すり／壁の線（各辺・角）。154 は白一色",
+      "confidence": "guess"
+    },
+    {
+      "from": 171,
+      "to": 173,
+      "kind": "variant",
+      "description": "171 灰色の石畳、172・173 黒い闇との斜めの境",
+      "confidence": "high"
+    },
+    {
+      "from": 174,
+      "to": 175,
+      "kind": "decoration",
+      "description": "赤い織物の床。175 は顔の紋章入り",
+      "confidence": "high"
+    },
+    {
+      "from": 176,
+      "to": 183,
+      "kind": "variant",
+      "description": "176〜178 水色の石レンガ、179・180 青い階段の絵の板、181〜183 青い模様タイル",
+      "confidence": "high"
+    },
+    {
+      "from": 184,
+      "to": 191,
+      "kind": "variant",
+      "style": "cream_stone",
+      "description": "184〜189 クリーム色の石レンガ、190・191 階段の絵の板",
+      "confidence": "high"
+    },
+    {
+      "from": 192,
+      "to": 202,
+      "kind": "variant",
+      "style": "green_stone",
+      "description": "192〜197 暗緑の石ブロック、198〜200 緑のうろこ状の石畳、201・202 階段の絵の板",
+      "confidence": "high"
+    },
+    {
+      "from": 203,
+      "to": 219,
+      "kind": "edge",
+      "style": "cream_stone",
+      "neighbor": "raised_border",
+      "description": "クリーム色の石レンガに盛り上がった縁取り線（各辺・角・内角）",
+      "confidence": "guess"
+    },
+    {
+      "from": 500,
+      "to": 523,
+      "kind": "style",
+      "style": "grid_grey",
+      "description": "148〜173 と同じ組を格子模様の明るい灰色床で描いたもの（低い塀・木箱・白／赤茶の縁・斜めの闇）",
+      "confidence": "high"
+    },
+    {
+      "from": 700,
+      "to": 707,
+      "kind": "decoration",
+      "style": "gold",
+      "description": "金色の豪華な床：700〜705 赤い十字模様の金の板（703・704 宝石飾り、702・705 影付き）、706・707 金の段",
+      "confidence": "high"
+    },
+    {
+      "from": 708,
+      "to": 708,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 800,
+      "to": 826,
+      "kind": "object",
+      "style": "navy",
+      "description": "紺色の床の会場：801 小さなスポットライト、803〜808 は 3×2 の大きなスポットライト、802・809〜814 は青い縁の線、815〜824 観客席と観客、825・826 人一人",
+      "confidence": "guess"
+    },
+    {
+      "from": 900,
+      "to": 926,
+      "kind": "object",
+      "style": "grey",
+      "description": "灰色版の会場：900〜907 黒い段の縁、908〜924 座席（青・赤）と観客、925・926 人一人",
+      "confidence": "guess"
+    },
+    {
+      "from": 1000,
+      "to": 1009,
+      "kind": "variant",
+      "style": "sandstone",
+      "description": "黄土色の砂岩レンガ：1000・1001 階段の絵の板、1002 格子、1003〜1007 レンガ（影・飾り付き）、1008・1009 手すり",
+      "confidence": "high"
+    },
+    {
+      "from": 1050,
+      "to": 1056,
+      "kind": "edge",
+      "style": "sandstone",
+      "description": "砂岩レンガに斜めの手すり・段（1050・1051 無地）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1100,
+      "to": 1106,
+      "kind": "edge",
+      "style": "sandstone",
+      "description": "1050 番台と同じ組の別向き（手すり・段）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1200,
+      "to": 1213,
+      "kind": "variant",
+      "style": "pale_stone",
+      "description": "淡い緑灰色の石：1200〜1202 レンガ、1203・1204 階段の絵の板、1205〜1213 ひし形の飾りタイル（影付きの変化あり）",
+      "confidence": "high"
+    },
+    {
+      "from": 1214,
+      "to": 1223,
+      "kind": "decoration",
+      "style": "pale_stone",
+      "description": "淡い石床に青い玉の柱・彫り線・管",
+      "confidence": "guess"
+    },
+    {
+      "from": 1224,
+      "to": 1234,
+      "kind": "edge",
+      "style": "pale_stone",
+      "neighbor": "sand",
+      "description": "砂地と淡い石の境・飾り（1233 は飾りタイル）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1235,
+      "to": 1251,
+      "kind": "edge",
+      "style": "pale_stone",
+      "neighbor": "raised_border",
+      "description": "緑のレンガに盛り上がった縁取り（各辺・角・内角）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1300,
+      "to": 1331,
+      "kind": "edge",
+      "style": "red_carpet",
+      "description": "金縁の赤い模様じゅうたん：各辺・角。1309〜1325 付近は暗い影付きの版",
+      "confidence": "guess"
+    },
+    {
+      "from": 2000,
+      "to": 2065,
+      "kind": "edge",
+      "style": "bright",
+      "neighbor": "mixed",
+      "description": "明るい別の画風：黄色い木の板・青灰のタイル・砂色・青い水・灰色を左右半分ずつ組み合わせた境目。2009 以降は下辺に灰色の幅木（壁の根元）付き。2032・2033 は黒い闇の斜め",
+      "confidence": "guess"
+    },
+    {
+      "from": 2066,
+      "to": 2068,
+      "kind": "object",
+      "style": "bright",
+      "description": "明るい画風：緑のパネル（窓／棚）と木の板",
+      "confidence": "guess"
+    },
+    {
+      "from": 2069,
+      "to": 2074,
+      "kind": "edge",
+      "style": "bright",
+      "neighbor": "void",
+      "description": "明るい画風：黒い闇と木／タイル床の斜め・縦の境",
+      "confidence": "high"
+    },
+    {
+      "from": 2075,
+      "to": 2096,
+      "kind": "edge",
+      "style": "bright",
+      "neighbor": "mixed",
+      "description": "明るい画風：灰色の格子床と木・青タイルの組み合わせ（下辺に幅木）",
+      "confidence": "guess"
+    },
+    {
+      "from": 2097,
+      "to": 2098,
+      "kind": "object",
+      "style": "bright",
+      "description": "明るい画風：2097 机、2098 本棚",
+      "confidence": "high"
+    },
+    {
+      "from": 2099,
+      "to": 2107,
+      "kind": "edge",
+      "style": "bright",
+      "neighbor": "plain",
+      "description": "明るい画風：緑の草地と青タイルの組み合わせ。2107 緑のパネルと草地",
+      "confidence": "guess"
+    },
+    {
+      "from": 5000,
+      "to": 5002,
+      "kind": "other",
+      "description": "網点の影（重ね用）：5000 丸い左端、5001 左半分、5002 左下 1/4",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "0〜219 が標準の室内床。500 番台は 148〜173 の別画風、700 金、800/900 会場、1000〜1100 砂岩、1200 淡い石、1300 赤じゅうたん、2000 番台は明るい別画風の境目組、5000 番台は影"
+}

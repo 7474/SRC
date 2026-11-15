@@ -1,0 +1,52 @@
+{
+  "terrain": "the_crowds",
+  "count": 41,
+  "exists": "0-13 500-506 1000-1009 1500-1509",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 1,
+      "kind": "object",
+      "description": "青い客席に座る観客 1 人",
+      "confidence": "high"
+    },
+    {
+      "from": 2,
+      "to": 11,
+      "kind": "variant",
+      "description": "観客で埋まった客席（色・並び違い）",
+      "confidence": "high"
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "kind": "object",
+      "description": "赤い客席に座る観客 1 人",
+      "confidence": "high"
+    },
+    {
+      "from": 500,
+      "to": 506,
+      "kind": "style",
+      "style": "dark",
+      "description": "暗い客席の観客",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1009,
+      "kind": "object",
+      "description": "灰色床の人物（1000–1003 座る人、1004–1009 走る・応援する人）",
+      "confidence": "high"
+    },
+    {
+      "from": 1500,
+      "to": 1509,
+      "kind": "style",
+      "style": "dark",
+      "description": "1000 番台の暗い紺色床版",
+      "confidence": "high"
+    }
+  ],
+  "rules": "500 番台は 0 番台の暗い版、1500 番台は 1000 番台の床色違い。"
+}

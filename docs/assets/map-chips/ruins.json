@@ -1,0 +1,71 @@
+{
+  "terrain": "ruins",
+  "count": 32,
+  "exists": "0-20 1000-1010",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "object",
+      "description": "草地の上の石段・崩れた石垣",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "kind": "object",
+      "description": "砂地の上の和風の家、鳥居",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 9,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "砂地の上のピラミッド（2×2）",
+      "confidence": "high"
+    },
+    {
+      "from": 10,
+      "to": 10,
+      "kind": "object",
+      "description": "モアイ像",
+      "confidence": "high"
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "kind": "object",
+      "description": "草地の上の和風の家、鳥居",
+      "confidence": "high"
+    },
+    {
+      "from": 13,
+      "to": 18,
+      "kind": "object",
+      "style": "dark",
+      "description": "暗い草地の上の石段・瓦礫・家・鳥居",
+      "confidence": "high"
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1010,
+      "kind": "style",
+      "style": "overlay",
+      "description": "各遺跡の白背景（重ね置き）版",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0 番台は下地付き、1000 番台は下地なし。"
+}

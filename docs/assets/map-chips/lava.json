@@ -1,0 +1,85 @@
+{
+  "terrain": "lava",
+  "count": 14,
+  "exists": "0-13",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 8,
+      "kind": "edge",
+      "neighbor": "rock",
+      "tiles": {
+        "0": [
+          "N",
+          "W"
+        ],
+        "1": [
+          "N"
+        ],
+        "2": [
+          "N",
+          "E"
+        ],
+        "3": [
+          "W"
+        ],
+        "5": [
+          "E"
+        ],
+        "6": [
+          "S",
+          "W"
+        ],
+        "7": [
+          "S"
+        ],
+        "8": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "灰黒の岩に囲まれた溶岩の 3×3（4 は中央）",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "kind": "corner",
+      "neighbor": "rock",
+      "tiles": {
+        "9": [
+          "NW"
+        ],
+        "10": [
+          "NE"
+        ]
+      },
+      "description": "溶岩が下側に山形に広がる斜めの角（9 は北西、10 は北東が岩）",
+      "confidence": "guess"
+    },
+    {
+      "from": 11,
+      "to": 11,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "kind": "corner",
+      "neighbor": "rock",
+      "tiles": {
+        "12": [
+          "SW"
+        ],
+        "13": [
+          "SE"
+        ]
+      },
+      "description": "溶岩が上側に広がる斜めの角（12 は南西、13 は南東が岩）",
+      "confidence": "guess"
+    }
+  ],
+  "rules": ""
+}

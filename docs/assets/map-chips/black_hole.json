@@ -1,0 +1,47 @@
+{
+  "terrain": "black_hole",
+  "count": 9,
+  "exists": "0-8",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "object",
+      "style": "black_space",
+      "description": "ブラックホール本体（オレンジの降着円盤の渦）、黒い宇宙",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 3,
+      "kind": "decoration",
+      "style": "black_space",
+      "description": "ブラックホールの周りの灰色の渦の筋（中心から離れるほど薄い：1 が近く濃い、3 が外側）",
+      "confidence": "guess"
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "kind": "style",
+      "style": "blue_space",
+      "description": "0〜1 の青い宇宙版（4=本体、5=近くの渦）",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 6,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "kind": "style",
+      "style": "blue_space",
+      "description": "2〜3 の青い宇宙版（外側の渦の筋）",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "0〜3 黒い宇宙、4〜8 青い宇宙版（6 は欠番）"
+}

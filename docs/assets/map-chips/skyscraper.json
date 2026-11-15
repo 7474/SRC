@@ -1,0 +1,138 @@
+{
+  "terrain": "skyscraper",
+  "count": 80,
+  "exists": "0-62 1000-1011 2000-2004",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "object",
+      "description": "灰色のビルの窓壁と屋上",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 6,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 7,
+      "to": 10,
+      "kind": "object",
+      "description": "青いガラス張りビルの屋上・壁面",
+      "confidence": "high"
+    },
+    {
+      "from": 11,
+      "to": 14,
+      "kind": "object",
+      "description": "鉄塔・テレビ塔（オレンジの骨組）",
+      "confidence": "high"
+    },
+    {
+      "from": 15,
+      "to": 17,
+      "kind": "object",
+      "description": "自由の女神像と台座（海背景）",
+      "confidence": "high"
+    },
+    {
+      "from": 18,
+      "to": 21,
+      "kind": "object",
+      "description": "赤白の電波塔",
+      "confidence": "high"
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "kind": "object",
+      "description": "自由の女神像（海・草地）",
+      "confidence": "high"
+    },
+    {
+      "from": 24,
+      "to": 35,
+      "kind": "object",
+      "description": "給水塔付き屋上、白いビルの壁面と屋上",
+      "confidence": "high"
+    },
+    {
+      "from": 36,
+      "to": 49,
+      "kind": "object",
+      "description": "灰色ビルの屋上・窓壁と広告看板（36–38, 46–47, 49）",
+      "confidence": "high"
+    },
+    {
+      "from": 50,
+      "to": 58,
+      "kind": "style",
+      "style": "deep_sea",
+      "description": "深海背景の自由の女神像・台座と青いビル",
+      "confidence": "high"
+    },
+    {
+      "from": 59,
+      "to": 59,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 60,
+      "to": 61,
+      "kind": "object",
+      "description": "青いガラス張りビルの壁面",
+      "confidence": "high"
+    },
+    {
+      "from": 62,
+      "to": 62,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1010,
+      "kind": "style",
+      "style": "night",
+      "description": "夜景のビル（灯る窓、1008 は「BEER!」看板）",
+      "confidence": "high"
+    },
+    {
+      "from": 1011,
+      "to": 1011,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2001,
+      "kind": "style",
+      "style": "black",
+      "description": "黒背景のガラス張りビルの屋上",
+      "confidence": "high"
+    },
+    {
+      "from": 2002,
+      "to": 2002,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 2003,
+      "to": 2004,
+      "kind": "style",
+      "style": "black",
+      "description": "黒背景のガラス張りビルの壁面",
+      "confidence": "high"
+    }
+  ],
+  "rules": "1000 番台は夜景、2000 番台は黒背景。"
+}

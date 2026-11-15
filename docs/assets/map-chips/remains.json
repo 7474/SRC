@@ -1,0 +1,29 @@
+{
+  "terrain": "remains",
+  "count": 12,
+  "exists": "0-11",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 2,
+      "kind": "object",
+      "description": "灰色の床の上の瓦礫の山（形違い）",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 5,
+      "kind": "object",
+      "description": "縞模様の床の上の瓦礫（3=灰の横縞,4=黄黒の横縞,5=黄の縦縞）",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 11,
+      "kind": "variant",
+      "description": "炎/溶岩色の混じった瓦礫（6–8=灰色の床,9–11=縞の床、並びは 0–5 と同じ）",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "0–5 と 6–11 は同じ並びで、後半はオレンジ色が混じる版"
+}

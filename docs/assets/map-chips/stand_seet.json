@@ -1,0 +1,44 @@
+{
+  "terrain": "stand_seet",
+  "count": 38,
+  "exists": "0-11 500-505 1000-1009 1500-1509",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "object",
+      "description": "観客席（青い座席2列）。偶数/奇数で観客の有無や最上段の背もたれ違い",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 11,
+      "kind": "object",
+      "description": "観客席（赤い座席、並びは 0–5 と同じ）",
+      "confidence": "guess"
+    },
+    {
+      "from": 500,
+      "to": 505,
+      "kind": "object",
+      "description": "観客席（暗い緑の座席、並びは 0–5 と同じ）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1000,
+      "to": 1009,
+      "kind": "object",
+      "description": "灰色の床の座席。1000–1003=長椅子(1人掛け・2人掛け、色違い),1004–1009=三脚の椅子(1007・1009 は人が座る)",
+      "confidence": "guess"
+    },
+    {
+      "from": 1500,
+      "to": 1509,
+      "kind": "style",
+      "style": "dark",
+      "description": "暗い紺の床版（並びは 1000–1009 と同じ）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0=青,6=赤,500=暗い緑の観客席。1000=灰色床、1500=紺の床の椅子"
+}

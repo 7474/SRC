@@ -1,0 +1,145 @@
+{
+  "terrain": "planet",
+  "count": 46,
+  "exists": "0-23 1000-1021",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "オレンジの惑星（金星風）",
+      "confidence": "high",
+      "style": "black"
+    },
+    {
+      "from": 4,
+      "to": 9,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "水色の輪のある惑星（天王星風）",
+      "confidence": "high",
+      "style": "black"
+    },
+    {
+      "from": 10,
+      "to": 13,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "青い惑星（海王星風）",
+      "confidence": "high",
+      "style": "black"
+    },
+    {
+      "from": 14,
+      "to": 17,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "暗い灰青色の惑星",
+      "confidence": "high",
+      "style": "black"
+    },
+    {
+      "from": 18,
+      "to": 21,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "灰色の惑星（月面風）",
+      "confidence": "high",
+      "style": "black"
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1003,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "オレンジの惑星（金星風）（青い宇宙背景）",
+      "confidence": "high",
+      "style": "blue"
+    },
+    {
+      "from": 1004,
+      "to": 1009,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "水色の輪のある惑星（天王星風）（青い宇宙背景）",
+      "confidence": "high",
+      "style": "blue"
+    },
+    {
+      "from": 1010,
+      "to": 1013,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "青い惑星（海王星風）（青い宇宙背景）",
+      "confidence": "high",
+      "style": "blue"
+    },
+    {
+      "from": 1014,
+      "to": 1017,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "暗い灰青色の惑星（青い宇宙背景）",
+      "confidence": "high",
+      "style": "blue"
+    },
+    {
+      "from": 1018,
+      "to": 1021,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "灰色の惑星（月面風）（青い宇宙背景）",
+      "confidence": "high",
+      "style": "blue"
+    }
+  ],
+  "rules": "1000 番台は青背景の同じ組（番号＋1000）"
+}
