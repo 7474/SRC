@@ -594,22 +594,31 @@ export class QuickBuilder {
     if (!this.host.loadImage) {
       return false;
     }
+    // 画像はまとめて（並行に）読む。ほかの縮図が読んでいる途中の画像も待ち、読めたら描き直す
     const terrains = new Map(this.host.terrains().map(x => [x.id, x]));
-    let loaded = false;
+    this.imageLoads ??= new Map();
+    const waits = new Map();
     for (let i = 0; i < tiles.length; i += 2) {
       const info = terrains.get(tiles[i]);
       const key = info && `${info.bitmap}:${tiles[i + 1]}`;
-      if (key && !this.images.has(key)) {
-        this.images.set(key, null);
-        try {
-          this.images.set(key, await this.host.loadImage(info.bitmap, tiles[i + 1]));
-          loaded = true;
-        } catch {
-          // 色で描く
-        }
+      if (!key || waits.has(key)) {
+        continue;
+      }
+      if (!this.images.has(key) && !this.imageLoads.has(key)) {
+        this.imageLoads.set(key, this.host.loadImage(info.bitmap, tiles[i + 1])
+          .catch(() => null)
+          .then(image => {
+            this.images.set(key, image);
+            this.imageLoads.delete(key);
+            return image;
+          }));
+      }
+      if (this.imageLoads.has(key)) {
+        waits.set(key, this.imageLoads.get(key));
       }
     }
-    return loaded;
+    const loaded = await Promise.all(waits.values());
+    return loaded.some(Boolean);
   }
 
   drawTiles(ctx, tiles, width, height, cell) {
