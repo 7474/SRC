@@ -17,6 +17,18 @@ const CELL = 26;
 
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+/** 画像の無いマスの色（地形タイプの色。宇宙・月面の構造物は明るくして見分ける） */
+function terrainColor(info) {
+  if (!info) {
+    return '#999';
+  }
+  const base = CLASS_COLORS[info.class] ?? '#999';
+  if (info.class === '宇宙' && info.hitMod > 0) {
+    return info.hitMod >= 30 ? '#8a8fa8' : '#4a4e6e';
+  }
+  return base;
+}
+
 function newBattle() {
   return {
     title: '', width: 20, height: 15,
@@ -44,6 +56,16 @@ export class QuickBuilder {
     /** 読んだマップのマス（parseMap の tiles）。下書きには残さず、mapText から作り直す */
     this.mapTiles = null;
     this.selected = null;
+    /** サンプルの場面の一覧を開いているか（null なら、まだ何も置いていないときだけ開く） */
+    this.galleryOpen = null;
+    /** 場面の縮図（id → マス）と、マップの画像（"画像の名前:番号" → ImageBitmap か null） */
+    this.thumbs = new Map();
+    this.images = new Map();
+    // 知らせは画面の下に出す（作り直しても消さない）
+    this.statusBox = document.createElement('div');
+    this.statusBox.className = 'quick-status';
+    this.statusBox.setAttribute('role', 'status');
+    this.statusBox.hidden = true;
     this.render();
   }
 
@@ -381,11 +403,15 @@ export class QuickBuilder {
   }
 
   status(text, kind = 'info') {
-    const box = this.root.querySelector('.quick-status');
-    if (box) {
-      box.textContent = text;
-      box.className = `quick-status ${text ? kind : ''}`;
-      box.hidden = !text;
+    const box = this.statusBox;
+    clearTimeout(this.statusTimer);
+    box.className = `quick-status ${text ? kind : ''}`;
+    box.hidden = !text;
+    box.innerHTML = text ? `<span>${esc(text)}</span><button type="button" aria-label="${esc(t('quick.close'))}">×</button>` : '';
+    box.querySelector('button')?.addEventListener('click', () => this.status(''));
+    // 知らせ（読み込み中・保存した）は少しして消す。エラーは閉じるまで残す
+    if (text && kind === 'info' && !/…$/.test(text)) {
+      this.statusTimer = setTimeout(() => this.status(''), 8000);
     }
   }
 
@@ -399,20 +425,24 @@ export class QuickBuilder {
     const maps = this.host.maps();
     const scenes = this.scenes ?? [];
     if (!this.scenes) {
-      this.loadScenes().then(list => {
-        if (list.length) {
-          this.render();
-        }
-      });
+      this.loadScenes().then(() => this.render());
     }
-    const sideRows = side => b[side].map((u, i) => `
-      <tr data-side="${side}" data-index="${i}" class="${this.selected?.side === side && this.selected.index === i ? 'selected' : ''}">
-        <td><input class="q-unit" list="q-units" value="${esc(u.unit)}" placeholder="${esc(t('quick.unit'))}" aria-label="${esc(t('quick.unit'))}"></td>
-        <td><input class="q-pilot" list="q-pilots" value="${esc(u.pilot)}" placeholder="${esc(t('quick.pilot'))}" aria-label="${esc(t('quick.pilot'))}"></td>
-        <td><input class="q-level" type="number" min="1" max="99" value="${u.level}" aria-label="${esc(t('quick.level'))}"></td>
-        <td class="q-pos">${u.x},${u.y}</td>
-        <td><button type="button" class="q-remove" aria-label="${esc(t('quick.remove'))}">×</button></td>
-      </tr>`).join('');
+    const chosen = this.titles.filter(x => !x.system);
+    const empty = !b.allies.length && !b.enemies.length;
+    const galleryOpen = this.galleryOpen ?? empty;
+    const currentScene = scenes.find(sc => `scene:${sc.base}#${sc.id}` === b.mapSource);
+    const sideTable = side => b[side].length ? `
+      <table class="q-table">
+        <thead><tr><th>${esc(t('quick.unit'))}</th><th>${esc(t('quick.pilot'))}</th><th>${esc(t('quick.level'))}</th><th>${esc(t('quick.position'))}</th><th></th></tr></thead>
+        <tbody>${b[side].map((u, i) => `
+          <tr data-side="${side}" data-index="${i}" class="${this.selected?.side === side && this.selected.index === i ? 'selected' : ''}">
+            <td><input class="q-unit" list="q-units" value="${esc(u.unit)}" placeholder="${esc(t('quick.unit'))}" aria-label="${esc(t('quick.unit'))}"></td>
+            <td><input class="q-pilot" list="q-pilots" value="${esc(u.pilot)}" placeholder="${esc(t('quick.pilot'))}" aria-label="${esc(t('quick.pilot'))}"></td>
+            <td><input class="q-level" type="number" min="1" max="99" value="${u.level}" aria-label="${esc(t('quick.level'))}"></td>
+            <td class="q-pos" title="${esc(t('quick.positionHint'))}">${u.x},${u.y}</td>
+            <td><button type="button" class="q-remove icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button></td>
+          </tr>`).join('')}</tbody>
+      </table>` : '';
     const talkRows = scene => b[scene].map((line, i) => `
       <div class="q-line" data-scene="${scene}" data-index="${i}">
         <select class="q-speaker" aria-label="${esc(t('quick.speaker'))}">
@@ -420,71 +450,102 @@ export class QuickBuilder {
           ${speakers.map(s => `<option ${s === line.speaker ? 'selected' : ''}>${esc(s)}</option>`).join('')}
           ${line.speaker && !speakers.includes(line.speaker) ? `<option selected>${esc(line.speaker)}</option>` : ''}
         </select>
-        <textarea class="q-text" rows="2" aria-label="${esc(t('quick.text'))}">${esc(line.text)}</textarea>
-        <button type="button" class="q-remove-line" aria-label="${esc(t('quick.remove'))}">×</button>
+        <textarea class="q-text" rows="2" aria-label="${esc(t('quick.text'))}" placeholder="${esc(t('quick.text'))}">${esc(line.text)}</textarea>
+        <button type="button" class="q-remove-line icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button>
       </div>`).join('');
+    const sceneCard = sc => {
+      const value = `scene:${sc.base}#${sc.id}`;
+      return `<li><button type="button" class="q-scene-card" data-value="${esc(value)}" aria-pressed="${value === b.mapSource}">
+        <canvas class="q-thumb" data-value="${esc(value)}" width="96" height="72" aria-hidden="true"></canvas>
+        <span class="q-scene-text"><strong>${esc(sc.title ?? sc.id)}</strong>
+        <span class="q-scene-desc">${esc(sc.description ?? '')}</span>
+        ${sc.tags?.length ? `<span class="q-tags">${sc.tags.map(x => `<span>${esc(x)}</span>`).join('')}</span>` : ''}</span>
+      </button></li>`;
+    };
 
     this.root.innerHTML = `
-      <p class="hint">${esc(t('quick.intro'))}</p>
-      <div class="quick-status" hidden></div>
+      <p class="hint q-intro">${esc(t('quick.intro'))}</p>
+      <details class="q-gallery" ${galleryOpen ? 'open' : ''}>
+        <summary>${esc(t('quick.gallery'))}${scenes.length ? ` <span class="hint">${esc(t('quick.galleryCount', scenes.length))}</span>` : ''}</summary>
+        <p class="hint">${esc(t('quick.galleryHint'))}</p>
+        ${this.scenes ? (scenes.length ? `<ul class="q-scenes">${scenes.map(sceneCard).join('')}</ul>` : `<p class="hint">${esc(t('quick.galleryEmpty'))}</p>`)
+          : `<p class="hint">${esc(t('quick.galleryLoading'))}</p>`}
+      </details>
       <section class="q-step">
-        <h2>1. ${esc(t('quick.stepTitles'))}</h2>
+        <h2><span class="q-num">1</span>${esc(t('quick.stepTitles'))}</h2>
         <p class="hint">${esc(t('quick.titlesHint'))}</p>
         <input type="search" class="q-search" placeholder="${esc(t('quick.searchTitles'))}" aria-label="${esc(t('quick.searchTitles'))}">
         <ul class="q-results"></ul>
-        <ul class="q-chosen">${this.titles.filter(x => !x.system).map(x => `
+        <ul class="q-chosen">${chosen.map(x => `
           <li data-key="${esc(x.key)}">${esc(x.title)} <span class="hint">${esc(t('quick.counts', x.units.length, x.pilots.length))}</span>
-          <button type="button" class="q-remove-title" aria-label="${esc(t('quick.remove'))}">×</button></li>`).join('')}</ul>
+          <button type="button" class="q-remove-title icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button></li>`).join('')}</ul>
         <datalist id="q-units">${units.map(u => `<option value="${esc(u.name)}">${esc(u.title)}${u.class ? ' / ' + esc(u.class) : ''}</option>`).join('')}</datalist>
         <datalist id="q-pilots">${pilots.map(p => `<option value="${esc(p.name)}">${esc(p.nickname || '')} ${esc(p.title)}</option>`).join('')}</datalist>
       </section>
       <section class="q-step">
-        <h2>2. ${esc(t('quick.stepUnits'))}</h2>
-        <h3>${esc(t('quick.allies'))}</h3>
-        <table class="q-table"><tbody>${sideRows('allies')}</tbody></table>
-        <button type="button" class="q-add" data-side="allies">${esc(t('quick.addAlly'))}</button>
-        <h3>${esc(t('quick.enemies'))}</h3>
-        <table class="q-table"><tbody>${sideRows('enemies')}</tbody></table>
-        <button type="button" class="q-add" data-side="enemies">${esc(t('quick.addEnemy'))}</button>
+        <h2><span class="q-num">2</span>${esc(t('quick.stepUnits'))}</h2>
+        ${chosen.length ? '' : `<p class="hint q-need">${esc(t('quick.needTitles'))}</p>`}
+        <div class="q-sides">
+          <div class="q-side allies">
+            <h3>${esc(t('quick.allies'))} <span class="hint">${b.allies.length}</span></h3>
+            ${sideTable('allies')}
+            <button type="button" class="q-add" data-side="allies">＋ ${esc(t('quick.addAlly'))}</button>
+          </div>
+          <div class="q-side enemies">
+            <h3>${esc(t('quick.enemies'))} <span class="hint">${b.enemies.length}</span></h3>
+            ${sideTable('enemies')}
+            <button type="button" class="q-add" data-side="enemies">＋ ${esc(t('quick.addEnemy'))}</button>
+          </div>
+        </div>
       </section>
       <section class="q-step">
-        <h2>3. ${esc(t('quick.stepMap'))}</h2>
-        <label>${esc(t('quick.scenarioTitle'))} <input class="q-title" value="${esc(b.title)}" placeholder="${esc(t('quick.defaultTitle'))}"></label>
-        <label>${esc(t('quick.map'))} <select class="q-map">
-          <option value="">${esc(t('quick.plainMap'))}</option>
-          ${scenes.length ? `<optgroup label="${esc(t('quick.scenes'))}">${scenes.map(sc => {
-            const value = `scene:${sc.base}#${sc.id}`;
-            return `<option value="${esc(value)}" ${value === b.mapSource ? 'selected' : ''}>${esc(sc.title ?? sc.id)}${sc.description ? ' — ' + esc(sc.description) : ''}</option>`;
-          }).join('')}</optgroup>` : ''}
-          ${maps.length ? `<optgroup label="${esc(t('quick.folderMaps'))}">${maps.map(m => `<option value="${esc('folder:' + m)}" ${'folder:' + m === b.mapSource ? 'selected' : ''}>${esc(m)}</option>`).join('')}</optgroup>` : ''}
-          ${b.mapSource?.startsWith('file:') ? `<option value="${esc(b.mapSource)}" selected>${esc(b.mapSource.slice(5))}</option>` : ''}
-        </select></label>
-        <button type="button" class="q-map-file">${esc(t('quick.mapFile'))}</button>
-        <input type="file" class="q-map-input" accept=".map" hidden>
-        <span class="q-size" ${b.mapSource ? 'hidden' : ''}>
-          <label>${esc(t('map.width'))} <input class="q-width" type="number" min="5" max="50" value="${b.width}"></label>
-          <label>${esc(t('map.height'))} <input class="q-height" type="number" min="5" max="50" value="${b.height}"></label>
-        </span>
+        <h2><span class="q-num">3</span>${esc(t('quick.stepMap'))}</h2>
+        <div class="q-fields">
+          <label class="q-field">${esc(t('quick.map'))} <select class="q-map">
+            <option value="">${esc(t('quick.plainMap'))}</option>
+            ${scenes.length ? `<optgroup label="${esc(t('quick.scenes'))}">${scenes.map(sc => {
+              const value = `scene:${sc.base}#${sc.id}`;
+              return `<option value="${esc(value)}" ${value === b.mapSource ? 'selected' : ''}>${esc(sc.title ?? sc.id)}</option>`;
+            }).join('')}</optgroup>` : ''}
+            ${maps.length ? `<optgroup label="${esc(t('quick.folderMaps'))}">${maps.map(m => `<option value="${esc('folder:' + m)}" ${'folder:' + m === b.mapSource ? 'selected' : ''}>${esc(m)}</option>`).join('')}</optgroup>` : ''}
+            ${b.mapSource?.startsWith('file:') ? `<option value="${esc(b.mapSource)}" selected>${esc(b.mapSource.slice(5))}</option>` : ''}
+          </select></label>
+          <button type="button" class="q-map-file">${esc(t('quick.mapFile'))}</button>
+          <input type="file" class="q-map-input" accept=".map" hidden>
+          <span class="q-size" ${b.mapSource ? 'hidden' : ''}>
+            <label class="q-field">${esc(t('map.width'))} <input class="q-width" type="number" min="5" max="50" value="${b.width}"></label>
+            <label class="q-field">${esc(t('map.height'))} <input class="q-height" type="number" min="5" max="50" value="${b.height}"></label>
+          </span>
+        </div>
+        ${currentScene?.description ? `<p class="q-scene-about">${esc(currentScene.description)}</p>` : ''}
         <p class="hint">${esc(t('quick.placeHint'))}</p>
+        <p class="q-legend hint"><span class="q-key allies"></span>${esc(t('quick.allies'))}<span class="q-key enemies"></span>${esc(t('quick.enemies'))}<span class="q-key spot"></span>${esc(t('quick.spot'))}</p>
         <div class="q-board"><canvas class="q-canvas"></canvas></div>
       </section>
       <section class="q-step">
-        <h2>4. ${esc(t('quick.stepTalk'))}</h2>
+        <h2><span class="q-num">4</span>${esc(t('quick.stepTalk'))}</h2>
         <p class="hint">${esc(t('quick.talkHint'))}</p>
         ${['opening', 'victory', 'defeat'].map(scene => `
           <h3>${esc(t(`quick.scene.${scene}`))}</h3>
           ${talkRows(scene)}
-          <button type="button" class="q-add-line" data-scene="${scene}">${esc(t('quick.addLine'))}</button>`).join('')}
+          <button type="button" class="q-add-line" data-scene="${scene}">＋ ${esc(t('quick.addLine'))}</button>`).join('')}
       </section>
       <section class="q-step">
-        <h2>5. ${esc(t('quick.stepPlay'))}</h2>
-        <button type="button" class="q-play primary">${esc(t('quick.play'))}</button>
-        <button type="button" class="q-save">${esc(t('quick.save'))}</button>
-        <button type="button" class="q-reset">${esc(t('quick.reset'))}</button>
+        <h2><span class="q-num">5</span>${esc(t('quick.stepPlay'))}</h2>
+        <div class="q-fields">
+          <label class="q-field">${esc(t('quick.scenarioTitle'))} <input class="q-title" value="${esc(b.title)}" placeholder="${esc(t('quick.defaultTitle'))}"></label>
+        </div>
+        <div class="q-actions">
+          <button type="button" class="q-play primary">▶ ${esc(t('quick.play'))}</button>
+          <button type="button" class="q-save">${esc(t('quick.save'))}</button>
+          <button type="button" class="q-reset danger">${esc(t('quick.reset'))}</button>
+        </div>
         <p class="hint q-play-hint">${esc(t('quick.playHint'))}</p>
       </section>`;
+    this.root.append(this.statusBox);
     this.bind();
     this.drawBoard();
+    this.drawThumbs();
     webIsSameOrigin().then(same => {
       const button = this.root.querySelector('.q-play');
       if (button && !same) {
@@ -492,6 +553,70 @@ export class QuickBuilder {
         this.root.querySelector('.q-play-hint').textContent = t('quick.playOtherSite');
       }
     });
+  }
+
+  /** 場面の一覧の縮図（地形タイプの色）。マップは一度だけ読む */
+  async drawThumbs() {
+    for (const canvas of this.root.querySelectorAll('.q-thumb')) {
+      const value = canvas.dataset.value;
+      if (!this.thumbs.has(value)) {
+        const scene = this.scenes.find(sc => `scene:${sc.base}#${sc.id}` === value);
+        this.thumbs.set(value, (async () => {
+          const response = await fetch(new URL(scene.map, scene.base));
+          return response.ok ? this.host.parseMap(new Uint8Array(await response.arrayBuffer())) : null;
+        })().catch(() => null));
+      }
+      const map = await this.thumbs.get(value);
+      if (!map || map.error || !canvas.isConnected) {
+        continue;
+      }
+      const cell = Math.max(1, Math.floor(Math.min(96 / map.width, 72 / map.height)));
+      canvas.width = map.width * cell;
+      canvas.height = map.height * cell;
+      await this.loadTileImages(map.tiles);
+      this.drawTiles(canvas.getContext('2d'), map.tiles, map.width, map.height, cell);
+    }
+  }
+
+  /** マスの画像を読んでおく（SRC と同じ順で探す。無ければ null を覚えて色で描く） */
+  async loadTileImages(tiles) {
+    if (!this.host.loadImage) {
+      return false;
+    }
+    const terrains = new Map(this.host.terrains().map(x => [x.id, x]));
+    let loaded = false;
+    for (let i = 0; i < tiles.length; i += 2) {
+      const info = terrains.get(tiles[i]);
+      const key = info && `${info.bitmap}:${tiles[i + 1]}`;
+      if (key && !this.images.has(key)) {
+        this.images.set(key, null);
+        try {
+          this.images.set(key, await this.host.loadImage(info.bitmap, tiles[i + 1]));
+          loaded = true;
+        } catch {
+          // 色で描く
+        }
+      }
+    }
+    return loaded;
+  }
+
+  drawTiles(ctx, tiles, width, height, cell) {
+    const terrains = new Map(this.host.terrains().map(x => [x.id, x]));
+    ctx.imageSmoothingEnabled = cell < 16;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const id = tiles[(y * width + x) * 2];
+        const info = terrains.get(id);
+        const image = info && this.images.get(`${info.bitmap}:${tiles[(y * width + x) * 2 + 1]}`);
+        if (image) {
+          ctx.drawImage(image, x * cell, y * cell, cell, cell);
+        } else {
+          ctx.fillStyle = terrainColor(info);
+          ctx.fillRect(x * cell, y * cell, cell, cell);
+        }
+      }
+    }
   }
 
   bind() {
@@ -521,12 +646,12 @@ export class QuickBuilder {
       button.addEventListener('click', () => this.removeTitle(button.closest('li').dataset.key)));
 
     this.root.querySelectorAll('.q-add').forEach(button => button.addEventListener('click', () => this.addUnit(button.dataset.side)));
-    this.root.querySelectorAll('.q-table tr').forEach(row => {
+    this.root.querySelectorAll('.q-table tbody tr').forEach(row => {
       const unit = this.battle[row.dataset.side][Number(row.dataset.index)];
       const select = () => {
         if (this.selected?.side !== row.dataset.side || this.selected?.index !== Number(row.dataset.index)) {
           this.selected = { side: row.dataset.side, index: Number(row.dataset.index) };
-          this.root.querySelectorAll('.q-table tr').forEach(r => r.classList.toggle('selected', r === row));
+          this.root.querySelectorAll('.q-table tbody tr').forEach(r => r.classList.toggle('selected', r === row));
           this.drawBoard();
         }
       };
@@ -569,28 +694,20 @@ export class QuickBuilder {
     };
     $('.q-width').addEventListener('change', resize);
     $('.q-height').addEventListener('change', resize);
-    $('.q-map').addEventListener('change', async ev => {
-      const value = ev.target.value;
-      try {
-        if (!value) {
-          this.usePlain();
-        } else if (value.startsWith('scene:')) {
-          await this.applyScene(this.scenes.find(sc => `scene:${sc.base}#${sc.id}` === value));
-        } else if (value.startsWith('folder:')) {
-          const error = await this.useMap(value, decodeText(await this.host.readMap(value.slice(7))));
-          if (error) {
-            throw new Error(error);
-          }
-          this.battle.spots = null;
-        }
-        this.status('');
-      } catch (e) {
-        this.usePlain();
-        this.status(t('quick.mapFailed', e.message ?? e), 'error');
-      }
-      this.saveDraft();
-      this.render();
+    $('.q-map').addEventListener('change', ev => this.chooseMap(ev.target.value));
+    const gallery = $('.q-gallery');
+    // 開いた・閉じたのは人が押したときだけ覚える（作り直したときの toggle は数えない）
+    gallery.querySelector('summary').addEventListener('click', () => {
+      this.galleryOpen = !gallery.open;
     });
+    this.root.querySelectorAll('.q-scene-card').forEach(card => card.addEventListener('click', async () => {
+      this.galleryOpen = false;
+      await this.chooseMap(card.dataset.value);
+      if (this.battle.mapSource === card.dataset.value) {
+        const scene = this.scenes.find(sc => `scene:${sc.base}#${sc.id}` === card.dataset.value);
+        this.status(t('quick.applied', scene?.title ?? ''), 'info');
+      }
+    }));
     $('.q-map-file').addEventListener('click', () => $('.q-map-input').click());
     $('.q-map-input').addEventListener('change', async ev => {
       const file = ev.target.files[0];
@@ -646,6 +763,30 @@ export class QuickBuilder {
     $('.q-reset').addEventListener('click', () => this.reset());
   }
 
+  /** マップを選ぶ（'' は平地、scene:・folder: は場面のサンプル・シナリオのフォルダのマップ） */
+  async chooseMap(value) {
+    try {
+      if (!value) {
+        this.usePlain();
+      } else if (value.startsWith('scene:')) {
+        this.status(t('loading'));
+        await this.applyScene(this.scenes.find(sc => `scene:${sc.base}#${sc.id}` === value));
+      } else if (value.startsWith('folder:')) {
+        const error = await this.useMap(value, decodeText(await this.host.readMap(value.slice(7))));
+        if (error) {
+          throw new Error(error);
+        }
+        this.battle.spots = null;
+      }
+      this.status('');
+    } catch (e) {
+      this.usePlain();
+      this.status(t('quick.mapFailed', e.message ?? e), 'error');
+    }
+    this.saveDraft();
+    this.render();
+  }
+
   clampUnits() {
     for (const u of [...this.battle.allies, ...this.battle.enemies]) {
       u.x = Math.min(u.x, this.battle.width);
@@ -659,7 +800,7 @@ export class QuickBuilder {
       const index = this.battle[side].findIndex(u => u.x === x && u.y === y);
       if (index >= 0) {
         this.selected = { side, index };
-        this.root.querySelectorAll('.q-table tr').forEach(r =>
+        this.root.querySelectorAll('.q-table tbody tr').forEach(r =>
           r.classList.toggle('selected', r.dataset.side === side && Number(r.dataset.index) === index));
         this.drawBoard();
         return;
@@ -690,27 +831,25 @@ export class QuickBuilder {
     canvas.style.width = `${width * CELL}px`;
     const ctx = canvas.getContext('2d');
     ctx.scale(ratio, ratio);
-    ctx.fillStyle = CLASS_COLORS['陸'];
-    ctx.fillRect(0, 0, width * CELL, height * CELL);
-    if (this.mapTiles) {
-      // 地形タイプの色で描く（画像は SRC#Web の汎用グラフィック集で出る）
-      const terrains = new Map(this.host.terrains().map(x => [x.id, x]));
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          const info = terrains.get(this.mapTiles[(y * width + x) * 2]);
-          ctx.fillStyle = info ? (CLASS_COLORS[info.class] ?? '#999') : '#999';
-          ctx.fillRect(x * CELL, y * CELL, CELL, CELL);
-        }
+    // 平地は地形 0（平地）のマス。マップの画像は手元の汎用データのもの（遊ぶ SRC#Web では、そのサイトの汎用グラフィック集で出る）
+    const tiles = this.mapTiles ?? new Array(width * height * 2).fill(0);
+    this.drawTiles(ctx, tiles, width, height, CELL);
+    this.loadTileImages(tiles).then(loaded => {
+      if (loaded) {
+        this.drawBoard();
       }
-    }
+    });
     // 場面の置く位置
-    for (const [side, color] of [['allies', 'rgba(47,111,214,0.35)'], ['enemies', 'rgba(208,57,62,0.35)']]) {
-      ctx.fillStyle = color;
+    for (const [side, color] of [['allies', 'rgba(47,111,214,0.9)'], ['enemies', 'rgba(208,57,62,0.9)']]) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([3, 2]);
       for (const p of this.battle.spots?.[side] ?? []) {
-        ctx.fillRect((p.x - 1) * CELL + 6, (p.y - 1) * CELL + 6, CELL - 12, CELL - 12);
+        ctx.strokeRect((p.x - 1) * CELL + 4, (p.y - 1) * CELL + 4, CELL - 8, CELL - 8);
       }
+      ctx.setLineDash([]);
     }
-    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+    ctx.strokeStyle = 'rgba(0,0,0,0.25)';
     ctx.lineWidth = 1;
     for (let x = 0; x <= width; x++) {
       ctx.beginPath();

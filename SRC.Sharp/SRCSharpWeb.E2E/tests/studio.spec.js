@@ -350,9 +350,16 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
     }],
   });
   await open(page, 'quick');
-  const option = page.locator('.q-map option', { hasText: '灯の港の戦い' });
-  await expect(option).toHaveCount(1);
-  await page.locator('.q-map').selectOption({ label: await option.textContent() });
+  // まだ何も置いていなければ、サンプルの場面の一覧が開いている。マップの欄でも選べる
+  await expect(page.locator('.q-gallery')).toHaveAttribute('open', '');
+  await expect(page.locator('.q-map option', { hasText: '灯の港の戦い' })).toHaveCount(1);
+  const card = page.locator('.q-scene-card', { hasText: '灯の港の戦い' });
+  await expect(card).toContainText('港での小競り合い');
+  await card.click();
+  // 入れたら一覧を閉じ、マップの欄はその場面になる
+  await expect(page.locator('.q-gallery')).not.toHaveAttribute('open', '');
+  await expect(page.locator('.q-map option:checked')).toHaveText('灯の港の戦い');
+  await expect(page.locator('.q-scene-about')).toHaveText('港での小競り合い');
 
   // 何も選んでいなければ尋ねずに入れる
   await expect(page.locator('.q-chosen li')).toContainText('ランタン');

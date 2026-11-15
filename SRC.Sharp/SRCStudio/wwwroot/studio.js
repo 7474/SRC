@@ -69,7 +69,12 @@ function dataFiles() {
 
 function renderDataFiles() {
   const select = $('#data-files');
-  select.innerHTML = dataFiles().map(f => `<option>${f.replace(/[&<>]/g, '')}</option>`).join('');
+  const files = dataFiles();
+  select.innerHTML = files.map(f => `<option>${f.replace(/[&<>]/g, '')}</option>`).join('');
+  // シナリオのフォルダを開くまでは、何をすればよいかだけを出す
+  $('#data-empty').hidden = files.length > 0;
+  $('#data-chooser').hidden = files.length === 0;
+  $('#preview').hidden = files.length === 0;
   if (select.value) {
     showData(select.value);
   } else {
@@ -121,10 +126,12 @@ $('#data-files').addEventListener('change', ev => showData(ev.target.value));
 function selectTab(tab) {
   for (const name of ['quick', 'map', 'data']) {
     $(`#tab-${name}`).setAttribute('aria-selected', String(tab === name));
+    $(`#tab-${name}`).tabIndex = tab === name ? 0 : -1;
   }
   $('#map-section').hidden = tab !== 'map';
   $('#data-section').hidden = tab !== 'data';
   $('#quick-section').hidden = tab !== 'quick';
+  $('#workspace').hidden = tab === 'quick';
   $('.files').hidden = tab !== 'map';
   if (tab === 'data') {
     renderDataFiles();
@@ -142,6 +149,20 @@ function selectTab(tab) {
 $('#tab-quick').addEventListener('click', () => selectTab('quick'));
 $('#tab-map').addEventListener('click', () => selectTab('map'));
 $('#tab-data').addEventListener('click', () => selectTab('data'));
+// タブは左右の矢印キーでも移る
+$('.studio-tabs').addEventListener('keydown', ev => {
+  const tabs = ['quick', 'map', 'data'];
+  const current = tabs.findIndex(name => $(`#tab-${name}`).getAttribute('aria-selected') === 'true');
+  const step = ev.key === 'ArrowRight' ? 1 : ev.key === 'ArrowLeft' ? -1 : 0;
+  if (step) {
+    const next = tabs[(current + step + tabs.length) % tabs.length];
+    selectTab(next);
+    $(`#tab-${next}`).focus();
+  }
+});
+// 空の画面のボタン（フォルダを開く・新しいマップ）は、上のボタンと同じ
+document.querySelectorAll('[data-open="scenario"]').forEach(b => b.addEventListener('click', () => $('#open-scenario').click()));
+document.querySelectorAll('[data-new-map]').forEach(b => b.addEventListener('click', () => $('#new-map').click()));
 
 // ---- かんたん作成（7474/SRC#1659） ----
 
@@ -152,6 +173,7 @@ const quick = new QuickBuilder($('#quick-section'), {
   readMap: path => state.scenario.read(path),
   parseMap,
   terrains: () => state.terrains,
+  loadImage,
   download,
 });
 
@@ -183,6 +205,7 @@ async function reloadWorkspace() {
   }
   showMessage(messages.join('\n'));
   editor.images.clear();
+  quick.images.clear();
   editor.setTerrains(result.terrains);
   renderMapList();
   if (!$('#data-section').hidden) {
@@ -232,7 +255,7 @@ async function openMap(path) {
   state.text = null;
   editor.setMap(map);
   setDirty(false);
-  $('#editor').hidden = false;
+  showEditor();
 }
 
 $('#new-map').addEventListener('click', async () => {
@@ -249,8 +272,13 @@ $('#new-map').addEventListener('click', async () => {
   editor.setMap(map);
   state.text = await serializeMap(map);
   setDirty(true);
-  $('#editor').hidden = false;
+  showEditor();
 });
+
+function showEditor() {
+  $('#editor').hidden = false;
+  $('#map-empty').hidden = true;
+}
 
 $('#save').addEventListener('click', async () => {
   const bytes = new TextEncoder().encode(state.text);
