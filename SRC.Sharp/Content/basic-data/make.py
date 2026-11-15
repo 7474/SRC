@@ -271,7 +271,7 @@ def space_tile(name, im, d, rnd):
                 d.line([box[0], (box[1] + box[3]) // 2, box[2], (box[1] + box[3]) // 2], fill=(80, 100, 120))
             for x, y in [(6, 19), (10, 20), (19, 11), (24, 12), (22, 24)]:
                 d.rectangle([x, y, x + 1, y + 1], fill=(248, 232, 120))
-        else:  # moon_base
+        elif name == "moon_base":
             d.rectangle([3, 13, 28, 29], fill=(120, 128, 136), outline=(60, 64, 72))
             d.chord([3, 5, 28, 21], 180, 360, fill=(136, 144, 152), outline=(60, 64, 72))
             d.rectangle([12, 20, 19, 29], fill=(56, 60, 68))
