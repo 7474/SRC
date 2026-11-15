@@ -1,0 +1,6 @@
+{
+  "web": "../web/",
+  "requires": ["basic-data"],
+  "data": "https://raw.githubusercontent.com/7474/SRC-Data/master/",
+  "scenes": ["https://raw.githubusercontent.com/7474/SRC-Data/master/scenes/index.json"]
+}

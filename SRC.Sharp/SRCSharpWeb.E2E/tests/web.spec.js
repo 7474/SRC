@@ -1732,3 +1732,52 @@ test('シナリオに同梱された文書（README・Shift_JIS のテキスト�
   await page.waitForSelector('#catalog button', { timeout: 180 * 1000 });
   await page.locator('#archives li', { hasText: name }).getByRole('button', { name: '削除' }).click();
 });
+
+test('SRC#Studio のかんたん作成が入れたシナリオを ?stored= で開き、求める素材を重ねてすぐに始める（7474/SRC#1659）', async ({ page }) => {
+  // SRC#Studio（web-handoff.js）と同じく、ブラウザの「追加したアーカイブ」に requires 付きで入れてから開く
+  const base = path.join(corpus, 'battle-basic');
+  const files = [];
+  const add = dir => {
+    for (const entry of fs.readdirSync(path.join(base, dir), { withFileTypes: true })) {
+      const rel = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        add(rel);
+      } else if (rel.startsWith('Data') || rel === 'test.map') {
+        files.push({ name: rel.split(path.sep).join('/'), data: fs.readFileSync(path.join(base, rel)) });
+      }
+    }
+  };
+  add('');
+  const eve = [
+    '@テスト', 'スタート:', 'ChangeMap test.map',
+    'Create 味方 テスト機 0 テストパイロット 20 6 6',
+    'Create 敵 標的機 0 標的パイロット 1 12 6',
+    'Talk システム', 'かんたん作成から始めました', 'End', 'Exit', '',
+  ].join('\r\n');
+  files.push({ name: 'quick.eve', data: Buffer.from(eve, 'utf8') });
+  const name = 'かんたん作成のテスト.zip';
+
+  await open(page);
+  const zip = [...makeZip(files)];
+  await page.evaluate(async ({ name, zip }) => {
+    await window.srcwebStore.put(name, new Uint8Array(zip), 'scenario', ['basic-data']);
+  }, { name, zip });
+  expect((await page.evaluate(() => window.srcwebStore.list())).find(x => x.name === name)?.requires).toEqual(['basic-data']);
+
+  const assets = [];
+  page.on('request', r => {
+    if (r.url().includes('assets/basic-data.zip')) {
+      assets.push(r.url());
+    }
+  });
+  await page.goto(`./?stored=${encodeURIComponent(name)}`);
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(async () => (await screenState(page)).message ?? '', { timeout: 120 * 1000 }).toContain('かんたん作成から始めました');
+  expect(assets.length).toBeGreaterThan(0);
+
+  // 同じ名前で入れ直しても（アーカイブの置き換え）、求める素材は引き継ぐ
+  await page.evaluate(async ({ name, zip }) => {
+    await window.srcwebStore.put(name, new Uint8Array(zip), 'scenario');
+  }, { name, zip });
+  expect((await page.evaluate(() => window.srcwebStore.list())).find(x => x.name === name)?.requires).toEqual(['basic-data']);
+});

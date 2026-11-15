@@ -131,6 +131,57 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>
+        /// かんたん作成（7474/SRC#1659）で作ったシナリオは、作品のデータを Data の下のフォルダに置けば、最小の汎用データで lint が通り、最後まで自動で遊べる
+        /// （SRC#Studio が作る zip と同じ形）
+        /// </summary>
+        [TestMethod]
+        public void QuickBattle_LintsCleanAndPlaysToTheEnd()
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-quick-" + Guid.NewGuid());
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                // 作品のデータは srcsharp new のひな形のユニット・パイロットを「テスト作品」のフォルダに置く
+                var template = Path.Combine(folder, "template");
+                Assert.AreEqual(0, Run("new", template).exitCode);
+                var data = Path.Combine(folder, "scenario", "Data", "テスト作品");
+                Directory.CreateDirectory(data);
+                File.Copy(Path.Combine(template, "Data", "robot.txt"), Path.Combine(data, "robot.txt"));
+                File.Copy(Path.Combine(template, "Data", "pilot.txt"), Path.Combine(data, "pilot.txt"));
+
+                var battle = SRCAuthoring.Templates.QuickBattleTemplate.FromJson(@"{
+  ""title"": ""荒野の戦い"", ""dataTitles"": [""テスト作品""], ""width"": 12, ""height"": 9,
+  ""allies"": [{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 20, ""x"": 3, ""y"": 5 }],
+  ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": 6, ""y"": 5 }],
+  ""opening"": [{ ""speaker"": """", ""text"": ""荒野に風が吹く。"" }, { ""speaker"": ""主人公"", ""text"": ""行くぞ！"" }],
+  ""victory"": [{ ""speaker"": ""主人公"", ""text"": ""やった！"" }],
+  ""defeat"": [{ ""speaker"": ""主人公"", ""text"": ""くっ……"" }]
+}");
+                Assert.AreEqual(0, SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle).Count);
+                foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
+                {
+                    File.WriteAllText(Path.Combine(folder, "scenario", path), text);
+                }
+                var eve = Path.Combine(folder, "scenario", "荒野の戦い.eve");
+
+                var (exitCode, stdout, stderr) = Run("lint", Path.Combine(folder, "scenario"), "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                var play = Path.Combine(folder, "quick.play");
+                File.WriteAllText(play, "auto 200\nturns 15\nexpect message やった！\nexpect finished\nexpect error none\n");
+                (exitCode, stdout, stderr) = Run("play", eve, "--script", play, "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
         [TestMethod]
         public void NoArguments_PrintsUsageAndFails()
         {

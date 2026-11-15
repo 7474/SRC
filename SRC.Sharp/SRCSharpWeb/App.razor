@@ -526,6 +526,8 @@ else
         public long Size { get; set; }
         public double Added { get; set; }
         public string Kind { get; set; }
+        /// <summary>遊ぶ前に重ねるカタログの素材の id（SRC#Studio のかんたん作成が入れる。7474/SRC#1659）</summary>
+        public List<string> Requires { get; set; }
     }
 
     public class StoredSave
@@ -1088,7 +1090,20 @@ else
             mode = Mode.Menu;
 
             // URL・サイトの設定で指定されたシナリオをすぐに始める
-            if (site.AllowUserCatalogs && query.TryGetValue("archive", out var archiveUrl))
+            if (site.UserScenariosEnabled && query.TryGetValue("stored", out var storedName) && !string.IsNullOrEmpty(storedName))
+            {
+                // 追加したアーカイブ（SRC#Studio のかんたん作成が同じサイトのブラウザに入れたもの。7474/SRC#1659）
+                var archive = archives.FirstOrDefault(x => x.Name == storedName && x.Kind != CatalogEntry.KindAsset);
+                if (archive == null)
+                {
+                    status = L["ScenarioNotInCatalog", storedName];
+                }
+                else
+                {
+                    await PlayArchiveAsync(archive);
+                }
+            }
+            else if (site.AllowUserCatalogs && query.TryGetValue("archive", out var archiveUrl))
             {
                 query.TryGetValue("eve", out var eve);
                 query.TryGetValue("root", out var root);
@@ -1627,7 +1642,17 @@ else
 
     private Task PlayArchiveAsync(StoredArchive archive) => RunBusyAsync(async token =>
     {
-        if (!await PrepareAssetsAsync(null, token))
+        // 求める素材のうち、このサイトのカタログに無いもの（別のサイトで作ったなど）は重ねずに遊ぶ
+        var requires = (archive.Requires ?? new List<string>()).Where(id =>
+        {
+            var found = FindEntry(id, CatalogEntry.KindAsset) != null;
+            if (!found)
+            {
+                WebLogging.Log.LogWarning("追加したアーカイブ {Name} が求める素材 {Asset} がカタログにありません", archive.Name, id);
+            }
+            return found;
+        }).ToList();
+        if (!await PrepareAssetsAsync(requires, token))
         {
             return;
         }

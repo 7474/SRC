@@ -171,6 +171,48 @@ namespace SRCStudio
             return DataPreview.ToJson(name, text, beforeNames.Select((n, i) => (n, beforeTexts[i])).ToList());
         }
 
+        /// <summary>
+        /// かんたん作成（7474/SRC#1659）。場面の JSON（SRCAuthoring.Templates.QuickBattleTemplate.FromJson）から、
+        /// { "errors": [理由], "files": { 相対パス: テキスト } } を返す。errors があれば files は空
+        /// </summary>
+        [JSExport]
+        internal static string BuildQuickBattle(string json)
+        {
+            using var stream = new MemoryStream();
+            using (var w = new Utf8JsonWriter(stream))
+            {
+                w.WriteStartObject();
+                IReadOnlyList<string> errors;
+                SRCAuthoring.Templates.QuickBattle battle = null;
+                try
+                {
+                    battle = SRCAuthoring.Templates.QuickBattleTemplate.FromJson(json);
+                    errors = SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle);
+                }
+                catch (JsonException ex)
+                {
+                    errors = new[] { ex.Message };
+                }
+                w.WriteStartArray("errors");
+                foreach (var e in errors)
+                {
+                    w.WriteStringValue(e);
+                }
+                w.WriteEndArray();
+                w.WriteStartObject("files");
+                if (errors.Count == 0)
+                {
+                    foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
+                    {
+                        w.WriteString(path, text);
+                    }
+                }
+                w.WriteEndObject();
+                w.WriteEndObject();
+            }
+            return Encoding.UTF8.GetString(stream.ToArray());
+        }
+
         /// <summary>候補のファイル（相対パス）のうち、画像を探すフォルダ（足した順）にある最初のもの。"フォルダの番号:パス" か空</summary>
         [JSExport]
         internal static string FindFile(string[] candidates)

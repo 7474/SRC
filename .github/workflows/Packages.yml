@@ -144,7 +144,7 @@ jobs:
           path: src-vscode-*.vsix
           retention-days: 7
 
-  # SRC#Web（AOT。リリースの SRCSharpWeb.zip と同じ）・ブラウザで動く lint・データビューアの発行物（外部のサイトに置く zip）
+  # SRC#Web（AOT。リリースの SRCSharpWeb.zip と同じ）・ブラウザで動く lint・データビューア・SRC#Studio の発行物（外部のサイトに置く zip）
   web:
     runs-on: ubuntu-24.04
     steps:
@@ -161,6 +161,9 @@ jobs:
             dotnet publish "SRC.Sharp/$p/$p.csproj" -c Release -o "out/$p" -p:SrcSharpDevBuild=$SRCSHARP_DEV_BUILD
             (cd "out/$p/wwwroot" && zip -qr "../../../$p.zip" .)
           done
+          # SRC#Studio（マップ作成ツール・かんたん作成。7474/SRC#1659）。置く側は隣の studio.json を、そのサイトの SRC#Web の場所・素材に書き換える
+          tools/studio_bundle.sh out/SRCStudio
+          (cd out/SRCStudio && zip -qr ../../SRCStudio.zip .)
       - uses: actions/upload-artifact@v7
         with:
           name: web

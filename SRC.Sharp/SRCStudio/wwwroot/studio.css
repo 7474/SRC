@@ -131,3 +131,36 @@ main { display: flex; gap: 16px; align-items: flex-start; }
 .dp-bar-cell { white-space: nowrap; color: var(--muted); }
 .dp-bar { display: inline-block; width: 120px; height: 8px; background: var(--border); border-radius: 4px; vertical-align: middle; overflow: hidden; }
 .dp-bar span { display: block; height: 100%; background: var(--accent); }
+
+/* かんたん作成（7474/SRC#1659） */
+#quick-section { max-width: 960px; }
+#quick-section .hint { color: var(--muted); margin: 2px 0 6px; }
+.q-step { border-top: 1px solid var(--border); padding: 6px 0 10px; }
+.q-step h3 { font-size: 0.95rem; margin: 8px 0 4px; }
+.q-step label { margin-right: 10px; white-space: nowrap; }
+.q-search { width: min(100%, 360px); padding: 3px 6px; }
+.q-results, .q-chosen { list-style: none; padding: 0; margin: 6px 0; display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.q-chosen li { border: 1px solid var(--border); border-radius: 4px; padding: 1px 4px 1px 8px; }
+.q-chosen button, .q-table button, .q-line button { padding: 0 6px; }
+.q-table { border-collapse: collapse; }
+.q-table td { padding: 2px 3px; }
+.q-table tr.selected td { background: var(--selected); }
+.q-unit, .q-pilot { width: 14em; max-width: 40vw; }
+.q-level { width: 4em; }
+.q-pos { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 3.5em; }
+.q-board { overflow: auto; max-width: 100%; border: 1px solid var(--border); display: inline-block; }
+.q-canvas { display: block; cursor: pointer; }
+.q-line { display: flex; gap: 6px; align-items: flex-start; margin: 4px 0; }
+.q-speaker { width: 12em; flex: none; }
+.q-text { flex: 1; min-width: 0; font: inherit; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.quick-status { margin: 6px 0; padding: 6px 10px; border-left: 3px solid var(--accent); white-space: pre-wrap; }
+.quick-status.error { border-color: var(--error); color: var(--error); }
+@media (max-width: 720px) {
+  .q-line { flex-direction: column; align-items: stretch; }
+  .q-speaker { width: auto; }
+  .q-table, .q-table tbody, .q-table tr { display: block; }
+  .q-table tr { border-bottom: 1px solid var(--border); padding: 4px 0; }
+  .q-table td { display: inline-block; }
+  .q-unit, .q-pilot { width: 40vw; }
+}
