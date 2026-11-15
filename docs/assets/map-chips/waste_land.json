@@ -1,0 +1,347 @@
+{
+  "terrain": "waste_land",
+  "count": 75,
+  "exists": "0-74",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "description": "オレンジの荒地",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 4,
+      "kind": "edge",
+      "neighbor": "woods",
+      "tiles": {
+        "1": [
+          "S"
+        ],
+        "2": [
+          "W"
+        ],
+        "3": [
+          "N"
+        ],
+        "4": [
+          "E"
+        ]
+      },
+      "description": "暗い緑の藪との境目",
+      "confidence": "high"
+    },
+    {
+      "from": 5,
+      "to": 5,
+      "kind": "edge",
+      "neighbor": "cliff",
+      "tiles": {
+        "5": [
+          "W"
+        ]
+      },
+      "description": "西側に茶色の段差（崖の柱）",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "kind": "inner_corner",
+      "neighbor": "hole",
+      "tiles": {
+        "6": [
+          "NW"
+        ],
+        "7": [
+          "NE"
+        ]
+      },
+      "description": "暗い穴の縁が角に入る",
+      "confidence": "guess"
+    },
+    {
+      "from": 8,
+      "to": 8,
+      "kind": "base",
+      "style": "olive",
+      "description": "くすんだ黄緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 12,
+      "kind": "inner_corner",
+      "style": "olive",
+      "neighbor": "snow",
+      "tiles": {
+        "9": [
+          "NW"
+        ],
+        "10": [
+          "NE"
+        ],
+        "11": [
+          "SW"
+        ],
+        "12": [
+          "SE"
+        ]
+      },
+      "description": "黄緑の草地の角に白い岩（雪）",
+      "confidence": "high"
+    },
+    {
+      "from": 13,
+      "to": 16,
+      "kind": "inner_corner",
+      "style": "olive",
+      "neighbor": "plain",
+      "tiles": {
+        "13": [
+          "NW"
+        ],
+        "14": [
+          "NE"
+        ],
+        "15": [
+          "SW"
+        ],
+        "16": [
+          "SE"
+        ]
+      },
+      "description": "黄緑の草地の角に明るい緑の草",
+      "confidence": "high"
+    },
+    {
+      "from": 17,
+      "to": 24,
+      "kind": "edge",
+      "neighbor": "plain",
+      "tiles": {
+        "17": [
+          "N",
+          "W"
+        ],
+        "18": [
+          "N"
+        ],
+        "19": [
+          "N",
+          "E"
+        ],
+        "20": [
+          "W"
+        ],
+        "21": [
+          "E"
+        ],
+        "22": [
+          "S",
+          "W"
+        ],
+        "23": [
+          "S"
+        ],
+        "24": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "明るい緑の草地に囲まれた荒地の辺・角（3×3 の中央抜き）",
+      "confidence": "high"
+    },
+    {
+      "from": 25,
+      "to": 26,
+      "kind": "variant",
+      "description": "25 赤茶の土、26 紫の床",
+      "confidence": "high"
+    },
+    {
+      "from": 27,
+      "to": 37,
+      "kind": "object",
+      "description": "公園の遊具（27・30・32–34 滑り台、28 鉄棒、29 ブランコ、35–37 ジャングルジム）",
+      "confidence": "high"
+    },
+    {
+      "from": 38,
+      "to": 38,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 39,
+      "to": 47,
+      "kind": "edge",
+      "neighbor": "olive_grass",
+      "tiles": {
+        "39": [
+          "N",
+          "W"
+        ],
+        "40": [
+          "N"
+        ],
+        "41": [
+          "N",
+          "E"
+        ],
+        "42": [
+          "W"
+        ],
+        "44": [
+          "E"
+        ],
+        "45": [
+          "S",
+          "W"
+        ],
+        "46": [
+          "S"
+        ],
+        "47": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "暗い黄緑の草地に囲まれた荒地の辺・角（43 は別扱い）",
+      "confidence": "guess"
+    },
+    {
+      "from": 48,
+      "to": 50,
+      "kind": "inner_corner",
+      "style": "olive",
+      "neighbor": "woods",
+      "tiles": {
+        "48": [
+          "NE"
+        ],
+        "49": [
+          "SW"
+        ],
+        "50": [
+          "SE"
+        ]
+      },
+      "description": "黄緑の草地の角に暗い緑の草（43 と組）",
+      "confidence": "guess"
+    },
+    {
+      "from": 51,
+      "to": 59,
+      "kind": "inner_corner",
+      "tiles": {
+        "51": [
+          "NE"
+        ],
+        "52": [
+          "NW"
+        ],
+        "53": [
+          "NE"
+        ],
+        "54": [
+          "NE"
+        ],
+        "55": [
+          "NW"
+        ],
+        "56": [
+          "NW"
+        ],
+        "57": [
+          "NE"
+        ],
+        "58": [
+          "NW"
+        ],
+        "59": [
+          "NE"
+        ]
+      },
+      "description": "角に他の地形が入る荒地（51・52・59 茶の崖、53・56 雪、54・55 黒い穴、57・58 青い水）",
+      "confidence": "guess"
+    },
+    {
+      "from": 60,
+      "to": 66,
+      "kind": "edge",
+      "neighbor": "dark",
+      "tiles": {
+        "60": [
+          "N",
+          "W"
+        ],
+        "61": [
+          "N"
+        ],
+        "62": [
+          "N",
+          "E"
+        ],
+        "63": [
+          "W"
+        ],
+        "64": [
+          "W",
+          "E"
+        ],
+        "65": [
+          "E"
+        ],
+        "66": [
+          "N",
+          "W",
+          "E"
+        ]
+      },
+      "description": "黒い枠で囲まれた荒地",
+      "confidence": "guess"
+    },
+    {
+      "from": 67,
+      "to": 74,
+      "kind": "edge",
+      "neighbor": "sand",
+      "tiles": {
+        "67": [
+          "N",
+          "W"
+        ],
+        "68": [
+          "N"
+        ],
+        "69": [
+          "N",
+          "E"
+        ],
+        "70": [
+          "W"
+        ],
+        "71": [
+          "E"
+        ],
+        "72": [
+          "S",
+          "W"
+        ],
+        "73": [
+          "S"
+        ],
+        "74": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "黄色の砂地に囲まれた荒地の辺・角（3×3 の中央抜き）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "辺・角は 北西角→北→北東角→西→（中央）→東→南西角→南→南東角 の順"
+}

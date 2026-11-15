@@ -1,0 +1,118 @@
+{
+  "terrain": "castle",
+  "count": 57,
+  "exists": "0-56",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 2,
+      "kind": "object",
+      "style": "white_grass",
+      "description": "草地の白い西洋城（城館・塔・尖った屋根）",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 5,
+      "kind": "object",
+      "style": "white_grass",
+      "description": "旗の立つ灰色の城壁（3・4 門の灯り）",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 11,
+      "kind": "style",
+      "style": "white_wasteland",
+      "description": "0–5 をオレンジの荒地の上に置いた版",
+      "confidence": "high"
+    },
+    {
+      "from": 12,
+      "to": 17,
+      "kind": "style",
+      "style": "white_woods",
+      "description": "0–5 を濃い森の上に置いた版",
+      "confidence": "high"
+    },
+    {
+      "from": 18,
+      "to": 20,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "石垣と木造の屋敷の正面",
+      "confidence": "high"
+    },
+    {
+      "from": 21,
+      "to": 23,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "石積みの砦の正面（中央に階段）",
+      "confidence": "high"
+    },
+    {
+      "from": 24,
+      "to": 29,
+      "kind": "object",
+      "style": "red_grass",
+      "description": "草地の赤い屋根の城：24–25 尖塔群、26・29 黒い円塔、27–28 城館",
+      "confidence": "high"
+    },
+    {
+      "from": 30,
+      "to": 35,
+      "kind": "style",
+      "style": "red_wasteland",
+      "description": "赤い城をオレンジの荒地の上に置いた版",
+      "confidence": "high"
+    },
+    {
+      "from": 36,
+      "to": 41,
+      "kind": "style",
+      "style": "red_sand",
+      "description": "赤い城を黄色の砂地の上に置いた版",
+      "confidence": "high"
+    },
+    {
+      "from": 42,
+      "to": 42,
+      "kind": "object",
+      "description": "木造の砦の門",
+      "confidence": "high"
+    },
+    {
+      "from": 43,
+      "to": 44,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 45,
+      "to": 50,
+      "kind": "style",
+      "style": "white_dark_grass",
+      "description": "白い城の組を暗めの草地に置いた版",
+      "confidence": "high"
+    },
+    {
+      "from": 51,
+      "to": 56,
+      "kind": "style",
+      "style": "red_dark_grass",
+      "description": "赤い城の組を暗めの草地に置いた版",
+      "confidence": "high"
+    }
+  ],
+  "rules": "6 枚 1 組（城 3＋城壁 3、または塔・城館）を背景（草地・荒地・森・砂地）違いで繰り返す"
+}

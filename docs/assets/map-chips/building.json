@@ -1,0 +1,162 @@
+{
+  "terrain": "building",
+  "count": 102,
+  "exists": "0-89 1000-1011",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 13,
+      "kind": "object",
+      "description": "灰色のビルの屋上（横縞の窓・縦縞・斜めの影）と黄色／黄土色の屋根のビル",
+      "confidence": "guess"
+    },
+    {
+      "from": 14,
+      "to": 20,
+      "kind": "object",
+      "description": "14〜16 雪の積もった屋根の青いビル、17・18 白いビル（水色の窓）、19・20 青いガラスのビルと入口",
+      "confidence": "guess"
+    },
+    {
+      "from": 21,
+      "to": 26,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "桃色の建物と緑の中庭（3×2 マス、21〜23 上段・24〜26 下段）",
+      "confidence": "guess"
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "病院（赤十字、横 2 マス）",
+      "confidence": "high"
+    },
+    {
+      "from": 29,
+      "to": 31,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "赤い鉄塔（横 3 マス）",
+      "confidence": "high"
+    },
+    {
+      "from": 32,
+      "to": 37,
+      "kind": "object",
+      "description": "32 灰色の円筒の建物（草地）、33 暗い建物、34 赤枠の格子のビル、35・36 高いガラスのビル、37 細い白い塔",
+      "confidence": "guess"
+    },
+    {
+      "from": 38,
+      "to": 38,
+      "kind": "object",
+      "description": "窓の並んだ灰色のビル",
+      "confidence": "high"
+    },
+    {
+      "from": 39,
+      "to": 44,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "中庭と塔のある大きな庁舎（3×2 マス）",
+      "confidence": "guess"
+    },
+    {
+      "from": 45,
+      "to": 62,
+      "kind": "object",
+      "description": "灰色のビルの部品（屋上・窓の壁・影付き）",
+      "confidence": "guess"
+    },
+    {
+      "from": 63,
+      "to": 67,
+      "kind": "object",
+      "description": "63・64 緑の屋上の縁のビル、65 紺のガラス、66・67 灰色のビル",
+      "confidence": "guess"
+    },
+    {
+      "from": 68,
+      "to": 70,
+      "kind": "object",
+      "description": "色つきの看板のある店",
+      "confidence": "high"
+    },
+    {
+      "from": 71,
+      "to": 71,
+      "kind": "object",
+      "description": "灰色の円筒の建物",
+      "confidence": "high"
+    },
+    {
+      "from": 72,
+      "to": 77,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "39〜44 と同じ大きな庁舎（3×2 マス）",
+      "confidence": "guess"
+    },
+    {
+      "from": 78,
+      "to": 84,
+      "kind": "object",
+      "style": "brown",
+      "description": "茶色・黄土色の建物（別画風、屋根と壁）",
+      "confidence": "guess"
+    },
+    {
+      "from": 85,
+      "to": 86,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 87,
+      "to": 87,
+      "kind": "object",
+      "style": "brown",
+      "description": "茶色の建物（別画風）",
+      "confidence": "high"
+    },
+    {
+      "from": 88,
+      "to": 89,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1011,
+      "kind": "style",
+      "style": "night",
+      "description": "夜のビル（黒地に紫・黄の明かりの窓）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "1000 番台は夜版"
+}

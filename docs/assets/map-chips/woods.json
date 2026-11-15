@@ -1,0 +1,146 @@
+{
+  "terrain": "woods",
+  "count": 70,
+  "exists": "0-41 100-113 1000-1013",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 1,
+      "kind": "base",
+      "description": "森の茂み",
+      "confidence": "high"
+    },
+    {
+      "from": 2,
+      "to": 9,
+      "kind": "corner",
+      "neighbor": "plain",
+      "tiles": {
+        "2": [
+          "NE"
+        ],
+        "3": [
+          "S"
+        ],
+        "5": [
+          "N"
+        ],
+        "6": [
+          "NE"
+        ],
+        "9": [
+          "NW"
+        ]
+      },
+      "description": "森と明るい緑の草地の境目（角・斜めの縁）",
+      "confidence": "high"
+    },
+    {
+      "from": 10,
+      "to": 13,
+      "kind": "edge",
+      "neighbor": "plain",
+      "tiles": {
+        "10": [
+          "N"
+        ],
+        "11": [
+          "E"
+        ],
+        "12": [
+          "S"
+        ],
+        "13": [
+          "W"
+        ]
+      },
+      "description": "森の縁にわずかに明るい草地",
+      "confidence": "high"
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "kind": "variant",
+      "description": "木の実・花の点が入る森",
+      "confidence": "high"
+    },
+    {
+      "from": 16,
+      "to": 23,
+      "kind": "corner",
+      "neighbor": "sand",
+      "tiles": {
+        "16": [
+          "NE"
+        ],
+        "17": [
+          "SE"
+        ],
+        "18": [
+          "SW"
+        ],
+        "19": [
+          "NW"
+        ]
+      },
+      "description": "森と茶色の土の境目（角・斜めの帯）",
+      "confidence": "high"
+    },
+    {
+      "from": 24,
+      "to": 27,
+      "kind": "edge",
+      "neighbor": "sand",
+      "tiles": {
+        "24": [
+          "N"
+        ],
+        "25": [
+          "E"
+        ],
+        "26": [
+          "S"
+        ],
+        "27": [
+          "W"
+        ]
+      },
+      "description": "森の縁にわずかに土",
+      "confidence": "high"
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 30,
+      "to": 41,
+      "kind": "corner",
+      "style": "dark",
+      "neighbor": "plain",
+      "description": "森と暗い緑の草地の境目（縁・角）",
+      "confidence": "high"
+    },
+    {
+      "from": 100,
+      "to": 113,
+      "kind": "corner",
+      "style": "snow",
+      "neighbor": "snow",
+      "description": "雪をかぶった青緑の森と雪原の境目（103–105 中央・縁）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1013,
+      "kind": "style",
+      "style": "overlay",
+      "description": "森の縁の白背景（重ね置き）版",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0 番台は下地の色（明るい草地・土・暗い草地）で 3 組、100 番台は雪、1000 番台は下地なし。"
+}

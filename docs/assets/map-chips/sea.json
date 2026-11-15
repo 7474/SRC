@@ -1,0 +1,286 @@
+{
+  "terrain": "sea",
+  "count": 175,
+  "exists": "0-61 500-511 1000-1014 2000-2056 2500-2527 3000",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "style": "default",
+      "description": "青緑の海",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 4,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "plain",
+      "tiles": {
+        "1": [
+          "S"
+        ],
+        "2": [
+          "W"
+        ],
+        "3": [
+          "N"
+        ],
+        "4": [
+          "E"
+        ]
+      },
+      "description": "海の縁にわずかに草地",
+      "confidence": "high"
+    },
+    {
+      "from": 5,
+      "to": 5,
+      "kind": "decoration",
+      "style": "default",
+      "description": "白い航跡（船の通り跡）",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 6,
+      "kind": "base",
+      "style": "default",
+      "description": "濃紺の深海",
+      "confidence": "high"
+    },
+    {
+      "from": 7,
+      "to": 10,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "plain",
+      "tiles": {
+        "7": [
+          "N"
+        ],
+        "8": [
+          "S"
+        ],
+        "9": [
+          "E"
+        ],
+        "10": [
+          "W"
+        ]
+      },
+      "description": "深海の縁に岸（白い波）",
+      "confidence": "high"
+    },
+    {
+      "from": 11,
+      "to": 14,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "sand",
+      "tiles": {
+        "11": [
+          "NE"
+        ],
+        "12": [
+          "SW"
+        ],
+        "13": [
+          "N"
+        ],
+        "14": [
+          "NW"
+        ]
+      },
+      "description": "砂浜の岸",
+      "confidence": "high"
+    },
+    {
+      "from": 15,
+      "to": 18,
+      "kind": "object",
+      "style": "default",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "深みの丸い濃淡（2×2 で円）",
+      "confidence": "guess"
+    },
+    {
+      "from": 19,
+      "to": 23,
+      "kind": "animation",
+      "style": "default",
+      "description": "渦潮（5 コマ）",
+      "confidence": "high"
+    },
+    {
+      "from": 24,
+      "to": 27,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "plain",
+      "tiles": {
+        "24": [
+          "E"
+        ],
+        "25": [
+          "N"
+        ],
+        "26": [
+          "W"
+        ],
+        "27": [
+          "S"
+        ]
+      },
+      "description": "細い草地の縁",
+      "confidence": "high"
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "plain",
+      "tiles": {
+        "28": [
+          "NW"
+        ],
+        "29": [
+          "NE"
+        ]
+      },
+      "description": "明るい草地の岸の角",
+      "confidence": "high"
+    },
+    {
+      "from": 30,
+      "to": 30,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 31,
+      "to": 37,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "plain",
+      "tiles": {
+        "31": [
+          "SW"
+        ],
+        "32": [
+          "SE"
+        ],
+        "33": [
+          "NW"
+        ],
+        "34": [
+          "NE"
+        ],
+        "36": [
+          "SW"
+        ],
+        "37": [
+          "SE"
+        ]
+      },
+      "description": "明るい草地の岸の外角・内角",
+      "confidence": "high"
+    },
+    {
+      "from": 38,
+      "to": 44,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "plain",
+      "description": "暗い草地の岸の角",
+      "confidence": "high"
+    },
+    {
+      "from": 45,
+      "to": 54,
+      "kind": "decoration",
+      "style": "default",
+      "description": "航跡付きの海＋岸（緑・茶・砂浜の縁）",
+      "confidence": "high"
+    },
+    {
+      "from": 55,
+      "to": 61,
+      "kind": "object",
+      "style": "default",
+      "description": "海に架かる橋（55–58 石の橋・アーチ、59–61 木の橋）",
+      "confidence": "high"
+    },
+    {
+      "from": 500,
+      "to": 511,
+      "kind": "edge",
+      "style": "snow",
+      "neighbor": "snow",
+      "description": "雪・流氷に接する深海と航跡",
+      "confidence": "guess"
+    },
+    {
+      "from": 1000,
+      "to": 1013,
+      "kind": "edge",
+      "style": "dark",
+      "description": "暗い紫灰色の水面と斜めの堤防・影（三角の黒い縁）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1014,
+      "to": 1014,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2046,
+      "kind": "style",
+      "style": "wave",
+      "description": "0〜54 と同じ並びを濃い青の波模様の画風で描いた組",
+      "confidence": "high"
+    },
+    {
+      "from": 2047,
+      "to": 2047,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 2048,
+      "to": 2056,
+      "kind": "style",
+      "style": "wave",
+      "description": "15–18・55–61 相当（深みの円・橋）の波模様版",
+      "confidence": "high"
+    },
+    {
+      "from": 2500,
+      "to": 2527,
+      "kind": "edge",
+      "style": "wave",
+      "neighbor": "sea",
+      "description": "濃い青の深みと青緑の浅瀬の境目（縦横の帯・角・草地付き）",
+      "confidence": "high"
+    },
+    {
+      "from": 3000,
+      "to": 3000,
+      "kind": "base",
+      "description": "波紋模様の水面",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "2000 番台は 0 番台と同じ並びの別画風（濃い青の波）。"
+}

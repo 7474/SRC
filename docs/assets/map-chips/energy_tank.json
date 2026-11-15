@@ -1,0 +1,29 @@
+{
+  "terrain": "energy_tank",
+  "count": 13,
+  "exists": "0-12",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "object",
+      "description": "赤い枠の中の円筒タンク",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 6,
+      "kind": "object",
+      "description": "四角い枠に円と五芒星（魔法陣/エネルギー装置）。1=赤,2=青,3=緑,4=黄,5=黒灰,6=白",
+      "confidence": "high"
+    },
+    {
+      "from": 7,
+      "to": 12,
+      "kind": "object",
+      "description": "四角い枠に円と六芒星。7=赤,8=青,9=緑,10=黄,11=黒灰,12=白",
+      "confidence": "high"
+    }
+  ],
+  "rules": "1–6 が五芒星、7–12 が六芒星で色順は同じ（赤・青・緑・黄・黒・白）"
+}

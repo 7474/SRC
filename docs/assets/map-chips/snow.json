@@ -1,0 +1,92 @@
+{
+  "terrain": "snow",
+  "count": 16,
+  "exists": "0-15",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "description": "雪原（無地）",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 3,
+      "kind": "decoration",
+      "description": "1=足跡/小さな凹み,2=星形のひび/枯れ枝,3=倒木の枝",
+      "confidence": "guess"
+    },
+    {
+      "from": 4,
+      "to": 7,
+      "kind": "inner_corner",
+      "neighbor": "deep_sea",
+      "tiles": {
+        "4": [
+          "N",
+          "W"
+        ],
+        "5": [
+          "N",
+          "E"
+        ],
+        "6": [
+          "S",
+          "E"
+        ],
+        "7": [
+          "S",
+          "W"
+        ]
+      },
+      "description": "深い水が大きく入る雪の岸。水のある側: 4=北と西,5=北と東,6=南と東,7=南と西",
+      "confidence": "high"
+    },
+    {
+      "from": 8,
+      "to": 11,
+      "kind": "corner",
+      "neighbor": "dirt",
+      "tiles": {
+        "8": [
+          "SE"
+        ],
+        "9": [
+          "SW"
+        ],
+        "10": [
+          "NE"
+        ],
+        "11": [
+          "NW"
+        ]
+      },
+      "description": "雪に土(枯れ草色)が角から入る。8=南東,9=南西,10=北東,11=北西",
+      "confidence": "guess"
+    },
+    {
+      "from": 12,
+      "to": 15,
+      "kind": "edge",
+      "neighbor": "dirt",
+      "tiles": {
+        "12": [
+          "S"
+        ],
+        "13": [
+          "N"
+        ],
+        "14": [
+          "E"
+        ],
+        "15": [
+          "W"
+        ]
+      },
+      "description": "土が帯状に入る。12=南,13=北,14=東,15=西",
+      "confidence": "guess"
+    }
+  ],
+  "rules": ""
+}

@@ -1,0 +1,216 @@
+{
+  "terrain": "small_block",
+  "count": 345,
+  "exists": "0-70 500-517 600-632 700-732 1000-1012 1500-1528 1700-1712 2000-2011 2500-2505 3000-3005 5000-5047 5200-5229 5400-5406 5600-5608 5800-5809 6000-6006",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 7,
+      "kind": "object",
+      "description": "公園の小物（草地の上の街灯、ベンチ、ゴミ箱付きの柱）",
+      "confidence": "high"
+    },
+    {
+      "from": 8,
+      "to": 18,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "公園の遊具（8 ブランコの座板、9–14 すべり台、15–18 ブランコの枠）",
+      "confidence": "high"
+    },
+    {
+      "from": 19,
+      "to": 29,
+      "kind": "strip",
+      "neighbor": "connects",
+      "description": "土の上の緑の手すり・柵（柱と横棒）",
+      "confidence": "high"
+    },
+    {
+      "from": 30,
+      "to": 32,
+      "kind": "object",
+      "description": "自販機、給水塔、飲料ケース",
+      "confidence": "high"
+    },
+    {
+      "from": 33,
+      "to": 40,
+      "kind": "object",
+      "description": "公園の小物（0–7 の別配置）",
+      "confidence": "high"
+    },
+    {
+      "from": 41,
+      "to": 49,
+      "kind": "object",
+      "description": "灰色床の小物（給水塔、ガラス扉、掲示パネル、車止め 1〜3 本）",
+      "confidence": "high"
+    },
+    {
+      "from": 50,
+      "to": 70,
+      "kind": "object",
+      "description": "スポーツ用品（緑・赤褐色のコート上の審判台、ネット、ベンチ、ゴールポスト）",
+      "confidence": "high"
+    },
+    {
+      "from": 500,
+      "to": 517,
+      "kind": "object",
+      "description": "病院・寝室の家具（カーテンの仕切り、ベッド 506–511、椅子、ストーブ、ロッカー）",
+      "confidence": "high"
+    },
+    {
+      "from": 600,
+      "to": 632,
+      "kind": "object",
+      "description": "灰色床のライブ会場の機材（キーボード、マイクスタンド、アンプ、ドラムセット 614–616、天井照明、ロープ柵）",
+      "confidence": "high"
+    },
+    {
+      "from": 700,
+      "to": 732,
+      "kind": "style",
+      "style": "dark",
+      "description": "600 番台と同じ機材を暗い紺色の床で描いた組",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1012,
+      "kind": "object",
+      "description": "草地の墓地・西洋の小物（墓石、十字架、剣の墓標、井戸）",
+      "confidence": "high"
+    },
+    {
+      "from": 1500,
+      "to": 1528,
+      "kind": "object",
+      "description": "洋館の室内（ベッド、タンス、暖炉 1509–1511、玉座 1514–1515、石床と柱）",
+      "confidence": "high"
+    },
+    {
+      "from": 1700,
+      "to": 1712,
+      "kind": "object",
+      "description": "石畳の上の石柱、獅子の噴水",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2011,
+      "kind": "object",
+      "description": "和風の小物（石灯籠、地蔵、のぼり旗、荷車、俵、石碑）",
+      "confidence": "high"
+    },
+    {
+      "from": 2500,
+      "to": 2500,
+      "kind": "object",
+      "description": "暖炉・炉（推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 2501,
+      "to": 2502,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 2503,
+      "to": 2503,
+      "kind": "object",
+      "description": "祭壇・仏壇風の棚",
+      "confidence": "guess"
+    },
+    {
+      "from": 2504,
+      "to": 2505,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 3000,
+      "to": 3004,
+      "kind": "object",
+      "description": "SF の培養槽（緑の液体）と制御パネル",
+      "confidence": "high"
+    },
+    {
+      "from": 3005,
+      "to": 3005,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 5000,
+      "to": 5004,
+      "kind": "style",
+      "style": "overlay",
+      "description": "0 番台の公園小物の白背景（重ね置き）版",
+      "confidence": "high"
+    },
+    {
+      "from": 5005,
+      "to": 5005,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 5006,
+      "to": 5019,
+      "kind": "style",
+      "style": "overlay",
+      "description": "公園小物・遊具の白背景版",
+      "confidence": "high"
+    },
+    {
+      "from": 5020,
+      "to": 5020,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 5021,
+      "to": 5229,
+      "kind": "style",
+      "style": "overlay",
+      "description": "柵・スポーツ用品・病院家具・ライブ機材の白背景版",
+      "confidence": "high"
+    },
+    {
+      "from": 5400,
+      "to": 5607,
+      "kind": "style",
+      "style": "overlay",
+      "description": "墓地・洋館の小物の白背景版（ガーゴイル 5403 含む）",
+      "confidence": "high"
+    },
+    {
+      "from": 5608,
+      "to": 5608,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 5609,
+      "to": 6006,
+      "kind": "style",
+      "style": "overlay",
+      "description": "和風小物・石柱・噴水の白背景版",
+      "confidence": "high"
+    }
+  ],
+  "rules": "下 1〜2 桁は小物の種類。700 番台は 600 番台の床色違い。5000 番台以降は下地なし（白）の重ね置き版。"
+}

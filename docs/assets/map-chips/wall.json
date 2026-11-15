@@ -1,0 +1,552 @@
+{
+  "terrain": "wall",
+  "count": 917,
+  "exists": "0-326 500-550 577-579 700-726 728-730 750-751 800-833 850-921 1000-1017 1200-1227 1300-1327 1400-1450 2000-2205 2500-2505 3000-3060",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "variant",
+      "style": "metal_blue",
+      "description": "水色の金属パネル壁（宇宙基地風）。縦のパイプ・横のオレンジ帯入り",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "kind": "decoration",
+      "style": "metal_blue",
+      "description": "水色壁の縦長の窓(6)・額縁状のパネル(7)",
+      "confidence": "high"
+    },
+    {
+      "from": 8,
+      "to": 11,
+      "kind": "edge",
+      "style": "metal_blue",
+      "neighbor": "wall_top",
+      "tiles": {
+        "8": [
+          "N"
+        ],
+        "9": [
+          "N"
+        ],
+        "10": [
+          "N"
+        ],
+        "11": [
+          "N"
+        ]
+      },
+      "description": "水色壁の上端（壁頂の白い縁）",
+      "confidence": "guess"
+    },
+    {
+      "from": 12,
+      "to": 12,
+      "kind": "corner",
+      "style": "metal_blue",
+      "neighbor": "dark",
+      "tiles": {
+        "12": [
+          "SW"
+        ]
+      },
+      "description": "水色壁の斜めの角（左下が黒い段差）",
+      "confidence": "guess"
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "kind": "edge",
+      "style": "panel_blue",
+      "description": "濃い青のパネル壁（縁の位置違い）",
+      "confidence": "guess"
+    },
+    {
+      "from": 15,
+      "to": 15,
+      "kind": "corner",
+      "style": "metal_blue",
+      "neighbor": "dark",
+      "tiles": {
+        "15": [
+          "SW"
+        ]
+      },
+      "description": "水色壁の斜めの角（左下が黒）",
+      "confidence": "guess"
+    },
+    {
+      "from": 16,
+      "to": 29,
+      "kind": "edge",
+      "style": "panel_blue",
+      "description": "濃い青のパネル壁。縁（上・下・左・右・角）の位置違いの組",
+      "confidence": "guess"
+    },
+    {
+      "from": 30,
+      "to": 30,
+      "kind": "base",
+      "style": "stone_light",
+      "description": "明るい灰色の石（コンクリート）壁",
+      "confidence": "high"
+    },
+    {
+      "from": 31,
+      "to": 35,
+      "kind": "decoration",
+      "style": "stone_light",
+      "description": "明るい灰色壁の部品（31・34 赤いランプ、32 横スリット、33 無地、35 青く光るアーチ入口）",
+      "confidence": "high"
+    },
+    {
+      "from": 36,
+      "to": 42,
+      "kind": "edge",
+      "style": "stone_light",
+      "description": "明るい灰色壁の縁違い（36・39 は斜めの角で左下が黒）",
+      "confidence": "guess"
+    },
+    {
+      "from": 43,
+      "to": 59,
+      "kind": "edge",
+      "style": "stone_dark",
+      "description": "暗い灰色の石壁。縁の付く位置違いの組",
+      "confidence": "guess"
+    },
+    {
+      "from": 60,
+      "to": 61,
+      "kind": "variant",
+      "style": "rock_brown",
+      "description": "茶色のざらついた岩壁（洞窟風）、61 は下端が影",
+      "confidence": "high"
+    },
+    {
+      "from": 62,
+      "to": 62,
+      "kind": "decoration",
+      "style": "rock_brown",
+      "description": "岩壁の青く光る入口",
+      "confidence": "high"
+    },
+    {
+      "from": 63,
+      "to": 86,
+      "kind": "edge",
+      "style": "rock_brown",
+      "description": "茶色の岩壁の縁違い（69・72 は斜めの角で左下が黒）",
+      "confidence": "guess"
+    },
+    {
+      "from": 87,
+      "to": 95,
+      "kind": "decoration",
+      "style": "interior_white",
+      "description": "白い内装の壁（腰板、91 アーチ扉、93 額入りの石、94 屋根状の飾り）",
+      "confidence": "high"
+    },
+    {
+      "from": 96,
+      "to": 115,
+      "kind": "edge",
+      "style": "cave_dark",
+      "neighbor": "dark",
+      "description": "黒い床を囲む暗い岩壁（洞穴の縁）。96 黒、98–103 辺、104–107 岩壁のみ、108–115 角・輪状の囲み",
+      "confidence": "guess"
+    },
+    {
+      "from": 116,
+      "to": 126,
+      "kind": "variant",
+      "style": "fence",
+      "description": "オレンジの土の上の緑の金網フェンス（柱の位置違い）",
+      "confidence": "high"
+    },
+    {
+      "from": 127,
+      "to": 131,
+      "kind": "decoration",
+      "description": "127–129 灰色のシャッター、130–131 斜め縞のガラス窓",
+      "confidence": "high"
+    },
+    {
+      "from": 132,
+      "to": 151,
+      "kind": "edge",
+      "style": "ice_cave",
+      "neighbor": "dark",
+      "description": "紫がかった氷（水晶）洞窟の壁。氷柱の垂れた壁と黒い空間との境目の辺・角",
+      "confidence": "guess"
+    },
+    {
+      "from": 152,
+      "to": 155,
+      "kind": "edge",
+      "description": "黒地に水色の細い枠線（辺・角）",
+      "confidence": "guess"
+    },
+    {
+      "from": 156,
+      "to": 161,
+      "kind": "edge",
+      "style": "interior_cream",
+      "description": "クリーム色の屋内壁（茶の枠の位置違い）",
+      "confidence": "guess"
+    },
+    {
+      "from": 162,
+      "to": 169,
+      "kind": "variant",
+      "style": "japanese",
+      "description": "白い屋内壁と障子（164・167 障子、165・172 等は上に灰色帯）",
+      "confidence": "high"
+    },
+    {
+      "from": 170,
+      "to": 173,
+      "kind": "decoration",
+      "style": "japanese",
+      "description": "170 暖炉、171–172 白壁、173 赤い仏壇風の棚",
+      "confidence": "high"
+    },
+    {
+      "from": 174,
+      "to": 188,
+      "kind": "decoration",
+      "style": "japanese",
+      "description": "土壁色の和室壁（177・178・180・181 掛け軸、179 黒い影、182 吊り物、184 桶、188 床との境）",
+      "confidence": "high"
+    },
+    {
+      "from": 189,
+      "to": 206,
+      "kind": "decoration",
+      "description": "屋内の部品：189・192 扉、190 赤い陳列棚、191・194 格子窓、193 赤い機械、195 壁の穴、196–197 扉（開いた鉄扉）、198–200 石壁の十字、201・204 ステンドグラス、202・205 柱、203・206 石像",
+      "confidence": "high"
+    },
+    {
+      "from": 207,
+      "to": 212,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "暗い緑の木製アーチ窓と両開き扉（横に並べて使う）",
+      "confidence": "guess"
+    },
+    {
+      "from": 213,
+      "to": 218,
+      "kind": "variant",
+      "style": "japanese",
+      "description": "赤茶の腰の格子壁",
+      "confidence": "high"
+    },
+    {
+      "from": 219,
+      "to": 249,
+      "kind": "edge",
+      "style": "castle_wall",
+      "neighbor": "plain",
+      "description": "上から見た灰色の石の城壁。明るい緑の草地・灰色の床との辺・角・T字・端、茶の木戸（門）、黒い矢狭間入り",
+      "confidence": "guess"
+    },
+    {
+      "from": 250,
+      "to": 269,
+      "kind": "decoration",
+      "style": "western",
+      "description": "洋館の部品：250 カーテン窓、251 茶壁、252 石積み、253・268 窓、254–259 白い漆喰壁の枠、260–265 オレンジ瓦屋根（斜めの辺）、266–267 木の両開き扉、269 時計",
+      "confidence": "high"
+    },
+    {
+      "from": 270,
+      "to": 290,
+      "kind": "edge",
+      "style": "castle_wall_dark",
+      "neighbor": "plain",
+      "description": "219 番台と同じ城壁の組（暗い緑の草地）",
+      "confidence": "guess"
+    },
+    {
+      "from": 291,
+      "to": 302,
+      "kind": "edge",
+      "style": "castle_wall_dark",
+      "neighbor": "water",
+      "description": "城壁と茶縁の暗い青の水面（堀・池）の組",
+      "confidence": "guess"
+    },
+    {
+      "from": 303,
+      "to": 313,
+      "kind": "edge",
+      "style": "castle_wall_dark",
+      "description": "城壁と灰色床の組",
+      "confidence": "guess"
+    },
+    {
+      "from": 314,
+      "to": 315,
+      "kind": "decoration",
+      "description": "黄(314)・赤(315)のアーチ扉",
+      "confidence": "high"
+    },
+    {
+      "from": 316,
+      "to": 322,
+      "kind": "edge",
+      "style": "castle_wall_dark",
+      "description": "城壁と灰色床・草地の組",
+      "confidence": "guess"
+    },
+    {
+      "from": 323,
+      "to": 326,
+      "kind": "decoration",
+      "description": "本棚",
+      "confidence": "high"
+    },
+    {
+      "from": 500,
+      "to": 549,
+      "kind": "edge",
+      "style": "castle_wall_light",
+      "description": "城壁の組を明るい灰色のタイル床に置いた版（草地・木戸・矢狭間も同じ考え方）",
+      "confidence": "guess"
+    },
+    {
+      "from": 550,
+      "to": 550,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 577,
+      "to": 577,
+      "kind": "variant",
+      "style": "gold",
+      "description": "金色（黄）の壁",
+      "confidence": "high"
+    },
+    {
+      "from": 578,
+      "to": 579,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 700,
+      "to": 729,
+      "kind": "edge",
+      "style": "gold",
+      "description": "金色の壁。700–705 上端、706・707・710 影・斜めの角、708・711・712 扉・窓、713–729 縁の位置違い（727 欠番）",
+      "confidence": "guess"
+    },
+    {
+      "from": 730,
+      "to": 730,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 750,
+      "to": 751,
+      "kind": "object",
+      "description": "木の切り株（丸太の柱）",
+      "confidence": "high"
+    },
+    {
+      "from": 800,
+      "to": 833,
+      "kind": "decoration",
+      "style": "brick_beige",
+      "description": "ベージュの石煉瓦の壁（神殿・遺跡風）。804 柱、805–808 汚れ、810–812 アーチ窓、813–817 浮き彫り、824 扉",
+      "confidence": "high"
+    },
+    {
+      "from": 850,
+      "to": 867,
+      "kind": "variant",
+      "style": "brick_beige",
+      "description": "影の付いた暗い煉瓦壁",
+      "confidence": "high"
+    },
+    {
+      "from": 868,
+      "to": 871,
+      "kind": "decoration",
+      "style": "brick_beige",
+      "description": "格子",
+      "confidence": "high"
+    },
+    {
+      "from": 872,
+      "to": 897,
+      "kind": "edge",
+      "style": "brick_beige",
+      "neighbor": "wall_top",
+      "description": "壁の上端（暗い壁上面と煉瓦の境）。884・897 扉付き",
+      "confidence": "guess"
+    },
+    {
+      "from": 898,
+      "to": 915,
+      "kind": "edge",
+      "style": "brick_beige",
+      "description": "暗い壁上面の縁の位置違い",
+      "confidence": "guess"
+    },
+    {
+      "from": 916,
+      "to": 921,
+      "kind": "variant",
+      "description": "丸石積み",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1016,
+      "kind": "edge",
+      "style": "neon",
+      "description": "黒地にピンク〜紫のグラデーションの近未来的な壁（1009 アーチ入口、1001・1011 ランプ）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1017,
+      "to": 1017,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 1200,
+      "to": 1227,
+      "kind": "edge",
+      "style": "dark_room",
+      "description": "暗い茶の壁と暗い紅の幕、紺地に青い線の壁の組",
+      "confidence": "guess"
+    },
+    {
+      "from": 1300,
+      "to": 1327,
+      "kind": "style",
+      "style": "dark_room_gray",
+      "description": "1200 番台の灰色版",
+      "confidence": "guess"
+    },
+    {
+      "from": 1400,
+      "to": 1450,
+      "kind": "style",
+      "style": "brick_green",
+      "description": "800 番台の石煉瓦の組の緑がかった色違い（1440–1441 獅子の頭の飾り）",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2085,
+      "kind": "edge",
+      "style": "school",
+      "description": "上から見た学校・事務所の壁。クリーム色の床に灰色の壁線、木の扉・青いガラス・水色の窓との組み合わせで辺・角・T字・端",
+      "confidence": "guess"
+    },
+    {
+      "from": 2086,
+      "to": 2094,
+      "kind": "decoration",
+      "style": "school",
+      "description": "2086–2092 黒板、2093–2094 窓",
+      "confidence": "high"
+    },
+    {
+      "from": 2095,
+      "to": 2123,
+      "kind": "edge",
+      "style": "school_sand",
+      "description": "砂色の床版の壁線（2096–2097 扉）",
+      "confidence": "guess"
+    },
+    {
+      "from": 2124,
+      "to": 2128,
+      "kind": "variant",
+      "style": "school",
+      "description": "緑のタイル壁",
+      "confidence": "high"
+    },
+    {
+      "from": 2129,
+      "to": 2150,
+      "kind": "edge",
+      "style": "school_gray",
+      "description": "灰色の格子床版の壁線",
+      "confidence": "guess"
+    },
+    {
+      "from": 2151,
+      "to": 2152,
+      "kind": "decoration",
+      "description": "棚・本棚",
+      "confidence": "high"
+    },
+    {
+      "from": 2153,
+      "to": 2205,
+      "kind": "edge",
+      "style": "school_green",
+      "description": "クリーム／水色の帯の壁と緑の絨毯との組",
+      "confidence": "guess"
+    },
+    {
+      "from": 2500,
+      "to": 2505,
+      "kind": "decoration",
+      "description": "計器・モニター画面（グラフ・波形）",
+      "confidence": "high"
+    },
+    {
+      "from": 3000,
+      "to": 3011,
+      "kind": "edge",
+      "style": "transparent",
+      "description": "白地（透過前提）の緑の金網フェンス",
+      "confidence": "guess"
+    },
+    {
+      "from": 3012,
+      "to": 3047,
+      "kind": "edge",
+      "style": "transparent",
+      "description": "白地の石の城壁の組",
+      "confidence": "guess"
+    },
+    {
+      "from": 3048,
+      "to": 3059,
+      "kind": "edge",
+      "style": "transparent",
+      "description": "白地の灰色・黒・紺の細い壁線",
+      "confidence": "guess"
+    },
+    {
+      "from": 3060,
+      "to": 3060,
+      "kind": "object",
+      "style": "transparent",
+      "description": "木の切り株（白地）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "200〜300 番台の城壁の組を 500 番台（明るい床）・3000 番台（白地）で繰り返す。1400 番台は 800 番台の色違い、1300 番台は 1200 番台の色違い"
+}

@@ -1,0 +1,15 @@
+{
+  "terrain": "damage_floor",
+  "count": 1,
+  "exists": "0",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "description": "水色の斜め縞の床（ダメージ床）",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

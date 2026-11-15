@@ -1,0 +1,22 @@
+{
+  "terrain": "small_crater",
+  "count": 8,
+  "exists": "0-7",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "object",
+      "description": "大きなクレーターの輪の部品（2 は小さなクレーター付き）",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "kind": "object",
+      "description": "6 小さなクレーター 1 つ、7 小さなクレーター 2 つ",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

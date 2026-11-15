@@ -1,0 +1,15 @@
+{
+  "terrain": "dummy_d",
+  "count": 1,
+  "exists": "0",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "other",
+      "description": "白黒の市松模様（ダミー）",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

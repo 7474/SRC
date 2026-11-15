@@ -1,0 +1,15 @@
+{
+  "terrain": "mars_waste_land",
+  "count": 2,
+  "exists": "0-1",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 1,
+      "kind": "variant",
+      "description": "赤茶色の火星の荒れ地（1 は小石が多い）",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

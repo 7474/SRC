@@ -1,0 +1,147 @@
+{
+  "terrain": "railroad",
+  "count": 74,
+  "exists": "0-73",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 7,
+      "kind": "strip",
+      "neighbor": "connects",
+      "tiles": {
+        "0": [
+          "E",
+          "W"
+        ],
+        "1": [
+          "E",
+          "W"
+        ],
+        "2": [
+          "E",
+          "W"
+        ],
+        "3": [
+          "E",
+          "W"
+        ],
+        "4": [
+          "N",
+          "S"
+        ],
+        "5": [
+          "N",
+          "S"
+        ],
+        "6": [
+          "N",
+          "S"
+        ],
+        "7": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "明るい草の縁の複線：0〜3 横、4〜7 縦",
+      "confidence": "high"
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "kind": "strip",
+      "neighbor": "connects",
+      "tiles": {
+        "8": [
+          "E",
+          "W"
+        ],
+        "9": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "砂地の複線（8 横、9 縦）",
+      "confidence": "high"
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "kind": "object",
+      "description": "列車の車両（10 縦、11 横）",
+      "confidence": "high"
+    },
+    {
+      "from": 12,
+      "to": 15,
+      "kind": "junction",
+      "description": "複線のカーブと分岐（2×2 マス）",
+      "confidence": "guess"
+    },
+    {
+      "from": 16,
+      "to": 21,
+      "kind": "junction",
+      "neighbor": "connects",
+      "tiles": {
+        "16": [
+          "E",
+          "S"
+        ],
+        "17": [
+          "W",
+          "S"
+        ],
+        "18": [
+          "E",
+          "W"
+        ],
+        "21": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "明るい草地の単線：16 東と南へのカーブ、17 西と南、18 横、19・20 北への分岐、21 縦",
+      "confidence": "guess"
+    },
+    {
+      "from": 22,
+      "to": 24,
+      "kind": "junction",
+      "neighbor": "connects",
+      "description": "単線と複線の合流（22・23 横、24 縦）",
+      "confidence": "guess"
+    },
+    {
+      "from": 25,
+      "to": 45,
+      "kind": "junction",
+      "style": "sand",
+      "description": "砂地の線路：直線・合流・カーブ（40・41・43・44 は複線の大きなカーブ）",
+      "confidence": "guess"
+    },
+    {
+      "from": 46,
+      "to": 62,
+      "kind": "style",
+      "style": "dark_grass",
+      "description": "濃い草地版の線路（複線の直線・カーブ・分岐・合流）",
+      "confidence": "guess"
+    },
+    {
+      "from": 63,
+      "to": 71,
+      "kind": "style",
+      "style": "sand",
+      "description": "砂地の線路の続き（直線と複線）",
+      "confidence": "guess"
+    },
+    {
+      "from": 72,
+      "to": 73,
+      "kind": "object",
+      "description": "列車の車両（72 縦、73 横）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0〜24 が明るい草地、25〜45・63〜71 が砂地、46〜62 が濃い草地"
+}

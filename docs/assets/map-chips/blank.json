@@ -1,0 +1,22 @@
+{
+  "terrain": "blank",
+  "count": 2,
+  "exists": "0-1",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "description": "白一色",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 1,
+      "kind": "base",
+      "description": "黒一色",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

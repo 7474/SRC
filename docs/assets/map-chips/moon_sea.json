@@ -1,0 +1,54 @@
+{
+  "terrain": "moon_sea",
+  "count": 12,
+  "exists": "0-11",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 2,
+      "kind": "base",
+      "description": "暗い緑灰色の月の海（1・2 はクレーターの輪）",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 5,
+      "kind": "edge",
+      "neighbor": "highland",
+      "tiles": {
+        "3": [
+          "NW"
+        ],
+        "5": [
+          "NE"
+        ]
+      },
+      "description": "明るい高地との境（上側の角）",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 8,
+      "kind": "variant",
+      "description": "6・8 無地、7 明るい地に暗い小さな海",
+      "confidence": "guess"
+    },
+    {
+      "from": 9,
+      "to": 11,
+      "kind": "edge",
+      "neighbor": "highland",
+      "tiles": {
+        "9": [
+          "SW"
+        ],
+        "11": [
+          "SE"
+        ]
+      },
+      "description": "明るい高地との境（下側の角）",
+      "confidence": "guess"
+    }
+  ],
+  "rules": ""
+}

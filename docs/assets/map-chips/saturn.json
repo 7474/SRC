@@ -1,0 +1,34 @@
+{
+  "terrain": "saturn",
+  "count": 12,
+  "exists": "0-11",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "object",
+      "style": "black",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "黒い宇宙の土星（輪のある惑星）",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 11,
+      "kind": "object",
+      "style": "blue",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "土星（青い宇宙背景）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "青背景版は番号＋6"
+}

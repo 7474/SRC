@@ -1,0 +1,81 @@
+{
+  "terrain": "cave",
+  "count": 16,
+  "exists": "0-11 1000-1003",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "object",
+      "style": "grass",
+      "description": "洞窟の入口（岩のアーチ、左右両方に岩柱）。手前は明るい緑の草地、奥は黒",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 3,
+      "kind": "strip",
+      "style": "grass",
+      "neighbor": "cliff",
+      "tiles": {
+        "1": [
+          "W"
+        ],
+        "3": [
+          "E"
+        ]
+      },
+      "description": "横に広い洞窟の入口：1=西端（左に岩柱）、2=中央（柱なし）、3=東端（右に岩柱）。草地は明るい緑",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "kind": "object",
+      "description": "岩壁の中のトンネル口：4=出口の光が白く見える、5=暗いトンネル",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 9,
+      "kind": "style",
+      "style": "dark_grass",
+      "neighbor": "cliff",
+      "tiles": {
+        "7": [
+          "W"
+        ],
+        "9": [
+          "E"
+        ]
+      },
+      "description": "0〜3 と同じ並びの暗い緑の草地版（6=単独、7=西端、8=中央、9=東端）",
+      "confidence": "high"
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1003,
+      "kind": "style",
+      "style": "transparent",
+      "neighbor": "cliff",
+      "tiles": {
+        "1001": [
+          "W"
+        ],
+        "1003": [
+          "E"
+        ]
+      },
+      "description": "0〜3 と同じ並びで地面が白（透過用）の版",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0=単独入口、1〜3=西端・中央・東端。6〜9 は暗い草地版、1000 番台は地面なし（白）版"
+}

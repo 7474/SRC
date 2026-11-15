@@ -1,0 +1,134 @@
+{
+  "terrain": "water",
+  "count": 20,
+  "exists": "0-19",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 2,
+      "kind": "edge",
+      "neighbor": "wall",
+      "tiles": {
+        "0": [
+          "N",
+          "W"
+        ],
+        "1": [
+          "N"
+        ],
+        "2": [
+          "N",
+          "E"
+        ]
+      },
+      "description": "水槽（プール）の水面、上が灰色の縁：0=北と西（西に配管）,1=北,2=北と東（東に曲がった配管）",
+      "confidence": "guess"
+    },
+    {
+      "from": 3,
+      "to": 5,
+      "kind": "edge",
+      "neighbor": "wall",
+      "tiles": {
+        "3": [
+          "W"
+        ],
+        "5": [
+          "E"
+        ]
+      },
+      "description": "水中：3=西に縦の配管、4=横線（水面の線）だけ、5=東に縦の配管",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "kind": "object",
+      "description": "天井から吊られた青い円筒（6=赤い継ぎ目、7=黄色い継ぎ目）の上端",
+      "confidence": "guess"
+    },
+    {
+      "from": 8,
+      "to": 8,
+      "kind": "edge",
+      "neighbor": "wall",
+      "tiles": {
+        "8": [
+          "N",
+          "E"
+        ]
+      },
+      "description": "北が灰色の縁、東に細い壁",
+      "confidence": "guess"
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "kind": "object",
+      "description": "青い円筒の中段（9=赤、10=黄の継ぎ目）",
+      "confidence": "guess"
+    },
+    {
+      "from": 11,
+      "to": 11,
+      "kind": "decoration",
+      "description": "水中の暗い影の帯（円筒の影）、上に横線",
+      "confidence": "guess"
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "kind": "object",
+      "description": "青い円筒の下段（12=赤、13=黄）",
+      "confidence": "guess"
+    },
+    {
+      "from": 14,
+      "to": 14,
+      "kind": "decoration",
+      "description": "水中の暗い影の帯",
+      "confidence": "guess"
+    },
+    {
+      "from": 15,
+      "to": 17,
+      "kind": "edge",
+      "neighbor": "wall",
+      "tiles": {
+        "15": [
+          "N"
+        ],
+        "16": [
+          "N",
+          "E"
+        ],
+        "17": [
+          "E"
+        ]
+      },
+      "description": "15=北の縁＋下寄りの横線、16=北と東の縁＋横線、17=東の縁＋横線",
+      "confidence": "guess"
+    },
+    {
+      "from": 18,
+      "to": 18,
+      "kind": "base",
+      "description": "水（模様のみ）",
+      "confidence": "high"
+    },
+    {
+      "from": 19,
+      "to": 19,
+      "kind": "edge",
+      "neighbor": "wall",
+      "tiles": {
+        "19": [
+          "E"
+        ]
+      },
+      "description": "東に細い壁",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "屋内の水槽／プール。縁と配管と吊り下げ円筒の部品（推測）"
+}

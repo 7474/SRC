@@ -1,0 +1,207 @@
+{
+  "terrain": "desert",
+  "count": 41,
+  "exists": "0-31 1000-1008",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 8,
+      "kind": "edge",
+      "style": "bright_grass",
+      "neighbor": "plain",
+      "tiles": {
+        "0": [
+          "N",
+          "W"
+        ],
+        "1": [
+          "N"
+        ],
+        "2": [
+          "N",
+          "E"
+        ],
+        "3": [
+          "W"
+        ],
+        "5": [
+          "E"
+        ],
+        "6": [
+          "S",
+          "W"
+        ],
+        "7": [
+          "S"
+        ],
+        "8": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "砂漠のかたまりの縁（3×3 の枠の並び：0=北西,1=北,2=北東,3=西,4=中央,5=東,6=南西,7=南,8=南東）。外側は明るい緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 14,
+      "kind": "variant",
+      "description": "砂丘の風紋（明るい筋の模様）入りの砂漠",
+      "confidence": "guess"
+    },
+    {
+      "from": 15,
+      "to": 18,
+      "kind": "edge",
+      "style": "dark_grass",
+      "neighbor": "plain",
+      "tiles": {
+        "15": [
+          "N",
+          "W"
+        ],
+        "16": [
+          "N"
+        ],
+        "17": [
+          "N",
+          "E"
+        ],
+        "18": [
+          "W"
+        ]
+      },
+      "description": "15〜23 は 0〜8 と同じ 3×3 の並びで外側が暗い緑の草地。15=北西,16=北,17=北東,18=西",
+      "confidence": "high"
+    },
+    {
+      "from": 19,
+      "to": 19,
+      "kind": "placeholder",
+      "description": "Can't Use（3×3 の中央の位置）",
+      "confidence": "high"
+    },
+    {
+      "from": 20,
+      "to": 23,
+      "kind": "edge",
+      "style": "dark_grass",
+      "neighbor": "plain",
+      "tiles": {
+        "20": [
+          "E"
+        ],
+        "21": [
+          "S",
+          "W"
+        ],
+        "22": [
+          "S"
+        ],
+        "23": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "暗い草地の縁の続き：20=東,21=南西,22=南,23=南東",
+      "confidence": "high"
+    },
+    {
+      "from": 24,
+      "to": 31,
+      "kind": "edge",
+      "style": "wasteland",
+      "neighbor": "waste_land",
+      "tiles": {
+        "24": [
+          "N",
+          "W"
+        ],
+        "25": [
+          "N"
+        ],
+        "26": [
+          "N",
+          "E"
+        ],
+        "27": [
+          "W"
+        ],
+        "28": [
+          "E"
+        ],
+        "29": [
+          "S",
+          "W"
+        ],
+        "30": [
+          "S"
+        ],
+        "31": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "外側が茶色の荒れ地の縁（中央なしの 8 枚）：24=北西,25=北,26=北東,27=西,28=東,29=南西,30=南,31=南東",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1003,
+      "kind": "edge",
+      "style": "transparent",
+      "neighbor": "none",
+      "tiles": {
+        "1000": [
+          "N",
+          "W"
+        ],
+        "1001": [
+          "N"
+        ],
+        "1002": [
+          "N",
+          "E"
+        ],
+        "1003": [
+          "W"
+        ]
+      },
+      "description": "外側が白（透過）の縁：1000=北西,1001=北,1002=北東,1003=西",
+      "confidence": "high"
+    },
+    {
+      "from": 1004,
+      "to": 1004,
+      "kind": "placeholder",
+      "description": "Can't Use（中央の位置）",
+      "confidence": "high"
+    },
+    {
+      "from": 1005,
+      "to": 1008,
+      "kind": "edge",
+      "style": "transparent",
+      "neighbor": "none",
+      "tiles": {
+        "1005": [
+          "E"
+        ],
+        "1006": [
+          "S",
+          "W"
+        ],
+        "1007": [
+          "S"
+        ],
+        "1008": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "白（透過）の縁の続き：1005=東,1006=南西,1007=南,1008=南東",
+      "confidence": "high"
+    }
+  ],
+  "rules": "縁は 3×3 の枠を左上から行順（北西,北,北東,西,中央,東,南西,南,南東）。0 台=明るい草地、15 台=暗い草地、24 台=荒れ地（中央なし）、1000 台=透過。中央の位置は欠番のことがある"
+}

@@ -1,0 +1,780 @@
+{
+  "terrain": "town",
+  "count": 249,
+  "exists": "0-222 1000-1001 2000-2023",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 2,
+      "kind": "variant",
+      "style": "grass",
+      "description": "明るい緑の草地に建つ村（茶色の家）：0=家 2 軒、1=大きめの家と建物、2=小さな家 2 軒",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 5,
+      "kind": "style",
+      "style": "wasteland",
+      "description": "0〜2 と同じ村が茶色の荒れ地の上",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 8,
+      "kind": "style",
+      "style": "sand",
+      "description": "0〜2 と同じ村が砂地（薄黄）の上",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 17,
+      "kind": "edge",
+      "style": "sand",
+      "neighbor": "plain",
+      "tiles": {
+        "9": [
+          "N",
+          "W"
+        ],
+        "10": [
+          "N"
+        ],
+        "11": [
+          "N",
+          "E"
+        ],
+        "12": [
+          "W"
+        ],
+        "14": [
+          "E"
+        ],
+        "15": [
+          "S",
+          "W"
+        ],
+        "16": [
+          "S"
+        ],
+        "17": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "砂地の村の縁（3×3：9=北西,10=北,11=北東,12=西,13=中央（教会）,14=東,15=南西,16=南,17=南東）。外側は明るい緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 18,
+      "to": 26,
+      "kind": "variant",
+      "style": "city",
+      "description": "灰色の街並み（ビルの並ぶ市街、色違いの屋根）",
+      "confidence": "high"
+    },
+    {
+      "from": 27,
+      "to": 27,
+      "kind": "object",
+      "description": "森に囲まれた白い塔（城）",
+      "confidence": "guess"
+    },
+    {
+      "from": 28,
+      "to": 28,
+      "kind": "variant",
+      "description": "市街の街並み",
+      "confidence": "high"
+    },
+    {
+      "from": 29,
+      "to": 29,
+      "kind": "object",
+      "description": "山を背にした金色の大聖堂／宮殿",
+      "confidence": "guess"
+    },
+    {
+      "from": 30,
+      "to": 30,
+      "kind": "object",
+      "description": "白い尖塔の城（大聖堂）",
+      "confidence": "high"
+    },
+    {
+      "from": 31,
+      "to": 44,
+      "kind": "variant",
+      "style": "city",
+      "description": "市街の街並み（赤い尖塔・灰色のビル・教会などの組み合わせ）",
+      "confidence": "high"
+    },
+    {
+      "from": 45,
+      "to": 53,
+      "kind": "edge",
+      "style": "city",
+      "neighbor": "wall",
+      "tiles": {
+        "45": [
+          "N",
+          "W"
+        ],
+        "46": [
+          "N"
+        ],
+        "47": [
+          "N",
+          "E"
+        ],
+        "48": [
+          "W"
+        ],
+        "50": [
+          "E"
+        ],
+        "51": [
+          "S",
+          "W"
+        ],
+        "52": [
+          "S"
+        ],
+        "53": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "灰色の舗装広場（3×3：45=北西…49=中央（噴水）…53=南東）。縁は濃い灰色の枠",
+      "confidence": "guess"
+    },
+    {
+      "from": 54,
+      "to": 54,
+      "kind": "object",
+      "description": "青いガラスのビル",
+      "confidence": "high"
+    },
+    {
+      "from": 55,
+      "to": 56,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "屋上にプールのある白い建物（横 2 マス）",
+      "confidence": "guess"
+    },
+    {
+      "from": 57,
+      "to": 59,
+      "kind": "object",
+      "description": "白い近代的な建物（57=大きな白い建物、58=小さな白いビル、59=青いガラスのビルの端）",
+      "confidence": "guess"
+    },
+    {
+      "from": 60,
+      "to": 62,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "大きな白い建物（横 3 マス、60=西端,61=中央,62=東端）",
+      "confidence": "high"
+    },
+    {
+      "from": 63,
+      "to": 65,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "赤い屋根の長い建物（横 3 マス、64 に手前へ突き出た棟）",
+      "confidence": "high"
+    },
+    {
+      "from": 66,
+      "to": 71,
+      "kind": "variant",
+      "style": "dense_city",
+      "description": "色とりどりの屋根が密集した市街（道なし）",
+      "confidence": "high"
+    },
+    {
+      "from": 72,
+      "to": 77,
+      "kind": "strip",
+      "style": "dense_city",
+      "neighbor": "connects",
+      "tiles": {
+        "72": [
+          "E",
+          "S"
+        ],
+        "73": [
+          "S",
+          "W"
+        ],
+        "74": [
+          "N",
+          "S"
+        ],
+        "75": [
+          "N",
+          "E"
+        ],
+        "76": [
+          "N",
+          "W"
+        ],
+        "77": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "密集市街の中の道路（灰色の舗装）。tiles は道がつながる辺：72=東南,73=南西,74=南北,75=北東,76=北西,77=南北",
+      "confidence": "high"
+    },
+    {
+      "from": 78,
+      "to": 83,
+      "kind": "strip",
+      "style": "dense_city",
+      "neighbor": "connects",
+      "tiles": {
+        "78": [
+          "E",
+          "S"
+        ],
+        "79": [
+          "S",
+          "W"
+        ],
+        "80": [
+          "N",
+          "S"
+        ],
+        "81": [
+          "N",
+          "E"
+        ],
+        "82": [
+          "N",
+          "W"
+        ],
+        "83": [
+          "E",
+          "W"
+        ]
+      },
+      "description": "同じ道路の別版：78=東南,79=南西,80=南北,81=北東,82=北西,83=東西",
+      "confidence": "high"
+    },
+    {
+      "from": 84,
+      "to": 95,
+      "kind": "junction",
+      "style": "dense_city",
+      "neighbor": "connects",
+      "tiles": {
+        "84": [
+          "N",
+          "E",
+          "S"
+        ],
+        "85": [
+          "E",
+          "S",
+          "W"
+        ],
+        "86": [
+          "E",
+          "W"
+        ],
+        "87": [
+          "N",
+          "E",
+          "W"
+        ],
+        "88": [
+          "N",
+          "S",
+          "W"
+        ],
+        "89": [
+          "E",
+          "W"
+        ],
+        "90": [
+          "N",
+          "E",
+          "S"
+        ],
+        "91": [
+          "E",
+          "S",
+          "W"
+        ],
+        "92": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ],
+        "93": [
+          "N",
+          "E",
+          "W"
+        ],
+        "94": [
+          "N",
+          "S",
+          "W"
+        ],
+        "95": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ]
+      },
+      "description": "市街の道路の T 字路・十字路・直線（84=北東南,85=東南西,86=東西,87=北東西,88=北南西,89=東西,90=北東南,91=東南西,92=十字,93=北東西,94=北南西,95=十字）",
+      "confidence": "high"
+    },
+    {
+      "from": 96,
+      "to": 108,
+      "kind": "strip",
+      "style": "grass",
+      "neighbor": "connects",
+      "tiles": {
+        "96": [
+          "E",
+          "S"
+        ],
+        "97": [
+          "S",
+          "W"
+        ],
+        "98": [
+          "N",
+          "S"
+        ],
+        "99": [
+          "N",
+          "E"
+        ],
+        "100": [
+          "N",
+          "W"
+        ],
+        "101": [
+          "N",
+          "S"
+        ],
+        "102": [
+          "N",
+          "E",
+          "S"
+        ],
+        "103": [
+          "E",
+          "S",
+          "W"
+        ],
+        "104": [
+          "E",
+          "W"
+        ],
+        "105": [
+          "N",
+          "E",
+          "W"
+        ],
+        "106": [
+          "N",
+          "S",
+          "W"
+        ],
+        "107": [
+          "E",
+          "W"
+        ],
+        "108": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ]
+      },
+      "description": "緑の草地の村の道路（家がまばら）。96=東南,97=南西,98=南北,99=北東,100=北西,101=南北,102=北東南,103=東南西,104=東西,105=北東西,106=北南西,107=東西,108=十字",
+      "confidence": "guess"
+    },
+    {
+      "from": 109,
+      "to": 109,
+      "kind": "object",
+      "description": "草地の小屋（1 軒）",
+      "confidence": "high"
+    },
+    {
+      "from": 110,
+      "to": 110,
+      "kind": "object",
+      "description": "木のある灰色の建物（学校・工場など）",
+      "confidence": "guess"
+    },
+    {
+      "from": 111,
+      "to": 113,
+      "kind": "variant",
+      "description": "紫の屋根の洋館：111=大きな屋敷、112=家 4 軒、113=家 1 軒（草地）",
+      "confidence": "high"
+    },
+    {
+      "from": 114,
+      "to": 116,
+      "kind": "variant",
+      "style": "grass",
+      "description": "色付き屋根の家（橙・赤・青）の村、明るい草地",
+      "confidence": "high"
+    },
+    {
+      "from": 117,
+      "to": 119,
+      "kind": "style",
+      "style": "wasteland",
+      "description": "114〜116 の荒れ地版",
+      "confidence": "high"
+    },
+    {
+      "from": 120,
+      "to": 122,
+      "kind": "style",
+      "style": "sand",
+      "description": "114〜116 の砂地版",
+      "confidence": "high"
+    },
+    {
+      "from": 123,
+      "to": 131,
+      "kind": "edge",
+      "style": "sand",
+      "neighbor": "plain",
+      "tiles": {
+        "123": [
+          "N",
+          "W"
+        ],
+        "124": [
+          "N"
+        ],
+        "125": [
+          "N",
+          "E"
+        ],
+        "126": [
+          "W"
+        ],
+        "128": [
+          "E"
+        ],
+        "129": [
+          "S",
+          "W"
+        ],
+        "130": [
+          "S"
+        ],
+        "131": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "色付き屋根の村の縁（3×3：123=北西…127=中央（教会）…131=南東）。地面は砂地、外側は明るい草地",
+      "confidence": "high"
+    },
+    {
+      "from": 132,
+      "to": 134,
+      "kind": "variant",
+      "style": "snow",
+      "description": "雪原のかまくら／イグルー（1・3・6 個）",
+      "confidence": "high"
+    },
+    {
+      "from": 135,
+      "to": 140,
+      "kind": "variant",
+      "style": "snow",
+      "description": "雪をかぶった村（135〜137 と 138〜140 の 2 組）",
+      "confidence": "high"
+    },
+    {
+      "from": 141,
+      "to": 143,
+      "kind": "variant",
+      "style": "grass",
+      "description": "草地のテント（とんがり、1・3・6 張り）",
+      "confidence": "high"
+    },
+    {
+      "from": 144,
+      "to": 146,
+      "kind": "style",
+      "style": "wasteland",
+      "description": "141〜143 の荒れ地版",
+      "confidence": "high"
+    },
+    {
+      "from": 147,
+      "to": 149,
+      "kind": "variant",
+      "description": "暗い森の中の開けた場所に家（3 種）",
+      "confidence": "high"
+    },
+    {
+      "from": 150,
+      "to": 152,
+      "kind": "variant",
+      "style": "grass",
+      "description": "草地の丸いゲル（1・3・6 張り）",
+      "confidence": "high"
+    },
+    {
+      "from": 153,
+      "to": 155,
+      "kind": "style",
+      "style": "wasteland",
+      "description": "150〜152 の荒れ地版",
+      "confidence": "high"
+    },
+    {
+      "from": 156,
+      "to": 158,
+      "kind": "variant",
+      "style": "wasteland",
+      "description": "荒れ地の日干し煉瓦の家（1〜3 棟）",
+      "confidence": "high"
+    },
+    {
+      "from": 159,
+      "to": 161,
+      "kind": "style",
+      "style": "sand",
+      "description": "156〜158 の砂地版",
+      "confidence": "high"
+    },
+    {
+      "from": 162,
+      "to": 164,
+      "kind": "variant",
+      "style": "grass",
+      "description": "草地の三角テント（1・3・6 張り）",
+      "confidence": "high"
+    },
+    {
+      "from": 165,
+      "to": 167,
+      "kind": "style",
+      "style": "sand",
+      "description": "162〜164 の砂地版",
+      "confidence": "high"
+    },
+    {
+      "from": 168,
+      "to": 173,
+      "kind": "style",
+      "style": "dark_grass",
+      "description": "暗い緑の草地版：168〜170=0〜2、171〜173=114〜116",
+      "confidence": "high"
+    },
+    {
+      "from": 174,
+      "to": 182,
+      "kind": "edge",
+      "style": "dark_grass",
+      "neighbor": "plain",
+      "tiles": {
+        "174": [
+          "N",
+          "W"
+        ],
+        "175": [
+          "N"
+        ],
+        "176": [
+          "N",
+          "E"
+        ],
+        "177": [
+          "W"
+        ],
+        "179": [
+          "E"
+        ],
+        "180": [
+          "S",
+          "W"
+        ],
+        "181": [
+          "S"
+        ],
+        "182": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "9〜17 の暗い草地版（3×3）。中央 178 は小屋（109 相当）",
+      "confidence": "high"
+    },
+    {
+      "from": 183,
+      "to": 191,
+      "kind": "edge",
+      "style": "dark_grass",
+      "neighbor": "plain",
+      "tiles": {
+        "183": [
+          "N",
+          "W"
+        ],
+        "184": [
+          "N"
+        ],
+        "185": [
+          "N",
+          "E"
+        ],
+        "186": [
+          "W"
+        ],
+        "188": [
+          "E"
+        ],
+        "189": [
+          "S",
+          "W"
+        ],
+        "190": [
+          "S"
+        ],
+        "191": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "123〜131 の暗い草地版（3×3）。中央 187 は灰色の建物（110 相当）",
+      "confidence": "high"
+    },
+    {
+      "from": 192,
+      "to": 206,
+      "kind": "style",
+      "style": "dark_grass",
+      "description": "暗い草地版：192〜194=111〜113、195〜197=147〜149、198〜200=141〜143、201〜203=150〜152、204〜206=162〜164",
+      "confidence": "high"
+    },
+    {
+      "from": 207,
+      "to": 219,
+      "kind": "strip",
+      "style": "dark_grass",
+      "neighbor": "connects",
+      "tiles": {
+        "207": [
+          "E",
+          "S"
+        ],
+        "208": [
+          "S",
+          "W"
+        ],
+        "209": [
+          "N",
+          "S"
+        ],
+        "210": [
+          "N",
+          "E"
+        ],
+        "211": [
+          "N",
+          "W"
+        ],
+        "212": [
+          "N",
+          "S"
+        ],
+        "213": [
+          "N",
+          "E",
+          "S"
+        ],
+        "214": [
+          "E",
+          "S",
+          "W"
+        ],
+        "215": [
+          "E",
+          "W"
+        ],
+        "216": [
+          "N",
+          "E",
+          "W"
+        ],
+        "217": [
+          "N",
+          "S",
+          "W"
+        ],
+        "218": [
+          "E",
+          "W"
+        ],
+        "219": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ]
+      },
+      "description": "96〜108 の暗い草地版の村の道路（同じ並び）",
+      "confidence": "guess"
+    },
+    {
+      "from": 220,
+      "to": 222,
+      "kind": "style",
+      "style": "desert",
+      "description": "0〜2 の村が濃い黄色の砂漠の上",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1001,
+      "kind": "variant",
+      "style": "night",
+      "description": "夜の街（黒地に灯りのともる窓）",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2023,
+      "kind": "style",
+      "style": "transparent",
+      "description": "地面なし（白・透過）版：2000〜2002=0〜2、2003〜2005=114〜116、2006〜2007=教会（13・127）、2008=109、2009=110、2010=29、2011=30、2012〜2014=111〜113、2015〜2017=テント、2018〜2020=ゲル、2021〜2023=三角テント",
+      "confidence": "high"
+    }
+  ],
+  "rules": "地面違いは 3 枚ずつ（草地→荒れ地→砂地）。3×3 の村の縁は左上から行順。168〜219 は前半の暗い草地版、2000 番台は地面なし版"
+}

@@ -1,0 +1,363 @@
+{
+  "terrain": "cliff",
+  "count": 621,
+  "exists": "0-106 108-111 113-244 500-679 1000-1083 1200-1235 1400-1435 2000-2041",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 9,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "cliff",
+      "description": "茶色の土の台地に掘られた溝・段差の縁と角（0–2 北側の縁、3–4 縦の黒い割れ目、5–9 木目状の段差の縁と角）",
+      "confidence": "guess"
+    },
+    {
+      "from": 10,
+      "to": 14,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "cliff",
+      "description": "明るい緑の草地の高台の縁（10–11 縦の縁、12–14 台地の上辺の左角・中・右角）",
+      "confidence": "high"
+    },
+    {
+      "from": 15,
+      "to": 21,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "plain",
+      "description": "草地の高台から下へ落ちる崖の正面（15–17 崖面の左・中・右、18–21 崖の左右端と内角。20–21 は崖下が雪）",
+      "confidence": "high"
+    },
+    {
+      "from": 22,
+      "to": 29,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "snow",
+      "description": "雪原の中の草地高台と崖（22–23 縦の縁、24–26 台地の上辺、27–29 雪原へ落ちる崖面）",
+      "confidence": "high"
+    },
+    {
+      "from": 30,
+      "to": 51,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "plain",
+      "description": "上に草地を持つ黄土色の岩崖の組（崖面の左右端・外角・内角・丸い突き出し。39–41 は崖下が水色の水）",
+      "confidence": "high"
+    },
+    {
+      "from": 52,
+      "to": 61,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "sea",
+      "description": "崖の柱・突き出しの崖下が明るい青の水",
+      "confidence": "high"
+    },
+    {
+      "from": 62,
+      "to": 72,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "snow",
+      "description": "崖の柱・突き出しの崖下が雪",
+      "confidence": "high"
+    },
+    {
+      "from": 73,
+      "to": 81,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "plain",
+      "description": "崖の付け根と草地の外角・内角",
+      "confidence": "high"
+    },
+    {
+      "from": 82,
+      "to": 87,
+      "kind": "object",
+      "style": "default",
+      "description": "灰色のコンクリート・金属の台と壁（82–84 天板付きの縁、85–87 暗い灰色の面）",
+      "confidence": "guess"
+    },
+    {
+      "from": 88,
+      "to": 98,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "sea",
+      "description": "崖の根元が青緑の海（浅瀬）に接する組",
+      "confidence": "high"
+    },
+    {
+      "from": 99,
+      "to": 107,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "sea",
+      "description": "明るい青の水の中の岩の島・岩棚（99–101 島の上辺、102–104 水面へ落ちる灰色の岩崖、105–106 縦の岩の筋）",
+      "confidence": "high"
+    },
+    {
+      "from": 108,
+      "to": 118,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "sea",
+      "description": "草地＋崖が青緑の海に接する縁と角",
+      "confidence": "high"
+    },
+    {
+      "from": 119,
+      "to": 139,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "deep_sea",
+      "description": "草地＋崖が濃紺の深海に接する縁と角",
+      "confidence": "high"
+    },
+    {
+      "from": 140,
+      "to": 160,
+      "kind": "junction",
+      "style": "default",
+      "neighbor": "plain",
+      "description": "崖同士・崖と草地の継ぎ目（段の分岐・合流）",
+      "confidence": "guess"
+    },
+    {
+      "from": 161,
+      "to": 174,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "sea",
+      "description": "草地＋崖が明るい青の水に接する縁と角",
+      "confidence": "high"
+    },
+    {
+      "from": 175,
+      "to": 175,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 176,
+      "to": 189,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "snow",
+      "description": "草地＋崖が雪に接する縁と角",
+      "confidence": "high"
+    },
+    {
+      "from": 190,
+      "to": 190,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 191,
+      "to": 200,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "sea",
+      "description": "海に接する崖・草地の複合角",
+      "confidence": "high"
+    },
+    {
+      "from": 201,
+      "to": 201,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 202,
+      "to": 231,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "sea",
+      "description": "海・深海に接する崖・草地の複合角（崖の付け根が水）",
+      "confidence": "high"
+    },
+    {
+      "from": 232,
+      "to": 232,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 233,
+      "to": 234,
+      "kind": "corner",
+      "style": "default",
+      "neighbor": "deep_sea",
+      "description": "深海に接する崖の角",
+      "confidence": "high"
+    },
+    {
+      "from": 235,
+      "to": 244,
+      "kind": "edge",
+      "style": "default",
+      "neighbor": "sea",
+      "description": "明るい水の中の草地の島と崖（236–238 島の上辺、242–244 水へ落ちる崖面）",
+      "confidence": "high"
+    },
+    {
+      "from": 500,
+      "to": 552,
+      "kind": "style",
+      "style": "dark",
+      "neighbor": "plain",
+      "description": "10–160 と同じ並びを暗い緑の草地の画風で描いた組（崖面・角・継ぎ目）",
+      "confidence": "high"
+    },
+    {
+      "from": 553,
+      "to": 553,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 554,
+      "to": 564,
+      "kind": "style",
+      "style": "dark",
+      "neighbor": "snow",
+      "description": "22–29/62–72 相当の雪の組（暗い草地の画風）",
+      "confidence": "high"
+    },
+    {
+      "from": 565,
+      "to": 635,
+      "kind": "style",
+      "style": "dark",
+      "neighbor": "sea",
+      "description": "88–231 相当の水・海・深海の組（暗い草地の画風）",
+      "confidence": "high"
+    },
+    {
+      "from": 636,
+      "to": 636,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 637,
+      "to": 666,
+      "kind": "style",
+      "style": "dark",
+      "neighbor": "sea",
+      "description": "202–231 相当の複合角（暗い草地の画風）",
+      "confidence": "high"
+    },
+    {
+      "from": 667,
+      "to": 667,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 668,
+      "to": 679,
+      "kind": "style",
+      "style": "dark",
+      "neighbor": "sea",
+      "description": "233–244 相当の水中の島と崖（暗い草地の画風）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1083,
+      "kind": "edge",
+      "style": "rock",
+      "neighbor": "void",
+      "description": "黒い闇（洞窟・奈落）に接するオレンジ茶色の岩崖（上辺・下辺・縦の縁・内角/外角。1006–1008 は岩のつらら状の下辺）",
+      "confidence": "high"
+    },
+    {
+      "from": 1200,
+      "to": 1216,
+      "kind": "edge",
+      "style": "rock",
+      "neighbor": "sea",
+      "description": "茶色の岩崖が明るい青の水に接する組",
+      "confidence": "high"
+    },
+    {
+      "from": 1217,
+      "to": 1217,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 1218,
+      "to": 1235,
+      "kind": "corner",
+      "style": "rock",
+      "neighbor": "sea",
+      "description": "茶色の岩崖と水の角",
+      "confidence": "high"
+    },
+    {
+      "from": 1400,
+      "to": 1416,
+      "kind": "edge",
+      "style": "rock",
+      "neighbor": "snow",
+      "description": "茶色の岩崖が雪原に接する組",
+      "confidence": "high"
+    },
+    {
+      "from": 1417,
+      "to": 1417,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 1418,
+      "to": 1435,
+      "kind": "corner",
+      "style": "rock",
+      "neighbor": "snow",
+      "description": "茶色の岩崖と雪の角",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2019,
+      "kind": "edge",
+      "style": "rock_face",
+      "neighbor": "void",
+      "description": "茶色の岩の崖面のみ（黒い縁取りで上下左右の端・単独タイル）",
+      "confidence": "high"
+    },
+    {
+      "from": 2020,
+      "to": 2020,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 2021,
+      "to": 2041,
+      "kind": "variant",
+      "description": "ひび割れ・地割れの地面（2021–2026 明るい草地、2027–2032 暗い草地、2033–2038 茶色の土、2039–2041 単独）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0〜244 は明るい草地の画風、500〜679 は暗い草地の画風で同じ並び。1000/1200/1400 番台は茶色の岩崖を闇・水・雪の下地で繰り返す。2000 番台は崖面単体と地割れ。"
+}

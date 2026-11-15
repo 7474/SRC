@@ -1,0 +1,208 @@
+{
+  "terrain": "sky",
+  "count": 34,
+  "exists": "0-33",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "description": "青空（雲なし）",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 1,
+      "kind": "base",
+      "description": "一面の雲（白い雲海）",
+      "confidence": "high"
+    },
+    {
+      "from": 2,
+      "to": 5,
+      "kind": "edge",
+      "neighbor": "sky",
+      "tiles": {
+        "2": [
+          "N"
+        ],
+        "3": [
+          "W"
+        ],
+        "4": [
+          "E"
+        ],
+        "5": [
+          "S"
+        ]
+      },
+      "description": "雲のかたまりの縁（ギザギザ）：2=北、3=西、4=東、5=南が青空",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "kind": "edge",
+      "neighbor": "sky",
+      "tiles": {
+        "6": [
+          "N",
+          "W"
+        ],
+        "7": [
+          "N",
+          "W"
+        ]
+      },
+      "description": "斜めの雲の縁：6=雲は南東の隅だけ、7=雲が多く北西側が青空",
+      "confidence": "guess"
+    },
+    {
+      "from": 8,
+      "to": 8,
+      "kind": "object",
+      "description": "青空に浮かぶ小さな雲のかたまり",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 15,
+      "kind": "edge",
+      "neighbor": "sky",
+      "tiles": {
+        "9": [
+          "S",
+          "W"
+        ],
+        "10": [
+          "S"
+        ],
+        "11": [
+          "S"
+        ],
+        "12": [
+          "N",
+          "E"
+        ],
+        "13": [
+          "N",
+          "E"
+        ],
+        "14": [
+          "N",
+          "E"
+        ],
+        "15": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "斜めの雲の縁の組：9=雲は北東の隅、10/11=南側が青空、12=北東が青空、13=雲は南西の隅、14=北・北東が青空、15=南東が青空",
+      "confidence": "guess"
+    },
+    {
+      "from": 16,
+      "to": 16,
+      "kind": "edge",
+      "neighbor": "sky",
+      "tiles": {
+        "16": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "雲は北西の隅だけ（ほぼ青空）",
+      "confidence": "guess"
+    },
+    {
+      "from": 17,
+      "to": 17,
+      "kind": "object",
+      "description": "小さな雲のかたまり（8 の別版）",
+      "confidence": "high"
+    },
+    {
+      "from": 18,
+      "to": 21,
+      "kind": "other",
+      "description": "雲の切れ込み・雲の舌：18/19=青空がくさび状に入る（東西対）、20/21=細い雲が東西から伸びる",
+      "confidence": "guess"
+    },
+    {
+      "from": 22,
+      "to": 25,
+      "kind": "corner",
+      "neighbor": "sky",
+      "tiles": {
+        "22": [
+          "NW"
+        ],
+        "23": [
+          "NE"
+        ],
+        "24": [
+          "SW"
+        ],
+        "25": [
+          "SE"
+        ]
+      },
+      "description": "丸い雲の外角（雲の角が丸い）：22=北西、23=北東、24=南西、25=南東が青空",
+      "confidence": "high"
+    },
+    {
+      "from": 26,
+      "to": 29,
+      "kind": "inner_corner",
+      "neighbor": "sky",
+      "tiles": {
+        "26": [
+          "N",
+          "W"
+        ],
+        "27": [
+          "N",
+          "E"
+        ],
+        "28": [
+          "S",
+          "W"
+        ],
+        "29": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "丸く青空がえぐれた内側の角：26=雲は南東、27=南西、28=北東、29=北西に残る",
+      "confidence": "guess"
+    },
+    {
+      "from": 30,
+      "to": 30,
+      "kind": "other",
+      "description": "黒一色（夜・闇）",
+      "confidence": "guess"
+    },
+    {
+      "from": 31,
+      "to": 33,
+      "kind": "strip",
+      "neighbor": "connects",
+      "tiles": {
+        "31": [
+          "E"
+        ],
+        "32": [
+          "W"
+        ],
+        "33": [
+          "E",
+          "W"
+        ]
+      },
+      "description": "青空に浮かぶ灰色の横棒（足場／空中の床）：31=西端、32=東端、33=中央",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "0=空、1=雲。2〜29 は雲と青空の境目（neighbor=sky は青空側）。番号ごとの規則性は弱い"
+}

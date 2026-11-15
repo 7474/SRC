@@ -1,0 +1,666 @@
+{
+  "terrain": "large_block",
+  "count": 839,
+  "exists": "0-103 500-517 600-658 700-754 1000-1012 1500-1517 1700-1711 2000-2011 2500-2505 3000-3017 3500-3514 3700-3708 3800-3805 4000-4005 4500-4557 4600-4634 4700-4734 5000-5148 6000-6045 6200-6247 6400-6413 6600-6608 6800-6809 7000-7020 7200-7257 7500-7504",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "object",
+      "style": "park",
+      "description": "公園の設備（茶色の柱に灰色の器具、水飲み場か電話、推測）、明るい草地",
+      "confidence": "guess"
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "kind": "object",
+      "style": "park",
+      "object": {
+        "width": 2,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "木のベンチ（横 2 マス）",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 3,
+      "kind": "object",
+      "style": "park",
+      "description": "木の柱／幅の狭い仕切り",
+      "confidence": "guess"
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "kind": "object",
+      "style": "park",
+      "description": "街灯（4=灯具、5=柱の根元）",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "kind": "variant",
+      "style": "park",
+      "description": "0 の設備の別の向き",
+      "confidence": "guess"
+    },
+    {
+      "from": 8,
+      "to": 8,
+      "kind": "object",
+      "style": "playground",
+      "description": "ぶらんこの座板（土の地面）",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 14,
+      "kind": "object",
+      "style": "playground",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "すべり台（9〜11=上段の台と手すり、12〜14=滑走面）",
+      "confidence": "high"
+    },
+    {
+      "from": 15,
+      "to": 17,
+      "kind": "object",
+      "style": "playground",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "ぶらんこの枠（横 3 マス、黄色の横棒と鎖）",
+      "confidence": "high"
+    },
+    {
+      "from": 18,
+      "to": 18,
+      "kind": "object",
+      "style": "playground",
+      "description": "シーソー／スプリング遊具（推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 19,
+      "to": 26,
+      "kind": "object",
+      "style": "playground",
+      "description": "緑の柱の鉄棒・手すり（砂地、柱と横棒の組み合わせ）",
+      "confidence": "high"
+    },
+    {
+      "from": 27,
+      "to": 27,
+      "kind": "object",
+      "description": "自動販売機（赤）",
+      "confidence": "high"
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "kind": "object",
+      "style": "playground",
+      "description": "鉄棒の柱と横棒の続き",
+      "confidence": "high"
+    },
+    {
+      "from": 30,
+      "to": 30,
+      "kind": "object",
+      "description": "赤い自動販売機（タバコなど、推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 31,
+      "to": 31,
+      "kind": "object",
+      "description": "白い箱の付いた柱（看板・街灯、推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 32,
+      "to": 32,
+      "kind": "object",
+      "description": "自動販売機 2 台",
+      "confidence": "high"
+    },
+    {
+      "from": 33,
+      "to": 40,
+      "kind": "style",
+      "style": "park_dark",
+      "description": "暗い草地版：33=街灯、34〜36=0 の設備、37=柱、38=街灯の根元、39〜40=ベンチ",
+      "confidence": "high"
+    },
+    {
+      "from": 41,
+      "to": 41,
+      "kind": "object",
+      "description": "31 の柱の灰色舗装版",
+      "confidence": "high"
+    },
+    {
+      "from": 42,
+      "to": 42,
+      "kind": "object",
+      "description": "店の正面（ガラス窓）",
+      "confidence": "guess"
+    },
+    {
+      "from": 43,
+      "to": 44,
+      "kind": "object",
+      "description": "電光掲示板／広告板（ピンクの画面）",
+      "confidence": "guess"
+    },
+    {
+      "from": 45,
+      "to": 45,
+      "kind": "object",
+      "description": "ガラスの自動扉",
+      "confidence": "guess"
+    },
+    {
+      "from": 46,
+      "to": 49,
+      "kind": "object",
+      "description": "灰色舗装の車止め（ボラード）：46/48=1 本、47/49=3 本",
+      "confidence": "high"
+    },
+    {
+      "from": 50,
+      "to": 62,
+      "kind": "object",
+      "style": "court_green",
+      "description": "緑のコート（テニス・サッカー）の設備：50〜51=審判台風の椅子、52/62=ベンチ、53=審判の高い椅子、54〜55・57〜58・60〜61=ゴールのネット、56/59=縦向きのベンチ",
+      "confidence": "guess"
+    },
+    {
+      "from": 63,
+      "to": 69,
+      "kind": "style",
+      "style": "court_clay",
+      "description": "赤土のコート版：63〜64=椅子、65/67=縦ベンチ、66=審判台、68〜69=ベンチ",
+      "confidence": "high"
+    },
+    {
+      "from": 70,
+      "to": 75,
+      "kind": "object",
+      "object": {
+        "width": 6,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "テニスのネット（横 6 マス、70=西の支柱,71〜74=ネット,75=東の支柱）",
+      "confidence": "high"
+    },
+    {
+      "from": 76,
+      "to": 79,
+      "kind": "base",
+      "description": "青い床（プール・体育館の床、推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 80,
+      "to": 81,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "「BEER!」の看板（横 2 マス）",
+      "confidence": "high"
+    },
+    {
+      "from": 82,
+      "to": 102,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "青い床の上の横 3 マスの色付きの板（82〜84=灰白,85〜87=青緑,88〜90=緑,91〜93=赤,94〜96=黄,97〜99=橙,100〜102=紫）。マット・看板（推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 103,
+      "to": 103,
+      "kind": "object",
+      "description": "草地の上の緑の網（フェンス）",
+      "confidence": "guess"
+    },
+    {
+      "from": 500,
+      "to": 505,
+      "kind": "object",
+      "style": "interior",
+      "description": "白いカーテン（500〜502=横 3 マス、503〜505=窓のカーテンの部品）",
+      "confidence": "high"
+    },
+    {
+      "from": 506,
+      "to": 511,
+      "kind": "object",
+      "style": "interior",
+      "description": "ベッド（506=1 マスのベッド、507〜508・510〜511=横 2 マスのベッド、509=布団の端）",
+      "confidence": "high"
+    },
+    {
+      "from": 512,
+      "to": 514,
+      "kind": "object",
+      "style": "interior",
+      "description": "灰色のタイル床のカーテン",
+      "confidence": "high"
+    },
+    {
+      "from": 515,
+      "to": 515,
+      "kind": "object",
+      "style": "interior",
+      "description": "木の床の椅子",
+      "confidence": "high"
+    },
+    {
+      "from": 516,
+      "to": 517,
+      "kind": "object",
+      "style": "interior",
+      "description": "516=電子レンジ／テレビ、517=冷蔵庫・ロッカー",
+      "confidence": "guess"
+    },
+    {
+      "from": 600,
+      "to": 629,
+      "kind": "object",
+      "style": "stage_gray",
+      "description": "ライブ会場の舞台（灰色の床）：600〜602=ドラムセット（横 3）、603〜605=吊り照明（横 3）、606〜607=マイクスタンド、608〜609=キーボード、610〜611・627=机・ミキサー、612〜613・629=縦向きの机、614〜621・624・628=床のケーブル、622・625=スピーカー、623・626=色付き照明のトラス",
+      "confidence": "high"
+    },
+    {
+      "from": 630,
+      "to": 642,
+      "kind": "object",
+      "style": "stage_gray",
+      "description": "ロープで囲まれたリング／ステージの縁（白い床、角柱・ロープ）",
+      "confidence": "guess"
+    },
+    {
+      "from": 643,
+      "to": 650,
+      "kind": "object",
+      "style": "stage_gray",
+      "description": "楽器スタンド（643・646・647・650）と樽型のアンプ・太鼓（644〜645・648〜649）",
+      "confidence": "guess"
+    },
+    {
+      "from": 651,
+      "to": 658,
+      "kind": "object",
+      "style": "stage_gray",
+      "description": "観客席（651〜652=青い座席と EXIT、653〜654=観客のいる青い座席、655〜656=赤い座席、657〜658=観客のいる赤い座席）",
+      "confidence": "high"
+    },
+    {
+      "from": 700,
+      "to": 754,
+      "kind": "style",
+      "style": "stage_navy",
+      "description": "600〜654 と同じ並びの紺色の床（夜の舞台）版",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1012,
+      "kind": "object",
+      "style": "graveyard",
+      "description": "墓地・井戸：1000=十字の墓,1001=剣の墓,1002=井戸（草地）,1003=井戸（土）,1004〜1005=墓石,1006〜1007=暗い草地の十字・剣の墓,1008=井戸（暗い草地）,1009=十字の墓石,1010=墓碑の板,1011〜1012=明るい草地の墓石・墓碑",
+      "confidence": "high"
+    },
+    {
+      "from": 1500,
+      "to": 1507,
+      "kind": "object",
+      "style": "bedroom",
+      "description": "天蓋付きベッドなど寝室の家具（横 3 マスで組む、推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1508,
+      "to": 1515,
+      "kind": "object",
+      "style": "bedroom",
+      "description": "1508=たんす、1509〜1511=暖炉（横 3、1510 に火）、1512=暗い棚、1513=衣装棚、1514=赤い玉座、1515=金縁の玉座",
+      "confidence": "high"
+    },
+    {
+      "from": 1516,
+      "to": 1517,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 1700,
+      "to": 1707,
+      "kind": "object",
+      "style": "temple",
+      "description": "石の柱（上下 2 マスの組、推測）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1708,
+      "to": 1711,
+      "kind": "object",
+      "style": "temple",
+      "description": "1708=獅子の顔の壁飾り、1709=水を吐く獅子の泉、1710=ガーゴイルの浮き彫り、1711=胸像",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2011,
+      "kind": "object",
+      "style": "japanese",
+      "description": "和風：2000〜2001=石灯籠（草地・砂地）、2002=地蔵、2003〜2005=のぼり旗（赤・青・緑）、2006=荷車、2007=米俵、2008=赤い毛氈の縁台、2009=石灯籠（暗い草地）、2010〜2011=石碑",
+      "confidence": "high"
+    },
+    {
+      "from": 2500,
+      "to": 2500,
+      "kind": "object",
+      "description": "仏壇／祭壇（金色の灯り）",
+      "confidence": "guess"
+    },
+    {
+      "from": 2501,
+      "to": 2502,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 2503,
+      "to": 2503,
+      "kind": "object",
+      "description": "祭壇（赤い装飾）",
+      "confidence": "guess"
+    },
+    {
+      "from": 2504,
+      "to": 2505,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 3000,
+      "to": 3008,
+      "kind": "object",
+      "style": "table_light",
+      "object": {
+        "width": 3,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "明るい木の大きなテーブル（3000〜3005=天板 3×2、3006〜3008=手前の脚）",
+      "confidence": "high"
+    },
+    {
+      "from": 3009,
+      "to": 3011,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "低い木の長机（横 3 マス）",
+      "confidence": "high"
+    },
+    {
+      "from": 3012,
+      "to": 3017,
+      "kind": "object",
+      "description": "家具：3012=テレビ、3013=戸棚、3014=鉢植えのサボテン、3015=引き出し、3016=椅子、3017=木の板",
+      "confidence": "guess"
+    },
+    {
+      "from": 3500,
+      "to": 3508,
+      "kind": "object",
+      "style": "table_red",
+      "object": {
+        "width": 3,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "赤い漆塗りの大きなテーブル（3500〜3505=天板、3506〜3508=手前）",
+      "confidence": "high"
+    },
+    {
+      "from": 3509,
+      "to": 3511,
+      "kind": "object",
+      "style": "table_red",
+      "description": "料理の載ったテーブル（3509〜3510=皿・ご飯・酒、3511=縁）",
+      "confidence": "high"
+    },
+    {
+      "from": 3512,
+      "to": 3514,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 3700,
+      "to": 3708,
+      "kind": "object",
+      "style": "table_yellow",
+      "object": {
+        "width": 3,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "黄色いテーブル（3×3、3706〜3708=飾り付きの手前）",
+      "confidence": "high"
+    },
+    {
+      "from": 3800,
+      "to": 3804,
+      "kind": "object",
+      "style": "office",
+      "description": "事務机・学校机（木の床、灰色の机、椅子）",
+      "confidence": "guess"
+    },
+    {
+      "from": 3805,
+      "to": 3805,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 4000,
+      "to": 4004,
+      "kind": "object",
+      "style": "lab",
+      "description": "研究所：4000〜4001=緑の液体のカプセル上段、4003〜4004=下段、4002=金庫／機械",
+      "confidence": "high"
+    },
+    {
+      "from": 4005,
+      "to": 4005,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 4500,
+      "to": 4530,
+      "kind": "object",
+      "style": "ship",
+      "description": "木造船の甲板・桟橋の部品（板張り、縁、ハッチ、水際 4512〜4514・4521・4528）",
+      "confidence": "guess"
+    },
+    {
+      "from": 4531,
+      "to": 4557,
+      "kind": "object",
+      "style": "ship",
+      "description": "積み荷：4531〜4536=樽、4537〜4542=水の入った樽、4543〜4548=木箱、4549〜4554=果物の箱、4555〜4557=巻いたロープ",
+      "confidence": "high"
+    },
+    {
+      "from": 4600,
+      "to": 4634,
+      "kind": "object",
+      "style": "ship",
+      "description": "海に浮かぶ木造船の船体（上から見た大きな船、複数マスで組む）",
+      "confidence": "guess"
+    },
+    {
+      "from": 4700,
+      "to": 4734,
+      "kind": "object",
+      "style": "ship",
+      "description": "4600 台と同じ構成のもう一隻の木造船（別版）",
+      "confidence": "guess"
+    },
+    {
+      "from": 5000,
+      "to": 5012,
+      "kind": "object",
+      "style": "fence",
+      "description": "土の地面の緑の金網フェンス（柱と網の組み合わせ）",
+      "confidence": "high"
+    },
+    {
+      "from": 5013,
+      "to": 5022,
+      "kind": "object",
+      "style": "fence",
+      "description": "木の柵（5013〜5016=砂地の植え込み付き、5017=水の前、5018〜5020=板塀、5021〜5022=板塀の端と砂地）",
+      "confidence": "guess"
+    },
+    {
+      "from": 5023,
+      "to": 5023,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 5024,
+      "to": 5026,
+      "kind": "object",
+      "style": "fence",
+      "description": "木の柵の続き",
+      "confidence": "high"
+    },
+    {
+      "from": 5027,
+      "to": 5082,
+      "kind": "edge",
+      "style": "fence_bright",
+      "neighbor": "fence",
+      "description": "明るい草地の金網フェンス（角・辺・継ぎ目の組み合わせ、濃い緑の部分は区画の内側）",
+      "confidence": "guess"
+    },
+    {
+      "from": 5083,
+      "to": 5148,
+      "kind": "edge",
+      "style": "fence_dark",
+      "neighbor": "fence",
+      "description": "暗い草地版の金網フェンスの組み合わせ（一部灰色の舗装）",
+      "confidence": "guess"
+    },
+    {
+      "from": 6000,
+      "to": 6045,
+      "kind": "style",
+      "style": "transparent",
+      "description": "0〜61 の公園・コートの設備の地面なし（白）版",
+      "confidence": "high"
+    },
+    {
+      "from": 6200,
+      "to": 6247,
+      "kind": "style",
+      "style": "transparent",
+      "description": "500〜650 の室内・舞台の品の地面なし版",
+      "confidence": "high"
+    },
+    {
+      "from": 6400,
+      "to": 6413,
+      "kind": "style",
+      "style": "transparent",
+      "description": "墓・井戸・柱・像の地面なし版（6403=ガーゴイル像）",
+      "confidence": "high"
+    },
+    {
+      "from": 6600,
+      "to": 6607,
+      "kind": "style",
+      "style": "transparent",
+      "description": "1500 台の寝室家具・玉座の地面なし版",
+      "confidence": "high"
+    },
+    {
+      "from": 6608,
+      "to": 6608,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 6800,
+      "to": 6809,
+      "kind": "style",
+      "style": "transparent",
+      "description": "2000 台の和風の品の地面なし版",
+      "confidence": "high"
+    },
+    {
+      "from": 7000,
+      "to": 7020,
+      "kind": "style",
+      "style": "transparent",
+      "description": "3000〜3800 台のテーブル・家具の地面なし版",
+      "confidence": "high"
+    },
+    {
+      "from": 7200,
+      "to": 7257,
+      "kind": "style",
+      "style": "transparent",
+      "description": "5000 台のフェンス・柵の地面なし版",
+      "confidence": "high"
+    },
+    {
+      "from": 7500,
+      "to": 7504,
+      "kind": "style",
+      "style": "transparent",
+      "description": "樽・水樽・木箱・果物の箱・ロープの地面なし版",
+      "confidence": "high"
+    }
+  ],
+  "rules": "百の位ごとに品の種類（0=公園・コート、500=室内、600/700=舞台（灰/紺）、1000=墓、1500=寝室、1700=神殿、2000=和風、3000〜3800=テーブル、4000=研究所、4500〜4700=船、5000=柵）。6000 番台以降は同じ品の地面なし（白背景）版"
+}
