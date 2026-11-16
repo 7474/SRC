@@ -68,7 +68,8 @@ namespace SRCCore.Models
                 Name = "地形" + ID,
                 Bitmap = "",
                 Class = "陸",
-                MoveCost = 1,
+                // MoveCost は 0.5 コスト単位の 2 倍値（移動コスト 1 = MoveCost 2）
+                MoveCost = 2,
                 HitMod = 0,
                 DamageMod = 0,
             };
