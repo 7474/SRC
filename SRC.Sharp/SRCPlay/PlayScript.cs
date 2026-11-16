@@ -673,6 +673,21 @@ namespace SRCPlay
             return IsReady;
         }
 
+        /// <summary>移動の後、移動後メニュー・操作受け付け状態（着艦等）・holdlist・シナリオ終了のいずれかになるまで、メッセージや確認ダイアログを進めて待つ。</summary>
+        internal bool WaitUntilMenuAfterMove(TimeSpan timeout)
+        {
+            var deadline = DateTime.UtcNow + timeout;
+            bool Done() => runner.IsFinished || runner.State.Menu != null || IsReady || IsHeld;
+            while (DateTime.UtcNow < deadline && !Done())
+            {
+                deadline += runner.WaitWhileSuspended();
+                var suspendedBefore = runner.SuspendedTime;
+                auto.Run(int.MaxValue, 30000, () => Done() || DateTime.UtcNow >= deadline + (runner.SuspendedTime - suspendedBefore));
+                deadline += runner.SuspendedTime - suspendedBefore;
+            }
+            return !runner.IsFinished && !IsHeld && runner.State.Menu != null;
+        }
+
         /// <summary>マップで操作を受け付ける状態でない理由（調査用）</summary>
         public string NotReadyReason()
         {
@@ -919,6 +934,19 @@ namespace SRCPlay
 
         private static bool IsEnemyOf(Unit u) => u.Party0 == "敵" || u.Party0 == "中立";
 
+        private static bool IsSelectionState(string commandState)
+        {
+            var state = commandState ?? "";
+            return state.Contains("ターゲット選択") || state.Contains("マップ攻撃使用");
+        }
+
+        private bool WaitForTargetSelection()
+        {
+            return script.WaitUntil(
+                () => !script.Runner.IsFinished && script.CommandState.Contains("ターゲット選択") && !script.Runner.GUI.IsGUILocked,
+                TimeSpan.FromSeconds(10));
+        }
+
         public void Run()
         {
             var acted = new HashSet<string>();
@@ -926,7 +954,10 @@ namespace SRCPlay
             {
                 if (!script.AutoUntilReady(TimeSpan.FromMinutes(5)))
                 {
-                    Log("操作を受け付ける状態になりません");
+                    if (!script.Runner.IsFinished && !script.IsHeld)
+                    {
+                        Log("操作を受け付ける状態になりません");
+                    }
                     return;
                 }
                 var unit = Units(u => u.Party0 == "味方" && u.Action > 0 && !acted.Contains(u.ID)).FirstOrDefault();
@@ -936,7 +967,15 @@ namespace SRCPlay
                 }
                 acted.Add(unit.ID);
                 ActUnit(unit);
+                if (script.Runner.IsFinished || script.IsHeld)
+                {
+                    return;
+                }
                 LeaveSelection();
+                if (script.Runner.IsFinished || script.IsHeld)
+                {
+                    return;
+                }
             }
             EndTurn();
         }
@@ -947,11 +986,11 @@ namespace SRCPlay
         /// </summary>
         private void LeaveSelection()
         {
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 4; i++)
             {
-                if (script.IsHeld)
+                if (script.Runner.IsFinished || script.IsHeld)
                 {
-                    // 行動の結果でステージが終わり、holdlist のリスト（インターミッションのコマンドなど）で止まっている。取り消さない
+                    // 行動の結果でシナリオが終わったか、holdlist のリスト（インターミッションのコマンドなど）で止まっている。取り消さない
                     return;
                 }
                 var menu = script.Runner.State.Menu;
@@ -962,13 +1001,21 @@ namespace SRCPlay
                     script.SelectMenu("待機");
                     return;
                 }
-                if (menu != null || !script.CommandState.Contains("ターゲット選択"))
+                if (menu == null && script.Runner.State.List != null)
+                {
+                    // 武器やスペシャルパワーの一覧が残っていたら閉じる
+                    script.Runner.GUI.KeyPressed(ScreenKey.Escape);
+                    script.WaitUntil(() => script.Runner.State.List == null || script.Runner.State.Menu != null, TimeSpan.FromSeconds(5));
+                    continue;
+                }
+                if (menu != null || !IsSelectionState(script.CommandState))
                 {
                     return;
                 }
                 Log("選択が残ったので取り消す");
+                var before = script.CommandState;
                 script.Cancel();
-                script.WaitUntil(() => !script.CommandState.Contains("ターゲット選択") || script.Runner.State.Menu != null, TimeSpan.FromSeconds(5));
+                script.WaitUntil(() => script.CommandState != before || !IsSelectionState(script.CommandState) || script.Runner.State.Menu != null, TimeSpan.FromSeconds(5));
             }
         }
 
@@ -980,9 +1027,12 @@ namespace SRCPlay
                 return;
             }
             Log($"{unit.Name} ({unit.X},{unit.Y})");
-            script.ClickCell(unit.X, unit.Y);
-            if (!script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10)))
+            if (!OpenUnitMenu(unit))
             {
+                if (script.Runner.IsFinished || script.IsHeld)
+                {
+                    return;
+                }
                 Log("ユニットのメニューが出ません");
                 script.Cancel();
                 return;
@@ -992,17 +1042,28 @@ namespace SRCPlay
             {
                 return;
             }
+            if (script.Runner.IsFinished || script.IsHeld)
+            {
+                return;
+            }
             if (script.Runner.State.Menu == null)
             {
-                script.ClickCell(unit.X, unit.Y);
-                script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10));
+                OpenUnitMenu(unit);
+            }
+            if (script.Runner.IsFinished || script.IsHeld)
+            {
+                return;
             }
             if (script.Policy == "advance" && script.Runner.State.Menu != null && script.Runner.State.Menu.Items.Contains("移動") && TryMoveTowardEnemy(unit))
             {
-                // 移動後のメニュー
-                if (script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10)))
+                // 移動後のメニュー（メッセージや確認ダイアログがあれば進める）
+                if (script.WaitUntilMenuAfterMove(TimeSpan.FromSeconds(10)))
                 {
                     if (script.Runner.State.Menu.Items.Contains("攻撃") && TryAttack())
+                    {
+                        return;
+                    }
+                    if (script.Runner.IsFinished || script.IsHeld)
                     {
                         return;
                     }
@@ -1011,17 +1072,11 @@ namespace SRCPlay
                         // 攻撃をやめた後は移動後のメニューに戻る
                         script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10));
                     }
-                    if (!script.SelectMenu("待機"))
-                    {
-                        script.Cancel();
-                    }
+                    Wait();
                 }
                 return;
             }
-            if (!script.SelectMenu("待機"))
-            {
-                script.Cancel();
-            }
+            Wait();
         }
 
         // ── smart: SRC の CPU と同じ見積もりで目標と武器を選ぶ ──
@@ -1115,7 +1170,10 @@ namespace SRCPlay
                 var hpRatio = u.HP / (double)u.MaxHP;
                 // HP が少ないほど危険を重く見る
                 var dangerWeight = 0.2 + (1 - hpRatio);
-                var weapons = u.Weapons.Where(w => w.IsWeaponAvailable("移動後")).ToList();
+                // COM.SelectWeapon と同じくマップ攻撃・自爆攻撃は選ばない
+                var weapons = u.Weapons.Where(w => w.IsWeaponAvailable("移動後")
+                    && !w.IsWeaponClassifiedAs("Ｍ")
+                    && !w.IsWeaponClassifiedAs("自")).ToList();
                 var bosses = enemies.Where(e => e.BossRank >= 0).ToList();
                 var goals = bosses.Any() ? bosses : enemies;
                 (int, int, AttackPlan)? best = null;
@@ -1189,10 +1247,11 @@ namespace SRCPlay
             {
                 Log($"武器がありません: {plan.Weapon}");
                 script.Runner.GUI.KeyPressed(ScreenKey.Escape);
+                script.WaitUntil(() => script.Runner.State.List == null, TimeSpan.FromSeconds(10));
                 return false;
             }
             script.ChooseListIndex(list, index);
-            if (!script.WaitUntil(() => script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10)))
+            if (!WaitForTargetSelection())
             {
                 return false;
             }
@@ -1212,13 +1271,22 @@ namespace SRCPlay
 
         private bool OpenUnitMenu(UnitInfo unit)
         {
+            if (script.Runner.IsFinished || script.IsHeld)
+            {
+                return false;
+            }
             script.ClickCell(unit.X, unit.Y);
-            return script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10));
+            return script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10))
+                && !script.Runner.IsFinished && !script.IsHeld;
         }
 
         private void Wait()
         {
-            if (!script.SelectMenu("待機"))
+            if (script.Runner.IsFinished || script.IsHeld)
+            {
+                return;
+            }
+            if (!script.SelectMenu("待機") && !script.Runner.IsFinished && !script.IsHeld)
             {
                 script.Cancel();
             }
@@ -1359,26 +1427,48 @@ namespace SRCPlay
             // 行動の前にスペシャルパワーを使う（使うとメニューが閉じるので、開き直す）
             for (var i = 0; i < 2; i++)
             {
+                if (script.Runner.IsFinished || script.IsHeld)
+                {
+                    return;
+                }
                 var sp = PlanSpecialPower(unit.ID);
                 if (sp == null || !OpenUnitMenu(unit) || !UseSpecialPower(unit, sp))
                 {
-                    if (script.Runner.State.Menu != null)
+                    if (!script.Runner.IsFinished && !script.IsHeld && script.Runner.State.Menu != null)
                     {
                         script.Cancel();
                     }
                     break;
                 }
             }
-            var (hpRatio, allies, spInfo) = script.OnGame(() =>
+            if (script.Runner.IsFinished || script.IsHeld)
+            {
+                return;
+            }
+            var (canAct, x, y, hpRatio, allies, spInfo) = script.OnGame(() =>
             {
                 var u = script.Src.UList.Item(unit.ID);
+                if (u == null || u.Status != "出撃" || u.Action <= 0)
+                {
+                    return (false, unit.X, unit.Y, 0d, 0, "");
+                }
                 var p = u.MainPilot();
                 var spText = p == null ? "" : $" SP {p.SP}/{p.MaxSP} {string.Join(" ", p.SpecialPowerNames)}";
-                return (u.HP / (double)u.MaxHP, script.Src.UList.Items.Count(x => x.Status == "出撃" && x.Party0 == "味方"), spText);
+                return (true, u.x, u.y, u.HP / (double)u.MaxHP, script.Src.UList.Items.Count(z => z.Status == "出撃" && z.Party0 == "味方"), spText);
             });
+            if (!canAct)
+            {
+                return;
+            }
+            unit.X = x;
+            unit.Y = y;
             Log($"{unit.Name} ({unit.X},{unit.Y}) HP {hpRatio:P0}{spInfo}");
             if (!OpenUnitMenu(unit))
             {
+                if (script.Runner.IsFinished || script.IsHeld)
+                {
+                    return;
+                }
                 Log("ユニットのメニューが出ません");
                 script.Cancel();
                 return;
@@ -1397,6 +1487,10 @@ namespace SRCPlay
                     {
                         return;
                     }
+                    if (script.Runner.IsFinished || script.IsHeld)
+                    {
+                        return;
+                    }
                     if (script.Runner.State.Menu == null && !OpenUnitMenu(unit))
                     {
                         return;
@@ -1407,9 +1501,12 @@ namespace SRCPlay
             if (script.Runner.State.Menu != null && script.Runner.State.Menu.Items.Contains("移動"))
             {
                 script.SelectMenu("移動");
-                if (!script.WaitUntil(() => script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10)))
+                if (!WaitForTargetSelection())
                 {
-                    script.Cancel();
+                    if (!script.Runner.IsFinished && !script.IsHeld)
+                    {
+                        script.Cancel();
+                    }
                     return;
                 }
                 var move = PlanMove(unit.ID, retreat);
@@ -1420,11 +1517,19 @@ namespace SRCPlay
                     // 動かないほうが良い。移動を取り消して、その場で攻撃するか待機する
                     script.Cancel();
                     script.WaitUntil(() => !script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10));
+                    if (script.Runner.IsFinished || script.IsHeld)
+                    {
+                        return;
+                    }
                     if (script.Runner.State.Menu == null && !OpenUnitMenu(unit))
                     {
                         return;
                     }
                     if (inPlace != null && Attack(inPlace))
+                    {
+                        return;
+                    }
+                    if (script.Runner.IsFinished || script.IsHeld)
                     {
                         return;
                     }
@@ -1437,11 +1542,15 @@ namespace SRCPlay
                 }
                 Log($"{(retreat ? "後退" : "移動")}: ({move.Value.X},{move.Value.Y})");
                 script.ClickCell(move.Value.X, move.Value.Y);
-                if (!script.WaitUntil(() => script.Runner.State.Menu != null, TimeSpan.FromSeconds(10)))
+                if (!script.WaitUntilMenuAfterMove(TimeSpan.FromSeconds(10)))
                 {
                     return;
                 }
                 if (move.Value.Attack != null && script.Runner.State.Menu.Items.Contains("攻撃") && Attack(move.Value.Attack))
+                {
+                    return;
+                }
+                if (script.Runner.IsFinished || script.IsHeld)
                 {
                     return;
                 }
@@ -1457,6 +1566,10 @@ namespace SRCPlay
             {
                 return;
             }
+            if (script.Runner.IsFinished || script.IsHeld)
+            {
+                return;
+            }
             if (script.Runner.State.Menu == null && !OpenUnitMenu(unit))
             {
                 return;
@@ -1467,7 +1580,10 @@ namespace SRCPlay
         /// <summary>メニューの「攻撃」から、届く敵を攻撃する。攻撃できなければキャンセルして false。</summary>
         private bool TryAttack()
         {
-            script.SelectMenu("攻撃");
+            if (!script.SelectMenu("攻撃"))
+            {
+                return false;
+            }
             // 武器の一覧から使える最初の武器を選ぶ
             if (!script.WaitUntil(() => script.Runner.State.List != null && script.Runner.GUI.IsWaitingList, TimeSpan.FromSeconds(10)))
             {
@@ -1478,10 +1594,11 @@ namespace SRCPlay
             if (weapon < 0)
             {
                 script.Runner.GUI.KeyPressed(ScreenKey.Escape);
+                script.WaitUntil(() => script.Runner.State.List == null, TimeSpan.FromSeconds(10));
                 return false;
             }
             script.ChooseListIndex(list, weapon);
-            if (!script.WaitUntil(() => script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10)))
+            if (!WaitForTargetSelection())
             {
                 return false;
             }
@@ -1511,8 +1628,11 @@ namespace SRCPlay
         /// <summary>最も近い敵へ近づくマスへ移動する。</summary>
         private bool TryMoveTowardEnemy(UnitInfo unit)
         {
-            script.SelectMenu("移動");
-            if (!script.WaitUntil(() => script.CommandState.Contains("ターゲット選択"), TimeSpan.FromSeconds(10)))
+            if (!script.SelectMenu("移動"))
+            {
+                return false;
+            }
+            if (!WaitForTargetSelection())
             {
                 return false;
             }
