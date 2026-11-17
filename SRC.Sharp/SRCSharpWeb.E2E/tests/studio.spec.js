@@ -394,3 +394,56 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
   expect(text).toContain(source);
   expect(text).toContain('ChangeMap harbor-battle.map');
 });
+
+test('かんたん作成: 内容をリセットすると、選んだ作品・マップ・ユニット・セリフ・題名と下書きが消える', async ({ page }) => {
+  await routeSrcData(page, {
+    scenes: [{
+      id: 'harbor', title: '灯の港の戦い', description: '港での小競り合い', map: 'maps/harbor.map',
+      allies: [{ x: 3, y: 10 }], enemies: [{ x: 15, y: 4 }],
+      titles: ['GSCデータパック/ロボ/ランタン'],
+      units: { allies: [{ unit: '灯機ホタル', pilot: 'ソラ', level: 12, x: 3, y: 10 }], enemies: [{ unit: '灯機ホタル', pilot: 'リオ', level: 8, x: 15, y: 4 }] },
+      talk: { opening: [{ speaker: 'ソラ', text: '港を守るぞ！' }] },
+    }],
+  });
+  await open(page, 'quick');
+  await expect(page.locator('.q-reset')).toHaveCount(2);
+
+  // サンプルの場面を入れ、下書きが保存された状態にする
+  await page.locator('.q-gallery summary').click();
+  await page.locator('.q-scene-card', { hasText: '灯の港の戦い' }).click();
+  await expect(page.locator('.q-chosen li')).toHaveCount(1);
+  await expect(page.locator('.q-title')).toHaveValue('灯の港の戦い');
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('srcstudio.quick'))).not.toBeNull();
+
+  // 確認をキャンセルしたら内容は消えない
+  page.once('dialog', d => d.dismiss());
+  await page.locator('.q-top .q-reset').click();
+  await expect(page.locator('.q-chosen li')).toHaveCount(1);
+  await expect(page.locator('.q-title')).toHaveValue('灯の港の戦い');
+
+  // 確認で OK するとすべて初期状態に戻り、下書きも消える
+  page.once('dialog', d => d.accept());
+  await page.locator('.q-top .q-reset').click();
+  await expect(page.locator('.q-chosen li')).toHaveCount(0);
+  await expect(page.locator('tr[data-side="allies"]')).toHaveCount(0);
+  await expect(page.locator('tr[data-side="enemies"]')).toHaveCount(0);
+  await expect(page.locator('.q-line')).toHaveCount(0);
+  await expect(page.locator('.q-title')).toHaveValue('');
+  await expect(page.locator('.q-map')).toHaveValue('');
+  await expect(page.locator('.quick-status')).toContainText('リセットしました');
+  expect(await page.evaluate(() => localStorage.getItem('srcstudio.quick'))).toBeNull();
+
+  // 開き直しても初期状態のまま
+  await page.reload();
+  await expect(page.locator('body[data-ready="true"]')).toHaveCount(1, { timeout: 60 * 1000 });
+  await expect(page.locator('.q-chosen li')).toHaveCount(0);
+  await expect(page.locator('.q-title')).toHaveValue('');
+
+  // 5 側のリセットボタンでも同様に消せる
+  await page.locator('.q-title').fill('temp');
+  await page.locator('.q-title').dispatchEvent('change');
+  page.once('dialog', d => d.accept());
+  await page.locator('.q-actions .q-reset').click();
+  await expect(page.locator('.q-title')).toHaveValue('');
+  expect(await page.evaluate(() => localStorage.getItem('srcstudio.quick'))).toBeNull();
+});

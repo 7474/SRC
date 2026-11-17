@@ -155,7 +155,9 @@ main[hidden] { display: none; }
 /* かんたん作成（7474/SRC#1659） */
 #quick-section { max-width: 1120px; }
 #quick-section .hint { margin: 2px 0 6px; }
-.q-intro { margin-top: 0; }
+.q-top { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.q-top .q-intro { flex: 1 1 280px; margin: 0; }
+.q-top .q-reset { flex: none; }
 .q-step { border-top: 1px solid var(--border); padding: 6px 0 14px; }
 .q-step h2 { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; margin: 10px 0 6px; }
 .q-num { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.85em; flex: none; }
