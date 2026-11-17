@@ -256,3 +256,59 @@ main[hidden] { display: none; }
   .q-scenes { grid-template-columns: 1fr; }
   .q-actions .q-reset { margin-left: 0; }
 }
+
+/* メッセージ・ダイアログデータのプレビューとメッセージウィンドウ（7474/SRC#1651・#1655） */
+.dp-msg-tabs { display: flex; gap: 6px; margin-bottom: 8px; }
+.dp-msg-tabs button[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+.dp-cov-list { display: flex; flex-wrap: wrap; gap: 4px 6px; margin-bottom: 6px; }
+.dp-cov-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 0.85em; padding: 2px 7px; border-radius: 4px; }
+.dp-cov-chip.covered { border-color: var(--accent); }
+.dp-cov-chip.missing { border-style: dashed; opacity: 0.72; }
+.dp-cov-chip.missing:not(:disabled):hover { opacity: 1; border-color: var(--accent); }
+.dp-cov-count { font-size: 0.8em; color: var(--muted); }
+.dp-cov-chip.covered .dp-cov-count { color: var(--accent); font-weight: 600; }
+.dp-msg-table tbody tr { cursor: pointer; }
+.dp-msg-table tbody tr[aria-selected="true"] td { background: var(--selected); }
+.dp-msg-text-cell { white-space: normal !important; min-width: 14em; }
+.dp-matrix-wrap { overflow-x: auto; max-width: 100%; }
+.dp-msg-matrix { border-collapse: collapse; font-size: 0.85em; }
+.dp-msg-matrix th, .dp-msg-matrix td { border: 1px solid var(--border); padding: 2px 6px; text-align: center; white-space: nowrap; }
+.dp-msg-matrix th:first-child, .dp-msg-matrix td:first-child,
+.dp-msg-matrix th:nth-child(2), .dp-msg-matrix td:nth-child(2) { text-align: left; }
+.dp-msg-matrix tr.selected td { background: var(--selected); }
+.dp-matrix-pilot { background: none; border: none; padding: 0; color: var(--accent); text-align: left; font-weight: 600; }
+.dp-matrix-pilot:hover { text-decoration: underline; }
+.dp-matrix-cell { background: none; border: none; padding: 0 4px; color: var(--accent); font-weight: 600; }
+.dp-msg-matrix td.cov-miss { color: var(--muted); }
+.dp-msg-matrix td.cov-ok { color: var(--accent); font-weight: 600; }
+.dp-msg-matrix td.cov-partial { color: var(--warning); font-weight: 600; }
+.dp-missing-pilots { list-style: none; padding: 0; margin: 4px 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.dp-missing-pilots li { display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
+
+.mw-preview { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 8px; }
+.mw-controls { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 0.85em; }
+.mw-nav { display: inline-flex; gap: 6px; align-items: center; }
+.mw-step { color: var(--muted); font-variant-numeric: tabular-nums; }
+.mw-vars-toggle { display: inline-flex; gap: 4px; align-items: center; color: var(--muted); }
+.mw-frame {
+  display: flex; align-items: center; gap: 10px;
+  width: 508px; max-width: 100%; box-sizing: border-box; padding: 10px;
+  background: #2b3240; border: 2px solid #727b8e; border-radius: 4px;
+}
+.mw-face-wrap {
+  width: 64px; height: 64px; flex: none;
+  background: #11151d; border: 1px solid #596173;
+  display: flex; align-items: center; justify-content: center;
+}
+.mw-face { width: 64px; height: 64px; display: block; image-rendering: pixelated; }
+.mw-box {
+  width: 417px; max-width: 100%; min-height: 70px; box-sizing: border-box;
+  padding: 3px 6px; background: #ffffff; color: #000000; border: 1px solid #596173;
+  font-family: "ＭＳ Ｐ明朝", "MS PMincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  font-size: 16px; line-height: 1.05; overflow-x: hidden;
+}
+.mw-speaker, .mw-line { white-space: pre; }
+.mw-special { margin: 4px 0; color: #555555; font-size: 0.85em; }
+.mw-meta { font-size: 0.85em; color: var(--muted); min-height: 1.2em; }
+.mw-meta.mw-overflow { color: var(--warning); font-weight: 600; }
+

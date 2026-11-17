@@ -335,7 +335,7 @@ export async function listWanted(dir: string): Promise<string[]> {
           await walk(p);
         }
       } else if (lower === 'data/system/terrain.txt' || lower === 'data/system/sp.txt'
-        || (lower.startsWith('data/') && /(^|\/)(robot|unit|pilot|sp)\.txt$/.test(lower))
+        || (lower.startsWith('data/') && /(^|\/)(robot|unit|pilot|non_pilot|sp)\.txt$/.test(lower))
         || (/^bitmap\/(map|unit|pilot)\//.test(lower) && /\.(bmp|png|jpg|gif)$/.test(lower))
         || lower.endsWith('.map')
         || lower.endsWith('.eve')) {

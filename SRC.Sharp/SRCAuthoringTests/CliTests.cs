@@ -97,10 +97,11 @@ namespace SRCAuthoring.Tests
                 (exitCode, stdout, stderr) = Run("play", Path.Combine(folder, "第1話.eve"), "--script", Path.Combine(folder, "第1話.play"), "--app-path", basicData, "--skip-wait", "--seed", "1");
                 Assert.AreEqual(0, exitCode, stdout + stderr);
 
-                // 試し戦闘（7474/SRC#1643）: データのユニット・パイロットの一覧と、敵と戦うイベント。最後まで自動で遊べる
+                // 試し戦闘（7474/SRC#1643・#1651）: データのユニット・パイロット・MessageType の一覧と、各焦点の試し戦闘イベント
                 (exitCode, stdout, stderr) = Run("trial", folder, "--list", "--app-path", basicData);
                 Assert.AreEqual(0, exitCode, stderr);
                 StringAssert.Contains(stdout, "\"units\":[\"見習い機\",\"偵察機\"]");
+                StringAssert.Contains(stdout, "\"messageTypes\":");
                 (exitCode, stdout, stderr) = Run("trial", folder, "--unit", "偵察機", "--app-path", basicData);
                 Assert.AreEqual(0, exitCode, stderr);
                 var trial = stdout.Trim();
@@ -111,6 +112,21 @@ namespace SRCAuthoring.Tests
                 File.WriteAllText(trialPlay, "auto 200\nturns 15\nexpect finished\nexpect error none\n");
                 (exitCode, stdout, stderr) = Run("play", trial, "--script", trialPlay, "--app-path", basicData, "--skip-wait", "--seed", "1");
                 Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                // --focus attack で隣接した瀕死の敵が生成され、エラーなく最後まで遊べる（evade / damage / destroy も有効な .eve を生成）
+                (exitCode, stdout, stderr) = Run("trial", folder, "--unit", "偵察機", "--focus", "attack", "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(File.ReadAllText(trial), "RecoverHP 10");
+                (exitCode, stdout, stderr) = Run("play", trial, "--script", trialPlay, "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                foreach (var (focus, expectedSnippet) in new[] { ("evade", "Create 味方 \"偵察機\" 10"), ("damage", "RecoverHP 70"), ("destroy", "RecoverHP 1") })
+                {
+                    (exitCode, stdout, stderr) = Run("trial", folder, "--unit", "偵察機", "--focus", focus, "--app-path", basicData);
+                    Assert.AreEqual(0, exitCode, stderr);
+                    StringAssert.Contains(File.ReadAllText(trial), expectedSnippet);
+                }
+
                 (exitCode, _, stderr) = Run("trial", folder, "--unit", "無い機体", "--app-path", basicData);
                 Assert.AreEqual(1, exitCode);
                 StringAssert.Contains(stderr, "無い機体");

@@ -70,6 +70,7 @@ namespace SRCAuthoring.Rules
         public IReadOnlyList<UnitData> Units { get; set; } = Array.Empty<UnitData>();
         public IReadOnlyList<PilotData> Pilots { get; set; } = Array.Empty<PilotData>();
         public IReadOnlyList<MessageData> Messages { get; set; } = Array.Empty<MessageData>();
+        public IReadOnlyList<DialogData> Dialogs { get; set; } = Array.Empty<DialogData>();
         /// <summary>
         /// 読み込んだデータの武器・アビリティ・特殊能力の名前（同じ名前のデータが後のファイルで置き換えられたものも含む）。
         /// 空なら、規則は今のデータから集める

@@ -54,5 +54,56 @@ namespace SRCAuthoring.Tests
             Assert.IsTrue(errors.Count > 0);
             StringAssert.Contains(errors[0], "行目");
         }
+
+        [TestMethod]
+        public void Messages_CoverageWeaponsAndMissingPilots()
+        {
+            var pilot = "主人公\n主人公, しゅじんこう, 男性, 汎用, AAAA, 120\n特殊能力なし\n150, 145, 150, 150, 150, 155, 普通\nＳＰ, 0\nHero.bmp, -.mid\n\n未定義人\n未定義人, み, 男性, 汎用, AAAA, 100\n特殊能力なし\n100, 100, 100, 100, 100, 100, 普通\nＳＰ, 0\n-.bmp, -.mid\n";
+            var robot = "試作機\n試作機, しさくき, 汎用, 1, 2\n陸, 4, M, 1000, 100\n特殊能力なし\n3000, 100, 600, 60\nAAAA, -.bmp\nパンチ, 1000, 1, 1, +0, -, -, -, AAAA, +0, 突\nビーム(強), 1500, 2, 4, +10, 8, -, -, AAAA, +5, Ｂ\n===\n";
+            var eve = "プロローグ:\nCreate 味方 試作機 0 主人公 1 2 2\nExit\n";
+            var msg = "主人公\n回避, かわした\nビーム, 発射！\n\n未書込\n回避, テスト\n";
+            var json = JsonNode.Parse(DataPreview.ToJson("Data/pilot_message.txt", msg, new[]
+            {
+                ("Data/pilot.txt", pilot),
+                ("Data/robot.txt", robot),
+                ("01.eve", eve),
+            }));
+            Assert.AreEqual("message", json["kind"].GetValue<string>());
+            Assert.IsTrue(json["standardSituations"].AsArray().Count >= 5);
+            var entries = json["entries"].AsArray();
+            Assert.AreEqual(2, entries.Count);
+            var hero = entries[0];
+            Assert.AreEqual("主人公", hero["name"].GetValue<string>());
+            Assert.AreEqual("Hero.bmp", hero["bitmap"].GetValue<string>());
+            CollectionAssert.AreEqual(new[] { "試作機" }, hero["units"].AsArray().Select(x => x.GetValue<string>()).ToArray());
+            CollectionAssert.AreEqual(new[] { "パンチ", "ビーム(強)" }, hero["weapons"].AsArray().Select(w => w["name"].GetValue<string>()).ToArray());
+            var beam = hero["coverage"].AsArray().First(w => w["kind"].GetValue<string>() == "weapon" && w["label"].GetValue<string>() == "ビーム(強)");
+            Assert.AreEqual(1, beam["count"].GetValue<int>(), "カッコ抜きの名前「ビーム」も武器のカバレッジに一致する");
+            var punch = hero["coverage"].AsArray().First(w => w["kind"].GetValue<string>() == "weapon" && w["label"].GetValue<string>() == "パンチ");
+            Assert.AreEqual(0, punch["count"].GetValue<int>());
+
+            var missing = json["missingPilots"].AsArray().Select(m => m["name"].GetValue<string>()).ToList();
+            CollectionAssert.Contains(missing, "未定義人");
+            CollectionAssert.DoesNotContain(missing, "主人公");
+        }
+
+        [TestMethod]
+        public void Dialogs_SpeakerBitmapsFromPilotAndNonPilot()
+        {
+            var pilot = "主人公\n主人公, しゅじんこう, 男性, 汎用, AAAA, 120\n特殊能力なし\n150, 145, 150, 150, 150, 155, 普通\nＳＰ, 0\nHero.bmp, -.mid\n";
+            var nonPilot = "通信士\n通信士, Comms.bmp\n";
+            var dialog = "主人公\n攻撃\n主人公, 行くぞ！\n通信士, 了解！\n";
+            var json = JsonNode.Parse(DataPreview.ToJson("Data/pilot_dialog.txt", dialog, new[]
+            {
+                ("Data/pilot.txt", pilot),
+                ("Data/non_pilot.txt", nonPilot),
+            }));
+            Assert.AreEqual("dialog", json["kind"].GetValue<string>());
+            var speakers = json["entries"][0]["items"][0]["messages"].AsArray();
+            Assert.AreEqual("主人公", speakers[0]["speaker"].GetValue<string>());
+            Assert.AreEqual("Hero.bmp", speakers[0]["bitmap"].GetValue<string>());
+            Assert.AreEqual("通信士", speakers[1]["speaker"].GetValue<string>());
+            Assert.AreEqual("Comms.bmp", speakers[1]["bitmap"].GetValue<string>());
+        }
     }
 }

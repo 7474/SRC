@@ -13,6 +13,8 @@ namespace SRCCore.Models
     {
         // パイロット一覧
         public string Name = "";
+        // 定義のあるファイルと行（SRC# の作成支援ツール用。元の SRC には無い）
+        public DataLocation Location;
 
         // ダイアログ一覧
         private IList<Dialog> Dialoges = new List<Dialog>();

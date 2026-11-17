@@ -26,7 +26,7 @@ function wanted(path, isDir) {
   }
   return p === 'data/system/terrain.txt' || p === 'data/system/sp.txt'
     // データのファイル（プレビュー）と、ユニット・パイロットの画像・イベント
-    || (p.startsWith('data/') && /(^|\/)(robot|unit|pilot|sp)\.txt$/.test(p))
+    || (p.startsWith('data/') && /(^|\/)(robot|unit|pilot|non_pilot|pilot_message|pilot_dialog|sp)\.txt$/.test(p))
     || (/^bitmap\/(map|unit|pilot)\//.test(p) && /\.(bmp|png|jpg|gif)$/.test(p))
     || p.endsWith('.map')
     || p.endsWith('.eve');

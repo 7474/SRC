@@ -23,13 +23,14 @@ const preview = new DataPreview(document.getElementById('preview'), {
   lines: () => lastText.split(/\r?\n/),
   // 表で直した行は、拡張が文書に書き換える（保存・元に戻すは VS Code のもの）
   editLines: edits => vscode.postMessage({ type: 'editLines', edits }),
+  insertLines: (afterLine, text) => vscode.postMessage({ type: 'insertLines', afterLine, text }),
   async loadImage(kind, bitmap) {
-    const folder = kind === 'pilot' ? 'Pilot' : 'Unit';
+    const folder = kind === 'pilot' || kind === 'message' || kind === 'dialog' ? 'Pilot' : 'Unit';
     const found = await findFile([`Bitmap/${folder}/${bitmap}`, `Bitmap/${bitmap}`]);
     return found ? createImageBitmap(new Blob([await read(found.root, found.path)])) : null;
   },
   // 一覧で選ぶと、エディタのその行へ
-  onSelect: entry => vscode.postMessage({ type: 'select', line: entry.startLine }),
+  onSelect: (entry, line) => vscode.postMessage({ type: 'select', line: line ?? entry.startLine }),
 });
 
 window.addEventListener('message', async ev => {

@@ -162,6 +162,7 @@ namespace SRCAuthoring.Linting
                 Units = src.UDList.Items.Where(x => IsTarget(x.Location)).ToList(),
                 Pilots = src.PDList.Items.Where(x => IsTarget(x.Location)).ToList(),
                 Messages = src.MDList.Items.Where(x => IsTarget(x.Location)).ToList(),
+                Dialogs = src.DDList.Items.Where(x => IsTarget(x.Location)).ToList(),
                 ResolveFile = x => string.IsNullOrEmpty(x) ? x : Path.GetFullPath(x),
                 ActionNames = actionNames,
             };

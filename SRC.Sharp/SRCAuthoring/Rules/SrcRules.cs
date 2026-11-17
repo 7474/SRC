@@ -65,11 +65,69 @@ namespace SRCAuthoring.Rules
             "地上", "水上", "水中", "空中", "地中",
         };
 
+        private static readonly HashSet<string> AttackSubSituations = new HashSet<string>
+        {
+            "反撃", "命中", "クリティカル", "回避", "攻撃無効化", "ダメージ", "とどめ",
+        };
+
+        private static readonly HashSet<string> AttackWeaponSituations = new HashSet<string>
+        {
+            "攻撃", "格闘", "射撃", "かけ声", "浄化", "浄解",
+        };
+
+        private static readonly HashSet<string> PilotRefSituations = new HashSet<string>
+        {
+            "かばう", "連携攻撃", "サポートガード",
+        };
+
+        /// <summary>元の SRC が使うシチュエーション（括弧の前の部分）の一覧</summary>
+        public static IReadOnlyCollection<string> StandardSituations => KnownSituations;
+
+        /// <summary>攻撃のサブシチュエーション（括弧の中）の一覧</summary>
+        public static IReadOnlyCollection<string> StandardSubSituations => AttackSubSituations;
+
         /// <summary>シチュエーションの括弧の前の部分。元の SRC は半角の「(」で区切る（全角の「（」は区切りにならない）</summary>
         public static string SituationBase(string situation)
         {
             var i = (situation ?? "").IndexOf('(');
             return (i < 0 ? situation ?? "" : situation.Substring(0, i)).Trim();
+        }
+
+        /// <summary>最初の半角「(」の後ろに並ぶ括弧 (...) の中身を順に取り出す</summary>
+        public static IEnumerable<string> SituationModifiers(string situation)
+        {
+            if (string.IsNullOrEmpty(situation))
+            {
+                yield break;
+            }
+            var first = situation.IndexOf('(');
+            if (first < 0)
+            {
+                yield break;
+            }
+            var depth = 0;
+            var start = -1;
+            for (var i = first; i < situation.Length; i++)
+            {
+                var ch = situation[i];
+                if (ch == '(')
+                {
+                    if (depth == 0)
+                    {
+                        start = i + 1;
+                    }
+                    depth++;
+                }
+                else if (ch == ')' && depth > 0)
+                {
+                    depth--;
+                    if (depth == 0 && start >= 0)
+                    {
+                        yield return situation.Substring(start, i - start).Trim();
+                        start = -1;
+                    }
+                }
+            }
         }
 
         /// <summary>データの中の、武器・アビリティ・特殊能力の名前</summary>
@@ -84,23 +142,167 @@ namespace SRCAuthoring.Rules
             return names;
         }
 
+        /// <summary>パイロットデータの MessageType（名称と「メッセージ=...」の指定）</summary>
+        private static HashSet<string> DefinedMessageTypes(DataRuleContext c)
+        {
+            var types = new HashSet<string>(System.StringComparer.Ordinal);
+            foreach (var p in c.Src.PDList.Items)
+            {
+                if (!string.IsNullOrEmpty(p.Name))
+                {
+                    types.Add(p.Name);
+                }
+                foreach (var s in p.Skills.Where(s => s.Name == "メッセージ" && !string.IsNullOrEmpty(s.StrData)))
+                {
+                    types.Add(s.StrData);
+                }
+            }
+            return types;
+        }
+
+        /// <summary>パイロットの名称・愛称・ノンパイロットの名称</summary>
+        private static HashSet<string> DefinedPilotNames(DataRuleContext c)
+        {
+            var names = new HashSet<string>(System.StringComparer.Ordinal);
+            foreach (var p in c.Src.PDList.Items)
+            {
+                if (!string.IsNullOrEmpty(p.Name)) names.Add(p.Name);
+                if (!string.IsNullOrEmpty(p.Nickname)) names.Add(p.Nickname);
+            }
+            foreach (var np in c.Src.NPDList.Items)
+            {
+                if (!string.IsNullOrEmpty(np.Name)) names.Add(np.Name);
+                if (!string.IsNullOrEmpty(np.Nickname)) names.Add(np.Nickname);
+            }
+            return names;
+        }
+
+        /// <summary>ユニットの名称・愛称・クラス・メッセージクラス</summary>
+        private static HashSet<string> DefinedUnitIdentifiers(DataRuleContext c)
+        {
+            var names = new HashSet<string>(System.StringComparer.Ordinal);
+            foreach (var u in c.Src.UDList.Items)
+            {
+                if (!string.IsNullOrEmpty(u.Name)) names.Add(u.Name);
+                if (!string.IsNullOrEmpty(u.Nickname)) names.Add(u.Nickname);
+                if (!string.IsNullOrEmpty(u.Class))
+                {
+                    names.Add(u.Class);
+                    var cls = u.Class;
+                    if (cls.StartsWith("(", System.StringComparison.Ordinal) && cls.EndsWith(")", System.StringComparison.Ordinal) && cls.Length > 2)
+                    {
+                        cls = cls.Substring(1, cls.Length - 2);
+                        names.Add(cls);
+                    }
+                    if (cls.EndsWith("専用)", System.StringComparison.Ordinal))
+                    {
+                        var open = cls.LastIndexOf('(');
+                        if (open > 0)
+                        {
+                            names.Add(cls.Substring(0, open));
+                        }
+                    }
+                }
+                foreach (var f in u.Features.Where(f => (f.Name == "メッセージクラス" || f.Name == "愛称変更") && !string.IsNullOrEmpty(f.StrData)))
+                {
+                    names.Add(f.StrData);
+                }
+            }
+            return names;
+        }
+
         public static readonly IDataRule MessageSituationUnknown = new LambdaRule(
             "message-situation-unknown", SrcOnly, DiagnosticSeverity.Information,
-            "メッセージのシチュエーションが、SRC が使うものでも、武器・アビリティ・特殊能力・スペシャルパワーの名前でもない（表示されない）",
-            "元の SRC の Unit.PilotMessage・IsMessageDefined に渡す文字列と、武器・アビリティの名前・スペシャルパワーの名前。シチュエーションは半角の「(」の前で比べる。ユニットのデータを 1 つも読んでいなければ調べない。tools/pack-stats の check",
+            "メッセージのシチュエーション・パイロット・武器が、SRC が使うものでもデータにある名前でもない（表示されない）",
+            "元の SRC の Unit.PilotMessage・IsMessageDefined に渡す文字列と、パイロットの MessageType・武器・アビリティの名前・スペシャルパワーの名前。ユニットまたはパイロットのデータを読んでいない部分は調べない。tools/pack-stats の check (7474/SRC#1651)",
             (c, r) =>
             {
-                if (!c.Src.UDList.Items.Any(x => x.Location != null))
+                var hasUnits = c.Src.UDList.Items.Any(x => x.Location != null);
+                var hasPilots = c.Src.PDList.Items.Any(x => x.Location != null);
+                if (!hasUnits && !hasPilots)
                 {
                     return Enumerable.Empty<SrcDiagnostic>();
                 }
-                var names = ActionNames(c);
-                bool Known(string b) => KnownSituations.Contains(b) || names.Contains(b) || c.Src.SPDList.IsDefined(b);
-                return c.Messages.SelectMany(m => m.Items
-                    .Where(x => !Known(SituationBase(x.Situation)))
-                    .GroupBy(x => x.Situation)
-                    .Select(g => r.At(c, g.First().Location ?? m.Location, g.First().Location?.Line ?? m.Location?.Line ?? 1,
-                        $"シチュエーション「{g.Key}」は、SRC が使うものでも、武器・アビリティ・特殊能力・スペシャルパワーの名前でもありません（表示されません）", m.Name)));
+                var diagnostics = new List<SrcDiagnostic>();
+                var actionNames = hasUnits ? ActionNames(c) : new HashSet<string>();
+                var unitIds = hasUnits ? DefinedUnitIdentifiers(c) : new HashSet<string>();
+                var messageTypes = hasPilots ? DefinedMessageTypes(c) : new HashSet<string>();
+                var pilotNames = hasPilots ? DefinedPilotNames(c) : new HashSet<string>();
+                bool KnownBase(string b) => KnownSituations.Contains(b) || actionNames.Contains(b) || c.Src.SPDList.IsDefined(b);
+
+                void CheckSituation(string situation, DataLocation location, string source)
+                {
+                    if (string.IsNullOrEmpty(situation) || situation.Contains("$("))
+                    {
+                        return;
+                    }
+                    var baseSit = SituationBase(situation);
+                    if (hasUnits && !KnownBase(baseSit))
+                    {
+                        diagnostics.Add(r.At(c, location, location?.Line ?? 1,
+                            $"シチュエーション「{situation}」は、SRC が使うものでも、武器・アビリティ・特殊能力・スペシャルパワーの名前でもありません（表示されません）", source));
+                        return;
+                    }
+                    foreach (var mod in SituationModifiers(situation))
+                    {
+                        if (string.IsNullOrEmpty(mod) || mod.Contains("$(") || mod.StartsWith("対", System.StringComparison.Ordinal))
+                        {
+                            continue;
+                        }
+                        if (hasPilots && PilotRefSituations.Contains(baseSit))
+                        {
+                            // サポートガードはパイロット名のほかにユニット名・クラスも修飾子として使える
+                            var ok = pilotNames.Contains(mod) || (baseSit == "サポートガード" && hasUnits && unitIds.Contains(mod));
+                            if (!ok)
+                            {
+                                diagnostics.Add(r.At(c, location, location?.Line ?? 1,
+                                    $"パイロット「{mod}」がデータにありません（シチュエーション「{situation}」は表示されません）", source));
+                            }
+                            break;
+                        }
+                        if (hasUnits && AttackWeaponSituations.Contains(baseSit) && !AttackSubSituations.Contains(mod))
+                        {
+                            if (!actionNames.Contains(mod) && !unitIds.Contains(mod))
+                            {
+                                diagnostics.Add(r.At(c, location, location?.Line ?? 1,
+                                    $"武器「{mod}」がデータにありません（シチュエーション「{situation}」は表示されません）", source));
+                            }
+                        }
+                    }
+                }
+
+                foreach (var m in c.Messages)
+                {
+                    if (hasPilots && !messageTypes.Contains(m.Name) && !c.Src.NPDList.IsDefined(m.Name))
+                    {
+                        diagnostics.Add(r.At(c, m.Location, m.Location?.Line ?? 1,
+                            $"パイロット「{m.Name}」がデータにありません（表示されません）", m.Name));
+                    }
+                    foreach (var g in m.Items.GroupBy(x => x.Situation))
+                    {
+                        CheckSituation(g.Key, g.First().Location ?? m.Location, m.Name);
+                    }
+                }
+
+                foreach (var dd in c.Dialogs)
+                {
+                    if (hasPilots)
+                    {
+                        var tokens = (dd.Name ?? "").Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+                        var missing = tokens.FirstOrDefault(t => !messageTypes.Contains(t) && !c.Src.NPDList.IsDefined(t));
+                        if (missing != null)
+                        {
+                            diagnostics.Add(r.At(c, dd.Location, dd.Location?.Line ?? 1,
+                                $"パイロット「{missing}」がデータにありません（表示されません）", dd.Name));
+                        }
+                    }
+                    foreach (var g in dd.Items.GroupBy(x => x.Situation))
+                    {
+                        CheckSituation(g.Key, g.First().Location ?? dd.Location, dd.Name);
+                    }
+                }
+
+                return diagnostics;
             });
 
         public static IEnumerable<IDataRule> All => new[]

@@ -14,6 +14,8 @@ namespace SRCCore.Models
         public string strName { get; }
         // メッセージ
         public string strMessage { get; }
+        // 定義のあるファイルと行（SRC# の作成支援ツール用。元の SRC には無い）
+        public DataLocation Location { get; set; }
 
         public DialogItem(string strName, string strMessage)
         {
@@ -26,6 +28,8 @@ namespace SRCCore.Models
     public class Dialog : ISituationItem
     {
         public string Situation { get; set; } = "";
+        // 定義のあるファイルと行（SRC# の作成支援ツール用。元の SRC には無い）
+        public DataLocation Location { get; set; }
         private IList<DialogItem> dialogs = new List<DialogItem>();
         private SRC SRC;
 
@@ -37,9 +41,11 @@ namespace SRCCore.Models
         public IList<DialogItem> Items => dialogs;
 
         // ダイアログにメッセージを追加
-        public void AddMessage(string Name, string Message)
+        public DialogItem AddMessage(string Name, string Message)
         {
-            dialogs.Add(new DialogItem(Name, Message));
+            var item = new DialogItem(Name, Message);
+            dialogs.Add(item);
+            return item;
         }
 
         // ダイアログに含まれるメッセージ数

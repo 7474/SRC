@@ -44,16 +44,34 @@ namespace SRCAuthoring.Analysis
         public string Summary { get; set; }
     }
 
+    /// <summary>武器・アビリティの定義（名前・持つユニット・場所・ホバーに出す要約）</summary>
+    public sealed class WeaponEntry
+    {
+        public string Name { get; set; }
+        public string UnitName { get; set; }
+        public string File { get; set; }
+        public int Line { get; set; }
+        public string Summary { get; set; }
+    }
+
     /// <summary>
-    /// シナリオのデータ（ユニット・パイロット・アイテム）の名前の一覧。SRCCore の読み込み処理で読んだ一覧から作る。
-    /// イベントの参照の検査・補完・ホバー・定義へ移動に使う
+    /// シナリオのデータ（ユニット・パイロット・アイテム・武器）の名前の一覧。SRCCore の読み込み処理で読んだ一覧から作る。
+    /// イベントの参照の検査・補完・ホバー・定義へ移動・メッセージ作成支援に使う
     /// </summary>
     public sealed class DataCatalog
     {
         private readonly Dictionary<DataKind, Dictionary<string, DataEntry>> byName = new Dictionary<DataKind, Dictionary<string, DataEntry>>();
+        private readonly Dictionary<string, DataEntry> byMessageType = new Dictionary<string, DataEntry>(StringComparer.Ordinal);
+        private readonly Dictionary<string, WeaponEntry> weaponsByName = new Dictionary<string, WeaponEntry>(StringComparer.Ordinal);
         private readonly List<DataEntry> entries = new List<DataEntry>();
+        private readonly List<WeaponEntry> weapons = new List<WeaponEntry>();
+        private readonly List<string> messageTypes = new List<string>();
+        private readonly List<string> specialPowers = new List<string>();
 
         public IReadOnlyList<DataEntry> Entries => entries;
+        public IReadOnlyList<WeaponEntry> Weapons => weapons;
+        public IReadOnlyList<string> MessageTypes => messageTypes;
+        public IReadOnlyList<string> SpecialPowers => specialPowers;
 
         public static readonly DataCatalog Empty = new DataCatalog();
 
@@ -62,7 +80,15 @@ namespace SRCAuthoring.Analysis
 
         /// <summary>名前か愛称で引く</summary>
         public DataEntry Find(DataKind kind, string name) =>
-            byName.TryGetValue(kind, out var d) && d.TryGetValue(name, out var e) ? e : null;
+            name != null && byName.TryGetValue(kind, out var d) && d.TryGetValue(name, out var e) ? e : null;
+
+        /// <summary>パイロットを名前・愛称・メッセージタイプ（「メッセージ=...」）で引く</summary>
+        public DataEntry FindPilotOrMessageType(string name) =>
+            Find(DataKind.Pilot, name) ?? (name != null && byMessageType.TryGetValue(name, out var e) ? e : null);
+
+        /// <summary>武器を名前で引く</summary>
+        public WeaponEntry FindWeapon(string name) =>
+            name != null && weaponsByName.TryGetValue(name, out var w) ? w : null;
 
         /// <summary>どの種類でもよいので名前か愛称で引く（ホバー・定義へ移動）</summary>
         public DataEntry FindAny(string name) =>
@@ -87,6 +113,7 @@ namespace SRCAuthoring.Analysis
         public static DataCatalog FromSrc(SRCCore.SRC src, IEnumerable<string> files = null)
         {
             var catalog = new DataCatalog();
+            var seenMessageTypes = new HashSet<string>(StringComparer.Ordinal);
             // 場所の無いもの（SRCCore が内部で作る仮のユニット・パイロット）は、シナリオのデータに数えない
             foreach (var u in src.UDList.Items.Where(x => x.Location != null))
             {
@@ -100,10 +127,29 @@ namespace SRCAuthoring.Analysis
                     Summary = string.Format(CultureInfo.InvariantCulture, "ユニット **{0}**（{1}）  \nHP {2}・EN {3}・装甲 {4}・運動性 {5}・移動力 {6}・サイズ {7}",
                         u.Name, u.Class, u.HP, u.EN, u.Armor, u.Mobility, u.Speed, u.Size),
                 });
+                foreach (var w in u.Weapons)
+                {
+                    if (string.IsNullOrEmpty(w.Name))
+                    {
+                        continue;
+                    }
+                    var range = w.MinRange == w.MaxRange ? w.MaxRange.ToString(CultureInfo.InvariantCulture) : $"{w.MinRange}-{w.MaxRange}";
+                    var we = new WeaponEntry
+                    {
+                        Name = w.Name,
+                        UnitName = u.Name,
+                        File = w.Location?.FileName ?? u.Location?.FileName,
+                        Line = w.Location?.Line ?? u.Location?.Line ?? 0,
+                        Summary = string.Format(CultureInfo.InvariantCulture, "武器 **{0}**（{1}）  \n攻撃力 {2}・射程 {3}・命中 {4:+#;-#;0}・属性 {5}",
+                            w.Name, u.Name, w.Power, range, w.Precision, string.IsNullOrEmpty(w.Class) ? "-" : w.Class),
+                    };
+                    catalog.weapons.Add(we);
+                    catalog.weaponsByName.TryAdd(w.Name, we);
+                }
             }
             foreach (var p in src.PDList.Items.Where(x => x.Location != null))
             {
-                catalog.Add(new DataEntry
+                var entry = new DataEntry
                 {
                     Kind = DataKind.Pilot,
                     Name = p.Name,
@@ -112,7 +158,23 @@ namespace SRCAuthoring.Analysis
                     Line = p.Location?.Line ?? 0,
                     Summary = string.Format(CultureInfo.InvariantCulture, "パイロット **{0}**（{1}）  \n格闘 {2}・射撃 {3}・命中 {4}・回避 {5}・技量 {6}・反応 {7}・SP {8}",
                         p.Name, p.Class, p.Infight, p.Shooting, p.Hit, p.Dodge, p.Technique, p.Intuition, p.SP),
-                });
+                };
+                catalog.Add(entry);
+                foreach (var s in p.Skills.Where(s => s.Name == "メッセージ" && !string.IsNullOrEmpty(s.StrData)))
+                {
+                    catalog.byMessageType.TryAdd(s.StrData, entry);
+                    if (s.StrData != p.Name && seenMessageTypes.Add(s.StrData))
+                    {
+                        catalog.messageTypes.Add(s.StrData);
+                    }
+                }
+            }
+            foreach (var sp in src.SPDList.Items)
+            {
+                if (!string.IsNullOrEmpty(sp.Name))
+                {
+                    catalog.specialPowers.Add(sp.Name);
+                }
             }
             var itemFiles = (files ?? Enumerable.Empty<string>()).Where(f => Path.GetFileName(f).Equals("item.txt", StringComparison.OrdinalIgnoreCase)).ToList();
             foreach (var i in src.IDList.Items)

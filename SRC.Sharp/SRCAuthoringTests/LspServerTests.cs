@@ -295,5 +295,75 @@ namespace SRCAuthoring.Tests
                 Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
             }
         }
+
+        [TestMethod]
+        public void Lsp_MessageAndDialogSupport()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                var pilot = scenario.Write(System.IO.Path.Combine("Data", "pilot.txt"),
+                    "主人公", "主人公, しゅじんこう, 男性, 汎用, AAAA, 120", "特殊能力", "メッセージ=ヒーロー, 1", "150, 145, 150, 150, 150, 155, 普通", "ＳＰ, 0", "-.bmp, -.mid", "");
+                var robot = scenario.Write(System.IO.Path.Combine("Data", "robot.txt"),
+                    "試作機", "試作機, しさくき, 汎用, 1, 2", "陸, 4, M, 1000, 100", "特殊能力なし", "3000, 100, 600, 60", "AAAA, -.bmp",
+                    "ライフル, 1200, 2, 4, +10, 8, -, -, AAAA, +5, 実", "===", "");
+                var msg = scenario.Write(System.IO.Path.Combine("Data", "pilot_message.txt"),
+                    "主人公\n回避, かわした\nライフル(対ザコ), 撃つ！\n攻撃(無い武器), だめ\n<BIG>テスト</BIG> $(武器)\n");
+                var uri = LspServer.PathToUri(msg);
+                var server = new LspServer(client.ServerInput, client.ServerOutput) { Debounce = TimeSpan.FromMilliseconds(10), Help = RepositoryHelp() };
+                var run = Task.Run(() => server.RunAsync());
+
+                Request(client, "initialize", new JsonObject
+                {
+                    ["capabilities"] = new JsonObject(),
+                    ["initializationOptions"] = new JsonObject { ["rules"] = new JsonArray("src") },
+                });
+                Notify(client, "initialized", new JsonObject());
+                var msgText = "ヒーロー\n回避, かわした\nライフル(対ザコ), 撃つ！\n攻撃(無い武器), だめ\n主人公\n";
+                Notify(client, "textDocument/didOpen", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri, ["languageId"] = "src-data", ["version"] = 1, ["text"] = msgText },
+                });
+
+                // 「攻撃(無い武器)」に診断が出る（「ヒーロー」は MessageType なので OK）
+                var diagnostics = client.WaitFor(x => x["method"]?.GetValue<string>() == "textDocument/publishDiagnostics"
+                    && x["params"]["uri"].GetValue<string>() == uri, "publishDiagnostics");
+                var items = diagnostics["params"]["diagnostics"].AsArray();
+                Assert.IsTrue(items.Any(d => d["code"]?.GetValue<string>() == "message-situation-unknown" && d["range"]["start"]["line"].GetValue<int>() == 3), diagnostics.ToJsonString());
+                Assert.IsFalse(items.Any(d => d["range"]["start"]["line"].GetValue<int>() == 0), diagnostics.ToJsonString());
+
+                // 補完に標準シチュエーション・修飾子・タグ・変数・パイロット・武器が含まれる
+                var completion = Request(client, "textDocument/completion", Position(uri, 4, 0)).AsArray();
+                var labels = completion.Select(x => x["label"].GetValue<string>()).ToList();
+                CollectionAssert.Contains(labels, "回避");
+                CollectionAssert.Contains(labels, "(対ザコ)");
+                CollectionAssert.Contains(labels, "<BIG>");
+                CollectionAssert.Contains(labels, "$(武器)");
+                CollectionAssert.Contains(labels, "主人公");
+                CollectionAssert.Contains(labels, "ライフル");
+
+                // ホバー: シチュエーション・修飾子・武器・パイロット（MessageType）
+                var hoverSit = Request(client, "textDocument/hover", Position(uri, 1, 1));
+                StringAssert.Contains(hoverSit["contents"]["value"].GetValue<string>(), "回避");
+                var hoverMod = Request(client, "textDocument/hover", Position(uri, 2, 6));
+                StringAssert.Contains(hoverMod["contents"]["value"].GetValue<string>(), "対ザコ");
+                var hoverWeapon = Request(client, "textDocument/hover", Position(uri, 2, 1));
+                StringAssert.Contains(hoverWeapon["contents"]["value"].GetValue<string>(), "ライフル");
+                var hoverType = Request(client, "textDocument/hover", Position(uri, 0, 1));
+                StringAssert.Contains(hoverType["contents"]["value"].GetValue<string>(), "主人公");
+
+                // 定義へ移動: パイロット・武器
+                var defPilot = Request(client, "textDocument/definition", Position(uri, 4, 1));
+                Assert.AreEqual(LspServer.PathToUri(pilot), defPilot["uri"].GetValue<string>());
+                Assert.AreEqual(0, defPilot["range"]["start"]["line"].GetValue<int>());
+                var defWeapon = Request(client, "textDocument/definition", Position(uri, 2, 1));
+                Assert.AreEqual(LspServer.PathToUri(robot), defWeapon["uri"].GetValue<string>());
+                Assert.AreEqual(6, defWeapon["range"]["start"]["line"].GetValue<int>());
+
+                Request(client, "shutdown", null);
+                Notify(client, "exit", null);
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
     }
 }

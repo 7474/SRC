@@ -19,6 +19,8 @@ namespace SRCAuthoring.Templates
         public int Level { get; set; } = 30;
         /// <summary>敵の数</summary>
         public int Enemies { get; set; } = 1;
+        /// <summary>試したい場面（normal・attack・evade・damage・destroy。メッセージの確認用。7474/SRC#1651）</summary>
+        public string Focus { get; set; } = "normal";
     }
 
     /// <summary>
@@ -45,6 +47,7 @@ namespace SRCAuthoring.Templates
                 Pilot = setup.Pilot ?? pilots.FirstOrDefault(p => !IsGeneric(p))?.Name ?? pilots.FirstOrDefault()?.Name,
                 Level = setup.Level,
                 Enemies = Math.Max(1, Math.Min(5, setup.Enemies)),
+                Focus = string.IsNullOrEmpty(setup.Focus) ? "normal" : setup.Focus,
             };
             result.EnemyUnit = setup.EnemyUnit ?? result.Unit;
             result.EnemyPilot = setup.EnemyPilot ?? pilots.FirstOrDefault(p => IsGeneric(p) && p.Name != result.Pilot)?.Name ?? pilots.LastOrDefault(p => p.Name != result.Pilot)?.Name;
@@ -79,19 +82,70 @@ namespace SRCAuthoring.Templates
         /// <summary>作るファイル（シナリオのフォルダからの相対パスと中身）</summary>
         public static IReadOnlyDictionary<string, string> Files(TrialSetup s)
         {
+            var focus = (s.Focus ?? "normal").ToLowerInvariant();
             var mapPath = Folder.Replace('/', '\\') + "\\" + MapName;
-            var enemies = Enumerable.Range(0, s.Enemies).Select(i => $"Create 敵 \"{s.EnemyUnit}\" 0 \"{s.EnemyPilot}\" {s.Level} {12 + i % 2} {4 + i * 2}").ToArray();
-            var eve = Lines(new[]
+            var body = new List<string>
             {
                 "# 試し戦闘（srcsharp trial・VS Code の「試し戦闘」が作る。作り直すと上書きする）",
-                $"# 味方: {s.Unit}／{s.Pilot}　敵: {s.EnemyUnit}／{s.EnemyPilot} ×{s.Enemies}　レベル {s.Level}",
+                $"# 味方: {s.Unit}／{s.Pilot}　敵: {s.EnemyUnit}／{s.EnemyPilot} ×{s.Enemies}　レベル {s.Level}　場面: {focus}",
                 "スタート:",
                 $"ChangeMap {mapPath}",
-                $"Create 味方 \"{s.Unit}\" 0 \"{s.Pilot}\" {s.Level} 4 6",
-            }.Concat(enemies).Concat(new[]
+            };
+
+            switch (focus)
+            {
+                case "attack":
+                    body.Add($"Create 味方 \"{s.Unit}\" 0 \"{s.Pilot}\" {s.Level} 4 6");
+                    for (var i = 0; i < s.Enemies; i++)
+                    {
+                        body.Add($"Create 敵 \"{s.EnemyUnit}\" 0 \"{s.EnemyPilot}\" {Math.Max(1, s.Level - 10)} {5 + i} {6 + (i > 0 ? 1 : 0)}");
+                        body.Add("RecoverHP 10");
+                    }
+                    break;
+                case "evade":
+                    body.Add($"Create 味方 \"{s.Unit}\" 10 \"{s.Pilot}\" {Math.Max(s.Level, 60)} 4 6");
+                    for (var i = 0; i < s.Enemies; i++)
+                    {
+                        body.Add($"Create 敵 \"{s.EnemyUnit}\" 0 \"{s.EnemyPilot}\" 1 {5 + i} {6 + (i > 0 ? 1 : 0)}");
+                    }
+                    break;
+                case "damage":
+                    body.Add($"Create 味方 \"{s.Unit}\" 0 \"{s.Pilot}\" {s.Level} 4 6");
+                    body.Add("RecoverHP 70");
+                    for (var i = 0; i < s.Enemies; i++)
+                    {
+                        body.Add($"Create 敵 \"{s.EnemyUnit}\" 2 \"{s.EnemyPilot}\" {s.Level + 5} {5 + i} {6 + (i > 0 ? 1 : 0)}");
+                    }
+                    break;
+                case "destroy":
+                    body.Add($"Create 味方 \"{s.Unit}\" 0 \"{s.Pilot}\" {s.Level} 4 6");
+                    body.Add("RecoverHP 1");
+                    for (var i = 0; i < s.Enemies; i++)
+                    {
+                        body.Add($"Create 敵 \"{s.EnemyUnit}\" 5 \"{s.EnemyPilot}\" {s.Level + 20} {5 + i} {6 + (i > 0 ? 1 : 0)}");
+                    }
+                    break;
+                default:
+                    body.Add($"Create 味方 \"{s.Unit}\" 0 \"{s.Pilot}\" {s.Level} 4 6");
+                    for (var i = 0; i < s.Enemies; i++)
+                    {
+                        body.Add($"Create 敵 \"{s.EnemyUnit}\" 0 \"{s.EnemyPilot}\" {s.Level} {8 + i % 2} {5 + i * 2}");
+                    }
+                    break;
+            }
+
+            var hint = focus switch
+            {
+                "attack" => "（攻撃・とどめの確認: 隣に HP 10% の敵を置きました）",
+                "evade" => "（回避の確認: 低レベルの敵を隣に置きました）",
+                "damage" => "（被弾の確認: 味方 HP 70%、格上の敵を隣に置きました）",
+                "destroy" => "（破壊の確認: 味方 HP 1%、強敵を隣に置きました）",
+                _ => "",
+            };
+            body.AddRange(new[]
             {
                 "Talk システム",
-                "試し戦闘です。データを直して保存すると、続きから読み直します（デバッガのホットリロード）。",
+                "試し戦闘です。データを直して保存すると、続きから読み直します（デバッガのホットリロード）。" + hint,
                 "End",
                 "Exit",
                 "",
@@ -106,7 +160,9 @@ namespace SRCAuthoring.Templates
                 "敗北",
                 "End",
                 "GameOver",
-            }).ToArray());
+            });
+
+            var eve = Lines(body.ToArray());
             var map = new MapDocument(16, 11, new MapTile(0, 0));
             return new Dictionary<string, string>
             {
