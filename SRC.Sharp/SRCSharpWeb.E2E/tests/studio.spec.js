@@ -518,7 +518,7 @@ test('戦闘メッセージ: メッセージウィンドウのプレビュー・
 
   // ソラの最初のセリフがメッセージウィンドウに表示される
   await expect(page.locator('.dp-list li').first()).toHaveText('ソラ');
-  await expect(page.locator('.dp-msg-window-section .mw-speaker')).toHaveText('【主人公】');
+  await expect(page.locator('.dp-msg-window-section .mw-speaker')).toHaveText('【主人公愛称】');
   await expect(page.locator('.dp-msg-window-section .mw-lines')).toContainText('いくぞ、ホタル！');
 
   // 足りないシチュエーションのチップ（例: 発進）を押すと末尾へ追記され、保存できる

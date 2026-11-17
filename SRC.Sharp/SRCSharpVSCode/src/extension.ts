@@ -247,7 +247,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     dataPreview,
     vscode.commands.registerCommand('srcsharp.showPreview', () => dataPreview.show()),
     // テスト用（プレビューに出したもの）。package.json には出さない
-    vscode.commands.registerCommand('srcsharp._previewStatus', () => dataPreview.lastShown),
+    vscode.commands.registerCommand('srcsharp._previewStatus', () => dataPreview.getStatus()),
   );
 
   // 操作パネル

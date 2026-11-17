@@ -17,7 +17,9 @@ export class DataPreviewPanel implements vscode.Disposable {
   private timer: NodeJS.Timeout | undefined;
   private readonly subscriptions: vscode.Disposable[] = [];
   /** 最後に出したもの（テスト用の srcsharp._previewStatus が返す） */
-  public lastShown: { kind: string; entries: string[]; selected: string | null; errors: string[] } | undefined;
+  public lastShown: { kind: string; entries: string[]; selected: string | null; errors: string[]; webviewError?: string; trace?: string[] } | undefined;
+  private lastError: string | undefined;
+  private trace: string[] = [];
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.subscriptions.push(
@@ -25,6 +27,23 @@ export class DataPreviewPanel implements vscode.Disposable {
       vscode.workspace.onDidChangeTextDocument((e) => e.document === this.document && this.schedule()),
       vscode.window.onDidChangeTextEditorSelection((e) => e.textEditor.document === this.document && this.schedule()),
     );
+  }
+
+  public getStatus(): DataPreviewPanel['lastShown'] {
+    if (this.lastShown) {
+      return { ...this.lastShown, ...(this.lastError ? { webviewError: this.lastError } : {}), trace: [...this.trace] };
+    }
+    if (this.trace.length === 0 && !this.lastError) {
+      return undefined;
+    }
+    return {
+      kind: '',
+      entries: [],
+      selected: null,
+      errors: this.lastError ? [this.lastError] : [],
+      ...(this.lastError ? { webviewError: this.lastError } : {}),
+      trace: [...this.trace],
+    };
   }
 
   public static isDataFile(document: vscode.TextDocument): boolean {
@@ -38,8 +57,11 @@ export class DataPreviewPanel implements vscode.Disposable {
       void vscode.window.showErrorMessage('SRC#: データのファイル（robot.txt・unit.txt・pilot.txt・pilot_message.txt・pilot_dialog.txt）を開いてください。');
       return;
     }
+    this.trace = ['show'];
+    this.lastError = undefined;
     const studioRoot = vscode.Uri.joinPath(this.context.extensionUri, 'studio');
     if (!this.panel) {
+      this.lastShown = undefined;
       this.panel = vscode.window.createWebviewPanel('srcsharp.dataPreview', 'SRC# データのプレビュー', { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
         { enableScripts: true, localResourceRoots: [studioRoot], retainContextWhenHidden: true });
       this.panel.onDidDispose(() => {
@@ -69,10 +91,13 @@ export class DataPreviewPanel implements vscode.Disposable {
         await this.sendInit();
       }
     }
-    this.schedule(0);
+    if (this.ready) {
+      this.schedule(0);
+    }
   }
 
   private async sendInit(): Promise<void> {
+    this.trace.push('sendInit');
     await this.panel?.webview.postMessage({
       type: 'init',
       roots: await Promise.all(this.roots.map(async (r) => ({ name: r.name, files: await listWanted(r.dir) }))),
@@ -80,6 +105,9 @@ export class DataPreviewPanel implements vscode.Disposable {
   }
 
   private schedule(delay = 300): void {
+    if (!this.ready) {
+      return;
+    }
     if (this.timer) {
       clearTimeout(this.timer);
     }
@@ -94,6 +122,7 @@ export class DataPreviewPanel implements vscode.Disposable {
     const editor = vscode.window.visibleTextEditors.find((e) => e.document === document);
     const line = (editor?.selection.active.line ?? 0) + 1;
     const fileName = path.basename(document.uri.fsPath);
+    this.trace.push(`send:${fileName}:${line}`);
     await this.panel.webview.postMessage({
       type: 'data',
       name: fileName,
@@ -142,6 +171,7 @@ export class DataPreviewPanel implements vscode.Disposable {
   }
 
   private async receive(msg: { type: string; [key: string]: unknown }): Promise<void> {
+    this.trace.push(`recv:${msg.type}`);
     switch (msg.type) {
       case 'ready':
         this.ready = true;
@@ -205,7 +235,8 @@ export class DataPreviewPanel implements vscode.Disposable {
         break;
       }
       case 'error':
-        void vscode.window.showWarningMessage(`SRC#Studio: ${msg.message as string}`);
+        this.lastError = String(msg.message ?? '');
+        void vscode.window.showWarningMessage(`SRC#Studio: ${this.lastError}`);
         break;
     }
   }

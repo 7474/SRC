@@ -70,6 +70,9 @@ describe('SRC# Authoring', () => {
       let status;
       for (let i = 0; i < 100; i++) {
         status = await vscode.commands.executeCommand('srcsharp._previewStatus');
+        if (status && status.webviewError) {
+          assert.fail(`プレビュー画面のエラー: ${JSON.stringify(status)}`);
+        }
         if (status && check(status)) {
           return status;
         }
