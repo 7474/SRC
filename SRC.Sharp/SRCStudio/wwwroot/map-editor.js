@@ -13,6 +13,7 @@ import { t } from './i18n.js';
 const TILE = 32;
 const NO_LAYER = 10000;
 export const CLASS_COLORS = { '陸': '#8db360', '屋内': '#b49a74', '月面': '#b9b9b9', '水': '#4f86c6', '深水': '#2c5a92', '空': '#bcd8f0', '宇宙': '#1b1b3a' };
+export const PARTY_COLORS = { '味方': '#2f6fd6', '敵': '#d0393e', '中立': '#d99b00', 'ＮＰＣ': '#2d9d5c' };
 const TOOLS = ['pen', 'rect', 'fill', 'pick', 'copy', 'paste'];
 
 export class MapEditor {
@@ -23,12 +24,19 @@ export class MapEditor {
     this.map = null;
     this.tool = 'pen';
     this.target = 'tiles';
+    this.showPlacements = true;
+    this.placements = [];
+    this.selectedPlacement = null;
+    this.moveRangeCells = new Set();
+    this.highlightCell = null;
+    this.dragPlacement = null;
     this.current = { terrain: 0, bitmap: 0 };
     this.zoom = 1;
     this.grid = true;
     this.history = [];
     this.future = [];
     this.images = new Map();
+    this.unitImages = new Map();
     this.clipboard = null;
     this.element = element;
     this.build();
@@ -45,6 +53,7 @@ export class MapEditor {
         <span class="me-group">
           <label><input type="radio" name="me-target" value="tiles" checked> ${t('map.targetTiles')}</label>
           <label><input type="radio" name="me-target" value="layer"> ${t('map.targetLayer')}</label>
+          <label><input type="radio" name="me-target" value="placement"> ${t('map.targetPlacement')}</label>
           <button type="button" class="me-erase" title="${t('map.eraseLayerHint')}">${t('map.eraseLayer')}</button>
         </span>
         <span class="me-group">
@@ -56,6 +65,7 @@ export class MapEditor {
           <span class="me-zoom-label">100%</span>
           <button type="button" class="me-zoom-in" aria-label="${t('map.zoomIn')}">＋</button>
           <label><input type="checkbox" class="me-grid" checked> ${t('map.grid')}</label>
+          <label><input type="checkbox" class="me-show-placements" checked> ${t('map.showPlacements')}</label>
         </span>
         <span class="me-group">
           <button type="button" class="me-resize">${t('map.resize')}</button>
@@ -64,11 +74,25 @@ export class MapEditor {
       <div class="me-body">
         <div class="me-canvas-wrap"><canvas class="me-canvas"></canvas></div>
         <div class="me-palette">
-          <div class="me-current"><canvas width="${TILE}" height="${TILE}"></canvas><span></span></div>
-          <select class="me-class"></select>
-          <input type="search" class="me-search" placeholder="${t('map.search')}">
-          <ul class="me-terrains" role="listbox"></ul>
-          <div class="me-bitmaps"></div>
+          <div class="me-terrain-pane">
+            <div class="me-current"><canvas width="${TILE}" height="${TILE}"></canvas><span></span></div>
+            <select class="me-class"></select>
+            <input type="search" class="me-search" placeholder="${t('map.search')}">
+            <ul class="me-terrains" role="listbox"></ul>
+            <div class="me-bitmaps"></div>
+          </div>
+          <div class="me-placement-pane" hidden>
+            <p class="hint">${t('map.placements.hint')}</p>
+            <div class="me-legend">
+              <span><i class="me-party-dot" style="background:${PARTY_COLORS['味方']}"></i>${t('map.party.ally')}</span>
+              <span><i class="me-party-dot" style="background:${PARTY_COLORS['敵']}"></i>${t('map.party.enemy')}</span>
+              <span><i class="me-party-dot" style="background:${PARTY_COLORS['中立']}"></i>${t('map.party.neutral')}</span>
+              <span><i class="me-party-dot" style="background:${PARTY_COLORS['ＮＰＣ']}"></i>${t('map.party.npc')}</span>
+            </div>
+            <ul class="me-placements" role="listbox"></ul>
+            <p class="hint me-placements-empty" hidden>${t('map.placements.empty')}</p>
+            <div class="me-placement-detail" hidden></div>
+          </div>
         </div>
       </div>
       <div class="me-status" aria-live="polite"></div>
@@ -93,13 +117,14 @@ export class MapEditor {
     this.canvas = e.querySelector('.me-canvas');
     this.ctx = this.canvas.getContext('2d');
     this.status = e.querySelector('.me-status');
-    e.querySelectorAll('input[name="me-target"]').forEach(r => r.addEventListener('change', () => { this.target = r.value; this.render(); }));
+    e.querySelectorAll('input[name="me-target"]').forEach(r => r.addEventListener('change', () => this.setTarget(r.value)));
     e.querySelector('.me-erase').addEventListener('click', () => this.setCurrent(NO_LAYER, NO_LAYER, 'layer'));
     e.querySelector('.me-undo').addEventListener('click', () => this.undo());
     e.querySelector('.me-redo').addEventListener('click', () => this.redo());
     e.querySelector('.me-zoom-in').addEventListener('click', () => this.setZoom(this.zoom * 2));
     e.querySelector('.me-zoom-out').addEventListener('click', () => this.setZoom(this.zoom / 2));
     e.querySelector('.me-grid').addEventListener('change', ev => { this.grid = ev.target.checked; this.render(); });
+    e.querySelector('.me-show-placements').addEventListener('change', ev => { this.showPlacements = ev.target.checked; this.render(); });
     e.querySelector('.me-resize').addEventListener('click', () => this.openResize());
     e.querySelector('.me-class').addEventListener('change', () => this.renderTerrainList());
     e.querySelector('.me-search').addEventListener('input', () => this.renderTerrainList());
@@ -111,6 +136,22 @@ export class MapEditor {
     e.tabIndex = 0;
     e.addEventListener('keydown', ev => this.keyDown(ev));
     this.setTool('pen');
+    this.setTarget('tiles');
+  }
+
+  setTarget(target) {
+    this.target = target;
+    const radio = this.element.querySelector(`input[name="me-target"][value="${target}"]`);
+    if (radio) {
+      radio.checked = true;
+    }
+    const isPlace = target === 'placement';
+    this.element.querySelector('.me-terrain-pane').hidden = isPlace;
+    this.element.querySelector('.me-placement-pane').hidden = !isPlace;
+    this.element.querySelectorAll('.me-tools button').forEach(b => { b.disabled = isPlace; });
+    this.element.querySelector('.me-erase').disabled = isPlace;
+    this.canvas.style.cursor = isPlace ? 'grab' : 'crosshair';
+    this.render();
   }
 
   setTool(tool) {
@@ -166,8 +207,7 @@ export class MapEditor {
   /** 描く地形を選ぶ。bitmap が null なら、その地形で手元にある最初の画像の番号 */
   async setCurrent(terrain, bitmap, target) {
     if (target) {
-      this.target = target;
-      this.element.querySelector(`input[name="me-target"][value="${target}"]`).checked = true;
+      this.setTarget(target);
     }
     this.current = { terrain, bitmap: bitmap ?? 0 };
     this.element.querySelectorAll('.me-terrains li').forEach(li => li.setAttribute('aria-selected', String(Number(li.dataset.id) === terrain)));
@@ -207,6 +247,169 @@ export class MapEditor {
     this.drawTile(ctx, 0, 0, TILE, this.current);
     const info = this.terrainById.get(terrain);
     this.element.querySelector('.me-current span').textContent = `${terrain} ${info?.name ?? t('map.undefined')}（${bitmap}）`;
+  }
+
+  // ---- 配置（7474/SRC#1653） ----
+
+  /** このマップに対する配置一覧を入れる */
+  setPlacements(items) {
+    this.placements = Array.isArray(items) ? items : [];
+    const prevId = this.selectedPlacement?.id;
+    const match = prevId ? this.placements.find(p => p.id === prevId) : null;
+    this.selectedPlacement = match ?? null;
+    this.renderPlacementList();
+    this.updateMoveRange();
+    this.render();
+  }
+
+  /** イベント行や座標を指定して配置タブを開き、そのマスを画面の中央付近に出す */
+  async focusPlacement(focus) {
+    this.setTarget('placement');
+    let match = null;
+    if (focus?.file && focus?.line) {
+      const norm = p => String(p).replace(/\\/g, '/').replace(/^\.\//, '').toLowerCase();
+      const targetFile = norm(focus.file);
+      match = this.placements.find(p => norm(p.file) === targetFile && p.line === focus.line) ?? null;
+    }
+    if (match) {
+      this.highlightCell = null;
+      await this.selectPlacement(match);
+      this.scrollToCell(match.x, match.y);
+    } else if (focus?.x && focus?.y) {
+      this.highlightCell = { x: focus.x, y: focus.y, label: focus.command ?? '' };
+      await this.selectPlacement(null, false);
+      this.scrollToCell(focus.x, focus.y);
+      this.status.textContent = `(${focus.x},${focus.y}) ${focus.command ?? ''} ${focus.unit ?? ''}`.trim();
+    }
+  }
+
+  scrollToCell(x, y) {
+    if (!this.map) {
+      return;
+    }
+    const wrap = this.element.querySelector('.me-canvas-wrap');
+    const size = TILE * this.zoom;
+    wrap.scrollLeft = Math.max(0, (x - 0.5) * size - wrap.clientWidth / 2);
+    wrap.scrollTop = Math.max(0, (y - 0.5) * size - wrap.clientHeight / 2);
+  }
+
+  async selectPlacement(item, clearHighlight = true) {
+    if (clearHighlight) {
+      this.highlightCell = null;
+    }
+    this.selectedPlacement = item ?? null;
+    this.element.querySelectorAll('.me-placements li').forEach(li => {
+      li.setAttribute('aria-selected', String(li.dataset.id === (item?.id ?? '')));
+    });
+    this.renderPlacementDetail();
+    await this.updateMoveRange();
+    this.render();
+  }
+
+  async updateMoveRange() {
+    this.moveRangeCells.clear();
+    const item = this.selectedPlacement;
+    if (!item || !(item.speed > 0) || !this.options.computeMoveRange || !this.map) {
+      return;
+    }
+    const targetId = item.id;
+    try {
+      const cells = await this.options.computeMoveRange(this.map, item);
+      if (this.selectedPlacement?.id !== targetId) {
+        return;
+      }
+      for (const c of cells) {
+        this.moveRangeCells.add(`${c.x},${c.y}`);
+      }
+      this.render();
+    } catch {
+      // 移動範囲の目安は計算できなくても操作できる
+    }
+  }
+
+  placementAt(x, y) {
+    const hits = this.placements.filter(p => p.x === x && p.y === y);
+    if (hits.length === 0) {
+      return null;
+    }
+    if (this.selectedPlacement) {
+      const cur = hits.find(p => p.id === this.selectedPlacement.id);
+      if (cur) {
+        return cur;
+      }
+    }
+    return hits[hits.length - 1];
+  }
+
+  async movePlacement(item, newX, newY) {
+    if (!item?.editable || !this.map) {
+      return;
+    }
+    const x = Math.max(1, Math.min(this.map.width, Math.round(newX)));
+    const y = Math.max(1, Math.min(this.map.height, Math.round(newY)));
+    if (x === item.x && y === item.y) {
+      return;
+    }
+    item.x = x;
+    item.y = y;
+    this.renderPlacementList();
+    this.renderPlacementDetail();
+    await this.updateMoveRange();
+    this.render();
+    await this.options.onEditPlacement?.(item, x, y);
+  }
+
+  renderPlacementList() {
+    const list = this.element.querySelector('.me-placements');
+    const empty = this.element.querySelector('.me-placements-empty');
+    list.innerHTML = '';
+    empty.hidden = this.placements.length > 0;
+    for (const item of this.placements) {
+      const li = document.createElement('li');
+      li.role = 'option';
+      li.dataset.id = item.id;
+      li.setAttribute('aria-selected', String(item.id === this.selectedPlacement?.id));
+      const color = PARTY_COLORS[item.party] ?? '#6e7681';
+      const title = item.unit || item.pilot || item.command;
+      const sub = item.pilot && item.pilot !== item.unit ? `${item.pilot} · ` : '';
+      li.innerHTML = `<i class="me-party-dot" style="background:${color}"></i><span class="me-pl-main" title="${escapeHtml(`${item.file}:${item.line} ${item.command}`)}">${escapeHtml(title)}</span><span class="me-pl-meta">${escapeHtml(sub)}(${item.x},${item.y})</span>`;
+      li.addEventListener('click', () => {
+        this.selectPlacement(item);
+        this.scrollToCell(item.x, item.y);
+      });
+      list.append(li);
+    }
+    this.renderPlacementDetail();
+  }
+
+  renderPlacementDetail() {
+    const box = this.element.querySelector('.me-placement-detail');
+    const item = this.selectedPlacement;
+    if (!item) {
+      box.hidden = true;
+      box.innerHTML = '';
+      return;
+    }
+    box.hidden = false;
+    const partyLabel = item.party || t('map.party.other');
+    const who = [item.unit, item.pilot && item.pilot !== item.unit ? `(${item.pilot})` : ''].filter(Boolean).join(' ');
+    const moveInfo = item.speed > 0 ? `<div class="hint">${escapeHtml(t('map.placements.moveRange', item.speed))} ${escapeHtml(item.transportation || '')}</div>` : '';
+    const ro = item.editable ? '' : `<div class="hint">${escapeHtml(t('map.placements.readonly'))}</div>`;
+    box.innerHTML = `
+      <div><strong>${escapeHtml(who || item.command)}</strong> · ${escapeHtml(partyLabel)}</div>
+      <div class="hint">${escapeHtml(`${item.file}:${item.line}`)}${item.label ? ` · ${escapeHtml(item.label)}` : ''} · ${escapeHtml(item.command)}</div>
+      <div class="me-pl-coords">
+        <label>${t('map.placements.x')} <input type="number" class="me-pl-x" min="1" max="${this.map?.width ?? 50}" value="${item.x}" ${item.editable ? '' : 'disabled'}></label>
+        <label>${t('map.placements.y')} <input type="number" class="me-pl-y" min="1" max="${this.map?.height ?? 50}" value="${item.y}" ${item.editable ? '' : 'disabled'}></label>
+      </div>
+      ${moveInfo}${ro}`;
+    if (item.editable) {
+      const xIn = box.querySelector('.me-pl-x');
+      const yIn = box.querySelector('.me-pl-y');
+      const apply = () => this.movePlacement(item, Number(xIn.value), Number(yIn.value));
+      xIn.addEventListener('change', apply);
+      yIn.addEventListener('change', apply);
+    }
   }
 
   // ---- マップ ----
@@ -262,6 +465,9 @@ export class MapEditor {
       }
       ctx.stroke();
     }
+    if (this.target === 'placement' || this.showPlacements) {
+      this.drawPlacements(ctx, size);
+    }
     const box = this.selectionBox();
     if (box) {
       ctx.strokeStyle = '#e8b400';
@@ -271,10 +477,118 @@ export class MapEditor {
     if (this.hover) {
       ctx.strokeStyle = '#fff';
       ctx.lineWidth = 2;
-      const w = this.tool === 'paste' && this.clipboard ? this.clipboard.width : 1;
-      const h = this.tool === 'paste' && this.clipboard ? this.clipboard.height : 1;
+      const w = this.target !== 'placement' && this.tool === 'paste' && this.clipboard ? this.clipboard.width : 1;
+      const h = this.target !== 'placement' && this.tool === 'paste' && this.clipboard ? this.clipboard.height : 1;
       ctx.strokeRect(this.hover.x * size + 1, this.hover.y * size + 1, w * size - 2, h * size - 2);
     }
+  }
+
+  drawPlacements(ctx, size) {
+    const dim = this.target !== 'placement' ? 0.85 : 1;
+    // 移動範囲の目安（選択中ユニット）
+    if (this.target === 'placement' && this.moveRangeCells.size > 0) {
+      ctx.fillStyle = 'rgba(64, 156, 255, 0.25)';
+      ctx.strokeStyle = 'rgba(64, 156, 255, 0.7)';
+      ctx.lineWidth = 1;
+      for (const key of this.moveRangeCells) {
+        const [cx, cy] = key.split(',').map(Number);
+        if (cx >= 1 && cy >= 1 && cx <= this.map.width && cy <= this.map.height) {
+          ctx.fillRect((cx - 1) * size + 1, (cy - 1) * size + 1, size - 2, size - 2);
+          ctx.strokeRect((cx - 1) * size + 1.5, (cy - 1) * size + 1.5, size - 3, size - 3);
+        }
+      }
+    }
+    // Move コマンドの移動線
+    for (const item of this.placements) {
+      if (item.fromX && item.fromY) {
+        const isSel = item.id === this.selectedPlacement?.id;
+        ctx.save();
+        ctx.globalAlpha = dim * (isSel ? 0.95 : 0.65);
+        ctx.strokeStyle = PARTY_COLORS[item.party] ?? '#fff';
+        ctx.lineWidth = isSel ? 2.5 : 1.5;
+        ctx.setLineDash([4, 3]);
+        const x1 = (item.fromX - 0.5) * size;
+        const y1 = (item.fromY - 0.5) * size;
+        const x2 = (item.x - 0.5) * size;
+        const y2 = (item.y - 0.5) * size;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+    // ユニット配置アイコン
+    for (const item of this.placements) {
+      const isDragging = this.dragPlacement?.item.id === item.id;
+      const drawX = isDragging ? this.dragPlacement.curX : item.x;
+      const drawY = isDragging ? this.dragPlacement.curY : item.y;
+      if (isDragging) {
+        this.drawUnitToken(ctx, (item.x - 0.5) * size, (item.y - 0.5) * size, size, item, 0.35, false);
+      }
+      const selected = item.id === this.selectedPlacement?.id;
+      this.drawUnitToken(ctx, (drawX - 0.5) * size, (drawY - 0.5) * size, size, item, dim, selected);
+    }
+    // 補助座標の強調表示（Center・Explode・進入 等）
+    if (this.highlightCell) {
+      const px = (this.highlightCell.x - 1) * size;
+      const py = (this.highlightCell.y - 1) * size;
+      ctx.strokeStyle = '#ffd400';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(px + 1.5, py + 1.5, size - 3, size - 3);
+    }
+  }
+
+  drawUnitToken(ctx, cx, cy, size, item, alpha, selected) {
+    const color = PARTY_COLORS[item.party] ?? '#6e7681';
+    const pad = Math.max(2, size * 0.08);
+    const left = cx - size / 2 + pad;
+    const top = cy - size / 2 + pad;
+    const w = size - pad * 2;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    // 背景色と陣営の枠
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(left, top, w, w);
+    const img = this.getUnitImage(item.bitmap);
+    if (img) {
+      ctx.drawImage(img, left + 1, top + 1, w - 2, w - 2);
+    } else {
+      ctx.fillStyle = color;
+      ctx.fillRect(left + 1, top + 1, w - 2, w - 2);
+      if (size >= 16) {
+        ctx.fillStyle = '#fff';
+        ctx.font = `bold ${Math.max(8, Math.floor(w * 0.42))}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const label = (item.unit || item.pilot || item.command || '?').slice(0, 2);
+        ctx.fillText(label, cx, cy + 1);
+      }
+    }
+    ctx.strokeStyle = selected ? '#ffd400' : color;
+    ctx.lineWidth = selected ? 3 : 2;
+    if (item.command === 'Organize') {
+      ctx.setLineDash([3, 2]);
+    }
+    ctx.strokeRect(left, top, w, w);
+    ctx.restore();
+  }
+
+  getUnitImage(bitmap) {
+    if (!bitmap || bitmap === '-.bmp' || !this.options.loadUnitImage) {
+      return null;
+    }
+    if (this.unitImages.has(bitmap)) {
+      return this.unitImages.get(bitmap);
+    }
+    this.unitImages.set(bitmap, null);
+    this.options.loadUnitImage(bitmap).then(img => {
+      if (img) {
+        this.unitImages.set(bitmap, img);
+        this.scheduleRender();
+      }
+    }, () => {});
+    return null;
   }
 
   /** 1 マスを描く。画像が無ければ地形タイプの色と番号 */
@@ -347,6 +661,16 @@ export class MapEditor {
     }
     this.element.focus({ preventScroll: true });
     this.canvas.setPointerCapture(ev.pointerId);
+    if (this.target === 'placement') {
+      const hit = this.placementAt(p.x + 1, p.y + 1);
+      this.selectPlacement(hit);
+      if (hit?.editable && ev.button === 0) {
+        this.dragPlacement = { item: hit, startX: hit.x, startY: hit.y, curX: hit.x, curY: hit.y };
+        this.canvas.style.cursor = 'grabbing';
+      }
+      this.render();
+      return;
+    }
     // 右クリックはスポイト（元の MapEdit と同じ）
     if (ev.button === 2 || this.tool === 'pick') {
       this.pick(p);
@@ -385,6 +709,14 @@ export class MapEditor {
     }
     const p = this.pointAt(ev);
     this.hover = p;
+    if (this.dragPlacement && p) {
+      this.dragPlacement.curX = p.x + 1;
+      this.dragPlacement.curY = p.y + 1;
+      const d = this.dragPlacement;
+      this.status.textContent = t('map.placements.dragging', d.item.unit || d.item.pilot || d.item.command, d.startX, d.startY, d.curX, d.curY);
+      this.render();
+      return;
+    }
     if (p) {
       const tile = this.cell(this.map.tiles, p.x, p.y);
       const info = this.terrainById.get(tile.terrain);
@@ -393,6 +725,12 @@ export class MapEditor {
         const l = this.cell(this.map.layer, p.x, p.y);
         if (l.terrain !== NO_LAYER) {
           text += ` / ${t('map.targetLayer')}: ${l.terrain} ${this.terrainById.get(l.terrain)?.name ?? t('map.undefined')}（${l.bitmap}）`;
+        }
+      }
+      if (this.target === 'placement' || this.showPlacements) {
+        const hits = this.placements.filter(pl => pl.x === p.x + 1 && pl.y === p.y + 1);
+        if (hits.length > 0) {
+          text += ' — ' + hits.map(pl => pl.unit || pl.pilot || pl.command).join(', ');
         }
       }
       this.status.textContent = text;
@@ -407,7 +745,18 @@ export class MapEditor {
     this.render();
   }
 
-  pointerUp() {
+  async pointerUp() {
+    if (this.dragPlacement) {
+      const drag = this.dragPlacement;
+      this.dragPlacement = null;
+      this.canvas.style.cursor = 'grab';
+      if (drag.curX !== drag.startX || drag.curY !== drag.startY) {
+        await this.movePlacement(drag.item, drag.curX, drag.curY);
+      } else {
+        this.render();
+      }
+      return;
+    }
     if (!this.dragging) {
       return;
     }

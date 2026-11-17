@@ -1,5 +1,5 @@
 // SRC#Studio のスタンドアロン（index.html）。フォルダを開き、マップを選んでマップ作成ツールで編集し、保存する
-import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, studioCore, decodeText, previewData, findFile } from './studio-core.js';
+import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange } from './studio-core.js';
 import { DataPreview } from './preview.js';
 import { MapEditor, newMap } from './map-editor.js';
 import { QuickBuilder } from './quick.js';
@@ -7,7 +7,7 @@ import { basicData, canWriteFolders, download, fromFileList, pickFolder } from '
 import { language, t } from './i18n.js';
 
 const $ = s => document.querySelector(s);
-const state = { app: null, scenario: null, roots: [], terrains: [], path: null, text: null, dirty: false };
+const state = { app: null, scenario: null, roots: [], terrains: [], path: null, text: null, dirty: false, eventTexts: new Map(), dirtyEvents: new Map() };
 
 document.documentElement.lang = language;
 document.querySelectorAll('[data-t]').forEach(e => { e.textContent = t(e.dataset.t); });
@@ -15,8 +15,11 @@ document.title = t('title');
 
 const editor = new MapEditor($('#editor'), {
   loadImage,
+  loadUnitImage: bitmap => loadDataImage('unit', bitmap),
   imageNumbers,
   serialize: serializeMap,
+  computeMoveRange,
+  onEditPlacement: (item, x, y) => editPlacement(item, x, y),
   onEdit: text => {
     state.text = text;
     setDirty(true);
@@ -55,6 +58,9 @@ const preview = new DataPreview($('#preview'), {
 
 /** ユニット・パイロットの画像（SRC と同じく Bitmap/Unit・Bitmap/Pilot、次に Bitmap の直下） */
 async function loadDataImage(kind, bitmap) {
+  if (!bitmap || bitmap === '-.bmp') {
+    return null;
+  }
   const folder = kind === 'pilot' ? 'Pilot' : 'Unit';
   const found = await findFile([`Bitmap/${folder}/${bitmap}`, `Bitmap/${bitmap}`]);
   if (!found) {
@@ -184,10 +190,56 @@ function setDirty(dirty) {
 }
 
 window.addEventListener('beforeunload', ev => {
-  if (state.dirty || data.dirty) {
+  if (state.dirty || data.dirty || state.dirtyEvents.size > 0) {
     ev.preventDefault();
   }
 });
+
+async function loadScenarioEvents() {
+  state.eventTexts.clear();
+  state.dirtyEvents.clear();
+  updateEventsUi();
+  for (const path of state.scenario?.files.filter(f => f.toLowerCase().endsWith('.eve')) ?? []) {
+    state.eventTexts.set(path, decodeText(await state.scenario.read(path)));
+  }
+}
+
+async function refreshPlacements() {
+  if (!state.path || state.eventTexts.size === 0) {
+    editor.setPlacements([]);
+    return;
+  }
+  const events = [...state.eventTexts.entries()].map(([path, text]) => ({ path, text }));
+  editor.setPlacements(await parsePlacements(state.path, events));
+}
+
+async function editPlacement(item, x, y) {
+  const norm = p => String(p).replace(/\\/g, '/').replace(/^\.\//, '').toLowerCase();
+  const target = norm(item.file);
+  const key = [...state.eventTexts.keys()].find(k => norm(k) === target);
+  if (!key) {
+    return;
+  }
+  const before = state.eventTexts.get(key);
+  const after = await replacePlacementFileCoordinates(before, item.line, x, y);
+  if (after === before) {
+    return;
+  }
+  state.eventTexts.set(key, after);
+  state.dirtyEvents.set(key, after);
+  updateEventsUi();
+  await refreshPlacements();
+}
+
+function updateEventsUi() {
+  const n = state.dirtyEvents.size;
+  const btn = $('#save-events');
+  const status = $('#events-status');
+  btn.hidden = n === 0;
+  btn.textContent = state.scenario?.write ? t('studio.saveEvents') : t('studio.downloadEvents');
+  status.hidden = n === 0;
+  status.textContent = n > 0 ? t('studio.eventsDirty', [...state.dirtyEvents.keys()].join(', ')) : '';
+}
 
 /** 開いているフォルダから地形と画像を読み直す（画像を探す順はシナリオ → SRC 本体） */
 async function reloadWorkspace() {
@@ -205,8 +257,11 @@ async function reloadWorkspace() {
   }
   showMessage(messages.join('\n'));
   editor.images.clear();
+  editor.unitImages.clear();
   quick.images.clear();
   editor.setTerrains(result.terrains);
+  await loadScenarioEvents();
+  await refreshPlacements();
   renderMapList();
   if (!$('#data-section').hidden) {
     renderDataFiles();
@@ -256,6 +311,7 @@ async function openMap(path) {
   editor.setMap(map);
   setDirty(false);
   showEditor();
+  await refreshPlacements();
 }
 
 $('#new-map').addEventListener('click', async () => {
@@ -273,6 +329,7 @@ $('#new-map').addEventListener('click', async () => {
   state.text = await serializeMap(map);
   setDirty(true);
   showEditor();
+  await refreshPlacements();
 });
 
 function showEditor() {
@@ -290,6 +347,24 @@ $('#save').addEventListener('click', async () => {
   } else {
     download(state.path, bytes);
     setDirty(false);
+  }
+});
+
+$('#save-events').addEventListener('click', async () => {
+  const saved = [];
+  for (const [path, text] of state.dirtyEvents) {
+    const bytes = new TextEncoder().encode(text);
+    if (state.scenario?.write) {
+      await state.scenario.write(path, bytes);
+    } else {
+      download(path, bytes);
+    }
+    saved.push(path);
+  }
+  state.dirtyEvents.clear();
+  updateEventsUi();
+  if (saved.length > 0 && state.scenario?.write) {
+    showMessage(t('studio.eventsSaved', saved.join(', ')), 'info');
   }
 });
 

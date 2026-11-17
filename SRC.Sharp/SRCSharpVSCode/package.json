@@ -469,6 +469,12 @@
         "title": "開いているイベントを自動プレイ（画面付き・早送り）",
         "category": "SRC#",
         "icon": "$(run-all)"
+      },
+      {
+        "command": "srcsharp.showOnMap",
+        "title": "イベントの座標をマップで見る",
+        "category": "SRC#",
+        "icon": "$(location)"
       }
     ],
     "menus": {
@@ -534,12 +540,23 @@
           "when": "editorLangId == src-eve"
         },
         {
+          "command": "srcsharp.showOnMap",
+          "when": "editorLangId == src-eve"
+        },
+        {
           "command": "srcsharp.reload",
           "when": "debugType == srcsharp"
         },
         {
           "command": "srcsharp.cancelReload",
           "when": "debugType == srcsharp"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "srcsharp.showOnMap",
+          "when": "editorLangId == src-eve",
+          "group": "navigation"
         }
       ],
       "editor/title": [

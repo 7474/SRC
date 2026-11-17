@@ -249,5 +249,51 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual("ラベル", LspServer.WordAt("ラベル:", 1));
             Assert.AreEqual("x", LspServer.WordAt("Set x (y + 1)", 4));
         }
+
+        [TestMethod]
+        public void Lsp_HoverAndPlacementAtForMapCoordinates()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                scenario.Write(System.IO.Path.Combine("Data", "System", "terrain.txt"),
+                    "0\n平地, plain\n陸, 1, 0, 0\n\n2\n道路, road\n陸, 1, 0, 0\n");
+                scenario.Write(System.IO.Path.Combine("Data", "robot.txt"),
+                    "試作機\n試作機, しさくき, 汎用, 1, 2\n陸, 4, M, 1000, 100\n特殊能力なし\n3000, 100, 600, 60\nAAAA, -.bmp\n");
+                scenario.Write("stage.map", "MapData\n\n3,3\n0,0\n0,0\n0,0\n0,0\n2,0\n0,0\n0,0\n0,0\n0,0\n");
+                var eve = scenario.Write("stage.eve",
+                    "スタート:",
+                    "Create 味方 試作機 0 パイロット 1 2 2",
+                    "Exit");
+                var uri = LspServer.PathToUri(eve);
+                var server = new LspServer(client.ServerInput, client.ServerOutput) { Debounce = TimeSpan.FromMilliseconds(10), Help = RepositoryHelp() };
+                var run = Task.Run(() => server.RunAsync());
+
+                Request(client, "initialize", new JsonObject { ["capabilities"] = new JsonObject() });
+                Notify(client, "initialized", new JsonObject());
+                Notify(client, "textDocument/didOpen", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri, ["languageId"] = "src-eve", ["version"] = 1, ["text"] = System.IO.File.ReadAllText(eve) },
+                });
+
+                // 座標の欄にホバーすると、マップ・座標・地形名が出る
+                var hover = Request(client, "textDocument/hover", Position(uri, 1, 25));
+                StringAssert.Contains(hover["contents"]["value"].GetValue<string>(), "stage.map");
+                StringAssert.Contains(hover["contents"]["value"].GetValue<string>(), "(2, 2)");
+                StringAssert.Contains(hover["contents"]["value"].GetValue<string>(), "道路 (2)");
+
+                // カスタムリクエスト srcsharp/placementAt でも配置情報とマップのフルパスが返る
+                var placement = Request(client, "srcsharp/placementAt", Position(uri, 1, 0));
+                Assert.AreEqual("stage.map", placement["mapPath"].GetValue<string>());
+                Assert.AreEqual(2, placement["x"].GetValue<int>());
+                Assert.AreEqual(2, placement["y"].GetValue<int>());
+                StringAssert.Contains(placement["terrainName"].GetValue<string>(), "道路");
+                StringAssert.EndsWith(placement["fullMapPath"].GetValue<string>().Replace('\\', '/'), "/stage.map");
+
+                Request(client, "shutdown", null);
+                Notify(client, "exit", null);
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
     }
 }

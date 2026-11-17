@@ -85,6 +85,13 @@ export class Controller implements vscode.Disposable {
     this.setState('stopped');
   }
 
+  async sendRequest<T = unknown>(method: string, params: unknown): Promise<T | undefined> {
+    if (!this.client || this.clientState !== 'running') {
+      return undefined;
+    }
+    return await this.client.sendRequest<T>(method, params);
+  }
+
   private setState(state: Controller['clientState']): void {
     this.clientState = state;
     this.changed.fire();
@@ -161,10 +168,77 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // マップ（.map）のカスタムエディタ（SRC#Studio のマップ作成ツール。7474/SRC#1641）
   const mapEditor = new MapEditorProvider(context);
+  interface PlacementAtResult {
+    mapPath: string;
+    fullMapPath: string;
+    x: number;
+    y: number;
+    command: string;
+    unit: string;
+    file: string;
+    line: number;
+  }
   context.subscriptions.push(
+    mapEditor,
     vscode.window.registerCustomEditorProvider(MapEditorProvider.viewType, mapEditor, { webviewOptions: { retainContextWhenHidden: true } }),
     // テスト用（画面の WebAssembly が動き、地形とマップを読めたか）。package.json には出さない
     vscode.commands.registerCommand('srcsharp._mapEditorStatus', (uri: vscode.Uri) => mapEditor.loaded.get(uri.toString())),
+    // イベント行の座標をマップ作成ツール上で開いて確認する（7474/SRC#1653）
+    vscode.commands.registerCommand('srcsharp.showOnMap', async (args?: { uri?: string; line?: number }) => {
+      const editor = vscode.window.activeTextEditor;
+      const targetUri = args?.uri ?? (editor?.document.languageId === 'src-eve' ? editor.document.uri.toString() : undefined);
+      const targetLine = args?.line ?? editor?.selection.active.line;
+      if (!targetUri || targetLine === undefined) {
+        vscode.window.showInformationMessage('SRC#: イベントファイル（*.eve）の座標がある行を選んでください。');
+        return;
+      }
+      if (controller.clientState !== 'running') {
+        if (!controller.server.found) {
+          void promptInstall();
+        } else {
+          vscode.window.showInformationMessage('SRC#: Language Server の起動を待ってからもう一度お試しください。');
+        }
+        return;
+      }
+      const res = await controller.sendRequest<PlacementAtResult | null>('srcsharp/placementAt', {
+        textDocument: { uri: targetUri },
+        position: { line: targetLine, character: 0 },
+      });
+      if (!res) {
+        vscode.window.showInformationMessage('SRC#: この行にはマップ上の座標がありません。');
+        return;
+      }
+      if (!res.fullMapPath) {
+        vscode.window.showInformationMessage(`SRC#: マップファイル（${res.mapPath || '未指定'}）が見つかりません。`);
+        return;
+      }
+      await mapEditor.openMapAt(res.fullMapPath, {
+        file: res.file,
+        line: res.line,
+        x: res.x,
+        y: res.y,
+        command: res.command,
+        unit: res.unit,
+      });
+    }),
+    vscode.languages.registerHoverProvider({ scheme: 'file', language: 'src-eve' }, {
+      async provideHover(document, position) {
+        if (controller.clientState !== 'running') {
+          return undefined;
+        }
+        const res = await controller.sendRequest<PlacementAtResult | null>('srcsharp/placementAt', {
+          textDocument: { uri: document.uri.toString() },
+          position: { line: position.line, character: position.character },
+        });
+        if (!res?.fullMapPath) {
+          return undefined;
+        }
+        const q = encodeURIComponent(JSON.stringify([{ uri: document.uri.toString(), line: position.line }]));
+        const md = new vscode.MarkdownString(`[マップの上で見る（${res.x}, ${res.y}）](command:srcsharp.showOnMap?${q})`);
+        md.isTrusted = true;
+        return new vscode.Hover(md);
+      },
+    }),
   );
 
   // データのプレビュー（SRC#Studio。7474/SRC#1643）

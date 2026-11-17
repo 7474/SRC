@@ -17,7 +17,9 @@ function scenarioFolder() {
   const scenario = path.join(dir, 'lantern');
   fs.mkdirSync(path.join(scenario, 'stage'), { recursive: true });
   fs.copyFileSync(path.join(lantern, '01_灯の港.map'), path.join(scenario, 'harbor.map'));
+  fs.copyFileSync(path.join(lantern, '01_灯の港.eve'), path.join(scenario, 'harbor.eve'));
   fs.copyFileSync(path.join(lantern, 'ステージ', '02_霧の渓谷.map'), path.join(scenario, 'stage', 'valley.map'));
+  fs.copyFileSync(path.join(lantern, 'ステージ', '02_霧の渓谷.eve'), path.join(scenario, 'stage', 'valley.eve'));
   fs.mkdirSync(path.join(scenario, 'Data', 'team'), { recursive: true });
   for (const name of ['unit.txt', 'pilot.txt']) {
     fs.copyFileSync(path.join(lantern, 'Data', 'ランタン', name), path.join(scenario, 'Data', 'team', name));
@@ -453,4 +455,42 @@ test('かんたん作成: 内容をリセットすると、選んだ作品・マ
   await expect(page.locator('.q-title')).toHaveValue('');
   await expect(page.locator('.q-actions .q-reset')).toBeDisabled();
   expect(await page.evaluate(() => localStorage.getItem('srcstudio.quick'))).toBeNull();
+});
+
+test('マップの配置: .eve からユニットを読み込み、ドラッグで座標の欄だけを書き換える（7474/SRC#1653）', async ({ page }) => {
+  await open(page, 'map');
+  await page.locator('#scenario-input').setInputFiles(scenarioFolder());
+  await page.locator('#maps a', { hasText: 'harbor.map' }).click();
+  await expect(page.locator('.me-canvas')).toBeVisible();
+
+  await page.locator('input[name="me-target"][value="placement"]').check();
+  await expect(page.locator('.me-placements li').first()).toBeVisible();
+  await expect(page.locator('.me-placements')).toContainText('ランタン号');
+  await expect(page.locator('.me-placements')).toContainText('祈り手');
+
+  // ランタン号を選んで移動力の目安が出ることを確かめ、(3,8) から (5,10) へドラッグする
+  await page.locator('.me-placements li', { hasText: 'ランタン号' }).click();
+  await expect(page.locator('.me-placement-detail')).toContainText('移動力の目安');
+  await expect(page.locator('.me-pl-x')).toHaveValue('3');
+  await expect(page.locator('.me-pl-y')).toHaveValue('8');
+
+  const box = await page.locator('.me-canvas').boundingBox();
+  await page.mouse.move(box.x + (3 - 0.5) * 32, box.y + (8 - 0.5) * 32);
+  await page.mouse.down();
+  await page.mouse.move(box.x + (5 - 0.5) * 32, box.y + (10 - 0.5) * 32, { steps: 4 });
+  await page.mouse.up();
+
+  await expect(page.locator('.me-pl-x')).toHaveValue('5');
+  await expect(page.locator('.me-pl-y')).toHaveValue('10');
+  await expect(page.locator('#save-events')).toBeVisible();
+  await expect(page.locator('#events-status')).toContainText('harbor.eve');
+
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#save-events').click()]);
+  expect(download.suggestedFilename()).toBe('harbor.eve');
+  const before = fs.readFileSync(path.join(lantern, '01_灯の港.eve'), 'utf8').split(/\r?\n/);
+  const after = fs.readFileSync(await download.path(), 'utf8').split(/\r?\n/);
+  const changed = before.map((line, i) => [line, after[i]]).filter(([a, b]) => a !== b);
+  expect(changed).toEqual([
+    ['Create 味方 ランタン号 0 グスタフ 10 3 8', 'Create 味方 ランタン号 0 グスタフ 10 5 10'],
+  ]);
 });

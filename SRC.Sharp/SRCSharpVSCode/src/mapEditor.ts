@@ -4,27 +4,115 @@ import * as vscode from 'vscode';
 import { isAppFolder } from './appPath';
 import { scenarioRoot } from './hotReload';
 
+export interface PlacementFocus {
+  file?: string;
+  line?: number;
+  x?: number;
+  y?: number;
+  command?: string;
+  unit?: string;
+}
+
+interface ActivePanel {
+  panel: vscode.WebviewPanel;
+  scenarioDir: string;
+  mapPath: string;
+  isLoaded: boolean;
+  pendingFocus?: PlacementFocus;
+}
+
 /**
  * マップ（.map）のカスタムエディタ。画面は SRC#Studio（SRC.Sharp/SRCStudio の wwwroot。.vsix の studio/ に入れる）を
  * Webview で動かし、ファイルの読み書きはここで行う（7474/SRC#1641）。
  * 文書はテキストのまま扱う（CustomTextEditor）。保存・元に戻す・未保存の印は VS Code のものを使う。
  */
-export class MapEditorProvider implements vscode.CustomTextEditorProvider {
+export class MapEditorProvider implements vscode.CustomTextEditorProvider, vscode.Disposable {
   public static readonly viewType = 'srcsharp.mapEditor';
 
   /** 画面が読み込みを終えた文書（テスト用の srcsharp._mapEditorStatus が返す） */
-  public readonly loaded = new Map<string, { terrains?: number; width?: number; height?: number; errors?: string[]; messages?: string[] }>();
+  public readonly loaded = new Map<string, { terrains?: number; width?: number; height?: number; placements?: number; errors?: string[]; messages?: string[] }>();
 
-  constructor(private readonly context: vscode.ExtensionContext) {}
+  private readonly panels = new Map<string, ActivePanel>();
+  private readonly pendingFocusByUri = new Map<string, PlacementFocus>();
+  private readonly applyingEventFiles = new Set<string>();
+  private readonly eventTimers = new Map<string, NodeJS.Timeout>();
+  private readonly watcherDisposable: vscode.Disposable;
+
+  constructor(private readonly context: vscode.ExtensionContext) {
+    this.watcherDisposable = vscode.workspace.onDidChangeTextDocument((e) => {
+      if (e.document.uri.scheme !== 'file' || !e.document.fileName.toLowerCase().endsWith('.eve') || e.contentChanges.length === 0) {
+        return;
+      }
+      const key = e.document.uri.toString();
+      if (this.applyingEventFiles.has(key)) {
+        return;
+      }
+      const existing = this.eventTimers.get(key);
+      if (existing) {
+        clearTimeout(existing);
+      }
+      this.eventTimers.set(key, setTimeout(() => {
+        this.eventTimers.delete(key);
+        const fsPath = path.resolve(e.document.uri.fsPath);
+        for (const entry of this.panels.values()) {
+          const base = path.resolve(entry.scenarioDir);
+          if (fsPath.startsWith(base + path.sep)) {
+            const rel = path.relative(base, fsPath).replace(/\\/g, '/');
+            void entry.panel.webview.postMessage({ type: 'eventsUpdated', file: rel });
+          }
+        }
+      }, 250));
+    });
+  }
+
+  dispose(): void {
+    this.watcherDisposable.dispose();
+    for (const timer of this.eventTimers.values()) {
+      clearTimeout(timer);
+    }
+    this.eventTimers.clear();
+  }
 
   private get studioRoot(): vscode.Uri {
     return vscode.Uri.joinPath(this.context.extensionUri, 'studio');
   }
 
+  /** 指定したマップ（フルパス）を横に開き、配置タブで該当行・座標を出す（7474/SRC#1653） */
+  async openMapAt(fullMapPath: string, focus: PlacementFocus): Promise<void> {
+    const resolved = path.resolve(fullMapPath);
+    for (const [uriStr, entry] of this.panels) {
+      if (path.resolve(vscode.Uri.parse(uriStr).fsPath) === resolved) {
+        entry.panel.reveal(vscode.ViewColumn.Beside, false);
+        if (entry.isLoaded) {
+          await entry.panel.webview.postMessage({ type: 'focus', focus });
+        } else {
+          entry.pendingFocus = focus;
+        }
+        return;
+      }
+    }
+    const uri = vscode.Uri.file(resolved);
+    this.pendingFocusByUri.set(uri.toString(), focus);
+    await vscode.commands.executeCommand('vscode.openWith', uri, MapEditorProvider.viewType, vscode.ViewColumn.Beside);
+  }
+
   async resolveCustomTextEditor(document: vscode.TextDocument, panel: vscode.WebviewPanel): Promise<void> {
     const webview = panel.webview;
-    this.loaded.set(document.uri.toString(), { messages: ['resolve'] });
+    const docKey = document.uri.toString();
+    this.loaded.set(docKey, { messages: ['resolve'] });
     const roots = folderRoots(document.uri.fsPath, path.join(this.studioRoot.fsPath, 'basic-data'));
+    const scenarioDir = roots[0].dir;
+    const mapPath = path.relative(scenarioDir, document.uri.fsPath).replace(/\\/g, '/');
+    const panelEntry: ActivePanel = {
+      panel,
+      scenarioDir,
+      mapPath,
+      isLoaded: false,
+      pendingFocus: this.pendingFocusByUri.get(docKey),
+    };
+    this.pendingFocusByUri.delete(docKey);
+    this.panels.set(docKey, panelEntry);
+
     webview.options = {
       enableScripts: true,
       localResourceRoots: [this.studioRoot],
@@ -43,17 +131,22 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider {
     };
     const subscriptions: vscode.Disposable[] = [];
     subscriptions.push(webview.onDidReceiveMessage(async (msg) => {
-      const log = this.loaded.get(document.uri.toString()) ?? {};
+      const log = this.loaded.get(docKey) ?? {};
       log.messages = [...(log.messages ?? []), msg.type];
-      this.loaded.set(document.uri.toString(), log);
+      this.loaded.set(docKey, log);
       switch (msg.type) {
-        case 'ready':
+        case 'ready': {
+          const focus = panelEntry.pendingFocus;
+          panelEntry.pendingFocus = undefined;
           await webview.postMessage({
             type: 'init',
             roots: await Promise.all(roots.map(async (r, i) => ({ name: r.name, files: await listFiles(i) }))),
+            mapPath,
             text: document.getText(),
+            focus,
           });
           break;
+        }
         case 'read':
           await answerRead(webview, roots, msg);
           break;
@@ -71,8 +164,51 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider {
           }
           break;
         }
+        case 'editEvent': {
+          const full = path.resolve(scenarioDir, msg.file);
+          if (!full.startsWith(path.resolve(scenarioDir) + path.sep)) {
+            break;
+          }
+          try {
+            const eveUri = vscode.Uri.file(full);
+            const eveDoc = await vscode.workspace.openTextDocument(eveUri);
+            if (msg.line >= 1 && msg.line <= eveDoc.lineCount) {
+              const line = eveDoc.lineAt(msg.line - 1);
+              if (msg.expectedLine !== undefined && line.text !== msg.expectedLine) {
+                await webview.postMessage({ type: 'eventsUpdated', file: msg.file });
+                break;
+              }
+              if (line.text !== msg.newLine) {
+                const edit = new vscode.WorkspaceEdit();
+                edit.replace(eveUri, line.range, msg.newLine);
+                const eveKey = eveUri.toString();
+                this.applyingEventFiles.add(eveKey);
+                try {
+                  await vscode.workspace.applyEdit(edit);
+                } finally {
+                  this.applyingEventFiles.delete(eveKey);
+                }
+              }
+            }
+          } catch (e) {
+            void vscode.window.showWarningMessage(`SRC#: イベントファイルの座標を書き換えられませんでした: ${(e as Error)?.message ?? e}`);
+          }
+          break;
+        }
         case 'loaded':
-          this.loaded.set(document.uri.toString(), { ...this.loaded.get(document.uri.toString()), terrains: msg.terrains, width: msg.width, height: msg.height });
+          panelEntry.isLoaded = true;
+          this.loaded.set(docKey, {
+            ...this.loaded.get(docKey),
+            terrains: msg.terrains,
+            width: msg.width,
+            height: msg.height,
+            placements: msg.placements,
+          });
+          if (panelEntry.pendingFocus) {
+            const focus = panelEntry.pendingFocus;
+            panelEntry.pendingFocus = undefined;
+            void webview.postMessage({ type: 'focus', focus });
+          }
           break;
         case 'undo':
           await vscode.commands.executeCommand('undo');
@@ -84,9 +220,9 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider {
           await vscode.commands.executeCommand('vscode.openWith', document.uri, 'default');
           break;
         case 'error': {
-          const state = this.loaded.get(document.uri.toString()) ?? {};
+          const state = this.loaded.get(docKey) ?? {};
           state.errors = [...(state.errors ?? []), msg.message];
-          this.loaded.set(document.uri.toString(), state);
+          this.loaded.set(docKey, state);
           void vscode.window.showWarningMessage(`SRC#Studio: ${msg.message}`);
           break;
         }
@@ -94,11 +230,14 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider {
     }));
     // 元に戻す・外での変更を画面に伝える（自分の編集は画面が無視する）
     subscriptions.push(vscode.workspace.onDidChangeTextDocument((e) => {
-      if (e.document.uri.toString() === document.uri.toString() && e.contentChanges.length > 0 && !applying) {
+      if (e.document.uri.toString() === docKey && e.contentChanges.length > 0 && !applying) {
         void webview.postMessage({ type: 'update', text: document.getText() });
       }
     }));
-    panel.onDidDispose(() => subscriptions.forEach((s) => s.dispose()));
+    panel.onDidDispose(() => {
+      this.panels.delete(docKey);
+      subscriptions.forEach((s) => s.dispose());
+    });
   }
 }
 
@@ -134,7 +273,10 @@ export async function answerRead(webview: vscode.Webview, roots: FolderRoot[], m
     return;
   }
   try {
-    const bytes = await vscode.workspace.fs.readFile(vscode.Uri.file(full));
+    const openDoc = vscode.workspace.textDocuments.find((d) => d.uri.scheme === 'file' && path.resolve(d.uri.fsPath) === full);
+    const bytes = openDoc
+      ? Buffer.from(openDoc.getText(), 'utf8')
+      : await vscode.workspace.fs.readFile(vscode.Uri.file(full));
     await webview.postMessage({ type: 'file', id: msg.id, bytes: Array.from(bytes) });
   } catch (e) {
     await webview.postMessage({ type: 'fileError', id: msg.id, message: String(e) });
@@ -173,7 +315,7 @@ export function folderRoots(mapFile: string, basicData: string): FolderRoot[] {
   return roots;
 }
 
-/** 地形データ・スペシャルパワー・データ・画像（マップ・ユニット・パイロット）・マップだけを一覧にする（SRC#Studio の folders.js の wanted と同じ） */
+/** 地形データ・スペシャルパワー・データ・画像（マップ・ユニット・パイロット）・マップ・イベントだけを一覧にする（SRC#Studio の folders.js の wanted と同じ） */
 export async function listWanted(dir: string): Promise<string[]> {
   const result: string[] = [];
   const skip = ['sound', 'midi', 'music', 'save', '.git', 'node_modules'];
@@ -195,7 +337,8 @@ export async function listWanted(dir: string): Promise<string[]> {
       } else if (lower === 'data/system/terrain.txt' || lower === 'data/system/sp.txt'
         || (lower.startsWith('data/') && /(^|\/)(robot|unit|pilot|sp)\.txt$/.test(lower))
         || (/^bitmap\/(map|unit|pilot)\//.test(lower) && /\.(bmp|png|jpg|gif)$/.test(lower))
-        || lower.endsWith('.map')) {
+        || lower.endsWith('.map')
+        || lower.endsWith('.eve')) {
         result.push(p);
       }
     }

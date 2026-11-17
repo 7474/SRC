@@ -21,6 +21,9 @@ namespace SRCStudio
     {
         private static TerrainCatalog terrains = TerrainCatalog.Load(Array.Empty<(string, byte[])>());
         private static readonly List<(string, byte[])> terrainFiles = new List<(string, byte[])>();
+        private static readonly List<(string, byte[])> placementDataFiles = new List<(string, byte[])>();
+        private static PlacementUnitCatalog unitCatalog = PlacementUnitCatalog.Empty;
+        private static bool unitCatalogDirty;
         private static readonly List<ImageIndex> imageRoots = new List<ImageIndex>();
         private static readonly Dictionary<int, MapDocument> templates = new Dictionary<int, MapDocument>();
         private static int nextTemplate = 1;
@@ -228,6 +231,76 @@ namespace SRCStudio
                 }
             }
             return "";
+        }
+
+        /// <summary>配置表示に使うユニット・パイロットのデータファイルを空にする（7474/SRC#1653）</summary>
+        [JSExport]
+        internal static void ClearPlacementDataFiles()
+        {
+            placementDataFiles.Clear();
+            unitCatalog = PlacementUnitCatalog.Empty;
+            unitCatalogDirty = false;
+        }
+
+        /// <summary>配置表示に使うユニット・パイロットのデータファイル（robot.txt・unit.txt・pilot.txt）を足す</summary>
+        [JSExport]
+        internal static void AddPlacementDataFile(string name, byte[] data)
+        {
+            placementDataFiles.Add((name, data));
+            unitCatalogDirty = true;
+        }
+
+        private static PlacementUnitCatalog EnsureUnitCatalog()
+        {
+            if (unitCatalogDirty)
+            {
+                unitCatalog = PlacementUnitCatalog.LoadBytes(placementDataFiles);
+                unitCatalogDirty = false;
+            }
+            return unitCatalog;
+        }
+
+        /// <summary>指定したマップ（targetMapPath）に対応するイベントファイルの配置一覧 JSON を返す</summary>
+        [JSExport]
+        internal static string ParsePlacements(string targetMapPath, string[] eventPaths, string[] eventTexts)
+        {
+            var events = new List<(string path, string text)>(eventPaths?.Length ?? 0);
+            if (eventPaths != null && eventTexts != null)
+            {
+                var n = Math.Min(eventPaths.Length, eventTexts.Length);
+                for (var i = 0; i < n; i++)
+                {
+                    events.Add((eventPaths[i], eventTexts[i]));
+                }
+            }
+            var items = EventPlacementParser.ParseForMap(targetMapPath, events, EnsureUnitCatalog());
+            return EventPlacementParser.ToJson(items);
+        }
+
+        /// <summary>イベント 1 行の座標だけを newX・newY に書き換える</summary>
+        [JSExport]
+        internal static string ReplacePlacementCoordinates(string line, int newX, int newY)
+        {
+            return EventPlacementParser.ReplaceLineCoordinates(line, newX, newY);
+        }
+
+        /// <summary>イベントテキスト全体の指定行（1 始まり）の座標だけを newX・newY に書き換える</summary>
+        [JSExport]
+        internal static string ReplacePlacementFileCoordinates(string text, int lineNumber, int newX, int newY)
+        {
+            return EventPlacementParser.ReplaceFileCoordinates(text, lineNumber, newX, newY);
+        }
+
+        /// <summary>移動力の範囲の目安を計算する（到達可能な 1 始まり座標 [x1, y1, x2, y2, ...]）</summary>
+        [JSExport]
+        internal static int[] ComputeMoveRange(
+            int width, int height, int[] tiles, int[] layer,
+            int startX, int startY, int speed, string transportation, string adaption)
+        {
+            return EventPlacementParser.ComputeMoveRange(
+                width, height, tiles,
+                layer == null || layer.Length == 0 ? null : layer,
+                terrains, startX, startY, speed, transportation, adaption);
         }
 
         private static void WriteInts(Utf8JsonWriter w, string name, int[] values)
