@@ -23,8 +23,10 @@
       รันซีนาริโอโดยไม่แสดงหน้าจอ หากไม่ระบุ --script จะเลื่อนข้อความและเลือกตัวเลือกแรกไปเรื่อย ๆ เมื่อใช้ --skip-wait จะข้ามการรอตามเวลาที่กำหนด (แอนิเมชัน ข้อความ Wait) --scenario-root กำหนดโฟลเดอร์ซีนาริโอ (ฐานของ Data, Lib และ Continue) หากไม่ระบุ ไฟล์อีเวนต์ในโฟลเดอร์ย่อยที่ไม่มี Data จะใช้โฟลเดอร์แม่ที่ใกล้ที่สุดที่มี Data
   srcsharp balance &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format md|csv] [--output ไฟล์]
       แสดงรายการค่าสถานะในข้อมูลยูนิตและค่าที่ผิดปกติ
-  srcsharp new &lt;โฟลเดอร์&gt; [--title ชื่อเรื่อง] [--app-path โฟลเดอร์ SRC] [--force]
-      สร้างแม่แบบฉากใหม่ (อีเวนต์ แผนที่ และข้อมูลของตอนแรก ขั้นตอนเล่นอัตโนมัติ การตั้งค่า VS Code และ CI) ไฟล์ที่มีอยู่แล้วจะไม่ถูกเขียนทับ (--force เพื่อเขียนทับ)
+  srcsharp new &lt;โฟลเดอร์&gt; [--title ชื่อเรื่อง] [--episodes n] [--app-path โฟลเดอร์ SRC] [--force]
+      สร้างแม่แบบฉากใหม่ (อีเวนต์ แผนที่ และข้อมูลของตอนแรก ขั้นตอนเล่นอัตโนมัติ การตั้งค่า VS Code และ CI) ไฟล์ที่มีอยู่แล้วจะไม่ถูกเขียนทับ (--force เพื่อเขียนทับ) เมื่อ --episodes ตั้งแต่ 2 ขึ้นไป จะสร้างหลายตอนพร้อมช่วงพัก (intermission)
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      ติดตาม Continue, ด่านถัดไป, Exec, IntermissionCommand, Load และ GameClear ระหว่างอีเวนต์ แล้วแสดงแผนภาพการเชื่อมต่อของแต่ละตอน (ค่าเริ่มต้นคือโฟลเดอร์ปัจจุบัน)
   srcsharp trial &lt;โฟลเดอร์ฉาก&gt; [--unit ยูนิต] [--pilot นักบิน] [--enemy ยูนิต] [--enemy-pilot นักบิน] [--level จำนวน] [--enemies จำนวน] [--list]
       สร้างอีเวนต์การต่อสู้ทดลองที่ให้ยูนิตและนักบินจากข้อมูลฉากสู้กับศัตรูใน .srcsharp/trial/ แล้วแสดงพาธ (รันด้วย play หรือดีบักเกอร์) --list แสดงยูนิตและนักบินเป็น JSON
   srcsharp lsp
@@ -79,11 +81,23 @@
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>ระบุโฟลเดอร์หนึ่งโฟลเดอร์สำหรับสร้างฉาก</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>จำนวนตอนต้องเป็นจำนวนเต็มตั้งแต่ 1 ขึ้นไป: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>สร้างแม่แบบใน {0} แล้ว ({1} ไฟล์)</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>ข้ามไฟล์ที่มีอยู่แล้ว: {0} (ใช้ --force เพื่อเขียนทับ)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>ระบุโฟลเดอร์ฉากหรือไฟล์อีเวนต์ได้ไม่เกินหนึ่งรายการ</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>ไม่พบโฟลเดอร์ฉากหรือไฟล์อีเวนต์: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>ไม่รู้จักรูปแบบผลลัพธ์: {0} (md, mmd หรือ json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>ระบุโฟลเดอร์ฉากหนึ่งโฟลเดอร์</value>

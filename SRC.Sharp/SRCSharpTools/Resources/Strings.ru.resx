@@ -23,8 +23,10 @@
       Запустить сценарий без экрана. Без --script сообщения пролистываются, выбирается первый вариант. С --skip-wait пропускаются фиксированные ожидания (анимации, сообщения, Wait). --scenario-root задаёт папку сценария (основа для Data, Lib и Continue); по умолчанию файл события в подпапке без Data использует ближайшую родительскую папку с Data.
   srcsharp balance &lt;каталог или файл&gt;... [--format md|csv] [--output файл]
       Таблица характеристик юнитов и выбросы
-  srcsharp new &lt;папка&gt; [--title название] [--app-path папка SRC] [--force]
-      Создаёт шаблон нового сценария (событие, карта и данные первого эпизода, сценарий автоигры, настройки VS Code, CI). Существующие файлы не перезаписываются (--force перезаписывает)
+  srcsharp new &lt;папка&gt; [--title название] [--episodes n] [--app-path папка SRC] [--force]
+      Создаёт шаблон нового сценария (событие, карта и данные первого эпизода, сценарий автоигры, настройки VS Code, CI). Существующие файлы не перезаписываются (--force перезаписывает) При --episodes 2 и более создаёт несколько эпизодов с интермиссией.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Прослеживает Continue, следующий этап, Exec, IntermissionCommand, Load и GameClear между событиями и выводит схему связей эпизодов (по умолчанию текущая папка)
   srcsharp trial &lt;папка сценария&gt; [--unit юнит] [--pilot пилот] [--enemy юнит] [--enemy-pilot пилот] [--level n] [--enemies n] [--list]
       Создаёт в .srcsharp/trial/ пробный бой юнитов и пилотов из данных сценария против врага и выводит путь (запускайте через play или отладчик). --list выводит юнитов и пилотов в JSON
   srcsharp lsp
@@ -79,11 +81,23 @@
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>Укажите одну папку для сценария</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Количество эпизодов должно быть целым числом ≥ 1: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>Шаблон создан в {0} (файлов: {1})</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Пропущены существующие файлы: {0} (--force для перезаписи)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Укажите не более одной папки сценария или файла событий</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Папка сценария или файл событий не найдены: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Неизвестный формат вывода: {0} (md, mmd или json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Укажите одну папку сценария</value>

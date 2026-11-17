@@ -23,8 +23,10 @@
       Запустити сценарій без екрана. Без --script повідомлення гортаються, обирається перший варіант. З --skip-wait пропускаються фіксовані очікування (анімації, повідомлення, Wait). --scenario-root задає теку сценарію (основа для Data, Lib і Continue); типово файл події в підтеці без Data використовує найближчу батьківську теку з Data.
   srcsharp balance &lt;каталог або файл&gt;... [--format md|csv] [--output файл]
       Таблиця характеристик юнітів і викиди
-  srcsharp new &lt;тека&gt; [--title назва] [--app-path тека SRC] [--force]
-      Створює шаблон нового сценарію (подія, мапа й дані першого епізоду, сценарій автогри, налаштування VS Code, CI). Наявні файли не перезаписуються (--force перезаписує)
+  srcsharp new &lt;тека&gt; [--title назва] [--episodes n] [--app-path тека SRC] [--force]
+      Створює шаблон нового сценарію (подія, мапа й дані першого епізоду, сценарій автогри, налаштування VS Code, CI). Наявні файли не перезаписуються (--force перезаписує) Якщо --episodes 2 або більше, створює кілька епізодів з інтермісією.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Відстежує Continue, наступний етап, Exec, IntermissionCommand, Load і GameClear між подіями та виводить схему зв'язків епізодів (типово поточна тека)
   srcsharp trial &lt;тека сценарію&gt; [--unit юніт] [--pilot пілот] [--enemy юніт] [--enemy-pilot пілот] [--level n] [--enemies n] [--list]
       Створює в .srcsharp/trial/ пробний бій юнітів і пілотів із даних сценарію проти ворога та виводить шлях (запускайте через play або налагоджувач). --list виводить юнітів і пілотів у JSON
   srcsharp lsp
@@ -79,11 +81,23 @@
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>Вкажіть одну теку для сценарію</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Кількість епізодів має бути цілим числом ≥ 1: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>Шаблон створено в {0} (файлів: {1})</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Пропущено наявні файли: {0} (--force для перезапису)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Вкажіть не більше однієї теки сценарію або файлу подій</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Теку сценарію або файл подій не знайдено: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Невідомий формат виводу: {0} (md, mmd або json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Вкажіть одну теку сценарію</value>

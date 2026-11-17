@@ -23,8 +23,10 @@
       在无画面状态下运行剧本。未指定 --script 时，自动推进消息，选项选择第一项。指定 --skip-wait 时跳过固定等待（动画、消息、Wait）。--scenario-root 指定剧本文件夹（Data、Lib、Continue 的基准）；未指定时，位于没有 Data 的子文件夹中的事件文件使用最近的含 Data 的上级文件夹。
   srcsharp balance &lt;目录或文件&gt;... [--format md|csv] [--output 文件]
       列出单位数据的能力值及异常值
-  srcsharp new &lt;文件夹&gt; [--title 标题] [--app-path SRC 文件夹] [--force]
-      创建新剧本的模板（第一话的事件、地图和数据，自动游玩步骤，VS Code 设置，CI）。已有的文件不覆盖（--force 覆盖）
+  srcsharp new &lt;文件夹&gt; [--title 标题] [--episodes n] [--app-path SRC 文件夹] [--force]
+      创建新剧本的模板（第一话的事件、地图和数据，自动游玩步骤，VS Code 设置，CI）。已有的文件不覆盖（--force 覆盖）--episodes 为 2 以上时，创建带幕间（intermission）的多话剧本。
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      追踪事件之间的 Continue、下一关、Exec、IntermissionCommand、Load、GameClear，输出各话之间的连接图（默认是当前文件夹）
   srcsharp trial &lt;剧本文件夹&gt; [--unit 机体] [--pilot 驾驶员] [--enemy 机体] [--enemy-pilot 驾驶员] [--level 数] [--enemies 数] [--list]
       在 .srcsharp/trial/ 创建让剧本数据中的机体和驾驶员与敌人战斗的试战事件，并输出其路径（用 play 或调试器运行）。--list 以 JSON 输出数据中的机体和驾驶员
   srcsharp lsp
@@ -79,11 +81,23 @@
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>请指定一个用于创建剧本的文件夹</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>话数必须是 1 以上的整数: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>已在 {0} 创建模板（{1} 个文件）</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>已跳过已有文件：{0}（使用 --force 覆盖）</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>最多只能指定一个剧本文件夹或事件文件</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>找不到剧本文件夹或事件文件: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>未知的输出格式: {0}（md、mmd 或 json）</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>请指定一个剧本文件夹</value>

@@ -23,8 +23,10 @@ Uso:
       Esegue uno scenario senza schermo. Senza --script, fa avanzare i messaggi e sceglie la prima opzione. Con --skip-wait salta le attese fisse (animazioni, messaggi, Wait). --scenario-root indica la cartella dello scenario (base di Data, Lib e Continue); per impostazione predefinita, un file evento in una sottocartella senza Data usa la cartella superiore più vicina con Data.
   srcsharp balance &lt;cartella o file&gt;... [--format md|csv] [--output file]
       Elenca le statistiche dei dati delle unità e i valori anomali
-  srcsharp new &lt;cartella&gt; [--title titolo] [--app-path cartella di SRC] [--force]
-      Crea un nuovo modello di scenario (evento, mappa e dati del primo episodio, script di gioco automatico, impostazioni di VS Code, CI). I file esistenti vengono mantenuti (--force li sovrascrive)
+  srcsharp new &lt;cartella&gt; [--title titolo] [--episodes n] [--app-path cartella di SRC] [--force]
+      Crea un nuovo modello di scenario (evento, mappa e dati del primo episodio, script di gioco automatico, impostazioni di VS Code, CI). I file esistenti vengono mantenuti (--force li sovrascrive) Con --episodes 2 o più crea più episodi con intermissione.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Segue Continue, fase successiva, Exec, IntermissionCommand, Load e GameClear tra gli eventi e produce il diagramma dei collegamenti tra episodi (predefinito: cartella corrente)
   srcsharp trial &lt;cartella dello scenario&gt; [--unit unità] [--pilot pilota] [--enemy unità] [--enemy-pilot pilota] [--level n] [--enemies n] [--list]
       Crea in .srcsharp/trial/ uno scontro di prova tra unità e piloti dei dati dello scenario e un nemico, e ne stampa il percorso (da eseguire con play o il debugger). --list stampa unità e piloti in JSON
   srcsharp lsp
@@ -79,11 +81,23 @@ Opzioni comuni:
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>Specifica una cartella in cui creare lo scenario</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Il numero di episodi deve essere un intero ≥ 1: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>Modello creato in {0} ({1} file)</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>File esistenti saltati: {0} (usa --force per sovrascrivere)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Specificare al massimo una cartella dello scenario o un file di eventi</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Cartella dello scenario o file di eventi non trovato: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Formato di output sconosciuto: {0} (md, mmd o json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Specifica una cartella dello scenario</value>

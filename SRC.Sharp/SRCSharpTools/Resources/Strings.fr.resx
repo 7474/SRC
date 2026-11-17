@@ -23,8 +23,10 @@ Utilisation :
       Exécute un scénario sans affichage. Sans --script, fait défiler les messages et choisit la première option. Avec --skip-wait, les attentes fixes (animations, messages, Wait) sont ignorées. --scenario-root indique le dossier du scénario (base de Data, Lib et Continue) ; par défaut, un fichier d'événements dans un sous-dossier sans Data utilise le dossier parent le plus proche contenant Data.
   srcsharp balance &lt;dossier ou fichier&gt;... [--format md|csv] [--output fichier]
       Liste les statistiques des unités et les valeurs aberrantes
-  srcsharp new &lt;dossier&gt; [--title titre] [--app-path dossier de SRC] [--force]
-      Crée un nouveau modèle de scénario (événement, carte et données du premier épisode, script de jeu automatique, réglages VS Code, CI). Les fichiers existants sont conservés (--force les écrase)
+  srcsharp new &lt;dossier&gt; [--title titre] [--episodes n] [--app-path dossier de SRC] [--force]
+      Crée un nouveau modèle de scénario (événement, carte et données du premier épisode, script de jeu automatique, réglages VS Code, CI). Les fichiers existants sont conservés (--force les écrase) Avec --episodes 2 ou plus, crée plusieurs épisodes avec intermission.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Suit Continue, étape suivante, Exec, IntermissionCommand, Load et GameClear entre les événements et affiche le diagramme des liens entre épisodes (dossier courant par défaut)
   srcsharp trial &lt;dossier du scénario&gt; [--unit unité] [--pilot pilote] [--enemy unité] [--enemy-pilot pilote] [--level n] [--enemies n] [--list]
       Crée dans .srcsharp/trial/ un combat d’essai opposant des unités et pilotes des données du scénario à un ennemi, et affiche son chemin (à lancer avec play ou le débogueur). --list affiche les unités et pilotes en JSON
   srcsharp lsp
@@ -79,11 +81,23 @@ Options communes :
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>Indiquez un dossier où créer le scénario</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Le nombre d'épisodes doit être un entier ≥ 1 : {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>Modèle créé dans {0} ({1} fichiers)</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Fichiers existants ignorés : {0} (--force pour écraser)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Indiquez au plus un dossier de scénario ou un fichier d'événements</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Dossier de scénario ou fichier d'événements introuvable : {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Format de sortie inconnu : {0} (md, mmd ou json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Indiquez un dossier de scénario</value>

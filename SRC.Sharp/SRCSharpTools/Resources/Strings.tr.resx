@@ -23,8 +23,10 @@ Kullanım:
       Senaryoyu ekransız çalıştırır. --script yoksa mesajları geçer ve ilk seçeneği seçer. --skip-wait ile sabit beklemeler (animasyonlar, mesajlar, Wait) atlanır. --scenario-root senaryo klasörünü (Data, Lib ve Continue için temel) belirtir; varsayılan olarak Data içermeyen bir alt klasördeki olay dosyası, Data içeren en yakın üst klasörü kullanır.
   srcsharp balance &lt;dizin veya dosya&gt;... [--format md|csv] [--output dosya]
       Birim verilerinin istatistik listesi ve aykırı değerler
-  srcsharp new &lt;klasör&gt; [--title başlık] [--app-path SRC klasörü] [--force]
-      Yeni bir senaryo şablonu oluşturur (ilk bölümün olayı, haritası ve verileri, otomatik oynama betiği, VS Code ayarları, CI). Var olan dosyalar korunur (--force üzerine yazar)
+  srcsharp new &lt;klasör&gt; [--title başlık] [--episodes n] [--app-path SRC klasörü] [--force]
+      Yeni bir senaryo şablonu oluşturur (ilk bölümün olayı, haritası ve verileri, otomatik oynama betiği, VS Code ayarları, CI). Var olan dosyalar korunur (--force üzerine yazar) --episodes 2 veya daha fazlaysa ara bölümlü (intermission) birden çok bölüm oluşturur.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Olaylar arasında Continue, sonraki aşama, Exec, IntermissionCommand, Load ve GameClear izlenir ve bölüm bağlantı diyagramı çıkarılır (varsayılan: geçerli klasör)
   srcsharp trial &lt;senaryo klasörü&gt; [--unit birim] [--pilot pilot] [--enemy birim] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
       Senaryo verilerindeki birim ve pilotları bir düşmanla savaştıran deneme savaşını .srcsharp/trial/ içinde oluşturur ve yolunu yazdırır (play veya hata ayıklayıcıyla çalıştırın). --list birim ve pilotları JSON olarak yazdırır
   srcsharp lsp
@@ -79,11 +81,23 @@ Ortak seçenekler:
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>Senaryonun oluşturulacağı tek bir klasör belirtin</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Bölüm sayısı 1 veya daha büyük bir tam sayı olmalıdır: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>Şablon {0} içinde oluşturuldu ({1} dosya)</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Var olan dosyalar atlandı: {0} (üzerine yazmak için --force)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>En fazla bir senaryo klasörü veya olay dosyası belirtin</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Senaryo klasörü veya olay dosyası bulunamadı: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Bilinmeyen çıktı biçimi: {0} (md, mmd veya json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Bir senaryo klasörü belirtin</value>
