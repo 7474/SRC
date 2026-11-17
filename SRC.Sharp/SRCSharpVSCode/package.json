@@ -562,12 +562,12 @@
       "editor/title": [
         {
           "command": "srcsharp.showPreview",
-          "when": "resourceFilename =~ /^(robot|unit|pilot)\\.txt$/i",
+          "when": "resourceFilename =~ /^(robot|unit|pilot|pilot_message|pilot_dialog)\\.txt$/i",
           "group": "navigation"
         },
         {
           "command": "srcsharp.trialBattle",
-          "when": "resourceFilename =~ /^(robot|unit|pilot)\\.txt$/i",
+          "when": "resourceFilename =~ /^(robot|unit|pilot|pilot_message|pilot_dialog)\\.txt$/i",
           "group": "navigation"
         }
       ]

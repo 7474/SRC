@@ -15,15 +15,26 @@ namespace SRCAuthoring.Lsp
     {
         private readonly Dictionary<string, string> commands = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, string> keywords = new Dictionary<string, string>(StringComparer.Ordinal);
+        private readonly Dictionary<string, string> situations = new Dictionary<string, string>(StringComparer.Ordinal);
 
         public static readonly HelpReference Empty = new HelpReference(Array.Empty<(string, string)>());
 
         /// <summary>特殊能力・属性の名前（補完に出す）</summary>
         public IReadOnlyCollection<string> Keywords => keywords.Keys;
 
+        /// <summary>メッセージデータのシチュエーション・タグの名前（補完に出す）</summary>
+        public IReadOnlyCollection<string> Situations => situations.Keys;
+
         private static readonly Regex Link = new Regex(@"\[([^\]]*)\]\([^)]*\)");
         private static readonly Regex Bold = new Regex(@"^\*\*([^*]{1,20})\*\*(.*)$");
-        private static readonly HashSet<string> NotKeywords = new HashSet<string> { "書式", "例", "解説", "指定項目説明", "注意", "備考", "元の SRC との違い" };
+        private static readonly Regex MessageEntryBold = new Regex(@"^\*\*([^*]+?)\*\*(.*)$");
+        private static readonly Regex MessageParenBold = new Regex(@"^\(\*\*([^*]+?)\*\*([^)]*)\)(.*)$");
+        private static readonly HashSet<string> NotKeywords = new HashSet<string>
+        {
+            "書式", "例", "例１", "例２", "例３", "例４", "例５", "例６", "解説", "項目解説", "指定項目説明", "注意", "備考", "元の SRC との違い",
+            "メッセージデータ", "ダイアログデータ", "格闘型の武器の場合", "射撃型の武器の場合", "武器名", "アビリティ名",
+            "カットイン", "カットインの消去", "カットインの持続", "パイロット画像切り替え", "カットインアニメ", "効果音", "ディレイ", "戦闘アニメ表示",
+        };
 
         public HelpReference(IEnumerable<(string name, string body)> topics)
         {
@@ -37,6 +48,10 @@ namespace SRCAuthoring.Lsp
                 if (name.Contains("特殊能力") || name.Contains("属性") || name == "アビリティ効果")
                 {
                     IndexKeywords(name, lines);
+                }
+                if (name == "メッセージデータ")
+                {
+                    IndexSituations(name, lines);
                 }
             }
         }
@@ -129,6 +144,90 @@ namespace SRCAuthoring.Lsp
             }
         }
 
+        private void IndexSituations(string topic, string[] lines)
+        {
+            var entries = new List<(int line, string[] keys)>();
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var trimmed = lines[i].Trim();
+                if (trimmed.StartsWith("```", StringComparison.Ordinal))
+                {
+                    i++;
+                    while (i < lines.Length && !lines[i].Trim().StartsWith("```", StringComparison.Ordinal))
+                    {
+                        i++;
+                    }
+                    continue;
+                }
+                string[] keys = null;
+                var mp = MessageParenBold.Match(trimmed);
+                if (mp.Success)
+                {
+                    var head = mp.Groups[1].Value.Trim();
+                    keys = new[] { head };
+                }
+                else
+                {
+                    var mb = MessageEntryBold.Match(trimmed);
+                    if (mb.Success)
+                    {
+                        var head = mb.Groups[1].Value.Trim();
+                        var parenIdx = head.IndexOf('(');
+                        if (parenIdx > 0)
+                        {
+                            head = head.Substring(0, parenIdx).Trim();
+                        }
+                        if (!NotKeywords.Contains(head) && !head.StartsWith("(", StringComparison.Ordinal) && head.Length <= 24)
+                        {
+                            if (head.Contains('、'))
+                            {
+                                keys = head.Split('、').Select(x => x.Trim()).Where(x => x != "").ToArray();
+                            }
+                            else if (!head.Contains(' '))
+                            {
+                                keys = new[] { head };
+                            }
+                        }
+                    }
+                }
+                if (keys != null && keys.Length > 0)
+                {
+                    entries.Add((i, keys));
+                }
+            }
+            for (var k = 0; k < entries.Count; k++)
+            {
+                var (start, keys) = entries[k];
+                var nextStart = k + 1 < entries.Count ? entries[k + 1].line : lines.Length;
+                var section = new List<string>();
+                for (var j = start; j < Math.Min(nextStart, start + 10); j++)
+                {
+                    var cleaned = Clean(lines[j]);
+                    if (cleaned.StartsWith("```", StringComparison.Ordinal))
+                    {
+                        break;
+                    }
+                    if (cleaned != "")
+                    {
+                        section.Add(cleaned);
+                    }
+                }
+                var text = string.Join("  \n", section) + $"\n\n（ヘルプ「{topic}」）";
+                foreach (var key in keys)
+                {
+                    if (!situations.TryGetValue(key, out var existing) || existing.Length < text.Length)
+                    {
+                        situations[key] = text;
+                    }
+                }
+            }
+            // 「攻撃」「格闘」「射撃」「アビリティ」など項目見出しになっていない標準語の説明を補う
+            situations.TryAdd("攻撃", "**攻撃**  \n武器名ごとのメッセージが無いときに使う、攻撃の汎用シチュエーションです。\n\n（ヘルプ「メッセージデータ」）");
+            situations.TryAdd("格闘", "**格闘**  \n格闘型の武器で攻撃したとき、武器名のメッセージが無ければ使われます（「攻撃」より優先）。\n\n（ヘルプ「メッセージデータ」）");
+            situations.TryAdd("射撃", "**射撃**  \n射撃型の武器で攻撃したとき、武器名のメッセージが無ければ使われます（「攻撃」より優先）。\n\n（ヘルプ「メッセージデータ」）");
+            situations.TryAdd("アビリティ", "**アビリティ**  \nアビリティ名のメッセージが無いときに使う、アビリティ使用時の汎用シチュエーションです。\n\n（ヘルプ「メッセージデータ」）");
+        }
+
         /// <summary>イベントコマンドの説明（Markdown）。無ければ null</summary>
         public string Command(string name) => commands.TryGetValue(name ?? "", out var s) ? s : null;
 
@@ -146,6 +245,53 @@ namespace SRCAuthoring.Lsp
                 if (keywords.TryGetValue(candidate, out var s))
                 {
                     return s;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// メッセージデータのシチュエーション・サブシチュエーション・タグ・変数の説明（Markdown）。無ければ null
+        /// </summary>
+        public string Situation(string word)
+        {
+            if (string.IsNullOrEmpty(word))
+            {
+                return null;
+            }
+            var trimmed = word.Trim().Trim('(', ')');
+            if (situations.TryGetValue(word.Trim(), out var exact))
+            {
+                return exact;
+            }
+            if (situations.TryGetValue(trimmed, out var s))
+            {
+                return s;
+            }
+            // (SIZE=14) -> <SIZE=数値> や (対弱点=機) -> 対弱点 など
+            var eq = trimmed.IndexOf('=');
+            if (eq > 0 && situations.TryGetValue(trimmed.Substring(0, eq), out var eqDoc))
+            {
+                return eqDoc;
+            }
+            if (trimmed.StartsWith("対", StringComparison.Ordinal) && situations.TryGetValue("対", out var taiDoc))
+            {
+                return taiDoc;
+            }
+            if (trimmed.StartsWith("<", StringComparison.Ordinal) && trimmed.EndsWith(">", StringComparison.Ordinal))
+            {
+                var inner = trimmed.Trim('<', '>').TrimStart('/');
+                if (situations.TryGetValue($"<{inner}>", out var tagDoc))
+                {
+                    return tagDoc;
+                }
+                if (inner.StartsWith("COLOR=", StringComparison.OrdinalIgnoreCase) && situations.TryGetValue("<COLOR=色指定>", out var colorDoc))
+                {
+                    return colorDoc;
+                }
+                if (inner.StartsWith("SIZE=", StringComparison.OrdinalIgnoreCase) && situations.TryGetValue("<SIZE=数値>", out var sizeDoc))
+                {
+                    return sizeDoc;
                 }
             }
             return null;

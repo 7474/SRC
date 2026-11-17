@@ -430,7 +430,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       if (listed === undefined) {
         return;
       }
-      let data: { units: string[]; pilots: string[] };
+      let data: { units: string[]; pilots: string[]; messageTypes?: Record<string, string> };
       try {
         data = JSON.parse(listed.trim().split('\n').pop() ?? '{}');
       } catch {
@@ -441,25 +441,47 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         vscode.window.showErrorMessage('SRC#: シナリオのデータにユニットとパイロットが要ります。');
         return;
       }
-      // カーソルのあるユニット（データのプレビューと同じく、その行より前のいちばん近い名前）を先頭に
-      const near = (names: string[]): string[] => {
+      // カーソルのあるユニット・パイロット（pilot_message/dialog のメッセージタイプや複数人見出しも含む）を先頭に
+      const near = (names: string[], map?: Record<string, string>): string[] => {
         if (!editor) {
           return names;
         }
         const lines = editor.document.getText().split(/\r?\n/).slice(0, editor.selection.active.line + 1).reverse().map((x) => x.trim());
-        const hit = lines.find((x) => names.includes(x));
-        return hit ? [hit, ...names.filter((x) => x !== hit)] : names;
+        for (const line of lines) {
+          if (names.includes(line)) {
+            return [line, ...names.filter((x) => x !== line)];
+          }
+          const firstToken = line.split(/\s+/)[0];
+          const mapped = map?.[line] ?? map?.[firstToken] ?? (names.includes(firstToken) ? firstToken : undefined);
+          if (mapped && names.includes(mapped)) {
+            return [mapped, ...names.filter((x) => x !== mapped)];
+          }
+        }
+        return names;
       };
       const pick = (items: string[], title: string) => vscode.window.showQuickPick(items, { title: `SRC# 試し戦闘: ${title}` });
       const unit = await pick(near(data.units), '味方のユニット');
-      const pilot = unit && (await pick(near(data.pilots), '味方のパイロット'));
+      const pilot = unit && (await pick(near(data.pilots, data.messageTypes), '味方のパイロット'));
       const enemy = pilot && (await pick([unit, ...data.units.filter((x) => x !== unit)], '敵のユニット'));
       const generic = data.pilots.filter((x) => x !== pilot);
       const enemyPilot = enemy && (await pick([...generic.filter((x) => /\((ザコ|汎用)\)/.test(x)), ...generic.filter((x) => !/\((ザコ|汎用)\)/.test(x))], '敵のパイロット（ザコか汎用）'));
       if (!enemyPilot) {
         return;
       }
-      const created = await run('trial', [root, '--unit', unit, '--pilot', pilot, '--enemy', enemy, '--enemy-pilot', enemyPilot, ...appArgs], root);
+      const focusPick = await vscode.window.showQuickPick(
+        [
+          { label: '標準', description: '通常の配置で戦う', value: 'normal' },
+          { label: '攻撃・とどめ', description: '隣に HP 10% の敵を置く（攻撃・武器・とどめのセリフ）', value: 'attack' },
+          { label: '回避', description: '低レベルの敵を隣に置く（回避のセリフ）', value: 'evade' },
+          { label: '被弾', description: '味方 HP 70% で格上の敵を隣に置く（ダメージのセリフ）', value: 'damage' },
+          { label: '破壊', description: '味方 HP 1% で強敵を隣に置く（破壊・脱出のセリフ）', value: 'destroy' },
+        ],
+        { title: 'SRC# 試し戦闘: 試したい場面' },
+      );
+      if (!focusPick) {
+        return;
+      }
+      const created = await run('trial', [root, '--unit', unit, '--pilot', pilot, '--enemy', enemy, '--enemy-pilot', enemyPilot, '--focus', focusPick.value, ...appArgs], root);
       const eve = created?.trim().split('\n').pop();
       if (!eve) {
         return;

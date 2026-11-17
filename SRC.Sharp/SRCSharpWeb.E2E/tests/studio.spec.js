@@ -12,7 +12,7 @@ const lantern = path.resolve(__dirname, '..', '..', 'Content', 'lantern');
  * ランタン号のマップを写したシナリオのフォルダ。Playwright でフォルダを選ぶ（setInputFiles）と、日本語の名前のファイルが読めないため、
  * ASCII の名前にする（ブラウザで使うときは日本語の名前も読める）
  */
-function scenarioFolder() {
+function scenarioFolder(extraData = []) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'studio-'));
   const scenario = path.join(dir, 'lantern');
   fs.mkdirSync(path.join(scenario, 'stage'), { recursive: true });
@@ -21,7 +21,7 @@ function scenarioFolder() {
   fs.copyFileSync(path.join(lantern, 'ステージ', '02_霧の渓谷.map'), path.join(scenario, 'stage', 'valley.map'));
   fs.copyFileSync(path.join(lantern, 'ステージ', '02_霧の渓谷.eve'), path.join(scenario, 'stage', 'valley.eve'));
   fs.mkdirSync(path.join(scenario, 'Data', 'team'), { recursive: true });
-  for (const name of ['unit.txt', 'pilot.txt']) {
+  for (const name of ['unit.txt', 'pilot.txt', ...extraData]) {
     fs.copyFileSync(path.join(lantern, 'Data', 'ランタン', name), path.join(scenario, 'Data', 'team', name));
   }
   return scenario;
@@ -494,3 +494,43 @@ test('マップの配置: .eve からユニットを読み込み、ドラッグ�
     ['Create 味方 ランタン号 0 グスタフ 10 3 8', 'Create 味方 ランタン号 0 グスタフ 10 5 10'],
   ]);
 });
+
+test('戦闘メッセージ: メッセージウィンドウのプレビュー・充実度チップからの追記・全パイロット一覧表（7474/SRC#1651）', async ({ page }) => {
+  await open(page);
+  // メッセージウィンドウの整形・区切り・改行ロジック
+  const mwCheck = await page.evaluate(async base => {
+    const m = await import(base + 'message-window.js');
+    return {
+      stripped: m.stripMessageTags('<B>太字</B> <LT>a<GT>'),
+      formatted: m.formatSrcMessageText('ああ――いいーーうう'),
+      pages: m.splitMessagePages('行くぞ！$(武器).覚悟しろ;$(相手)め', { '$(武器)': '灯銃', '$(相手)': '敵' }),
+      lines: m.layoutMessageLines('行くぞ！灯銃.覚悟しろ', true),
+    };
+  }, base);
+  expect(mwCheck.stripped).toBe('太字 <a>');
+  expect(mwCheck.formatted).toBe('ああ──いい──うう');
+  expect(mwCheck.pages.map(p => p.text)).toEqual(['行くぞ！灯銃.覚悟しろ', '敵め']);
+  expect(mwCheck.lines).toEqual(['「行くぞ！灯銃', '  覚悟しろ」']);
+
+  await page.locator('#scenario-input').setInputFiles(scenarioFolder(['pilot_message.txt']));
+  await page.locator('#tab-data').click();
+  await page.locator('#data-files').selectOption('Data/team/pilot_message.txt');
+
+  // ソラの最初のセリフがメッセージウィンドウに表示される
+  await expect(page.locator('.dp-list li').first()).toHaveText('ソラ');
+  await expect(page.locator('.dp-msg-window-section .mw-speaker')).toHaveText('【主人公】');
+  await expect(page.locator('.dp-msg-window-section .mw-lines')).toContainText('いくぞ、ホタル！');
+
+  // 足りないシチュエーションのチップ（例: 発進）を押すと末尾へ追記され、保存できる
+  const missingChip = page.locator('.dp-cov-chip.missing').first();
+  const missingLabel = await missingChip.locator('span').first().textContent();
+  await missingChip.click();
+  await expect(page.locator('.dp-msg-table')).toContainText(missingLabel);
+  await expect(page.locator('#save-data')).toBeEnabled();
+
+  // 一覧表タブで全パイロットの表と未記入パイロットが見える
+  await page.locator('.dp-msg-tabs button').nth(1).click();
+  await expect(page.locator('.dp-msg-matrix')).toContainText('ソラ');
+  await expect(page.locator('.dp-missing-pilots')).toContainText('教官ドーラ');
+});
+

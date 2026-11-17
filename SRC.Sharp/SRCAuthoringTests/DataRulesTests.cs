@@ -37,7 +37,7 @@ namespace SRCAuthoring.Tests
         private static string[] Pilot(string name, string stats = "100, 100, 100, 100, 100, 100, 普通", string sp = "ＳＰなし", int exp = 100, string nickname = null)
             => new[] { name, $"{nickname ?? name}, よみ, 男性, 汎用, AAAA, {exp}", "特殊能力なし", stats, sp, "-.bmp, -.mid", "" };
 
-        private static List<SrcDiagnostic> Lint(string groups, string[] robot = null, string[] pilot = null, string[] message = null, string[] sp = null)
+        private static List<SrcDiagnostic> Lint(string groups, string[] robot = null, string[] pilot = null, string[] message = null, string[] dialog = null, string[] sp = null)
         {
             using (var scenario = new TestScenario())
             {
@@ -52,6 +52,10 @@ namespace SRCAuthoring.Tests
                 if (message != null)
                 {
                     scenario.Write(Path.Combine("Data", "pilot_message.txt"), message);
+                }
+                if (dialog != null)
+                {
+                    scenario.Write(Path.Combine("Data", "pilot_dialog.txt"), dialog);
                 }
                 var system = new List<string>();
                 if (sp != null)
@@ -116,6 +120,59 @@ namespace SRCAuthoring.Tests
             var d = Lint("src", message: new[] { "テスト", "ビーム, 撃つ", "" });
 
             Assert.AreEqual(0, d.Count, string.Join("\n", d));
+        }
+
+        [TestMethod]
+        public void Src_MessageAndDialogRules_PilotWeaponAndReferences()
+        {
+            var pilot = new[]
+            {
+                "主人公", "主人公, よみ, 男性, 汎用, AAAA, 100", "特殊能力", "メッセージ=ヒーロー, 1", "100, 100, 100, 100, 100, 100, 普通", "ＳＰなし", "-.bmp, -.mid", "",
+            };
+            var robot = Unit("試作機", weapons: new[] { Weapon("ライフル", 4, "実") });
+            var message = new[]
+            {
+                "主人公",
+                "攻撃(無い武器), だめ",
+                "攻撃($(武器)), 通る",
+                "サポートアタック(試作機), 援護！",
+                "サポートガード(汎用), 守る！",
+                "かばう(無い人), だめ",
+                "",
+                "ヒーロー",
+                "回避, かわした",
+                "",
+                "無いパイロット",
+                "回避, だめ",
+                "",
+            };
+            var dialog = new[]
+            {
+                "無いダイアログ主",
+                "回避",
+                "主人公, よけた",
+                "",
+                "ヒーロー",
+                "存在しないシチュ",
+                "主人公, ああ",
+                "",
+            };
+
+            var d = Lint("src", robot: robot, pilot: pilot, message: message, dialog: dialog)
+                .Where(x => x.RuleId == "message-situation-unknown")
+                .ToList();
+
+            CollectionAssert.AreEquivalent(
+                new[]
+                {
+                    "pilot_message.txt:2",
+                    "pilot_message.txt:6",
+                    "pilot_message.txt:11",
+                    "pilot_dialog.txt:1",
+                    "pilot_dialog.txt:6",
+                },
+                d.Select(x => $"{Path.GetFileName(x.File)}:{x.Line}").ToArray(),
+                string.Join("\n", d));
         }
 
         [TestMethod]

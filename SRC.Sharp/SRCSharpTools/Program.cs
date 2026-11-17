@@ -406,10 +406,20 @@ namespace SRCSharpTools
             var catalog = lint.Catalog;
             if (options.ContainsKey("list"))
             {
+                var messageTypes = new System.Text.Json.Nodes.JsonObject();
+                foreach (var mt in catalog.MessageTypes)
+                {
+                    var p = catalog.FindPilotOrMessageType(mt);
+                    if (p != null)
+                    {
+                        messageTypes[mt] = p.Name;
+                    }
+                }
                 var json = new System.Text.Json.Nodes.JsonObject
                 {
                     ["units"] = new System.Text.Json.Nodes.JsonArray(catalog.Entries.Where(e => e.Kind == SRCAuthoring.Analysis.DataKind.Unit).Select(e => (System.Text.Json.Nodes.JsonNode)e.Name).ToArray()),
                     ["pilots"] = new System.Text.Json.Nodes.JsonArray(catalog.Entries.Where(e => e.Kind == SRCAuthoring.Analysis.DataKind.Pilot).Select(e => (System.Text.Json.Nodes.JsonNode)e.Name).ToArray()),
+                    ["messageTypes"] = messageTypes,
                 };
                 Console.WriteLine(json.ToJsonString(new System.Text.Json.JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
                 return 0;
@@ -418,6 +428,7 @@ namespace SRCSharpTools
             options.TryGetValue("pilot", out var pilot);
             options.TryGetValue("enemy", out var enemy);
             options.TryGetValue("enemy-pilot", out var enemyPilot);
+            options.TryGetValue("focus", out var focus);
             var setup = TrialTemplate.Complete(new TrialSetup
             {
                 Unit = unit,
@@ -426,6 +437,7 @@ namespace SRCSharpTools
                 EnemyPilot = enemyPilot,
                 Level = options.TryGetValue("level", out var level) && int.TryParse(level, out var l) ? l : 30,
                 Enemies = options.TryGetValue("enemies", out var enemies) && int.TryParse(enemies, out var n) ? n : 1,
+                Focus = focus ?? "normal",
             }, catalog);
             var problem = TrialTemplate.Validate(setup, catalog);
             if (problem != null)

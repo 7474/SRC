@@ -54,6 +54,21 @@ const preview = new DataPreview($('#preview'), {
     $('#save-data').disabled = false;
     await renderData();
   },
+  insertLines: async (afterLine, text) => {
+    const eol = data.text.includes('\r\n') ? '\r\n' : '\n';
+    const inserted = text.split('\n');
+    if (!data.text) {
+      data.text = inserted.join(eol);
+    } else {
+      const lines = data.text.split(/\r?\n/);
+      const at = afterLine > 0 ? Math.min(afterLine, lines.length) : lines.length;
+      lines.splice(at, 0, ...inserted);
+      data.text = lines.join(eol);
+    }
+    data.dirty = true;
+    $('#save-data').disabled = false;
+    await renderData();
+  },
 });
 
 /** ユニット・パイロットの画像（SRC と同じく Bitmap/Unit・Bitmap/Pilot、次に Bitmap の直下） */
@@ -61,7 +76,7 @@ async function loadDataImage(kind, bitmap) {
   if (!bitmap || bitmap === '-.bmp') {
     return null;
   }
-  const folder = kind === 'pilot' ? 'Pilot' : 'Unit';
+  const folder = kind === 'pilot' || kind === 'message' || kind === 'dialog' ? 'Pilot' : 'Unit';
   const found = await findFile([`Bitmap/${folder}/${bitmap}`, `Bitmap/${bitmap}`]);
   if (!found) {
     return null;
@@ -70,7 +85,7 @@ async function loadDataImage(kind, bitmap) {
 }
 
 function dataFiles() {
-  return (state.scenario?.files ?? []).filter(f => /(^|\/)(robot|unit|pilot)\.txt$/i.test(f) && /^data\//i.test(f));
+  return (state.scenario?.files ?? []).filter(f => /(^|\/)(robot|unit|pilot|pilot_message|pilot_dialog)\.txt$/i.test(f) && /^data\//i.test(f));
 }
 
 function renderDataFiles() {
@@ -99,6 +114,23 @@ async function systemTexts() {
   return result;
 }
 
+/** メッセージ・ダイアログデータのプレビュー用に、パイロット・ユニット・イベントも一緒に渡す */
+async function dataPreviewBefore(path) {
+  const result = await systemTexts();
+  if (!/(^|\/)(pilot_message|pilot_dialog)\.txt$/i.test(path)) {
+    return result;
+  }
+  for (const root of [...state.roots].reverse()) {
+    for (const f of root.files.filter(x => /^data\/.*(^|\/)(pilot|non_pilot|robot|unit)\.txt$/i.test(x))) {
+      result.push({ name: `${root.name}/${f}`, text: decodeText(await root.read(f)) });
+    }
+  }
+  for (const [evePath, eveText] of state.eventTexts) {
+    result.push({ name: evePath, text: eveText });
+  }
+  return result;
+}
+
 async function showData(path) {
   if (data.dirty && !confirm(t('studio.unsaved'))) {
     $('#data-files').value = data.path;
@@ -112,7 +144,7 @@ async function showData(path) {
 }
 
 async function renderData() {
-  preview.show(await previewData(data.path.split('/').at(-1), data.text, await systemTexts()));
+  preview.show(await previewData(data.path.split('/').at(-1), data.text, await dataPreviewBefore(data.path)));
 }
 
 $('#save-data').addEventListener('click', async () => {

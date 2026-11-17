@@ -536,16 +536,89 @@ namespace SRCAuthoring.Lsp
                 @params["position"]["character"].GetValue<int>());
         }
 
+        private static bool IsMessageDataFile(string path)
+        {
+            var name = Path.GetFileName(path ?? "");
+            return string.Equals(name, "pilot_message.txt", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(name, "pilot_dialog.txt", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private DataCatalog CatalogForDataFile(string path)
+        {
+            var scenarioRoot = ScenarioAnalyzer.FindScenarioRoot(path);
+            if (!string.IsNullOrEmpty(scenarioRoot))
+            {
+                return CatalogFor(scenarioRoot);
+            }
+            var dataRoot = DataRootOf(path);
+            if (!string.IsNullOrEmpty(dataRoot))
+            {
+                var parent = Path.GetDirectoryName(dataRoot);
+                var cat = string.IsNullOrEmpty(parent) ? DataCatalog.Empty : CatalogFor(parent);
+                if (cat.Entries.Count > 0 || cat.Weapons.Count > 0)
+                {
+                    return cat;
+                }
+            }
+            return DataCatalog.Empty;
+        }
+
+        /// <summary>行の character 付近にあるタグ（<...>）、変数（$(...)）、または括弧内トークン（(...)）</summary>
+        private static string DelimitedTokenAt(string text, int character, char open, char close)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return null;
+            }
+            var pos = Math.Max(0, Math.Min(character, text.Length - 1));
+            for (var i = pos; i >= 0; i--)
+            {
+                if (text[i] == close && i < pos)
+                {
+                    break;
+                }
+                if (text[i] == open)
+                {
+                    var end = text.IndexOf(close, i + 1);
+                    if (end > i && pos <= end)
+                    {
+                        return text.Substring(i, end - i + 1);
+                    }
+                    break;
+                }
+            }
+            return null;
+        }
+
         private JsonNode Definition(JsonNode @params)
         {
             var (path, line, character) = Position(@params);
+            var word = WordAt(LineText(path, line), character);
+            if (IsMessageDataFile(path))
+            {
+                var catalog = CatalogForDataFile(path);
+                var dataEntry = catalog.FindPilotOrMessageType(word) ?? catalog.Find(DataKind.Unit, word);
+                if (dataEntry?.File != null)
+                {
+                    return Location(dataEntry.File, dataEntry.Line);
+                }
+                var weapon = catalog.FindWeapon(word);
+                if (weapon?.File != null)
+                {
+                    return Location(weapon.File, weapon.Line);
+                }
+                return null;
+            }
+            if (DataLinter.IsDataFileName(path))
+            {
+                return null;
+            }
             var analysis = AnalysisFor(path);
             var include = analysis.Includes.FirstOrDefault(x => ScenarioAnalysis.SamePath(x.File, path) && x.Line == line + 1);
             if (include?.ResolvedPath != null)
             {
                 return Location(include.ResolvedPath, 1);
             }
-            var word = WordAt(LineText(path, line), character);
             var label = analysis.Labels.FirstOrDefault(x => x.Name == word);
             if (label != null)
             {
@@ -591,6 +664,69 @@ namespace SRCAuthoring.Lsp
         {
             var (path, line, character) = Position(@params);
             var text = LineText(path, line);
+            // メッセージ・ダイアログデータ: シチュエーション・タグの説明、パイロット・ユニット・武器の要約
+            if (IsMessageDataFile(path))
+            {
+                var angle = DelimitedTokenAt(text, character, '<', '>');
+                if (angle != null)
+                {
+                    var doc = Help.Situation(angle);
+                    if (doc != null)
+                    {
+                        return Markdown(doc);
+                    }
+                }
+                var paren = DelimitedTokenAt(text, character, '(', ')');
+                if (paren != null)
+                {
+                    if (character > 0 && text.IndexOf("$(", StringComparison.Ordinal) >= 0)
+                    {
+                        var idx = text.LastIndexOf("$(", Math.Min(character, text.Length - 1), StringComparison.Ordinal);
+                        if (idx >= 0)
+                        {
+                            var closeIdx = text.IndexOf(')', idx);
+                            if (closeIdx >= character)
+                            {
+                                var varDoc = Help.Situation(text.Substring(idx, closeIdx - idx + 1));
+                                if (varDoc != null)
+                                {
+                                    return Markdown(varDoc);
+                                }
+                            }
+                        }
+                    }
+                    var modDoc = Help.Situation(paren);
+                    if (modDoc != null)
+                    {
+                        return Markdown(modDoc);
+                    }
+                }
+                var wordAtCursor = WordAt(text, character);
+                var sitDoc = Help.Situation(wordAtCursor);
+                if (sitDoc != null)
+                {
+                    return Markdown(sitDoc);
+                }
+                var catalog = CatalogForDataFile(path);
+                var pilot = catalog.FindPilotOrMessageType(wordAtCursor);
+                if (pilot != null)
+                {
+                    var note = pilot.Name != wordAtCursor && pilot.Nickname != wordAtCursor ? $"（メッセージタイプ `{wordAtCursor}`）  \n" : "";
+                    return Markdown(note + pilot.Summary + (pilot.File == null ? "" : $"  \n{Path.GetFileName(pilot.File)}:{pilot.Line}"));
+                }
+                var weapon = catalog.FindWeapon(wordAtCursor);
+                if (weapon != null)
+                {
+                    return Markdown(weapon.Summary + (weapon.File == null ? "" : $"  \n{Path.GetFileName(weapon.File)}:{weapon.Line}"));
+                }
+                var unit = catalog.Find(DataKind.Unit, wordAtCursor);
+                if (unit != null)
+                {
+                    return Markdown(unit.Summary + (unit.File == null ? "" : $"  \n{Path.GetFileName(unit.File)}:{unit.Line}"));
+                }
+                var kw = Help.Keyword(wordAtCursor);
+                return kw == null ? null : Markdown(kw);
+            }
             // データのファイル: 特殊能力・武器の属性の説明（ヘルプ）
             if (DataLinter.IsDataFileName(path))
             {
@@ -754,6 +890,71 @@ namespace SRCAuthoring.Lsp
         {
             var (path, _, _) = Position(@params);
             var items = new JsonArray();
+            if (IsMessageDataFile(path))
+            {
+                var seen = new HashSet<string>(StringComparer.Ordinal);
+                void AddItem(string label, int kind, string detail, string doc)
+                {
+                    if (string.IsNullOrEmpty(label) || !seen.Add(label))
+                    {
+                        return;
+                    }
+                    var obj = new JsonObject { ["label"] = label, ["kind"] = kind, ["detail"] = detail };
+                    if (!string.IsNullOrEmpty(doc))
+                    {
+                        obj["documentation"] = new JsonObject { ["kind"] = "markdown", ["value"] = doc };
+                    }
+                    items.Add(obj);
+                }
+
+                foreach (var sit in Help.Situations.Concat(Rules.SrcRules.StandardSituations).OrderBy(x => x, StringComparer.Ordinal))
+                {
+                    if (sit.StartsWith("<", StringComparison.Ordinal) || sit.StartsWith("$", StringComparison.Ordinal) || sit.StartsWith("(", StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+                    AddItem(sit, 14, "シチュエーション", Help.Situation(sit));
+                }
+                foreach (var sub in Rules.SrcRules.StandardSubSituations.OrderBy(x => x, StringComparer.Ordinal))
+                {
+                    AddItem($"({sub})", 14, "攻撃サブシチュエーション", Help.Situation(sub));
+                }
+                foreach (var mod in new[] { "(対瀕死)", "(対強敵)", "(対ザコ)", "(対男性)", "(対女性)", "(対自分)", "(対高回避率)", "(対低回避率)", "(対高命中率)", "(対低命中率)" })
+                {
+                    AddItem(mod, 14, "相手限定シチュエーション", Help.Situation(mod));
+                }
+                foreach (var tag in new[] { "<B>", "</B>", "<I>", "</I>", "<BIG>", "</BIG>", "<SMALL>", "</SMALL>", "<SIZE=14>", "</SIZE>", "<COLOR=red>", "</COLOR>", "<LT>", "<GT>" })
+                {
+                    AddItem(tag, 14, "メッセージタグ", Help.Situation(tag));
+                }
+                foreach (var v in new[] { "$(ユニット)", "$(パイロット)", "$(武器)", "$(損傷率)", "$(相手ユニット)", "$(相手パイロット)", "$(相手武器)", "$(相手損傷率)" })
+                {
+                    AddItem(v, 6, "メッセージ変数", Help.Situation(v));
+                }
+
+                var catalog = CatalogForDataFile(path);
+                foreach (var entry in catalog.Entries.Where(e => e.Kind == DataKind.Pilot))
+                {
+                    AddItem(entry.Name, 12, "パイロット", entry.Summary);
+                }
+                foreach (var mt in catalog.MessageTypes)
+                {
+                    AddItem(mt, 12, "メッセージタイプ", catalog.FindPilotOrMessageType(mt)?.Summary);
+                }
+                foreach (var w in catalog.Weapons)
+                {
+                    AddItem(w.Name, 12, string.IsNullOrEmpty(w.UnitName) ? "武器" : $"武器（{w.UnitName}）", w.Summary);
+                }
+                foreach (var entry in catalog.Entries.Where(e => e.Kind == DataKind.Unit))
+                {
+                    AddItem(entry.Name, 12, "ユニット", entry.Summary);
+                }
+                foreach (var sp in catalog.SpecialPowers)
+                {
+                    AddItem(sp, 14, "スペシャルパワー", null);
+                }
+                return items;
+            }
             // データのファイル: 特殊能力・武器の属性（ヘルプにあるもの）
             if (DataLinter.IsDataFileName(path))
             {

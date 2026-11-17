@@ -11,6 +11,7 @@
 import { t } from './i18n.js';
 import { WEAPON_FIELDS, ABILITY_FIELDS, splitLine, replaceField, isContinued } from './table-edit.js';
 import { compareUnit, comparePilot, analysisSections } from './compare.js';
+import { MessageWindowPreview } from './message-window.js';
 
 export class DataPreview {
   constructor(element, options) {
@@ -18,6 +19,9 @@ export class DataPreview {
     this.options = options;
     this.result = null;
     this.selected = null;
+    this.selectedItemLine = null;
+    this.cursorLine = null;
+    this.messageView = 'pilot';
     element.classList.add('data-preview');
     element.innerHTML = `
       <div class="dp-errors" hidden></div>
@@ -30,11 +34,20 @@ export class DataPreview {
   /** プレビューを出す。line を含むデータがあればそれを、無ければ前に選んだもの（同じ名前）か最初のものを選ぶ */
   show(result, line) {
     this.result = result;
+    this.cursorLine = line ?? null;
     const errors = this.element.querySelector('.dp-errors');
     errors.hidden = result.errors.length === 0;
     errors.textContent = result.errors.join('\n');
     const byLine = line ? result.entries.find(e => line >= e.startLine && line <= e.endLine) : null;
     const previous = this.selected && result.entries.find(e => e.name === this.selected.name);
+    if (line && byLine) {
+      const itemAtLine = byLine.items?.find(it => it.line === line || it.messages?.some(m => m.line === line));
+      if (itemAtLine) {
+        this.selectedItemLine = itemAtLine.line;
+      } else if (!byLine.items?.some(it => it.line === this.selectedItemLine)) {
+        this.selectedItemLine = byLine.items?.[0]?.line ?? null;
+      }
+    }
     this.renderList();
     this.select(byLine ?? previous ?? result.entries[0] ?? null);
   }
@@ -46,8 +59,10 @@ export class DataPreview {
       const li = document.createElement('li');
       li.role = 'option';
       li.textContent = entry.name;
+      li.dataset.name = entry.name;
       li.title = `${entry.startLine}${t('preview.line')}`;
       li.addEventListener('click', () => {
+        this.selectedItemLine = entry.items?.[0]?.line ?? null;
         this.select(entry);
         this.options.onSelect?.(entry);
       });
@@ -64,10 +79,15 @@ export class DataPreview {
   select(entry) {
     this.selected = entry;
     const items = [...this.element.querySelectorAll('.dp-list li')];
-    items.forEach(li => li.setAttribute('aria-selected', String(entry != null && li.textContent === entry.name)));
+    items.forEach(li => li.setAttribute('aria-selected', String(entry != null && li.dataset.name === entry.name)));
     const card = this.element.querySelector('.dp-card');
-    if (!entry) {
+    const isMsg = this.result.kind === 'message' || this.result.kind === 'dialog';
+    if (!entry && !(isMsg && this.result.missingPilots?.length)) {
       card.innerHTML = '';
+      return;
+    }
+    if (isMsg) {
+      this.renderMessageCard(card, entry);
       return;
     }
     card.innerHTML = this.result.kind === 'pilot' ? pilotCard(entry) : unitCard(entry);
@@ -258,3 +278,323 @@ function pilotCard(p) {
 function signed(v) {
   return v > 0 ? `+${v}` : String(v);
 }
+
+// ---- メッセージ・ダイアログデータのプレビューと充実度の一覧（7474/SRC#1651） ----
+
+DataPreview.prototype.renderMessageCard = function (card, entry) {
+  card.innerHTML = '';
+  const tabs = document.createElement('div');
+  tabs.className = 'dp-msg-tabs';
+  for (const [mode, labelKey] of [['pilot', 'msg.tabPilot'], ['all', 'msg.tabAll']]) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = t(labelKey);
+    btn.setAttribute('aria-pressed', String(this.messageView === mode));
+    btn.addEventListener('click', () => {
+      this.messageView = mode;
+      this.renderMessageCard(card, entry);
+    });
+    tabs.append(btn);
+  }
+  card.append(tabs);
+
+  if (this.messageView === 'all' || !entry) {
+    this.renderAllPilotsMatrix(card);
+    return;
+  }
+
+  const head = document.createElement('header');
+  const face = document.createElement('canvas');
+  face.className = 'dp-image';
+  face.hidden = true;
+  const info = document.createElement('div');
+  const h2 = document.createElement('h2');
+  h2.textContent = entry.name;
+  const meta = document.createElement('p');
+  const parts = [entry.nickname && entry.nickname !== entry.name ? entry.nickname : null, entry.class || null,
+    entry.units?.length ? `${t('msg.unit')}: ${entry.units.join('・')}` : null,
+    t('preview.lines', entry.startLine, entry.endLine)].filter(Boolean);
+  meta.textContent = parts.join('・');
+  info.append(h2, meta);
+  head.append(face, info);
+  card.append(head);
+
+  if (entry.bitmap && entry.bitmap !== '-.bmp') {
+    this.options.loadImage?.('pilot', entry.bitmap).then(img => {
+      if (img && this.selected === entry) {
+        face.width = img.width;
+        face.height = img.height;
+        face.getContext('2d').drawImage(img, 0, 0);
+        face.hidden = false;
+      }
+    }, () => {});
+  }
+
+  // メッセージウィンドウのプレビュー
+  const previewSection = document.createElement('section');
+  previewSection.className = 'dp-msg-window-section';
+  const previewTitle = document.createElement('h3');
+  previewTitle.textContent = t('msg.previewTitle');
+  const windowHost = document.createElement('div');
+  previewSection.append(previewTitle, windowHost);
+  card.append(previewSection);
+
+  const mw = new MessageWindowPreview(windowHost, { loadImage: this.options.loadImage });
+  const selectPreviewItem = (item) => {
+    this.selectedItemLine = item?.line ?? null;
+    for (const row of card.querySelectorAll('.dp-msg-item')) {
+      row.setAttribute('aria-selected', String(item != null && Number(row.dataset.line) === item.line));
+    }
+    if (!item) {
+      mw.setMessages([]);
+      return;
+    }
+    mw.setMessages(item.messages, sampleVarsForMessage(entry, item));
+  };
+
+  // このパイロットのシチュエーション充実度
+  const covSection = document.createElement('section');
+  covSection.className = 'dp-coverage';
+  const renderSlots = (titleText, slots) => {
+    if (slots.length === 0) return;
+    const h3 = document.createElement('h3');
+    h3.textContent = titleText;
+    const list = document.createElement('div');
+    list.className = 'dp-cov-list';
+    for (const slot of slots) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `dp-cov-chip ${slot.count > 0 ? 'covered' : 'missing'}`;
+      const label = document.createElement('span');
+      label.textContent = slot.label;
+      const badge = document.createElement('span');
+      badge.className = 'dp-cov-count';
+      badge.textContent = slot.count > 0 ? String(slot.count) : t('msg.missing');
+      btn.append(label, badge);
+      if (slot.count > 0) {
+        btn.title = `${slot.lines[0]}${t('preview.line')}`;
+        btn.addEventListener('click', () => {
+          const item = entry.items?.find(it => it.line === slot.lines[0]);
+          if (item) selectPreviewItem(item);
+          this.options.onSelect?.(entry, slot.lines[0]);
+        });
+      } else if (this.options.insertLines) {
+        btn.title = t('msg.addSlot');
+        btn.addEventListener('click', () => {
+          const snippet = buildSlotSnippet(this.result.kind, entry.name, slot.key);
+          this.options.insertLines(entry.lastLine ?? entry.endLine, snippet);
+        });
+      } else {
+        btn.disabled = true;
+      }
+      list.append(btn);
+    }
+    covSection.append(h3, list);
+  };
+  const stdSlots = (entry.coverage ?? []).filter(c => c.kind === 'standard');
+  const wpSlots = (entry.coverage ?? []).filter(c => c.kind === 'weapon');
+  renderSlots(t('msg.situation'), stdSlots);
+  renderSlots(t('msg.weapons'), wpSlots);
+  card.append(covSection);
+
+  // セリフの一覧
+  const itemsSection = document.createElement('section');
+  itemsSection.className = 'dp-msg-items';
+  const itemsH3 = document.createElement('h3');
+  itemsH3.textContent = `${t('msg.text')}（${t('msg.lineCount', entry.items?.length ?? 0)}）`;
+  itemsSection.append(itemsH3);
+  if (!entry.items?.length) {
+    const p = document.createElement('p');
+    p.className = 'dp-none';
+    p.textContent = t('msg.noItems');
+    itemsSection.append(p);
+  } else {
+    const tableEl = document.createElement('table');
+    tableEl.className = 'dp-weapons dp-msg-table';
+    tableEl.innerHTML = `<thead><tr><th>${esc(t('msg.situation'))}</th><th>${esc(t('msg.text'))}</th><th>${esc(t('preview.line') || '#')}</th></tr></thead>`;
+    const tbody = document.createElement('tbody');
+    for (const item of entry.items) {
+      const tr = document.createElement('tr');
+      tr.className = 'dp-msg-item';
+      tr.dataset.line = String(item.line);
+      const tdSit = document.createElement('td');
+      tdSit.textContent = item.situation;
+      const tdTxt = document.createElement('td');
+      tdTxt.className = 'dp-msg-text-cell';
+      tdTxt.textContent = item.messages.map(m =>
+        this.result.kind === 'dialog' ? `${m.nickname || m.speaker}: ${m.text}` : m.text).join(' / ');
+      const tdLine = document.createElement('td');
+      tdLine.textContent = String(item.line);
+      tr.append(tdSit, tdTxt, tdLine);
+      tr.addEventListener('click', () => {
+        selectPreviewItem(item);
+        this.options.onSelect?.(entry, item.line);
+      });
+      tbody.append(tr);
+    }
+    tableEl.append(tbody);
+    itemsSection.append(tableEl);
+  }
+  card.append(itemsSection);
+
+  const initialItem = entry.items?.find(it => it.line === this.selectedItemLine) ?? entry.items?.[0] ?? null;
+  selectPreviewItem(initialItem);
+};
+
+DataPreview.prototype.renderAllPilotsMatrix = function (card) {
+  const stds = this.result.standardSituations ?? [];
+  const entries = this.result.entries ?? [];
+  const h3 = document.createElement('h3');
+  h3.textContent = t('msg.tabAll');
+  card.append(h3);
+
+  if (entries.length > 0) {
+    const wrap = document.createElement('div');
+    wrap.className = 'dp-matrix-wrap';
+    const tableEl = document.createElement('table');
+    tableEl.className = 'dp-msg-matrix';
+    const thead = document.createElement('thead');
+    const htr = document.createElement('tr');
+    for (const label of [t('msg.pilot'), t('msg.unit'), ...stds, t('msg.weapons')]) {
+      const th = document.createElement('th');
+      th.textContent = label;
+      htr.append(th);
+    }
+    thead.append(htr);
+    tableEl.append(thead);
+
+    const tbody = document.createElement('tbody');
+    for (const e of entries) {
+      const tr = document.createElement('tr');
+      if (this.selected?.name === e.name) tr.className = 'selected';
+      const tdPilot = document.createElement('td');
+      const pBtn = document.createElement('button');
+      pBtn.type = 'button';
+      pBtn.className = 'dp-matrix-pilot';
+      pBtn.textContent = e.name;
+      pBtn.addEventListener('click', () => {
+        this.messageView = 'pilot';
+        this.selectedItemLine = e.items?.[0]?.line ?? null;
+        this.select(e);
+        this.options.onSelect?.(e, e.startLine);
+      });
+      tdPilot.append(pBtn);
+      const tdUnit = document.createElement('td');
+      tdUnit.textContent = e.units?.join(', ') || '-';
+      tr.append(tdPilot, tdUnit);
+
+      for (const s of stds) {
+        const slot = e.coverage?.find(c => c.kind === 'standard' && c.key === s);
+        const td = document.createElement('td');
+        td.className = slot && slot.count > 0 ? 'cov-ok' : 'cov-miss';
+        if (slot && slot.count > 0) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'dp-matrix-cell';
+          btn.textContent = slot.count > 1 ? String(slot.count) : '○';
+          btn.title = `${s}: ${slot.lines[0]}${t('preview.line')}`;
+          btn.addEventListener('click', () => {
+            this.messageView = 'pilot';
+            this.selectedItemLine = slot.lines[0];
+            this.select(e);
+            this.options.onSelect?.(e, slot.lines[0]);
+          });
+          td.append(btn);
+        } else {
+          td.textContent = '—';
+        }
+        tr.append(td);
+      }
+      const tdW = document.createElement('td');
+      const wSlots = (e.coverage ?? []).filter(c => c.kind === 'weapon');
+      if (wSlots.length === 0) {
+        tdW.textContent = '-';
+      } else {
+        const ok = wSlots.filter(c => c.count > 0).length;
+        tdW.className = ok === wSlots.length ? 'cov-ok' : (ok > 0 ? 'cov-partial' : 'cov-miss');
+        tdW.textContent = `${ok}/${wSlots.length}`;
+        tdW.title = wSlots.map(w => `${w.label}: ${w.count > 0 ? w.count : t('msg.missing')}`).join('\n');
+      }
+      tr.append(tdW);
+      tbody.append(tr);
+    }
+    tableEl.append(tbody);
+    wrap.append(tableEl);
+    card.append(wrap);
+  }
+
+  const missing = this.result.missingPilots ?? [];
+  if (missing.length > 0) {
+    const mh3 = document.createElement('h3');
+    mh3.textContent = `${t('msg.missingPilots')}（${missing.length}）`;
+    card.append(mh3);
+    const ul = document.createElement('ul');
+    ul.className = 'dp-missing-pilots';
+    const eofLine = entries.length > 0 ? Math.max(...entries.map(e => e.lastLine ?? e.endLine)) : 0;
+    for (const mp of missing) {
+      const li = document.createElement('li');
+      const label = document.createElement('span');
+      const uText = mp.units?.length ? `（${mp.units.join('・')}）` : '';
+      label.textContent = `${mp.name}${uText}`;
+      li.append(label);
+      if (this.options.insertLines) {
+        const addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.textContent = t('msg.addPilot');
+        addBtn.addEventListener('click', () => {
+          const snippet = buildPilotSnippet(this.result.kind, mp.name, mp.weapons);
+          this.options.insertLines(eofLine, snippet);
+        });
+        li.append(addBtn);
+      }
+      ul.append(li);
+    }
+    card.append(ul);
+  }
+};
+
+function sampleVarsForMessage(entry, item) {
+  const unitName = entry.units?.[0] ?? 'ホタル';
+  const sit = item?.situation ?? '';
+  const paren = sit.indexOf('(');
+  const sitBase = (paren < 0 ? sit : sit.slice(0, paren)).trim();
+  const weaponName = entry.weapons?.find(w => w.name === sitBase)?.name ?? entry.weapons?.[0]?.name ?? 'ビーム';
+  return {
+    '$(パイロット)': entry.nickname || entry.name || 'パイロット',
+    '$(ユニット)': unitName,
+    '$(機体)': unitName,
+    '$(武器)': weaponName,
+    '$(損傷率)': '50',
+    '$(相手パイロット)': '敵パイロット',
+    '$(相手ユニット)': '敵機',
+    '$(相手機体)': '敵機',
+    '$(相手武器)': 'ビーム',
+    '$(相手損傷率)': '50',
+  };
+}
+
+function buildSlotSnippet(kind, pilotName, situation) {
+  if (kind === 'dialog') {
+    return `${situation}\n${pilotName}, ${t('msg.sampleText')}`;
+  }
+  return `${situation}, ${t('msg.sampleText')}`;
+}
+
+function buildPilotSnippet(kind, pilotName, weapons) {
+  const lines = ['', pilotName];
+  if (kind === 'dialog') {
+    lines.push('攻撃', `${pilotName}, ${t('msg.sampleText')}`);
+    for (const wp of weapons ?? []) {
+      lines.push(wp, `${pilotName}, ${t('msg.sampleText')}`);
+    }
+  } else {
+    lines.push(`攻撃, ${t('msg.sampleText')}`);
+    lines.push(`回避, ${t('msg.sampleText')}`);
+    lines.push(`破壊, ${t('msg.sampleText')}`);
+    for (const wp of weapons ?? []) {
+      lines.push(`${wp}, ${t('msg.sampleText')}`);
+    }
+  }
+  return lines.join('\n');
+}
+
