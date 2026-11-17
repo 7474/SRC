@@ -21,12 +21,16 @@ export function studioCore() {
 export async function loadWorkspace(roots) {
   const core = await studioCore();
   core.ClearTerrainFiles();
+  core.ClearPlacementDataFiles();
   core.ClearImageRoots();
   // 地形データは SRC 本体 → シナリオの順に重ねる（後のものが同じ番号を上書きする）。SRCCore と同じく Data/System/terrain.txt
   for (const root of [...roots].reverse()) {
     const terrain = root.files.find(f => f.replace(/\\/g, '/').toLowerCase() === 'data/system/terrain.txt');
     if (terrain) {
       core.AddTerrainFile(`${root.name}/${terrain}`, await root.read(terrain));
+    }
+    for (const dataFile of root.files.filter(f => /(^|\/)(robot|unit|pilot)\.txt$/i.test(f) && /^data\//i.test(f.replace(/\\/g, '/')))) {
+      core.AddPlacementDataFile(dataFile, await root.read(dataFile));
     }
   }
   for (const root of roots) {
@@ -91,6 +95,40 @@ export async function findFile(candidates) {
   }
   const i = found.indexOf(':');
   return { root: Number(found.slice(0, i)), path: found.slice(i + 1) };
+}
+
+/** 指定したマップに対応するイベントの配置（Create・Launch・Move・Organize）を解析する（7474/SRC#1653） */
+export async function parsePlacements(targetMapPath, events) {
+  const core = await studioCore();
+  const paths = events.map(e => e.path);
+  const texts = events.map(e => e.text);
+  return JSON.parse(core.ParsePlacements(targetMapPath, paths, texts));
+}
+
+/** イベント 1 行の座標だけを書き換える */
+export async function replacePlacementCoordinates(line, x, y) {
+  const core = await studioCore();
+  return core.ReplacePlacementCoordinates(line, x, y);
+}
+
+/** イベントテキスト全体の指定行（1 始まり）の座標だけを書き換える */
+export async function replacePlacementFileCoordinates(text, lineNumber, x, y) {
+  const core = await studioCore();
+  return core.ReplacePlacementFileCoordinates(text, lineNumber, x, y);
+}
+
+/** 移動力の範囲の目安を計算する（[{ x, y }]） */
+export async function computeMoveRange(map, placement) {
+  const core = await studioCore();
+  const flat = Array.from(core.ComputeMoveRange(
+    map.width, map.height, map.tiles, map.layer ?? [],
+    placement.x, placement.y, placement.speed ?? 0,
+    placement.transportation ?? '', placement.adaption ?? ''));
+  const cells = [];
+  for (let i = 0; i + 1 < flat.length; i += 2) {
+    cells.push({ x: flat[i], y: flat[i + 1] });
+  }
+  return cells;
 }
 
 /** かんたん作成（7474/SRC#1659）。場面の JSON から { errors: [...], files: { 相対パス: テキスト } } */

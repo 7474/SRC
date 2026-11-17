@@ -56,6 +56,7 @@ describe('SRC# Authoring', () => {
     assert.deepStrictEqual(status.errors ?? [], [], '画面のエラー');
     assert.ok(status.terrains > 0, '地形が無い');
     assert.deepStrictEqual([status.width, status.height], [2, 1]);
+    assert.strictEqual(status.placements, 1, 'イベントの配置数が合わない');
     await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
   });
 

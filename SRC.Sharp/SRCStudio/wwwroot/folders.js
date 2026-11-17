@@ -25,10 +25,11 @@ function wanted(path, isDir) {
     return !['sound', 'midi', 'music', 'save', '.git', 'node_modules'].includes(top);
   }
   return p === 'data/system/terrain.txt' || p === 'data/system/sp.txt'
-    // データのファイル（プレビュー）と、ユニット・パイロットの画像
+    // データのファイル（プレビュー）と、ユニット・パイロットの画像・イベント
     || (p.startsWith('data/') && /(^|\/)(robot|unit|pilot|sp)\.txt$/.test(p))
     || (/^bitmap\/(map|unit|pilot)\//.test(p) && /\.(bmp|png|jpg|gif)$/.test(p))
-    || p.endsWith('.map');
+    || p.endsWith('.map')
+    || p.endsWith('.eve');
 }
 
 /** showDirectoryPicker で選んだフォルダ */

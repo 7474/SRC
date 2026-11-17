@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SRCAuthoring.Analysis;
 using SRCAuthoring.Linting;
+using SRCAuthoring.Maps;
 using SRCAuthoring.Protocol;
 using SRCAuthoring.Rules;
 using SRCCore.Events;
@@ -9,6 +10,7 @@ using SRCCore.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
@@ -51,6 +53,7 @@ namespace SRCAuthoring.Lsp
 
         /// <summary>シナリオのフォルダごとの、データの名前の一覧（データを調べたときに作り直す）</summary>
         private readonly ConcurrentDictionary<string, DataCatalog> catalogs = new ConcurrentDictionary<string, DataCatalog>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, TerrainCatalog> terrainCatalogs = new ConcurrentDictionary<string, TerrainCatalog>(StringComparer.OrdinalIgnoreCase);
 
         public LspServer(Stream input, Stream output, ILoggerFactory loggerFactory = null, Action<LogLevel?> setLogLevel = null)
         {
@@ -228,6 +231,8 @@ namespace SRCAuthoring.Lsp
                     return Hover(@params);
                 case "textDocument/completion":
                     return Completion(@params);
+                case "srcsharp/placementAt":
+                    return PlacementAt(@params);
                 default:
                     if (method != null && method.StartsWith("$/"))
                     {
@@ -599,13 +604,140 @@ namespace SRCAuthoring.Lsp
             {
                 return Markdown($"ラベル `{label.Name}`  \n{Path.GetFileName(label.File)}:{label.Line}");
             }
+            var info = InspectLinePlacement(path, line + 1, analysis.ScenarioRoot);
             var entry = DataAt(path, line, character, analysis);
             if (entry != null)
             {
-                return Markdown(entry.Summary + (entry.File == null ? "" : $"  \n{Path.GetFileName(entry.File)}:{entry.Line}"));
+                var summary = entry.Summary + (entry.File == null ? "" : $"  \n{Path.GetFileName(entry.File)}:{entry.Line}");
+                if (info != null)
+                {
+                    summary += "\n\n---\n\n" + FormatPlacementMarkdown(info);
+                }
+                return Markdown(summary);
             }
             var command = Help.Command(CommandAt(text, character));
+            if (info != null)
+            {
+                var coord = FormatPlacementMarkdown(info);
+                return Markdown(command == null ? coord : command + "\n\n---\n\n" + coord);
+            }
             return command == null ? null : Markdown(command);
+        }
+
+        private JsonNode PlacementAt(JsonNode @params)
+        {
+            var (path, line, _) = Position(@params);
+            if (DataLinter.IsDataFileName(path))
+            {
+                return null;
+            }
+            var scenarioRoot = ScenarioAnalyzer.FindScenarioRoot(path);
+            var info = InspectLinePlacement(path, line + 1, scenarioRoot);
+            if (info == null)
+            {
+                return null;
+            }
+            return new JsonObject
+            {
+                ["mapPath"] = info.Item.MapPath ?? "",
+                ["fullMapPath"] = info.FullMapPath ?? "",
+                ["x"] = info.Item.X,
+                ["y"] = info.Item.Y,
+                ["command"] = info.Item.Command,
+                ["party"] = info.Item.Party ?? "",
+                ["unit"] = info.Item.Unit ?? "",
+                ["pilot"] = info.Item.Pilot ?? "",
+                ["label"] = info.Item.Label ?? "",
+                ["terrainName"] = info.TerrainName ?? "",
+                ["file"] = info.Item.File,
+                ["line"] = info.Item.Line,
+                ["editable"] = info.Item.Editable,
+            };
+        }
+
+        private sealed class LinePlacementDetail
+        {
+            public PlacementItem Item { get; set; }
+            public string FullMapPath { get; set; }
+            public string TerrainName { get; set; }
+        }
+
+        private LinePlacementDetail InspectLinePlacement(string path, int lineNumber, string scenarioRoot)
+        {
+            var text = DocumentText(path);
+            if (string.IsNullOrEmpty(text))
+            {
+                return null;
+            }
+            var relPath = !string.IsNullOrEmpty(scenarioRoot) && path.StartsWith(scenarioRoot, StringComparison.OrdinalIgnoreCase)
+                ? EventPlacementParser.NormalizePath(Path.GetRelativePath(scenarioRoot, path))
+                : Path.GetFileName(path);
+            var item = EventPlacementParser.InspectLine(relPath, text, lineNumber);
+            if (item == null)
+            {
+                return null;
+            }
+            string fullMapPath = null;
+            string terrainName = null;
+            if (!string.IsNullOrEmpty(scenarioRoot) && !string.IsNullOrEmpty(item.MapPath))
+            {
+                var candidate = Path.Combine(scenarioRoot, item.MapPath.Replace('/', Path.DirectorySeparatorChar));
+                if (File.Exists(candidate))
+                {
+                    fullMapPath = OverlayFileSystem.Normalize(candidate);
+                    terrainName = ResolveTerrainName(scenarioRoot, candidate, item.X, item.Y);
+                }
+            }
+            return new LinePlacementDetail { Item = item, FullMapPath = fullMapPath, TerrainName = terrainName };
+        }
+
+        private string ResolveTerrainName(string scenarioRoot, string mapFile, int x, int y)
+        {
+            try
+            {
+                var doc = MapDocument.Parse(File.ReadAllBytes(mapFile));
+                if (x < 1 || y < 1 || x > doc.Width || y > doc.Height)
+                {
+                    return null;
+                }
+                var tile = doc.Layer != null && !doc.Layer[x - 1, y - 1].IsEmpty
+                    ? doc.Layer[x - 1, y - 1]
+                    : doc.Tiles[x - 1, y - 1];
+                var terrains = GetTerrainCatalog(scenarioRoot);
+                var info = terrains.Terrains.FirstOrDefault(t => t.Id == tile.Terrain);
+                return info != null ? $"{info.Name} ({tile.Terrain})" : tile.Terrain.ToString(CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private TerrainCatalog GetTerrainCatalog(string scenarioRoot)
+        {
+            return terrainCatalogs.GetOrAdd(scenarioRoot ?? "", root =>
+            {
+                var files = new List<(string, byte[])>();
+                var appPath = analyzer.AppPath ?? ScenarioAnalyzer.FindAppPath(root) ?? AppContext.BaseDirectory;
+                foreach (var dir in new[] { appPath, root }.Where(d => !string.IsNullOrEmpty(d)))
+                {
+                    var terrainFile = Path.Combine(dir, "Data", "System", "terrain.txt");
+                    if (File.Exists(terrainFile))
+                    {
+                        files.Add((terrainFile, File.ReadAllBytes(terrainFile)));
+                    }
+                }
+                return TerrainCatalog.Load(files);
+            });
+        }
+
+        private static string FormatPlacementMarkdown(LinePlacementDetail detail)
+        {
+            var item = detail.Item;
+            var mapPart = string.IsNullOrEmpty(item.MapPath) ? "（マップ未指定）" : $"`{item.MapPath}`";
+            var terrainPart = string.IsNullOrEmpty(detail.TerrainName) ? "" : $"・地形: {detail.TerrainName}";
+            var who = string.IsNullOrEmpty(item.Unit) ? "" : $" — {item.Unit}";
+            return $"マップ {mapPart} の座標 **({item.X}, {item.Y})**{terrainPart}{who}";
         }
 
         /// <summary>イベントコマンドの名前（CmdType から）</summary>
