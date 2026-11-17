@@ -40,12 +40,12 @@ export class DataPreview {
     errors.textContent = result.errors.join('\n');
     const byLine = line ? result.entries.find(e => line >= e.startLine && line <= e.endLine) : null;
     const previous = this.selected && result.entries.find(e => e.name === this.selected.name);
-    if (line && byLine) {
-      const itemAtLine = byLine.items?.find(it => it.line === line || it.messages?.some(m => m.line === line));
+    if (line && byLine && Array.isArray(byLine.items)) {
+      const itemAtLine = byLine.items.find(it => it.line === line || it.messages?.some(m => m.line === line));
       if (itemAtLine) {
         this.selectedItemLine = itemAtLine.line;
-      } else if (!byLine.items?.some(it => it.line === this.selectedItemLine)) {
-        this.selectedItemLine = byLine.items?.[0]?.line ?? null;
+      } else if (!byLine.items.some(it => it.line === this.selectedItemLine)) {
+        this.selectedItemLine = byLine.items[0]?.line ?? null;
       }
     }
     this.renderList();
@@ -62,7 +62,7 @@ export class DataPreview {
       li.dataset.name = entry.name;
       li.title = `${entry.startLine}${t('preview.line')}`;
       li.addEventListener('click', () => {
-        this.selectedItemLine = entry.items?.[0]?.line ?? null;
+        this.selectedItemLine = Array.isArray(entry.items) ? entry.items[0]?.line ?? null : null;
         this.select(entry);
         this.options.onSelect?.(entry);
       });
