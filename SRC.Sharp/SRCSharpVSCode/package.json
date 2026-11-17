@@ -475,6 +475,12 @@
         "title": "イベントの座標をマップで見る",
         "category": "SRC#",
         "icon": "$(location)"
+      },
+      {
+        "command": "srcsharp.showEpisodeFlow",
+        "title": "話のつながりの図を表示",
+        "category": "SRC#",
+        "icon": "$(type-hierarchy)"
       }
     ],
     "menus": {
@@ -560,6 +566,11 @@
         }
       ],
       "editor/title": [
+        {
+          "command": "srcsharp.showEpisodeFlow",
+          "when": "resourceLangId == src-eve",
+          "group": "navigation"
+        },
         {
           "command": "srcsharp.showPreview",
           "when": "resourceFilename =~ /^(robot|unit|pilot|pilot_message|pilot_dialog)\\.txt$/i",

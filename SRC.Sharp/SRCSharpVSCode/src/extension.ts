@@ -3,6 +3,7 @@ import { spawn } from 'child_process';
 import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { pickAppPath, suggestAppPath } from './appPath';
+import { EpisodeFlowPanel, ScenarioFlowData } from './flow';
 import { MapEditorProvider } from './mapEditor';
 import { DataPreviewPanel } from './preview';
 import { HotReload, scenarioRoot } from './hotReload';
@@ -243,11 +244,18 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // データのプレビュー（SRC#Studio。7474/SRC#1643）
   const dataPreview = new DataPreviewPanel(context);
+  // 話のつながりの図（7474/SRC#1652）
+  const episodeFlow = new EpisodeFlowPanel();
   context.subscriptions.push(
     dataPreview,
+    episodeFlow,
     vscode.commands.registerCommand('srcsharp.showPreview', () => dataPreview.show()),
     // テスト用（プレビューに出したもの）。package.json には出さない
     vscode.commands.registerCommand('srcsharp._previewStatus', () => dataPreview.getStatus()),
+    vscode.commands.registerCommand('srcsharp.showEpisodeFlow', (target?: string) => episodeFlow.show(target)),
+    // テスト用（話のつながりの図）。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._flowStatus', () => episodeFlow.getStatus()),
+    vscode.commands.registerCommand('srcsharp._showFlowData', (data: ScenarioFlowData) => episodeFlow.showData(data)),
   );
 
   // 操作パネル
@@ -388,7 +396,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         await run('lint', [dir], dir);
       }
     }),
-    // 新しいシナリオのひな形（srcsharp new。7474/SRC#1640）。作ったフォルダを開く
+    // 新しいシナリオのひな形（srcsharp new。7474/SRC#1640・#1652）。作ったフォルダを開く
     vscode.commands.registerCommand('srcsharp.newScenario', async () => {
       const picked = await vscode.window.showOpenDialog({
         canSelectFolders: true,
@@ -405,12 +413,22 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       if (title === undefined) {
         return;
       }
+      const episodes = await vscode.window.showInputBox({
+        title: 'SRC#: 話数（1 以上）',
+        value: '1',
+        prompt: '1 は単発、2 以上で各話・インターミッション・通しプレイ付きの複数話を作成',
+        validateInput: (v) => (/^[1-9]\d*$/.test(v.trim()) ? undefined : '1 以上の整数を入力してください'),
+      });
+      if (episodes === undefined) {
+        return;
+      }
+      const epCount = episodes.trim();
       const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
-      const args = [folder, '--title', title, ...(appPath ? ['--app-path', appPath] : [])];
+      const args = [folder, '--title', title, '--episodes', epCount, ...(appPath ? ['--app-path', appPath] : [])];
       if ((await run('new', args, folder)) === undefined) {
         return;
       }
-      const open = await vscode.window.showInformationMessage(`SRC#: ${folder} にシナリオのひな形を作りました。`, 'フォルダを開く');
+      const open = await vscode.window.showInformationMessage(`SRC#: ${folder} にシナリオのひな形（${epCount} 話）を作りました。`, 'フォルダを開く');
       if (open) {
         await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(folder));
       }
