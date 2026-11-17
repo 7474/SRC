@@ -358,6 +358,30 @@ export class QuickBuilder {
     } catch {
       // 残せなくても続ける
     }
+    this.syncResetButtons();
+  }
+
+  hasContent() {
+    const b = this.battle;
+    return Boolean(
+      this.titles.length
+      || b.title
+      || b.mapSource
+      || b.mapText !== undefined
+      || b.spots
+      || b.width !== 20
+      || b.height !== 15
+      || b.allies.length
+      || b.enemies.length
+      || b.opening.length
+      || b.victory.length
+      || b.defeat.length
+    );
+  }
+
+  syncResetButtons() {
+    const disabled = !this.hasContent();
+    this.root.querySelectorAll('.q-reset').forEach(button => { button.disabled = disabled; });
   }
 
   async restoreDraft() {
@@ -476,10 +500,11 @@ export class QuickBuilder {
       </button></li>`;
     };
 
+    const resetDisabled = this.hasContent() ? '' : 'disabled';
     this.root.innerHTML = `
-      <div class="q-top">
-        <p class="hint q-intro">${esc(t('quick.intro'))}</p>
-        <button type="button" class="q-reset danger">${esc(t('quick.reset'))}</button>
+      <p class="hint q-intro">${esc(t('quick.intro'))}</p>
+      <div class="q-toolbar">
+        <button type="button" class="q-reset danger" title="${esc(t('quick.resetHint'))}" ${resetDisabled}>${esc(t('quick.reset'))}</button>
       </div>
       <details class="q-gallery" ${galleryOpen ? 'open' : ''}>
         <summary>${esc(t('quick.gallery'))}${scenes.length ? ` <span class="hint">${esc(t('quick.galleryCount', scenes.length))}</span>` : ''}</summary>
@@ -554,7 +579,7 @@ export class QuickBuilder {
         <div class="q-actions">
           <button type="button" class="q-play primary">▶ ${esc(t('quick.play'))}</button>
           <button type="button" class="q-save">${esc(t('quick.save'))}</button>
-          <button type="button" class="q-reset danger">${esc(t('quick.reset'))}</button>
+          <button type="button" class="q-reset danger" title="${esc(t('quick.resetHint'))}" ${resetDisabled}>${esc(t('quick.reset'))}</button>
         </div>
         <p class="hint q-play-hint">${esc(t('quick.playHint'))}</p>
       </section>`;
@@ -723,7 +748,7 @@ export class QuickBuilder {
       });
     });
 
-    $('.q-title').addEventListener('change', ev => {
+    $('.q-title').addEventListener('input', ev => {
       this.battle.title = ev.target.value;
       this.saveDraft();
     });

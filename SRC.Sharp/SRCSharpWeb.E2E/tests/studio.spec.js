@@ -407,29 +407,34 @@ test('かんたん作成: 内容をリセットすると、選んだ作品・マ
   });
   await open(page, 'quick');
   await expect(page.locator('.q-reset')).toHaveCount(2);
+  await expect(page.locator('.q-toolbar .q-reset')).toBeDisabled();
+  await expect(page.locator('.q-actions .q-reset')).toBeDisabled();
 
   // サンプルの場面を入れ、下書きが保存された状態にする
   await page.locator('.q-gallery summary').click();
   await page.locator('.q-scene-card', { hasText: '灯の港の戦い' }).click();
   await expect(page.locator('.q-chosen li')).toHaveCount(1);
   await expect(page.locator('.q-title')).toHaveValue('灯の港の戦い');
+  await expect(page.locator('.q-toolbar .q-reset')).toBeEnabled();
+  await expect(page.locator('.q-actions .q-reset')).toBeEnabled();
   await expect.poll(() => page.evaluate(() => localStorage.getItem('srcstudio.quick'))).not.toBeNull();
 
   // 確認をキャンセルしたら内容は消えない
   page.once('dialog', d => d.dismiss());
-  await page.locator('.q-top .q-reset').click();
+  await page.locator('.q-toolbar .q-reset').click();
   await expect(page.locator('.q-chosen li')).toHaveCount(1);
   await expect(page.locator('.q-title')).toHaveValue('灯の港の戦い');
 
   // 確認で OK するとすべて初期状態に戻り、下書きも消える
   page.once('dialog', d => d.accept());
-  await page.locator('.q-top .q-reset').click();
+  await page.locator('.q-toolbar .q-reset').click();
   await expect(page.locator('.q-chosen li')).toHaveCount(0);
   await expect(page.locator('tr[data-side="allies"]')).toHaveCount(0);
   await expect(page.locator('tr[data-side="enemies"]')).toHaveCount(0);
   await expect(page.locator('.q-line')).toHaveCount(0);
   await expect(page.locator('.q-title')).toHaveValue('');
   await expect(page.locator('.q-map')).toHaveValue('');
+  await expect(page.locator('.q-toolbar .q-reset')).toBeDisabled();
   await expect(page.locator('.quick-status')).toContainText('リセットしました');
   expect(await page.evaluate(() => localStorage.getItem('srcstudio.quick'))).toBeNull();
 
@@ -438,12 +443,14 @@ test('かんたん作成: 内容をリセットすると、選んだ作品・マ
   await expect(page.locator('body[data-ready="true"]')).toHaveCount(1, { timeout: 60 * 1000 });
   await expect(page.locator('.q-chosen li')).toHaveCount(0);
   await expect(page.locator('.q-title')).toHaveValue('');
+  await expect(page.locator('.q-toolbar .q-reset')).toBeDisabled();
 
-  // 5 側のリセットボタンでも同様に消せる
+  // 題名を 1 文字入れただけでも有効になり、5 側のリセットボタンでも同様に消せる
   await page.locator('.q-title').fill('temp');
-  await page.locator('.q-title').dispatchEvent('change');
+  await expect(page.locator('.q-actions .q-reset')).toBeEnabled();
   page.once('dialog', d => d.accept());
   await page.locator('.q-actions .q-reset').click();
   await expect(page.locator('.q-title')).toHaveValue('');
+  await expect(page.locator('.q-actions .q-reset')).toBeDisabled();
   expect(await page.evaluate(() => localStorage.getItem('srcstudio.quick'))).toBeNull();
 });
