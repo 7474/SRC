@@ -156,6 +156,7 @@ main[hidden] { display: none; }
 #quick-section { max-width: 1120px; }
 #quick-section .hint { margin: 2px 0 6px; }
 .q-intro { margin-top: 0; }
+.q-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 4px 0 10px; }
 .q-step { border-top: 1px solid var(--border); padding: 6px 0 14px; }
 .q-step h2 { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; margin: 10px 0 6px; }
 .q-num { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.85em; flex: none; }
@@ -201,7 +202,7 @@ main[hidden] { display: none; }
 .q-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 4px; }
 .q-actions .q-play { font-size: 1.05em; padding: 6px 18px; }
 .q-actions .q-save { padding: 6px 14px; }
-.q-actions .q-reset { margin-left: auto; }
+.q-actions .q-reset { padding: 6px 12px; margin-left: 8px; }
 /* サンプルの場面 */
 .q-gallery { border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; margin: 8px 0 12px; }
 .q-gallery[open] { padding-bottom: 12px; }
