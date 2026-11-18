@@ -38,7 +38,8 @@
     "onDebugResolve:srcsharp",
     "workspaceContains:**/*.eve",
     "onCustomEditor:srcsharp.mapEditor",
-    "onCommand:srcsharp.newScenario"
+    "onCommand:srcsharp.newScenario",
+    "onUri"
   ],
   "main": "./out/extension.js",
   "contributes": {

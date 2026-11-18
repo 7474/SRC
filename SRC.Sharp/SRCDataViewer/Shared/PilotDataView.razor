@@ -1,4 +1,4 @@
-﻿@using SRCCore.Models
+@using SRCCore.Models
 
 <article class="card src-data" id="pilot-@Data.Name">
     <header class="card-header">
@@ -139,8 +139,7 @@
             }
         </div>
     </div>
-    <footer class="card-footer">
-    </footer>
+    <DataCopyFooter Kind="pilot" Name="@Data.Name" Raw="@Data.Raw" />
 </article>
 
 @code {

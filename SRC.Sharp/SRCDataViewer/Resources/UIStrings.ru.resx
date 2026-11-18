@@ -316,4 +316,13 @@
   <data name="ComparePartner" xml:space="preserve">
     <value>Партнёр</value>
   </data>
+  <data name="CopyData" xml:space="preserve">
+    <value>Копировать данные</value>
+  </data>
+  <data name="CopiedData" xml:space="preserve">
+    <value>Скопировано</value>
+  </data>
+  <data name="SendToVsCode" xml:space="preserve">
+    <value>Отправить в VS Code</value>
+  </data>
 </root>

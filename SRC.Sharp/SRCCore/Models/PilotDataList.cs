@@ -212,6 +212,7 @@ namespace SRCCore.Models
 
                 // 愛称, 読み仮名, 性別, クラス, 地形適応, 経験値
                 line_buf = reader.GetLine();
+                pd.Location.SetFieldLine("地形適応", reader.LineNumber);
 
                 // 書式チェックのため、コンマの数を数えておく
                 int comma_num = 0;

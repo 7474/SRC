@@ -316,4 +316,13 @@
   <data name="ComparePartner" xml:space="preserve">
     <value>Parceiro</value>
   </data>
+  <data name="CopyData" xml:space="preserve">
+    <value>Copiar dados</value>
+  </data>
+  <data name="CopiedData" xml:space="preserve">
+    <value>Copiado</value>
+  </data>
+  <data name="SendToVsCode" xml:space="preserve">
+    <value>Enviar para VS Code</value>
+  </data>
 </root>

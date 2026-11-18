@@ -215,6 +215,14 @@ namespace SRCAuthoring.Preview
             w.WriteNumber("exp", u.ExpValue);
             w.WriteNumber("pilots", u.PilotNum);
             w.WriteNumber("items", u.ItemNum);
+            if (u.Location != null)
+            {
+                w.WriteStartObject("statLines");
+                w.WriteNumber("move", u.Location.FieldLine("移動可能地形"));
+                w.WriteNumber("hp", u.Location.FieldLine("最大ＨＰ"));
+                w.WriteNumber("adaption", u.Location.FieldLine("地形適応"));
+                w.WriteEndObject();
+            }
             w.WriteStartArray("features");
             foreach (var f in u.Features)
             {
@@ -282,6 +290,13 @@ namespace SRCAuthoring.Preview
             w.WriteNumber("反応", p.Intuition);
             w.WriteEndObject();
             w.WriteNumber("sp", p.SP);
+            if (p.Location != null)
+            {
+                w.WriteStartObject("statLines");
+                w.WriteNumber("adaption", p.Location.FieldLine("地形適応"));
+                w.WriteNumber("stats", p.Location.FieldLine("格闘"));
+                w.WriteEndObject();
+            }
             w.WriteStartArray("specialPowers");
             foreach (var s in p.DefinedSpecialPowers())
             {

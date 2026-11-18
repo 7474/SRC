@@ -200,6 +200,75 @@ test('表で直す: 武器の欄を直すと、その欄だけが変わり、並
   await expect(page.locator('.dp-weapons tbody tr').first().locator('td').first()).toHaveText(second);
 });
 
+test('表で直す: ユニットとパイロットの能力値・地形適応を直すと、その欄だけが変わる（7474/SRC#1656）', async ({ page }) => {
+  await open(page);
+  const helper = await page.evaluate(async base => {
+    const m = await import(base + 'table-edit.js');
+    return {
+      commentPreserved: m.replaceField('3000, 100, 600, 60 // コメント', 3, '75'),
+      pilot4: m.replaceField('愛称, 汎用, AAAA, 120', m.pilotAdaptionIndex('愛称, 汎用, AAAA, 120'), 'SAAA'),
+      pilot5: m.replaceField('愛称, 男性, 汎用, AAAA, 120', m.pilotAdaptionIndex('愛称, 男性, 汎用, AAAA, 120'), 'SAAB'),
+      pilot6: m.replaceField('愛称, あいしょう, 男性, 汎用, AAAA, 120 // c', m.pilotAdaptionIndex('愛称, あいしょう, 男性, 汎用, AAAA, 120 // c'), 'SSAA'),
+    };
+  }, base);
+  expect(helper.commentPreserved).toBe('3000, 100, 600, 75 // コメント');
+  expect(helper.pilot4).toBe('愛称, 汎用, SAAA, 120');
+  expect(helper.pilot5).toBe('愛称, 男性, 汎用, SAAB, 120');
+  expect(helper.pilot6).toBe('愛称, あいしょう, 男性, 汎用, SSAA, 120 // c');
+
+  await page.locator('#scenario-input').setInputFiles(scenarioFolder());
+  await page.locator('#tab-data').click();
+
+  // パイロット: 格闘・反応・地形適応を表で直す
+  await expect(page.locator('.dp-card h2')).toHaveText('ソラ');
+  const pilotBefore = fs.readFileSync(path.join(lantern, 'Data', 'ランタン', 'pilot.txt'), 'utf8');
+  await page.locator('.dp-table-toggle').click();
+  const pilotStats = page.locator('.dp-edit-stats');
+  await expect(pilotStats).toBeVisible();
+  await pilotStats.locator('input[data-field="infight"]').fill('177');
+  await pilotStats.locator('input[data-field="infight"]').press('Enter');
+  await pilotStats.locator('input[data-field="intuition"]').fill('188');
+  await pilotStats.locator('input[data-field="intuition"]').press('Enter');
+  await pilotStats.locator('input[data-field="adaption"]').fill('SAAA');
+  await pilotStats.locator('input[data-field="adaption"]').press('Enter');
+  await expect(page.locator('.dp-card > .dp-stats')).toContainText('177');
+  await expect(page.locator('.dp-card > .dp-stats')).toContainText('188');
+  await expect(page.locator('.dp-card > .dp-stats')).toContainText('SAAA');
+
+  const [pilotDl] = await Promise.all([page.waitForEvent('download'), page.locator('#save-data').click()]);
+  const pilotAfter = fs.readFileSync(await pilotDl.path(), 'utf8');
+  const pChanged = pilotBefore.split(/\r?\n/).map((line, i) => [line, pilotAfter.split(/\r?\n/)[i]]).filter(([x, y]) => x !== y);
+  expect(pChanged).toEqual([
+    ['主人公, そら, 男性, 灯機, AAAA, 150', '主人公, そら, 男性, 灯機, SAAA, 150'],
+    ['150, 145, 150, 150, 150, 155, 強気', '177, 145, 150, 150, 150, 188, 強気'],
+  ]);
+
+  // ユニット: HP・移動力・地形適応を表で直す
+  await page.locator('#data-files').selectOption('Data/team/unit.txt');
+  await expect(page.locator('.dp-card .dp-weapons')).toBeVisible();
+  const unitBefore = fs.readFileSync(path.join(lantern, 'Data', 'ランタン', 'unit.txt'), 'utf8');
+  await page.locator('.dp-table-toggle').click();
+  const unitStats = page.locator('.dp-edit-stats');
+  await expect(unitStats).toBeVisible();
+  await unitStats.locator('input[data-field="hp"]').fill('4200');
+  await unitStats.locator('input[data-field="hp"]').press('Enter');
+  await unitStats.locator('input[data-field="speed"]').fill('8');
+  await unitStats.locator('input[data-field="speed"]').press('Enter');
+  await unitStats.locator('input[data-field="adaption"]').fill('SSAA');
+  await unitStats.locator('input[data-field="adaption"]').press('Enter');
+  await expect(page.locator('.dp-card > .dp-stats')).toContainText('4200');
+  await expect(page.locator('.dp-card > .dp-stats')).toContainText('SSAA');
+
+  const [unitDl] = await Promise.all([page.waitForEvent('download'), page.locator('#save-data').click()]);
+  const unitAfter = fs.readFileSync(await unitDl.path(), 'utf8');
+  const uChanged = unitBefore.split(/\r?\n/).map((line, i) => [line, unitAfter.split(/\r?\n/)[i]]).filter(([x, y]) => x !== y);
+  expect(uChanged).toEqual([
+    ['陸, 5, M, 3000, 120', '陸, 8, M, 3000, 120'],
+    ['3600, 140, 900, 100', '4200, 140, 900, 100'],
+    ['AA-A, Lantern_Hotaru.bmp', 'SSAA, Lantern_Hotaru.bmp'],
+  ]);
+});
+
 test('比べる: 書いているユニットとパイロットを、データパックの中の上位何 % かで見る（7474/SRC#1644）', async ({ page }) => {
   // 7474/SRC-Data の Pages の評価の JSON の代わり
   const analysis = {

@@ -165,6 +165,32 @@ describe('SRC# Authoring', () => {
     await vscode.commands.executeCommand('workbench.action.closeAllEditors');
   });
 
+  it('データビューアからの URI でユニット・パイロットのデータを開いて追記できる（7474/SRC#1656）', async () => {
+    const fs = require('node:fs');
+    const os = require('node:os');
+    const sampleUnit = '新機体\nしんきたい, しんきたい, 汎用, 1, 2\n陸, 4, M, 1000, 100\n特殊能力なし\n3000, 100, 600, 60\nAAAA, -.bmp\n===\n';
+    const uri = vscode.Uri.parse(`vscode://koudenpa.src-vscode/addData?kind=unit&name=${encodeURIComponent('新機体')}&text=${encodeURIComponent(sampleUnit)}`);
+    const untitled = await vscode.commands.executeCommand('srcsharp._handleUri', uri, 'new');
+    assert.ok(untitled, '無題のドキュメントが開かない');
+    assert.strictEqual(untitled.languageId, 'src-data');
+    assert.ok(untitled.getText().includes('新機体'));
+
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'src-uri-'));
+    try {
+      const pilotPath = path.join(tmpDir, 'pilot.txt');
+      fs.writeFileSync(pilotPath, '既存人\n既存人, きぞん, 男性, 汎用, AAAA, 100\n特殊能力なし\n100, 100, 100, 100, 100, 100, 普通\nＳＰ, 0\n-.bmp, -.mid\n', 'utf8');
+      const samplePilot = '追加人\nついかじん, ついか, 女性, 汎用, AAAA, 120\n特殊能力なし\n140, 145, 150, 150, 140, 155, 強気\nＳＰ, 0\n-.bmp, -.mid\n';
+      const pilotUri = vscode.Uri.parse(`vscode://koudenpa.src-vscode/addData?kind=pilot&name=${encodeURIComponent('追加人')}&text=${encodeURIComponent(samplePilot)}`);
+      const doc = await vscode.commands.executeCommand('srcsharp._handleUri', pilotUri, vscode.Uri.file(pilotPath));
+      assert.ok(doc);
+      assert.ok(doc.getText().includes('既存人'));
+      assert.ok(doc.getText().includes('\n\n追加人\n'));
+    } finally {
+      await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
   it('データの規則のグループ（srcsharp.rules）の既定は src だけ', () => {
     assert.deepStrictEqual(vscode.workspace.getConfiguration('srcsharp').get('rules'), ['src']);
   });

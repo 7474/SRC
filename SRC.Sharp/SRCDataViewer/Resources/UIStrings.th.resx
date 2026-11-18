@@ -316,4 +316,13 @@
   <data name="ComparePartner" xml:space="preserve">
     <value>คู่หู</value>
   </data>
+  <data name="CopyData" xml:space="preserve">
+    <value>คัดลอกข้อมูล</value>
+  </data>
+  <data name="CopiedData" xml:space="preserve">
+    <value>คัดลอกแล้ว</value>
+  </data>
+  <data name="SendToVsCode" xml:space="preserve">
+    <value>ส่งไปยัง VS Code</value>
+  </data>
 </root>

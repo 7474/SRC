@@ -316,4 +316,13 @@
   <data name="ComparePartner" xml:space="preserve">
     <value>組合對象</value>
   </data>
+  <data name="CopyData" xml:space="preserve">
+    <value>複製資料</value>
+  </data>
+  <data name="CopiedData" xml:space="preserve">
+    <value>已複製</value>
+  </data>
+  <data name="SendToVsCode" xml:space="preserve">
+    <value>傳送到 VS Code</value>
+  </data>
 </root>

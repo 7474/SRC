@@ -9,7 +9,7 @@
 // });
 // preview.show(result, line);   // result は studio-core.js の previewData の結果。line（1 始まり）を含むデータを選ぶ
 import { t } from './i18n.js';
-import { WEAPON_FIELDS, ABILITY_FIELDS, splitLine, replaceField, isContinued } from './table-edit.js';
+import { WEAPON_FIELDS, ABILITY_FIELDS, UNIT_STAT_FIELDS, PILOT_STAT_FIELDS, resolveFieldIndex, splitTrailingComment, splitLine, replaceField, isContinued } from './table-edit.js';
 import { compareUnit, comparePilot, analysisSections } from './compare.js';
 import { MessageWindowPreview } from './message-window.js';
 
@@ -107,29 +107,39 @@ export class DataPreview {
   }
 }
 
-// ---- 表で直す（7474/SRC#1644） ----
+// ---- 表で直す（7474/SRC#1644・#1656） ----
 
 DataPreview.prototype.setupTable = function (card, entry) {
   const lines = this.options.lines?.();
-  if (!lines || this.result.kind !== 'unit') {
+  if (!lines || (this.result.kind !== 'unit' && this.result.kind !== 'pilot')) {
     return;
   }
-  const rows = [
-    ...entry.weapons.filter(w => w.line).map(w => ({ kind: 'weapon', line: w.line })),
-    ...entry.abilities.filter(a => a.line).map(a => ({ kind: 'ability', line: a.line })),
-  ];
-  if (rows.length === 0) {
+  const statFields = this.result.kind === 'pilot' ? PILOT_STAT_FIELDS : UNIT_STAT_FIELDS;
+  const statLines = entry.statLines ?? null;
+  const hasStats = !!statLines && statFields.some(f => statLines[f.lineKey] > 0);
+  const rows = this.result.kind === 'unit'
+    ? [
+        ...entry.weapons.filter(w => w.line).map(w => ({ kind: 'weapon', line: w.line })),
+        ...entry.abilities.filter(a => a.line).map(a => ({ kind: 'ability', line: a.line })),
+      ]
+    : [];
+  if (!hasStats && rows.length === 0) {
     return;
   }
+  const tableKey = `${this.result.kind}:${entry.name}`;
   // 表で直している間は、直すたびにプレビューを作り直しても表を開いたままにする
   const openTable = () => {
-    this.tableOpenFor = entry.name;
-    return renderTable(rows, this.options.lines(), edits => this.options.editLines(edits));
+    this.tableOpenFor = tableKey;
+    return renderTable({
+      statLines: hasStats ? statLines : null,
+      statFields,
+      rows,
+    }, this.options.lines(), edits => this.options.editLines(edits));
   };
-  const weaponsTable = card.querySelector('.dp-weapons');
-  if (this.tableOpenFor === entry.name) {
-    if (weaponsTable) {
-      weaponsTable.before(openTable());
+  const anchor = card.querySelector('.dp-stats') ?? card.querySelector('.dp-weapons');
+  if (this.tableOpenFor === tableKey) {
+    if (anchor) {
+      anchor.before(openTable());
     } else {
       card.append(openTable());
     }
@@ -139,18 +149,57 @@ DataPreview.prototype.setupTable = function (card, entry) {
   button.type = 'button';
   button.className = 'dp-table-toggle';
   button.textContent = t('table.edit');
-  if (weaponsTable) {
-    weaponsTable.before(button);
+  if (anchor) {
+    anchor.before(button);
   } else {
     card.append(button);
   }
   button.addEventListener('click', () => button.replaceWith(openTable()));
 };
 
-/** 武器・アビリティの行を、欄ごとの入力欄の表にする */
-function renderTable(rows, lines, editLines) {
+/** 能力値・地形適応の表（1 行）を作る。既存の .dp-edit とは別のクラスにする */
+function renderStatsTable(statFields, statLines, lines, editLines) {
+  const table = document.createElement('table');
+  table.className = 'dp-edit-stats';
+  table.innerHTML = `<caption>${esc(t('table.stats'))}</caption><thead><tr>${statFields.map(f => `<th>${esc(t(`table.stat.${f.field}`))}</th>`).join('')}</tr></thead>`;
+  const body = document.createElement('tbody');
+  const tr = document.createElement('tr');
+  for (const col of statFields) {
+    const td = document.createElement('td');
+    const lineNo = statLines[col.lineKey] ?? 0;
+    const text = lineNo > 0 ? (lines[lineNo - 1] ?? '') : '';
+    const locked = lineNo <= 0 || isContinued(lines, lineNo);
+    const { fields: values } = splitLine(splitTrailingComment(text).code);
+    const index = resolveFieldIndex(col, text);
+    const input = document.createElement('input');
+    input.value = index >= 0 && index < values.length ? values[index] : '';
+    input.disabled = locked || index < 0 || index >= values.length;
+    input.dataset.field = col.field;
+    input.size = Math.max(3, Math.min(10, input.value.length + 1));
+    input.title = locked && lineNo > 0 ? t('table.continued') : (lineNo > 0 ? `${lineNo}${t('preview.line')}` : '');
+    input.addEventListener('change', () => {
+      const current = lines[lineNo - 1] ?? '';
+      const currentIndex = resolveFieldIndex(col, current);
+      if (currentIndex < 0) {
+        return;
+      }
+      editLines([{ line: lineNo, text: replaceField(current, currentIndex, input.value.trim()) }]);
+    });
+    td.append(input);
+    tr.append(td);
+  }
+  body.append(tr);
+  table.append(body);
+  return table;
+}
+
+/** 能力値・地形適応・武器・アビリティの行を、欄ごとの入力欄の表にする */
+function renderTable({ statLines, statFields, rows }, lines, editLines) {
   const box = document.createElement('div');
   box.className = 'dp-table-edit';
+  if (statLines) {
+    box.append(renderStatsTable(statFields, statLines, lines, editLines));
+  }
   for (const kind of ['weapon', 'ability']) {
     const list = rows.filter(r => r.kind === kind);
     if (list.length === 0) {
@@ -179,7 +228,7 @@ function renderTable(rows, lines, editLines) {
         move.append(b);
       }
       tr.append(move);
-      const { fields: values } = splitLine(text);
+      const { fields: values } = splitLine(splitTrailingComment(text).code);
       fields.forEach((f, index) => {
         const td = document.createElement('td');
         const input = document.createElement('input');
