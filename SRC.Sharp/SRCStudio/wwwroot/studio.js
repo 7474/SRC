@@ -145,8 +145,15 @@ async function showData(path) {
   await renderData();
 }
 
+let renderDataSeq = 0;
+
+/** プレビューを作り直す。ファイルを続けて切り替えたときなどに、前に始めた分が後から終わって画面を戻さないよう、最後に始めた分だけを出す */
 async function renderData() {
-  preview.show(await previewData(data.path.split('/').at(-1), data.text, await dataPreviewBefore(data.path)));
+  const seq = ++renderDataSeq;
+  const result = await previewData(data.path.split('/').at(-1), data.text, await dataPreviewBefore(data.path));
+  if (seq === renderDataSeq) {
+    preview.show(result);
+  }
 }
 
 $('#save-data').addEventListener('click', async () => {
