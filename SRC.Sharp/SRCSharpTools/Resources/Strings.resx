@@ -23,8 +23,10 @@
       シナリオを画面なしで動かす。--script が無ければ、メッセージを送り、選択肢は先頭を選んで進める。--skip-wait を付けると、決まった時間だけ待つ処理（アニメーション、メッセージ、Wait など）を飛ばす。--scenario-root はシナリオのフォルダ（Data・Lib・Continue の基準）。無ければ、Data の無いサブフォルダのイベントファイルは、Data のあるいちばん近い親フォルダを使う。
   srcsharp balance &lt;ディレクトリかファイル&gt;... [--format md|csv] [--output ファイル]
       ユニットデータの能力値の一覧と外れ値
-  srcsharp new &lt;フォルダ&gt; [--title タイトル] [--app-path SRCのフォルダ] [--force]
-      新しいシナリオのひな形（最初の話のイベント・マップ・データ、自動プレイの手順、VS Code の設定、CI）を作る。既にあるファイルは上書きしない（--force で上書き）
+  srcsharp new &lt;フォルダ&gt; [--title タイトル] [--episodes 数] [--app-path SRCのフォルダ] [--force]
+      新しいシナリオのひな形（イベント・マップ・データ、自動プレイの手順、VS Code の設定、CI）を作る。--episodes で 2 以上の話数を指定すると、各話とインターミッション・共通イベント付きの複数話を作る。既にあるファイルは上書きしない（--force で上書き）
+  srcsharp flow [シナリオのフォルダかイベントファイル] [--format md|mmd|json] [--output ファイル] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+      イベントの Continue・次ステージ・Exec・IntermissionCommand・Load・GameClear をたどり、話のつながりの図を出す（省くと現在のフォルダ）
   srcsharp trial &lt;シナリオのフォルダ&gt; [--unit ユニット] [--pilot パイロット] [--enemy ユニット] [--enemy-pilot パイロット] [--level 数] [--enemies 数] [--list]
       シナリオのデータのユニット・パイロットを敵と戦わせる試し戦闘のイベントを .srcsharp/trial/ に作り、そのパスを出す（play・デバッガで動かす）。--list でデータのユニット・パイロットを JSON で出す
   srcsharp lsp
@@ -87,11 +89,26 @@
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>シナリオを作るフォルダを 1 つ指定してください</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>話数は 1 以上の整数で指定してください: {0}</value>
+    <comment>{0}: --episodes の値</comment>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>{0} にひな形を作りました（{1} 個のファイル）</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>既にあるので書きませんでした: {0}（--force で上書き）</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>解析するフォルダまたはイベントファイルは 1 つだけ指定してください</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>シナリオのフォルダまたはイベントファイルが見つかりません: {0}</value>
+    <comment>{0}: 指定したパス</comment>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>不明な出力形式: {0}（md・mmd・json のいずれか）</value>
+    <comment>{0}: --format の値</comment>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>シナリオのフォルダを 1 つ指定してください</value>

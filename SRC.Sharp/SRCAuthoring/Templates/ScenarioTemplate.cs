@@ -19,24 +19,56 @@ namespace SRCAuthoring.Templates
         public const string DefaultEpisode = "第1話";
 
         /// <summary>作るファイル（シナリオのフォルダからの相対パスと中身）</summary>
-        public static IReadOnlyDictionary<string, string> Files(string title, string appPath = null, string episode = DefaultEpisode)
+        public static IReadOnlyDictionary<string, string> Files(string title, string appPath = null, string episode = DefaultEpisode, int episodes = 1)
         {
+            if (episodes < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(episodes), "話数は 1 以上にしてください");
+            }
             if (string.IsNullOrWhiteSpace(title))
             {
                 title = "新しいシナリオ";
             }
-            var files = new Dictionary<string, string>
+            Dictionary<string, string> files;
+            if (episodes == 1)
             {
-                [episode + ".eve"] = Event(title, episode),
-                [episode + ".map"] = Map(),
-                [episode + ".play"] = Play(episode),
-                ["Data/robot.txt"] = Units(),
-                ["Data/pilot.txt"] = Pilots(),
-                ["README.md"] = Readme(title, episode),
-                [".vscode/launch.json"] = Launch(episode),
-                [".github/workflows/src-check.yml"] = Workflow(episode),
-                [".gitignore"] = Lines("# SRC のセーブデータ・ログ", "*.src", "Save/", "Logs/", "srcsharp-logs/", "# 試し戦闘（srcsharp trial・VS Code の「試し戦闘」が作る）", ".srcsharp/"),
-            };
+                files = new Dictionary<string, string>
+                {
+                    [episode + ".eve"] = Event(title, episode),
+                    [episode + ".map"] = Map(),
+                    [episode + ".play"] = Play(episode),
+                    ["Data/robot.txt"] = Units(),
+                    ["Data/pilot.txt"] = Pilots(),
+                    ["README.md"] = Readme(title, episode),
+                    [".vscode/launch.json"] = Launch(episode),
+                    [".github/workflows/src-check.yml"] = Workflow(episode),
+                    [".gitignore"] = Lines("# SRC のセーブデータ・ログ", "*.src", "Save/", "Logs/", "srcsharp-logs/", "# 試し戦闘（srcsharp trial・VS Code の「試し戦闘」が作る）", ".srcsharp/"),
+                };
+            }
+            else
+            {
+                var names = Enumerable.Range(1, episodes).Select(i => $"第{i}話").ToList();
+                files = new Dictionary<string, string>
+                {
+                    ["Lib/include.eve"] = MultiInclude(title),
+                    ["Lib/作戦会議.eve"] = IntermissionBriefing(),
+                    ["全話.play"] = CampaignPlay(episodes),
+                    ["Data/robot.txt"] = Units(),
+                    ["Data/pilot.txt"] = Pilots(),
+                    ["README.md"] = MultiReadme(title, names),
+                    [".vscode/launch.json"] = MultiLaunch(names),
+                    [".github/workflows/src-check.yml"] = MultiWorkflow(names),
+                    [".gitignore"] = Lines("# SRC のセーブデータ・ログ", "*.src", "*.srcq", "Save/", "Logs/", "srcsharp-logs/", "# 試し戦闘（srcsharp trial・VS Code の「試し戦闘」が作る）", ".srcsharp/"),
+                };
+                for (var i = 1; i <= episodes; i++)
+                {
+                    var ep = names[i - 1];
+                    var next = i < episodes ? names[i] : null;
+                    files[ep + ".eve"] = MultiEvent(title, ep, i, episodes, next);
+                    files[ep + ".map"] = Map();
+                    files[ep + ".play"] = MultiEpisodePlay(ep, i == episodes);
+                }
+            }
             if (!string.IsNullOrEmpty(appPath))
             {
                 files[".vscode/settings.json"] = Lines("{", $"  \"srcsharp.appPath\": {Json(appPath)}", "}");
@@ -48,11 +80,11 @@ namespace SRCAuthoring.Templates
         /// フォルダに書く。既にあるファイルは上書きしない（overwrite で上書き）。書いたファイルの相対パスを返す。
         /// 書かなかった（既にある）ファイルは skipped に入れる
         /// </summary>
-        public static IReadOnlyList<string> Write(string folder, string title, string appPath, bool overwrite, out IReadOnlyList<string> skipped)
+        public static IReadOnlyList<string> Write(string folder, string title, string appPath, bool overwrite, out IReadOnlyList<string> skipped, int episodes = 1)
         {
             var written = new List<string>();
             var notWritten = new List<string>();
-            foreach (var (path, text) in Files(title, appPath))
+            foreach (var (path, text) in Files(title, appPath, DefaultEpisode, episodes))
             {
                 var full = Path.Combine(folder, path.Replace('/', Path.DirectorySeparatorChar));
                 if (File.Exists(full) && !overwrite)
@@ -106,6 +138,171 @@ namespace SRCAuthoring.Templates
             "全滅 味方:",
             "GameOver");
 
+        private static string MultiInclude(string title) => Lines(
+            $"# {title} 全話共通のイベント",
+            "# シナリオのフォルダの Lib/include.eve は、どの話のイベントを読み込むときも自動で取り込まれる",
+            "",
+            "#---------------------------------------------------------------",
+            "# 敗北（味方の全滅）",
+            "#---------------------------------------------------------------",
+            "全滅 味方:",
+            "Call 敗北",
+            "Exit",
+            "",
+            "敗北:",
+            "StopBGM",
+            "Talk システム",
+            "部隊は撤退した……。",
+            "End",
+            "Ask どうする？",
+            "クイックセーブした所からやり直す",
+            "あきらめる",
+            "End",
+            "If 選択 = 1 Then",
+            "  QuickLoad",
+            "EndIf",
+            "GameOver",
+            "Return",
+            "",
+            "#---------------------------------------------------------------",
+            "# 章の題： Call 章題 \"第1話\"",
+            "#---------------------------------------------------------------",
+            "章題:",
+            "FadeOut 8",
+            "Telop $(Args(1))",
+            "FadeIn 8",
+            "Return",
+            "",
+            "#---------------------------------------------------------------",
+            "# 報酬： Call 報酬 金額 理由",
+            "#---------------------------------------------------------------",
+            "報酬:",
+            "Local 額",
+            "額 = Args(1)",
+            "Money 額",
+            "Talk システム",
+            "$(Args(2))の報酬として、資金$(額)を受け取った。",
+            "End",
+            "Return",
+            "",
+            "#---------------------------------------------------------------",
+            "# 単体で始めたときの部隊： Call 単体の部隊 話数",
+            "# 前の話のデータが無いとき（第2話以降をファイル単体で開いて始めたとき）に呼ぶ",
+            "#---------------------------------------------------------------",
+            "単体の部隊:",
+            "Option アイテム交換",
+            "If Args(1) >= 2 Then",
+            "  Option 機体改造",
+            "EndIf",
+            @"IntermissionCommand 作戦会議 Lib\作戦会議.eve",
+            "Unit 見習い機 0",
+            "Pilot 主人公 (2 * Args(1) - 1)",
+            "Ride 主人公",
+            "Return");
+
+        private static string IntermissionBriefing() => Lines(
+            "# インターミッションのメニュー「作戦会議」から呼ばれるイベント",
+            "# 終わりに引数の無い Continue を置くとインターミッションに戻る",
+            "",
+            "プロローグ:",
+            "Talk 主人公",
+            "次の戦いに備えて、機体や装備を整えておこう。",
+            "End",
+            "Continue",
+            "",
+            "スタート:",
+            "Exit");
+
+        private static string MultiEvent(string title, string episode, int index, int total, string nextEpisode)
+        {
+            var lines = new List<string>
+            {
+                $"# {title}　{episode}" + (index == total ? "（最終話）" : ""),
+                "# SRC# の複数話のシナリオのひな形（srcsharp new --episodes）。各話を単体でも、第1話から通しでも動かせる",
+                "",
+                "#===============================================================",
+                "# プロローグ",
+                "#===============================================================",
+                "プロローグ:",
+            };
+            if (index == 1)
+            {
+                lines.Add("Option アイテム交換");
+                lines.Add(@"IntermissionCommand 作戦会議 Lib\作戦会議.eve");
+                lines.Add("Talk システム");
+                lines.Add($"「{title}」のはじまり。");
+                lines.Add("End");
+            }
+            else
+            {
+                lines.Add("Talk 主人公");
+                lines.Add(index == total ? $"{episode}（最終話）。いよいよ決戦だ！" : $"{episode}。新たな敵が現れた。");
+                lines.Add("End");
+            }
+            lines.Add("Exit");
+            lines.Add("");
+            lines.Add("#===============================================================");
+            lines.Add("# スタート");
+            lines.Add("#===============================================================");
+            lines.Add("スタート:");
+            if (index > 1)
+            {
+                lines.Add($"# 第{index}話から単体で始めたとき（前の話のデータが無いとき）は、仮の部隊を作る");
+                lines.Add("If IsDefined(主人公, パイロット) = 0 Then");
+                lines.Add($"  Call 単体の部隊 {index}");
+                lines.Add("EndIf");
+            }
+            lines.Add($"Call 章題 \"{episode}\"");
+            lines.Add($"ChangeMap {episode}.map");
+            if (index == 1)
+            {
+                lines.Add("Create 味方 見習い機 0 主人公 1 4 8");
+            }
+            else
+            {
+                lines.Add("Launch 主人公 4 8");
+            }
+            lines.Add($"Create 敵 偵察機 0 敵兵(ザコ) {index} 14 6");
+            lines.Add($"Create 敵 偵察機 0 敵兵(ザコ) {index} 15 10");
+            lines.Add("Talk 主人公");
+            lines.Add(index == total ? "これが最後の戦いだ。負けるわけにはいかない！" : "敵の偵察機だ。片付けよう！");
+            lines.Add("End");
+            lines.Add("Exit");
+            lines.Add("");
+            lines.Add("#===============================================================");
+            lines.Add("# 勝利");
+            lines.Add("#===============================================================");
+            lines.Add("全滅 敵:");
+            lines.Add("Talk システム");
+            lines.Add($"{episode}クリア！");
+            if (nextEpisode == null)
+            {
+                lines.Add($"「{title}」をクリアしました！");
+                lines.Add("End");
+                lines.Add("GameClear");
+            }
+            else
+            {
+                lines.Add("End");
+                lines.Add($"Call 報酬 {1000 * index} {episode}");
+                if (index == 1)
+                {
+                    lines.Add("Option 機体改造");
+                }
+                lines.Add($"Continue {nextEpisode}.eve");
+                lines.Add("");
+                lines.Add("#===============================================================");
+                lines.Add("# エピローグ（Continue でインターミッションに入る前に動く）");
+                lines.Add("#===============================================================");
+                lines.Add("エピローグ:");
+                lines.Add("Talk 主人公");
+                lines.Add($"次は {nextEpisode} だ。インターミッションで機体を整えておこう。");
+                lines.Add("End");
+                lines.Add("Exit");
+            }
+            return Lines(lines.ToArray());
+        }
+
         /// <summary>20×15 の平地に、林と川（最小の汎用データの地形の番号）</summary>
         private static string Map()
         {
@@ -129,6 +326,37 @@ namespace SRCAuthoring.Templates
             "auto 300",
             "turns 20",
             "expect message 勝利",
+            "expect finished",
+            "expect error none");
+
+        private static string MultiEpisodePlay(string episode, bool isFinal) => isFinal
+            ? Lines(
+                $"# {episode}（最終話）を単体で最後まで遊ぶ手順",
+                $"#   srcsharp play {episode}.eve --script {episode}.play --app-path <SRC のフォルダか最小の汎用データ> --skip-wait",
+                "choose どうする あきらめる",
+                "auto 300",
+                "turns 20",
+                "expect message クリアしました",
+                "expect finished",
+                "expect error none")
+            : Lines(
+                $"# {episode} を単体でクリア後のインターミッションまで遊ぶ手順",
+                $"#   srcsharp play {episode}.eve --script {episode}.play --app-path <SRC のフォルダか最小の汎用データ> --skip-wait",
+                "choose どうする あきらめる",
+                "holdlist コマンド",
+                "auto 300",
+                "turns 20",
+                $"expect message {episode}クリア！",
+                "expect error none");
+
+        private static string CampaignPlay(int episodes) => Lines(
+            $"# 第1話から第{episodes}話（最終話）まで通しで最後まで遊ぶ手順",
+            $"#   srcsharp play 第1話.eve --script 全話.play --app-path <SRC のフォルダか最小の汎用データ> --skip-wait",
+            "choose どうする あきらめる",
+            "choose コマンド 次のステージへ",
+            "auto 300",
+            $"turns {20 * episodes}",
+            "expect message クリアしました",
             "expect finished",
             "expect error none");
 
@@ -193,6 +421,41 @@ namespace SRCAuthoring.Templates
             "",
             "作り方の流れは、SRC# のヘルプの「SRC# でシナリオ・データを作る」を見てください。");
 
+        private static string MultiReadme(string title, IReadOnlyList<string> episodes)
+        {
+            var lines = new List<string>
+            {
+                $"# {title}",
+                "",
+                $"SRC# のシナリオのひな形（`srcsharp new --episodes {episodes.Count}`）から作った全 {episodes.Count} 話のシナリオです。",
+                "",
+                "| ファイル | 内容 |",
+                "|---|---|",
+                "| `Lib/include.eve` | 全話共通のイベント（敗北・章題・報酬・単体で始めたときの部隊） |",
+                "| `Lib/作戦会議.eve` | インターミッションのコマンド「作戦会議」のイベント |",
+            };
+            foreach (var ep in episodes)
+            {
+                lines.Add($"| `{ep}.eve`・`{ep}.map`・`{ep}.play` | {ep} のイベント・マップ・単体自動プレイの手順 |");
+            }
+            lines.Add("| `全話.play` | 第1話から最終話まで通しで自動で遊ぶ手順 |");
+            lines.Add("| `Data/robot.txt`・`Data/pilot.txt` | ユニット・パイロットのデータ |");
+            lines.Add("| `.vscode/launch.json` | VS Code で F5 を押すと、開いているイベントを画面付きで動かす |");
+            lines.Add("| `.github/workflows/src-check.yml` | GitHub に置くと、push のたびにデータ検査・話のつながり確認・自動プレイを動かす |");
+            lines.Add("");
+            lines.Add("## 動かす");
+            lines.Add("");
+            lines.Add("SRC の汎用データ（`Data/System/terrain.txt` などのある SRC のフォルダ）か、SRC# の最小の汎用データ（https://github.com/7474/SRC の `SRC.Sharp/Content/basic-data`）が要ります。");
+            lines.Add("");
+            lines.Add("- VS Code: 拡張「SRC# Authoring」を入れ、設定 `srcsharp.appPath` に SRC のフォルダを書き、イベントを開いて F5");
+            lines.Add("- 話のつながりの図: VS Code のコマンド「SRC#: 話のつながりの図を表示」、または `srcsharp flow .`");
+            lines.Add("- 通しで自動プレイ: `srcsharp play 第1話.eve --script 全話.play --app-path <SRC のフォルダ> --skip-wait`");
+            lines.Add($"- 各話を単体で自動プレイ: `srcsharp play {episodes[1]}.eve --script {episodes[1]}.play --app-path <SRC のフォルダ> --skip-wait`");
+            lines.Add("");
+            lines.Add("作り方の流れは、SRC# のヘルプの「SRC# でシナリオ・データを作る」を見てください。");
+            return Lines(lines.ToArray());
+        }
+
         private static string Launch(string episode) => Lines(
             "{",
             "  \"version\": \"0.2.0\",",
@@ -214,6 +477,49 @@ namespace SRCAuthoring.Templates
             "    }",
             "  ]",
             "}");
+
+        private static string MultiLaunch(IReadOnlyList<string> episodes)
+        {
+            var configs = new List<string>
+            {
+                string.Join("\r\n",
+                    "    {",
+                    "      \"type\": \"srcsharp\",",
+                    "      \"request\": \"launch\",",
+                    "      \"name\": \"開いているイベントを遊ぶ（画面付き）\",",
+                    "      \"program\": \"${file}\",",
+                    "      \"interactive\": true",
+                    "    }"),
+                string.Join("\r\n",
+                    "    {",
+                    "      \"type\": \"srcsharp\",",
+                    "      \"request\": \"launch\",",
+                    "      \"name\": \"全話を自動で通しプレイ\",",
+                    "      \"program\": \"${workspaceFolder}/第1話.eve\",",
+                    "      \"script\": \"${workspaceFolder}/全話.play\",",
+                    "      \"skipWait\": true",
+                    "    }"),
+            };
+            foreach (var ep in episodes)
+            {
+                configs.Add(string.Join("\r\n",
+                    "    {",
+                    "      \"type\": \"srcsharp\",",
+                    "      \"request\": \"launch\",",
+                    $"      \"name\": \"{ep} を自動でプレイ（単体）\",",
+                    $"      \"program\": \"${{workspaceFolder}}/{ep}.eve\",",
+                    $"      \"script\": \"${{workspaceFolder}}/{ep}.play\",",
+                    "      \"skipWait\": true",
+                    "    }"));
+            }
+            return Lines(
+                "{",
+                "  \"version\": \"0.2.0\",",
+                "  \"configurations\": [",
+                string.Join(",\r\n", configs),
+                "  ]",
+                "}");
+        }
 
         private static string Workflow(string episode) => Lines(
             "# SRC# のデータの検査と、最後まで自動で遊べるかの確かめ（srcsharp new のひな形）",
@@ -267,5 +573,23 @@ namespace SRCAuthoring.Templates
             "",
             $"      - name: Play {episode} to the end",
             $"        run: srcsharp play \"{episode}.eve\" --script \"{episode}.play\" --app-path \"$RUNNER_TEMP/srcsharp/SRC.Sharp/Content/basic-data\" --skip-wait --seed 1");
+
+        private static string MultiWorkflow(IReadOnlyList<string> episodes)
+        {
+            var steps = new List<string>
+            {
+                Workflow(episodes[0]).TrimEnd('\r', '\n'),
+                "",
+                "      - name: Play all episodes through",
+                "        run: srcsharp play \"第1話.eve\" --script \"全話.play\" --app-path \"$RUNNER_TEMP/srcsharp/SRC.Sharp/Content/basic-data\" --skip-wait --seed 1",
+            };
+            foreach (var ep in episodes.Skip(1))
+            {
+                steps.Add("");
+                steps.Add($"      - name: Play {ep} standalone");
+                steps.Add($"        run: srcsharp play \"{ep}.eve\" --script \"{ep}.play\" --app-path \"$RUNNER_TEMP/srcsharp/SRC.Sharp/Content/basic-data\" --skip-wait --seed 1");
+            }
+            return string.Join("\r\n", steps) + "\r\n";
+        }
     }
 }

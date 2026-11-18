@@ -148,6 +148,76 @@ namespace SRCAuthoring.Tests
         }
 
         /// <summary>
+        /// 複数話のひな形（srcsharp new --episodes 3）が、通しプレイ（全話.play）と各話単体プレイの両方で通り、
+        /// srcsharp flow が話のつながりの図を出力できること（7474/SRC#1652）
+        /// </summary>
+        [TestMethod]
+        public void New_MultiEpisodeTemplateLintsPlaysAndFlows()
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-multi-" + Guid.NewGuid());
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                var (exitCode, _, stderr) = Run("new", folder, "--episodes", "0");
+                Assert.AreEqual(2, exitCode);
+                StringAssert.Contains(stderr, "1");
+
+                string stdout;
+                (exitCode, stdout, stderr) = Run("new", folder, "--title", "長編の物語", "--episodes", "3");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "Lib/include.eve");
+                StringAssert.Contains(stdout, "Lib/作戦会議.eve");
+                StringAssert.Contains(stdout, "第3話.eve");
+                StringAssert.Contains(stdout, "全話.play");
+
+                (exitCode, stdout, stderr) = Run("lint", folder, "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                // 第1話から第3話まで通しで最後まで遊ぶ
+                (exitCode, stdout, stderr) = Run("play", Path.Combine(folder, "第1話.eve"), "--script", Path.Combine(folder, "全話.play"), "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                // 各話を単体で遊ぶ（第2話は 単体の部隊 を呼んで動く）
+                foreach (var ep in new[] { "第1話", "第2話", "第3話" })
+                {
+                    (exitCode, stdout, stderr) = Run("play", Path.Combine(folder, ep + ".eve"), "--script", Path.Combine(folder, ep + ".play"), "--app-path", basicData, "--skip-wait", "--seed", "1");
+                    Assert.AreEqual(0, exitCode, $"{ep} 単体失敗:\n{stdout}\n{stderr}");
+                }
+
+                // srcsharp flow の各フォーマット
+                (exitCode, stdout, stderr) = Run("flow", folder);
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "```mermaid");
+                StringAssert.Contains(stdout, "第1話.eve");
+                StringAssert.Contains(stdout, "第3話.eve");
+
+                (exitCode, stdout, stderr) = Run("flow", folder, "--format", "mmd");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.StartsWith(stdout, "flowchart TD");
+                StringAssert.Contains(stdout, "Lib/作戦会議");
+
+                var jsonOut = Path.Combine(folder, "flow.json");
+                (exitCode, stdout, stderr) = Run("flow", folder, "--format", "json", "--output", jsonOut);
+                Assert.AreEqual(0, exitCode, stderr);
+                var json = File.ReadAllText(jsonOut);
+                StringAssert.Contains(json, "\"第2話.eve\"");
+                StringAssert.Contains(json, "\"warnings\": []");
+
+                (exitCode, _, _) = Run("flow", Path.Combine(folder, "no-such-dir"));
+                Assert.AreEqual(2, exitCode);
+                (exitCode, _, _) = Run("flow", folder, "--format", "yaml");
+                Assert.AreEqual(2, exitCode);
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
+        /// <summary>
         /// かんたん作成（7474/SRC#1659）で作ったシナリオは、作品のデータを Data の下のフォルダに置けば、最小の汎用データで lint が通り、最後まで自動で遊べる
         /// （SRC#Studio が作る zip と同じ形）
         /// </summary>

@@ -23,8 +23,10 @@ Verwendung:
       Führt ein Szenario ohne Bildschirm aus. Ohne --script werden Nachrichten weitergeschaltet und jeweils die erste Auswahl gewählt. Mit --skip-wait werden feste Wartezeiten (Animationen, Nachrichten, Wait) übersprungen. --scenario-root legt den Szenario-Ordner fest (Basis für Data, Lib und Continue); standardmäßig verwendet eine Event-Datei in einem Unterordner ohne Data den nächsten übergeordneten Ordner mit Data.
   srcsharp balance &lt;Verzeichnis oder Datei&gt;... [--format md|csv] [--output Datei]
       Listet Werte der Einheitendaten und Ausreißer auf
-  srcsharp new &lt;Ordner&gt; [--title Titel] [--app-path SRC-Ordner] [--force]
-      Erstellt eine neue Szenariovorlage (Ereignis, Karte und Daten der ersten Episode, Autoplay-Skript, VS-Code-Einstellungen, CI). Vorhandene Dateien bleiben erhalten (--force überschreibt)
+  srcsharp new &lt;Ordner&gt; [--title Titel] [--episodes n] [--app-path SRC-Ordner] [--force]
+      Erstellt eine neue Szenariovorlage (Ereignis, Karte und Daten der ersten Episode, Autoplay-Skript, VS-Code-Einstellungen, CI). Vorhandene Dateien bleiben erhalten (--force überschreibt) Mit --episodes 2 oder mehr werden mehrere Episoden mit Intermission erstellt.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Verfolgt Continue, nächste Stufe, Exec, IntermissionCommand, Load und GameClear über die Ereignisse und gibt das Diagramm der Episodenverbindungen aus (Standard: aktueller Ordner)
   srcsharp trial &lt;Szenarioordner&gt; [--unit Einheit] [--pilot Pilot] [--enemy Einheit] [--enemy-pilot Pilot] [--level n] [--enemies n] [--list]
       Erstellt in .srcsharp/trial/ ein Probegefecht, in dem Einheiten und Piloten aus den Szenariodaten gegen einen Gegner kämpfen, und gibt den Pfad aus (mit play oder dem Debugger ausführen). --list gibt Einheiten und Piloten als JSON aus
   srcsharp lsp
@@ -79,11 +81,23 @@ Allgemeine Optionen:
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>Geben Sie genau einen Ordner für das Szenario an</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Die Anzahl der Episoden muss eine ganze Zahl ≥ 1 sein: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>Vorlage in {0} erstellt ({1} Dateien)</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Vorhandene Dateien übersprungen: {0} (--force zum Überschreiben)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Geben Sie höchstens einen Szenarioordner oder eine Ereignisdatei an</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Szenarioordner oder Ereignisdatei nicht gefunden: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Unbekanntes Ausgabeformat: {0} (md, mmd oder json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Geben Sie genau einen Szenarioordner an</value>

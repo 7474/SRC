@@ -47,9 +47,17 @@ namespace SRCSharpTools.Resources
 
         public static string NewRequiresFolder => Get(nameof(NewRequiresFolder));
 
+        public static string NewInvalidEpisodes(string value) => Format(nameof(NewInvalidEpisodes), value);
+
         public static string NewCreated(string folder, int count) => Format(nameof(NewCreated), folder, count);
 
         public static string NewSkipped(string files) => Format(nameof(NewSkipped), files);
+
+        public static string FlowRequiresAtMostOnePath => Get(nameof(FlowRequiresAtMostOnePath));
+
+        public static string FlowPathNotFound(string path) => Format(nameof(FlowPathNotFound), path);
+
+        public static string UnknownFlowFormat(string format) => Format(nameof(UnknownFlowFormat), format);
 
         public static string TrialRequiresFolder => Get(nameof(TrialRequiresFolder));
 

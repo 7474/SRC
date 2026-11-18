@@ -23,8 +23,10 @@ Uso:
       Executa um cenário sem tela. Sem --script, avança as mensagens e escolhe a primeira opção. Com --skip-wait, pula as esperas fixas (animações, mensagens, Wait). --scenario-root indica a pasta do cenário (base de Data, Lib e Continue); por padrão, um arquivo de evento em uma subpasta sem Data usa a pasta superior mais próxima com Data.
   srcsharp balance &lt;diretório ou arquivo&gt;... [--format md|csv] [--output arquivo]
       Lista os atributos dos dados de unidades e os valores atípicos
-  srcsharp new &lt;pasta&gt; [--title título] [--app-path pasta do SRC] [--force]
-      Cria um novo modelo de cenário (evento, mapa e dados do primeiro episódio, roteiro de jogo automático, configurações do VS Code, CI). Arquivos existentes são mantidos (--force sobrescreve)
+  srcsharp new &lt;pasta&gt; [--title título] [--episodes n] [--app-path pasta do SRC] [--force]
+      Cria um novo modelo de cenário (evento, mapa e dados do primeiro episódio, roteiro de jogo automático, configurações do VS Code, CI). Arquivos existentes são mantidos (--force sobrescreve) Com --episodes 2 ou mais, cria vários episódios com intervalo (intermission).
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Segue Continue, próxima fase, Exec, IntermissionCommand, Load e GameClear entre os eventos e gera o diagrama de ligação dos episódios (padrão: pasta atual)
   srcsharp trial &lt;pasta do cenário&gt; [--unit unidade] [--pilot piloto] [--enemy unidade] [--enemy-pilot piloto] [--level n] [--enemies n] [--list]
       Cria em .srcsharp/trial/ uma batalha de teste com unidades e pilotos dos dados do cenário contra um inimigo e imprime o caminho (execute com play ou o depurador). --list imprime as unidades e os pilotos em JSON
   srcsharp lsp
@@ -79,11 +81,23 @@ Opções comuns:
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>Informe uma pasta para criar o cenário</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>O número de episódios deve ser um inteiro ≥ 1: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>Modelo criado em {0} ({1} arquivos)</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Arquivos existentes ignorados: {0} (use --force para sobrescrever)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Informe no máximo uma pasta de cenário ou um arquivo de eventos</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Pasta de cenário ou arquivo de eventos não encontrado: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Formato de saída desconhecido: {0} (md, mmd ou json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Informe uma pasta de cenário</value>

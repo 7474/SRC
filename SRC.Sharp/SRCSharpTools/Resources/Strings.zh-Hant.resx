@@ -23,8 +23,10 @@
       在無畫面狀態下執行劇本。未指定 --script 時，自動推進訊息，選項選擇第一項。指定 --skip-wait 時略過固定等待（動畫、訊息、Wait）。--scenario-root 指定劇本資料夾（Data、Lib、Continue 的基準）；未指定時，位於沒有 Data 的子資料夾中的事件檔案使用最近的含 Data 的上層資料夾。
   srcsharp balance &lt;目錄或檔案&gt;... [--format md|csv] [--output 檔案]
       列出單位資料的能力值與異常值
-  srcsharp new &lt;資料夾&gt; [--title 標題] [--app-path SRC 資料夾] [--force]
-      建立新劇本的範本（第一話的事件、地圖與資料，自動遊玩步驟，VS Code 設定，CI）。已有的檔案不覆寫（--force 覆寫）
+  srcsharp new &lt;資料夾&gt; [--title 標題] [--episodes n] [--app-path SRC 資料夾] [--force]
+      建立新劇本的範本（第一話的事件、地圖與資料，自動遊玩步驟，VS Code 設定，CI）。已有的檔案不覆寫（--force 覆寫）--episodes 為 2 以上時，建立帶幕間（intermission）的多話劇本。
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      追蹤事件之間的 Continue、下一關、Exec、IntermissionCommand、Load、GameClear，輸出各話之間的連接圖（預設是目前資料夾）
   srcsharp trial &lt;劇本資料夾&gt; [--unit 機體] [--pilot 駕駛員] [--enemy 機體] [--enemy-pilot 駕駛員] [--level 數] [--enemies 數] [--list]
       在 .srcsharp/trial/ 建立讓劇本資料中的機體與駕駛員和敵人戰鬥的試戰事件，並輸出其路徑（以 play 或除錯器執行）。--list 以 JSON 輸出資料中的機體與駕駛員
   srcsharp lsp
@@ -79,11 +81,23 @@
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>請指定一個用於建立劇本的資料夾</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>話數必須是 1 以上的整數: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>已在 {0} 建立範本（{1} 個檔案）</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>已略過既有檔案：{0}（使用 --force 覆寫）</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>最多只能指定一個劇本資料夾或事件檔案</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>找不到劇本資料夾或事件檔案: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>未知的輸出格式: {0}（md、mmd 或 json）</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>請指定一個劇本資料夾</value>

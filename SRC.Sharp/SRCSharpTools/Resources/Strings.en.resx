@@ -23,8 +23,10 @@ Usage:
       Run a scenario without a screen. Without --script, advance messages and pick the first choice. With --skip-wait, fixed waits (animations, messages, Wait) are skipped. --scenario-root sets the scenario folder (the base of Data, Lib and Continue); by default, an event file in a subfolder without Data uses the nearest parent folder with Data.
   srcsharp balance &lt;directory or file&gt;... [--format md|csv] [--output file]
       List unit data stats and outliers
-  srcsharp new &lt;folder&gt; [--title title] [--app-path SRC folder] [--force]
-      Create a new scenario template (first episode event, map and data, autoplay script, VS Code settings, CI). Existing files are kept (--force overwrites)
+  srcsharp new &lt;folder&gt; [--title title] [--episodes count] [--app-path SRC folder] [--force]
+      Create a new scenario template (events, maps and data, autoplay script, VS Code settings, CI). When --episodes is 2 or more, creates multiple episodes with intermission and shared events. Existing files are kept (--force overwrites)
+  srcsharp flow [scenario folder or event file] [--format md|mmd|json] [--output file] [--app-path SRC folder] [--scenario-root scenario folder]
+      Trace Continue, next stage, Exec, IntermissionCommand, Load and GameClear across events and output the episode flow diagram (defaults to the current directory)
   srcsharp trial &lt;scenario folder&gt; [--unit unit] [--pilot pilot] [--enemy unit] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
       Create a trial battle event in .srcsharp/trial/ that fights units and pilots from the scenario data against an enemy, and print its path (run it with play or the debugger). --list prints the units and pilots as JSON
   srcsharp lsp
@@ -80,11 +82,23 @@ Common options:
   <data name="NewRequiresFolder" xml:space="preserve">
     <value>Specify one folder to create the scenario in</value>
   </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Episode count must be an integer &gt;= 1: {0}</value>
+  </data>
   <data name="NewCreated" xml:space="preserve">
     <value>Created the template in {0} ({1} files)</value>
   </data>
   <data name="NewSkipped" xml:space="preserve">
     <value>Skipped existing files: {0} (use --force to overwrite)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Specify at most one scenario folder or event file</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Scenario folder or event file not found: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Unknown output format: {0} (md, mmd, or json)</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Specify one scenario folder</value>

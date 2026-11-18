@@ -1,4 +1,5 @@
 using SRCAuthoring;
+using SRCAuthoring.Analysis;
 using SRCAuthoring.Balance;
 using SRCAuthoring.Rules;
 using SRCDebugAdapter;
@@ -60,6 +61,8 @@ namespace SRCSharpTools
                     return Balance(positional, options);
                 case "new":
                     return New(positional, options);
+                case "flow":
+                    return Flow(positional, options);
                 case "trial":
                     return await TrialAsync(positional, options);
                 case "help":
@@ -360,7 +363,7 @@ namespace SRCSharpTools
             return 1;
         }
 
-        /// <summary>新しいシナリオのひな形を作る（7474/SRC#1640）。既にあるファイルは上書きしない（--force で上書き）</summary>
+        /// <summary>新しいシナリオのひな形を作る（7474/SRC#1640・#1652）。既にあるファイルは上書きしない（--force で上書き）</summary>
         private static int New(List<string> positional, Dictionary<string, string> options)
         {
             if (positional.Count != 1)
@@ -368,10 +371,19 @@ namespace SRCSharpTools
                 Console.Error.WriteLine(Strings.NewRequiresFolder);
                 return 2;
             }
+            var episodes = 1;
+            if (options.TryGetValue("episodes", out var epText))
+            {
+                if (!int.TryParse(epText, NumberStyles.Integer, CultureInfo.InvariantCulture, out episodes) || episodes < 1)
+                {
+                    Console.Error.WriteLine(Strings.NewInvalidEpisodes(epText));
+                    return 2;
+                }
+            }
             var folder = Path.GetFullPath(positional[0]);
             options.TryGetValue("title", out var title);
             options.TryGetValue("app-path", out var appPath);
-            var written = ScenarioTemplate.Write(folder, title ?? Path.GetFileName(folder.TrimEnd(Path.DirectorySeparatorChar)), appPath == null ? null : Path.GetFullPath(appPath), options.ContainsKey("force"), out var skipped);
+            var written = ScenarioTemplate.Write(folder, title ?? Path.GetFileName(folder.TrimEnd(Path.DirectorySeparatorChar)), appPath == null ? null : Path.GetFullPath(appPath), options.ContainsKey("force"), out var skipped, episodes);
             foreach (var path in written)
             {
                 Console.WriteLine("  " + path);
@@ -382,6 +394,47 @@ namespace SRCSharpTools
                 Console.Error.WriteLine(Strings.NewSkipped(string.Join(", ", skipped)));
             }
             return 0;
+        }
+
+        /// <summary>話のつながりの図を出す（7474/SRC#1652）</summary>
+        private static int Flow(List<string> positional, Dictionary<string, string> options)
+        {
+            if (positional.Count > 1)
+            {
+                Console.Error.WriteLine(Strings.FlowRequiresAtMostOnePath);
+                return 2;
+            }
+            var target = positional.Count == 1 ? Path.GetFullPath(positional[0]) : Environment.CurrentDirectory;
+            if (!Directory.Exists(target) && !File.Exists(target))
+            {
+                Console.Error.WriteLine(Strings.FlowPathNotFound(target));
+                return 2;
+            }
+            options.TryGetValue("app-path", out var appPath);
+            options.TryGetValue("scenario-root", out var scenarioRoot);
+            var analyzer = new ScenarioFlowAnalyzer
+            {
+                AppPath = string.IsNullOrEmpty(appPath) ? null : Path.GetFullPath(appPath),
+            };
+            var flow = analyzer.Analyze(target, scenarioRoot: string.IsNullOrEmpty(scenarioRoot) ? null : Path.GetFullPath(scenarioRoot));
+            options.TryGetValue("format", out var format);
+            switch ((format ?? "md").ToLowerInvariant())
+            {
+                case "md":
+                case "markdown":
+                    WriteOutput(flow.ToMarkdown(), options);
+                    return 0;
+                case "mmd":
+                case "mermaid":
+                    WriteOutput(flow.ToMermaid(), options);
+                    return 0;
+                case "json":
+                    WriteOutput(flow.ToJson(), options);
+                    return 0;
+                default:
+                    Console.Error.WriteLine(Strings.UnknownFlowFormat(format));
+                    return 2;
+            }
         }
 
         /// <summary>

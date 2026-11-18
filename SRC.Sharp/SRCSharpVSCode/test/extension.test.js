@@ -92,6 +92,48 @@ describe('SRC# Authoring', () => {
     await vscode.commands.executeCommand('workbench.action.closeAllEditors');
   });
 
+  it('話のつながりの図を表示して描画できる（7474/SRC#1652）', async function () {
+    this.timeout(30 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    await vscode.commands.executeCommand('srcsharp._showFlowData', {
+      scenarioRoot: folder,
+      scenarioTitle: 'テストシナリオ',
+      nodes: [
+        { id: 's0', path: 'ep01.eve', fullPath: path.join(folder, 'test.eve'), title: 'ep01', kind: 'Stage', exists: true, entry: true, line: 1, labels: ['プロローグ'] },
+        { id: 's1', path: 'ep02.eve', title: 'ep02', kind: 'Stage', exists: true, entry: false, line: 1, labels: [] },
+        { id: 'im0', path: 'Lib/shop.eve', title: 'Lib/shop', kind: 'Intermission', exists: true, entry: false, line: 1, labels: [] },
+        { id: 'load0', path: 'Data/enemy', title: 'enemy', kind: 'LoadData', exists: true, entry: false, line: 1, labels: [] },
+        { id: 'clear', path: '(GameClear)', title: 'クリア', kind: 'GameClear', exists: true, entry: false, line: 1, labels: [] },
+        { id: 'miss0', path: 'missing.eve', title: 'missing.eve', kind: 'Missing', exists: false, entry: false, line: 1, labels: [] },
+      ],
+      edges: [
+        { from: 's0', to: 's1', kind: 'Continue', file: 'ep01.eve', fullFile: path.join(folder, 'test.eve'), line: 10, command: 'Continue', target: 'ep02.eve' },
+        { from: 's0', to: 'im0', kind: 'IntermissionCommand', file: 'ep01.eve', line: 5, command: 'IntermissionCommand', commandArg: 'ショップ', target: 'Lib/shop.eve' },
+        { from: 'im0', to: 'im0', kind: 'IntermissionReturn', file: 'Lib/shop.eve', line: 12, command: 'Continue' },
+        { from: 's0', to: 'load0', kind: 'Load', file: 'ep01.eve', line: 3, command: 'Load', target: 'enemy' },
+        { from: 's1', to: 'clear', kind: 'GameClear', file: 'ep02.eve', line: 20, command: 'GameClear' },
+      ],
+      warnings: [
+        { file: 'ep01.eve', line: 15, target: 'missing.eve', message: 'Continue 先のイベントファイル「missing.eve」が見つかりません' },
+      ],
+      mermaid: 'flowchart TD\n  s0["ep01.eve"] --> s1["ep02.eve"]\n',
+    });
+    let status;
+    for (let i = 0; i < 60; i++) {
+      status = await vscode.commands.executeCommand('srcsharp._flowStatus');
+      if (status && status.rendered) {
+        break;
+      }
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    assert.ok(status && status.rendered, `話のつながりの図が描画を終えない: ${JSON.stringify(status)}`);
+    assert.strictEqual(status.nodes, 6);
+    assert.strictEqual(status.edges, 5);
+    assert.strictEqual(status.warnings, 1);
+    assert.strictEqual(status.error, undefined);
+    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+  });
+
   it('データの規則のグループ（srcsharp.rules）の既定は src だけ', () => {
     assert.deepStrictEqual(vscode.workspace.getConfiguration('srcsharp').get('rules'), ['src']);
   });
