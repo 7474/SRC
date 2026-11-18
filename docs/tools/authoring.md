@@ -59,7 +59,7 @@ flowchart TB
 
 | 部品 | VS Code 拡張での使い方 | 単独での使い方 |
 |---|---|---|
-| `srcsharp`（CLI） | コマンド（新しいシナリオ・話のつながりの図・lint・バランス・試し戦闘） | コマンドライン・CI（ひな形の GitHub Actions） |
+| `srcsharp`（CLI） | コマンド（新しいシナリオ・話のつながりの図・素材の一覧・lint・バランス・試し戦闘） | コマンドライン・CI（ひな形の GitHub Actions） |
 | Language Server（`srcsharp lsp`） | イベント・データの編集 | LSP に対応したほかのエディタ |
 | デバッガ（`srcsharp dap`） | F5・画面のタブ・ホットリロード・試し戦闘 | DAP に対応したほかのエディタ。画面なしの自動プレイは `srcsharp play` |
 | SRC#Studio | `.map` のカスタムエディタ、データのプレビュー（横に開く） | ブラウザ（[https://7474.github.io/SRC/studio/](https://7474.github.io/SRC/studio/)）。インストールが要らない |
@@ -74,14 +74,14 @@ flowchart TB
 | プロジェクト | 内容 |
 |---|---|
 | `SRC.Sharp/SRCPlay` | シナリオを画面なしで動かし、`.play` スクリプトで自動プレイする部品。`SRCRenderTests` の E2E と共通 |
-| `SRC.Sharp/SRCAuthoring` | lint・SARIF・シナリオ解析（`ScenarioAnalyzer`・`ScenarioFlowAnalyzer`）・バランス集計・LSP。SRCCore だけに依存する（描画の部品は使わない） |
+| `SRC.Sharp/SRCAuthoring` | lint・SARIF・シナリオ解析（`ScenarioAnalyzer`・`ScenarioFlowAnalyzer`・`AssetReport`）・バランス集計・LSP。SRCCore だけに依存する（描画の部品は使わない） |
 | `SRC.Sharp/SRCDebugAdapter` | DAP・イベントのデバッガ。シナリオを画面なしで動かすため SRCPlay（SRCRender）に依存する |
 | `SRC.Sharp/SRCSharpTools` | CLI `srcsharp`（.NET tool） |
 | `SRC.Sharp/SRCHelpSearch` | `srcsharp help` の検索（全文検索・埋め込みのベクトルの検索）。実行するとヘルプの断片のベクトルを作る（`srcsharp` のビルドで使う） |
 | `SRC.Sharp/SRCAuthoringTests` | SRCAuthoring・SRCDebugAdapter のテスト（LSP・DAP はパイプでつないで確かめる） |
 | `SRC.Sharp/SRCDataLinter` | 従来の lint の CLI と Docker イメージ。検査は SRCAuthoring の `DataLinter`（`srcsharp lint` と共通）で、出力の書式は従来どおり |
 | `SRC.Sharp/SRCLintWeb` | ブラウザで動く lint（WebAssembly、スレッドなし）。`srcsharp lint` と同じ `DataLinter` と、LSP と同じ静的解析（`ScenarioAnalyzer`。ラベル・include）と素材の参照（`AssetReferenceChecker`。画像・音・マップのファイルがあるか）で zip を検査する。投稿サイト（7474/SRC-Site）がアップロードの前に使う（`SRC.Sharp/SRCLintWeb/README.md`） |
-| `SRC.Sharp/SRCStudio` | SRC#Studio（作成支援の画面。かんたん作成・マップ作成ツール・データのプレビュー）。.NET の WebAssembly と HTML・JavaScript の画面で、スタンドアロン（GitHub Pages の `/SRC/studio/`）と VS Code 拡張（`.map` のカスタムエディタ）で動く（`SRC.Sharp/SRCStudio/README.md`）。マップの読み書きと地形データは SRCAuthoring の `Maps` |
+| `SRC.Sharp/SRCStudio` | SRC#Studio（作成支援の画面。かんたん作成・マップ作成ツール・データのプレビュー・素材の一覧）。.NET の WebAssembly と HTML・JavaScript の画面で、スタンドアロン（GitHub Pages の `/SRC/studio/`）と VS Code 拡張（`.map` のカスタムエディタ）で動く（`SRC.Sharp/SRCStudio/README.md`）。マップの読み書きと地形データは SRCAuthoring の `Maps` |
 | `SRC.Sharp/SRCSharpVSCode` | VS Code 拡張 |
 
 SRCCore には、デバッガ用のフック `IEventDebugger`（`Event.Debugger`）がある。`CmdData.Exec` の先頭と、イベントのエラーを表示する時に呼ばれる。設定しなければ null の判定だけで、通常の実行には影響しない。
@@ -93,6 +93,7 @@ dotnet tool install -g SRCSharpTools
 
 srcsharp new <フォルダ> [--title 題名] [--episodes 数] [--app-path SRCのフォルダ] [--force]
 srcsharp flow [シナリオのフォルダかイベントファイル] [--format md|mmd|json] [--output ファイル] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+srcsharp assets [シナリオのフォルダ] [--format md|json|readme] [--output ファイル] [--app-path SRCのフォルダ] [--ext-data フォルダ] [--ext-data2 フォルダ] [--fail-on-missing]
 srcsharp trial <シナリオのフォルダ> [--unit ユニット] [--pilot パイロット] [--enemy ユニット] [--enemy-pilot パイロット] [--level 数] [--enemies 数] [--app-path SRCのフォルダ] [--list]
 srcsharp lint <ディレクトリかファイル>... [--format text|sarif] [--output ファイル] [--rules グループ,...|none] [--list-rules] [--app-path SRCのフォルダ]
 srcsharp play <イベントファイル> [--script ファイル.play] [--out ディレクトリ] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ] [--steps 数] [--skip-wait] [--seed 数] [--state ファイル]
@@ -107,6 +108,7 @@ srcsharp --version
 |---|---|
 | `new` | 新しいシナリオのひな形を作る（SRCAuthoring の `ScenarioTemplate`。7474/SRC#1640・#1652）。最小の汎用データで遊べる 1 話（`第1話.eve`・`第1話.map`・`Data/robot.txt`・`Data/pilot.txt`）、最後まで自動で遊ぶ手順（`第1話.play`）、VS Code のデバッガの構成（`.vscode/launch.json`。`--app-path` があれば `.vscode/settings.json` の `srcsharp.appPath` も）、作者のリポジトリの CI（`.github/workflows/src-check.yml`。最小の汎用データで `lint`（SARIF をコードスキャンに渡す）と `play`）、README・.gitignore。`--episodes 2` 以上を指定すると、全話分のイベント・マップ・単体/通しプレイ（`全話.play`）と `Lib/include.eve`（共通の敗北・章題・報酬・単体開始用の `単体の部隊`）・`Lib/作戦会議.eve` を作る。既にあるファイルは上書きしない（`--force` で上書き）。VS Code のコマンド「新しいシナリオを作る」も同じ |
 | `flow` | シナリオの `Continue`・`次ステージ`・`Exec`・`IntermissionCommand`・`Load`・`GameClear` と `If`/`Switch` の分岐をたどり、話のつながりの図を出す（SRCAuthoring の `ScenarioFlowAnalyzer`。7474/SRC#1652）。`--format md`（既定、Mermaid 付きの Markdown）・`mmd`（Mermaid）・`json`（ノード・エッジ・警告の構造化データ）。VS Code のコマンド「話のつながりの図を表示」が `--format json` を使って SVG フローチャートを描き、クリックで該当ファイル・行へ飛べる |
+| `assets` | データとイベントが参照する画像・音・マップ（`AssetReferenceChecker` と共通の字句解析）を、参照している場所と一緒に並べ、SRC と同じ順（シナリオ → 拡張データ → SRC 本体）で探した結果を出す（`AssetReport`。7474/SRC#1654。素材の入手・再配布は扱わない）。式で組み立てる名前は「確かめられない」に分け、シナリオのフォルダ内で名前から参照されていない素材も並べる。`--format readme` でシナリオ外の必要素材を README 用に書き出す。`--fail-on-missing` で不足があれば終了コード 1（CI 用）。VS Code のコマンド「素材の一覧（揃っているか）を表示」・SRC#Studio の「素材の一覧」タブも同じ部品を使う |
 | `trial` | 試し戦闘（SRCAuthoring の `TrialTemplate`。7474/SRC#1643）。シナリオのデータのユニット・パイロットを、小さなマップ（16×11）で敵と戦わせるイベントを、シナリオのフォルダの `.srcsharp/trial/試し戦闘.eve` に作り（毎回上書き）、そのパスを標準出力に出す。シナリオのフォルダで動くのでシナリオのデータをそのまま使い、デバッガのホットリロードでデータを直しながら戦える。省いた組は、味方のユニットはデータの最初、パイロットは最初の名前付き、敵は味方と同じユニットとザコか汎用のパイロット。`--list` はデータのユニット・パイロットを JSON で出す（VS Code の「試し戦闘」が使う） |
 | `lint` | SRCDataLinter と同じ処理で検査する（データは種類ごとの読み込み処理、イベントは読み込みと構文の検査）。読み込めたデータには、`--rules` で選んだグループの規則もかける（下の「[データの規則](#データの規則)」。既定は `src`）。`--list-rules` は規則の一覧（ID・グループ・重さ・説明・出どころをタブで区切る）。`--format sarif` で GitHub のコードスキャンに渡せる（[SARIF support for code scanning](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning)。規則ごとに `rules` を出し、グループは `properties.tags`）。エラーか警告があれば終了コード 1（規則の「情報」は数えない）。`--app-path` を付けると、そのフォルダの `Data/System/*.txt`（`sp.txt` など）を先に読み、参照の先として使う（検査はしない。シナリオに無いスペシャルパワーを汎用データから使うときに要る） |
 | `play` | シナリオを画面なしで動かす。`--script` の書式は [E2E テスト](../gui/e2e-testing.md) の PlayScript。無ければメッセージを送り、選択肢は先頭を選んで進める。`--out` にスナップショットを保存する。`--skip-wait` を付けると、決まった時間だけ待つ処理（戦闘アニメ、メッセージの表示時間、ユニットの移動、`Wait` や `Telop` など）を眠らずに飛ばし、その分だけ時計（`GeneralLib.timeGetTime`）を進める。入力を待つポーリングは実時間のまま。`--scenario-root` はシナリオのフォルダ（`Data`・`Lib`・`Continue` の基準）。無ければイベントファイルのあるフォルダで、そこに `Data`・`src.ini` が無ければ、それを持ついちばん近い親（`Data\System` のある SRC 本体のフォルダは除く）。シナリオのサブフォルダに置いた章を単体で動かすのに使う。`--seed` は乱数の種（省くと起動のたびに変わる）。同じ種・同じスクリプトなら毎回同じ結果になる。`--state` には、各話（イベントファイル）の終わりの状態（資金・ユニットとパイロットの一覧・グローバル変数・イベントのエラー）を書く（互換性の検証用のシナリオのゴールデンに使う。`SRC.Sharp/Compat/README.md`） |

@@ -1,5 +1,6 @@
 // SRC#Studio のスタンドアロン（index.html）。フォルダを開き、マップを選んでマップ作成ツールで編集し、保存する
-import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange } from './studio-core.js';
+import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport } from './studio-core.js';
+import { AssetsView } from './assets.js';
 import { DataPreview } from './preview.js';
 import { MapEditor, newMap } from './map-editor.js';
 import { QuickBuilder } from './quick.js';
@@ -161,18 +162,46 @@ $('#save-data').addEventListener('click', async () => {
 
 $('#data-files').addEventListener('change', ev => showData(ev.target.value));
 
+// ---- 素材の一覧（7474/SRC#1654） ----
+
+const assetsView = new AssetsView($('#assets-view'), {
+  onRefresh: () => renderAssets(),
+  onMessage: (text, kind) => showMessage(text, kind),
+});
+
+async function renderAssets() {
+  const hasScenario = Boolean(state.scenario);
+  $('#assets-empty').hidden = hasScenario;
+  $('#assets-view').hidden = !hasScenario;
+  if (!hasScenario) {
+    assetsView.setData(null, '');
+    return;
+  }
+  const roots = [
+    { kind: 'scenario', name: state.scenario.name, files: state.scenario.files, read: p => state.scenario.read(p) },
+    ...(state.app ? [{ kind: 'app', name: state.app.name === 'basic-data' ? t('studio.basicData') : state.app.name, files: state.app.files, read: p => state.app.read(p) }] : []),
+  ];
+  const report = await buildAssetReport(roots, 'json');
+  const readme = await buildAssetReport(roots, 'readme');
+  assetsView.setData(report, readme);
+}
+
 function selectTab(tab) {
-  for (const name of ['quick', 'map', 'data']) {
+  for (const name of ['quick', 'map', 'data', 'assets']) {
     $(`#tab-${name}`).setAttribute('aria-selected', String(tab === name));
     $(`#tab-${name}`).tabIndex = tab === name ? 0 : -1;
   }
   $('#map-section').hidden = tab !== 'map';
   $('#data-section').hidden = tab !== 'data';
+  $('#assets-section').hidden = tab !== 'assets';
   $('#quick-section').hidden = tab !== 'quick';
   $('#workspace').hidden = tab === 'quick';
   $('.files').hidden = tab !== 'map';
   if (tab === 'data') {
     renderDataFiles();
+  }
+  if (tab === 'assets') {
+    void renderAssets();
   }
   if (tab === 'quick') {
     quick.render();
@@ -187,9 +216,10 @@ function selectTab(tab) {
 $('#tab-quick').addEventListener('click', () => selectTab('quick'));
 $('#tab-map').addEventListener('click', () => selectTab('map'));
 $('#tab-data').addEventListener('click', () => selectTab('data'));
+$('#tab-assets').addEventListener('click', () => selectTab('assets'));
 // タブは左右の矢印キーでも移る
 $('.studio-tabs').addEventListener('keydown', ev => {
-  const tabs = ['quick', 'map', 'data'];
+  const tabs = ['quick', 'map', 'data', 'assets'];
   const current = tabs.findIndex(name => $(`#tab-${name}`).getAttribute('aria-selected') === 'true');
   const step = ev.key === 'ArrowRight' ? 1 : ev.key === 'ArrowLeft' ? -1 : 0;
   if (step) {
@@ -297,6 +327,9 @@ async function reloadWorkspace() {
   renderMapList();
   if (!$('#data-section').hidden) {
     renderDataFiles();
+  }
+  if (!$('#assets-section').hidden) {
+    await renderAssets();
   }
 }
 
@@ -453,7 +486,7 @@ $('#save').hidden = !canWriteFolders();
   } catch {
     // localStorage を使えない
   }
-  selectTab(['quick', 'map', 'data'].includes(tab) ? tab : 'quick');
+  selectTab(['quick', 'map', 'data', 'assets'].includes(tab) ? tab : 'quick');
   await quick.restoreDraft();
   $('#loading').hidden = true;
   document.body.dataset.ready = 'true';

@@ -27,6 +27,8 @@
       สร้างแม่แบบฉากใหม่ (อีเวนต์ แผนที่ และข้อมูลของตอนแรก ขั้นตอนเล่นอัตโนมัติ การตั้งค่า VS Code และ CI) ไฟล์ที่มีอยู่แล้วจะไม่ถูกเขียนทับ (--force เพื่อเขียนทับ) เมื่อ --episodes ตั้งแต่ 2 ขึ้นไป จะสร้างหลายตอนพร้อมช่วงพัก (intermission)
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       ติดตาม Continue, ด่านถัดไป, Exec, IntermissionCommand, Load และ GameClear ระหว่างอีเวนต์ แล้วแสดงแผนภาพการเชื่อมต่อของแต่ละตอน (ค่าเริ่มต้นคือโฟลเดอร์ปัจจุบัน)
+  srcsharp assets [โฟลเดอร์ฉาก] [--format md|json|readme] [--output ไฟล์] [--app-path โฟลเดอร์ SRC] [--ext-data โฟลเดอร์] [--ext-data2 โฟลเดอร์] [--fail-on-missing]
+      แสดงรายการภาพ เสียง และแผนที่ที่ข้อมูลและอีเวนต์อ้างถึง พร้อมตำแหน่งที่อ้างถึงและตำแหน่งที่พบตามลำดับการค้นหาของ SRC (ฉาก → ข้อมูลเสริม → SRC) และแสดงชื่อที่สร้างจากนิพจน์และไฟล์ที่ไม่ถูกอ้างถึง readme สร้างร่างหัวข้อ "ไฟล์ที่ต้องใช้" สำหรับ README --fail-on-missing จะจบด้วยรหัส 1 หากมีไฟล์ที่หาไม่พบ (ไม่จัดหาหรือแจกจ่ายไฟล์)
   srcsharp trial &lt;โฟลเดอร์ฉาก&gt; [--unit ยูนิต] [--pilot นักบิน] [--enemy ยูนิต] [--enemy-pilot นักบิน] [--level จำนวน] [--enemies จำนวน] [--list]
       สร้างอีเวนต์การต่อสู้ทดลองที่ให้ยูนิตและนักบินจากข้อมูลฉากสู้กับศัตรูใน .srcsharp/trial/ แล้วแสดงพาธ (รันด้วย play หรือดีบักเกอร์) --list แสดงยูนิตและนักบินเป็น JSON
   srcsharp lsp
@@ -98,6 +100,18 @@
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>ไม่รู้จักรูปแบบผลลัพธ์: {0} (md, mmd หรือ json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>ระบุโฟลเดอร์ฉากได้ไม่เกินหนึ่งโฟลเดอร์</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>ไม่พบโฟลเดอร์ฉาก: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>ไม่รู้จักรูปแบบผลลัพธ์: {0} (md, json หรือ readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>ไฟล์ {0} รายการ (หาไม่พบ {1}) อ้างอิงที่ตรวจสอบไม่ได้ {2} จุด ไฟล์ที่ไม่ถูกอ้างถึง {3} รายการ</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>ระบุโฟลเดอร์ฉากหนึ่งโฟลเดอร์</value>

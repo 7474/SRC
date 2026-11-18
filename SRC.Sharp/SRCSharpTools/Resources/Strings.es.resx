@@ -27,6 +27,8 @@ Uso:
       Crea una plantilla de escenario nueva (evento, mapa y datos del primer episodio, guion de juego automático, ajustes de VS Code, CI). No sobrescribe archivos existentes (--force los sobrescribe) Con --episodes 2 o más, crea varios episodios con intermedio.
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Sigue Continue, siguiente etapa, Exec, IntermissionCommand, Load y GameClear entre los eventos y muestra el diagrama de conexión de episodios (por defecto, la carpeta actual)
+  srcsharp assets [carpeta del escenario] [--format md|json|readme] [--output archivo] [--app-path carpeta de SRC] [--ext-data carpeta] [--ext-data2 carpeta] [--fail-on-missing]
+      Lista las imágenes, sonidos y mapas referenciados por datos y eventos, con dónde se referencian y dónde se encontraron en el orden de búsqueda de SRC (escenario, datos extendidos, SRC). También muestra nombres construidos con expresiones y archivos sin referencia. readme genera un borrador de "Recursos necesarios" para el README. --fail-on-missing termina con 1 si falta algo (no obtiene ni redistribuye recursos)
   srcsharp trial &lt;carpeta del escenario&gt; [--unit unidad] [--pilot piloto] [--enemy unidad] [--enemy-pilot piloto] [--level n] [--enemies n] [--list]
       Crea en .srcsharp/trial/ un combate de prueba con unidades y pilotos de los datos del escenario contra un enemigo e imprime su ruta (ejecútalo con play o el depurador). --list imprime las unidades y los pilotos en JSON
   srcsharp lsp
@@ -98,6 +100,18 @@ Opciones comunes:
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Formato de salida desconocido: {0} (md, mmd o json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Indique como máximo una carpeta de escenario</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>No se encontró la carpeta del escenario: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Formato de salida desconocido: {0} (md, json o readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} recursos ({1} faltan), {2} referencias no verificables, {3} archivos sin referencia</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Indica una carpeta de escenario</value>

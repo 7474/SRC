@@ -217,6 +217,54 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        [TestMethod]
+        public void Assets_ReportsStatusAndSupportsFailOnMissing()
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-assets-cli-" + Guid.NewGuid());
+            var app = Path.Combine(folder, "app");
+            var scenario = Path.Combine(folder, "scenario");
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(scenario, "Data"));
+                Directory.CreateDirectory(Path.Combine(scenario, "Bitmap", "Event"));
+                Directory.CreateDirectory(Path.Combine(app, "Sound"));
+                File.WriteAllText(Path.Combine(scenario, "ep1.eve"), "スタート:\nPaintPicture Event\\ある.bmp 0 0\nPaintPicture Event\\足りない.bmp 0 0\nPlaySound 本体の音.wav\nPaintPicture $(式).bmp 0 0\nExit\n");
+                File.WriteAllText(Path.Combine(scenario, "Bitmap", "Event", "ある.bmp"), "x");
+                File.WriteAllText(Path.Combine(scenario, "Bitmap", "Event", "余り.bmp"), "x");
+                File.WriteAllText(Path.Combine(app, "Sound", "本体の音.wav"), "x");
+
+                var (exitCode, stdout, stderr) = Run("assets", scenario, "--app-path", app);
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "`Event/足りない.bmp`");
+                StringAssert.Contains(stdout, "**見つからない**");
+                StringAssert.Contains(stdout, "SRC 本体: `Sound/本体の音.wav`");
+                StringAssert.Contains(stdout, "Bitmap/Event/余り.bmp");
+                StringAssert.Contains(stderr, "見つからない 1");
+
+                // --format readme は不足・外部素材のみ出す
+                (exitCode, stdout, stderr) = Run("assets", scenario, "--app-path", app, "--format", "readme");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "`Event/足りない.bmp`");
+                StringAssert.Contains(stdout, "`本体の音.wav`");
+                Assert.IsFalse(stdout.Contains("ある.bmp"));
+
+                // --fail-on-missing は見つからない素材があると終了コード 1（CI 用）
+                (exitCode, stdout, stderr) = Run("assets", scenario, "--app-path", app, "--format", "json", "--fail-on-missing");
+                Assert.AreEqual(1, exitCode, stderr);
+                StringAssert.Contains(stdout, "\"missing\": 1");
+
+                (exitCode, _, _) = Run("assets", scenario, "--format", "bad");
+                Assert.AreEqual(2, exitCode);
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
         /// <summary>
         /// かんたん作成（7474/SRC#1659）で作ったシナリオは、作品のデータを Data の下のフォルダに置けば、最小の汎用データで lint が通り、最後まで自動で遊べる
         /// （SRC#Studio が作る zip と同じ形）

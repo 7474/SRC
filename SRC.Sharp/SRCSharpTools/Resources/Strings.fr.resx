@@ -27,6 +27,8 @@ Utilisation :
       Crée un nouveau modèle de scénario (événement, carte et données du premier épisode, script de jeu automatique, réglages VS Code, CI). Les fichiers existants sont conservés (--force les écrase) Avec --episodes 2 ou plus, crée plusieurs épisodes avec intermission.
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Suit Continue, étape suivante, Exec, IntermissionCommand, Load et GameClear entre les événements et affiche le diagramme des liens entre épisodes (dossier courant par défaut)
+  srcsharp assets [dossier du scénario] [--format md|json|readme] [--output fichier] [--app-path dossier SRC] [--ext-data dossier] [--ext-data2 dossier] [--fail-on-missing]
+      Liste les images, sons et cartes référencés par les données et événements, avec l'emplacement de la référence et l'endroit trouvé dans l'ordre de recherche de SRC (scénario, données étendues, SRC). Affiche aussi les noms construits par expression et les fichiers non référencés. readme produit un brouillon « Ressources nécessaires » pour le README. --fail-on-missing quitte avec 1 s'il manque une ressource (n'obtient ni ne redistribue de ressources)
   srcsharp trial &lt;dossier du scénario&gt; [--unit unité] [--pilot pilote] [--enemy unité] [--enemy-pilot pilote] [--level n] [--enemies n] [--list]
       Crée dans .srcsharp/trial/ un combat d’essai opposant des unités et pilotes des données du scénario à un ennemi, et affiche son chemin (à lancer avec play ou le débogueur). --list affiche les unités et pilotes en JSON
   srcsharp lsp
@@ -98,6 +100,18 @@ Options communes :
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Format de sortie inconnu : {0} (md, mmd ou json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Indiquez au plus un dossier de scénario</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Dossier du scénario introuvable : {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Format de sortie inconnu : {0} (md, json ou readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} ressources ({1} manquantes), {2} références invérifiables, {3} fichiers non référencés</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Indiquez un dossier de scénario</value>

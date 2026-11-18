@@ -27,6 +27,8 @@ Użycie:
       Tworzy nowy szablon scenariusza (zdarzenie, mapa i dane pierwszego odcinka, skrypt autogry, ustawienia VS Code, CI). Istniejące pliki są zachowywane (--force je nadpisuje) Przy --episodes 2 lub więcej tworzy kilka odcinków z przerwą (intermission).
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Śledzi Continue, następny etap, Exec, IntermissionCommand, Load i GameClear między zdarzeniami i wypisuje diagram połączeń odcinków (domyślnie bieżący folder)
+  srcsharp assets [folder scenariusza] [--format md|json|readme] [--output plik] [--app-path folder SRC] [--ext-data folder] [--ext-data2 folder] [--fail-on-missing]
+      Wyświetla obrazy, dźwięki i mapy, do których odwołują się dane i zdarzenia, wraz z miejscem odwołania i miejscem znalezienia w kolejności wyszukiwania SRC (scenariusz, dane rozszerzone, SRC). Pokazuje też nazwy budowane wyrażeniami i pliki bez odwołań. readme tworzy szkic sekcji „Wymagane zasoby” do README. --fail-on-missing kończy z kodem 1, gdy czegoś brakuje (nie pozyskuje ani nie rozpowszechnia zasobów)
   srcsharp trial &lt;folder scenariusza&gt; [--unit jednostka] [--pilot pilot] [--enemy jednostka] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
       Tworzy w .srcsharp/trial/ walkę próbną jednostek i pilotów z danych scenariusza z wrogiem i wypisuje jej ścieżkę (uruchom przez play lub debuger). --list wypisuje jednostki i pilotów jako JSON
   srcsharp lsp
@@ -98,6 +100,18 @@ Opcje wspólne:
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Nieznany format wyjścia: {0} (md, mmd lub json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Podaj co najwyżej jeden folder scenariusza</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Nie znaleziono folderu scenariusza: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Nieznany format wyjścia: {0} (md, json lub readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>Zasoby: {0} (brakuje {1}), odwołania nieweryfikowalne: {2}, pliki bez odwołań: {3}</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Podaj jeden folder scenariusza</value>

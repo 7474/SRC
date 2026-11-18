@@ -27,6 +27,8 @@ Verwendung:
       Erstellt eine neue Szenariovorlage (Ereignis, Karte und Daten der ersten Episode, Autoplay-Skript, VS-Code-Einstellungen, CI). Vorhandene Dateien bleiben erhalten (--force überschreibt) Mit --episodes 2 oder mehr werden mehrere Episoden mit Intermission erstellt.
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Verfolgt Continue, nächste Stufe, Exec, IntermissionCommand, Load und GameClear über die Ereignisse und gibt das Diagramm der Episodenverbindungen aus (Standard: aktueller Ordner)
+  srcsharp assets [Szenarioordner] [--format md|json|readme] [--output Datei] [--app-path SRC-Ordner] [--ext-data Ordner] [--ext-data2 Ordner] [--fail-on-missing]
+      Listet von Daten und Ereignissen referenzierte Bilder, Klänge und Karten mit Fundstelle der Referenz und Fundort in SRC-Suchreihenfolge (Szenario, Erweiterungsdaten, SRC) auf. Zeigt auch per Ausdruck gebildete Namen und nicht referenzierte Dateien. readme erstellt einen Entwurf „Benötigte Assets“ für die README. --fail-on-missing beendet mit 1, wenn etwas fehlt (beschafft oder verteilt keine Assets)
   srcsharp trial &lt;Szenarioordner&gt; [--unit Einheit] [--pilot Pilot] [--enemy Einheit] [--enemy-pilot Pilot] [--level n] [--enemies n] [--list]
       Erstellt in .srcsharp/trial/ ein Probegefecht, in dem Einheiten und Piloten aus den Szenariodaten gegen einen Gegner kämpfen, und gibt den Pfad aus (mit play oder dem Debugger ausführen). --list gibt Einheiten und Piloten als JSON aus
   srcsharp lsp
@@ -98,6 +100,18 @@ Allgemeine Optionen:
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Unbekanntes Ausgabeformat: {0} (md, mmd oder json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Geben Sie höchstens einen Szenarioordner an</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Szenarioordner nicht gefunden: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Unbekanntes Ausgabeformat: {0} (md, json oder readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} Assets ({1} fehlen), {2} nicht prüfbare Referenzen, {3} nicht referenzierte Dateien</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Geben Sie genau einen Szenarioordner an</value>

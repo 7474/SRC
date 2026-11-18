@@ -27,6 +27,8 @@ Kullanım:
       Yeni bir senaryo şablonu oluşturur (ilk bölümün olayı, haritası ve verileri, otomatik oynama betiği, VS Code ayarları, CI). Var olan dosyalar korunur (--force üzerine yazar) --episodes 2 veya daha fazlaysa ara bölümlü (intermission) birden çok bölüm oluşturur.
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Olaylar arasında Continue, sonraki aşama, Exec, IntermissionCommand, Load ve GameClear izlenir ve bölüm bağlantı diyagramı çıkarılır (varsayılan: geçerli klasör)
+  srcsharp assets [senaryo klasörü] [--format md|json|readme] [--output dosya] [--app-path SRC klasörü] [--ext-data klasör] [--ext-data2 klasör] [--fail-on-missing]
+      Veri ve olayların başvurduğu görüntü, ses ve haritaları, başvuru yeri ve SRC arama sırasında (senaryo, genişletilmiş veri, SRC) bulunduğu yerle birlikte listeler. İfadeyle oluşturulan adları ve başvurulmayan dosyaları da gösterir. readme, README için "Gerekli varlıklar" taslağı üretir. --fail-on-missing eksik varsa 1 ile çıkar (varlık edinmez veya yeniden dağıtmaz)
   srcsharp trial &lt;senaryo klasörü&gt; [--unit birim] [--pilot pilot] [--enemy birim] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
       Senaryo verilerindeki birim ve pilotları bir düşmanla savaştıran deneme savaşını .srcsharp/trial/ içinde oluşturur ve yolunu yazdırır (play veya hata ayıklayıcıyla çalıştırın). --list birim ve pilotları JSON olarak yazdırır
   srcsharp lsp
@@ -98,6 +100,18 @@ Ortak seçenekler:
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Bilinmeyen çıktı biçimi: {0} (md, mmd veya json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>En fazla bir senaryo klasörü belirtin</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Senaryo klasörü bulunamadı: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Bilinmeyen çıktı biçimi: {0} (md, json veya readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} varlık ({1} eksik), {2} doğrulanamayan başvuru, {3} başvurulmayan dosya</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Bir senaryo klasörü belirtin</value>

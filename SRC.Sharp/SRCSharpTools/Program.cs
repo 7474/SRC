@@ -63,6 +63,8 @@ namespace SRCSharpTools
                     return New(positional, options);
                 case "flow":
                     return Flow(positional, options);
+                case "assets":
+                    return Assets(positional, options);
                 case "trial":
                     return await TrialAsync(positional, options);
                 case "help":
@@ -435,6 +437,46 @@ namespace SRCSharpTools
                     Console.Error.WriteLine(Strings.UnknownFlowFormat(format));
                     return 2;
             }
+        }
+
+        /// <summary>
+        /// シナリオに必要な素材が揃っているかの一覧（7474/SRC#1654）。--fail-on-missing で見つからない素材があれば 1 を返す（CI 用）
+        /// </summary>
+        private static int Assets(List<string> positional, Dictionary<string, string> options)
+        {
+            if (positional.Count > 1)
+            {
+                Console.Error.WriteLine(Strings.AssetsRequiresAtMostOneFolder);
+                return 2;
+            }
+            var root = positional.Count == 1 ? Path.GetFullPath(positional[0]) : Environment.CurrentDirectory;
+            if (!Directory.Exists(root))
+            {
+                Console.Error.WriteLine(Strings.AssetsFolderNotFound(root));
+                return 2;
+            }
+            options.TryGetValue("format", out var format);
+            format = (format ?? "md").ToLowerInvariant();
+            if (format != "md" && format != "markdown" && format != "json" && format != "readme")
+            {
+                Console.Error.WriteLine(Strings.UnknownAssetsFormat(format));
+                return 2;
+            }
+            options.TryGetValue("app-path", out var appPath);
+            options.TryGetValue("ext-data", out var extData);
+            options.TryGetValue("ext-data2", out var extData2);
+            appPath = string.IsNullOrEmpty(appPath) ? ScenarioAnalyzer.FindAppPath(root) : Path.GetFullPath(appPath);
+            var report = AssetReport.FromDirectories(
+                root,
+                appPath,
+                string.IsNullOrEmpty(extData) ? null : Path.GetFullPath(extData),
+                string.IsNullOrEmpty(extData2) ? null : Path.GetFullPath(extData2));
+            WriteOutput(format == "json" ? report.ToJson() : format == "readme" ? report.ToReadme() : report.ToMarkdown(), options);
+            if (!options.ContainsKey("output") && format != "json")
+            {
+                Console.Error.WriteLine(Strings.AssetsSummary(report.Assets.Count, report.MissingCount, report.Dynamic.Count, report.Unused.Count));
+            }
+            return options.ContainsKey("fail-on-missing") && report.MissingCount > 0 ? 1 : 0;
         }
 
         /// <summary>

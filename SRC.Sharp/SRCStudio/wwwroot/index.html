@@ -14,6 +14,7 @@
       <button type="button" role="tab" id="tab-quick" aria-selected="true" aria-controls="quick-section" data-t="studio.tabQuick"></button>
       <button type="button" role="tab" id="tab-map" aria-selected="false" aria-controls="map-section" data-t="studio.tabMap"></button>
       <button type="button" role="tab" id="tab-data" aria-selected="false" aria-controls="data-section" data-t="studio.tabData"></button>
+      <button type="button" role="tab" id="tab-assets" aria-selected="false" aria-controls="assets-section" data-t="studio.tabAssets"></button>
     </div>
   </header>
   <p id="loading" data-t="loading" hidden></p>
@@ -50,6 +51,14 @@
       <button type="button" id="save-data" class="primary" data-t="studio.saveData" disabled></button>
     </div>
     <div id="preview"></div>
+  </section>
+  <section id="assets-section" role="tabpanel" aria-labelledby="tab-assets" hidden>
+    <p class="hint" data-t="studio.assetsHint"></p>
+    <div id="assets-empty" class="empty-state">
+      <p data-t="studio.assetsEmpty"></p>
+      <button type="button" class="primary" data-open="scenario" data-t="studio.openScenario"></button>
+    </div>
+    <div id="assets-view" hidden></div>
   </section>
   <main id="map-section" role="tabpanel" aria-labelledby="tab-map" hidden>
     <div id="map-empty" class="empty-state">

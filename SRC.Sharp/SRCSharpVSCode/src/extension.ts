@@ -3,6 +3,7 @@ import { spawn } from 'child_process';
 import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { pickAppPath, suggestAppPath } from './appPath';
+import { AssetReportData, AssetsPanel } from './assets';
 import { EpisodeFlowPanel, ScenarioFlowData } from './flow';
 import { MapEditorProvider } from './mapEditor';
 import { DataPreviewPanel } from './preview';
@@ -256,6 +257,16 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     // テスト用（話のつながりの図）。package.json には出さない
     vscode.commands.registerCommand('srcsharp._flowStatus', () => episodeFlow.getStatus()),
     vscode.commands.registerCommand('srcsharp._showFlowData', (data: ScenarioFlowData) => episodeFlow.showData(data)),
+  );
+
+  // 素材の一覧（揃っているか。7474/SRC#1654）
+  const assets = new AssetsPanel();
+  context.subscriptions.push(
+    assets,
+    vscode.commands.registerCommand('srcsharp.showAssets', (target?: string) => assets.show(target)),
+    // テスト用。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._assetsStatus', () => assets.getStatus()),
+    vscode.commands.registerCommand('srcsharp._showAssetsData', (data: AssetReportData) => assets.showData(data)),
   );
 
   // 操作パネル

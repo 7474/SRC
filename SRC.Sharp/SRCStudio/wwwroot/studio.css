@@ -312,3 +312,21 @@ main[hidden] { display: none; }
 .mw-meta { font-size: 0.85em; color: var(--muted); min-height: 1.2em; }
 .mw-meta.mw-overflow { color: var(--warning); font-weight: 600; }
 
+/* 素材の一覧（7474/SRC#1654） */
+.assets-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 6px 0; }
+.assets-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.assets-roots { margin: 4px 0; font-size: 0.9em; }
+.assets-summary { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.assets-chip { border-radius: 99px; }
+.assets-chip.bad { color: var(--error); }
+.assets-table { width: 100%; border-collapse: collapse; font-size: 0.92em; margin-bottom: 12px; }
+.assets-table th, .assets-table td { border-bottom: 1px solid var(--border); padding: 4px 8px; text-align: left; vertical-align: top; }
+.assets-table th { color: var(--muted); font-weight: 600; }
+.assets-name { font-family: ui-monospace, monospace; word-break: break-all; }
+.assets-missing { color: var(--error); font-weight: 600; }
+.assets-usages { color: var(--muted); font-size: 0.9em; }
+.assets-list { padding-left: 20px; margin: 4px 0 12px; }
+.assets-loc { font-family: ui-monospace, monospace; font-size: 0.9em; color: var(--muted); }
+.assets-readme-box { border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin: 8px 0 12px; }
+.assets-readme-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.assets-readme-box textarea { width: 100%; font-family: ui-monospace, monospace; font-size: 0.9em; }

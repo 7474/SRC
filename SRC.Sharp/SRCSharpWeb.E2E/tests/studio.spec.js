@@ -534,3 +534,21 @@ test('戦闘メッセージ: メッセージウィンドウのプレビュー・
   await expect(page.locator('.dp-missing-pilots')).toContainText('教官ドーラ');
 });
 
+test('素材の一覧: シナリオが参照する素材の不足・参照場所・README 用一覧を表示できる（7474/SRC#1654）', async ({ page }) => {
+  await open(page, 'assets');
+  const scenario = scenarioFolder();
+  // harbor.eve は Lantern_Deck.bmp や Midi 等を参照しており、コピーした最小フォルダには画像・音が同梱されていない
+  await page.locator('#scenario-input').setInputFiles(scenario);
+  await expect(page.locator('#assets-view')).toBeVisible();
+  await expect(page.locator('#assets-view .assets-table')).toBeVisible();
+  // 見つからない素材・参照ファイルと行が出る
+  await expect(page.locator('#assets-view .assets-chip[data-filter="missing"]')).toContainText('見つからない');
+  await expect(page.locator('#assets-view .assets-table')).toContainText('harbor.eve:');
+  // 見つからない絞り込み・README 用一覧の下書き
+  await page.locator('#assets-view .assets-chip[data-filter="missing"]').click();
+  await expect(page.locator('#assets-view .assets-missing').first()).toBeVisible();
+  await page.locator('#assets-readme-btn').click();
+  await expect(page.locator('#assets-readme-text')).toHaveValue(/## 必要な素材/);
+});
+
+

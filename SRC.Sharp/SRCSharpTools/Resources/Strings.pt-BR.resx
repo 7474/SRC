@@ -27,6 +27,8 @@ Uso:
       Cria um novo modelo de cenário (evento, mapa e dados do primeiro episódio, roteiro de jogo automático, configurações do VS Code, CI). Arquivos existentes são mantidos (--force sobrescreve) Com --episodes 2 ou mais, cria vários episódios com intervalo (intermission).
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Segue Continue, próxima fase, Exec, IntermissionCommand, Load e GameClear entre os eventos e gera o diagrama de ligação dos episódios (padrão: pasta atual)
+  srcsharp assets [pasta do cenário] [--format md|json|readme] [--output arquivo] [--app-path pasta do SRC] [--ext-data pasta] [--ext-data2 pasta] [--fail-on-missing]
+      Lista imagens, sons e mapas referenciados por dados e eventos, com onde são referenciados e onde foram encontrados na ordem de busca do SRC (cenário, dados estendidos, SRC). Também mostra nomes montados por expressões e arquivos sem referência. readme gera um rascunho de "Recursos necessários" para o README. --fail-on-missing sai com 1 se faltar algo (não obtém nem redistribui recursos)
   srcsharp trial &lt;pasta do cenário&gt; [--unit unidade] [--pilot piloto] [--enemy unidade] [--enemy-pilot piloto] [--level n] [--enemies n] [--list]
       Cria em .srcsharp/trial/ uma batalha de teste com unidades e pilotos dos dados do cenário contra um inimigo e imprime o caminho (execute com play ou o depurador). --list imprime as unidades e os pilotos em JSON
   srcsharp lsp
@@ -98,6 +100,18 @@ Opções comuns:
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Formato de saída desconhecido: {0} (md, mmd ou json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Informe no máximo uma pasta de cenário</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Pasta do cenário não encontrada: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Formato de saída desconhecido: {0} (md, json ou readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} recursos ({1} faltando), {2} referências não verificáveis, {3} arquivos sem referência</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Informe uma pasta de cenário</value>

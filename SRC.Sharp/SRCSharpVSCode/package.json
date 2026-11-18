@@ -481,6 +481,12 @@
         "title": "話のつながりの図を表示",
         "category": "SRC#",
         "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "srcsharp.showAssets",
+        "title": "素材の一覧（揃っているか）を表示",
+        "category": "SRC#",
+        "icon": "$(file-media)"
       }
     ],
     "menus": {

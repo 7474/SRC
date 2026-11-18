@@ -27,6 +27,8 @@
       새 시나리오 템플릿(첫 화의 이벤트·맵·데이터, 자동 플레이 절차, VS Code 설정, CI)을 만든다. 이미 있는 파일은 덮어쓰지 않는다(--force로 덮어쓰기) --episodes 가 2 이상이면 인터미션이 있는 여러 화를 만듭니다.
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       이벤트 사이의 Continue·다음 스테이지·Exec·IntermissionCommand·Load·GameClear를 따라가 화의 연결 그림을 출력합니다(기본은 현재 폴더)
+  srcsharp assets [시나리오 폴더] [--format md|json|readme] [--output 파일] [--app-path SRC 폴더] [--ext-data 폴더] [--ext-data2 폴더] [--fail-on-missing]
+      데이터와 이벤트가 참조하는 이미지·소리·맵을, 참조하는 위치와 SRC와 같은 순서(시나리오 → 확장 데이터 → SRC 본체)로 찾은 결과와 함께 나열한다. 식으로 만드는 이름과 참조하지 않는 소재도 출력한다. readme는 README에 쓸 「필요한 소재」 초안. --fail-on-missing은 찾을 수 없는 소재가 있으면 종료 코드 1(소재의 입수·재배포는 다루지 않음)
   srcsharp trial &lt;시나리오 폴더&gt; [--unit 유닛] [--pilot 파일럿] [--enemy 유닛] [--enemy-pilot 파일럿] [--level 수] [--enemies 수] [--list]
       시나리오 데이터의 유닛·파일럿을 적과 싸우게 하는 시험 전투 이벤트를 .srcsharp/trial/에 만들고 경로를 출력한다(play나 디버거로 실행). --list로 데이터의 유닛·파일럿을 JSON으로 출력
   srcsharp lsp
@@ -98,6 +100,18 @@
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>알 수 없는 출력 형식: {0} (md, mmd, json 중 하나)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>시나리오 폴더는 하나까지만 지정하십시오</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>시나리오 폴더를 찾을 수 없습니다: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>알 수 없는 출력 형식: {0} (md, json, readme 중 하나)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>소재 {0}개(찾을 수 없음 {1})·확인할 수 없는 참조 {2}곳·참조하지 않는 소재 {3}개</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>시나리오 폴더를 하나 지정하십시오</value>

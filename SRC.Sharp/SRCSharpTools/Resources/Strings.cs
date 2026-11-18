@@ -59,6 +59,14 @@ namespace SRCSharpTools.Resources
 
         public static string UnknownFlowFormat(string format) => Format(nameof(UnknownFlowFormat), format);
 
+        public static string AssetsRequiresAtMostOneFolder => Get(nameof(AssetsRequiresAtMostOneFolder));
+
+        public static string AssetsFolderNotFound(string path) => Format(nameof(AssetsFolderNotFound), path);
+
+        public static string UnknownAssetsFormat(string format) => Format(nameof(UnknownAssetsFormat), format);
+
+        public static string AssetsSummary(int assets, int missing, int dynamic, int unused) => Format(nameof(AssetsSummary), assets, missing, dynamic, unused);
+
         public static string TrialRequiresFolder => Get(nameof(TrialRequiresFolder));
 
         public static string TrialCreated(string unit, string pilot, string enemy, string enemyPilot) => Format(nameof(TrialCreated), unit, pilot, enemy, enemyPilot);

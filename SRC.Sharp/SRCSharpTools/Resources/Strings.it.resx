@@ -27,6 +27,8 @@ Uso:
       Crea un nuovo modello di scenario (evento, mappa e dati del primo episodio, script di gioco automatico, impostazioni di VS Code, CI). I file esistenti vengono mantenuti (--force li sovrascrive) Con --episodes 2 o più crea più episodi con intermissione.
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Segue Continue, fase successiva, Exec, IntermissionCommand, Load e GameClear tra gli eventi e produce il diagramma dei collegamenti tra episodi (predefinito: cartella corrente)
+  srcsharp assets [cartella dello scenario] [--format md|json|readme] [--output file] [--app-path cartella SRC] [--ext-data cartella] [--ext-data2 cartella] [--fail-on-missing]
+      Elenca immagini, suoni e mappe referenziati da dati ed eventi, con il punto di riferimento e dove sono stati trovati nell'ordine di ricerca di SRC (scenario, dati estesi, SRC). Mostra anche i nomi costruiti con espressioni e i file non referenziati. readme crea una bozza "Risorse necessarie" per il README. --fail-on-missing esce con 1 se manca qualcosa (non ottiene né ridistribuisce risorse)
   srcsharp trial &lt;cartella dello scenario&gt; [--unit unità] [--pilot pilota] [--enemy unità] [--enemy-pilot pilota] [--level n] [--enemies n] [--list]
       Crea in .srcsharp/trial/ uno scontro di prova tra unità e piloti dei dati dello scenario e un nemico, e ne stampa il percorso (da eseguire con play o il debugger). --list stampa unità e piloti in JSON
   srcsharp lsp
@@ -98,6 +100,18 @@ Opzioni comuni:
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Formato di output sconosciuto: {0} (md, mmd o json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Specificare al massimo una cartella dello scenario</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Cartella dello scenario non trovata: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Formato di output sconosciuto: {0} (md, json o readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} risorse ({1} mancanti), {2} riferimenti non verificabili, {3} file non referenziati</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Specifica una cartella dello scenario</value>

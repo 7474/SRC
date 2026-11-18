@@ -27,6 +27,8 @@
       Створює шаблон нового сценарію (подія, мапа й дані першого епізоду, сценарій автогри, налаштування VS Code, CI). Наявні файли не перезаписуються (--force перезаписує) Якщо --episodes 2 або більше, створює кілька епізодів з інтермісією.
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Відстежує Continue, наступний етап, Exec, IntermissionCommand, Load і GameClear між подіями та виводить схему зв'язків епізодів (типово поточна тека)
+  srcsharp assets [тека сценарію] [--format md|json|readme] [--output файл] [--app-path тека SRC] [--ext-data тека] [--ext-data2 тека] [--fail-on-missing]
+      Виводить зображення, звуки й карти, на які посилаються дані та події, із місцем посилання та місцем, де їх знайдено в порядку пошуку SRC (сценарій, розширені дані, SRC). Також показує імена, складені виразами, і файли без посилань. readme створює чернетку розділу «Потрібні ресурси» для README. --fail-on-missing завершує з кодом 1, якщо чогось бракує (не отримує й не поширює ресурси)
   srcsharp trial &lt;тека сценарію&gt; [--unit юніт] [--pilot пілот] [--enemy юніт] [--enemy-pilot пілот] [--level n] [--enemies n] [--list]
       Створює в .srcsharp/trial/ пробний бій юнітів і пілотів із даних сценарію проти ворога та виводить шлях (запускайте через play або налагоджувач). --list виводить юнітів і пілотів у JSON
   srcsharp lsp
@@ -98,6 +100,18 @@
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Невідомий формат виводу: {0} (md, mmd або json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Вкажіть не більше однієї теки сценарію</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Теку сценарію не знайдено: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Невідомий формат виводу: {0} (md, json або readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>Ресурсів: {0} (не знайдено {1}), неперевірних посилань: {2}, файлів без посилань: {3}</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Вкажіть одну теку сценарію</value>

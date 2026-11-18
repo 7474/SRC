@@ -27,6 +27,8 @@
       Создаёт шаблон нового сценария (событие, карта и данные первого эпизода, сценарий автоигры, настройки VS Code, CI). Существующие файлы не перезаписываются (--force перезаписывает) При --episodes 2 и более создаёт несколько эпизодов с интермиссией.
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       Прослеживает Continue, следующий этап, Exec, IntermissionCommand, Load и GameClear между событиями и выводит схему связей эпизодов (по умолчанию текущая папка)
+  srcsharp assets [папка сценария] [--format md|json|readme] [--output файл] [--app-path папка SRC] [--ext-data папка] [--ext-data2 папка] [--fail-on-missing]
+      Выводит изображения, звуки и карты, на которые ссылаются данные и события, с местом ссылки и местом, где они найдены в порядке поиска SRC (сценарий, расширенные данные, SRC). Также показывает имена, собираемые выражениями, и файлы без ссылок. readme создаёт черновик раздела «Необходимые ресурсы» для README. --fail-on-missing завершает с кодом 1, если чего-то нет (не получает и не распространяет ресурсы)
   srcsharp trial &lt;папка сценария&gt; [--unit юнит] [--pilot пилот] [--enemy юнит] [--enemy-pilot пилот] [--level n] [--enemies n] [--list]
       Создаёт в .srcsharp/trial/ пробный бой юнитов и пилотов из данных сценария против врага и выводит путь (запускайте через play или отладчик). --list выводит юнитов и пилотов в JSON
   srcsharp lsp
@@ -98,6 +100,18 @@
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Неизвестный формат вывода: {0} (md, mmd или json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Укажите не более одной папки сценария</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Папка сценария не найдена: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Неизвестный формат вывода: {0} (md, json или readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>Ресурсов: {0} (не найдено {1}), непроверяемых ссылок: {2}, файлов без ссылок: {3}</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Укажите одну папку сценария</value>

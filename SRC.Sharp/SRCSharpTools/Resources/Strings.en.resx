@@ -27,6 +27,8 @@ Usage:
       Create a new scenario template (events, maps and data, autoplay script, VS Code settings, CI). When --episodes is 2 or more, creates multiple episodes with intermission and shared events. Existing files are kept (--force overwrites)
   srcsharp flow [scenario folder or event file] [--format md|mmd|json] [--output file] [--app-path SRC folder] [--scenario-root scenario folder]
       Trace Continue, next stage, Exec, IntermissionCommand, Load and GameClear across events and output the episode flow diagram (defaults to the current directory)
+  srcsharp assets [scenario folder] [--format md|json|readme] [--output file] [--app-path SRC folder] [--ext-data folder] [--ext-data2 folder] [--fail-on-missing]
+      List images, sounds and maps referenced by data and events, with where they are referenced and where they were found in SRC search order (scenario, extended data, SRC). Also lists names built from expressions and unreferenced files. readme drafts a "Required assets" section for README. --fail-on-missing exits with 1 if any asset is missing (does not obtain or redistribute assets)
   srcsharp trial &lt;scenario folder&gt; [--unit unit] [--pilot pilot] [--enemy unit] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
       Create a trial battle event in .srcsharp/trial/ that fights units and pilots from the scenario data against an enemy, and print its path (run it with play or the debugger). --list prints the units and pilots as JSON
   srcsharp lsp
@@ -99,6 +101,18 @@ Common options:
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>Unknown output format: {0} (md, mmd, or json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Specify at most one scenario folder</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Scenario folder not found: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Unknown output format: {0} (md, json, or readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} assets ({1} missing), {2} unverifiable references, {3} unreferenced files</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>Specify one scenario folder</value>
