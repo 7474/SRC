@@ -31,6 +31,12 @@
       데이터와 이벤트가 참조하는 이미지·소리·맵을, 참조하는 위치와 SRC와 같은 순서(시나리오 → 확장 데이터 → SRC 본체)로 찾은 결과와 함께 나열한다. 식으로 만드는 이름과 참조하지 않는 소재도 출력한다. readme는 README에 쓸 「필요한 소재」 초안. --fail-on-missing은 찾을 수 없는 소재가 있으면 종료 코드 1(소재의 입수·재배포는 다루지 않음)
   srcsharp trial &lt;시나리오 폴더&gt; [--unit 유닛] [--pilot 파일럿] [--enemy 유닛] [--enemy-pilot 파일럿] [--level 수] [--enemies 수] [--list]
       시나리오 데이터의 유닛·파일럿을 적과 싸우게 하는 시험 전투 이벤트를 .srcsharp/trial/에 만들고 경로를 출력한다(play나 디버거로 실행). --list로 데이터의 유닛·파일럿을 JSON으로 출력
+  srcsharp event-flow &lt;이벤트 파일&gt; [--format md|mmd|json] [--output 파일] [--app-path SRC 폴더] [--scenario-root 시나리오 폴더]
+      하나의 이벤트 파일(및 include·Require 대상)에서 발화 이벤트·레이블·Call·Goto·Require의 연결 흐름도를 출력합니다
+  srcsharp talk-preview &lt;이벤트 파일&gt; [--line 줄] [--block 번호] [--stdin] [--input 파일] [--format json|png] [--out 디렉터리] [--output 파일] [--no-images] [--app-path SRC 폴더] [--scenario-root 시나리오 폴더]
+      이벤트 파일의 Talk·AutoTalk 블록을 게임과 같은 메시지 창으로 그려 페이지별 PNG 이미지 또는 JSON을 출력합니다
+  srcsharp anime-preview &lt;파일 또는 폴더&gt; [--list] [--file 파일] [--line 줄] [--kind animation|ext_animation|effect|subroutine] [--target 이름] [--situation 상황] [--spec 지정] [--attacker 유닛] [--attacker-pilot 파일럿] [--defender 유닛] [--defender-pilot 파일럿] [--play-once] [--out 이미지 파일] [--app-path SRC 폴더] [--scenario-root 시나리오 폴더]
+      animation.txt·ext_animation.txt·effect.txt의 한 정의나 범용 전투 애니메이션을 고정된 공격 측·방어 측으로 재생할 준비 파일(.srcsharp/preview/)을 만듭니다. --list로 목록 출력, --play-once로 1회 재생
   srcsharp lsp
       Language Server(표준 입출력)
   srcsharp dap
@@ -118,5 +124,20 @@
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>시험 전투를 만들었습니다: {0}/{1} 대 {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>분석할 이벤트 파일을 찾을 수 없습니다: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>미리 볼 이벤트 파일을 하나 지정해 주세요</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>{0}페이지 분량의 이미지를 {1}에 저장했습니다</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>대상 데이터·이벤트 파일 또는 폴더를 찾을 수 없습니다: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>미리 볼 수 있는 전투 애니메이션·특수 효과 정의를 찾을 수 없습니다</value>
   </data>
 </root>

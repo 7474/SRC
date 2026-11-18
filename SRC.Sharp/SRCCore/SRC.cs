@@ -183,13 +183,19 @@ namespace SRCCore
         // スペシャルパワーアニメを表示するか
         public bool SpecialPowerAnimation => Config.SpecialPowerAnimation;
         // 戦闘アニメを表示するか
-        public bool BattleAnimation => !BattleAnimationUnavailable && Config.BattleAnimation;
+        public bool BattleAnimation => BattleAnimationOverride ?? (!BattleAnimationUnavailable && Config.BattleAnimation);
         /// <summary>汎用戦闘アニメのインクルードファイルが無く、戦闘アニメを使えないか。設定ファイルには残さない</summary>
         public bool BattleAnimationUnavailable { get; set; }
         // 武器準備アニメを表示するか
-        public bool WeaponAnimation => Config.WeaponAnimation;
+        public bool WeaponAnimation => WeaponAnimationOverride ?? Config.WeaponAnimation;
         // 拡大戦闘アニメを表示するか
-        public bool ExtendedAnimation => Config.ExtendedAnimation;
+        public bool ExtendedAnimation => ExtendedAnimationOverride ?? Config.ExtendedAnimation;
+        /// <summary>プレビュー用の一時上書き（null なら設定に従う）。設定ファイルには残さない</summary>
+        public bool? BattleAnimationOverride { get; set; }
+        /// <summary>プレビュー用の一時上書き（null なら設定に従う）。設定ファイルには残さない</summary>
+        public bool? WeaponAnimationOverride { get; set; }
+        /// <summary>プレビュー用の一時上書き（null なら設定に従う）。設定ファイルには残さない</summary>
+        public bool? ExtendedAnimationOverride { get; set; }
         // 移動アニメを表示するか
         public bool MoveAnimation => Config.MoveAnimation;
         // 画像バッファの枚数

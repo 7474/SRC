@@ -31,6 +31,12 @@ Użycie:
       Wyświetla obrazy, dźwięki i mapy, do których odwołują się dane i zdarzenia, wraz z miejscem odwołania i miejscem znalezienia w kolejności wyszukiwania SRC (scenariusz, dane rozszerzone, SRC). Pokazuje też nazwy budowane wyrażeniami i pliki bez odwołań. readme tworzy szkic sekcji „Wymagane zasoby” do README. --fail-on-missing kończy z kodem 1, gdy czegoś brakuje (nie pozyskuje ani nie rozpowszechnia zasobów)
   srcsharp trial &lt;folder scenariusza&gt; [--unit jednostka] [--pilot pilot] [--enemy jednostka] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
       Tworzy w .srcsharp/trial/ walkę próbną jednostek i pilotów z danych scenariusza z wrogiem i wypisuje jej ścieżkę (uruchom przez play lub debuger). --list wypisuje jednostki i pilotów jako JSON
+  srcsharp event-flow &lt;plik zdarzeń&gt; [--format md|mmd|json] [--output plik] [--app-path folder SRC] [--scenario-root folder scenariusza]
+      Śledzi wyzwalacze zdarzeń, etykiety, Call, Goto i Require w jednym pliku zdarzeń (wraz z include i Require) i generuje diagram przepływu
+  srcsharp talk-preview &lt;plik zdarzeń&gt; [--line wiersz] [--block indeks] [--stdin] [--input plik] [--format json|png] [--out katalog] [--output plik] [--no-images] [--app-path folder SRC] [--scenario-root folder scenariusza]
+      Renderuje bloki Talk i AutoTalk w oknie wiadomości gry i zapisuje obrazy PNG na stronę lub JSON
+  srcsharp anime-preview &lt;plik lub folder&gt; [--list] [--file plik] [--line wiersz] [--kind animation|ext_animation|effect|subroutine] [--target nazwa] [--situation sytuacja] [--spec specyfikacja] [--attacker jednostka] [--attacker-pilot pilot] [--defender jednostka] [--defender-pilot pilot] [--play-once] [--out plik obrazu] [--app-path folder SRC] [--scenario-root folder scenariusza]
+      Przygotowuje pliki (.srcsharp/preview/) do odtworzenia jednej definicji animation.txt, ext_animation.txt, effect.txt lub ogólnej animacji walki ze stałym atakującym i broniącym. --list wypisuje listę JSON, --play-once odtwarza raz
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -118,5 +124,20 @@ Opcje wspólne:
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>Utworzono walkę próbną: {0}/{1} przeciw {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Nie znaleziono pliku zdarzeń: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Podaj dokładnie jeden plik zdarzeń do podglądu</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>Zapisano {0} obrazów podglądu w {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Nie znaleziono docelowego pliku danych/zdarzeń lub folderu: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Nie znaleziono definicji animacji walki ani efektu specjalnego do podglądu</value>
   </data>
 </root>

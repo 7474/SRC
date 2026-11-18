@@ -270,8 +270,20 @@ namespace SRCCore.Units
                 }
             }
 
+            // 検索するシチュエーションが武器名かどうか調べる
+            var is_weapon = Weapons.Any(w => main_situation == w.Name + "(攻撃)");
+
+            // 検索するシチュエーションがアビリティかどうか調べる
+            var is_ability = Abilities.Any(a => main_situation == a.Data.Name + "(発動)");
+
+            PlayAnimationSpec(main_situation, anime, is_weapon, is_ability, in_bulk, keep_message_form);
+        }
+
+        // 指定文字列から戦闘アニメを再生（プレビューや PlayAnimation から共通利用）
+        public void PlayAnimationSpec(string main_situation, string anime, bool is_weapon, bool is_ability, bool in_bulk, bool keep_message_form = false)
+        {
             // 元の SRC の TrimString と同じく、前後のタブ・空白・全角空白だけを除く
-            anime = anime.Trim('\t', ' ', '\u3000');
+            anime = (anime ?? "").Trim('\t', ' ', '\u3000');
 
             // 表示キャンセル
             if (string.IsNullOrEmpty(anime) || anime == "-")
@@ -298,12 +310,6 @@ namespace SRCCore.Units
             var prevObjectDrawSetting = Event.GetObjectDrawSetting();
             // オブジェクト色等をデフォルトに戻す
             Event.ResetObjectDrawSetting();
-
-            // 検索するシチュエーションが武器名かどうか調べる
-            var is_weapon = Weapons.Any(w => main_situation == w.Name + "(攻撃)");
-
-            // 検索するシチュエーションがアビリティかどうか調べる
-            var is_ability = Abilities.Any(a => main_situation == a.Data.Name + "(発動)");
 
             // イベント用ターゲットを記録しておく
             var prev_selected_target = Event.SelectedTargetForEvent;

@@ -233,6 +233,8 @@ namespace SRCAuthoring.Lsp
                     return Completion(@params);
                 case "srcsharp/placementAt":
                     return PlacementAt(@params);
+                case "srcsharp/eventFlow":
+                    return EventFlow(@params);
                 default:
                     if (method != null && method.StartsWith("$/"))
                     {
@@ -789,6 +791,25 @@ namespace SRCAuthoring.Lsp
                 ["line"] = info.Item.Line,
                 ["editable"] = info.Item.Editable,
             };
+        }
+
+        private JsonNode EventFlow(JsonNode @params)
+        {
+            var uri = @params?["textDocument"]?["uri"]?.GetValue<string>() ?? @params?["uri"]?.GetValue<string>();
+            if (string.IsNullOrEmpty(uri))
+            {
+                return null;
+            }
+            var path = UriToPath(uri);
+            if (DataLinter.IsDataFileName(path))
+            {
+                return null;
+            }
+            // 未保存の変更や開いているファイルを含めた解析結果をそのまま使う（7474/SRC#1655）
+            var analysis = Analyze(path);
+            var overlays = documents.ToDictionary(x => x.Key, x => x.Value);
+            var graph = new EventFlowAnalyzer { AppPath = analyzer.AppPath }.Analyze(analysis, overlays, analyzer.AppPath);
+            return JsonNode.Parse(graph.ToJson());
         }
 
         private sealed class LinePlacementDetail

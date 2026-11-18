@@ -31,6 +31,12 @@
       列出資料和事件引用的圖像、聲音、地圖，以及引用位置和依 SRC 相同順序（劇本 → 擴充資料 → SRC 本體）尋找的結果。也列出用運算式組成的名稱和未被引用的素材。readme 輸出寫入 README 的「所需素材」草稿。--fail-on-missing 在有找不到的素材時以結束代碼 1 結束（不涉及素材的取得和再散布）
   srcsharp trial &lt;劇本資料夾&gt; [--unit 機體] [--pilot 駕駛員] [--enemy 機體] [--enemy-pilot 駕駛員] [--level 數] [--enemies 數] [--list]
       在 .srcsharp/trial/ 建立讓劇本資料中的機體與駕駛員和敵人戰鬥的試戰事件，並輸出其路徑（以 play 或除錯器執行）。--list 以 JSON 輸出資料中的機體與駕駛員
+  srcsharp event-flow &lt;事件檔案&gt; [--format md|mmd|json] [--output 檔案] [--app-path SRC 資料夾] [--scenario-root 劇本資料夾]
+      追蹤單一事件檔案（及其 include 與 Require）中的觸發器、標籤、Call、Goto、Require，並輸出事件流程圖
+  srcsharp talk-preview &lt;事件檔案&gt; [--line 行] [--block 編號] [--stdin] [--input 檔案] [--format json|png] [--out 目錄] [--output 檔案] [--no-images] [--app-path SRC 資料夾] [--scenario-root 劇本資料夾]
+      使用遊戲訊息視窗繪製 Talk 與 AutoTalk 區塊，輸出依頁拆分的 PNG 圖片或 JSON
+  srcsharp anime-preview &lt;檔案或資料夾&gt; [--list] [--file 檔案] [--line 行] [--kind animation|ext_animation|effect|subroutine] [--target 名稱] [--situation 場合] [--spec 指定] [--attacker 機體] [--attacker-pilot 駕駛員] [--defender 機體] [--defender-pilot 駕駛員] [--play-once] [--out 圖片檔案] [--app-path SRC 資料夾] [--scenario-root 劇本資料夾]
+      產生用於以固定攻擊方與防禦方播放單一 animation.txt、ext_animation.txt、effect.txt 定義或通用戰鬥動畫的準備檔案（.srcsharp/preview/）。--list 以 JSON 輸出清單，--play-once 播放一次
   srcsharp lsp
       Language Server（標準輸入輸出）
   srcsharp dap
@@ -118,5 +124,20 @@
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>已建立試戰：{0}/{1} 對 {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>找不到要解析的事件檔案: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>請指定一個要預覽的事件檔案</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>已將 {0} 頁圖片寫入 {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>找不到目標資料/事件檔案或資料夾: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>找不到可預覽的戰鬥動畫或特殊效果定義</value>
   </data>
 </root>

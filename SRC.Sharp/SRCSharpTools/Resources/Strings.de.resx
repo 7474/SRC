@@ -31,6 +31,12 @@ Verwendung:
       Listet von Daten und Ereignissen referenzierte Bilder, Klänge und Karten mit Fundstelle der Referenz und Fundort in SRC-Suchreihenfolge (Szenario, Erweiterungsdaten, SRC) auf. Zeigt auch per Ausdruck gebildete Namen und nicht referenzierte Dateien. readme erstellt einen Entwurf „Benötigte Assets“ für die README. --fail-on-missing beendet mit 1, wenn etwas fehlt (beschafft oder verteilt keine Assets)
   srcsharp trial &lt;Szenarioordner&gt; [--unit Einheit] [--pilot Pilot] [--enemy Einheit] [--enemy-pilot Pilot] [--level n] [--enemies n] [--list]
       Erstellt in .srcsharp/trial/ ein Probegefecht, in dem Einheiten und Piloten aus den Szenariodaten gegen einen Gegner kämpfen, und gibt den Pfad aus (mit play oder dem Debugger ausführen). --list gibt Einheiten und Piloten als JSON aus
+  srcsharp event-flow &lt;Ereignisdatei&gt; [--format md|mmd|json] [--output Datei] [--app-path SRC-Ordner] [--scenario-root Szenarioordner]
+      Verfolgt Ereignisauslöser, Labels, Call, Goto und Require in einer Ereignisdatei (samt Include und Require) und gibt ein Ablaufdiagramm aus
+  srcsharp talk-preview &lt;Ereignisdatei&gt; [--line Zeile] [--block Index] [--stdin] [--input Datei] [--format json|png] [--out Verzeichnis] [--output Datei] [--no-images] [--app-path SRC-Ordner] [--scenario-root Szenarioordner]
+      Rendert Talk- und AutoTalk-Blöcke mit dem Nachrichtenfenster des Spiels und gibt PNG-Bilder pro Seite oder JSON aus
+  srcsharp anime-preview &lt;Datei oder Ordner&gt; [--list] [--file Datei] [--line Zeile] [--kind animation|ext_animation|effect|subroutine] [--target Name] [--situation Situation] [--spec Spezifikation] [--attacker Einheit] [--attacker-pilot Pilot] [--defender Einheit] [--defender-pilot Pilot] [--play-once] [--out Bilddatei] [--app-path SRC-Ordner] [--scenario-root Szenarioordner]
+      Bereitet Dateien (.srcsharp/preview/) vor, um einen Eintrag aus animation.txt, ext_animation.txt, effect.txt oder eine allgemeine Kampfanimation mit festem Angreifer und Verteidiger abzuspielen. --list gibt Einträge als JSON aus, --play-once spielt einmal ab
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -118,5 +124,20 @@ Allgemeine Optionen:
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>Probegefecht erstellt: {0}/{1} gegen {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Ereignisdatei nicht gefunden: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Geben Sie genau eine Ereignisdatei für die Vorschau an</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>{0} Vorschaubilder in {1} gespeichert</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Zieldaten-/-ereignisdatei oder -ordner nicht gefunden: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Keine vorschaufähige Kampfanimations- oder Spezialeffekt-Definition gefunden</value>
   </data>
 </root>

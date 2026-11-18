@@ -31,6 +31,12 @@ Kullanım:
       Veri ve olayların başvurduğu görüntü, ses ve haritaları, başvuru yeri ve SRC arama sırasında (senaryo, genişletilmiş veri, SRC) bulunduğu yerle birlikte listeler. İfadeyle oluşturulan adları ve başvurulmayan dosyaları da gösterir. readme, README için "Gerekli varlıklar" taslağı üretir. --fail-on-missing eksik varsa 1 ile çıkar (varlık edinmez veya yeniden dağıtmaz)
   srcsharp trial &lt;senaryo klasörü&gt; [--unit birim] [--pilot pilot] [--enemy birim] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
       Senaryo verilerindeki birim ve pilotları bir düşmanla savaştıran deneme savaşını .srcsharp/trial/ içinde oluşturur ve yolunu yazdırır (play veya hata ayıklayıcıyla çalıştırın). --list birim ve pilotları JSON olarak yazdırır
+  srcsharp event-flow &lt;olay dosyası&gt; [--format md|mmd|json] [--output dosya] [--app-path SRC klasörü] [--scenario-root senaryo klasörü]
+      Tek bir olay dosyasındaki (ve include ile Require hedeflerindeki) tetikleyicileri, etiketleri, Call, Goto ve Require bağlantılarını izleyip akış şeması üretir
+  srcsharp talk-preview &lt;olay dosyası&gt; [--line satır] [--block sıra] [--stdin] [--input dosya] [--format json|png] [--out dizin] [--output dosya] [--no-images] [--app-path SRC klasörü] [--scenario-root senaryo klasörü]
+      Talk ve AutoTalk bloklarını oyunun mesaj penceresiyle çizip sayfa başına PNG görselleri veya JSON çıktısı üretir
+  srcsharp anime-preview &lt;dosya veya klasör&gt; [--list] [--file dosya] [--line satır] [--kind animation|ext_animation|effect|subroutine] [--target ad] [--situation durum] [--spec tanım] [--attacker birim] [--attacker-pilot pilot] [--defender birim] [--defender-pilot pilot] [--play-once] [--out görsel dosyası] [--app-path SRC klasörü] [--scenario-root senaryo klasörü]
+      animation.txt, ext_animation.txt, effect.txt içindeki bir tanımı veya genel savaş animasyonunu sabit saldıran ve savunan ile oynatmak için .srcsharp/preview/ hazırlar. --list JSON listeler, --play-once bir kez oynatır
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -118,5 +124,20 @@ Ortak seçenekler:
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>Deneme savaşı oluşturuldu: {0}/{1} - {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Olay dosyası bulunamadı: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Önizleme için tam olarak bir olay dosyası belirtin</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>{0} önizleme sayfası görseli {1} konumuna yazıldı</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Hedef veri/olay dosyası veya klasörü bulunamadı: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Önizlenebilir savaş animasyonu veya özel efekt tanımı bulunamadı</value>
   </data>
 </root>

@@ -31,6 +31,12 @@
       Виводить зображення, звуки й карти, на які посилаються дані та події, із місцем посилання та місцем, де їх знайдено в порядку пошуку SRC (сценарій, розширені дані, SRC). Також показує імена, складені виразами, і файли без посилань. readme створює чернетку розділу «Потрібні ресурси» для README. --fail-on-missing завершує з кодом 1, якщо чогось бракує (не отримує й не поширює ресурси)
   srcsharp trial &lt;тека сценарію&gt; [--unit юніт] [--pilot пілот] [--enemy юніт] [--enemy-pilot пілот] [--level n] [--enemies n] [--list]
       Створює в .srcsharp/trial/ пробний бій юнітів і пілотів із даних сценарію проти ворога та виводить шлях (запускайте через play або налагоджувач). --list виводить юнітів і пілотів у JSON
+  srcsharp event-flow &lt;файл подій&gt; [--format md|mmd|json] [--output файл] [--app-path тека SRC] [--scenario-root тека сценарію]
+      Відстежує тригери, мітки, Call, Goto та Require в одному файлі подій (і його include та Require) та виводить схему потоку подій
+  srcsharp talk-preview &lt;файл подій&gt; [--line рядок] [--block індекс] [--stdin] [--input файл] [--format json|png] [--out каталог] [--output файл] [--no-images] [--app-path тека SRC] [--scenario-root тека сценарію]
+      Відмальовує блоки Talk і AutoTalk у ігровому вікні повідомлень та виводить посторінкові зображення PNG або JSON
+  srcsharp anime-preview &lt;файл або тека&gt; [--list] [--file файл] [--line рядок] [--kind animation|ext_animation|effect|subroutine] [--target назва] [--situation ситуація] [--spec параметри] [--attacker юніт] [--attacker-pilot пілот] [--defender юніт] [--defender-pilot пілот] [--play-once] [--out файл зображення] [--app-path тека SRC] [--scenario-root тека сценарію]
+      Готує файли (.srcsharp/preview/) для відтворення одного визначення animation.txt, ext_animation.txt, effect.txt або загальної бойової анімації з фіксованими нападником і захисником. --list виводить список у JSON, --play-once відтворює один раз
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -118,5 +124,20 @@
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>Пробний бій створено: {0}/{1} проти {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Файл подій не знайдено: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Вкажіть рівно один файл подій для попереднього перегляду</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>Записано {0} зображень попереднього перегляду в {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Цільовий файл даних/подій або теку не знайдено: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Не знайдено визначень бойової анімації чи спецефектів для попереднього перегляду</value>
   </data>
 </root>

@@ -184,6 +184,36 @@ namespace SRCRender
             }
         }
 
+        /// <summary>メッセージのページが描かれ、クリックや時間を待ち始める直前に呼ばれる（会話プレビュー用）</summary>
+        public Action OnMessagePageRendered { get; set; }
+
+        /// <summary>メッセージ待ちを 1 回進める（会話プレビュー用）</summary>
+        public void AdvanceMessage() => isFormClicked = true;
+
+        /// <summary>メッセージウィンドウだけを PNG として書き出す（会話プレビュー用）</summary>
+        public byte[] RenderMessageWindowPng()
+        {
+            lock (renderLock)
+            {
+                if (disposed)
+                {
+                    return Array.Empty<byte>();
+                }
+                using (var bitmap = renderer.RenderMessageWindow(frmMessage))
+                {
+                    if (bitmap == null)
+                    {
+                        return Array.Empty<byte>();
+                    }
+                    using (var image = SKImage.FromBitmap(bitmap))
+                    using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+                    {
+                        return data.ToArray();
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region 待ち

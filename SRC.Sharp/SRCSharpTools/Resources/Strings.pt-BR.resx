@@ -31,6 +31,12 @@ Uso:
       Lista imagens, sons e mapas referenciados por dados e eventos, com onde são referenciados e onde foram encontrados na ordem de busca do SRC (cenário, dados estendidos, SRC). Também mostra nomes montados por expressões e arquivos sem referência. readme gera um rascunho de "Recursos necessários" para o README. --fail-on-missing sai com 1 se faltar algo (não obtém nem redistribui recursos)
   srcsharp trial &lt;pasta do cenário&gt; [--unit unidade] [--pilot piloto] [--enemy unidade] [--enemy-pilot piloto] [--level n] [--enemies n] [--list]
       Cria em .srcsharp/trial/ uma batalha de teste com unidades e pilotos dos dados do cenário contra um inimigo e imprime o caminho (execute com play ou o depurador). --list imprime as unidades e os pilotos em JSON
+  srcsharp event-flow &lt;arquivo de evento&gt; [--format md|mmd|json] [--output arquivo] [--app-path pasta SRC] [--scenario-root pasta do cenário]
+      Rastreia gatilhos, rótulos, Call, Goto e Require em um arquivo de evento (com seus includes e Requires) e gera o diagrama de fluxo
+  srcsharp talk-preview &lt;arquivo de evento&gt; [--line linha] [--block índice] [--stdin] [--input arquivo] [--format json|png] [--out diretório] [--output arquivo] [--no-images] [--app-path pasta SRC] [--scenario-root pasta do cenário]
+      Renderiza blocos Talk e AutoTalk usando a janela de mensagens do jogo e gera imagens PNG por página ou JSON
+  srcsharp anime-preview &lt;arquivo ou pasta&gt; [--list] [--file arquivo] [--line linha] [--kind animation|ext_animation|effect|subroutine] [--target nome] [--situation situação] [--spec especificação] [--attacker unidade] [--attacker-pilot piloto] [--defender unidade] [--defender-pilot piloto] [--play-once] [--out imagem] [--app-path pasta SRC] [--scenario-root pasta do cenário]
+      Prepara em .srcsharp/preview/ a reprodução de uma definição de animation.txt, ext_animation.txt, effect.txt ou animação genérica de batalha com atacante e defensor fixos. --list lista em JSON, --play-once reproduz uma vez
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -118,5 +124,20 @@ Opções comuns:
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>Batalha de teste criada: {0}/{1} contra {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Arquivo de evento não encontrado: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Especifique exatamente um arquivo de evento para visualizar</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>{0} imagens de pré-visualização gravadas em {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Arquivo ou pasta de dados/evento de destino não encontrado: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Nenhuma definição de animação de batalha ou efeito especial visualizável foi encontrada</value>
   </data>
 </root>

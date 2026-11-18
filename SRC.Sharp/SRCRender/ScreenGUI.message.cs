@@ -1126,6 +1126,7 @@ namespace SRCRender
                         // 次のメッセージ待ち
                         IsFormClicked = false;
                         BeginMessageWait();
+                        OnMessagePageRendered?.Invoke();
                         var is_automode = AutoMessageMode;
                         while (!IsFormClicked)
                         {
@@ -1752,6 +1753,7 @@ namespace SRCRender
                 // キャラ表示の描き換え
                 string pnickname;
                 DisplayMessagePilot(pname, msg_mode, true, out pnickname, out _);
+                State.Message.Speaker = pnickname;
 
                 // メッセージが空なら表示は止める
                 if (string.IsNullOrEmpty(msg))
@@ -2500,6 +2502,7 @@ namespace SRCRender
                     // 待ち時間が切れるまで待機
                     start_time = GeneralLib.timeGetTime();
                     IsFormClicked = false;
+                    OnMessagePageRendered?.Invoke();
                     while (start_time + wait_time > GeneralLib.timeGetTime())
                     {
                         // 左ボタンが押されたらメッセージ送り

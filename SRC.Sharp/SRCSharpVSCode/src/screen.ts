@@ -10,6 +10,7 @@ const FRAME_EVENT = 'srcsharpFrame';
 const INPUT_COMMAND = 'srcsharpInput';
 const PROMPT_EVENT = 'srcsharpPrompt';
 const PROMPT_RESULT_COMMAND = 'srcsharpPromptResult';
+const REPLAY_ANIMATION_COMMAND = 'srcsharpReplayAnimation';
 /** interactive でない時に、実行中の画面を取り直す間隔 */
 const POLL_INTERVAL_MS = 500;
 
@@ -55,6 +56,7 @@ export class ScreenView implements vscode.Disposable {
   private panel: vscode.WebviewPanel | undefined;
   private session: vscode.DebugSession | undefined;
   private interactive = false;
+  private animationPreview = false;
   /** このセッションでフレームが送られてきたか */
   private framed = false;
   private timer: NodeJS.Timeout | undefined;
@@ -74,6 +76,7 @@ export class ScreenView implements vscode.Disposable {
         this.session = s;
         this.reload = undefined;
         this.interactive = isInteractive(s);
+        this.animationPreview = !!s.configuration.animationPreview;
         this.framed = false;
         this.unsupported = false;
         this.status = 'running';
@@ -86,6 +89,7 @@ export class ScreenView implements vscode.Disposable {
       vscode.debug.onDidTerminateDebugSession((s) => {
         if (s === this.session) {
           this.session = undefined;
+          this.animationPreview = false;
           this.status = 'ended';
           this.post();
           this.updateTimer();
@@ -171,6 +175,8 @@ export class ScreenView implements vscode.Disposable {
         void vscode.commands.executeCommand('srcsharp.reload');
       } else if (m.type === 'cancelReload') {
         void vscode.commands.executeCommand('srcsharp.cancelReload');
+      } else if (m.type === 'replayAnimation') {
+        void vscode.commands.executeCommand('srcsharp.replayAnimationPreview');
       } else if (m.type === 'start') {
         void vscode.commands.executeCommand('srcsharp.runFile');
       }
@@ -264,12 +270,31 @@ export class ScreenView implements vscode.Disposable {
     this.updateTimer();
   }
 
+  isAnimationPreviewActive(scenarioRoot?: string): boolean {
+    if (!this.session || !this.animationPreview || this.status === 'ended') {
+      return false;
+    }
+    if (!scenarioRoot) {
+      return true;
+    }
+    return path.resolve(String(this.session.configuration.scenarioRoot ?? '')) === path.resolve(scenarioRoot);
+  }
+
+  async replayAnimationPreview(overridePreview?: Record<string, unknown>): Promise<boolean> {
+    if (!this.session || !this.animationPreview) {
+      return false;
+    }
+    await this.session.customRequest(REPLAY_ANIMATION_COMMAND, overridePreview ? { animationPreview: overridePreview } : {});
+    return true;
+  }
+
   private post(): void {
     void this.panel?.webview.postMessage({
       type: 'state',
       status: this.status,
       src: this.dataUrl(),
       interactive: this.interactive && this.status !== 'ended',
+      animationPreview: this.animationPreview,
       unsupported: this.unsupported,
       reload: this.status === 'ended' ? undefined : this.reload,
     });
@@ -321,6 +346,7 @@ export class ScreenView implements vscode.Disposable {
       `
 <div class="bar">
   <span class="status" id="status"></span>
+  <button class="secondary" id="replayAnim" hidden title="保存した内容を反映して戦闘アニメ・特殊効果をもう一度再生">もう一度再生</button>
   <button class="secondary" id="reload" title="イベント・データ・画像を、プレイの状態を保ったまま読み直す">読み直す</button>
   <button class="secondary" id="refresh">取り直す</button>
   <button class="secondary" id="save" disabled>画像を保存</button>
@@ -345,6 +371,7 @@ document.getElementById('save').addEventListener('click', () => vscode.postMessa
 document.getElementById('start').addEventListener('click', () => vscode.postMessage({ type: 'start' }));
 document.getElementById('reload').addEventListener('click', () => vscode.postMessage({ type: 'reload' }));
 document.getElementById('cancelReload').addEventListener('click', () => vscode.postMessage({ type: 'cancelReload' }));
+document.getElementById('replayAnim').addEventListener('click', () => vscode.postMessage({ type: 'replayAnimation' }));
 
 function show(src) {
   if (!src) return;
@@ -370,6 +397,9 @@ window.addEventListener('message', (e) => {
   show(m.src);
   document.getElementById('refresh').disabled = interactive || m.status === 'idle' || m.status === 'ended';
   document.getElementById('reload').disabled = m.status === 'idle' || m.status === 'ended';
+  const replayBtn = document.getElementById('replayAnim');
+  replayBtn.hidden = !m.animationPreview;
+  replayBtn.disabled = m.status === 'idle' || m.status === 'ended';
   document.getElementById('reloadBar').hidden = !m.reload;
   if (m.reload) {
     const r = document.getElementById('reloadStatus');

@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { pickAppPath, suggestAppPath } from './appPath';
 import { AssetReportData, AssetsPanel } from './assets';
+import { EventFlowGraphData, EventFlowPanel } from './eventFlow';
 import { EpisodeFlowPanel, ScenarioFlowData } from './flow';
 import { MapEditorProvider } from './mapEditor';
 import { DataPreviewPanel } from './preview';
@@ -12,6 +13,7 @@ import { PanelProvider } from './panel';
 import { ScreenView } from './screen';
 import { installServer, resolveServer, serverCommand, ServerInfo, serverVersion } from './server';
 import { SettingsView } from './settings';
+import { TalkPreviewData, TalkPreviewPanel } from './talkPreview';
 import { SrcUriHandler } from './uriHandler';
 
 /** データに動かす規則のグループ（設定 srcsharp.rules）。空なら none */
@@ -248,9 +250,14 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   const dataPreview = new DataPreviewPanel(context);
   // 話のつながりの図（7474/SRC#1652）
   const episodeFlow = new EpisodeFlowPanel();
+  // イベントの流れの図・会話のプレビュー（7474/SRC#1655）
+  const eventFlow = new EventFlowPanel(controller);
+  const talkPreview = new TalkPreviewPanel();
   context.subscriptions.push(
     dataPreview,
     episodeFlow,
+    eventFlow,
+    talkPreview,
     vscode.commands.registerCommand('srcsharp.showPreview', () => dataPreview.show()),
     // テスト用（プレビューに出したもの）。package.json には出さない
     vscode.commands.registerCommand('srcsharp._previewStatus', () => dataPreview.getStatus()),
@@ -258,6 +265,12 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     // テスト用（話のつながりの図）。package.json には出さない
     vscode.commands.registerCommand('srcsharp._flowStatus', () => episodeFlow.getStatus()),
     vscode.commands.registerCommand('srcsharp._showFlowData', (data: ScenarioFlowData) => episodeFlow.showData(data)),
+    vscode.commands.registerCommand('srcsharp.showEventFlow', (target?: string) => eventFlow.show(target)),
+    vscode.commands.registerCommand('srcsharp._eventFlowStatus', () => eventFlow.getStatus()),
+    vscode.commands.registerCommand('srcsharp._showEventFlowData', (data: EventFlowGraphData) => eventFlow.showData(data)),
+    vscode.commands.registerCommand('srcsharp.previewTalk', (uri?: vscode.Uri, line?: number) => talkPreview.show(uri, line)),
+    vscode.commands.registerCommand('srcsharp._talkPreviewStatus', () => talkPreview.getStatus()),
+    vscode.commands.registerCommand('srcsharp._showTalkPreviewData', (data: TalkPreviewData) => talkPreview.showData(data)),
   );
 
   // 素材の一覧（揃っているか。7474/SRC#1654）
@@ -543,6 +556,136 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       const file = activeEventFile()?.fsPath;
       if (file) {
         await run('play', [file], path.dirname(file));
+      }
+    }),
+    vscode.commands.registerCommand('srcsharp.previewAnimation', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const doc = editor?.document;
+      if (!doc || doc.uri.scheme !== 'file') {
+        vscode.window.showErrorMessage('SRC#: animation.txt・ext_animation.txt・effect.txt またはイベントファイル（*.eve）を開いてください。');
+        return;
+      }
+      const file = doc.uri.fsPath;
+      const lowerName = path.basename(file).toLowerCase();
+      const isAnimData = lowerName === 'animation.txt' || lowerName === 'ext_animation.txt' || lowerName === 'effect.txt';
+      const isEve = doc.languageId === 'src-eve' || lowerName.endsWith('.eve');
+      if (!isAnimData && !isEve) {
+        vscode.window.showInformationMessage('SRC#: animation.txt・ext_animation.txt・effect.txt またはイベントファイル（*.eve）で使えます。');
+        return;
+      }
+      if (doc.isDirty) {
+        await doc.save();
+      }
+      const server = resolveServer();
+      if (!server.found) {
+        void promptInstall();
+        return;
+      }
+      const runAnimeCli = (args: string[]): Promise<string> => new Promise((resolve, reject) => {
+        const c = serverCommand(server, 'anime-preview', args);
+        const child = spawn(c.command, c.args, { cwd: path.dirname(file), env: server.env });
+        let stdout = '';
+        let stderr = '';
+        child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+        child.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+        child.on('error', reject);
+        child.on('close', (code) => {
+          if (code === 0) {
+            resolve(stdout);
+          } else {
+            reject(new Error(stderr.trim() || `srcsharp anime-preview が終了コード ${code} で失敗しました`));
+          }
+        });
+      });
+
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const appArgs = appPath ? ['--app-path', appPath] : [];
+      const line1 = editor.selection.active.line + 1;
+      interface AnimeListPayload {
+        file: string;
+        scenarioRoot: string;
+        appPath: string;
+        defaultSetup: { attackerUnit: string; attackerPilot: string; defenderUnit: string; defenderPilot: string };
+        selectedIndex: number;
+        entries: { index: number; kind: string; file: string; line: number; target: string; situation: string; spec: string }[];
+      }
+      let listData: AnimeListPayload;
+      try {
+        const raw = await runAnimeCli([file, '--line', String(line1), '--list', ...appArgs]);
+        listData = JSON.parse(raw) as AnimeListPayload;
+      } catch (e) {
+        vscode.window.showErrorMessage(`SRC#: 戦闘アニメ・特殊効果を読めませんでした: ${(e as Error)?.message ?? e}`);
+        return;
+      }
+      if (!listData.entries || listData.entries.length === 0) {
+        vscode.window.showInformationMessage('SRC#: このファイルに再生できる戦闘アニメ・特殊効果・汎用戦闘アニメの定義が見つかりませんでした。');
+        return;
+      }
+      const selected = listData.entries[listData.selectedIndex >= 0 ? listData.selectedIndex : 0];
+      if (screen.isAnimationPreviewActive(listData.scenarioRoot)) {
+        try {
+          await screen.replayAnimationPreview({
+            kind: selected.kind,
+            file: selected.file,
+            line: selected.line,
+            target: selected.target,
+            situation: selected.situation,
+            spec: selected.spec,
+            ...listData.defaultSetup,
+          });
+          screen.show(true);
+          return;
+        } catch {
+          // 既に終わったセッションなら新しく起動する
+        }
+      }
+      interface AnimePrepPayload {
+        program: string;
+        scenarioRoot: string;
+        appPath: string;
+        animationPreview: Record<string, unknown>;
+      }
+      let prep: AnimePrepPayload;
+      try {
+        const raw = await runAnimeCli([
+          file,
+          '--line', String(selected.line),
+          '--kind', selected.kind,
+          '--scenario-root', listData.scenarioRoot,
+          ...appArgs,
+        ]);
+        prep = JSON.parse(raw) as AnimePrepPayload;
+      } catch (e) {
+        vscode.window.showErrorMessage(`SRC#: 演出プレビューの準備に失敗しました: ${(e as Error)?.message ?? e}`);
+        return;
+      }
+      await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(listData.scenarioRoot)), {
+        type: 'srcsharp',
+        request: 'launch',
+        name: `SRC# 演出プレビュー: ${selected.target} - ${selected.situation}`,
+        program: prep.program,
+        scenarioRoot: prep.scenarioRoot,
+        appPath: prep.appPath,
+        interactive: true,
+        animationPreview: prep.animationPreview,
+      });
+    }),
+    vscode.commands.registerCommand('srcsharp.replayAnimationPreview', async () => {
+      if (!screen.isAnimationPreviewActive()) {
+        vscode.window.showInformationMessage('SRC#: 戦闘アニメ・特殊効果のプレビューを実行していません。');
+        return;
+      }
+      const activePreviewFile = vscode.debug.activeDebugSession?.configuration?.animationPreview?.file as string | undefined;
+      if (activePreviewFile) {
+        const openDoc = vscode.workspace.textDocuments.find((d) => path.resolve(d.uri.fsPath) === path.resolve(activePreviewFile));
+        if (openDoc?.isDirty) {
+          await openDoc.save();
+        }
+      }
+      try {
+        await screen.replayAnimationPreview();
+      } catch (e) {
+        vscode.window.showWarningMessage(`SRC#: もう一度再生できませんでした: ${(e as Error)?.message ?? e}`);
       }
     }),
     vscode.commands.registerCommand('srcsharp.autoPlay', () => autoPlay()),

@@ -8,6 +8,9 @@ srcsharp lint path/to/scenario
 srcsharp lint path/to/scenario --rules src,gsc-ext   # 書き間違いを見つける規則のグループを選ぶ（既定は src。--list-rules で一覧）
 srcsharp play path/to/scenario/test.eve --script test.play --out snapshots
 srcsharp balance path/to/data --output balance.md
+srcsharp event-flow path/to/scenario/第1話.eve --format md        # イベント内の流れの図を出す
+srcsharp talk-preview path/to/scenario/第1話.eve --line 20 --format png --out talk  # Talk をメッセージウィンドウで描画する
+srcsharp anime-preview path/to/scenario/Data/animation.txt --line 5 --play-once    # 戦闘アニメ・特殊効果を 1 回再生する
 srcsharp help Askコマンド              # SRC# のヘルプ（リファレンス）を引く
 srcsharp help --search 選択肢を表示する  # 関連の高い順にページを探す（全文検索とベクトルの検索）
 srcsharp help --grep ChangeMap         # 文字列を含む行を探す

@@ -581,5 +581,51 @@ namespace SRCAuthoring.Tests
                 Assert.IsTrue(File.Exists(Path.Combine(dir, "Askコマンド.md")));
             }
         }
+
+        [TestMethod]
+        public void EventFlow_TalkPreview_And_AnimePreview_Commands()
+        {
+            using (var scenario = new TestScenario())
+            {
+                var eve = scenario.Write("ep01.eve",
+                    "スタート:",
+                    "Call 会話テスト",
+                    "Exit",
+                    "",
+                    "会話テスト:",
+                    "Talk システム",
+                    "テストメッセージ",
+                    "End",
+                    "Return");
+
+                var (exitCode, stdout, stderr) = Run("event-flow", eve, "--format", "json");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "会話テスト");
+                StringAssert.Contains(stdout, "\"edges\"");
+
+                (exitCode, stdout, stderr) = Run("talk-preview", eve, "--line", "7", "--format", "json", "--no-images");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "テストメッセージ");
+                StringAssert.Contains(stdout, "\"blocks\"");
+
+                scenario.Write(Path.Combine("Data", "robot.txt"),
+                    "試作機\n試作機, しさくき, 汎用, 1, 2\n陸, 4, M, 1000, 100\n特殊能力なし\n3000, 100, 600, 60\nAAAA, -.bmp\n===\n");
+                scenario.Write(Path.Combine("Data", "pilot.txt"),
+                    "主人公\n主人公, しゅじんこう, 男性, 汎用, AAAA, 120\n特殊能力なし\n150, 145, 150, 150, 150, 155, 普通\nＳＰ, 0\n-.bmp, -.mid\n");
+                var anim = scenario.Write(Path.Combine("Data", "animation.txt"),
+                    "試作機",
+                    "攻撃, 斬撃");
+
+                (exitCode, stdout, stderr) = Run("anime-preview", anim, "--line", "2", "--list");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "\"situation\": \"攻撃\"");
+                StringAssert.Contains(stdout, "\"selectedIndex\": 0");
+
+                (exitCode, stdout, stderr) = Run("anime-preview", anim, "--line", "2");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "演出プレビュー.eve");
+                StringAssert.Contains(stdout, "\"animationPreview\"");
+            }
+        }
     }
 }

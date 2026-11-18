@@ -1,6 +1,7 @@
 using SRCAuthoring;
 using SRCAuthoring.Analysis;
 using SRCAuthoring.Balance;
+using SRCAuthoring.Preview;
 using SRCAuthoring.Rules;
 using SRCDebugAdapter;
 using SRCHelpSearch;
@@ -19,6 +20,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SRCSharpTools
@@ -26,6 +31,11 @@ namespace SRCSharpTools
     public static class Program
     {
         private static LogSettings logSettings = LogSettings.Empty;
+
+        private static readonly HashSet<string> BooleanOptions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "list", "list-rules", "skip-wait", "force", "fail-on-missing", "no-images", "stdin", "play-once",
+        };
 
         /// <summary>ログの構成。play・lsp・dap で使う</summary>
         private static LogHost CreateLogHost(string command, LogOutputs outputs)
@@ -67,6 +77,12 @@ namespace SRCSharpTools
                     return Assets(positional, options);
                 case "trial":
                     return await TrialAsync(positional, options);
+                case "event-flow":
+                    return EventFlow(positional, options);
+                case "talk-preview":
+                    return TalkPreview(positional, options);
+                case "anime-preview":
+                    return await AnimePreviewAsync(positional, options);
                 case "help":
                     return Help(positional, options);
                 case "lsp":
@@ -103,7 +119,8 @@ namespace SRCSharpTools
                 if (list[i].StartsWith("--"))
                 {
                     var key = list[i].Substring(2);
-                    options[key] = i + 1 < list.Count && !list[i + 1].StartsWith("--") ? list[++i] : "true";
+                    var hasValue = !BooleanOptions.Contains(key) && i + 1 < list.Count && !list[i + 1].StartsWith("--");
+                    options[key] = hasValue ? list[++i] : "true";
                 }
                 else
                 {
@@ -571,6 +588,330 @@ namespace SRCSharpTools
                     break;
             }
             return 0;
+        }
+
+        /// <summary>1 つのイベントファイル（と include・Require 先）の流れの図を出す（7474/SRC#1655）</summary>
+        private static int EventFlow(List<string> positional, Dictionary<string, string> options)
+        {
+            if (positional.Count != 1 || !File.Exists(positional[0]))
+            {
+                Console.Error.WriteLine(Strings.EventFlowRequiresEventFile(positional.Count > 0 ? positional[0] : ""));
+                return 2;
+            }
+            var eve = Path.GetFullPath(positional[0]);
+            options.TryGetValue("app-path", out var appPath);
+            options.TryGetValue("scenario-root", out var scenarioRoot);
+            var resolvedRoot = string.IsNullOrEmpty(scenarioRoot) ? null : Path.GetFullPath(scenarioRoot);
+            var resolvedAppPath = string.IsNullOrEmpty(appPath) ? null : Path.GetFullPath(appPath);
+            var analyzer = new EventFlowAnalyzer { AppPath = resolvedAppPath };
+            var graph = analyzer.Analyze(eve, scenarioRoot: resolvedRoot);
+
+            options.TryGetValue("format", out var format);
+            switch ((format ?? "md").ToLowerInvariant())
+            {
+                case "md":
+                case "markdown":
+                    WriteOutput(graph.ToMarkdown(), options);
+                    return 0;
+                case "mmd":
+                case "mermaid":
+                    WriteOutput(graph.ToMermaid(), options);
+                    return 0;
+                case "json":
+                    WriteOutput(graph.ToJson(), options);
+                    return 0;
+                default:
+                    Console.Error.WriteLine(Strings.UnknownFlowFormat(format));
+                    return 2;
+            }
+        }
+
+        /// <summary>Talk・AutoTalk のブロックを SRCRender で描画してプレビューを出す（7474/SRC#1655）</summary>
+        private static int TalkPreview(List<string> positional, Dictionary<string, string> options)
+        {
+            if (positional.Count != 1)
+            {
+                Console.Error.WriteLine(Strings.TalkPreviewRequiresEventFile);
+                return 2;
+            }
+            var eve = Path.GetFullPath(positional[0]);
+            string content = null;
+            if (options.ContainsKey("stdin"))
+            {
+                content = Console.In.ReadToEnd();
+            }
+            else if (options.TryGetValue("input", out var inputPath) && File.Exists(inputPath))
+            {
+                content = File.ReadAllText(inputPath);
+            }
+            else if (!File.Exists(eve))
+            {
+                Console.Error.WriteLine(Strings.EventFlowRequiresEventFile(eve));
+                return 2;
+            }
+
+            var line = options.TryGetValue("line", out var lineStr) && int.TryParse(lineStr, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedLine)
+                ? parsedLine
+                : 1;
+            int? blockIndex = options.TryGetValue("block", out var blockStr) && int.TryParse(blockStr, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedBlock)
+                ? parsedBlock
+                : null;
+            options.TryGetValue("scenario-root", out var scenarioRoot);
+            options.TryGetValue("app-path", out var appPath);
+
+            var result = TalkPreviewRunner.Render(
+                eve,
+                text: content,
+                cursorLine: line,
+                blockIndex: blockIndex,
+                scenarioRoot: string.IsNullOrEmpty(scenarioRoot) ? null : Path.GetFullPath(scenarioRoot),
+                appPath: string.IsNullOrEmpty(appPath) ? null : Path.GetFullPath(appPath));
+
+            options.TryGetValue("format", out var format);
+            if (string.Equals(format, "png", StringComparison.OrdinalIgnoreCase))
+            {
+                var outDir = options.TryGetValue("out", out var dir) ? Path.GetFullPath(dir) : Environment.CurrentDirectory;
+                Directory.CreateDirectory(outDir);
+                for (var i = 0; i < result.Pages.Count; i++)
+                {
+                    var page = result.Pages[i];
+                    var path = Path.Combine(outDir, $"page-{i:D3}.png");
+                    if (page.PngBytes != null && page.PngBytes.Length > 0)
+                    {
+                        File.WriteAllBytes(path, page.PngBytes);
+                    }
+                    Console.WriteLine(path);
+                }
+                Console.Error.WriteLine(Strings.TalkPreviewPagesWritten(result.Pages.Count, outDir));
+                return 0;
+            }
+
+            WriteOutput(result.ToJson(!options.ContainsKey("no-images")), options);
+            return 0;
+        }
+
+        /// <summary>
+        /// 戦闘アニメ・特殊効果・汎用戦闘アニメの 1 定義を固定の攻撃側・防御側で再生する準備ファイルを作り、
+        /// --play-once があれば 1 回再生する（7474/SRC#1655）
+        /// </summary>
+        private static async Task<int> AnimePreviewAsync(List<string> positional, Dictionary<string, string> options)
+        {
+            if (positional.Count > 1 || (positional.Count == 0 && !options.ContainsKey("file")))
+            {
+                Console.Error.WriteLine(Strings.AnimePreviewPathNotFound(positional.FirstOrDefault() ?? ""));
+                return 2;
+            }
+
+            var targetPath = positional.Count == 1 ? Path.GetFullPath(positional[0]) : Path.GetFullPath(options["file"]);
+            if (!File.Exists(targetPath) && !Directory.Exists(targetPath))
+            {
+                Console.Error.WriteLine(Strings.AnimePreviewPathNotFound(targetPath));
+                return 2;
+            }
+
+            var filePath = options.TryGetValue("file", out var explicitFile)
+                ? Path.GetFullPath(explicitFile)
+                : (File.Exists(targetPath) ? targetPath : null);
+            var scenarioRoot = options.TryGetValue("scenario-root", out var rootOpt) && !string.IsNullOrEmpty(rootOpt)
+                ? Path.GetFullPath(rootOpt)
+                : (Directory.Exists(targetPath) ? targetPath : ScenarioAnalyzer.FindRunRoot(filePath));
+            options.TryGetValue("app-path", out var appPathOpt);
+            var appPath = !string.IsNullOrEmpty(appPathOpt)
+                ? Path.GetFullPath(appPathOpt)
+                : ScenarioAnalyzer.FindAppPath(scenarioRoot) ?? scenarioRoot;
+
+            var dataDir = Path.Combine(scenarioRoot, "Data");
+            var systemDir = Path.Combine(appPath, "Data", "System");
+            var systemFiles = Directory.Exists(systemDir)
+                ? Directory.GetFiles(systemDir, "*.txt").OrderBy(x => x, StringComparer.Ordinal).ToList()
+                : new List<string>();
+            var lint = await new DataLinter { RuleGroups = Array.Empty<string>() }
+                .LintAsync(Directory.Exists(dataDir) ? new[] { dataDir } : Array.Empty<string>(), scenarioRoot, systemFiles);
+            var catalog = lint.Catalog;
+
+            options.TryGetValue("kind", out var kindOpt);
+            var entries = filePath != null && File.Exists(filePath)
+                ? AnimationDataParser.ParseFile(filePath, overrideKind: kindOpt)
+                : new List<AnimationPreviewEntry>();
+
+            var cursorLine = options.TryGetValue("line", out var lineStr) && int.TryParse(lineStr, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedLine)
+                ? parsedLine
+                : 0;
+            var selected = AnimationDataParser.SelectAtLine(entries, cursorLine);
+            var hasSit = options.TryGetValue("situation", out var sitOpt);
+            var hasSpec = options.TryGetValue("spec", out var specOpt);
+            var hasTgt = options.TryGetValue("target", out var tgtOpt);
+            if (hasSit || hasSpec || hasTgt)
+            {
+                selected = new AnimationPreviewEntry
+                {
+                    Kind = kindOpt ?? selected?.Kind ?? AnimationPreviewKind.Animation,
+                    File = filePath ?? selected?.File ?? "",
+                    Line = cursorLine > 0 ? cursorLine : (selected?.Line ?? 0),
+                    Target = tgtOpt ?? selected?.Target ?? "汎用",
+                    Situation = sitOpt ?? selected?.Situation ?? "",
+                    Spec = specOpt ?? selected?.Spec ?? "",
+                };
+            }
+
+            options.TryGetValue("attacker", out var attackerUnit);
+            options.TryGetValue("attacker-pilot", out var attackerPilot);
+            options.TryGetValue("defender", out var defenderUnit);
+            options.TryGetValue("defender-pilot", out var defenderPilot);
+            var setup = AnimationPreviewTemplate.Complete(new AnimationPreviewSetup
+            {
+                Unit = attackerUnit,
+                Pilot = attackerPilot,
+                EnemyUnit = defenderUnit,
+                EnemyPilot = defenderPilot,
+            }, catalog, selected?.Target);
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            };
+
+            if (options.ContainsKey("list"))
+            {
+                var selectedIdx = selected != null ? entries.IndexOf(selected) : -1;
+                var listJson = new JsonObject
+                {
+                    ["file"] = filePath ?? "",
+                    ["scenarioRoot"] = scenarioRoot,
+                    ["appPath"] = appPath,
+                    ["defaultSetup"] = new JsonObject
+                    {
+                        ["attackerUnit"] = setup.Unit,
+                        ["attackerPilot"] = setup.Pilot,
+                        ["defenderUnit"] = setup.EnemyUnit,
+                        ["defenderPilot"] = setup.EnemyPilot,
+                    },
+                    ["units"] = new JsonArray(catalog.Entries.Where(e => e.Kind == DataKind.Unit).Select(e => (JsonNode)e.Name).ToArray()),
+                    ["pilots"] = new JsonArray(catalog.Entries.Where(e => e.Kind == DataKind.Pilot).Select(e => (JsonNode)e.Name).ToArray()),
+                    ["selectedIndex"] = selectedIdx,
+                    ["entries"] = new JsonArray(entries.Select((e, idx) => (JsonNode)new JsonObject
+                    {
+                        ["index"] = idx,
+                        ["kind"] = e.Kind,
+                        ["file"] = e.File,
+                        ["line"] = e.Line,
+                        ["target"] = e.Target,
+                        ["situation"] = e.Situation,
+                        ["spec"] = e.Spec,
+                    }).ToArray()),
+                };
+                WriteOutput(listJson.ToJsonString(jsonOptions), options);
+                return 0;
+            }
+
+            if (selected == null)
+            {
+                Console.Error.WriteLine(Strings.AnimePreviewNoEntry);
+                return 1;
+            }
+
+            var previewEve = AnimationPreviewTemplate.Write(scenarioRoot, setup, catalog);
+            var animPreviewObj = new JsonObject
+            {
+                ["kind"] = selected.Kind,
+                ["file"] = selected.File,
+                ["line"] = selected.Line,
+                ["target"] = selected.Target,
+                ["situation"] = selected.Situation,
+                ["spec"] = selected.Spec,
+                ["attackerUnit"] = setup.Unit,
+                ["attackerPilot"] = setup.Pilot,
+                ["defenderUnit"] = setup.EnemyUnit,
+                ["defenderPilot"] = setup.EnemyPilot,
+            };
+
+            if (!options.ContainsKey("play-once"))
+            {
+                var prepJson = new JsonObject
+                {
+                    ["program"] = previewEve,
+                    ["scenarioRoot"] = scenarioRoot,
+                    ["appPath"] = appPath,
+                    ["animationPreview"] = animPreviewObj,
+                };
+                WriteOutput(prepJson.ToJsonString(jsonOptions), options);
+                return 0;
+            }
+
+            var prevSkipWait = SRCCore.Lib.GeneralLib.SkipWait;
+            SRCCore.Lib.GeneralLib.SkipWait = options.ContainsKey("skip-wait");
+            try
+            {
+                using (var logHost = CreateLogHost("anime-preview", LogOutputs.StandardError))
+                using (var runner = new ScreenScenarioRunner(appPath, logHost.LoggerFactory))
+                {
+                    runner.Start(previewEve, scenarioRoot);
+                    var waitDeadline = DateTime.UtcNow + TimeSpan.FromSeconds(15);
+                    while (!runner.IsFinished && DateTime.UtcNow < waitDeadline)
+                    {
+                        var s = runner.Session.SRC;
+                        if (s.Turn >= 1 && s.Stage == "味方" && !runner.GUI.IsGUILocked && s.Commands.CommandState == "ユニット選択")
+                        {
+                            break;
+                        }
+                        Thread.Sleep(50);
+                    }
+
+                    var req = new AnimationPreviewRequest
+                    {
+                        Kind = selected.Kind,
+                        File = selected.File,
+                        Line = selected.Line,
+                        Target = selected.Target,
+                        Situation = selected.Situation,
+                        Spec = selected.Spec,
+                        AttackerUnit = setup.Unit,
+                        AttackerPilot = setup.Pilot,
+                        DefenderUnit = setup.EnemyUnit,
+                        DefenderPilot = setup.EnemyPilot,
+                    };
+
+                    var tcs = new TaskCompletionSource<AnimationPreviewPlayResult>(TaskCreationOptions.RunContinuationsAsynchronously);
+                    runner.Session.Game.Post(() =>
+                    {
+                        try
+                        {
+                            tcs.TrySetResult(AnimationPreviewRunner.Play(runner.Session.SRC, req));
+                        }
+                        catch (Exception ex)
+                        {
+                            tcs.TrySetException(ex);
+                        }
+                    });
+                    var playResult = await tcs.Task;
+                    if (options.TryGetValue("out", out var outPng) && !string.IsNullOrEmpty(outPng))
+                    {
+                        using var fs = File.Create(Path.GetFullPath(outPng));
+                        runner.GUI.SnapshotPng(fs);
+                    }
+                    runner.Session.GUI.Terminate();
+
+                    var resultJson = new JsonObject
+                    {
+                        ["program"] = previewEve,
+                        ["scenarioRoot"] = scenarioRoot,
+                        ["appPath"] = appPath,
+                        ["played"] = playResult.Played,
+                        ["message"] = playResult.Message ?? "",
+                        ["attacker"] = playResult.Attacker ?? "",
+                        ["defender"] = playResult.Defender ?? "",
+                        ["warnings"] = new JsonArray(playResult.Warnings.Select(w => (JsonNode)w).ToArray()),
+                        ["animationPreview"] = animPreviewObj,
+                    };
+                    WriteOutput(resultJson.ToJsonString(jsonOptions), options);
+                    return playResult.Played ? 0 : 1;
+                }
+            }
+            finally
+            {
+                SRCCore.Lib.GeneralLib.SkipWait = prevSkipWait;
+            }
         }
     }
 }

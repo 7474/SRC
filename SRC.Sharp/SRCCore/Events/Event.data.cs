@@ -30,6 +30,12 @@ namespace SRCCore.Events
             LoadEventData("", "システム");
         }
 
+        /// <summary>次の LoadEventData でシナリオ側の Lib（汎用戦闘アニメなど）を読み直すようにする</summary>
+        public void InvalidateScenarioLib()
+        {
+            ScenarioLibChecked = false;
+        }
+
         // イベントファイルのロード
         public void LoadEventData(string fname, string load_mode = "")
         {

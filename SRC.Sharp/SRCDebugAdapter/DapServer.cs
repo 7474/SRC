@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using SRCAuthoring.Preview;
 using SRCAuthoring.Protocol;
 using SRCCore.Logging;
 using SRCLogging;
@@ -31,6 +32,12 @@ namespace SRCDebugAdapter
         /// </summary>
         public const string ScreenCommand = "srcsharpScreen";
 
+        /// <summary>
+        /// 戦闘アニメ・特殊効果プレビューを再再生する独自のリクエスト（7474/SRC#1655）。
+        /// ファイル保存後の spec 取り直しも行う
+        /// </summary>
+        public const string ReplayAnimationCommand = "srcsharpReplayAnimation";
+
         private readonly MessageStream stream;
         private readonly LogHost logHost;
         private readonly ILogger log;
@@ -42,6 +49,9 @@ namespace SRCDebugAdapter
         /// <summary>自動で進めるときにフレームだけを送る</summary>
         private InteractiveScreen frames;
         private HotReloader reloader;
+        private AnimationPreviewRequest currentAnimationPreview;
+        private TaskCompletionSource<bool> previewReady;
+        private int replayingAnimation;
         private readonly Dictionary<string, List<int>> pendingBreakpoints = new Dictionary<string, List<int>>(StringComparer.OrdinalIgnoreCase);
         private Task session;
         private volatile bool disconnected;
@@ -223,6 +233,8 @@ namespace SRCDebugAdapter
                     return null;
                 case HotReloader.ReloadCommand:
                     return (reloader ?? throw new InvalidOperationException("シナリオを実行していません")).Request(args);
+                case ReplayAnimationCommand:
+                    return await ReplayAnimationPreviewAsync(args);
                 case InteractiveScreen.PromptResultCommand:
                     RequireInteractive().PromptResult(args);
                     return null;
@@ -258,8 +270,12 @@ namespace SRCDebugAdapter
             var turns = launchArgs["turns"]?.GetValue<int>() ?? 1000;
             // ウェイト（Wait・メッセージの表示待ちなど）を飛ばす。画面は送り続けるので、早送りで眺められる
             var skipWait = launchArgs["skipWait"]?.GetValue<bool>() ?? false;
-            // .play スクリプトがあればそれで動かし、タブの操作は受けない
-            var isInteractive = (launchArgs["interactive"]?.GetValue<bool>() ?? false) && string.IsNullOrEmpty(script);
+            currentAnimationPreview = ParseAnimationPreviewRequest(launchArgs["animationPreview"]);
+            previewReady = currentAnimationPreview != null
+                ? new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously)
+                : null;
+            // .play スクリプトがあればそれで動かし、タブの操作は受けない（演出プレビューは画面操作を受け付けつつ再生する）
+            var isInteractive = ((launchArgs["interactive"]?.GetValue<bool>() ?? false) || currentAnimationPreview != null) && string.IsNullOrEmpty(script);
             if (!SRCRender.Compat.SkiaFonts.HasJapaneseFont())
             {
                 // 画面の日本語が豆腐になる。important は VS Code が通知で出す
@@ -322,6 +338,30 @@ namespace SRCDebugAdapter
                 try
                 {
                     runner.Start(program, scenarioRoot);
+                    if (currentAnimationPreview != null)
+                    {
+                        try
+                        {
+                            var waitDeadline = DateTime.UtcNow + TimeSpan.FromSeconds(15);
+                            while (!runner.IsFinished && !disconnected && DateTime.UtcNow < waitDeadline)
+                            {
+                                var s = runner.Session.SRC;
+                                if (s.Turn >= 1 && s.Stage == "味方" && !runner.GUI.IsGUILocked && s.Commands.CommandState == "ユニット選択")
+                                {
+                                    break;
+                                }
+                                Thread.Sleep(50);
+                            }
+                            if (!runner.IsFinished && !disconnected)
+                            {
+                                ReplayAnimationPreviewAsync(null, reloadFromDisk: false).GetAwaiter().GetResult();
+                            }
+                        }
+                        finally
+                        {
+                            previewReady?.TrySetResult(true);
+                        }
+                    }
                     if (interactive != null)
                     {
                         // タブの操作で進める。シナリオが終わるか、デバッグを止めるまで待つ
@@ -356,6 +396,7 @@ namespace SRCDebugAdapter
                 }
                 finally
                 {
+                    previewReady?.TrySetResult(false);
                     // 終わった後はリクエストで画面を取れないため、最後の画面をイベントで送る
                     try
                     {
@@ -374,6 +415,138 @@ namespace SRCDebugAdapter
                     runner.Dispose();
                 }
             });
+        }
+
+        private static AnimationPreviewRequest ParseAnimationPreviewRequest(JsonNode node)
+        {
+            if (node == null)
+            {
+                return null;
+            }
+            return new AnimationPreviewRequest
+            {
+                Kind = node["kind"]?.GetValue<string>() ?? "animation",
+                File = node["file"]?.GetValue<string>(),
+                Line = node["line"]?.GetValue<int>() ?? 0,
+                Target = node["target"]?.GetValue<string>(),
+                Situation = node["situation"]?.GetValue<string>(),
+                Spec = node["spec"]?.GetValue<string>(),
+                AttackerUnit = node["attackerUnit"]?.GetValue<string>(),
+                AttackerPilot = node["attackerPilot"]?.GetValue<string>(),
+                DefenderUnit = node["defenderUnit"]?.GetValue<string>(),
+                DefenderPilot = node["defenderPilot"]?.GetValue<string>(),
+            };
+        }
+
+        private async Task<JsonNode> ReplayAnimationPreviewAsync(JsonNode args, bool reloadFromDisk = true)
+        {
+            if (reloadFromDisk && previewReady != null)
+            {
+                await Task.WhenAny(previewReady.Task, Task.Delay(TimeSpan.FromSeconds(20)));
+            }
+            if (runner == null || sessionEnded)
+            {
+                throw new InvalidOperationException("シナリオを実行していません");
+            }
+            var overrideReq = ParseAnimationPreviewRequest(args?["animationPreview"] ?? args);
+            if (overrideReq != null && (!string.IsNullOrEmpty(overrideReq.Situation) || !string.IsNullOrEmpty(overrideReq.Spec) || !string.IsNullOrEmpty(overrideReq.File)))
+            {
+                currentAnimationPreview = overrideReq;
+            }
+            var req = currentAnimationPreview ?? throw new InvalidOperationException("再生する戦闘アニメ・特殊効果が指定されていません");
+
+            if (Interlocked.CompareExchange(ref replayingAnimation, 1, 0) != 0)
+            {
+                return new JsonObject { ["played"] = false, ["message"] = "再生中です" };
+            }
+
+            try
+            {
+                if (reloadFromDisk && !string.IsNullOrEmpty(req.File) && File.Exists(req.File))
+                {
+                    var entries = AnimationDataParser.ParseFile(req.File, overrideKind: req.Kind);
+                    AnimationPreviewEntry updated = null;
+                    if (req.Line > 0)
+                    {
+                        updated = entries.FirstOrDefault(e => e.Line == req.Line);
+                    }
+                    updated ??= entries.FirstOrDefault(e =>
+                        string.Equals(e.Target, req.Target, StringComparison.Ordinal)
+                        && string.Equals(e.Situation, req.Situation, StringComparison.Ordinal));
+                    if (updated != null)
+                    {
+                        req.Kind = updated.Kind;
+                        req.Target = updated.Target;
+                        req.Situation = updated.Situation;
+                        req.Spec = updated.Spec;
+                    }
+                }
+
+                var tcs = new TaskCompletionSource<AnimationPreviewPlayResult>(TaskCreationOptions.RunContinuationsAsynchronously);
+                runner.Session.Game.Post(() =>
+                {
+                    try
+                    {
+                        var src = runner.Session.SRC;
+                        if (reloadFromDisk)
+                        {
+                            SRCCore.Filesystem.PathResolver.Invalidate();
+                            runner.GUI.ClearImageCache();
+                        }
+                        if (reloadFromDisk && string.Equals(req.Kind, "subroutine", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(src.ScenarioFileName))
+                        {
+                            // 保存済みの汎用戦闘アニメイベントを再読み込み
+                            try
+                            {
+                                src.Event.InvalidateScenarioLib();
+                                src.Event.LoadEventData(src.ScenarioFileName, "クイックロード");
+                            }
+                            catch (Exception ex)
+                            {
+                                Output($"イベントの再読み込みで警告: {ex.Message}", "stderr");
+                            }
+                        }
+                        var res = AnimationPreviewRunner.Play(src, req);
+                        tcs.TrySetResult(res);
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.TrySetException(ex);
+                    }
+                });
+
+                var completed = await Task.WhenAny(tcs.Task, Task.Delay(TimeSpan.FromSeconds(30)));
+                if (completed != tcs.Task)
+                {
+                    throw new TimeoutException("戦闘アニメ・特殊効果の再生が時間内に終わりませんでした");
+                }
+                var playResult = await tcs.Task;
+                foreach (var w in playResult.Warnings)
+                {
+                    Output(w, "stderr");
+                }
+                if (!string.IsNullOrEmpty(playResult.Message))
+                {
+                    Output(playResult.Message);
+                }
+                var warningsJson = new JsonArray();
+                foreach (var w in playResult.Warnings)
+                {
+                    warningsJson.Add(w);
+                }
+                return new JsonObject
+                {
+                    ["played"] = playResult.Played,
+                    ["message"] = playResult.Message ?? "",
+                    ["attacker"] = playResult.Attacker ?? "",
+                    ["defender"] = playResult.Defender ?? "",
+                    ["warnings"] = warningsJson,
+                };
+            }
+            finally
+            {
+                Interlocked.Exchange(ref replayingAnimation, 0);
+            }
         }
 
         private JsonNode StackTrace()

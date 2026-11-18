@@ -31,6 +31,12 @@ Usage:
       List images, sounds and maps referenced by data and events, with where they are referenced and where they were found in SRC search order (scenario, extended data, SRC). Also lists names built from expressions and unreferenced files. readme drafts a "Required assets" section for README. --fail-on-missing exits with 1 if any asset is missing (does not obtain or redistribute assets)
   srcsharp trial &lt;scenario folder&gt; [--unit unit] [--pilot pilot] [--enemy unit] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
       Create a trial battle event in .srcsharp/trial/ that fights units and pilots from the scenario data against an enemy, and print its path (run it with play or the debugger). --list prints the units and pilots as JSON
+  srcsharp event-flow &lt;event file&gt; [--format md|mmd|json] [--output file] [--app-path SRC folder] [--scenario-root scenario folder]
+      Trace event triggers, labels, Call, Goto and Require across one event file (and its includes and Requires) and output an event flow diagram
+  srcsharp talk-preview &lt;event file&gt; [--line line] [--block index] [--stdin] [--input file] [--format json|png] [--out directory] [--output file] [--no-images] [--app-path SRC folder] [--scenario-root scenario folder]
+      Render Talk and AutoTalk blocks using the game message window and output per-page PNG images or JSON
+  srcsharp anime-preview &lt;file or folder&gt; [--list] [--file file] [--line line] [--kind animation|ext_animation|effect|subroutine] [--target name] [--situation situation] [--spec spec] [--attacker unit] [--attacker-pilot pilot] [--defender unit] [--defender-pilot pilot] [--play-once] [--out image file] [--app-path SRC folder] [--scenario-root scenario folder]
+      Prepare .srcsharp/preview/ to play one animation.txt, ext_animation.txt, effect.txt entry or generic battle animation subroutine with fixed attacker and defender units. --list outputs entries as JSON, --play-once plays it once
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -119,5 +125,20 @@ Common options:
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>Created a trial battle: {0}/{1} vs {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Event file not found: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Specify exactly one event file to preview</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>Wrote {0} preview page images to {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Target data/event file or folder not found: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>No previewable battle animation or special effect definition was found</value>
   </data>
 </root>
