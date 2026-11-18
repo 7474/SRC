@@ -174,8 +174,9 @@ test('データビューア: ユニットとパイロットをコピーし、VS 
   });
   await page.goto(archive('scenarios/test'));
   await expect(page.getByText('テスト機').first()).toBeVisible({ timeout: 60 * 1000 });
-  const unitCopy = page.locator('.src-copy-data').first();
-  const unitVsCode = page.locator('.src-send-vscode').first();
+  const unitCard = page.locator('article[id^="unit-"]').first();
+  const unitCopy = unitCard.locator('.src-copy-data');
+  const unitVsCode = unitCard.locator('.src-send-vscode');
   await expect(unitCopy).toBeVisible();
   const unitHref = await unitVsCode.getAttribute('href');
   expect(unitHref).toContain('vscode://koudenpa.src-vscode/addData?kind=unit');
@@ -185,8 +186,9 @@ test('データビューア: ユニットとパイロットをコピーし、VS 
   expect(await page.evaluate(() => window.__copied.at(-1))).toContain('テスト機');
 
   await page.getByText('Pilot', { exact: true }).click();
-  const pilotCopy = page.locator('.src-copy-data').first();
-  const pilotVsCode = page.locator('.src-send-vscode').first();
+  const pilotCard = page.locator('article[id^="pilot-"]').first();
+  const pilotCopy = pilotCard.locator('.src-copy-data');
+  const pilotVsCode = pilotCard.locator('.src-send-vscode');
   await expect(pilotCopy).toBeVisible({ timeout: 60 * 1000 });
   const pilotHref = await pilotVsCode.getAttribute('href');
   expect(pilotHref).toContain('vscode://koudenpa.src-vscode/addData?kind=pilot');
