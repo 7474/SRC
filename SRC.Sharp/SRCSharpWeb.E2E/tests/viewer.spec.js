@@ -174,7 +174,7 @@ test('データビューア: ユニットとパイロットをコピーし、VS 
   });
   await page.goto(archive('scenarios/test'));
   await expect(page.getByText('テスト機').first()).toBeVisible({ timeout: 60 * 1000 });
-  const unitCard = page.locator('article[id^="unit-"]').first();
+  const unitCard = page.locator('#unit-テスト機');
   const unitCopy = unitCard.locator('.src-copy-data');
   const unitVsCode = unitCard.locator('.src-send-vscode');
   await expect(unitCopy).toBeVisible();
@@ -186,7 +186,7 @@ test('データビューア: ユニットとパイロットをコピーし、VS 
   expect(await page.evaluate(() => window.__copied.at(-1))).toContain('テスト機');
 
   await page.getByText('Pilot', { exact: true }).click();
-  const pilotCard = page.locator('article[id^="pilot-"]').first();
+  const pilotCard = page.locator('#pilot-テストパイロット');
   const pilotCopy = pilotCard.locator('.src-copy-data');
   const pilotVsCode = pilotCard.locator('.src-send-vscode');
   await expect(pilotCopy).toBeVisible({ timeout: 60 * 1000 });
