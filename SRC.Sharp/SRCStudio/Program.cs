@@ -1,3 +1,4 @@
+using SRCAuthoring.Analysis;
 using SRCAuthoring.Maps;
 using SRCAuthoring.Preview;
 using System;
@@ -25,6 +26,8 @@ namespace SRCStudio
         private static PlacementUnitCatalog unitCatalog = PlacementUnitCatalog.Empty;
         private static bool unitCatalogDirty;
         private static readonly List<ImageIndex> imageRoots = new List<ImageIndex>();
+        private static readonly List<AssetRoot> assetRoots = new List<AssetRoot>();
+        private static readonly List<(string path, string text)> assetTargets = new List<(string path, string text)>();
         private static readonly Dictionary<int, MapDocument> templates = new Dictionary<int, MapDocument>();
         private static int nextTemplate = 1;
 
@@ -301,6 +304,45 @@ namespace SRCStudio
                 width, height, tiles,
                 layer == null || layer.Length == 0 ? null : layer,
                 terrains, startX, startY, speed, transportation, adaption);
+        }
+
+        /// <summary>素材の一覧（7474/SRC#1654）の入力を空にする</summary>
+        [JSExport]
+        internal static void ClearAssetReportInputs()
+        {
+            assetRoots.Clear();
+            assetTargets.Clear();
+        }
+
+        /// <summary>素材を探す場所（探す順に scenario・extdata・extdata2・app）を足す</summary>
+        [JSExport]
+        internal static void AddAssetRoot(string kind, string name, string[] files)
+        {
+            assetRoots.Add(new AssetRoot(kind, name ?? "", files ?? Array.Empty<string>()));
+        }
+
+        /// <summary>素材を参照するファイル（*.eve や robot.txt など）の中身を足す</summary>
+        [JSExport]
+        internal static void AddAssetTargetFile(string path, byte[] data)
+        {
+            assetTargets.Add((path, AssetReferenceChecker.DecodeText(data ?? Array.Empty<byte>())));
+        }
+
+        /// <summary>素材の一覧（json・md・readme）を返す</summary>
+        [JSExport]
+        internal static string BuildAssetReport(string format)
+        {
+            var report = AssetReport.Build(assetRoots, assetTargets);
+            switch ((format ?? "json").ToLowerInvariant())
+            {
+                case "md":
+                case "markdown":
+                    return report.ToMarkdown();
+                case "readme":
+                    return report.ToReadme();
+                default:
+                    return report.ToJson();
+            }
         }
 
         private static void WriteInts(Utf8JsonWriter w, string name, int[] values)

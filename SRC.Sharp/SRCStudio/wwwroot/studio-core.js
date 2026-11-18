@@ -136,3 +136,31 @@ export async function buildQuickBattle(json) {
   const core = await studioCore();
   return JSON.parse(core.BuildQuickBattle(json));
 }
+
+/** 素材の参照を調べる対象ファイル（*.eve と素材を参照する Data/*.txt）か */
+export function isAssetTarget(path) {
+  const name = path.replace(/\\/g, '/').split('/').pop() ?? '';
+  return /\.eve$/i.test(name) || /^(robot|unit|pilot|non_pilot|animation|effect|item|terrain)\.txt$/i.test(name);
+}
+
+/**
+ * 素材の一覧（7474/SRC#1654）。
+ * @param {{ kind: string, name: string, files: string[], read: (path: string) => Promise<Uint8Array> }[]} roots 探す順（シナリオ → SRC 本体）
+ * @param {'json'|'md'|'readme'} format
+ */
+export async function buildAssetReport(roots, format = 'json') {
+  const core = await studioCore();
+  core.ClearAssetReportInputs();
+  for (const root of roots) {
+    core.AddAssetRoot(root.kind, root.name, root.files);
+  }
+  const scenario = roots.find(r => r.kind === 'scenario');
+  if (scenario) {
+    for (const file of scenario.files.filter(isAssetTarget)) {
+      core.AddAssetTargetFile(file, await scenario.read(file));
+    }
+  }
+  const out = core.BuildAssetReport(format);
+  return format === 'json' ? JSON.parse(out) : out;
+}
+

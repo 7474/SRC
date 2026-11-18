@@ -134,6 +134,37 @@ describe('SRC# Authoring', () => {
     await vscode.commands.executeCommand('workbench.action.closeAllEditors');
   });
 
+  it('素材の一覧を表示できる（7474/SRC#1654）', async function () {
+    this.timeout(30 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    await vscode.commands.executeCommand('srcsharp._showAssetsData', {
+      scenarioRoot: folder,
+      roots: [{ kind: 'scenario', name: folder, files: 3 }, { kind: 'app', name: 'basic-data', files: 10 }],
+      assets: [
+        { name: 'Event/無い.bmp', kind: 'image', missing: true, usages: [{ file: 'test.eve', line: 3 }] },
+        { name: '戦闘.mid', kind: 'sound', missing: false, foundIn: 'app', foundPath: 'Midi/戦闘.mid', usages: [{ file: 'test.eve', line: 2 }] },
+      ],
+      dynamic: [{ file: 'test.eve', line: 5, text: 'PaintPicture $(x).bmp 0 0' }],
+      unused: ['Bitmap/Event/使っていない.bmp'],
+      checkedFiles: 1,
+      missing: 1,
+    });
+    let status;
+    for (let i = 0; i < 60; i++) {
+      status = await vscode.commands.executeCommand('srcsharp._assetsStatus');
+      if (status && status.rendered) {
+        break;
+      }
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    assert.ok(status && status.rendered, `素材の一覧が描画を終えない: ${JSON.stringify(status)}`);
+    assert.strictEqual(status.assets, 2);
+    assert.strictEqual(status.missing, 1);
+    assert.strictEqual(status.dynamic, 1);
+    assert.strictEqual(status.unused, 1);
+    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+  });
+
   it('データの規則のグループ（srcsharp.rules）の既定は src だけ', () => {
     assert.deepStrictEqual(vscode.workspace.getConfiguration('srcsharp').get('rules'), ['src']);
   });

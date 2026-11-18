@@ -27,6 +27,8 @@
       建立新劇本的範本（第一話的事件、地圖與資料，自動遊玩步驟，VS Code 設定，CI）。已有的檔案不覆寫（--force 覆寫）--episodes 為 2 以上時，建立帶幕間（intermission）的多話劇本。
   srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
       追蹤事件之間的 Continue、下一關、Exec、IntermissionCommand、Load、GameClear，輸出各話之間的連接圖（預設是目前資料夾）
+  srcsharp assets [劇本資料夾] [--format md|json|readme] [--output 檔案] [--app-path SRC 資料夾] [--ext-data 資料夾] [--ext-data2 資料夾] [--fail-on-missing]
+      列出資料和事件引用的圖像、聲音、地圖，以及引用位置和依 SRC 相同順序（劇本 → 擴充資料 → SRC 本體）尋找的結果。也列出用運算式組成的名稱和未被引用的素材。readme 輸出寫入 README 的「所需素材」草稿。--fail-on-missing 在有找不到的素材時以結束代碼 1 結束（不涉及素材的取得和再散布）
   srcsharp trial &lt;劇本資料夾&gt; [--unit 機體] [--pilot 駕駛員] [--enemy 機體] [--enemy-pilot 駕駛員] [--level 數] [--enemies 數] [--list]
       在 .srcsharp/trial/ 建立讓劇本資料中的機體與駕駛員和敵人戰鬥的試戰事件，並輸出其路徑（以 play 或除錯器執行）。--list 以 JSON 輸出資料中的機體與駕駛員
   srcsharp lsp
@@ -98,6 +100,18 @@
   </data>
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>未知的輸出格式: {0}（md、mmd 或 json）</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>最多只能指定一個劇本資料夾</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>找不到劇本資料夾: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>未知的輸出格式: {0}（md、json 或 readme）</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>素材 {0} 個（找不到 {1}）·無法確認的引用 {2} 處·未引用的素材 {3} 個</value>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>請指定一個劇本資料夾</value>

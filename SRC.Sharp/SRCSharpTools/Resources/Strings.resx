@@ -27,6 +27,8 @@
       新しいシナリオのひな形（イベント・マップ・データ、自動プレイの手順、VS Code の設定、CI）を作る。--episodes で 2 以上の話数を指定すると、各話とインターミッション・共通イベント付きの複数話を作る。既にあるファイルは上書きしない（--force で上書き）
   srcsharp flow [シナリオのフォルダかイベントファイル] [--format md|mmd|json] [--output ファイル] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
       イベントの Continue・次ステージ・Exec・IntermissionCommand・Load・GameClear をたどり、話のつながりの図を出す（省くと現在のフォルダ）
+  srcsharp assets [シナリオのフォルダ] [--format md|json|readme] [--output ファイル] [--app-path SRCのフォルダ] [--ext-data フォルダ] [--ext-data2 フォルダ] [--fail-on-missing]
+      データとイベントが参照する画像・音・マップを、参照している場所と、SRC と同じ順（シナリオ → 拡張データ → SRC 本体）で探した結果と一緒に並べる。式で組み立てる名前・参照していない素材も出す。readme は README に書く「必要な素材」の下書き。--fail-on-missing で見つからない素材があれば終了コード 1（素材の入手・再配布は扱わない）
   srcsharp trial &lt;シナリオのフォルダ&gt; [--unit ユニット] [--pilot パイロット] [--enemy ユニット] [--enemy-pilot パイロット] [--level 数] [--enemies 数] [--list]
       シナリオのデータのユニット・パイロットを敵と戦わせる試し戦闘のイベントを .srcsharp/trial/ に作り、そのパスを出す（play・デバッガで動かす）。--list でデータのユニット・パイロットを JSON で出す
   srcsharp lsp
@@ -109,6 +111,21 @@
   <data name="UnknownFlowFormat" xml:space="preserve">
     <value>不明な出力形式: {0}（md・mmd・json のいずれか）</value>
     <comment>{0}: --format の値</comment>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>シナリオのフォルダは 1 つまで指定してください</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>シナリオのフォルダが見つかりません: {0}</value>
+    <comment>{0}: フォルダのパス</comment>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>不明な出力形式: {0}（md・json・readme のいずれか）</value>
+    <comment>{0}: --format の値</comment>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>素材 {0} 件（見つからない {1}）・確かめられない参照 {2} か所・参照していない素材 {3} 件</value>
+    <comment>{0}: 参照している素材の数、{1}: 見つからない数、{2}: 確かめられない参照の数、{3}: 参照していない素材の数</comment>
   </data>
   <data name="TrialRequiresFolder" xml:space="preserve">
     <value>シナリオのフォルダを 1 つ指定してください</value>

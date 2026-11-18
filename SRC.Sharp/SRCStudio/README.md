@@ -18,6 +18,7 @@
 | `wwwroot/map-editor.js` | マップ作成ツールの画面（canvas）。ファイルの読み書きは使う側に任せる |
 | `wwwroot/index.html`・`studio.js`・`folders.js` | スタンドアロン。フォルダを開き、マップを選んで編集し、保存する |
 | `wwwroot/preview.js` | データのプレビューの画面 |
+| `wwwroot/assets.js` | 素材の一覧（揃っているかの管理。7474/SRC#1654）の画面 |
 | `wwwroot/table-edit.js` | 表で直す（武器・アビリティの行を欄ごとに書き換える） |
 | `wwwroot/compare.js` | 比べる（7474/SRC-Data の Pages の評価の JSON の中で上位何 %） |
 | `wwwroot/vscode.html`・`vscode-boot.js`・`vscode.js` | VS Code の Webview（マップ作成ツール）。拡張とメッセージでやり取りする |
