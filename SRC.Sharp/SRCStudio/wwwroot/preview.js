@@ -33,6 +33,11 @@ export class DataPreview {
 
   /** プレビューを出す。line を含むデータがあればそれを、無ければ前に選んだもの（同じ名前）か最初のものを選ぶ */
   show(result, line) {
+    // 表で直している途中の入力欄（書いている途中・まだ確定していない値）は、作り直した表に引き継ぐ。
+    // 1 つ直すとプレビューを作り直すので、続けて次の欄に書いた値が消えないようにする
+    const pending = [...this.element.querySelectorAll('.dp-table-edit input[data-key]')]
+      .filter(input => input.value !== input.defaultValue || input === document.activeElement)
+      .map(input => ({ key: input.dataset.key, value: input.value, focused: input === document.activeElement }));
     this.result = result;
     this.cursorLine = line ?? null;
     const errors = this.element.querySelector('.dp-errors');
@@ -50,6 +55,15 @@ export class DataPreview {
     }
     this.renderList();
     this.select(byLine ?? previous ?? result.entries[0] ?? null);
+    for (const p of pending) {
+      const input = [...this.element.querySelectorAll('.dp-table-edit input[data-key]')].find(x => x.dataset.key === p.key);
+      if (input && !input.disabled) {
+        input.value = p.value;
+        if (p.focused) {
+          input.focus();
+        }
+      }
+    }
   }
 
   renderList() {
@@ -134,7 +148,7 @@ DataPreview.prototype.setupTable = function (card, entry) {
       statLines: hasStats ? statLines : null,
       statFields,
       rows,
-    }, this.options.lines(), edits => this.options.editLines(edits));
+    }, () => this.options.lines(), edits => this.options.editLines(edits));
   };
   const anchor = card.querySelector('.dp-stats') ?? card.querySelector('.dp-weapons');
   if (this.tableOpenFor === tableKey) {
@@ -158,7 +172,8 @@ DataPreview.prototype.setupTable = function (card, entry) {
 };
 
 /** 能力値・地形適応の表（1 行）を作る。既存の .dp-edit とは別のクラスにする */
-function renderStatsTable(statFields, statLines, lines, editLines) {
+function renderStatsTable(statFields, statLines, getLines, editLines) {
+  const lines = getLines();
   const table = document.createElement('table');
   table.className = 'dp-edit-stats';
   table.innerHTML = `<caption>${esc(t('table.stats'))}</caption><thead><tr>${statFields.map(f => `<th>${esc(t(`table.stat.${f.field}`))}</th>`).join('')}</tr></thead>`;
@@ -173,12 +188,15 @@ function renderStatsTable(statFields, statLines, lines, editLines) {
     const index = resolveFieldIndex(col, text);
     const input = document.createElement('input');
     input.value = index >= 0 && index < values.length ? values[index] : '';
+    input.defaultValue = input.value;
     input.disabled = locked || index < 0 || index >= values.length;
     input.dataset.field = col.field;
+    input.dataset.key = `stat:${col.field}`;
     input.size = Math.max(3, Math.min(10, input.value.length + 1));
     input.title = locked && lineNo > 0 ? t('table.continued') : (lineNo > 0 ? `${lineNo}${t('preview.line')}` : '');
     input.addEventListener('change', () => {
-      const current = lines[lineNo - 1] ?? '';
+      // 表を作った後に別の欄を直していることがあるので、今の行で書き換える
+      const current = getLines()[lineNo - 1] ?? '';
       const currentIndex = resolveFieldIndex(col, current);
       if (currentIndex < 0) {
         return;
@@ -194,11 +212,12 @@ function renderStatsTable(statFields, statLines, lines, editLines) {
 }
 
 /** 能力値・地形適応・武器・アビリティの行を、欄ごとの入力欄の表にする */
-function renderTable({ statLines, statFields, rows }, lines, editLines) {
+function renderTable({ statLines, statFields, rows }, getLines, editLines) {
+  const lines = getLines();
   const box = document.createElement('div');
   box.className = 'dp-table-edit';
   if (statLines) {
-    box.append(renderStatsTable(statFields, statLines, lines, editLines));
+    box.append(renderStatsTable(statFields, statLines, getLines, editLines));
   }
   for (const kind of ['weapon', 'ability']) {
     const list = rows.filter(r => r.kind === kind);
@@ -224,7 +243,10 @@ function renderTable({ statLines, statFields, rows }, lines, editLines) {
         const other = list[i + delta];
         b.disabled = locked || !other || isContinued(lines, other.line);
         // 並べ替え: 隣の行と入れ替える
-        b.addEventListener('click', () => editLines([{ line: row.line, text: lines[other.line - 1] }, { line: other.line, text }]));
+        b.addEventListener('click', () => {
+          const now = getLines();
+          editLines([{ line: row.line, text: now[other.line - 1] }, { line: other.line, text: now[row.line - 1] }]);
+        });
         move.append(b);
       }
       tr.append(move);
@@ -233,12 +255,14 @@ function renderTable({ statLines, statFields, rows }, lines, editLines) {
         const td = document.createElement('td');
         const input = document.createElement('input');
         input.value = values[index] ?? '';
+        input.defaultValue = input.value;
         input.disabled = locked || index >= values.length;
         input.dataset.field = f;
+        input.dataset.key = `row:${row.line}:${f}`;
         input.size = Math.max(3, Math.min(14, input.value.length + 1));
         input.title = locked ? t('table.continued') : `${row.line}${t('preview.line')}`;
         input.addEventListener('change', () => {
-          const current = lines[row.line - 1] ?? '';
+          const current = getLines()[row.line - 1] ?? '';
           editLines([{ line: row.line, text: replaceField(current, index, input.value.trim()) }]);
         });
         td.append(input);

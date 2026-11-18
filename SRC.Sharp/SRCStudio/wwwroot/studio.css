@@ -323,7 +323,15 @@ main[hidden] { display: none; }
 .assets-table th, .assets-table td { border-bottom: 1px solid var(--border); padding: 4px 8px; text-align: left; vertical-align: top; }
 .assets-table th { color: var(--muted); font-weight: 600; }
 .assets-name { font-family: ui-monospace, monospace; word-break: break-all; }
-.assets-missing { color: var(--error); font-weight: 600; }
+.assets-missing { color: var(--error); font-weight: 600; white-space: nowrap; }
+@media (max-width: 720px) {
+  /* 狭い画面では表をやめ、素材ごとに 1 枚のカードにする（列が細くなり「見つからない」が 1 字ずつ折り返すため） */
+  .assets-table thead { display: none; }
+  .assets-table, .assets-table tbody, .assets-table tr, .assets-table td { display: block; }
+  .assets-table tr { border-bottom: 1px solid var(--border); padding: 6px 0; }
+  .assets-table td { border: none; padding: 1px 0; }
+  .assets-table td:nth-child(2), .assets-table td:nth-child(3) { display: inline-block; margin-right: 10px; }
+}
 .assets-usages { color: var(--muted); font-size: 0.9em; }
 .assets-list { padding-left: 20px; margin: 4px 0 12px; }
 .assets-loc { font-family: ui-monospace, monospace; font-size: 0.9em; color: var(--muted); }
