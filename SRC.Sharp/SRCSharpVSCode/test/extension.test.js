@@ -191,6 +191,79 @@ describe('SRC# Authoring', () => {
     }
   });
 
+  it('イベントの流れの図を表示して描画できる（7474/SRC#1655）', async function () {
+    this.timeout(30 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    await vscode.commands.executeCommand('srcsharp._showEventFlowData', {
+      file: 'ep01.eve',
+      fullFile: path.join(folder, 'test.eve'),
+      scenarioRoot: folder,
+      nodes: [
+        { id: 'lbl0', name: 'スタート', kind: 'Entry', file: 'ep01.eve', fullFile: path.join(folder, 'test.eve'), line: 1, exists: true },
+        { id: 'lbl1', name: '会話サブルーチン', kind: 'Subroutine', file: 'ep01.eve', fullFile: path.join(folder, 'test.eve'), line: 10, exists: true },
+        { id: 'miss0', name: '無いサブルーチン', kind: 'Missing', file: '無いサブルーチン', line: 0, exists: false },
+      ],
+      edges: [
+        { from: 'lbl0', to: 'lbl1', kind: 'Call', file: 'ep01.eve', fullFile: path.join(folder, 'test.eve'), line: 3, command: 'Call', target: '会話サブルーチン', condition: 'フラグ = 1' },
+        { from: 'lbl0', to: 'miss0', kind: 'Call', file: 'ep01.eve', line: 5, command: 'Call', target: '無いサブルーチン', missing: true },
+      ],
+      warnings: [
+        { file: 'ep01.eve', line: 5, target: '無いサブルーチン', message: 'Call 先のラベル「無いサブルーチン」が見つかりません' },
+      ],
+      mermaid: 'flowchart TD\n  lbl0(["スタート"]) --> lbl1["会話サブルーチン"]\n',
+    });
+    let status;
+    for (let i = 0; i < 60; i++) {
+      status = await vscode.commands.executeCommand('srcsharp._eventFlowStatus');
+      if (status && status.rendered) {
+        break;
+      }
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    assert.ok(status && status.rendered, `イベントの流れの図が描画を終えない: ${JSON.stringify(status)}`);
+    assert.strictEqual(status.nodes, 3);
+    assert.strictEqual(status.edges, 2);
+    assert.strictEqual(status.warnings, 1);
+    assert.strictEqual(status.error, undefined);
+    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+  });
+
+  it('会話のプレビューを表示してページ情報を描画できる（7474/SRC#1655）', async function () {
+    this.timeout(30 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    // 1x1 の透明 PNG
+    const samplePng = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+    await vscode.commands.executeCommand('srcsharp._showTalkPreviewData', {
+      file: path.join(folder, 'test.eve'),
+      scenarioRoot: folder,
+      cursorLine: 2,
+      selectedBlockIndex: 0,
+      startPageIndex: 1,
+      blocks: [
+        { index: 0, command: 'Talk', startLine: 2, endLine: 6, endKind: 'End', label: 'スタート', stepCount: 2, previewText: 'システム: 1ページ目' },
+      ],
+      pages: [
+        { pageIndex: 0, stepIndex: 0, line: 3, command: 'Talk', speaker: 'システム', text: '1ページ目', renderedLines: ['1ページ目'], pngBase64: samplePng },
+        { pageIndex: 1, stepIndex: 1, line: 4, command: 'Talk', speaker: 'システム', text: '2ページ目', renderedLines: ['2ページ目'], pngBase64: samplePng },
+      ],
+      warnings: [],
+    });
+    let status;
+    for (let i = 0; i < 60; i++) {
+      status = await vscode.commands.executeCommand('srcsharp._talkPreviewStatus');
+      if (status && status.rendered) {
+        break;
+      }
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    assert.ok(status && status.rendered, `会話のプレビューが描画を終えない: ${JSON.stringify(status)}`);
+    assert.strictEqual(status.blocks, 1);
+    assert.strictEqual(status.pages, 2);
+    assert.strictEqual(status.currentPage, 1);
+    assert.strictEqual(status.error, undefined);
+    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+  });
+
   it('データの規則のグループ（srcsharp.rules）の既定は src だけ', () => {
     assert.deepStrictEqual(vscode.workspace.getConfiguration('srcsharp').get('rules'), ['src']);
   });

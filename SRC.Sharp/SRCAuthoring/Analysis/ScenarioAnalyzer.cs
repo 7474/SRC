@@ -40,6 +40,8 @@ namespace SRCAuthoring.Analysis
         public List<EveInclude> Includes { get; } = new List<EveInclude>();
         /// <summary>読み込んだイベントの行（include 先を含む）</summary>
         public IList<EventDataLine> Lines { get; set; } = new List<EventDataLine>();
+        /// <summary>解析したコマンド（include 先を含む）</summary>
+        public IList<CmdData> Commands { get; set; } = new List<CmdData>();
 
         public IEnumerable<SrcDiagnostic> DiagnosticsFor(string file)
             => Diagnostics.Where(x => SamePath(x.File, file));
@@ -152,6 +154,7 @@ namespace SRCAuthoring.Analysis
 
             var lines = src.Event.EventData ?? new List<EventDataLine>();
             result.Lines = lines;
+            result.Commands = src.Event.EventCmd ?? new List<CmdData>();
             foreach (var line in lines)
             {
                 var data = line.Data ?? "";

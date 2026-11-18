@@ -329,5 +329,78 @@ namespace SRCAuthoring.Tests
                 Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
             }
         }
+
+        [TestMethod]
+        public void Dap_AnimationPreviewAndReplay()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                scenario.Write(System.IO.Path.Combine("Data", "System", "terrain.txt"),
+                    "0\n平地, plain\n陸, 1, 0, 0\n\n");
+                scenario.Write(System.IO.Path.Combine("Data", "robot.txt"),
+                    "試作機\n試作機, しさくき, 汎用, 1, 2\n陸, 4, M, 1000, 100\n特殊能力なし\n3000, 100, 600, 60\nAAAA, -.bmp\n===\n");
+                scenario.Write(System.IO.Path.Combine("Data", "pilot.txt"),
+                    "主人公\n主人公, しゅじんこう, 男性, 汎用, AAAA, 120\n特殊能力なし\n150, 145, 150, 150, 150, 155, 普通\nＳＰ, 0\n-.bmp, -.mid\n");
+                var animPath = scenario.Write(System.IO.Path.Combine("Data", "animation.txt"),
+                    "試作機",
+                    "攻撃, テストアニメ");
+                scenario.Write(System.IO.Path.Combine("Lib", "汎用戦闘アニメ", "include.eve"),
+                    "戦闘アニメ_テストアニメ:",
+                    "Wait 0",
+                    "Return");
+
+                var previewEve = SRCAuthoring.Templates.AnimationPreviewTemplate.Write(
+                    scenario.Root,
+                    new SRCAuthoring.Templates.AnimationPreviewSetup
+                    {
+                        Unit = "試作機",
+                        Pilot = "主人公",
+                        EnemyUnit = "試作機",
+                        EnemyPilot = "主人公",
+                    });
+
+                var server = new DapServer(client.ServerInput, client.ServerOutput);
+                var run = Task.Run(() => server.RunAsync());
+
+                Request(client, "initialize", new JsonObject { ["adapterID"] = "srcsharp" });
+                Request(client, "launch", new JsonObject
+                {
+                    ["program"] = previewEve,
+                    ["appPath"] = scenario.Root,
+                    ["scenarioRoot"] = scenario.Root,
+                    ["skipWait"] = true,
+                    ["animationPreview"] = new JsonObject
+                    {
+                        ["kind"] = "animation",
+                        ["file"] = animPath,
+                        ["line"] = 2,
+                        ["target"] = "試作機",
+                        ["situation"] = "攻撃",
+                        ["spec"] = "テストアニメ",
+                        ["attackerUnit"] = "試作機",
+                        ["attackerPilot"] = "主人公",
+                        ["defenderUnit"] = "試作機",
+                        ["defenderPilot"] = "主人公",
+                    },
+                });
+                Request(client, "configurationDone");
+
+                // 起動後に画面フレームが出る
+                var frame = WaitEvent(client, InteractiveScreen.FrameEvent);
+                Assert.AreEqual("webp", frame["body"]["format"].GetValue<string>());
+
+                // 定義を更新してから srcsharpReplayAnimation を送ると、編集内容を取り直して再生できる
+                scenario.Write(System.IO.Path.Combine("Data", "animation.txt"),
+                    "試作機",
+                    "攻撃, テストアニメ 赤");
+                var replay = Request(client, DapServer.ReplayAnimationCommand);
+                Assert.IsTrue(replay["played"].GetValue<bool>(), replay.ToJsonString());
+                StringAssert.Contains(replay["message"].GetValue<string>(), "攻撃");
+
+                Request(client, "disconnect");
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
     }
 }

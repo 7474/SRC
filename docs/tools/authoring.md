@@ -93,6 +93,9 @@ dotnet tool install -g SRCSharpTools
 
 srcsharp new <フォルダ> [--title 題名] [--episodes 数] [--app-path SRCのフォルダ] [--force]
 srcsharp flow [シナリオのフォルダかイベントファイル] [--format md|mmd|json] [--output ファイル] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+srcsharp event-flow <イベントファイル> [--format md|mmd|json] [--output ファイル] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+srcsharp talk-preview <イベントファイル> [--line 行] [--block 番号] [--stdin] [--input ファイル] [--format json|png] [--out ディレクトリ] [--output ファイル] [--no-images] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+srcsharp anime-preview <ファイルかフォルダ> [--list] [--file ファイル] [--line 行] [--kind animation|ext_animation|effect|subroutine] [--target 名称] [--situation 場面] [--spec 指定] [--attacker ユニット] [--attacker-pilot パイロット] [--defender ユニット] [--defender-pilot パイロット] [--play-once] [--skip-wait] [--out 画像ファイル] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
 srcsharp assets [シナリオのフォルダ] [--format md|json|readme] [--output ファイル] [--app-path SRCのフォルダ] [--ext-data フォルダ] [--ext-data2 フォルダ] [--fail-on-missing]
 srcsharp trial <シナリオのフォルダ> [--unit ユニット] [--pilot パイロット] [--enemy ユニット] [--enemy-pilot パイロット] [--level 数] [--enemies 数] [--app-path SRCのフォルダ] [--list]
 srcsharp lint <ディレクトリかファイル>... [--format text|sarif] [--output ファイル] [--rules グループ,...|none] [--list-rules] [--app-path SRCのフォルダ]
@@ -108,6 +111,9 @@ srcsharp --version
 |---|---|
 | `new` | 新しいシナリオのひな形を作る（SRCAuthoring の `ScenarioTemplate`。7474/SRC#1640・#1652）。最小の汎用データで遊べる 1 話（`第1話.eve`・`第1話.map`・`Data/robot.txt`・`Data/pilot.txt`）、最後まで自動で遊ぶ手順（`第1話.play`）、VS Code のデバッガの構成（`.vscode/launch.json`。`--app-path` があれば `.vscode/settings.json` の `srcsharp.appPath` も）、作者のリポジトリの CI（`.github/workflows/src-check.yml`。最小の汎用データで `lint`（SARIF をコードスキャンに渡す）と `play`）、README・.gitignore。`--episodes 2` 以上を指定すると、全話分のイベント・マップ・単体/通しプレイ（`全話.play`）と `Lib/include.eve`（共通の敗北・章題・報酬・単体開始用の `単体の部隊`）・`Lib/作戦会議.eve` を作る。既にあるファイルは上書きしない（`--force` で上書き）。VS Code のコマンド「新しいシナリオを作る」も同じ |
 | `flow` | シナリオの `Continue`・`次ステージ`・`Exec`・`IntermissionCommand`・`Load`・`GameClear` と `If`/`Switch` の分岐をたどり、話のつながりの図を出す（SRCAuthoring の `ScenarioFlowAnalyzer`。7474/SRC#1652）。`--format md`（既定、Mermaid 付きの Markdown）・`mmd`（Mermaid）・`json`（ノード・エッジ・警告の構造化データ）。VS Code のコマンド「話のつながりの図を表示」が `--format json` を使って SVG フローチャートを描き、クリックで該当ファイル・行へ飛べる |
+| `event-flow` | 1 つのイベントファイル（と include・Require 先）について、発火イベント・ラベル・`Call`・`Goto`・`Require` のつながりの図を出す（SRCAuthoring の `EventFlowAnalyzer`。7474/SRC#1655）。`--format md`（既定）・`mmd`・`json`。VS Code のコマンド「イベントの流れの図を表示」は LSP の `srcsharp/eventFlow` を使って SVG フローチャートを描き、クリックで該当ファイル・行へ飛べる |
+| `talk-preview` | イベントファイルの `Talk`・`AutoTalk` ブロックをゲームと同じメッセージウィンドウ（SRCRender の `TalkPreviewRunner`）で描画し、改ページごとの画像（PNG base64 の JSON または `--format png` で `page-NNN.png`）を出す（7474/SRC#1655）。シナリオを最初から遊ばずに見た目・改行・改ページ・顔グラフィックを確かめられる（`--stdin`・`--input` で未保存の内容も可）。VS Code のコマンド「会話をプレビュー」も同じ |
+| `anime-preview` | `animation.txt`・`ext_animation.txt`・`effect.txt` の 1 定義や汎用戦闘アニメ（`Lib/汎用戦闘アニメ`）を、固定の攻撃側・防御側ユニットで再生する準備ファイル（`.srcsharp/preview/`、`AnimationPreviewTemplate`）を作る（7474/SRC#1655）。`--list` でファイル内の定義一覧と候補ユニット・パイロットを JSON で出し、`--play-once` で 1 回再生（`--out` で PNG 保存）する。VS Code のコマンド「戦闘アニメ・特殊効果をプレビュー」は同じ設定でデバッガ（`animationPreview`）を起動し、画面を見ながら「もう一度再生」（`srcsharpReplayAnimation`）で直してすぐ確認できる |
 | `assets` | データとイベントが参照する画像・音・マップ（`AssetReferenceChecker` と共通の字句解析）を、参照している場所と一緒に並べ、SRC と同じ順（シナリオ → 拡張データ → SRC 本体）で探した結果を出す（`AssetReport`。7474/SRC#1654。素材の入手・再配布は扱わない）。式で組み立てる名前は「確かめられない」に分け、シナリオのフォルダ内で名前から参照されていない素材も並べる。`--format readme` でシナリオ外の必要素材を README 用に書き出す。`--fail-on-missing` で不足があれば終了コード 1（CI 用）。VS Code のコマンド「素材の一覧（揃っているか）を表示」・SRC#Studio の「素材の一覧」タブも同じ部品を使う |
 | `trial` | 試し戦闘（SRCAuthoring の `TrialTemplate`。7474/SRC#1643）。シナリオのデータのユニット・パイロットを、小さなマップ（16×11）で敵と戦わせるイベントを、シナリオのフォルダの `.srcsharp/trial/試し戦闘.eve` に作り（毎回上書き）、そのパスを標準出力に出す。シナリオのフォルダで動くのでシナリオのデータをそのまま使い、デバッガのホットリロードでデータを直しながら戦える。省いた組は、味方のユニットはデータの最初、パイロットは最初の名前付き、敵は味方と同じユニットとザコか汎用のパイロット。`--list` はデータのユニット・パイロットを JSON で出す（VS Code の「試し戦闘」が使う） |
 | `lint` | SRCDataLinter と同じ処理で検査する（データは種類ごとの読み込み処理、イベントは読み込みと構文の検査）。読み込めたデータには、`--rules` で選んだグループの規則もかける（下の「[データの規則](#データの規則)」。既定は `src`）。`--list-rules` は規則の一覧（ID・グループ・重さ・説明・出どころをタブで区切る）。`--format sarif` で GitHub のコードスキャンに渡せる（[SARIF support for code scanning](https://docs.github.com/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning)。規則ごとに `rules` を出し、グループは `properties.tags`）。エラーか警告があれば終了コード 1（規則の「情報」は数えない）。`--app-path` を付けると、そのフォルダの `Data/System/*.txt`（`sp.txt` など）を先に読み、参照の先として使う（検査はしない。シナリオに無いスペシャルパワーを汎用データから使うときに要る） |
@@ -229,11 +235,12 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | 補完 | コマンド名（ヘルプの説明付き）・ラベル・シナリオのデータの名前（ユニット・パイロット・アイテム） |
 | データの参照の診断 | Create・Unit・Pilot・Item の引数のユニット・パイロット・アイテムの名前（愛称でもよい）が、シナリオの Data のデータに無い（警告）。式（`$` を含む）・変数（Set・Local・Global・Incr で値を入れた名前）は見ない。その種類のデータがシナリオに 1 つも無ければ調べない（ほかの場所のデータを使うシナリオがあるため）。`srcsharp lint` とブラウザの lint も同じ（`DataReferenceChecker`） |
 | データのファイル | 特殊能力・武器の属性の補完と、ホバーでヘルプの説明（「…特殊能力…」「…属性…」の頁の節。`ＨＰ回復Lv2`・`弱点=風` のようにレベル・値を付けても引く） |
+| イベントの流れの図 | 独自のリクエスト `srcsharp/eventFlow`（`uri`・`appPath`・`scenarioRoot`）に、開いているイベントファイル（未保存の内容を反映）と include・Require 先の `EventFlowGraph`（発火イベント・ラベル・Call・Goto・Require）を返す |
 
 解析は、エディタで開いているファイルの内容を重ねたファイルシステム（`OverlayFileSystem`）で、SRCCore の `Event.LoadEventData` を動かして行う。本体と同じ検査をそのまま使う。
 
 - **シナリオのフォルダ**：src.ini か Data フォルダのある、いちばん近い親フォルダ
-- **SRC 本体のフォルダ**：設定（`srcsharp.appPath`）が無ければ、シナリオのフォルダの親のうち、Lib か Data\System のあるもの。汎用戦闘アニメなどのシステムのラベルはここから読む
+- **SRC 本体のフォルダ**：設定（`srcsharp.appPath`）が無ければ、シナリオのフォルダの親のうち Lib か Data\System のあるもの。汎用戦闘アニメなどのシステムのラベルはここから読む
 - **ラベルの検査から除くもの**
   - Talk の本文や Ask の選択肢（知らないコマンドの行は Call とみなされるため）
   - 変数に入れたラベル名（Set・Local・Global で値を入れた名前）
@@ -257,6 +264,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | 画面 | 独自のリクエスト `srcsharpScreen` に、最後に表示したフレーム（`ScreenGUI.SnapshotPng`）を base64 の PNG で返す。止まっている間も撮れる。シナリオが終わる時は、`terminated` の前に同じ名前のイベントで最後の画面を送る |
 | 操作（`interactive`） | 自動の入力を動かさず、タブの操作で進める（`InteractiveScreen`）。表示が変わったらフレームを `srcsharpFrame` イベント（WebP、最大で約 15 枚／秒）で送る。`srcsharpInput` リクエスト（pointer・wheel・key）を ScreenGUI の操作にする（キーの割り当ては SRC#Web と同じ。止まっている間の押下は捨てる）。文字入力・ファイルの選択は `srcsharpPrompt` イベントで尋ね、`srcsharpPromptResult` リクエストで答えを受ける。`script` があれば `script` で動かす |
 | ホットリロード | 独自のリクエスト `srcsharpReload`（events・data・images・cancel）で受け、結果を同じ名前のイベント（waiting・reloaded・failed・canceled）で送る（`HotReloader`）。イベント・データは、ゲームスレッドの処理が待ちのループの中でなく（`GameThread.IsTopLevel`）、味方フェイズでコマンドを待つ時に、`DumpData`（クイックセーブの形、メモリ）→ データの読み直し（`IncludeData`・`LoadLocalData`）→ `LoadEventData(…, "クイックロード")` → `RestoreData`（クイックロード）の順に行う。前にイベントは `ScenarioAnalyzer`、データは `DataLinter` で調べ、エラーなら読み直さない。画像は `ScreenGUI.ClearImageCache` ですぐ捨てる |
+| 演出プレビュー（`animationPreview`） | launch に `animationPreview` を指定すると、1 ターン目の操作待ちになったところで `AnimationPreviewRunner.Play` を 1 回再生する。独自のリクエスト `srcsharpReplayAnimation` を受けると、`animation.txt`・`ext_animation.txt`・`effect.txt`・汎用戦闘アニメの保存済みの定義を取り直し、画像キャッシュを捨てて再再生する |
 | SRC 本体のフォルダ | launch の `appPath`。無ければシナリオのフォルダの親のうち Lib か Data\System のあるもの、それも無ければシナリオのフォルダ。VS Code 拡張は `srcsharp.appPath` を渡す |
 
 止めている間はゲームスレッドが待つ。自動プレイ（`ScreenScenarioRunner.IsSuspended`）もその間は操作せず、待った時間は待ち時間に数えない。

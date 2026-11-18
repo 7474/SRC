@@ -382,6 +382,33 @@ namespace SRCRender
             return new SKPointI(rect.Left + ScreenLayout.MessageFramePx, rect.Top + ScreenLayout.MessageTitleBarPx);
         }
 
+        /// <summary>メッセージウィンドウだけを独立したビットマップに描く（会話プレビュー用）</summary>
+        public SKBitmap RenderMessageWindow(Compat.MessageWindow window)
+        {
+            if (window == null)
+            {
+                return null;
+            }
+            var rect = ScreenLayout.MessageWindowRect(window.Width, window.Height, window.Centered);
+            var bitmap = new SKBitmap(rect.Width, rect.Height, SKColorType.Bgra8888, SKAlphaType.Premul);
+            var wasVisible = window.Visible;
+            window.Visible = true;
+            try
+            {
+                using (var canvas = new SKCanvas(bitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(-rect.Left, -rect.Top);
+                    DrawMessageArea(canvas, window);
+                }
+            }
+            finally
+            {
+                window.Visible = wasVisible;
+            }
+            return bitmap;
+        }
+
         private void DrawMessageArea(SKCanvas canvas, Compat.MessageWindow window)
         {
             if (window == null || !window.Visible)

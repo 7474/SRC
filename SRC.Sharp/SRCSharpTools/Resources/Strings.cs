@@ -71,6 +71,16 @@ namespace SRCSharpTools.Resources
 
         public static string TrialCreated(string unit, string pilot, string enemy, string enemyPilot) => Format(nameof(TrialCreated), unit, pilot, enemy, enemyPilot);
 
+        public static string EventFlowRequiresEventFile(string path) => Format(nameof(EventFlowRequiresEventFile), path);
+
+        public static string TalkPreviewRequiresEventFile => Get(nameof(TalkPreviewRequiresEventFile));
+
+        public static string TalkPreviewPagesWritten(int count, string dir) => Format(nameof(TalkPreviewPagesWritten), count, dir);
+
+        public static string AnimePreviewPathNotFound(string path) => Format(nameof(AnimePreviewPathNotFound), path);
+
+        public static string AnimePreviewNoEntry => Get(nameof(AnimePreviewNoEntry));
+
         public static string UnknownRuleGroup(string value, string groups) => Format(nameof(UnknownRuleGroup), value, groups);
     }
 }

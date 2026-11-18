@@ -31,6 +31,12 @@
       データとイベントが参照する画像・音・マップを、参照している場所と、SRC と同じ順（シナリオ → 拡張データ → SRC 本体）で探した結果と一緒に並べる。式で組み立てる名前・参照していない素材も出す。readme は README に書く「必要な素材」の下書き。--fail-on-missing で見つからない素材があれば終了コード 1（素材の入手・再配布は扱わない）
   srcsharp trial &lt;シナリオのフォルダ&gt; [--unit ユニット] [--pilot パイロット] [--enemy ユニット] [--enemy-pilot パイロット] [--level 数] [--enemies 数] [--list]
       シナリオのデータのユニット・パイロットを敵と戦わせる試し戦闘のイベントを .srcsharp/trial/ に作り、そのパスを出す（play・デバッガで動かす）。--list でデータのユニット・パイロットを JSON で出す
+  srcsharp event-flow &lt;イベントファイル&gt; [--format md|mmd|json] [--output ファイル] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+      1 つのイベントファイル（と include・Require 先）について、発火イベント・ラベル・Call・Goto・Require のつながりの図を出す
+  srcsharp talk-preview &lt;イベントファイル&gt; [--line 行] [--block 番号] [--stdin] [--input ファイル] [--format json|png] [--out ディレクトリ] [--output ファイル] [--no-images] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+      イベントファイルの Talk・AutoTalk ブロックをゲームと同じメッセージウィンドウで描画し、改ページごとの画像（PNG）や JSON を出す
+  srcsharp anime-preview &lt;ファイルかフォルダ&gt; [--list] [--file ファイル] [--line 行] [--kind animation|ext_animation|effect|subroutine] [--target 名称] [--situation 場面] [--spec 指定] [--attacker ユニット] [--attacker-pilot パイロット] [--defender ユニット] [--defender-pilot パイロット] [--play-once] [--out 画像ファイル] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+      animation.txt・ext_animation.txt・effect.txt の 1 定義や汎用戦闘アニメを固定の攻撃側・防御側で再生する準備ファイル（.srcsharp/preview/）を作る。--list で一覧、--play-once で 1 回再生する
   srcsharp lsp
       Language Server（標準入出力）
   srcsharp dap
@@ -132,5 +138,23 @@
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>試し戦闘を作りました: {0}／{1} 対 {2}／{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>解析するイベントファイルが見つかりません: {0}</value>
+    <comment>{0}: 指定したパス</comment>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>プレビューするイベントファイルを 1 つ指定してください</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>{0} ページ分の画像を {1} に書き出しました</value>
+    <comment>{0}: ページ数、{1}: 出力フォルダ</comment>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>対象のデータ・イベントファイルまたはフォルダが見つかりません: {0}</value>
+    <comment>{0}: 指定したパス</comment>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>プレビューできる戦闘アニメ・特殊効果の定義が見つかりません</value>
   </data>
 </root>

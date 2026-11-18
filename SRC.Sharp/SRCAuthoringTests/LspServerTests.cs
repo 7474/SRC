@@ -365,5 +365,67 @@ namespace SRCAuthoring.Tests
                 Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
             }
         }
+
+        [TestMethod]
+        public void Lsp_EventFlowReturnsGraphAndUsesUnsavedChanges()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                var eve = scenario.Write("ep01.eve",
+                    "スタート:",
+                    "Call 保存済みサブ",
+                    "Exit",
+                    "",
+                    "保存済みサブ:",
+                    "Return");
+                var uri = LspServer.PathToUri(eve);
+                var server = new LspServer(client.ServerInput, client.ServerOutput) { Debounce = TimeSpan.FromMilliseconds(10), Help = RepositoryHelp() };
+                var run = Task.Run(() => server.RunAsync());
+
+                Request(client, "initialize", new JsonObject { ["capabilities"] = new JsonObject() });
+                Notify(client, "initialized", new JsonObject());
+                Notify(client, "textDocument/didOpen", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri, ["languageId"] = "src-eve", ["version"] = 1, ["text"] = System.IO.File.ReadAllText(eve) },
+                });
+
+                var flow1 = Request(client, "srcsharp/eventFlow", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri },
+                });
+                var nodes1 = flow1["nodes"].AsArray().Select(n => n["name"].GetValue<string>()).ToList();
+                CollectionAssert.Contains(nodes1, "保存済みサブ");
+
+                // 未保存の編集を didChange で送ると、保存前でもイベントの流れの図に反映される
+                var editedText = string.Join("\r\n",
+                    "スタート:",
+                    "If フラグ = 1 Then",
+                    "Call 未保存サブ",
+                    "EndIf",
+                    "Exit",
+                    "",
+                    "未保存サブ:",
+                    "Return");
+                Notify(client, "textDocument/didChange", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri, ["version"] = 2 },
+                    ["contentChanges"] = new JsonArray { new JsonObject { ["text"] = editedText } },
+                });
+
+                var flow2 = Request(client, "srcsharp/eventFlow", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri },
+                });
+                var nodes2 = flow2["nodes"].AsArray().Select(n => n["name"].GetValue<string>()).ToList();
+                CollectionAssert.Contains(nodes2, "未保存サブ");
+                var edges2 = flow2["edges"].AsArray();
+                Assert.IsTrue(edges2.Any(e => e["target"]?.GetValue<string>() == "未保存サブ" && (e["condition"]?.GetValue<string>() ?? "").Contains("フラグ = 1")), flow2.ToJsonString());
+
+                Request(client, "shutdown", null);
+                Notify(client, "exit", null);
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
     }
 }

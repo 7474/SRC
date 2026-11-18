@@ -121,8 +121,32 @@ namespace SRCCore.Units
         {
             // 特殊効果データを検索
             var anime = SpecialEffectData(main_situation, sub_situation);
+
+            // 戦闘アニメ有効時は効果音に合わせて戦闘アニメを自動選択
+            var w = 0;
+            for (var i = 1; i <= CountWeapon(); i++)
+            {
+                if (Weapon(i).Name == main_situation)
+                {
+                    w = i;
+                    break;
+                }
+            }
+
+            // 検索するシチュエーションが武器名かどうか調べる
+            var is_weapon = Weapons.Any(x => main_situation == x.Name);
+
+            // 検索するシチュエーションがアビリティかどうか調べる
+            var is_ability = Abilities.Any(a => main_situation == a.Data.Name);
+
+            SpecialEffectSpec(main_situation, anime, is_weapon, is_ability, w, keep_message_form);
+        }
+
+        // 指定文字列から特殊効果データを再生（プレビューや SpecialEffect から共通利用）
+        public void SpecialEffectSpec(string main_situation, string anime, bool is_weapon, bool is_ability, int w = 0, bool keep_message_form = false)
+        {
             // 元の SRC の TrimString と同じく、前後のタブ・空白・全角空白だけを除く
-            anime = anime.Trim('\t', ' ', '\u3000');
+            anime = (anime ?? "").Trim('\t', ' ', '\u3000');
 
             // 表示キャンセル
             if (string.IsNullOrEmpty(anime) || anime == "-")
@@ -138,16 +162,6 @@ namespace SRCCore.Units
                 return;
             }
 
-            // 戦闘アニメ有効時は効果音に合わせて戦闘アニメを自動選択
-            var w = 0;
-            for (var i = 1; i <= CountWeapon(); i++)
-            {
-                if (Weapon(i).Name == main_situation)
-                {
-                    w = i;
-                    break;
-                }
-            }
             if (SRC.BattleAnimation && !Expression.IsOptionDefined("戦闘アニメ非自動選択"))
             {
                 if (w > 0)
@@ -234,12 +248,6 @@ namespace SRCCore.Units
             var prevObjectDrawSetting = Event.GetObjectDrawSetting();
             // オブジェクト色等をデフォルトに戻す
             Event.ResetObjectDrawSetting();
-
-            // 検索するシチュエーションが武器名かどうか調べる
-            var is_weapon = Weapons.Any(x => main_situation == x.Name);
-
-            // 検索するシチュエーションがアビリティかどうか調べる
-            var is_ability = Abilities.Any(a => main_situation == a.Data.Name);
 
             // イベント用ターゲットを記録しておく
             var prev_selected_target = Event.SelectedTargetForEvent;
