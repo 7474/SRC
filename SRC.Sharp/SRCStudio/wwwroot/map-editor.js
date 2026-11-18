@@ -4,6 +4,7 @@
 //   loadImage: async (bitmap, no) => ImageBitmap | null,   // 地形の画像
 //   imageNumbers: async bitmap => number[],                 // 手元にある画像の番号（パレット）
 //   serialize: async map => string,                          // マップをテキストにする（studio-core.js の serializeMap）
+//   autoConnect: async map => ({ tiles, layer }),            // 地形の境目・変種を自動でつなぐ（任意）
 //   onEdit: text => {},                                      // 編集のたび（一筆ごと）に、書き出したテキスト
 //   undo: 'own' | { undo: () => {}, redo: () => {} },        // 元に戻す（既定は自前。VS Code は文書の元に戻すを使う）
 // });
@@ -24,6 +25,7 @@ export class MapEditor {
     this.map = null;
     this.tool = 'pen';
     this.target = 'tiles';
+    this.autoConnect = false;
     this.showPlacements = true;
     this.placements = [];
     this.selectedPlacement = null;
@@ -55,6 +57,10 @@ export class MapEditor {
           <label><input type="radio" name="me-target" value="layer"> ${t('map.targetLayer')}</label>
           <label><input type="radio" name="me-target" value="placement"> ${t('map.targetPlacement')}</label>
           <button type="button" class="me-erase" title="${t('map.eraseLayerHint')}">${t('map.eraseLayer')}</button>
+        </span>
+        <span class="me-group">
+          <label title="${t('map.autoConnectHint')}"><input type="checkbox" class="me-auto-connect"> ${t('map.autoConnect')}</label>
+          <button type="button" class="me-reconnect" title="${t('map.reconnectHint')}">${t('map.reconnect')}</button>
         </span>
         <span class="me-group">
           <button type="button" class="me-undo" title="Ctrl+Z">${t('map.undo')}</button>
@@ -119,6 +125,10 @@ export class MapEditor {
     this.status = e.querySelector('.me-status');
     e.querySelectorAll('input[name="me-target"]').forEach(r => r.addEventListener('change', () => this.setTarget(r.value)));
     e.querySelector('.me-erase').addEventListener('click', () => this.setCurrent(NO_LAYER, NO_LAYER, 'layer'));
+    const ac = e.querySelector('.me-auto-connect');
+    ac.disabled = !this.options.autoConnect;
+    ac.addEventListener('change', ev => { this.autoConnect = ev.target.checked; });
+    e.querySelector('.me-reconnect').addEventListener('click', () => this.reconnect());
     e.querySelector('.me-undo').addEventListener('click', () => this.undo());
     e.querySelector('.me-redo').addEventListener('click', () => this.redo());
     e.querySelector('.me-zoom-in').addEventListener('click', () => this.setZoom(this.zoom * 2));
@@ -150,6 +160,7 @@ export class MapEditor {
     this.element.querySelector('.me-placement-pane').hidden = !isPlace;
     this.element.querySelectorAll('.me-tools button').forEach(b => { b.disabled = isPlace; });
     this.element.querySelector('.me-erase').disabled = isPlace;
+    this.element.querySelector('.me-reconnect').disabled = isPlace || !this.options.autoConnect;
     this.canvas.style.cursor = isPlace ? 'grab' : 'crosshair';
     this.render();
   }
@@ -651,7 +662,7 @@ export class MapEditor {
     return x >= 0 && y >= 0 && x < this.map.width && y < this.map.height ? { x, y } : null;
   }
 
-  pointerDown(ev) {
+  async pointerDown(ev) {
     if (!this.map) {
       return;
     }
@@ -686,13 +697,13 @@ export class MapEditor {
       case 'fill':
         this.begin();
         this.flood(p);
-        this.commit();
+        await this.commit();
         this.dragging = false;
         break;
       case 'paste':
         this.begin();
         this.paste(p);
-        this.commit();
+        await this.commit();
         this.dragging = false;
         break;
       case 'rect':
@@ -762,7 +773,7 @@ export class MapEditor {
     }
     this.dragging = false;
     if (this.tool === 'pen') {
-      this.commit();
+      await this.commit();
     } else if (this.tool === 'rect' && this.selection) {
       this.begin();
       const b = this.selectionBox();
@@ -772,7 +783,7 @@ export class MapEditor {
         }
       }
       this.selection = null;
-      this.commit();
+      await this.commit();
     } else if (this.tool === 'copy' && this.selection) {
       this.copy();
       this.setTool('paste');
@@ -910,12 +921,24 @@ export class MapEditor {
     this.before = this.snapshot();
   }
 
-  /** 一筆の終わり。変わっていれば履歴に積み、書き出して知らせる */
-  async commit() {
+  /** 一筆の終わり。変わっていれば自動接続を掛け、履歴に積んで書き出して知らせる */
+  async commit(applyAuto = true) {
     const before = this.before;
     this.before = null;
     if (!before) {
       return;
+    }
+    const mid = this.snapshot();
+    if (JSON.stringify(before) === JSON.stringify(mid)) {
+      return;
+    }
+    if (applyAuto && this.autoConnect && this.options.autoConnect) {
+      const updated = await this.options.autoConnect(this.map);
+      if (updated?.tiles) {
+        this.map.tiles = Array.from(updated.tiles);
+        this.map.layer = updated.layer ? Array.from(updated.layer) : null;
+        this.render();
+      }
     }
     const after = this.snapshot();
     if (JSON.stringify(before) === JSON.stringify(after)) {
@@ -927,6 +950,21 @@ export class MapEditor {
       this.updateButtons();
     }
     await this.emit();
+  }
+
+  /** マップ全体の地形の境目と変種をつなぎ直す */
+  async reconnect() {
+    if (!this.map || !this.options.autoConnect) {
+      return;
+    }
+    this.begin();
+    const updated = await this.options.autoConnect(this.map);
+    if (updated?.tiles) {
+      this.map.tiles = Array.from(updated.tiles);
+      this.map.layer = updated.layer ? Array.from(updated.layer) : null;
+      this.render();
+    }
+    await this.commit(false);
   }
 
   async emit() {
@@ -984,14 +1022,14 @@ export class MapEditor {
     form.height.value = this.map.height;
     dialog.onclose = () => {
       if (dialog.returnValue === 'ok') {
-        this.resize(Number(form.width.value), Number(form.height.value));
+        void this.resize(Number(form.width.value), Number(form.height.value));
       }
     };
     dialog.showModal();
   }
 
   /** 大きさを変える。左上をそろえ、増えたマスは描く地形で埋める */
-  resize(width, height) {
+  async resize(width, height) {
     if (!(width >= 1 && height >= 1 && width <= 50 && height <= 50)) {
       return;
     }
@@ -1012,7 +1050,7 @@ export class MapEditor {
       }
     }
     Object.assign(this.map, { width, height, tiles, layer });
-    this.commit();
+    await this.commit();
     this.render();
   }
 }

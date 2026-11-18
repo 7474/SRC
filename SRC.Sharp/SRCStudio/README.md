@@ -13,7 +13,7 @@
 
 | ファイル | 役割 |
 |---|---|
-| `Program.cs` | 計算（.NET の WebAssembly。`JSExport`）。マップの読み書き（`SRCAuthoring.Maps.MapDocument`）、地形データの読み込みとマップの画像の探し方（`TerrainCatalog`）を SRCCore と同じ処理で行う。スレッド・AOT を使わない |
+| `Program.cs` | 計算（.NET の WebAssembly。`JSExport`）。マップの読み書き（`SRCAuthoring.Maps.MapDocument`）、自動接続（`MapAutoConnect`）、地形データの読み込みとマップの画像の探し方（`TerrainCatalog`）を SRCCore と同じ処理で行う。スレッド・AOT を使わない |
 | `wwwroot/studio-core.js` | .NET の実行環境の読み込みと、計算の呼び出し |
 | `wwwroot/map-editor.js` | マップ作成ツールの画面（canvas）。ファイルの読み書きは使う側に任せる |
 | `wwwroot/index.html`・`studio.js`・`folders.js` | スタンドアロン。フォルダを開き、マップを選んで編集し、保存する |
@@ -34,7 +34,7 @@
 - 地形データは SRCCore と同じく、SRC 本体の `Data/System/terrain.txt` を読み、シナリオの `Data/System/terrain.txt` があれば重ねる
 - マップの画像は SRCCore の `Map.SearchMapImageFile` と同じく、フォルダ（シナリオ → SRC 本体）ごとに `Bitmap/Map/名前/名前0000.bmp`・`Bitmap/Map/名前0000.bmp`・`Bitmap/Map/名前0.bmp` の順に探す。無ければ地形タイプの色と番号で描く
 - SRC 本体のフォルダを開かなければ、同梱の最小の汎用データ（`SRC.Sharp/Content/basic-data`）の地形・画像・スペシャルパワーを使う（画像・地形は CC0、`sp.txt` は GPL-3.0）
-- 操作: 描く（右クリックはスポイト）・四角・塗りつぶし・スポイト・写す・貼る、地形とレイヤーの切り替え、レイヤーを消す、元に戻す・やり直す、拡大・縮小、マス目、大きさの変更。マウスを置いたマスの座標と地形を下に出す
+- 操作: 描く（右クリックはスポイト）・四角・塗りつぶし・スポイト・写す・貼る、地形とレイヤーの切り替え、レイヤーを消す、自動接続（ON で描くと境目・変種を自動で選ぶ）・つなぎ直し（全体をつなぎ直す。元に戻す可）、元に戻す・やり直す、拡大・縮小、マス目、大きさの変更。マウスを置いたマスの座標と地形を下に出す
 - 書き出しは、読んだファイルの書き方（改行・1 行目・予約行・最後の改行）を保つ。変えていないマップは 1 バイトも変わらない（`SRCAuthoringTests` の `MapDocumentTests` と E2E で確かめる）
 
 ## 作る
@@ -47,7 +47,9 @@ tools/studio_bundle.sh out/studio
 
 ## テスト
 
-- `SRCAuthoringTests/MapDocumentTests.cs`: マップの読み書き（リポジトリの全てのマップが変わらない・SRCCore と同じに読める）・地形データ・画像の探し方
-- `SRCSharpWeb.E2E/tests/studio.spec.js`: スタンドアロン（`?fs=input` で、フォルダの読み込みとダウンロードの道を通す）。かんたん作成（7474/SRC-Data の代わりを返す）
+- `SRCAuthoringTests/MapDocumentTests.cs`・`MapAutoConnectTests.cs`: マップの読み書き（リポジトリの全てのマップが変わらない・SRCCore と同じに読める）・自動接続・地形データ・画像の探し方
+- `SRCRenderTests/MapChipVrtTests.cs`: `basic-data` のマップチップ一覧・描画画面（1x / 2x）・青ユニット枠との視認性（コントラスト・色覚特性）
+- `SRCSharpWeb.E2E/tests/studio.spec.js`: スタンドアロン（`?fs=input` で、フォルダの読み込みとダウンロードの道を通す）・自動接続とつなぎ直し・かんたん作成（7474/SRC-Data の代わりを返す）
 - `SRCAuthoringTests/QuickBattleTemplateTests.cs`・`CliTests.cs`: かんたん作成のイベント（作ったシナリオが lint を通り、最後まで遊べる）
 - `SRCSharpVSCode/test/extension.test.js`: VS Code でカスタムエディタが開き、画面の WebAssembly が地形とマップを読めること
+

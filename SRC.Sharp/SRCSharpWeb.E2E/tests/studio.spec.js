@@ -620,4 +620,73 @@ test('素材の一覧: シナリオが参照する素材の不足・参照場所
   await expect(page.locator('#assets-readme-text')).toHaveValue(/## 必要な素材/);
 });
 
+test('マップの自動接続: 描いた道・川・橋・海を自動でつなぎ、つなぎ直しを元に戻せる（7474/SRC#1663）', async ({ page }) => {
+  await open(page);
+  page.once('dialog', d => d.accept('auto.map'));
+  await page.locator('#new-map').click();
+  await expect(page.locator('.me-canvas')).toBeVisible();
+
+  const autoConnect = page.locator('.me-auto-connect');
+  await expect(autoConnect).not.toBeChecked();
+  await autoConnect.check();
+
+  // 四角で縦の川 (5,1)-(5,5)
+  await page.locator('.me-terrains li', { hasText: '19 川' }).click();
+  await page.locator('.me-tools button[data-tool="rect"]').click();
+  const box = await page.locator('.me-canvas').boundingBox();
+  await page.mouse.move(box.x + 4.5 * 32, box.y + 0.5 * 32);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 4.5 * 32, box.y + 4.5 * 32, { steps: 4 });
+  await page.mouse.up();
+  await expect(page.locator('.me-undo')).toBeEnabled();
+
+  // 四角で横の道 (3,3)-(4,3)、描くで (3,4)・(6,3)、橋を (5,3)
+  await page.locator('.me-terrains li', { hasText: '2 道路' }).click();
+  await page.mouse.move(box.x + 2.5 * 32, box.y + 2.5 * 32);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 3.5 * 32, box.y + 2.5 * 32, { steps: 2 });
+  await page.mouse.up();
+
+  await page.locator('.me-tools button[data-tool="pen"]').click();
+  await clickCell(page, 3, 4);
+  await clickCell(page, 6, 3);
+  await page.locator('.me-terrains li', { hasText: '25 橋' }).click();
+  await clickCell(page, 5, 3);
+
+  // 四角で 3×3 の海 (10,2)-(12,4)
+  await page.locator('.me-terrains li', { hasText: '17 海' }).click();
+  await page.locator('.me-tools button[data-tool="rect"]').click();
+  await page.mouse.move(box.x + 9.5 * 32, box.y + 1.5 * 32);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 11.5 * 32, box.y + 3.5 * 32, { steps: 4 });
+  await page.mouse.up();
+
+  await expect.poll(async () => tileAt((await downloaded(page)).text, 11, 2)).toBe('17,3');
+  let { text } = await downloaded(page);
+  expect(tileAt(text, 3, 3)).toBe('2,5');
+  expect(tileAt(text, 5, 3)).toBe('25,501');
+  expect(tileAt(text, 5, 2)).toBe('19,11');
+  expect(tileAt(text, 10, 2)).toBe('17,35');
+  expect(tileAt(text, 11, 2)).toBe('17,3');
+  expect(tileAt(text, 12, 3)).toBe('17,4');
+
+  // 自動接続を切って 2 番（道路）を描いたあと、「つなぎ直し」で接続し「元に戻す」で戻す
+  await autoConnect.uncheck();
+  await page.locator('.me-terrains li', { hasText: '2 道路' }).click();
+  await page.mouse.move(box.x + 14.5 * 32, box.y + 9.5 * 32);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 16.5 * 32, box.y + 9.5 * 32, { steps: 2 });
+  await page.mouse.up();
+  await page.locator('.me-tools button[data-tool="pen"]').click();
+  await clickCell(page, 15, 11);
+  await expect.poll(async () => tileAt((await downloaded(page)).text, 15, 10)).toBe('2,0');
+
+  await page.locator('.me-reconnect').click();
+  await expect.poll(async () => tileAt((await downloaded(page)).text, 15, 10)).toBe('2,5');
+
+  await page.locator('.me-undo').click();
+  await expect.poll(async () => tileAt((await downloaded(page)).text, 15, 10)).toBe('2,0');
+});
+
+
 

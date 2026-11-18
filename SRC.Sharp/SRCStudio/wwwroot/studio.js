@@ -1,5 +1,5 @@
 // SRC#Studio のスタンドアロン（index.html）。フォルダを開き、マップを選んでマップ作成ツールで編集し、保存する
-import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport } from './studio-core.js';
+import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, autoConnectMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport } from './studio-core.js';
 import { AssetsView } from './assets.js';
 import { DataPreview } from './preview.js';
 import { MapEditor, newMap } from './map-editor.js';
@@ -19,6 +19,7 @@ const editor = new MapEditor($('#editor'), {
   loadUnitImage: bitmap => loadDataImage('unit', bitmap),
   imageNumbers,
   serialize: serializeMap,
+  autoConnect: autoConnectMap,
   computeMoveRange,
   onEditPlacement: (item, x, y) => editPlacement(item, x, y),
   onEdit: text => {
