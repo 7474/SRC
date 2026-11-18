@@ -31,6 +31,12 @@
       แสดงรายการภาพ เสียง และแผนที่ที่ข้อมูลและอีเวนต์อ้างถึง พร้อมตำแหน่งที่อ้างถึงและตำแหน่งที่พบตามลำดับการค้นหาของ SRC (ฉาก → ข้อมูลเสริม → SRC) และแสดงชื่อที่สร้างจากนิพจน์และไฟล์ที่ไม่ถูกอ้างถึง readme สร้างร่างหัวข้อ "ไฟล์ที่ต้องใช้" สำหรับ README --fail-on-missing จะจบด้วยรหัส 1 หากมีไฟล์ที่หาไม่พบ (ไม่จัดหาหรือแจกจ่ายไฟล์)
   srcsharp trial &lt;โฟลเดอร์ฉาก&gt; [--unit ยูนิต] [--pilot นักบิน] [--enemy ยูนิต] [--enemy-pilot นักบิน] [--level จำนวน] [--enemies จำนวน] [--list]
       สร้างอีเวนต์การต่อสู้ทดลองที่ให้ยูนิตและนักบินจากข้อมูลฉากสู้กับศัตรูใน .srcsharp/trial/ แล้วแสดงพาธ (รันด้วย play หรือดีบักเกอร์) --list แสดงยูนิตและนักบินเป็น JSON
+  srcsharp event-flow &lt;ไฟล์เหตุการณ์&gt; [--format md|mmd|json] [--output ไฟล์] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ฉาก]
+      ติดตามทริกเกอร์ ป้ายกำกับ Call Goto และ Require ในไฟล์เหตุการณ์เดียว (รวมถึง include และ Require) แล้วแสดงแผนผังลำดับเหตุการณ์
+  srcsharp talk-preview &lt;ไฟล์เหตุการณ์&gt; [--line บรรทัด] [--block หมายเลข] [--stdin] [--input ไฟล์] [--format json|png] [--out ไดเรกทอรี] [--output ไฟล์] [--no-images] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ฉาก]
+      วาดบล็อก Talk และ AutoTalk ด้วยหน้าต่างข้อความของเกม แล้วส่งออกเป็นภาพ PNG แยกตามหน้าหรือ JSON
+  srcsharp anime-preview &lt;ไฟล์หรือโฟลเดอร์&gt; [--list] [--file ไฟล์] [--line บรรทัด] [--kind animation|ext_animation|effect|subroutine] [--target ชื่อ] [--situation สถานการณ์] [--spec ค่ากำหนด] [--attacker ยูนิต] [--attacker-pilot นักบิน] [--defender ยูนิต] [--defender-pilot นักบิน] [--play-once] [--out ไฟล์ภาพ] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ฉาก]
+      สร้างไฟล์เตรียมเล่น (.srcsharp/preview/) สำหรับนิยาม animation.txt, ext_animation.txt, effect.txt หรือแอนิเมชันต่อสู้ทั่วไป 1 รายการโดยกำหนดฝ่ายโจมตีและฝ่ายป้องกัน --list แสดงรายการเป็น JSON, --play-once เล่น 1 ครั้ง
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -118,5 +124,20 @@
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>สร้างการต่อสู้ทดลองแล้ว: {0}/{1} ปะทะ {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>ไม่พบไฟล์เหตุการณ์ที่จะวิเคราะห์: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>โปรดระบุไฟล์เหตุการณ์สำหรับแสดงตัวอย่าง 1 ไฟล์</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>บันทึกภาพตัวอย่าง {0} หน้าไปยัง {1} แล้ว</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>ไม่พบไฟล์ข้อมูล/เหตุการณ์หรือโฟลเดอร์เป้าหมาย: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>ไม่พบนิยามแอนิเมชันการต่อสู้หรือเอฟเฟกต์พิเศษที่แสดงตัวอย่างได้</value>
   </data>
 </root>

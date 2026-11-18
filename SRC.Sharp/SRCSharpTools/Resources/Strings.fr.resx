@@ -31,6 +31,12 @@ Utilisation :
       Liste les images, sons et cartes référencés par les données et événements, avec l'emplacement de la référence et l'endroit trouvé dans l'ordre de recherche de SRC (scénario, données étendues, SRC). Affiche aussi les noms construits par expression et les fichiers non référencés. readme produit un brouillon « Ressources nécessaires » pour le README. --fail-on-missing quitte avec 1 s'il manque une ressource (n'obtient ni ne redistribue de ressources)
   srcsharp trial &lt;dossier du scénario&gt; [--unit unité] [--pilot pilote] [--enemy unité] [--enemy-pilot pilote] [--level n] [--enemies n] [--list]
       Crée dans .srcsharp/trial/ un combat d’essai opposant des unités et pilotes des données du scénario à un ennemi, et affiche son chemin (à lancer avec play ou le débogueur). --list affiche les unités et pilotes en JSON
+  srcsharp event-flow &lt;fichier d'événements&gt; [--format md|mmd|json] [--output fichier] [--app-path dossier SRC] [--scenario-root dossier du scénario]
+      Suit les déclencheurs, étiquettes, Call, Goto et Require d'un fichier d'événements (avec ses include et Require) et produit un diagramme de flux
+  srcsharp talk-preview &lt;fichier d'événements&gt; [--line ligne] [--block index] [--stdin] [--input fichier] [--format json|png] [--out répertoire] [--output fichier] [--no-images] [--app-path dossier SRC] [--scenario-root dossier du scénario]
+      Affiche les blocs Talk et AutoTalk avec la fenêtre de message du jeu et produit des images PNG par page ou du JSON
+  srcsharp anime-preview &lt;fichier ou dossier&gt; [--list] [--file fichier] [--line ligne] [--kind animation|ext_animation|effect|subroutine] [--target nom] [--situation situation] [--spec spécification] [--attacker unité] [--attacker-pilot pilote] [--defender unité] [--defender-pilot pilote] [--play-once] [--out image] [--app-path dossier SRC] [--scenario-root dossier du scénario]
+      Prépare dans .srcsharp/preview/ la lecture d'une entrée de animation.txt, ext_animation.txt, effect.txt ou d'une animation de combat générique avec attaquant et défenseur fixes. --list liste en JSON, --play-once lit une fois
   srcsharp lsp
       Language Server (entrée/sortie standard)
   srcsharp dap
@@ -118,5 +124,20 @@ Options communes :
   </data>
   <data name="TrialCreated" xml:space="preserve">
     <value>Combat d’essai créé : {0}/{1} contre {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Fichier d'événements introuvable : {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Spécifiez exactement un fichier d'événements à prévisualiser</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>{0} images d'aperçu enregistrées dans {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Fichier ou dossier cible de données/événements introuvable : {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Aucune définition d'animation de combat ou d'effet spécial prévisualisable trouvée</value>
   </data>
 </root>
