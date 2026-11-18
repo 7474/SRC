@@ -68,6 +68,12 @@ export async function serializeMap(map) {
   return core.SerializeMap(map.width, map.height, map.tiles, map.layer ?? [], map.template ?? 0);
 }
 
+/** 地形の並びと座標から、マップチップ番号を自動で選ぶ（7474/SRC#1663）。{ tiles, layer } */
+export async function autoConnectMap(map, filterAvailable = true) {
+  const core = await studioCore();
+  return JSON.parse(core.AutoConnectMap(map.width, map.height, map.tiles, map.layer ?? [], filterAvailable));
+}
+
 /** バイト列を文字列にする（UTF-8 として読めなければ Shift_JIS。SRC のデータは両方ある） */
 export function decodeText(bytes) {
   try {

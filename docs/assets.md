@@ -7,7 +7,7 @@ SRC# でのプレイに使う汎用データ（グラフィック・戦闘アニ
 | 素材 | 扱い |
 |---|---|
 | SRC フルパッケージの汎用データ（グラフィック集・汎用戦闘アニメ・効果音集・地形データ・スペシャルパワー eve） | 含まない。利用者が [SRC 公式サイト](http://www.src-srpg.jpn.org/play_newinstall.shtml) から入手する |
-| 自作の最小の汎用データ（`SRC.Sharp/Content/basic-data`） | 含む（CC0 1.0）。地形データ・スペシャルパワーデータ・地形とユニットの画像・効果音・BGM を、汎用データと同じ番号・ファイル名で作っている（[Content](../SRC.Sharp/Content/README.md)） |
+| 自作の最小の汎用データ（`SRC.Sharp/Content/basic-data`） | 含む（CC0 1.0）。地形データ・スペシャルパワーデータ・地形（基本 `0000` と変種・境目）とユニットの画像・効果音・BGM を、汎用データと同じ番号・ファイル名で作っている（[Content](../SRC.Sharp/Content/README.md)・[別パック分離の判断](./decisions/2026-11-18-map-chip-packs-and-ai-assets.md)） |
 | 汎用グラフィック集のマップチップの番号と意味（`docs/assets/map-chips/`） | 含む。絵は含まず、地形ごとに番号が何を表すか（基本・変種・境目の方角・大きな物の部品・画風の組など）を書いたデータ（[マップチップの番号と意味](./assets/map-chips/README.md)） |
 | 遊べるシナリオ「灯の巡航船ランタン号」（`SRC.Sharp/Content/lantern`） | 含む（CC0 1.0） |
 | E2E テストのコーパス（`SRC.Sharp/E2E/`）のデータと音声 | 含む。自作の最小のもの（[E2E テスト](./gui/e2e-testing.md)） |

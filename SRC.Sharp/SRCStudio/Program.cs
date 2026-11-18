@@ -167,6 +167,60 @@ namespace SRCStudio
             return doc.Serialize();
         }
 
+        /// <summary>地形の並びと座標から、マップチップ番号を自動で選ぶ（7474/SRC#1663）。{ "tiles": [...], "layer": [...] | null }</summary>
+        [JSExport]
+        internal static string AutoConnectMap(int width, int height, int[] tiles, int[] layer, bool filterAvailable)
+        {
+            Func<int, string> bitmapForTerrain = null;
+            Func<string, int, bool> hasImage = null;
+            if (filterAvailable && imageRoots.Count > 0)
+            {
+                var bitmapMap = new Dictionary<int, string>();
+                foreach (var t in terrains.Terrains)
+                {
+                    if (!string.IsNullOrEmpty(t.Bitmap))
+                    {
+                        bitmapMap[t.Id] = t.Bitmap;
+                    }
+                }
+                bitmapForTerrain = id => bitmapMap.TryGetValue(id, out var b) ? b : MapAutoConnect.DefaultBitmapName(id);
+                var cache = new Dictionary<(string, int), bool>();
+                hasImage = (bmp, no) =>
+                {
+                    var key = (bmp, no);
+                    if (!cache.TryGetValue(key, out var ok))
+                    {
+                        ok = TerrainCatalog.FindImage(bmp, no, imageRoots) != null;
+                        cache[key] = ok;
+                    }
+                    return ok;
+                };
+            }
+            var (outTiles, outLayer) = MapAutoConnect.ApplyToRows(
+                width,
+                height,
+                tiles,
+                layer == null || layer.Length == 0 ? null : layer,
+                bitmapForTerrain,
+                hasImage);
+            using var stream = new MemoryStream();
+            using (var w = new Utf8JsonWriter(stream))
+            {
+                w.WriteStartObject();
+                WriteInts(w, "tiles", outTiles);
+                if (outLayer == null)
+                {
+                    w.WriteNull("layer");
+                }
+                else
+                {
+                    WriteInts(w, "layer", outLayer);
+                }
+                w.WriteEndObject();
+            }
+            return Encoding.UTF8.GetString(stream.ToArray());
+        }
+
         /// <summary>
         /// データのプレビュー（7474/SRC#1643）。name・text はプレビューするデータのファイル（robot.txt・pilot.txt など）、
         /// beforeNames・beforeTexts は先に読むデータ（汎用データの sp.txt など）。結果は SRCAuthoring.Preview.DataPreview の JSON

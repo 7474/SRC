@@ -2,7 +2,7 @@
 // ファイルの読み書きは拡張（SRCSharpVSCode の src/mapEditor.ts）が行い、メッセージでやり取りする。
 //   拡張 → 画面: { type: 'init', roots: [{ name, files }], mapPath, text, lang, focus? } / { type: 'update', text } / { type: 'eventsUpdated', file? } / { type: 'focus', focus } / { type: 'file', id, bytes } / { type: 'fileError', id, message }
 //   画面 → 拡張: { type: 'ready' } / { type: 'loaded', terrains, width, height, placements } / { type: 'edit', text } / { type: 'editEvent', file, line, expectedLine, newLine } / { type: 'read', id, root, path } / { type: 'undo' } / { type: 'redo' } / { type: 'reopenAsText' } / { type: 'error', message }
-import { loadWorkspace, findImage, findFile, imageNumbers, parseMap, serializeMap, decodeText, parsePlacements, replacePlacementCoordinates, computeMoveRange } from './studio-core.js';
+import { loadWorkspace, findImage, findFile, imageNumbers, parseMap, serializeMap, autoConnectMap, decodeText, parsePlacements, replacePlacementCoordinates, computeMoveRange } from './studio-core.js';
 import { MapEditor } from './map-editor.js';
 import { t } from './i18n.js';
 
@@ -43,6 +43,7 @@ const editor = new MapEditor(document.getElementById('editor'), {
   },
   imageNumbers,
   serialize: serializeMap,
+  autoConnect: autoConnectMap,
   computeMoveRange,
   async onEditPlacement(item, x, y) {
     const key = [...eventCache.keys()].find(k => normPath(k) === normPath(item.file));
