@@ -12,6 +12,7 @@ import { PanelProvider } from './panel';
 import { ScreenView } from './screen';
 import { installServer, resolveServer, serverCommand, ServerInfo, serverVersion } from './server';
 import { SettingsView } from './settings';
+import { SrcUriHandler } from './uriHandler';
 
 /** データに動かす規則のグループ（設定 srcsharp.rules）。空なら none */
 export function ruleGroups(): string[] {
@@ -261,12 +262,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
   // 素材の一覧（揃っているか。7474/SRC#1654）
   const assets = new AssetsPanel();
+  // データビューアからデータを受け取る（7474/SRC#1656）
+  const uriHandler = new SrcUriHandler();
   context.subscriptions.push(
     assets,
+    vscode.window.registerUriHandler(uriHandler),
     vscode.commands.registerCommand('srcsharp.showAssets', (target?: string) => assets.show(target)),
     // テスト用。package.json には出さない
     vscode.commands.registerCommand('srcsharp._assetsStatus', () => assets.getStatus()),
     vscode.commands.registerCommand('srcsharp._showAssetsData', (data: AssetReportData) => assets.showData(data)),
+    vscode.commands.registerCommand('srcsharp._handleUri', (uri: vscode.Uri | string, target?: 'new' | vscode.Uri) =>
+      uriHandler.handle(typeof uri === 'string' ? vscode.Uri.parse(uri) : uri, target)),
   );
 
   // 操作パネル

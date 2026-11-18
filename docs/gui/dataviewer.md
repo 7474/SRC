@@ -30,6 +30,13 @@
 
 データの BGM のボタンと、「音」タブの MIDI の「合成して鳴らす」は、画面の下の再生の帯（`BgmBar`。`MainLayout` に置く）で鳴らす。帯は画面を移っても残り、曲は繰り返して鳴り続ける。「止める」で止める。一度合成した MIDI は、頁を読み込み直すまで合成し直さない。
 
+### このデータをコピー・VS Code で追加
+
+ユニット・パイロットのカードのフッターには「このデータをコピー」と「VS Code で追加」を並べる（`DataCopyFooter`。7474/SRC#1656）。
+
+- **このデータをコピー**: `Data.Raw`（ユニット・パイロットの定義ブロック）をクリップボードへコピーする
+- **VS Code で追加**: `vscode://koudenpa.src-vscode/addData?kind=...&name=...&text=...` を開き、VS Code 拡張「SRC# Authoring」の既存の `robot.txt` / `unit.txt` / `pilot.txt` の末尾（空行で区切る）または無題の `src-data` ドキュメントへ定義ブロックを追加する（URI が長い場合はクリップボード経由の `&fromClipboard=1` で渡す）
+
 ## 比べる
 
 ユニットとパイロットの組を、ゲームと同じ計算で評価した結果（7474/SRC-Data の Pages の `analysis/*.json`。SRC の `tools/pack-analysis --json` が書く）を比べて楽しむ頁（`/compare`。判断は [データの比較を楽しむための道具として整える](../decisions/2026-11-14-data-comparison.md)）。評価は、SRC-Data のデータと役割表（`analysis/`）が変わったときと毎週、Pages で作り直す。

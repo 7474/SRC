@@ -25,6 +25,9 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual(13, entries[1]["startLine"].GetValue<int>());
             Assert.AreEqual(3000, u["hp"].GetValue<int>());
             Assert.AreEqual("OBJ_Robot01.bmp", u["bitmap"].GetValue<string>());
+            Assert.AreEqual(4, u["statLines"]["move"].GetValue<int>());
+            Assert.AreEqual(7, u["statLines"]["hp"].GetValue<int>());
+            Assert.AreEqual(8, u["statLines"]["adaption"].GetValue<int>());
             CollectionAssert.AreEqual(new[] { "バリアLv1=Ｂ", "ＨＰ回復Lv2" }, u["features"].AsArray().Select(x => x.GetValue<string>()).ToArray());
             var rifle = u["weapons"][1];
             Assert.AreEqual("ライフル", rifle["name"].GetValue<string>());
@@ -42,8 +45,21 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual("pilot", json["kind"].GetValue<string>());
             var p = json["entries"][0];
             Assert.AreEqual(145, p["stats"]["射撃"].GetValue<int>());
+            Assert.AreEqual(2, p["statLines"]["adaption"].GetValue<int>());
+            Assert.AreEqual(4, p["statLines"]["stats"].GetValue<int>());
             CollectionAssert.AreEqual(new[] { "集中（Lv1）" }, p["specialPowers"].AsArray().Select(x => x.GetValue<string>()).ToArray());
             Assert.AreEqual(0, json["errors"].AsArray().Count, json.ToJsonString());
+        }
+
+        [TestMethod]
+        public void Pilots_StatLinesRecordHeaderAndStatsWithShortHeaders()
+        {
+            var pilot = "省略例\n省略例, 汎用, SAAA, 150\n特殊能力\n底力, 1\n160, 155, 150, 145, 140, 165, 普通\nＳＰ, 0\n-.bmp, -.mid\n";
+            var json = JsonNode.Parse(DataPreview.ToJson("pilot.txt", pilot));
+            Assert.AreEqual(0, json["errors"].AsArray().Count, json.ToJsonString());
+            var p = json["entries"][0];
+            Assert.AreEqual(2, p["statLines"]["adaption"].GetValue<int>());
+            Assert.AreEqual(5, p["statLines"]["stats"].GetValue<int>());
         }
 
         [TestMethod]

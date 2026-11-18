@@ -1,0 +1,108 @@
+@implements IDisposable
+@using System.Threading
+
+@if (!string.IsNullOrWhiteSpace(Raw))
+{
+    <footer class="card-footer src-data-footer">
+        <a href="#" role="button" class="card-footer-item src-copy-data" @onclick:preventDefault @onclick="CopyAsync">
+            <span class="icon is-small"><i class="fas @(copied ? "fa-check" : "fa-copy")"></i></span>
+            <span>@(copied ? L["CopiedData"] : L["CopyData"])</span>
+        </a>
+        <a class="card-footer-item src-send-vscode" href="@VsCodeHref" @onclick="OnSendToVsCodeAsync" @onclick:preventDefault="UseClipboardForUri">
+            <span class="icon is-small"><i class="fas fa-file-import"></i></span>
+            <span>@L["SendToVsCode"]</span>
+        </a>
+    </footer>
+}
+else
+{
+    <footer class="card-footer">
+    </footer>
+}
+
+@code {
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; }
+
+    [Parameter]
+    public string Kind { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public string Raw { get; set; }
+
+    private bool copied;
+    private CancellationTokenSource resetCts;
+
+    private string TrimmedRaw => (Raw ?? "").Trim();
+
+    private string BaseVsCodeUri =>
+        $"vscode://koudenpa.src-vscode/addData?kind={Uri.EscapeDataString(Kind ?? "unit")}&name={Uri.EscapeDataString(Name ?? "")}";
+
+    private bool UseClipboardForUri
+    {
+        get
+        {
+            var full = $"{BaseVsCodeUri}&text={Uri.EscapeDataString(TrimmedRaw)}";
+            return full.Length > 8000;
+        }
+    }
+
+    private string VsCodeHref => UseClipboardForUri
+        ? $"{BaseVsCodeUri}&fromClipboard=1"
+        : $"{BaseVsCodeUri}&text={Uri.EscapeDataString(TrimmedRaw)}";
+
+    private async Task CopyAsync()
+    {
+        try
+        {
+            var ok = await JsRuntime.InvokeAsync<bool>("srcClipboard.copyText", TrimmedRaw);
+            if (!ok)
+            {
+                return;
+            }
+            copied = true;
+            resetCts?.Cancel();
+            resetCts?.Dispose();
+            resetCts = new CancellationTokenSource();
+            var token = resetCts.Token;
+            StateHasChanged();
+            await Task.Delay(2000, token);
+            if (!token.IsCancellationRequested)
+            {
+                copied = false;
+                StateHasChanged();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch (JSException)
+        {
+        }
+    }
+
+    private async Task OnSendToVsCodeAsync()
+    {
+        // URI が長い場合はクリップボードへコピーし終わってから vscode://...&fromClipboard=1 を開く
+        if (UseClipboardForUri)
+        {
+            try
+            {
+                await JsRuntime.InvokeAsync<bool>("srcClipboard.copyText", TrimmedRaw);
+                await JsRuntime.InvokeVoidAsync("srcClipboard.openUri", VsCodeHref);
+            }
+            catch (JSException)
+            {
+            }
+        }
+    }
+
+    public void Dispose()
+    {
+        resetCts?.Cancel();
+        resetCts?.Dispose();
+    }
+}

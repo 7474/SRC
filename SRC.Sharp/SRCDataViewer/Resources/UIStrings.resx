@@ -324,4 +324,13 @@
   <data name="ComparePartner" xml:space="preserve">
     <value>組の相手</value>
   </data>
+  <data name="CopyData" xml:space="preserve">
+    <value>データをコピー</value>
+  </data>
+  <data name="CopiedData" xml:space="preserve">
+    <value>コピーしました</value>
+  </data>
+  <data name="SendToVsCode" xml:space="preserve">
+    <value>VS Code へ送る</value>
+  </data>
 </root>

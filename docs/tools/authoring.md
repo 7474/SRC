@@ -299,7 +299,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | VS Code | データのファイルを開いて「SRC#: データのプレビュー」（エディタの右上のボタン）。横に開き、カーソルのあるユニット・パイロット・メッセージを、打つたびに（保存しなくても）出す。一覧で選ぶとその行へ移る |
 | スタンドアロン | 「データのプレビュー」のタブ。シナリオのフォルダを開き、データのファイルを選ぶ |
 
-- **表で直す**（7474/SRC#1644）: ユニットの武器・アビリティの行を、欄ごとの入力欄の表で直す。直した欄だけを書き換え、ほかの欄・空白・必要条件（`<…>`・`(…)`）は残す。↑↓ で隣の行と入れ替える。行の続き（末尾の `_`）を使う行は表では直さない。VS Code は文書を書き換え（保存・元に戻すは VS Code）、スタンドアロンは「データを保存」で書く
+- **表で直す**（7474/SRC#1644・#1656）: ユニットの能力値（HP・EN・装甲・運動性・移動力・地形適応）・パイロットの能力値（格闘・射撃・命中・回避・技量・反応・地形適応）と、武器・アビリティの行を、欄ごとの入力欄の表で直す。直した欄だけを書き換え、ほかの欄・空白・行末コメント（`//`）・必要条件（`<…>`・`(…)`）は残す。↑↓ で武器・アビリティの隣の行と入れ替える。行の続き（末尾の `_`）を使う行は表では直さない。VS Code は文書を書き換え（保存・元に戻すは VS Code）、スタンドアロンは「データを保存」で書く
 - **メッセージのプレビューと充実度**（7474/SRC#1651）: `pilot_message.txt`・`pilot_dialog.txt` では、選んだセリフを SRC のメッセージウィンドウと同じ幅・顔グラフィック・区切り（`;`・`:`・`.`）・タグ（`<B>`・`<COLOR>` 等）でプレビューし、パイロットごとの標準シチュエーション・武装別ラインの充実度チップ（クリックで追記）と全パイロット一覧表・未記入パイロットを出す
 - **比べる**（7474/SRC#1644）: 書いているユニットの HP・EN・装甲・運動性・移動力・最大攻撃力を、準拠するデータパック（ロボ・拡張）の全ユニットの中で上位何 % か、パイロットの能力値と SP を同じ帯（経験値）のパイロットの中で上位何 % かで出す。比べる相手は 7474/SRC-Data の Pages の評価の JSON（書式 2 の `units`・`pilots`。[データビューア](../gui/dataviewer.md)の「比べる」と同じ）
 
@@ -317,6 +317,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | ホットリロード | デバッグ中のシナリオのフォルダと SRC 本体のフォルダの `*.eve`・`Data` の `*.txt`・画像の変化を見て、`srcsharpReload` を頼む（`srcsharp.hotReload`）。画面のタブとデバッグのツールバーに「読み直す」 |
 | 画面 | デバッグ中のシナリオを Webview のタブで遊ぶ（launch の `interactive`）。フレームを受けて表示し、クリック・キー・ホイールを渡す。文字入力・ファイルの選択は VS Code の入力欄・ダイアログで尋ねる。`interactive` でなければ表示だけ（止まった時と実行中の 0.5 秒ごとに `srcsharpScreen` で取る） |
 | コマンド | 開いているイベントの実行（画面付き）・デバッグ、画面の表示、ワークスペースの lint・バランスレポート・このイベントの自動プレイ、srcsharp を入れる／更新する |
+| URI 連携 | データビューアの「VS Code で追加」から `vscode://koudenpa.src-vscode/addData` を受け取り、ワークスペースの `robot.txt` / `unit.txt` / `pilot.txt` の末尾か新しい無題の `src-data` ファイルへ定義ブロックを追加する（7474/SRC#1656） |
 | デバッガ | 型 `srcsharp`、`launch` だけ。属性は `program`（必須）・`script`・`appPath`・`scenarioRoot`（シナリオのフォルダ。無ければ `program` のあるフォルダ、そこに `Data` が無ければ `Data` のある親）・`interactive`・`stopOnEntry`・`skipWait`（ウェイトを飛ばす）・`policy`・`turns`（`script` も `interactive` も無いときの味方フェイズの方針と上限）・`logLevel` |
 | 表示言語 | `srcsharp.language`（環境変数 `SRCSHARP_LANG` として渡す）か、`srcsharp.serverArgs` に `["--lang", "en"]` などを入れる。切り替わるのはコマンドの出力だけで、LSP の診断と DAP のメッセージは日本語のまま |
 | 導入 | Marketplace の `koudenpa.src-vscode`（版は srcsharp と同じ）。CI の成果物 `src-vscode-vsix` か、`npm run package`（esbuild でまとめる）で作った `.vsix` も入れられる |
@@ -334,7 +335,6 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | バランス：期待ダメージの表 | パイロットとユニットの組み合わせで、COM.SelectWeapon・ExpDamage による期待ダメージを一覧にする |
 | エディタ：解析の高速化 | システムの Lib など、変わらない部分の解析結果を使い回す |
 | 画面：音 | `interactive` で、効果音・BGM を Webview の Web Audio で鳴らす |
-| データビューアの「このデータを元にする」 | データビューアで見つけたユニット・パイロットのデータを、自分のデータのファイルに写す（[作成環境の補完](../decisions/2026-11-14-authoring-environment.md) の「始める」） |
 | 試し戦闘：ブラウザ単独 | SRC#Studio から、書いているシナリオのデータで試し戦闘を始める。SRC#Web に渡す仕組みはかんたん作成（[かんたん作成](./quick-create.md)）で作った。今は VS Code（デバッガ）か `srcsharp trial` と `srcsharp play`・SRC#Avalonia・SRC#Web |
 | マップ作成ツール：言語 | 画面の文字列は日本語と英語だけ（ほかの言語は英語） |
 | 拡張の公開 | Open VSX への公開（7474/SRC#1175）。`Publish-VSCode.yml` は Secrets に `OVSX_PAT` があるときだけ出す |

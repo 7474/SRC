@@ -316,4 +316,13 @@
   <data name="ComparePartner" xml:space="preserve">
     <value>조의 상대</value>
   </data>
+  <data name="CopyData" xml:space="preserve">
+    <value>데이터 복사</value>
+  </data>
+  <data name="CopiedData" xml:space="preserve">
+    <value>복사됨</value>
+  </data>
+  <data name="SendToVsCode" xml:space="preserve">
+    <value>VS Code로 보내기</value>
+  </data>
 </root>
