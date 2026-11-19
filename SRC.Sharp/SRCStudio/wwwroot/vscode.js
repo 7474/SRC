@@ -1,8 +1,8 @@
 // SRC#Studio のマップ作成ツールを、VS Code 拡張のカスタムエディタ（Webview）で動かす（7474/SRC#1641）。
 // ファイルの読み書きは拡張（SRCSharpVSCode の src/mapEditor.ts）が行い、メッセージでやり取りする。
 //   拡張 → 画面: { type: 'init', roots: [{ name, files }], mapPath, text, lang, focus? } / { type: 'update', text } / { type: 'eventsUpdated', file? } / { type: 'focus', focus } / { type: 'file', id, bytes } / { type: 'fileError', id, message }
-//   画面 → 拡張: { type: 'ready' } / { type: 'loaded', terrains, width, height, placements } / { type: 'edit', text } / { type: 'editEvent', file, line, expectedLine, newLine } / { type: 'read', id, root, path } / { type: 'undo' } / { type: 'redo' } / { type: 'reopenAsText' } / { type: 'error', message }
-import { loadWorkspace, findImage, findFile, imageNumbers, parseMap, serializeMap, autoConnectMap, decodeText, parsePlacements, replacePlacementCoordinates, computeMoveRange } from './studio-core.js';
+//   画面 → 拡張: { type: 'ready' } / { type: 'loaded', terrains, width, height, placements } / { type: 'edit', text } / { type: 'editEvent', file, line, expectedLine, newLine } / { type: 'insertEvent', file, at, expectedLine, lines } / { type: 'read', id, root, path } / { type: 'undo' } / { type: 'redo' } / { type: 'reopenAsText' } / { type: 'error', message }
+import { loadWorkspace, findImage, findFile, imageNumbers, parseMap, serializeMap, autoConnectMap, decodeText, parsePlacements, replacePlacementCoordinates, computeMoveRange, timelineBlocks, buildTimeline, insertTimelineMove } from './studio-core.js';
 import { MapEditor } from './map-editor.js';
 import { t } from './i18n.js';
 
@@ -65,6 +65,44 @@ const editor = new MapEditor(document.getElementById('editor'), {
     eventCache.set(key, lines.join(eol));
     vscode.postMessage({ type: 'editEvent', file: key, line: item.line, expectedLine: origLine, newLine });
     await refreshPlacements();
+  },
+  // 人形劇（7474/SRC#1694）
+  timeline: {
+    async blocks() {
+      const files = new Set(editor.placements.map(p => normPath(p.file)));
+      const paths = [...eventCache.keys()];
+      const targets = paths.some(k => files.has(normPath(k))) ? paths.filter(k => files.has(normPath(k))) : paths;
+      const blocks = [];
+      for (const file of targets) {
+        for (const b of await timelineBlocks(eventCache.get(file))) {
+          blocks.push({ ...b, file });
+        }
+      }
+      return blocks;
+    },
+    build: (file, line) => buildTimeline(eventCache.get(file) ?? '', line, editor.map),
+    async insertMove(file, after, name, x, y) {
+      const before = eventCache.get(file);
+      if (before == null) {
+        return null;
+      }
+      const result = await insertTimelineMove(before, after, name, x, y);
+      // 差し込んだ行（前後の同じ行を除いた残り）を VS Code の文書に書き足す
+      const a = before.replace(/\r\n/g, '\n').split('\n');
+      const b = result.text.replace(/\r\n/g, '\n').split('\n');
+      let at = 0;
+      while (at < a.length && a[at] === b[at]) {
+        at++;
+      }
+      const lines = b.slice(at, at + (b.length - a.length));
+      eventCache.set(file, result.text);
+      vscode.postMessage({ type: 'insertEvent', file, at, expectedLine: at > 0 ? a[at - 1] : undefined, lines });
+      await refreshPlacements();
+      return result;
+    },
+    async editMove(file, line, x, y) {
+      await editor.options.onEditPlacement({ file, line }, x, y);
+    },
   },
   onEdit(text) {
     lastText = text;
