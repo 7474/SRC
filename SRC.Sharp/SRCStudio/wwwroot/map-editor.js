@@ -101,6 +101,7 @@ export class MapEditor {
                   <input type="range" class="me-puppet-range" min="0" max="0" value="0" aria-label="${t('map.puppet.step')}">
                   <button type="button" class="me-puppet-next" aria-label="${t('map.puppet.next')}" title="${t('map.puppet.next')}">▶</button>
                   <span class="me-puppet-pos"></span>
+                  <button type="button" class="me-puppet-play" hidden>${t('map.puppet.play')}</button>
                 </div>
                 <div class="me-puppet-step" aria-live="polite"></div>
                 <ul class="me-puppet-warnings"></ul>
@@ -159,6 +160,7 @@ export class MapEditor {
     e.querySelector('.me-puppet-range').addEventListener('input', ev => this.setPuppetIndex(Number(ev.target.value)));
     e.querySelector('.me-puppet-prev').addEventListener('click', () => this.setPuppetIndex((this.puppet?.index ?? 0) - 1));
     e.querySelector('.me-puppet-next').addEventListener('click', () => this.setPuppetIndex((this.puppet?.index ?? 0) + 1));
+    e.querySelector('.me-puppet-play').addEventListener('click', () => this.puppet && this.options.timeline?.play?.(this.puppet.file, this.puppet.line));
     e.querySelector('.me-class').addEventListener('change', () => this.renderTerrainList());
     e.querySelector('.me-search').addEventListener('input', () => this.renderTerrainList());
     this.canvas.addEventListener('contextmenu', ev => ev.preventDefault());
@@ -532,6 +534,7 @@ export class MapEditor {
     const blocks = (await this.options.timeline.blocks()).filter(b => b.moves > 0 || b.talks > 0);
     this.puppetBlocks = blocks;
     box.hidden = false;
+    this.element.querySelector('.me-puppet-play').hidden = !this.options.timeline.play;
     const select = this.element.querySelector('.me-puppet-block');
     const current = this.puppet ? `${this.puppet.file}#${this.puppet.line}` : '';
     select.innerHTML = `<option value="">${escapeHtml(t('map.puppet.none'))}</option>` + blocks.map(b =>

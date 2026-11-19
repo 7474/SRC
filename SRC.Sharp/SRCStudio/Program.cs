@@ -399,6 +399,11 @@ namespace SRCStudio
             return Encoding.UTF8.GetString(stream.ToArray());
         }
 
+        /// <summary>場面の再生（7474/SRC#1694）。line を含む塊だけを流すイベントファイルの中身（塊が無ければ空）</summary>
+        [JSExport]
+        internal static string TimelineScene(string eventText, int line, string mapPath)
+            => EventTimeline.SceneScript(eventText, line, mapPath) ?? "";
+
         /// <summary>素材の一覧（7474/SRC#1654）の入力を空にする</summary>
         [JSExport]
         internal static void ClearAssetReportInputs()

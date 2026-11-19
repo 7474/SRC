@@ -1,8 +1,8 @@
 // SRC#Studio のマップ作成ツールを、VS Code 拡張のカスタムエディタ（Webview）で動かす（7474/SRC#1641）。
 // ファイルの読み書きは拡張（SRCSharpVSCode の src/mapEditor.ts）が行い、メッセージでやり取りする。
 //   拡張 → 画面: { type: 'init', roots: [{ name, files }], mapPath, text, lang, focus? } / { type: 'update', text } / { type: 'eventsUpdated', file? } / { type: 'focus', focus } / { type: 'file', id, bytes } / { type: 'fileError', id, message }
-//   画面 → 拡張: { type: 'ready' } / { type: 'loaded', terrains, width, height, placements } / { type: 'edit', text } / { type: 'editEvent', file, line, expectedLine, newLine } / { type: 'insertEvent', file, at, expectedLine, lines } / { type: 'read', id, root, path } / { type: 'undo' } / { type: 'redo' } / { type: 'reopenAsText' } / { type: 'error', message }
-import { loadWorkspace, findImage, findFile, imageNumbers, parseMap, serializeMap, autoConnectMap, decodeText, parsePlacements, replacePlacementCoordinates, computeMoveRange, timelineBlocks, buildTimeline, insertTimelineMove } from './studio-core.js';
+//   画面 → 拡張: { type: 'ready' } / { type: 'loaded', terrains, width, height, placements } / { type: 'edit', text } / { type: 'editEvent', file, line, expectedLine, newLine } / { type: 'insertEvent', file, at, expectedLine, lines } / { type: 'playScene', text, label } / { type: 'read', id, root, path } / { type: 'undo' } / { type: 'redo' } / { type: 'reopenAsText' } / { type: 'error', message }
+import { loadWorkspace, findImage, findFile, imageNumbers, parseMap, serializeMap, autoConnectMap, decodeText, parsePlacements, replacePlacementCoordinates, computeMoveRange, timelineBlocks, buildTimeline, insertTimelineMove, timelineScene } from './studio-core.js';
 import { MapEditor } from './map-editor.js';
 import { t } from './i18n.js';
 
@@ -102,6 +102,14 @@ const editor = new MapEditor(document.getElementById('editor'), {
     },
     async editMove(file, line, x, y) {
       await editor.options.onEditPlacement({ file, line }, x, y);
+    },
+    // 場面の再生（7474/SRC#1694）: 拡張が .srcsharp/scene/場面の再生.eve に書いて、デバッガで動かす
+    async play(file, line) {
+      const text = await timelineScene(eventCache.get(file) ?? '', line, currentMapPath);
+      if (text) {
+        const label = editor.puppetBlocks.find(b => b.file === file && b.line === line)?.label ?? `${file}:${line}`;
+        vscode.postMessage({ type: 'playScene', text, label });
+      }
     },
   },
   onEdit(text) {

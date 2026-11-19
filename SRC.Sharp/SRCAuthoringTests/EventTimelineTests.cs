@@ -135,6 +135,38 @@ Move 次陣 9 4
         }
 
         [TestMethod]
+        public void SceneScript_PlaysOnlyTheChosenBlock()
+        {
+            var text = "@作品\r\nプロローグ:\r\nOption 乗り換え\r\nGlobal 名前\r\nTalk ナレーター\r\n長い前置き\r\nEnd\r\nInput 名前 名前は？ ソラ\r\nIf 名前 = \"\" Then\r\n  Set 名前 ソラ\r\nEndIf\r\nExit\r\n"
+                + "スタート:\r\nCreate 味方 機体A 0 ソラ 10 3 4\r\nTalk ソラ\r\n出撃！\r\nEnd\r\n先陣 = UnitID(ソラ)\r\nExit\r\n"
+                + "ターン 2 味方:\r\nMove ソラ 5 5\r\nTalk ソラ\r\n進むぞ\r\nEnd\r\nExit\r\n"
+                + "章題:\r\nTelop 第一話\r\nReturn\r\n";
+            var scene = EventTimeline.SceneScript(text, 20, "stage/第1話.map");
+            var lines = scene.Split("\r\n");
+            // プロローグは設定だけ。Input は既定の値の Set にする。会話・条件の中は飛ばす
+            CollectionAssert.AreEqual(new[] { "プロローグ:", "Option 乗り換え", "Global 名前", "Set 名前 ソラ", "Exit" },
+                lines.SkipWhile(l => l != "プロローグ:").Take(5).ToArray());
+            // スタートで場面のマップに移り、スタートの配置（会話は飛ばす）をしてから、場面を流す。Exit は終わりに飛ぶ
+            CollectionAssert.AreEqual(new[]
+            {
+                "スタート:", "ChangeMap stage\\第1話.map", "Create 味方 機体A 0 ソラ 10 3 4", "先陣 = UnitID(ソラ)",
+                "Move ソラ 5 5", "Talk ソラ", "進むぞ", "End", "Goto 場面の再生の終わり",
+                "Goto 場面の再生の終わり", "場面の再生の終わり:", "Telop 場面の再生はここまで", "GameClear",
+            }, lines.SkipWhile(l => l != "スタート:").Take(13).ToArray());
+            // ほかの塊（Call の先）は残し、元のプロローグ・スタート・場面は二重にしない
+            StringAssert.Contains(scene, "章題:\r\nTelop 第一話\r\nReturn");
+            Assert.AreEqual(1, lines.Count(l => l == "スタート:"));
+            Assert.AreEqual(1, lines.Count(l => l == "プロローグ:"));
+            Assert.IsFalse(lines.Contains("ターン 2 味方:"));
+            Assert.AreEqual("@作品", lines[0]);
+
+            // 場面がスタートなら、配置を重ねない。場面が ChangeMap していれば足さない
+            var own = EventTimeline.SceneScript("スタート:\nChangeMap 別.map\nCreate 味方 機体A 0 ソラ 10 3 4\nExit\n", 1, "第1話.map");
+            StringAssert.Contains(own, "スタート:\nChangeMap 別.map\nCreate");
+            Assert.IsFalse(own.Contains("第1話.map"));
+        }
+
+        [TestMethod]
         public void LPath_LongerAxisFirst()
         {
             CollectionAssert.AreEqual(new[] { 1, 1, 1, 2, 1, 3, 2, 3 }, EventTimeline.LPath(1, 1, 2, 3).SelectMany(p => p).ToArray());

@@ -1100,7 +1100,9 @@ else
                 }
                 else
                 {
-                    await PlayArchiveAsync(archive);
+                    // eve: 始めるイベントファイル（SRC#Studio の場面の再生は 場面の再生.eve。7474/SRC#1694）
+                    query.TryGetValue("eve", out var storedEve);
+                    await PlayArchiveAsync(archive, storedEve);
                 }
             }
             else if (site.AllowUserCatalogs && query.TryGetValue("archive", out var archiveUrl))
@@ -1640,7 +1642,7 @@ else
         return true;
     }
 
-    private Task PlayArchiveAsync(StoredArchive archive) => RunBusyAsync(async token =>
+    private Task PlayArchiveAsync(StoredArchive archive, string eve = null) => RunBusyAsync(async token =>
     {
         // 求める素材のうち、このサイトのカタログに無いもの（別のサイトで作ったなど）は重ねずに遊ぶ
         var requires = (archive.Requires ?? new List<string>()).Where(id =>
@@ -1656,7 +1658,7 @@ else
         {
             return;
         }
-        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await GetStoredArchiveAsync(archive.Name, token), false), null, null, token);
+        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await GetStoredArchiveAsync(archive.Name, token), false), eve, null, token);
     });
 
     /// <param name="fetch">zip を開く。展開したら CloseDownload で閉じる</param>

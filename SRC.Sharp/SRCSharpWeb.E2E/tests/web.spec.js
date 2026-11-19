@@ -1781,3 +1781,36 @@ test('SRC#Studio のかんたん作成が入れたシナリオを ?stored= で�
   }, { name, zip });
   expect((await page.evaluate(() => window.srcwebStore.list())).find(x => x.name === name)?.requires).toEqual(['basic-data']);
 });
+
+test('SRC#Studio の場面の再生: ?stored= と eve で、イベントファイルが複数あっても選んだものから始める（7474/SRC#1694）', async ({ page }) => {
+  const base = path.join(corpus, 'battle-basic');
+  const files = [];
+  const add = dir => {
+    for (const entry of fs.readdirSync(path.join(base, dir), { withFileTypes: true })) {
+      const rel = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        add(rel);
+      } else if (rel.startsWith('Data') || rel === 'test.map') {
+        files.push({ name: rel.split(path.sep).join('/'), data: fs.readFileSync(path.join(base, rel)) });
+      }
+    }
+  };
+  add('');
+  const eve = (message, extra = []) => Buffer.from([
+    '@テスト', 'スタート:', 'ChangeMap test.map',
+    'Create 味方 テスト機 0 テストパイロット 20 6 6',
+    'Talk システム', message, 'End', ...extra, 'Exit', '',
+  ].join('\r\n'), 'utf8');
+  files.push({ name: '第1話.eve', data: eve('第1話の始まり') });
+  files.push({ name: '場面の再生.eve', data: eve('場面だけを再生', ['Telop 場面の再生はここまで', 'GameClear']) });
+  const name = '場面の再生のテスト.zip';
+
+  await open(page);
+  const zip = [...makeZip(files)];
+  await page.evaluate(async ({ name, zip }) => {
+    await window.srcwebStore.put(name, new Uint8Array(zip), 'scenario', ['basic-data']);
+  }, { name, zip });
+  await page.goto(`./?stored=${encodeURIComponent(name)}&eve=${encodeURIComponent('場面の再生.eve')}`);
+  await expect(page.locator('#screen')).toBeVisible({ timeout: 180 * 1000 });
+  await expect.poll(async () => (await screenState(page)).message ?? '', { timeout: 120 * 1000 }).toContain('場面だけを再生');
+});
