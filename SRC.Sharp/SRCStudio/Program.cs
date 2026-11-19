@@ -360,6 +360,45 @@ namespace SRCStudio
                 terrains, startX, startY, speed, transportation, adaption);
         }
 
+        /// <summary>人形劇の編集（7474/SRC#1694）。イベントの塊（ラベル）の一覧 JSON</summary>
+        [JSExport]
+        internal static string TimelineBlocks(string eventText)
+        {
+            return EventTimeline.BlocksToJson(EventTimeline.Blocks(eventText));
+        }
+
+        /// <summary>
+        /// 人形劇の編集（7474/SRC#1694）。line（1 始まり）を含む塊を一手ずつ進めた状態の JSON。
+        /// マップ（width・height・tiles。tiles は ParseMap の形）と地形データで、VB 版と同じく埋まっている・入れないマスを避けた行き先を出す
+        /// </summary>
+        [JSExport]
+        internal static string BuildTimeline(string eventText, int line, int width, int height, int[] tiles)
+        {
+            TimelineMap map = null;
+            if (width > 0 && height > 0 && tiles != null && tiles.Length >= width * height * 2)
+            {
+                var doc = MapDocument.FromRows(width, height, tiles, null, null);
+                map = TimelineMap.From(doc, terrains);
+            }
+            return EventTimeline.StepsToJson(EventTimeline.Build(eventText, line, map, EnsureUnitCatalog()));
+        }
+
+        /// <summary>人形劇の編集（7474/SRC#1694）。after（1 始まり）の行の後に Move を差し込む。結果は { "text", "line" }</summary>
+        [JSExport]
+        internal static string InsertTimelineMove(string eventText, int after, string name, int x, int y)
+        {
+            var (text, line) = EventTimeline.InsertMove(eventText, after, name, x, y);
+            using var stream = new MemoryStream();
+            using (var w = new Utf8JsonWriter(stream))
+            {
+                w.WriteStartObject();
+                w.WriteString("text", text);
+                w.WriteNumber("line", line);
+                w.WriteEndObject();
+            }
+            return Encoding.UTF8.GetString(stream.ToArray());
+        }
+
         /// <summary>素材の一覧（7474/SRC#1654）の入力を空にする</summary>
         [JSExport]
         internal static void ClearAssetReportInputs()

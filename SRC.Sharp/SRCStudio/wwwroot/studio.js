@@ -1,5 +1,5 @@
 // SRC#Studio のスタンドアロン（index.html）。フォルダを開き、マップを選んでマップ作成ツールで編集し、保存する
-import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, autoConnectMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport } from './studio-core.js';
+import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, autoConnectMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport, timelineBlocks, buildTimeline, insertTimelineMove } from './studio-core.js';
 import { AssetsView } from './assets.js';
 import { DataPreview } from './preview.js';
 import { MapEditor, newMap } from './map-editor.js';
@@ -22,6 +22,16 @@ const editor = new MapEditor($('#editor'), {
   autoConnect: autoConnectMap,
   computeMoveRange,
   onEditPlacement: (item, x, y) => editPlacement(item, x, y),
+  timeline: {
+    blocks: () => puppetBlocks(),
+    build: (file, line) => buildTimeline(state.eventTexts.get(file) ?? '', line, editor.map),
+    insertMove: async (file, after, name, x, y) => {
+      const result = await insertTimelineMove(state.eventTexts.get(file) ?? '', after, name, x, y);
+      await setEventText(file, result.text);
+      return result;
+    },
+    editMove: async (file, line, x, y) => setEventText(file, await replacePlacementFileCoordinates(state.eventTexts.get(file) ?? '', line, x, y)),
+  },
   onEdit: text => {
     state.text = text;
     setDirty(true);
@@ -281,6 +291,31 @@ async function refreshPlacements() {
   }
   const events = [...state.eventTexts.entries()].map(([path, text]) => ({ path, text }));
   editor.setPlacements(await parsePlacements(state.path, events));
+}
+
+/** 人形劇（7474/SRC#1694）で選べる塊。このマップの配置があるイベントファイルの塊（無ければ全部） */
+async function puppetBlocks() {
+  const norm = p => String(p).replace(/\\/g, '/').replace(/^\.\//, '').toLowerCase();
+  const files = new Set(editor.placements.map(p => norm(p.file)));
+  const paths = [...state.eventTexts.keys()];
+  const targets = paths.some(k => files.has(norm(k))) ? paths.filter(k => files.has(norm(k))) : paths;
+  const blocks = [];
+  for (const file of targets) {
+    for (const b of await timelineBlocks(state.eventTexts.get(file))) {
+      blocks.push({ ...b, file });
+    }
+  }
+  return blocks;
+}
+
+async function setEventText(key, after) {
+  if (after === state.eventTexts.get(key)) {
+    return;
+  }
+  state.eventTexts.set(key, after);
+  state.dirtyEvents.set(key, after);
+  updateEventsUi();
+  await refreshPlacements();
 }
 
 async function editPlacement(item, x, y) {

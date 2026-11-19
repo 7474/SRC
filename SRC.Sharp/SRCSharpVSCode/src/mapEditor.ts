@@ -195,6 +195,39 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider, vscod
           }
           break;
         }
+        case 'insertEvent': {
+          // 人形劇（7474/SRC#1694）: at 行目（0 始まり）の前に lines を差し込む
+          const full = path.resolve(scenarioDir, msg.file);
+          if (!full.startsWith(path.resolve(scenarioDir) + path.sep) || !Array.isArray(msg.lines) || msg.lines.length === 0) {
+            break;
+          }
+          try {
+            const eveUri = vscode.Uri.file(full);
+            const eveDoc = await vscode.workspace.openTextDocument(eveUri);
+            const at = Number(msg.at);
+            if (!(at >= 0 && at <= eveDoc.lineCount) || (at > 0 && msg.expectedLine !== undefined && eveDoc.lineAt(at - 1).text !== msg.expectedLine)) {
+              await webview.postMessage({ type: 'eventsUpdated', file: msg.file });
+              break;
+            }
+            const eol = eveDoc.eol === vscode.EndOfLine.CRLF ? '\r\n' : '\n';
+            const edit = new vscode.WorkspaceEdit();
+            if (at < eveDoc.lineCount) {
+              edit.insert(eveUri, new vscode.Position(at, 0), msg.lines.join(eol) + eol);
+            } else {
+              edit.insert(eveUri, eveDoc.lineAt(eveDoc.lineCount - 1).range.end, eol + msg.lines.join(eol));
+            }
+            const eveKey = eveUri.toString();
+            this.applyingEventFiles.add(eveKey);
+            try {
+              await vscode.workspace.applyEdit(edit);
+            } finally {
+              this.applyingEventFiles.delete(eveKey);
+            }
+          } catch (e) {
+            void vscode.window.showWarningMessage(`SRC#: イベントファイルに Move を書き足せませんでした: ${(e as Error)?.message ?? e}`);
+          }
+          break;
+        }
         case 'loaded':
           panelEntry.isLoaded = true;
           this.loaded.set(docKey, {

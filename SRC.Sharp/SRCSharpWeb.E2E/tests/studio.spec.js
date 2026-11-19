@@ -564,6 +564,55 @@ test('マップの配置: .eve からユニットを読み込み、ドラッグ�
   ]);
 });
 
+test('人形劇: 場面を一手ずつ見て、会話の途中でユニットを動かすと Move を書き足す（7474/SRC#1694）', async ({ page }) => {
+  await open(page, 'map');
+  await page.locator('#scenario-input').setInputFiles(scenarioFolder());
+  await page.locator('#maps a', { hasText: 'harbor.map' }).click();
+  await expect(page.locator('.me-canvas')).toBeVisible();
+  await page.locator('input[name="me-target"][value="placement"]').check();
+
+  const select = page.locator('.me-puppet-block');
+  await expect(select.locator('option', { hasText: 'harbor.eve: スタート' })).toHaveCount(1);
+  const value = await select.locator('option', { hasText: 'harbor.eve: スタート' }).getAttribute('value');
+  await select.selectOption(value);
+  await expect(page.locator('.me-puppet-body')).toBeVisible();
+  // 人形劇の間は、静的な配置の一覧を隠す
+  await expect(page.locator('.me-placements')).toBeHidden();
+
+  // 一手ずつ進め、「すごい……！」（ソラの台詞）まで行く
+  const step = page.locator('.me-puppet-step');
+  for (let i = 0; i < 40 && !(await step.textContent()).includes('すごい'); i++) {
+    await page.locator('.me-puppet-next').click();
+  }
+  await expect(step).toContainText('ソラ');
+  await expect(step).toContainText('すごい……！');
+
+  // ソラ（灯機ホタル、(8,6)）を (10,6) へドラッグすると、会話を切って Move を書き足す
+  const box = await page.locator('.me-canvas').boundingBox();
+  await page.mouse.move(box.x + (8 - 0.5) * 32, box.y + (6 - 0.5) * 32);
+  await page.mouse.down();
+  await page.mouse.move(box.x + (10 - 0.5) * 32, box.y + (6 - 0.5) * 32, { steps: 4 });
+  await page.mouse.up();
+  await expect(step).toContainText('Move ソラ 10 6');
+  await expect(page.locator('#save-events')).toBeVisible();
+
+  // Move の手でもう一度動かすと、行き先を書き換える
+  await page.mouse.move(box.x + (10 - 0.5) * 32, box.y + (6 - 0.5) * 32);
+  await page.mouse.down();
+  await page.mouse.move(box.x + (11 - 0.5) * 32, box.y + (7 - 0.5) * 32, { steps: 4 });
+  await page.mouse.up();
+  await expect(step).toContainText('Move ソラ 11 7');
+
+  // 次の手は切った会話の続き
+  await page.locator('.me-puppet-next').click();
+  await expect(step).toContainText('リオ');
+
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#save-events').click()]);
+  const after = fs.readFileSync(await download.path(), 'utf8');
+  // 会話を End で切り、Move を挟む。続きは元から Talk リオ なので話す人を書き直さない
+  expect(after).toMatch(/すごい……！ でも、まだ来る！\r?\nEnd\r?\nMove ソラ 11 7\r?\nTalk リオ\r?\n/);
+});
+
 test('戦闘メッセージ: メッセージウィンドウのプレビュー・充実度チップからの追記・全パイロット一覧表（7474/SRC#1651）', async ({ page }) => {
   await open(page);
   // メッセージウィンドウの整形・区切り・改行ロジック

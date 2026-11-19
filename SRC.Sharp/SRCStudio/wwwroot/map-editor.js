@@ -32,6 +32,10 @@ export class MapEditor {
     this.moveRangeCells = new Set();
     this.highlightCell = null;
     this.dragPlacement = null;
+    /** 人形劇（7474/SRC#1694）: { file, line, steps, index } か null */
+    this.puppet = null;
+    this.puppetBlocks = [];
+    this.dragPuppet = null;
     this.current = { terrain: 0, bitmap: 0 };
     this.zoom = 1;
     this.grid = true;
@@ -88,14 +92,29 @@ export class MapEditor {
             <div class="me-bitmaps"></div>
           </div>
           <div class="me-placement-pane" hidden>
-            <p class="hint">${t('map.placements.hint')}</p>
+            <div class="me-puppet" hidden>
+              <label class="me-puppet-head">${t('map.puppet.title')}
+                <select class="me-puppet-block"><option value="">${t('map.puppet.none')}</option></select></label>
+              <div class="me-puppet-body" hidden>
+                <div class="me-puppet-nav">
+                  <button type="button" class="me-puppet-prev" aria-label="${t('map.puppet.prev')}" title="${t('map.puppet.prev')}">◀</button>
+                  <input type="range" class="me-puppet-range" min="0" max="0" value="0" aria-label="${t('map.puppet.step')}">
+                  <button type="button" class="me-puppet-next" aria-label="${t('map.puppet.next')}" title="${t('map.puppet.next')}">▶</button>
+                  <span class="me-puppet-pos"></span>
+                </div>
+                <div class="me-puppet-step" aria-live="polite"></div>
+                <ul class="me-puppet-warnings"></ul>
+                <p class="hint">${t('map.puppet.hint')}</p>
+              </div>
+            </div>
+            <p class="hint me-static">${t('map.placements.hint')}</p>
             <div class="me-legend">
               <span><i class="me-party-dot" style="background:${PARTY_COLORS['味方']}"></i>${t('map.party.ally')}</span>
               <span><i class="me-party-dot" style="background:${PARTY_COLORS['敵']}"></i>${t('map.party.enemy')}</span>
               <span><i class="me-party-dot" style="background:${PARTY_COLORS['中立']}"></i>${t('map.party.neutral')}</span>
               <span><i class="me-party-dot" style="background:${PARTY_COLORS['ＮＰＣ']}"></i>${t('map.party.npc')}</span>
             </div>
-            <ul class="me-placements" role="listbox"></ul>
+            <ul class="me-placements me-static" role="listbox"></ul>
             <p class="hint me-placements-empty" hidden>${t('map.placements.empty')}</p>
             <div class="me-placement-detail" hidden></div>
           </div>
@@ -136,6 +155,10 @@ export class MapEditor {
     e.querySelector('.me-grid').addEventListener('change', ev => { this.grid = ev.target.checked; this.render(); });
     e.querySelector('.me-show-placements').addEventListener('change', ev => { this.showPlacements = ev.target.checked; this.render(); });
     e.querySelector('.me-resize').addEventListener('click', () => this.openResize());
+    e.querySelector('.me-puppet-block').addEventListener('change', ev => this.selectPuppet(ev.target.value));
+    e.querySelector('.me-puppet-range').addEventListener('input', ev => this.setPuppetIndex(Number(ev.target.value)));
+    e.querySelector('.me-puppet-prev').addEventListener('click', () => this.setPuppetIndex((this.puppet?.index ?? 0) - 1));
+    e.querySelector('.me-puppet-next').addEventListener('click', () => this.setPuppetIndex((this.puppet?.index ?? 0) + 1));
     e.querySelector('.me-class').addEventListener('change', () => this.renderTerrainList());
     e.querySelector('.me-search').addEventListener('input', () => this.renderTerrainList());
     this.canvas.addEventListener('contextmenu', ev => ev.preventDefault());
@@ -265,6 +288,7 @@ export class MapEditor {
   /** このマップに対する配置一覧を入れる */
   setPlacements(items) {
     this.placements = Array.isArray(items) ? items : [];
+    this.refreshPuppetBlocks();
     const prevId = this.selectedPlacement?.id;
     const match = prevId ? this.placements.find(p => p.id === prevId) : null;
     this.selectedPlacement = match ?? null;
@@ -476,7 +500,9 @@ export class MapEditor {
       }
       ctx.stroke();
     }
-    if (this.target === 'placement' || this.showPlacements) {
+    if (this.puppet && this.target === 'placement') {
+      this.drawPuppet(ctx, size);
+    } else if (this.target === 'placement' || this.showPlacements) {
       this.drawPlacements(ctx, size);
     }
     const box = this.selectionBox();
@@ -492,6 +518,186 @@ export class MapEditor {
       const h = this.target !== 'placement' && this.tool === 'paste' && this.clipboard ? this.clipboard.height : 1;
       ctx.strokeRect(this.hover.x * size + 1, this.hover.y * size + 1, w * size - 2, h * size - 2);
     }
+  }
+
+  // ---- 人形劇（7474/SRC#1694）: 場面を一手ずつ見て、ユニットを動かして Move を書く ----
+
+  /** このマップのイベントの塊を選べるようにする（動き・会話のある塊だけ） */
+  async refreshPuppetBlocks() {
+    const box = this.element.querySelector('.me-puppet');
+    if (!this.options.timeline) {
+      box.hidden = true;
+      return;
+    }
+    const blocks = (await this.options.timeline.blocks()).filter(b => b.moves > 0 || b.talks > 0);
+    this.puppetBlocks = blocks;
+    box.hidden = false;
+    const select = this.element.querySelector('.me-puppet-block');
+    const current = this.puppet ? `${this.puppet.file}#${this.puppet.line}` : '';
+    select.innerHTML = `<option value="">${escapeHtml(t('map.puppet.none'))}</option>` + blocks.map(b =>
+      `<option value="${escapeHtml(`${b.file}#${b.line}`)}">${escapeHtml(`${b.file}: ${b.label}`)} — ${escapeHtml(t('map.puppet.blockInfo', b.moves, b.talks))}</option>`).join('');
+    if (current && blocks.some(b => `${b.file}#${b.line}` === current)) {
+      select.value = current;
+      await this.reloadPuppet();
+    } else if (current) {
+      await this.selectPuppet('');
+    }
+  }
+
+  async selectPuppet(value) {
+    if (!value) {
+      this.puppet = null;
+    } else {
+      const i = value.lastIndexOf('#');
+      this.puppet = { file: value.slice(0, i), line: Number(value.slice(i + 1)), steps: [], index: 0 };
+      await this.reloadPuppet();
+    }
+    // 人形劇の間は、静的な配置の一覧を隠す（マップには一手ごとの状態を出す）
+    this.element.querySelector('.me-placement-pane').classList.toggle('me-puppet-active', Boolean(this.puppet));
+    this.renderPuppetPanel();
+    this.render();
+  }
+
+  /** 一手ずつの状態を作り直す。focusLine があれば、その行の手を選ぶ */
+  async reloadPuppet(focusLine) {
+    if (!this.puppet) {
+      return;
+    }
+    const steps = await this.options.timeline.build(this.puppet.file, this.puppet.line);
+    this.puppet.steps = steps;
+    if (focusLine) {
+      const i = steps.findIndex(s => s.line === focusLine);
+      if (i >= 0) {
+        this.puppet.index = i;
+      }
+    }
+    this.puppet.index = Math.max(0, Math.min(this.puppet.index, steps.length - 1));
+    this.renderPuppetPanel();
+    this.render();
+  }
+
+  setPuppetIndex(i) {
+    if (!this.puppet || this.puppet.steps.length === 0) {
+      return;
+    }
+    this.puppet.index = Math.max(0, Math.min(i, this.puppet.steps.length - 1));
+    this.renderPuppetPanel();
+    this.revealPuppetStep();
+    this.render();
+  }
+
+  /** 今の手で見るべきマス（動いた先・Center・話す人）が画面の外なら、そこまでスクロールする */
+  revealPuppetStep() {
+    const step = this.puppet?.steps[this.puppet.index];
+    if (!step) {
+      return;
+    }
+    const speaker = step.kind === 'talk' ? step.units.find(u => u.key === step.speaker || u.pilot === step.speaker || u.unit === step.speaker) : null;
+    const cell = step.toX ? [step.toX, step.toY] : step.centerX ? [step.centerX, step.centerY] : speaker ? [speaker.x, speaker.y] : null;
+    const wrap = this.element.querySelector('.me-canvas-wrap');
+    if (!cell || !wrap) {
+      return;
+    }
+    const size = TILE * this.zoom;
+    const [cx, cy] = [(cell[0] - 0.5) * size, (cell[1] - 0.5) * size];
+    if (cx < wrap.scrollLeft || cx > wrap.scrollLeft + wrap.clientWidth || cy < wrap.scrollTop || cy > wrap.scrollTop + wrap.clientHeight) {
+      this.scrollToCell(cell[0], cell[1]);
+    }
+  }
+
+  renderPuppetPanel() {
+    const body = this.element.querySelector('.me-puppet-body');
+    if (!this.puppet) {
+      body.hidden = true;
+      return;
+    }
+    body.hidden = false;
+    const { steps, index } = this.puppet;
+    const range = this.element.querySelector('.me-puppet-range');
+    range.max = String(Math.max(0, steps.length - 1));
+    range.value = String(index);
+    this.element.querySelector('.me-puppet-pos').textContent = steps.length ? `${index + 1} / ${steps.length}` : '0 / 0';
+    const step = steps[index];
+    const view = this.element.querySelector('.me-puppet-step');
+    if (!step) {
+      view.innerHTML = `<p class="hint">${escapeHtml(t('map.puppet.empty'))}</p>`;
+    } else if (step.kind === 'talk') {
+      view.innerHTML = `<div class="me-puppet-line">${escapeHtml(t('map.puppet.line', step.line))}</div>`
+        + `<div class="me-puppet-talk"><b>${escapeHtml(step.speaker || t('map.puppet.narration'))}</b>${escapeHtml(step.message ?? '')}</div>`;
+    } else {
+      view.innerHTML = `<div class="me-puppet-line">${escapeHtml(t('map.puppet.line', step.line))}</div><code class="me-puppet-cmd">${escapeHtml(step.text)}</code>`;
+    }
+    this.element.querySelector('.me-puppet-warnings').innerHTML = (step?.warnings ?? []).map(w => `<li>${escapeHtml(w)}</li>`).join('');
+  }
+
+  drawPuppet(ctx, size) {
+    const step = this.puppet.steps[this.puppet.index];
+    if (!step) {
+      return;
+    }
+    const center = (x, y) => [(x - 0.5) * size, (y - 0.5) * size];
+    // この手で動いたユニットの元の位置（薄く）と通り道
+    if (step.kind === 'move' && step.fromX && step.toX) {
+      const moved = step.units.find(u => u.key === step.target);
+      if (moved) {
+        this.drawUnitToken(ctx, ...center(step.fromX, step.fromY), size, moved, 0.3, false);
+      }
+      ctx.save();
+      ctx.strokeStyle = '#ffd400';
+      ctx.lineWidth = 3;
+      ctx.setLineDash(step.path ? [] : [6, 4]);
+      ctx.beginPath();
+      const points = step.path ?? [[step.fromX, step.fromY], [step.toX, step.toY]];
+      points.forEach(([x, y], i) => (i === 0 ? ctx.moveTo(...center(x, y)) : ctx.lineTo(...center(x, y))));
+      ctx.stroke();
+      ctx.restore();
+    }
+    // 退いたユニットの元の位置
+    if (step.kind === 'escape' && step.fromX) {
+      ctx.save();
+      ctx.strokeStyle = '#d0393e';
+      ctx.lineWidth = 3;
+      const [cx, cy] = center(step.fromX, step.fromY);
+      ctx.beginPath();
+      ctx.moveTo(cx - size / 3, cy - size / 3);
+      ctx.lineTo(cx + size / 3, cy + size / 3);
+      ctx.moveTo(cx + size / 3, cy - size / 3);
+      ctx.lineTo(cx - size / 3, cy + size / 3);
+      ctx.stroke();
+      ctx.restore();
+    }
+    for (const u of step.units) {
+      const dragging = this.dragPuppet?.unit.key === u.key;
+      if (dragging) {
+        this.drawUnitToken(ctx, ...center(u.x, u.y), size, u, 0.35, false);
+        this.drawUnitToken(ctx, ...center(this.dragPuppet.curX, this.dragPuppet.curY), size, u, 1, true);
+      } else {
+        const speaking = step.kind === 'talk' && (u.key === step.speaker || u.pilot === step.speaker || u.unit === step.speaker);
+        this.drawUnitToken(ctx, ...center(u.x, u.y), size, u, 1, u.key === step.target || speaking);
+      }
+    }
+    if (step.centerX) {
+      ctx.strokeStyle = '#ffd400';
+      ctx.lineWidth = 3;
+      ctx.strokeRect((step.centerX - 1) * size + 1.5, (step.centerY - 1) * size + 1.5, size - 3, size - 3);
+    }
+  }
+
+  /** ドラッグしたユニットを動かす。今の手が同じユニットの Move なら行き先を書き換え、そうでなければ今の手の後に Move を差し込む */
+  async movePuppetUnit(unit, x, y) {
+    const step = this.puppet?.steps[this.puppet.index];
+    if (!step) {
+      return;
+    }
+    let focusLine;
+    if (step.kind === 'move' && step.target === unit.key) {
+      await this.options.timeline.editMove(this.puppet.file, step.line, x, y);
+      focusLine = step.line;
+    } else {
+      const result = await this.options.timeline.insertMove(this.puppet.file, step.line, unit.key, x, y);
+      focusLine = result?.line;
+    }
+    await this.reloadPuppet(focusLine);
   }
 
   drawPlacements(ctx, size) {
@@ -672,6 +878,16 @@ export class MapEditor {
     }
     this.element.focus({ preventScroll: true });
     this.canvas.setPointerCapture(ev.pointerId);
+    if (this.target === 'placement' && this.puppet) {
+      const step = this.puppet.steps[this.puppet.index];
+      const unit = step?.units.find(u => u.x === p.x + 1 && u.y === p.y + 1);
+      if (unit && ev.button === 0) {
+        this.dragPuppet = { unit, curX: unit.x, curY: unit.y };
+        this.canvas.style.cursor = 'grabbing';
+      }
+      this.render();
+      return;
+    }
     if (this.target === 'placement') {
       const hit = this.placementAt(p.x + 1, p.y + 1);
       this.selectPlacement(hit);
@@ -720,6 +936,14 @@ export class MapEditor {
     }
     const p = this.pointAt(ev);
     this.hover = p;
+    if (this.dragPuppet && p) {
+      this.dragPuppet.curX = p.x + 1;
+      this.dragPuppet.curY = p.y + 1;
+      const d = this.dragPuppet;
+      this.status.textContent = t('map.placements.dragging', d.unit.key, d.unit.x, d.unit.y, d.curX, d.curY);
+      this.render();
+      return;
+    }
     if (this.dragPlacement && p) {
       this.dragPlacement.curX = p.x + 1;
       this.dragPlacement.curY = p.y + 1;
@@ -757,6 +981,17 @@ export class MapEditor {
   }
 
   async pointerUp() {
+    if (this.dragPuppet) {
+      const drag = this.dragPuppet;
+      this.dragPuppet = null;
+      this.canvas.style.cursor = 'grab';
+      if (drag.curX !== drag.unit.x || drag.curY !== drag.unit.y) {
+        await this.movePuppetUnit(drag.unit, drag.curX, drag.curY);
+      } else {
+        this.render();
+      }
+      return;
+    }
     if (this.dragPlacement) {
       const drag = this.dragPlacement;
       this.dragPlacement = null;

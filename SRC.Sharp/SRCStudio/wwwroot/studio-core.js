@@ -123,6 +123,24 @@ export async function replacePlacementFileCoordinates(text, lineNumber, x, y) {
   return core.ReplacePlacementFileCoordinates(text, lineNumber, x, y);
 }
 
+/** 人形劇の編集（7474/SRC#1694）。イベントの塊（ラベル）の一覧 [{ label, line, lastLine, moves, talks }] */
+export async function timelineBlocks(text) {
+  const core = await studioCore();
+  return JSON.parse(core.TimelineBlocks(text));
+}
+
+/** 人形劇の編集（7474/SRC#1694）。line を含む塊を一手ずつ進めた状態 [{ index, line, kind, speaker, message, target, fromX, fromY, toX, toY, path, units, warnings, ... }] */
+export async function buildTimeline(text, line, map) {
+  const core = await studioCore();
+  return JSON.parse(core.BuildTimeline(text, line, map?.width ?? 0, map?.height ?? 0, map?.tiles ?? []));
+}
+
+/** 人形劇の編集（7474/SRC#1694）。after 行の後に Move を差し込む（会話の途中なら会話を切る）。{ text, line } */
+export async function insertTimelineMove(text, after, name, x, y) {
+  const core = await studioCore();
+  return JSON.parse(core.InsertTimelineMove(text, after, name, x, y));
+}
+
 /** 移動力の範囲の目安を計算する（[{ x, y }]） */
 export async function computeMoveRange(map, placement) {
   const core = await studioCore();
