@@ -410,6 +410,77 @@ test('かんたん作成: 作品を選び、味方と敵を置き、セリフを
   await expect(page.locator('tr[data-side="enemies"] .q-boss')).toHaveValue('3');
 });
 
+test('かんたん作成の出来事: 勝ち負けの条件・援軍・戦闘中の会話・撤退を足すと、普通のイベントになる（7474/SRC#1689）', async ({ page }) => {
+  await routeSrcData(page);
+  await open(page, 'quick');
+  await page.locator('.q-search').fill('ランタン');
+  await page.locator('.q-results button', { hasText: 'ランタン' }).click();
+  await expect(page.locator('.q-chosen li')).toHaveCount(1);
+  const setUnit = async (row, unit, pilot) => {
+    await row.locator('.q-unit').fill(unit);
+    await row.locator('.q-unit').dispatchEvent('change');
+    await row.locator('.q-pilot').fill(pilot);
+    await row.locator('.q-pilot').dispatchEvent('change');
+  };
+  await page.locator('.q-add[data-side="allies"]').click();
+  await setUnit(page.locator('tr[data-side="allies"]'), '灯機ホタル', 'ソラ');
+  await page.locator('.q-add[data-side="enemies"]').click();
+  await setUnit(page.locator('tr[data-side="enemies"]'), '灯機ツバメ', 'リオ');
+  await page.locator('tr[data-side="enemies"] .q-boss').selectOption('2');
+  await page.locator('.q-title').fill('events');
+  await page.locator('.q-title').dispatchEvent('change');
+
+  // 勝利の条件: リオを倒す。敗北の条件: 8 ターンを過ぎる
+  await page.locator('.q-goal-kind').selectOption('boss');
+  await page.locator('.q-goal-target').selectOption('リオ');
+  await page.locator('.q-loss-kind').selectOption('turns');
+  await page.locator('.q-loss-turns').fill('8');
+  await page.locator('.q-loss-turns').dispatchEvent('change');
+
+  // 援軍: 3 ターン目の敵のフェイズに、ミュウを (2,2) に置く
+  await page.locator('.q-add-event[data-kind="reinforce"]').click();
+  const reinforce = page.locator('.q-event[data-event="0"]');
+  await reinforce.locator('.q-ev-turn').fill('3');
+  await reinforce.locator('.q-ev-turn').dispatchEvent('change');
+  await setUnit(reinforce.locator('tr[data-side="ev0.enemies"]'), '灯機ホタル', 'ミュウ');
+  await reinforce.locator('tr[data-side="ev0.enemies"] .q-pos').click();
+  await page.locator('.q-canvas').scrollIntoViewIfNeeded();
+  const box = await page.locator('.q-canvas').boundingBox();
+  await page.mouse.click(box.x + 1.5 * 26, box.y + 1.5 * 26);
+  await expect(page.locator('tr[data-side="ev0.enemies"] .q-pos')).toHaveText('2,2');
+
+  // 戦闘中の会話: ソラとリオが戦うとき
+  await page.locator('.q-add-event[data-kind="talk"]').click();
+  const talk = page.locator('.q-event[data-event="1"]');
+  await expect(talk.locator('.q-ev-unit')).toHaveValue('ソラ');
+  await expect(talk.locator('.q-ev-target')).toHaveValue('リオ');
+  await talk.locator('.q-text').fill('リオ、目を覚まして！');
+
+  // 撤退: リオの損傷率 60% で退く（倒す相手が退いたら勝ち）
+  await page.locator('.q-add-event[data-kind="retreat"]').click();
+  const retreat = page.locator('.q-event[data-event="2"]');
+  await expect(retreat.locator('.q-ev-unit')).toHaveValue('リオ');
+  await retreat.locator('.q-ev-ratio').fill('60');
+  await retreat.locator('.q-ev-ratio').dispatchEvent('change');
+  await retreat.locator('.q-text').fill('覚えていろ！');
+
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('.q-save').click()]);
+  const text = fs.readFileSync(await download.path()).toString('utf8');
+  expect(text).toContain('勝利条件：リオの撃破');
+  expect(text).toMatch(/ターン 3 敵:\r\nCreate 敵 灯機ホタル 0 ミュウ 5 2 2\r\nExit/);
+  expect(text).toMatch(/攻撃 ソラ リオ:\r\nTalk ソラ\r\nリオ、目を覚まして！\r\nEnd\r\nExit/);
+  expect(text).toMatch(/損傷率 リオ 60:\r\nTalk リオ\r\n覚えていろ！\r\nEnd\r\nEscape リオ\r\n/);
+  expect(text).toMatch(/破壊 リオ:\r\nTalk システム\r\n勝利！\r\nEnd\r\nGameClear/);
+  expect(text).toMatch(/ターン 9 味方:\r\nGameOver/);
+
+  // 下書きに残り、開き直しても出来事はそのまま
+  await page.reload();
+  await expect(page.locator('body[data-ready="true"]')).toHaveCount(1, { timeout: 60 * 1000 });
+  await expect(page.locator('.q-event')).toHaveCount(3);
+  await expect(page.locator('.q-goal-kind')).toHaveValue('boss');
+  await expect(page.locator('.q-loss-turns')).toHaveValue('8');
+});
+
 test('かんたん作成: 足りないものは作らずに知らせる', async ({ page }) => {
   await routeSrcData(page);
   await open(page, 'quick');
@@ -426,6 +497,10 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
       titles: ['GSCデータパック/ロボ/ランタン'],
       units: { allies: [{ unit: '灯機ホタル', pilot: 'ソラ', level: 12, x: 3, y: 10 }], enemies: [{ unit: '灯機ホタル', pilot: 'リオ', level: 8, bossRank: 2, x: 15, y: 4 }] },
       talk: { opening: [{ speaker: 'ソラ', text: '港を守るぞ！' }] },
+      // 出来事（7474/SRC#1689）
+      goal: { kind: 'boss', target: 'リオ' },
+      events: [{ trigger: 'destroyed', unit: 'リオ', talk: [{ speaker: 'リオ', text: 'まだ終わらない……' }],
+        enemies: [{ unit: '灯機ツバメ', pilot: 'グスタフ', level: 9, x: 16, y: 4 }] }],
     }],
   });
   await open(page, 'quick');
@@ -451,6 +526,10 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
   await expect(page.locator('tr[data-side="allies"] .q-boss')).toHaveValue('-1');
   await expect(page.locator('.q-line[data-scene="opening"] .q-text')).toHaveValue('港を守るぞ！');
   await expect(page.locator('.q-title')).toHaveValue('灯の港の戦い');
+  await expect(page.locator('.q-goal-kind')).toHaveValue('boss');
+  await expect(page.locator('.q-goal-target')).toHaveValue('リオ');
+  await expect(page.locator('.q-event .q-ev-trigger')).toHaveValue('destroyed');
+  await expect(page.locator('tr[data-side="ev0.enemies"] .q-pilot')).toHaveValue('グスタフ');
   // 足した味方は、空いているおすすめの位置に置く
   await page.locator('.q-add[data-side="allies"]').click();
   await expect(page.locator('tr[data-side="allies"] .q-pos').nth(1)).toHaveText('4,10');
@@ -464,6 +543,7 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
   const source = fs.readFileSync(path.join(lantern, '01_灯の港.map'), 'utf8').replace(/^\uFEFF/, '');
   expect(text).toContain(source);
   expect(text).toContain('ChangeMap harbor-battle.map');
+  expect(text).toMatch(/破壊 リオ:\r\nTalk リオ\r\nまだ終わらない……\r\nEnd\r\nCreate 敵 灯機ツバメ 0 グスタフ 9 16 4\r\n/);
 });
 
 test('かんたん作成: 内容をリセットすると、選んだ作品・マップ・ユニット・セリフ・題名と下書きが消える', async ({ page }) => {

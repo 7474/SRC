@@ -227,6 +227,14 @@ main[hidden] { display: none; }
 .q-key.enemies { background: #d0393e; }
 .q-key.spot { border: 2px dashed var(--muted); width: 8px; height: 8px; }
 .q-key.boss { background: #ffd400; border: 1px solid #000; border-radius: 50%; width: 9px; height: 9px; }
+.q-key.reinforce { background: #d0393e; opacity: 0.55; box-shadow: inset 4px 4px 0 #000; }
+.q-key.goal { border: 2px dashed #ffd400; width: 8px; height: 8px; }
+/* 出来事（7474/SRC#1689） */
+.q-event { border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin: 10px 0; }
+.q-event legend { font-weight: 600; padding: 0 4px; }
+.q-event h4 { margin: 10px 0 4px; font-size: 0.95em; }
+.q-check { flex-direction: row; align-items: center; gap: 4px; }
+.q-goal-pick[aria-pressed="true"] { outline: 2px solid #ffd400; }
 .q-board { overflow: auto; max-width: 100%; max-height: 75vh; border: 1px solid var(--border); display: inline-block; vertical-align: top; }
 .q-canvas { display: block; cursor: pointer; }
 .q-line { display: flex; gap: 6px; align-items: flex-start; margin: 4px 0; }
