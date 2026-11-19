@@ -611,6 +611,25 @@ test('人形劇: 場面を一手ずつ見て、会話の途中でユニットを
   const after = fs.readFileSync(await download.path(), 'utf8');
   // 会話を End で切り、Move を挟む。続きは元から Talk リオ なので話す人を書き直さない
   expect(after).toMatch(/すごい……！ でも、まだ来る！\r?\nEnd\r?\nMove ソラ 11 7\r?\nTalk リオ\r?\n/);
+
+  // この場面を再生: シナリオ（書きかけのイベントを含む）と、その場面だけを流す 場面の再生.eve を SRC#Web に渡す（ここでは SRC#Web の代わりの頁を返す）
+  await page.context().route('**/web/**', route => route.fulfill({ contentType: 'text/html', body: '<p>SRC#Web</p>' }));
+  const [popup] = await Promise.all([page.context().waitForEvent('page'), page.locator('.me-puppet-play').click()]);
+  await expect.poll(() => popup.url()).toContain('stored=');
+  expect(decodeURIComponent(popup.url())).toContain('/web/?stored=lantern（場面の再生）.zip&eve=場面の再生.eve');
+  const zipText = await page.evaluate(() => new Promise((resolve, reject) => {
+    const request = indexedDB.open('srcweb');
+    request.onsuccess = () => {
+      const get = request.result.transaction('archives').objectStore('archives').get('lantern（場面の再生）.zip');
+      get.onsuccess = async () => resolve(await get.result.data.text());
+      get.onerror = () => reject(get.error);
+    };
+    request.onerror = () => reject(request.error);
+  }));
+  expect(zipText).toContain('場面の再生.eve');
+  expect(zipText).toMatch(/スタート:\r?\nChangeMap harbor\.map\r?\n/);
+  expect(zipText).toContain('Move ソラ 11 7');
+  expect(zipText).toMatch(/場面の再生の終わり:\r?\nTelop 場面の再生はここまで\r?\nGameClear/);
 });
 
 test('戦闘メッセージ: メッセージウィンドウのプレビュー・充実度チップからの追記・全パイロット一覧表（7474/SRC#1651）', async ({ page }) => {

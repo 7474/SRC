@@ -1,9 +1,11 @@
 // SRC#Studio のスタンドアロン（index.html）。フォルダを開き、マップを選んでマップ作成ツールで編集し、保存する
-import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, autoConnectMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport, timelineBlocks, buildTimeline, insertTimelineMove } from './studio-core.js';
+import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, autoConnectMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport, timelineBlocks, buildTimeline, insertTimelineMove, timelineScene } from './studio-core.js';
 import { AssetsView } from './assets.js';
 import { DataPreview } from './preview.js';
 import { MapEditor, newMap } from './map-editor.js';
 import { QuickBuilder } from './quick.js';
+import { makeZip } from './zip.js';
+import { storeForWeb, studioConfig, webPlayUrl } from './web-handoff.js';
 import { basicData, canWriteFolders, download, fromFileList, pickFolder } from './folders.js';
 import { language, t } from './i18n.js';
 
@@ -31,6 +33,7 @@ const editor = new MapEditor($('#editor'), {
       return result;
     },
     editMove: async (file, line, x, y) => setEventText(file, await replacePlacementFileCoordinates(state.eventTexts.get(file) ?? '', line, x, y)),
+    play: (file, line) => playScene(file, line),
   },
   onEdit: text => {
     state.text = text;
@@ -306,6 +309,49 @@ async function puppetBlocks() {
     }
   }
   return blocks;
+}
+
+/**
+ * 場面の再生（7474/SRC#1694）。シナリオのフォルダ（書きかけのイベントとマップを含む）と、その場面だけを流す 場面の再生.eve を zip にして、
+ * 同じサイトの SRC#Web に渡す（かんたん作成と同じ受け渡し）
+ */
+async function playScene(file, line) {
+  // ポップアップを止められないよう、押したときに窓を開いてから中身を作る
+  const win = window.open('', '_blank');
+  try {
+    const scene = await timelineScene(state.eventTexts.get(file) ?? '', line, state.path);
+    if (!scene) {
+      throw new Error(`${file}:${line}`);
+    }
+    const sceneName = '場面の再生.eve';
+    const overrides = new Map([...state.dirtyEvents.entries()]);
+    if (state.path && state.text != null) {
+      overrides.set(state.path, state.text);
+    }
+    const files = [];
+    for (const path of state.scenario.files) {
+      if (/^\.srcsharp\//.test(path) || path === sceneName) {
+        continue;
+      }
+      files.push({ path, data: overrides.has(path) ? overrides.get(path) : await state.scenario.read(path) });
+    }
+    files.push({ path: sceneName, data: scene });
+    const config = await studioConfig();
+    const name = `${state.scenario.name}（場面の再生）.zip`;
+    await storeForWeb(name, makeZip(files), config.requires);
+    const url = new URL(await webPlayUrl(name));
+    url.searchParams.set('eve', sceneName);
+    if (win) {
+      win.location.href = url.toString();
+    } else {
+      location.href = url.toString();
+    }
+    const block = editor.puppetBlocks.find(b => b.file === file && b.line === line);
+    showMessage(t('map.puppet.playing', block?.label ?? `${file}:${line}`), 'info');
+  } catch (e) {
+    win?.close();
+    showMessage(t('map.puppet.playFailed', e?.message ?? e));
+  }
 }
 
 async function setEventText(key, after) {

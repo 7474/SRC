@@ -141,6 +141,12 @@ export async function insertTimelineMove(text, after, name, x, y) {
   return JSON.parse(core.InsertTimelineMove(text, after, name, x, y));
 }
 
+/** 場面の再生（7474/SRC#1694）。line を含む塊だけを流すイベントファイルの中身（場面の再生.eve。シナリオのフォルダに置く） */
+export async function timelineScene(text, line, mapPath) {
+  const core = await studioCore();
+  return core.TimelineScene(text, line, mapPath ?? '');
+}
+
 /** 移動力の範囲の目安を計算する（[{ x, y }]） */
 export async function computeMoveRange(map, placement) {
   const core = await studioCore();

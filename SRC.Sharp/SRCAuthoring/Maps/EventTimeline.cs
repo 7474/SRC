@@ -404,6 +404,132 @@ namespace SRCAuthoring.Maps
             return steps;
         }
 
+        /// <summary>場面の再生（7474/SRC#1694）で作るイベントファイルの名前</summary>
+        public const string SceneEventName = "場面の再生.eve";
+
+        /// <summary>VS Code が場面の再生のイベントファイルを置く、シナリオのフォルダからのフォルダ（試し戦闘の .srcsharp/trial と同じ扱い）</summary>
+        public const string SceneFolder = ".srcsharp/scene";
+
+        private const string SceneEndLabel = "場面の再生の終わり";
+
+        private static readonly string[] PrologueSettings = { "Option", "RenameTerm", "RenameBGM", "Load", "Global", "Set", "Local", "Require" };
+
+        private static readonly string[] StageSetup = { "ChangeMap", "Create", "Launch", "Organize", "BossRank", "Move", "Escape" };
+
+        /// <summary>
+        /// line を含む塊（場面）だけを再生するイベントファイルを作る（7474/SRC#1694）。
+        /// プロローグからは設定の命令（Option・Load・Global・Set など。Input は既定の値の Set にする）だけを持ってきて、会話や選択は飛ばす。
+        /// スタートで場面のマップ（mapPath。場面が ChangeMap していなければ）に移り、場面がスタートでなければ、スタートのユニットの配置（Create・Launch・Move など）をしてから、
+        /// 場面を流す。場面の Exit と最後で「ここまで」と出して GameClear で終える。ほかの塊（Call の先や、場面の中で起きるイベント）はそのまま残す。
+        /// </summary>
+        public static string SceneScript(string text, int line, string mapPath)
+        {
+            var eol = (text ?? "").Contains("\r\n") ? "\r\n" : "\n";
+            var lines = SplitLines(text);
+            var blocks = Blocks(text);
+            var scene = blocks.LastOrDefault(b => b.Line <= line);
+            if (scene == null)
+            {
+                return null;
+            }
+            var prologue = blocks.FirstOrDefault(b => b.Label == "プロローグ");
+            var start = blocks.FirstOrDefault(b => b.Label == "スタート");
+            IEnumerable<string> Body(TimelineBlock b) => lines.Skip(b.Line).Take(Math.Max(0, b.LastLine - b.Line));
+
+            var output = new List<string>();
+            // 最初のラベルの前（シナリオの宣言など）はそのまま
+            output.AddRange(lines.Take(blocks.Count > 0 ? blocks[0].Line - 1 : 0));
+            output.Add($"# 場面の再生（SRC#Studio・VS Code の人形劇が作る。7474/SRC#1694）: {scene.Label}（{scene.Line} 行目）");
+
+            output.Add("プロローグ:");
+            if (prologue != null)
+            {
+                output.AddRange(SetupLines(Body(prologue), PrologueSettings, prologue: true));
+            }
+            output.Add("Exit");
+
+            output.Add("スタート:");
+            var setup = start != null && start != scene ? SetupLines(Body(start), StageSetup, prologue: false) : new List<string>();
+            var body = Body(scene).Select(l => Is(l.Trim(), "Exit") ? l.Substring(0, l.Length - l.TrimStart().Length) + "Goto " + SceneEndLabel : l).ToList();
+            var first = setup.Concat(body).Select(l => FirstToken(l.Trim())).FirstOrDefault(t => Is(t, "ChangeMap") || Is(t, "Create") || Is(t, "Launch") || Is(t, "Organize"));
+            if (!Is(first ?? "", "ChangeMap") && !string.IsNullOrEmpty(mapPath))
+            {
+                output.Add("ChangeMap " + Quote(mapPath.Replace('/', '\\')));
+            }
+            output.AddRange(setup);
+            output.AddRange(body);
+            output.Add("Goto " + SceneEndLabel);
+            output.Add(SceneEndLabel + ":");
+            output.Add("Telop 場面の再生はここまで");
+            output.Add("GameClear");
+
+            // ほかの塊（Call の先・場面の中で起きるイベント）
+            foreach (var b in blocks.Where(b => b != prologue && b != start && b != scene))
+            {
+                output.Add("");
+                output.Add(lines[b.Line - 1]);
+                output.AddRange(Body(b));
+            }
+            return string.Join(eol, output) + eol;
+        }
+
+        private static List<string> SetupLines(IEnumerable<string> body, string[] commands, bool prologue)
+        {
+            var result = new List<string>();
+            var inTalk = false;
+            var depth = 0;
+            foreach (var raw in body)
+            {
+                var trimmed = raw.Trim();
+                if (IsSkippable(trimmed))
+                {
+                    continue;
+                }
+                if (inTalk)
+                {
+                    inTalk = !IsEnd(trimmed);
+                    continue;
+                }
+                if (IsTalkStart(trimmed) || Is(FirstToken(trimmed), "Question") || Is(FirstToken(trimmed), "Menu") || Is(FirstToken(trimmed), "Ask"))
+                {
+                    // 会話・選択の塊（End まで）は飛ばす
+                    inTalk = true;
+                    continue;
+                }
+                var cmd = FirstToken(trimmed);
+                // If・Switch・Do などの中（条件しだいの命令）は持ってこない
+                if (Is(cmd, "If") && !trimmed.EndsWith("Then", StringComparison.OrdinalIgnoreCase) && trimmed.IndexOf(" Then ", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    continue;
+                }
+                if (Is(cmd, "If") || Is(cmd, "Switch") || Is(cmd, "Do") || Is(cmd, "For") || Is(cmd, "ForEach"))
+                {
+                    depth++;
+                    continue;
+                }
+                if (Is(cmd, "EndIf") || Is(cmd, "EndSw") || Is(cmd, "Loop") || Is(cmd, "Next"))
+                {
+                    depth = Math.Max(0, depth - 1);
+                    continue;
+                }
+                if (depth > 0)
+                {
+                    continue;
+                }
+                if (prologue && Is(cmd, "Input") && EventPlacementParser.TrySplitWithSpans(trimmed, out var spans) && spans.Count >= 4)
+                {
+                    result.Add($"Set {spans[1].Value} {spans[spans.Count - 1].Value}");
+                    continue;
+                }
+                if (commands.Any(c => Is(cmd, c)) || (!prologue && TryUnitIdAssignment(trimmed, out _, out _)))
+                {
+                    // 配置は場面の前の下ごしらえなので、動きを見せずに置く
+                    result.Add(Is(cmd, "Move") ? System.Text.RegularExpressions.Regex.Replace(raw, @"\s+アニメ表示\s*$", "") : raw);
+                }
+            }
+            return result;
+        }
+
         /// <summary>
         /// after（1 始まり）の行の後に Move を差し込む。会話の途中（Talk と End の間）なら、会話をそこで切り、
         /// End・Move・Talk（同じ話す人）を差し込んで、会話の続きはそのまま残す。差し込んだ Move の行番号も返す

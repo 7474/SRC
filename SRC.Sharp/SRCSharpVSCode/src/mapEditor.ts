@@ -195,6 +195,29 @@ export class MapEditorProvider implements vscode.CustomTextEditorProvider, vscod
           }
           break;
         }
+        case 'playScene': {
+          // 人形劇の場面だけを再生する（7474/SRC#1694）。試し戦闘と同じく .srcsharp の下に置き、シナリオのフォルダを基準にデバッガで動かす
+          if (typeof msg.text !== 'string' || msg.text.length === 0) {
+            break;
+          }
+          try {
+            const dir = path.join(scenarioDir, '.srcsharp', 'scene');
+            await fs.promises.mkdir(dir, { recursive: true });
+            const eve = path.join(dir, '場面の再生.eve');
+            await fs.promises.writeFile(eve, msg.text, 'utf8');
+            await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(scenarioDir)), {
+              type: 'srcsharp',
+              request: 'launch',
+              name: `SRC# 場面の再生: ${String(msg.label ?? '')}`,
+              program: eve,
+              scenarioRoot: scenarioDir,
+              interactive: true,
+            });
+          } catch (e) {
+            void vscode.window.showWarningMessage(`SRC#: 場面を再生できませんでした: ${(e as Error)?.message ?? e}`);
+          }
+          break;
+        }
         case 'insertEvent': {
           // 人形劇（7474/SRC#1694）: at 行目（0 始まり）の前に lines を差し込む
           const full = path.resolve(scenarioDir, msg.file);

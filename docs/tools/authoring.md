@@ -298,6 +298,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | スタンドアロン | Chrome・Edge はフォルダを直接読み書き（File System Access API）。ほかのブラウザは読み込みとダウンロード |
 | 配置 | 「配置」でシナリオの `.eve` の Create・Launch・Move などをマップに重ね、ドラッグでその行の座標の欄だけを書き換える（7474/SRC#1653） |
 | 人形劇 | 「配置」で場面（ラベルの塊）を選ぶと、ユニットを動かしながら会話する場面を一手ずつ見る（7474/SRC#1694。SRCAuthoring の `EventTimeline`）。手ごとにマップの状態と会話、Move の通り道（アニメ表示は VB 版と同じく長い方の軸を先に進む L 字）、Center のマスを出す。行き先が埋まっている・入れない地形なら VB 版の `Unit.Jump` と同じ順で近くのマスへずらし、その旨と、まだいないユニットを動かす・話させることを知らせる。`変数 = UnitID(名前)` の変数は、そのユニットとして扱う。ユニットをドラッグすると今の手の後に `Move` を書き足し（会話の途中なら `End` で切って Move を挟み、同じ話す人の `Talk` で続ける）、Move の手でそのユニットを動かすと行き先を書き換える。条件分岐・Wait・戦闘の結果は追わない |
+| 場面の再生 | 人形劇の「この場面を再生」で、選んだ場面だけをエンジンで流す（`EventTimeline.SceneScript`）。場面の再生.eve を作る: プロローグからは設定の命令（Option・Load・Global・Set など。Input は既定の値の Set）だけを持ってきて会話・選択・条件の中は飛ばし、スタートで場面のマップに移り（場面が ChangeMap していなければ）、場面がスタートでなければスタートの配置（Create・Launch・Move など。アニメ表示は外す）をしてから場面を流し、場面の Exit と最後で「場面の再生はここまで」と出して GameClear で終える。ほかの塊（Call の先・場面の中で起きるイベント）はそのまま残す。スタンドアロンは書きかけのイベント・マップを含むシナリオと一緒に zip にして同じサイトの SRC#Web に渡し（かんたん作成と同じ受け渡し。`?stored=…&eve=場面の再生.eve`）、VS Code は `.srcsharp/scene/場面の再生.eve` に書いてデバッガで動かす（試し戦闘と同じ扱い） |
 | VS Code | SRC 本体のフォルダは `srcsharp.appPath`、無ければシナリオの親のうち Lib か Data/System のあるもの、それも無ければ最小の汎用データ。保存・元に戻す・未保存の印は VS Code のもの。SRC のマップでない `.map`（JavaScript のソースマップなど）は「テキストとして開く」で開き直せる |
 
 ## データのプレビュー（SRC#Studio）
