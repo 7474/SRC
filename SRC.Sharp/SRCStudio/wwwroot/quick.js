@@ -36,7 +36,25 @@ function newBattle() {
     mapSource: '', mapText: undefined, spots: null,
     allies: [], enemies: [],
     opening: [], victory: [], defeat: [],
+    /** 出来事（7474/SRC#1689）: 勝利・敗北の条件と、戦闘中の出来事（会話・援軍・撤退） */
+    goal: { kind: 'annihilate', target: '', turns: 5, x: 0, y: 0 },
+    loss: { kind: 'annihilate', target: '', turns: 10 },
+    events: [],
   };
+}
+
+/** 出来事の初めの形（援軍・会話・撤退） */
+function newEvent(kind, battle) {
+  const boss = battle.enemies.find(u => (u.bossRank ?? -1) >= 0) ?? battle.enemies[0];
+  const ally = battle.allies[0];
+  switch (kind) {
+    case 'reinforce':
+      return { trigger: 'turn', turn: 2, phase: '敵', unit: '', target: '', ratio: 50, talk: [], allies: [], enemies: [], retreat: false };
+    case 'retreat':
+      return { trigger: 'damaged', turn: 2, phase: '敵', unit: boss?.pilot ?? '', target: '', ratio: 50, talk: [{ speaker: boss?.pilot ?? '', text: '' }], allies: [], enemies: [], retreat: true };
+    default:
+      return { trigger: 'attack', turn: 2, phase: '敵', unit: ally?.pilot ?? '', target: boss?.pilot ?? '', ratio: 50, talk: [{ speaker: ally?.pilot ?? '', text: '' }], allies: [], enemies: [], retreat: false };
+  }
 }
 
 export class QuickBuilder {
@@ -126,9 +144,9 @@ export class QuickBuilder {
     }
     const spots = { allies: scene.allies ?? [], enemies: scene.enemies ?? [] };
     this.battle.spots = spots;
-    const preset = (scene.units?.allies?.length || scene.units?.enemies?.length || scene.titles?.length || scene.talk);
+    const preset = (scene.units?.allies?.length || scene.units?.enemies?.length || scene.titles?.length || scene.talk || scene.events?.length || scene.goal);
     const b = this.battle;
-    const empty = !b.allies.length && !b.enemies.length && ![b.opening, b.victory, b.defeat].some(x => x.length);
+    const empty = !b.allies.length && !b.enemies.length && ![b.opening, b.victory, b.defeat, b.events].some(x => x.length);
     if (preset && (empty || confirm(t('quick.scenePreset', scene.title)))) {
       if (scene.titles?.length) {
         const index = await this.loadIndex();
@@ -145,6 +163,19 @@ export class QuickBuilder {
       for (const key of ['opening', 'victory', 'defeat']) {
         b[key] = (scene.talk?.[key] ?? []).map(x => ({ speaker: x.speaker ?? '', text: x.text ?? '' }));
       }
+      // 出来事（7474/SRC#1689）: 勝利・敗北の条件と、戦闘中の出来事
+      const fresh = newBattle();
+      b.goal = { ...fresh.goal, ...(scene.goal ?? {}) };
+      b.loss = { ...fresh.loss, ...(scene.loss ?? {}) };
+      b.events = (scene.events ?? []).map(e => ({
+        ...newEvent('talk', { allies: [], enemies: [] }),
+        ...e,
+        unit: e.unit ?? '', target: e.target ?? '',
+        talk: (e.talk ?? []).map(x => ({ speaker: x.speaker ?? '', text: x.text ?? '' })),
+        allies: (e.allies ?? []).map(unit),
+        enemies: (e.enemies ?? []).map(unit),
+        retreat: Boolean(e.retreat),
+      }));
       if (!b.title && scene.title) {
         b.title = scene.title;
       }
@@ -253,12 +284,40 @@ export class QuickBuilder {
     return this.titles.flatMap(x => x.pilots.map(p => ({ ...p, title: x.title })));
   }
 
+  /** ユニットの表の鍵（allies・enemies・ev0.allies など）から、その一覧 */
+  unitList(key) {
+    const m = /^ev(\d+)\.(allies|enemies)$/.exec(key);
+    return m ? this.battle.events[Number(m[1])][m[2]] : this.battle[key];
+  }
+
+  /** セリフの鍵（opening・victory・defeat・ev0 など）から、その一覧 */
+  lineList(key) {
+    const m = /^ev(\d+)$/.exec(key);
+    return m ? this.battle.events[Number(m[1])].talk : this.battle[key];
+  }
+
+  /** 出来事の援軍も含めた、置くユニット（{ key, index, side, unit, event }） */
+  allUnits() {
+    const b = this.battle;
+    const result = [];
+    for (const side of ['allies', 'enemies']) {
+      b[side].forEach((unit, index) => result.push({ key: side, index, side, unit, event: -1 }));
+    }
+    b.events.forEach((e, i) => {
+      for (const side of ['allies', 'enemies']) {
+        e[side].forEach((unit, index) => result.push({ key: `ev${i}.${side}`, index, side, unit, event: i }));
+      }
+    });
+    return result;
+  }
+
   // ---- ユニット ----
 
   addUnit(side) {
-    const list = this.battle[side];
-    const place = this.freeCell(side);
-    list.push({ unit: '', pilot: '', level: side === 'allies' ? 10 : 5, rank: 0, bossRank: -1, x: place.x, y: place.y });
+    const list = this.unitList(side);
+    const party = side.endsWith('allies') ? 'allies' : 'enemies';
+    const place = this.freeCell(party);
+    list.push({ unit: '', pilot: '', level: party === 'allies' ? 10 : 5, rank: 0, bossRank: -1, x: place.x, y: place.y });
     this.selected = { side, index: list.length - 1 };
     this.saveDraft();
     this.render();
@@ -266,7 +325,7 @@ export class QuickBuilder {
 
   /** 場面の置く位置のうち空いているところ。無ければ、味方は左から、敵は右から空いているマス */
   freeCell(side) {
-    const used = new Set([...this.battle.allies, ...this.battle.enemies].map(u => `${u.x},${u.y}`));
+    const used = new Set(this.allUnits().map(x => `${x.unit.x},${x.unit.y}`));
     const spot = (this.battle.spots?.[side] ?? []).find(p => !used.has(`${p.x},${p.y}`));
     if (spot) {
       return { x: spot.x, y: spot.y };
@@ -300,6 +359,9 @@ export class QuickBuilder {
       opening: b.opening,
       victory: b.victory,
       defeat: b.defeat,
+      goal: b.goal,
+      loss: b.loss,
+      events: b.events,
     });
   }
 
@@ -376,6 +438,9 @@ export class QuickBuilder {
       || b.opening.length
       || b.victory.length
       || b.defeat.length
+      || b.events?.length
+      || (b.goal && b.goal.kind !== 'annihilate')
+      || (b.loss && b.loss.kind !== 'annihilate')
     );
   }
 
@@ -454,7 +519,12 @@ export class QuickBuilder {
     const b = this.battle;
     const units = this.units();
     const pilots = this.pilots();
-    const speakers = [...new Set([...b.allies, ...b.enemies].map(u => u.pilot).filter(Boolean))];
+    const speakers = [...new Set(this.allUnits().map(x => x.unit.pilot).filter(Boolean))];
+    const enemyPilots = [...new Set(this.allUnits().filter(x => x.side === 'enemies').map(x => x.unit.pilot).filter(Boolean))];
+    const allyPilots = [...new Set(this.allUnits().filter(x => x.side === 'allies').map(x => x.unit.pilot).filter(Boolean))];
+    const pilotOptions = (list, value, empty) => `${empty !== undefined ? `<option value="" ${value ? '' : 'selected'}>${esc(empty)}</option>` : ''}`
+      + list.map(p => `<option ${p === value ? 'selected' : ''}>${esc(p)}</option>`).join('')
+      + (value && !list.includes(value) ? `<option selected>${esc(value)}</option>` : '');
     const maps = this.host.maps();
     const scenes = this.scenes ?? [];
     if (!this.scenes) {
@@ -463,10 +533,10 @@ export class QuickBuilder {
     const chosen = this.titles.filter(x => !x.system);
     const galleryOpen = this.galleryOpen ?? false;
     const currentScene = scenes.find(sc => `scene:${sc.base}#${sc.id}` === b.mapSource);
-    const sideTable = side => b[side].length ? `
+    const sideTable = side => this.unitList(side).length ? `
       <table class="q-table">
         <thead><tr><th>${esc(t('quick.unit'))}</th><th>${esc(t('quick.pilot'))}</th><th>${esc(t('quick.level'))}</th><th title="${esc(t('quick.rankHint'))}">${esc(t('quick.rank'))}</th><th title="${esc(t('quick.bossRankHint'))}">${esc(t('quick.bossRank'))}</th><th>${esc(t('quick.position'))}</th><th></th></tr></thead>
-        <tbody>${b[side].map((u, i) => `
+        <tbody>${this.unitList(side).map((u, i) => `
           <tr data-side="${side}" data-index="${i}" class="${this.selected?.side === side && this.selected.index === i ? 'selected' : ''}">
             <td><input class="q-unit" list="q-units" value="${esc(u.unit)}" placeholder="${esc(t('quick.unit'))}" aria-label="${esc(t('quick.unit'))}"></td>
             <td><input class="q-pilot" list="q-pilots" value="${esc(u.pilot)}" placeholder="${esc(t('quick.pilot'))}" aria-label="${esc(t('quick.pilot'))}"></td>
@@ -480,7 +550,7 @@ export class QuickBuilder {
             <td><button type="button" class="q-remove icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button></td>
           </tr>`).join('')}</tbody>
       </table>` : '';
-    const talkRows = scene => b[scene].map((line, i) => `
+    const talkRows = scene => this.lineList(scene).map((line, i) => `
       <div class="q-line" data-scene="${scene}" data-index="${i}">
         <select class="q-speaker" aria-label="${esc(t('quick.speaker'))}">
           <option value="" ${line.speaker ? '' : 'selected'}>${esc(t('quick.narration'))}</option>
@@ -490,6 +560,65 @@ export class QuickBuilder {
         <textarea class="q-text" rows="2" aria-label="${esc(t('quick.text'))}" placeholder="${esc(t('quick.text'))}">${esc(line.text)}</textarea>
         <button type="button" class="q-remove-line icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button>
       </div>`).join('');
+    const triggerFields = (e, i) => {
+      switch (e.trigger) {
+        case 'turn':
+          return `<label class="q-field">${esc(t('quick.ev.turn'))} <input class="q-ev-turn" type="number" min="1" max="99" value="${e.turn}"></label>
+            <label class="q-field">${esc(t('quick.ev.phase'))} <select class="q-ev-phase">
+              <option value="敵" ${e.phase === '敵' ? 'selected' : ''}>${esc(t('quick.enemies'))}</option>
+              <option value="味方" ${e.phase === '味方' ? 'selected' : ''}>${esc(t('quick.allies'))}</option></select></label>`;
+        case 'attack':
+          return `<label class="q-field">${esc(t('quick.ev.unit'))} <select class="q-ev-unit">${pilotOptions(speakers, e.unit, '')}</select></label>
+            <label class="q-field">${esc(t('quick.ev.target'))} <select class="q-ev-target">${pilotOptions(speakers, e.target, '')}</select></label>`;
+        case 'damaged':
+          return `<label class="q-field">${esc(t('quick.ev.unit'))} <select class="q-ev-unit">${pilotOptions(speakers, e.unit, '')}</select></label>
+            <label class="q-field">${esc(t('quick.ev.ratio'))} <input class="q-ev-ratio" type="number" min="1" max="99" value="${e.ratio}">%</label>`;
+        default:
+          return `<label class="q-field">${esc(t('quick.ev.unit'))} <select class="q-ev-unit">${pilotOptions(speakers, e.unit, '')}</select></label>`;
+      }
+    };
+    const eventCard = (e, i) => `
+      <fieldset class="q-event" data-event="${i}">
+        <legend>${esc(t('quick.ev.title', i + 1))}</legend>
+        <div class="q-fields">
+          <label class="q-field">${esc(t('quick.ev.trigger'))} <select class="q-ev-trigger">
+            ${['turn', 'attack', 'damaged', 'destroyed'].map(k => `<option value="${k}" ${e.trigger === k ? 'selected' : ''}>${esc(t(`quick.ev.trigger.${k}`))}</option>`).join('')}
+          </select></label>
+          ${triggerFields(e, i)}
+          ${e.trigger === 'destroyed' || e.trigger === 'turn' ? '' : `<label class="q-field q-check"><input type="checkbox" class="q-ev-retreat" ${e.retreat ? 'checked' : ''}> ${esc(t('quick.ev.retreat'))}</label>`}
+          <button type="button" class="q-remove-event danger">${esc(t('quick.ev.remove'))}</button>
+        </div>
+        <h4>${esc(t('quick.ev.talk'))}</h4>
+        ${talkRows(`ev${i}`)}
+        <button type="button" class="q-add-line" data-scene="ev${i}">＋ ${esc(t('quick.addLine'))}</button>
+        <h4>${esc(t('quick.ev.reinforce'))}</h4>
+        ${e.allies.length ? `<div class="q-side allies">${sideTable(`ev${i}.allies`)}</div>` : ''}
+        ${e.enemies.length ? `<div class="q-side enemies">${sideTable(`ev${i}.enemies`)}</div>` : ''}
+        <div class="q-actions">
+          <button type="button" class="q-add" data-side="ev${i}.allies">＋ ${esc(t('quick.addAlly'))}</button>
+          <button type="button" class="q-add" data-side="ev${i}.enemies">＋ ${esc(t('quick.addEnemy'))}</button>
+        </div>
+      </fieldset>`;
+    const goal = b.goal;
+    const loss = b.loss;
+    const conditions = `
+      <div class="q-fields">
+        <label class="q-field">${esc(t('quick.goal'))} <select class="q-goal-kind">
+          ${['annihilate', 'boss', 'survive', 'reach'].map(k => `<option value="${k}" ${goal.kind === k ? 'selected' : ''}>${esc(t(`quick.goal.${k}`))}</option>`).join('')}
+        </select></label>
+        ${goal.kind === 'boss' ? `<label class="q-field">${esc(t('quick.goal.target'))} <select class="q-goal-target">${pilotOptions(enemyPilots, goal.target, '')}</select></label>` : ''}
+        ${goal.kind === 'survive' ? `<label class="q-field">${esc(t('quick.goal.turns'))} <input class="q-goal-turns" type="number" min="1" max="99" value="${goal.turns}"></label>` : ''}
+        ${goal.kind === 'reach' ? `<label class="q-field">${esc(t('quick.goal.who'))} <select class="q-goal-target">${pilotOptions(allyPilots, goal.target, t('quick.allies'))}</select></label>
+          <button type="button" class="q-goal-pick" aria-pressed="${this.picking === 'goal'}">${esc(t('quick.goal.pick'))}</button>
+          <span class="q-goal-cell">${goal.x && goal.y ? `(${goal.x},${goal.y})` : esc(t('quick.goal.noCell'))}</span>` : ''}
+      </div>
+      <div class="q-fields">
+        <label class="q-field">${esc(t('quick.loss'))} <select class="q-loss-kind">
+          ${['annihilate', 'unit', 'turns'].map(k => `<option value="${k}" ${loss.kind === k ? 'selected' : ''}>${esc(t(`quick.loss.${k}`))}</option>`).join('')}
+        </select></label>
+        ${loss.kind === 'unit' ? `<label class="q-field">${esc(t('quick.loss.target'))} <select class="q-loss-target">${pilotOptions(allyPilots, loss.target, '')}</select></label>` : ''}
+        ${loss.kind === 'turns' ? `<label class="q-field">${esc(t('quick.loss.turnsLabel'))} <input class="q-loss-turns" type="number" min="1" max="99" value="${loss.turns}"></label>` : ''}
+      </div>`;
     const sceneCard = sc => {
       const value = `scene:${sc.base}#${sc.id}`;
       return `<li><button type="button" class="q-scene-card" data-value="${esc(value)}" aria-pressed="${value === b.mapSource}">
@@ -560,7 +689,7 @@ export class QuickBuilder {
         </div>
         ${currentScene?.description ? `<p class="q-scene-about">${esc(currentScene.description)}</p>` : ''}
         <p class="hint">${esc(t('quick.placeHint'))}</p>
-        <p class="q-legend hint"><span class="q-key allies"></span>${esc(t('quick.allies'))}<span class="q-key enemies"></span>${esc(t('quick.enemies'))}<span class="q-key spot"></span>${esc(t('quick.spot'))}<span class="q-key boss"></span>${esc(t('quick.boss'))}</p>
+        <p class="q-legend hint"><span class="q-key allies"></span>${esc(t('quick.allies'))}<span class="q-key enemies"></span>${esc(t('quick.enemies'))}<span class="q-key spot"></span>${esc(t('quick.spot'))}<span class="q-key boss"></span>${esc(t('quick.boss'))}<span class="q-key reinforce"></span>${esc(t('quick.reinforceKey'))}<span class="q-key goal"></span>${esc(t('quick.goalKey'))}</p>
         <div class="q-board"><canvas class="q-canvas"></canvas></div>
       </section>
       <section class="q-step">
@@ -571,8 +700,19 @@ export class QuickBuilder {
           ${talkRows(scene)}
           <button type="button" class="q-add-line" data-scene="${scene}">＋ ${esc(t('quick.addLine'))}</button>`).join('')}
       </section>
+      <section class="q-step q-events">
+        <h2><span class="q-num">5</span>${esc(t('quick.stepEvents'))}</h2>
+        <p class="hint">${esc(t('quick.eventsHint'))}</p>
+        ${conditions}
+        ${b.events.map(eventCard).join('')}
+        <div class="q-actions">
+          <button type="button" class="q-add-event" data-kind="reinforce">＋ ${esc(t('quick.ev.addReinforce'))}</button>
+          <button type="button" class="q-add-event" data-kind="talk">＋ ${esc(t('quick.ev.addTalk'))}</button>
+          <button type="button" class="q-add-event" data-kind="retreat">＋ ${esc(t('quick.ev.addRetreat'))}</button>
+        </div>
+      </section>
       <section class="q-step">
-        <h2><span class="q-num">5</span>${esc(t('quick.stepPlay'))}</h2>
+        <h2><span class="q-num">6</span>${esc(t('quick.stepPlay'))}</h2>
         <div class="q-fields">
           <label class="q-field">${esc(t('quick.scenarioTitle'))} <input class="q-title" value="${esc(b.title)}" placeholder="${esc(t('quick.defaultTitle'))}"></label>
         </div>
@@ -704,7 +844,7 @@ export class QuickBuilder {
 
     this.root.querySelectorAll('.q-add').forEach(button => button.addEventListener('click', () => this.addUnit(button.dataset.side)));
     this.root.querySelectorAll('.q-table tbody tr').forEach(row => {
-      const unit = this.battle[row.dataset.side][Number(row.dataset.index)];
+      const unit = this.unitList(row.dataset.side)[Number(row.dataset.index)];
       const select = () => {
         if (this.selected?.side !== row.dataset.side || this.selected?.index !== Number(row.dataset.index)) {
           this.selected = { side: row.dataset.side, index: Number(row.dataset.index) };
@@ -741,7 +881,7 @@ export class QuickBuilder {
       });
       row.querySelector('.q-remove').addEventListener('click', ev => {
         ev.stopPropagation();
-        this.battle[row.dataset.side].splice(Number(row.dataset.index), 1);
+        this.unitList(row.dataset.side).splice(Number(row.dataset.index), 1);
         this.selected = null;
         this.saveDraft();
         this.render();
@@ -807,14 +947,15 @@ export class QuickBuilder {
 
     this.root.querySelectorAll('.q-add-line').forEach(button => button.addEventListener('click', () => {
       const scene = button.dataset.scene;
-      const last = this.battle[scene].at(-1);
-      this.battle[scene].push({ speaker: last?.speaker ?? '', text: '' });
+      const list = this.lineList(scene);
+      const last = list.at(-1);
+      list.push({ speaker: last?.speaker ?? '', text: '' });
       this.saveDraft();
       this.render();
       this.root.querySelector(`.q-line[data-scene="${scene}"]:last-of-type .q-text`)?.focus();
     }));
     this.root.querySelectorAll('.q-line').forEach(div => {
-      const line = this.battle[div.dataset.scene][Number(div.dataset.index)];
+      const line = this.lineList(div.dataset.scene)[Number(div.dataset.index)];
       div.querySelector('.q-speaker').addEventListener('change', ev => {
         line.speaker = ev.target.value;
         this.saveDraft();
@@ -824,15 +965,113 @@ export class QuickBuilder {
         this.saveDraft();
       });
       div.querySelector('.q-remove-line').addEventListener('click', () => {
-        this.battle[div.dataset.scene].splice(Number(div.dataset.index), 1);
+        this.lineList(div.dataset.scene).splice(Number(div.dataset.index), 1);
         this.saveDraft();
         this.render();
       });
     });
 
+    this.bindEvents();
     $('.q-play').addEventListener('click', () => this.play().catch(e => this.status(String(e.message ?? e), 'error')));
     $('.q-save').addEventListener('click', () => this.save().catch(e => this.status(String(e.message ?? e), 'error')));
     this.root.querySelectorAll('.q-reset').forEach(button => button.addEventListener('click', () => this.reset()));
+  }
+
+  /** 出来事の段（7474/SRC#1689）: 勝利・敗北の条件と、出来事の一覧 */
+  bindEvents() {
+    const $ = s => this.root.querySelector(s);
+    const b = this.battle;
+    const changed = (rerender = false) => {
+      this.saveDraft();
+      if (rerender) {
+        this.render();
+      } else {
+        this.drawBoard();
+      }
+    };
+    const number = (value, fallback) => Math.max(1, Math.min(99, Math.floor(Number(value)) || fallback));
+    $('.q-goal-kind').addEventListener('change', ev => {
+      b.goal.kind = ev.target.value;
+      this.picking = null;
+      changed(true);
+    });
+    $('.q-goal-target')?.addEventListener('change', ev => {
+      b.goal.target = ev.target.value;
+      changed();
+    });
+    $('.q-goal-turns')?.addEventListener('change', ev => {
+      b.goal.turns = number(ev.target.value, 5);
+      changed();
+    });
+    $('.q-goal-pick')?.addEventListener('click', ev => {
+      this.picking = this.picking === 'goal' ? null : 'goal';
+      ev.target.setAttribute('aria-pressed', String(this.picking === 'goal'));
+      if (this.picking) {
+        this.status(t('quick.goal.pickHint'), 'info');
+        this.root.querySelector('.q-board')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
+    $('.q-loss-kind').addEventListener('change', ev => {
+      b.loss.kind = ev.target.value;
+      changed(true);
+    });
+    $('.q-loss-target')?.addEventListener('change', ev => {
+      b.loss.target = ev.target.value;
+      changed();
+    });
+    $('.q-loss-turns')?.addEventListener('change', ev => {
+      b.loss.turns = number(ev.target.value, 10);
+      changed();
+    });
+    this.root.querySelectorAll('.q-add-event').forEach(button => button.addEventListener('click', () => {
+      const e = newEvent(button.dataset.kind, b);
+      b.events.push(e);
+      if (button.dataset.kind === 'reinforce') {
+        this.addUnit(`ev${b.events.length - 1}.enemies`);
+        return;
+      }
+      changed(true);
+    }));
+    this.root.querySelectorAll('.q-event').forEach(box => {
+      const e = b.events[Number(box.dataset.event)];
+      const on = (selector, handler) => box.querySelector(selector)?.addEventListener('change', handler);
+      on('.q-ev-trigger', ev => {
+        e.trigger = ev.target.value;
+        if (e.trigger === 'destroyed' || e.trigger === 'turn') {
+          e.retreat = false;
+        }
+        changed(true);
+      });
+      on('.q-ev-turn', ev => {
+        e.turn = number(ev.target.value, 2);
+        changed();
+      });
+      on('.q-ev-phase', ev => {
+        e.phase = ev.target.value;
+        changed();
+      });
+      on('.q-ev-unit', ev => {
+        e.unit = ev.target.value;
+        changed();
+      });
+      on('.q-ev-target', ev => {
+        e.target = ev.target.value;
+        changed();
+      });
+      on('.q-ev-ratio', ev => {
+        e.ratio = number(ev.target.value, 50);
+        changed();
+      });
+      on('.q-ev-retreat', ev => {
+        e.retreat = ev.target.checked;
+        changed();
+      });
+      box.querySelector('.q-remove-event').addEventListener('click', () => {
+        b.events.splice(Number(box.dataset.event), 1);
+        this.selected = null;
+        changed(true);
+      });
+    });
   }
 
   /** マップを選ぶ（'' は平地、scene:・folder: は場面のサンプル・シナリオのフォルダのマップ） */
@@ -860,7 +1099,7 @@ export class QuickBuilder {
   }
 
   clampUnits() {
-    for (const u of [...this.battle.allies, ...this.battle.enemies]) {
+    for (const { unit: u } of this.allUnits()) {
       u.x = Math.min(u.x, this.battle.width);
       u.y = Math.min(u.y, this.battle.height);
     }
@@ -868,17 +1107,26 @@ export class QuickBuilder {
 
   /** 置いたユニットのマスなら選び、空いたマスなら選んでいるユニットを動かす */
   clickCell(x, y) {
-    for (const side of ['allies', 'enemies']) {
-      const index = this.battle[side].findIndex(u => u.x === x && u.y === y);
-      if (index >= 0) {
-        this.selected = { side, index };
-        this.root.querySelectorAll('.q-table tbody tr').forEach(r =>
-          r.classList.toggle('selected', r.dataset.side === side && Number(r.dataset.index) === index));
-        this.drawBoard();
-        return;
-      }
+    if (this.picking === 'goal') {
+      // 勝利の条件の着くマス
+      this.battle.goal.x = x;
+      this.battle.goal.y = y;
+      this.picking = null;
+      this.saveDraft();
+      this.render();
+      return;
     }
-    const unit = this.selected && this.battle[this.selected.side][this.selected.index];
+    // そのマスのユニットを選ぶ。ただし援軍を選んでいるときは、はじめのユニットのマスにも動かせる（SRC が近くの空いたマスに置く）
+    const reinforcing = Boolean(this.selected?.side.startsWith('ev'));
+    const hit = this.allUnits().find(h => h.unit.x === x && h.unit.y === y && (!reinforcing || h.event >= 0));
+    if (hit) {
+      this.selected = { side: hit.key, index: hit.index };
+      this.root.querySelectorAll('.q-table tbody tr').forEach(r =>
+        r.classList.toggle('selected', r.dataset.side === hit.key && Number(r.dataset.index) === hit.index));
+      this.drawBoard();
+      return;
+    }
+    const unit = this.selected && this.unitList(this.selected.side)?.[this.selected.index];
     if (unit) {
       unit.x = x;
       unit.y = y;
@@ -938,11 +1186,25 @@ export class QuickBuilder {
     ctx.font = `bold ${CELL * 0.42}px system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    for (const side of ['allies', 'enemies']) {
-      this.battle[side].forEach((u, i) => {
+    // 勝利の条件の着くマス
+    const goal = this.battle.goal;
+    if (goal?.kind === 'reach' && goal.x && goal.y) {
+      ctx.strokeStyle = '#ffd400';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([4, 3]);
+      ctx.strokeRect((goal.x - 1) * CELL + 2, (goal.y - 1) * CELL + 2, CELL - 4, CELL - 4);
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#ffd400';
+      ctx.fillText('★', (goal.x - 0.5) * CELL, (goal.y - 0.5) * CELL + 1);
+    }
+    // 援軍は、はじめのユニットの下に薄く出す（出来事の番号を付ける）
+    const order = this.allUnits().sort((a, c) => (c.event >= 0) - (a.event >= 0));
+    for (const { key: side, side: party, index: i, unit: u, event } of order) {
+      {
         const left = (u.x - 1) * CELL;
         const top = (u.y - 1) * CELL;
-        ctx.fillStyle = side === 'allies' ? '#2f6fd6' : '#d0393e';
+        ctx.globalAlpha = event >= 0 ? 0.55 : 1;
+        ctx.fillStyle = party === 'allies' ? '#2f6fd6' : '#d0393e';
         ctx.fillRect(left + 2, top + 2, CELL - 4, CELL - 4);
         // 水の地形（青）の上でも見分けられるよう白で縁取る
         ctx.strokeStyle = '#ffffff';
@@ -965,7 +1227,18 @@ export class QuickBuilder {
           ctx.lineWidth = 1;
           ctx.stroke();
         }
-      });
+        if (event >= 0) {
+          // 援軍は左上に出来事の番号
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = '#000000';
+          ctx.fillRect(left + 1, top + 1, 11, 11);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 9px system-ui, sans-serif';
+          ctx.fillText(String(event + 1), left + 6.5, top + 7);
+          ctx.font = `bold ${CELL * 0.42}px system-ui, sans-serif`;
+        }
+        ctx.globalAlpha = 1;
+      }
     }
   }
 }

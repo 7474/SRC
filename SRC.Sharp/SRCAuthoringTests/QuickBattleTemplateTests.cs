@@ -92,6 +92,118 @@ namespace SRCAuthoring.Tests
             CollectionAssert.Contains(empty.ToList(), "敵のユニットがありません");
         }
 
+        private const string EventsJson = @"{
+  ""title"": ""砦の戦い"", ""width"": 12, ""height"": 8,
+  ""allies"": [{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""x"": 2, ""y"": 3 }, { ""unit"": ""支援機"", ""pilot"": ""相棒"", ""x"": 2, ""y"": 4 }],
+  ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""x"": 10, ""y"": 4 }, { ""unit"": ""指揮官機"", ""pilot"": ""敵将"", ""bossRank"": 2, ""x"": 11, ""y"": 5 }],
+  ""victory"": [{ ""speaker"": ""主人公"", ""text"": ""勝った！"" }],
+  ""defeat"": [{ ""speaker"": ""主人公"", ""text"": ""くっ……"" }],
+  ""goal"": { ""kind"": ""boss"", ""target"": ""敵将"" },
+  ""loss"": { ""kind"": ""unit"", ""target"": ""相棒"" },
+  ""events"": [
+    { ""trigger"": ""turn"", ""turn"": 2, ""phase"": ""敵"", ""talk"": [{ ""speaker"": ""敵将"", ""text"": ""増援を出せ！"" }],
+      ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 4, ""x"": 12, ""y"": 1 }] },
+    { ""trigger"": ""attack"", ""unit"": ""主人公"", ""target"": ""敵将"", ""talk"": [{ ""speaker"": ""敵将"", ""text"": ""来たか、小僧！"" }] },
+    { ""trigger"": ""damaged"", ""unit"": ""敵将"", ""ratio"": 70, ""retreat"": true, ""talk"": [{ ""speaker"": ""敵将"", ""text"": ""覚えていろ！"" }] },
+    { ""trigger"": ""destroyed"", ""unit"": ""敵将"", ""talk"": [{ ""speaker"": ""敵将"", ""text"": ""ば、ばかな……"" }] }
+  ]
+}";
+
+        /// <summary>出来事（7474/SRC#1689）: 勝敗の条件・援軍・戦闘中の会話・撤退を、SRC のヘルプにある普通の書き方のイベントにする</summary>
+        [TestMethod]
+        public void Files_WritesGoalLossAndEventsAsPlainEventLabels()
+        {
+            var battle = QuickBattleTemplate.FromJson(EventsJson);
+            Assert.AreEqual(0, QuickBattleTemplate.Validate(battle).Count, string.Join("\n", QuickBattleTemplate.Validate(battle)));
+            var eve = QuickBattleTemplate.Files(battle)["砦の戦い.eve"].Split("\r\n");
+            string[] Block(string label)
+            {
+                var i = System.Array.IndexOf(eve, label);
+                Assert.IsTrue(i >= 0, label + "\n" + string.Join("\n", eve));
+                return eve.Skip(i + 1).TakeWhile(x => x.Length > 0).ToArray();
+            }
+
+            // 作戦目的
+            CollectionAssert.AreEqual(new[] { "Talk システム", "勝利条件：敵将の撃破", "敗北条件：味方の全滅、または相棒の撃墜", "End", "Exit" }, Block("勝利条件:"));
+            // 援軍（2 ターン目の敵のフェイズの始め）
+            CollectionAssert.AreEqual(new[] { "Talk 敵将", "増援を出せ！", "End", "Create 敵 偵察機 0 \"敵兵(ザコ)\" 4 12 1", "Exit" }, Block("ターン 2 敵:"));
+            // 戦闘中の会話
+            CollectionAssert.AreEqual(new[] { "Talk 敵将", "来たか、小僧！", "End", "Exit" }, Block("攻撃 主人公 敵将:"));
+            // HP が減ったボスが退く。倒す相手が退いたら勝ち
+            CollectionAssert.AreEqual(new[] { "Talk 敵将", "覚えていろ！", "End", "Escape 敵将", "Talk 主人公", "勝った！", "End", "GameClear" }, Block("損傷率 敵将 70:"));
+            // 倒す相手が落ちたときの会話と勝ちは、1 つのラベルにまとめる
+            CollectionAssert.AreEqual(new[] { "Talk 敵将", "ば、ばかな……", "End", "Talk 主人公", "勝った！", "End", "GameClear" }, Block("破壊 敵将:"));
+            Assert.AreEqual(1, eve.Count(x => x == "破壊 敵将:"));
+            // 相棒が落ちたら負け
+            CollectionAssert.AreEqual(new[] { "Talk 主人公", "くっ……", "End", "GameOver" }, Block("破壊 相棒:"));
+            // 全滅は今までどおり
+            CollectionAssert.AreEqual(new[] { "Talk 主人公", "勝った！", "End", "GameClear" }, Block("全滅 敵:"));
+            CollectionAssert.AreEqual(new[] { "Talk 主人公", "くっ……", "End", "GameOver" }, Block("全滅 味方:"));
+            // 注釈を付ける
+            Assert.AreEqual("# 敵将を倒したら勝ち", eve[System.Array.IndexOf(eve, "破壊 敵将:") - 1]);
+        }
+
+        [TestMethod]
+        public void Files_SurviveReachAndTurnLimit()
+        {
+            var battle = QuickBattleTemplate.FromJson(@"{
+  ""width"": 12, ""height"": 8,
+  ""allies"": [{ ""unit"": ""A"", ""pilot"": ""a"", ""x"": 2, ""y"": 3 }],
+  ""enemies"": [{ ""unit"": ""B"", ""pilot"": ""b"", ""x"": 10, ""y"": 4 }],
+  ""goal"": { ""kind"": ""survive"", ""turns"": 3 },
+  ""loss"": { ""kind"": ""turns"", ""turns"": 5 },
+  ""events"": [{ ""trigger"": ""turn"", ""turn"": 4, ""phase"": ""味方"", ""talk"": [{ ""speaker"": ""a"", ""text"": ""あと少し"" }] }]
+}");
+            Assert.AreEqual(0, QuickBattleTemplate.Validate(battle).Count, string.Join("\n", QuickBattleTemplate.Validate(battle)));
+            var eve = QuickBattleTemplate.Files(battle).Values.First(x => x.Contains("スタート:")).Split("\r\n");
+            // 3 ターン守りきる = 4 ターン目の味方のフェイズの始めに勝ち。同じラベルの会話は先に出す
+            var survive = System.Array.IndexOf(eve, "ターン 4 味方:");
+            CollectionAssert.AreEqual(new[] { "Talk a", "あと少し", "End", "Talk システム", "勝利！", "End", "GameClear" }, eve.Skip(survive + 1).Take(7).ToArray());
+            CollectionAssert.Contains(eve, "ターン 6 味方:");
+            Assert.AreEqual("GameOver", eve[System.Array.IndexOf(eve, "ターン 6 味方:") + 1]);
+
+            battle.Goal = new QuickGoal { Kind = "reach", X = 12, Y = 1 };
+            battle.Loss = new QuickLoss();
+            eve = QuickBattleTemplate.Files(battle).Values.First(x => x.Contains("スタート:")).Split("\r\n");
+            CollectionAssert.Contains(eve, "進入 味方 12 1:");
+            battle.Goal.Target = "a";
+            CollectionAssert.Contains(QuickBattleTemplate.Files(battle).Values.First(x => x.Contains("スタート:")).Split("\r\n"), "進入 a 12 1:");
+        }
+
+        [TestMethod]
+        public void Validate_ReportsBrokenConditionsAndEvents()
+        {
+            var battle = QuickBattleTemplate.FromJson(@"{
+  ""width"": 10, ""height"": 10,
+  ""allies"": [{ ""unit"": ""A"", ""pilot"": ""a"", ""x"": 2, ""y"": 3 }],
+  ""enemies"": [{ ""unit"": ""B"", ""pilot"": ""b"", ""x"": 8, ""y"": 4 }],
+  ""goal"": { ""kind"": ""boss"", ""target"": ""a"" },
+  ""loss"": { ""kind"": ""unit"", ""target"": ""b"" },
+  ""events"": [
+    { ""trigger"": ""destroyed"", ""unit"": ""b"", ""retreat"": true },
+    { ""trigger"": ""attack"", ""unit"": ""a"", ""talk"": [{ ""speaker"": ""a"", ""text"": ""…"" }] },
+    { ""trigger"": ""turn"", ""turn"": 2 },
+    { ""trigger"": ""turn"", ""turn"": 3, ""enemies"": [{ ""unit"": ""C"", ""pilot"": ""c"", ""x"": 11, ""y"": 1 }] }
+  ]
+}");
+            var errors = QuickBattleTemplate.Validate(battle).ToList();
+            CollectionAssert.Contains(errors, "勝利の条件で倒す相手は、置いた敵のパイロットから選んでください");
+            CollectionAssert.Contains(errors, "敗北の条件で落ちてはいけないユニットは、置いた味方のパイロットから選んでください");
+            CollectionAssert.Contains(errors, "出来事 1: 退くのは、落ちる前のユニットだけです（きっかけを損傷率などにしてください）");
+            CollectionAssert.Contains(errors, "出来事 2: 戦う相手を、置いたユニットのパイロットから選んでください");
+            CollectionAssert.Contains(errors, "出来事 3: 会話・援軍・退くのどれかを足してください");
+            CollectionAssert.Contains(errors, "敵の「C」がマップの外にあります");
+            Assert.AreEqual(6, errors.Count, string.Join("\n", errors));
+
+            // 援軍の置く位置は、はじめのユニットと重なってもよい（SRC が近くの空いたマスに置く）
+            var reinforce = QuickBattleTemplate.FromJson(@"{
+  ""allies"": [{ ""unit"": ""A"", ""pilot"": ""a"", ""x"": 2, ""y"": 3 }],
+  ""enemies"": [{ ""unit"": ""B"", ""pilot"": ""b"", ""x"": 8, ""y"": 4 }],
+  ""events"": [{ ""trigger"": ""destroyed"", ""unit"": ""b"", ""enemies"": [{ ""unit"": ""B"", ""pilot"": ""b2"", ""x"": 8, ""y"": 4 }] }]
+}");
+            Assert.AreEqual(0, QuickBattleTemplate.Validate(reinforce).Count, string.Join("\n", QuickBattleTemplate.Validate(reinforce)));
+        }
+
         [TestMethod]
         public void FileName_DropsCharactersFilesCannotHave()
         {

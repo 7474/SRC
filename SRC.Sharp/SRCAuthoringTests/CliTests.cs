@@ -316,6 +316,66 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>
+        /// かんたん作成の出来事（7474/SRC#1689）: 勝利・敗北の条件、援軍、戦闘中の会話のあるシナリオも、lint が通り、自動で遊ぶと条件どおりに終わる
+        /// </summary>
+        [TestMethod]
+        [DataRow("annihilate", @"""goal"": { ""kind"": ""annihilate"" }", "やった！", "増援だ！")]
+        [DataRow("boss", @"""goal"": { ""kind"": ""boss"", ""target"": ""敵兵(ザコ)"" }", "やった！", "増援だ！")]
+        [DataRow("survive", @"""goal"": { ""kind"": ""survive"", ""turns"": 1 }", "やった！", "増援だ！")]
+        [DataRow("turns", @"""goal"": { ""kind"": ""annihilate"" }, ""loss"": { ""kind"": ""turns"", ""turns"": 1 }", "くっ……", "増援だ！")]
+        public void QuickBattleEvents_LintCleanAndEndAsTheConditionsSay(string name, string conditions, string ending, string talk)
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-quick-events-" + Guid.NewGuid());
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                var template = Path.Combine(folder, "template");
+                Assert.AreEqual(0, Run("new", template).exitCode);
+                var data = Path.Combine(folder, "scenario", "Data", "テスト作品");
+                Directory.CreateDirectory(data);
+                File.Copy(Path.Combine(template, "Data", "robot.txt"), Path.Combine(data, "robot.txt"));
+                File.Copy(Path.Combine(template, "Data", "pilot.txt"), Path.Combine(data, "pilot.txt"));
+
+                // 守りきる・ターン切れを確かめる回は、敵を遠くに置いて全滅させない
+                var far = name == "survive" || name == "turns";
+                var battle = SRCAuthoring.Templates.QuickBattleTemplate.FromJson($@"{{
+  ""title"": ""出来事の戦い"", ""dataTitles"": [""テスト作品""], ""width"": {(far ? 40 : 12)}, ""height"": 9,
+  ""allies"": [{{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 30, ""x"": 3, ""y"": 5 }}],
+  ""enemies"": [{{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": {(far ? 40 : 6)}, ""y"": 5 }}],
+  ""victory"": [{{ ""speaker"": ""主人公"", ""text"": ""やった！"" }}],
+  ""defeat"": [{{ ""speaker"": ""主人公"", ""text"": ""くっ……"" }}],
+  {conditions},
+  ""events"": [
+    {{ ""trigger"": ""turn"", ""turn"": 1, ""phase"": ""味方"", ""talk"": [{{ ""speaker"": ""敵兵(ザコ)"", ""text"": ""{talk}"" }}],
+      ""enemies"": [{{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": {(far ? 40 : 7)}, ""y"": 6 }}] }},
+    {{ ""trigger"": ""attack"", ""unit"": ""主人公"", ""target"": ""敵兵(ザコ)"", ""talk"": [{{ ""speaker"": ""主人公"", ""text"": ""行くぞ！"" }}] }}
+  ]
+}}");
+                Assert.AreEqual(0, SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle).Count, string.Join("\n", SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle)));
+                foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
+                {
+                    File.WriteAllText(Path.Combine(folder, "scenario", path), text);
+                }
+                var eve = Path.Combine(folder, "scenario", "出来事の戦い.eve");
+
+                var (exitCode, stdout, stderr) = Run("lint", Path.Combine(folder, "scenario"), "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                var play = Path.Combine(folder, "quick.play");
+                File.WriteAllText(play, $"auto 400\nturns 15\nexpect message {talk}\nexpect message {ending}\nexpect finished\nexpect error none\n");
+                (exitCode, stdout, stderr) = Run("play", eve, "--script", play, "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, File.ReadAllText(eve) + stdout + stderr);
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
         [TestMethod]
         public void NoArguments_PrintsUsageAndFails()
         {
