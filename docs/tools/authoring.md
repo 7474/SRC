@@ -48,10 +48,10 @@ flowchart LR
 flowchart TB
   VSCode["VS Code 拡張（主）<br/>部品を束ねる"]
   subgraph Parts["単独でも使える部品"]
-    CLI["srcsharp<br/>new・flow・lint・play・trial・balance・help"]
+    CLI["srcsharp<br/>new・lint・play・trial・assets・flow・event-flow<br/>talk-preview・anime-preview・balance・help"]
     LSP["srcsharp lsp<br/>診断・補完・ホバー・定義へ移動"]
     DAP["srcsharp dap<br/>デバッガ・画面・ホットリロード"]
-    Studio["SRC#Studio<br/>マップ作成ツール・データのプレビュー<br/>表で直す・比べる"]
+    Studio["SRC#Studio<br/>かんたん作成・マップ作成ツール（配置・人形劇・場面の再生）<br/>データのプレビュー・表で直す・比べる・素材の一覧"]
   end
   VSCode --> CLI & LSP & DAP & Studio
   Parts --> Core["SRCAuthoring・SRCPlay・SRCCore（計算はゲームと同じ）"]
@@ -59,10 +59,10 @@ flowchart TB
 
 | 部品 | VS Code 拡張での使い方 | 単独での使い方 |
 |---|---|---|
-| `srcsharp`（CLI） | コマンド（新しいシナリオ・話のつながりの図・素材の一覧・lint・バランス・試し戦闘） | コマンドライン・CI（ひな形の GitHub Actions） |
+| `srcsharp`（CLI） | コマンド（新しいシナリオ・話のつながりの図・イベントの流れの図・会話のプレビュー・戦闘アニメのプレビュー・素材の一覧・lint・バランス・試し戦闘） | コマンドライン・CI（ひな形の GitHub Actions） |
 | Language Server（`srcsharp lsp`） | イベント・データの編集 | LSP に対応したほかのエディタ |
 | デバッガ（`srcsharp dap`） | F5・画面のタブ・ホットリロード・試し戦闘 | DAP に対応したほかのエディタ。画面なしの自動プレイは `srcsharp play` |
-| SRC#Studio | `.map` のカスタムエディタ、データのプレビュー（横に開く） | ブラウザ（[https://7474.github.io/SRC/studio/](https://7474.github.io/SRC/studio/)）。インストールが要らない |
+| SRC#Studio | `.map` のカスタムエディタ（配置・人形劇。場面の再生はデバッガ）、データのプレビュー（横に開く） | ブラウザ（[https://src.koudenpa.net/studio/](https://src.koudenpa.net/studio/)・開発版 [https://7474.github.io/SRC/studio/](https://7474.github.io/SRC/studio/)）。インストールが要らない。かんたん作成・素材の一覧もここ。場面の再生は同じサイトの SRC#Web |
 | ブラウザの lint（SRCLintWeb） | ―（VS Code は Language Server） | 投稿サイト（7474/SRC-Site）がアップロードの前に使う |
 
 - 新しい機能は、計算を部品（SRCAuthoring・SRCStudio など）に置き、VS Code 拡張から使う形を最初に作る。単独での使い方（CLI の引数・SRC#Studio の画面）は同じ部品で足す
@@ -74,14 +74,14 @@ flowchart TB
 | プロジェクト | 内容 |
 |---|---|
 | `SRC.Sharp/SRCPlay` | シナリオを画面なしで動かし、`.play` スクリプトで自動プレイする部品。`SRCRenderTests` の E2E と共通 |
-| `SRC.Sharp/SRCAuthoring` | lint・SARIF・シナリオ解析（`ScenarioAnalyzer`・`ScenarioFlowAnalyzer`・`AssetReport`）・バランス集計・LSP。SRCCore だけに依存する（描画の部品は使わない） |
+| `SRC.Sharp/SRCAuthoring` | lint・SARIF・シナリオ解析（`ScenarioAnalyzer`・`ScenarioFlowAnalyzer`・`EventFlowAnalyzer`・`AssetReport`）・バランス集計・LSP・ひな形（`ScenarioTemplate`・`TrialTemplate`・`QuickBattleTemplate`）・マップ（`Maps`。読み書き・自動接続・イベントの配置・人形劇の `EventTimeline`）・データのプレビュー（`DataPreview`）。SRCCore だけに依存する（描画の部品は使わない） |
 | `SRC.Sharp/SRCDebugAdapter` | DAP・イベントのデバッガ。シナリオを画面なしで動かすため SRCPlay（SRCRender）に依存する |
 | `SRC.Sharp/SRCSharpTools` | CLI `srcsharp`（.NET tool） |
 | `SRC.Sharp/SRCHelpSearch` | `srcsharp help` の検索（全文検索・埋め込みのベクトルの検索）。実行するとヘルプの断片のベクトルを作る（`srcsharp` のビルドで使う） |
 | `SRC.Sharp/SRCAuthoringTests` | SRCAuthoring・SRCDebugAdapter のテスト（LSP・DAP はパイプでつないで確かめる） |
 | `SRC.Sharp/SRCDataLinter` | 従来の lint の CLI と Docker イメージ。検査は SRCAuthoring の `DataLinter`（`srcsharp lint` と共通）で、出力の書式は従来どおり |
 | `SRC.Sharp/SRCLintWeb` | ブラウザで動く lint（WebAssembly、スレッドなし）。`srcsharp lint` と同じ `DataLinter` と、LSP と同じ静的解析（`ScenarioAnalyzer`。ラベル・include）と素材の参照（`AssetReferenceChecker`。画像・音・マップのファイルがあるか）で zip を検査する。投稿サイト（7474/SRC-Site）がアップロードの前に使う（`SRC.Sharp/SRCLintWeb/README.md`） |
-| `SRC.Sharp/SRCStudio` | SRC#Studio（作成支援の画面。かんたん作成・マップ作成ツール・データのプレビュー・素材の一覧）。.NET の WebAssembly と HTML・JavaScript の画面で、スタンドアロン（GitHub Pages の `/SRC/studio/`）と VS Code 拡張（`.map` のカスタムエディタ）で動く（`SRC.Sharp/SRCStudio/README.md`）。マップの読み書きと地形データは SRCAuthoring の `Maps` |
+| `SRC.Sharp/SRCStudio` | SRC#Studio（作成支援の画面。かんたん作成・マップ作成ツール（配置・人形劇・場面の再生）・データのプレビュー・素材の一覧）。.NET の WebAssembly と HTML・JavaScript の画面で、スタンドアロン（GitHub Pages の `/SRC/studio/`）と VS Code 拡張（`.map` のカスタムエディタ）で動く（`SRC.Sharp/SRCStudio/README.md`）。マップの読み書きと地形データは SRCAuthoring の `Maps` |
 | `SRC.Sharp/SRCSharpVSCode` | VS Code 拡張 |
 
 SRCCore には、デバッガ用のフック `IEventDebugger`（`Event.Debugger`）がある。`CmdData.Exec` の先頭と、イベントのエラーを表示する時に呼ばれる。設定しなければ null の判定だけで、通常の実行には影響しない。
@@ -293,7 +293,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | 内容 | |
 |---|---|
 | 地形・画像 | SRCCore と同じ処理。SRC 本体の `Data/System/terrain.txt` にシナリオのものを重ね、画像はシナリオ → SRC 本体の順に `Bitmap/Map` を探す。SRC 本体のフォルダが無ければ最小の汎用データ |
-| 操作 | 描く（右クリックはスポイト）・四角・塗りつぶし・スポイト・写す・貼る、地形とレイヤー、元に戻す・やり直す、拡大・縮小、マス目、大きさ（1〜50） |
+| 操作 | 描く（右クリックはスポイト）・四角・塗りつぶし・スポイト・写す・貼る、地形とレイヤー、レイヤーを消す、自動接続（ON で描くと境目・変種を自動で選ぶ。7474/SRC#1663）・つなぎ直し、元に戻す・やり直す、拡大・縮小、マス目、大きさ（1〜50） |
 | 書き出し | 読んだファイルの書き方（改行・1 行目・予約行）を保つ。変えていないマップは変わらない |
 | スタンドアロン | Chrome・Edge はフォルダを直接読み書き（File System Access API）。ほかのブラウザは読み込みとダウンロード |
 | 配置 | 「配置」でシナリオの `.eve` の Create・Launch・Move などをマップに重ね、ドラッグでその行の座標の欄だけを書き換える（7474/SRC#1653） |
