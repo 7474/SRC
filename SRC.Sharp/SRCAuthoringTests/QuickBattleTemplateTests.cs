@@ -204,6 +204,37 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual(0, QuickBattleTemplate.Validate(reinforce).Count, string.Join("\n", QuickBattleTemplate.Validate(reinforce)));
         }
 
+        /// <summary>名前のあるパイロットは 1 人だけ（2 度目の Create はエラー）。落ちたあとに別の機体で出直すときは、乗り換えて出す</summary>
+        [TestMethod]
+        public void Reinforcement_NamedPilotReturnsInANewUnitByRiding()
+        {
+            var battle = QuickBattleTemplate.FromJson(@"{
+  ""allies"": [{ ""unit"": ""A"", ""pilot"": ""a"", ""x"": 2, ""y"": 3 }],
+  ""enemies"": [{ ""unit"": ""ジオング"", ""pilot"": ""シャア"", ""x"": 8, ""y"": 4 }, { ""unit"": ""B"", ""pilot"": ""兵(ザコ)"", ""x"": 8, ""y"": 6 }],
+  ""events"": [
+    { ""trigger"": ""destroyed"", ""unit"": ""シャア"", ""enemies"": [{ ""unit"": ""ジオングヘッド"", ""pilot"": ""シャア"", ""bossRank"": 0, ""x"": 8, ""y"": 4 }] },
+    { ""trigger"": ""turn"", ""turn"": 2, ""enemies"": [{ ""unit"": ""B"", ""pilot"": ""兵(ザコ)"", ""x"": 9, ""y"": 6 }] }
+  ]
+}");
+            Assert.AreEqual(0, QuickBattleTemplate.Validate(battle).Count, string.Join("\n", QuickBattleTemplate.Validate(battle)));
+            var eve = QuickBattleTemplate.Files(battle).Values.First(x => x.Contains("スタート:")).Split("\r\n");
+            var i = System.Array.IndexOf(eve, "破壊 シャア:");
+            CollectionAssert.AreEqual(new[]
+            {
+                "# シャアは落ちたユニットから、新しい機体に乗り換えて出る",
+                "Unit ジオングヘッド 0", "Ride シャア", "ChangeParty シャア 敵", "BossRank 0", "Launch シャア 8 4", "Exit",
+            }, eve.Skip(i + 1).Take(7).ToArray());
+            // ザコは何人でも Create できる
+            CollectionAssert.Contains(eve, "Create 敵 B 0 \"兵(ザコ)\" 1 9 6");
+
+            // まだ乗っている名前のあるパイロットは、2 機目には乗せられない
+            battle.Events[0].Trigger = "turn";
+            battle.Enemies.Add(new QuickUnit { Unit = "C", Pilot = "シャア", X = 5, Y = 5 });
+            var errors = QuickBattleTemplate.Validate(battle).ToList();
+            CollectionAssert.Contains(errors, "「シャア」は名前のあるパイロットなので、2 機には乗せられません（ザコ・汎用のパイロットなら何機でも置けます）");
+            CollectionAssert.Contains(errors, "出来事 1: 「シャア」はもう出ています。名前のあるパイロットが別の機体で出直せるのは、そのパイロットが落ちたときの出来事だけです");
+        }
+
         [TestMethod]
         public void FileName_DropsCharactersFilesCannotHave()
         {

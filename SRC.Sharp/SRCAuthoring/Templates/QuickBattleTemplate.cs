@@ -307,10 +307,26 @@ namespace SRCAuthoring.Templates
                     errors.Add($"敗北の条件「{b.Loss.Kind}」は分かりません");
                     break;
             }
+            var named = new HashSet<string>();
+            foreach (var u in b.Allies.Concat(b.Enemies).Where(u => IsNamed(u.Pilot)))
+            {
+                if (!named.Add(u.Pilot))
+                {
+                    errors.Add($"「{u.Pilot}」は名前のあるパイロットなので、2 機には乗せられません（ザコ・汎用のパイロットなら何機でも置けます）");
+                }
+            }
             for (var i = 0; i < b.Events.Count; i++)
             {
                 var e = b.Events[i];
                 var name = $"出来事 {i + 1}";
+                foreach (var u in e.Allies.Concat(e.Enemies).Where(u => IsNamed(u.Pilot)))
+                {
+                    // 落ちたパイロットが別の機体で出直すのはよい（乗り換えて出す）。まだ乗っている人は 2 機目に乗れない
+                    if (!named.Add(u.Pilot) && !(e.Trigger == "destroyed" && e.Unit == u.Pilot))
+                    {
+                        errors.Add($"{name}: 「{u.Pilot}」はもう出ています。名前のあるパイロットが別の機体で出直せるのは、そのパイロットが落ちたときの出来事だけです");
+                    }
+                }
                 switch (e.Trigger)
                 {
                     case "turn":
@@ -439,6 +455,8 @@ namespace SRCAuthoring.Templates
                 block.End = end;
             }
 
+            // 名前のあるパイロット（ザコ・汎用でない）は 1 人だけ。落ちたあとに別の機体で出直すときは、乗り換えて出す
+            var named = new HashSet<string>(b.Allies.Concat(b.Enemies).Select(u => u.Pilot).Where(IsNamed));
             var goalText = ConditionText(b, out var lossText);
             var conditions = At("勝利条件:");
             conditions.Notes.Add("マップのコマンド「作戦目的」で出す");
@@ -483,8 +501,8 @@ namespace SRCAuthoring.Templates
                 }
                 block.Notes.Add($"{note}: {string.Join("・", what)}");
                 block.Talk.AddRange(e.Talk);
-                block.Commands.AddRange(e.Allies.SelectMany(u => Create("味方", u)));
-                block.Commands.AddRange(e.Enemies.SelectMany(u => Create("敵", u)));
+                block.Commands.AddRange(e.Allies.SelectMany(u => Reinforce("味方", u, named)));
+                block.Commands.AddRange(e.Enemies.SelectMany(u => Reinforce("敵", u, named)));
                 if (e.Retreat)
                 {
                     block.Commands.Add($"Escape {Quote(e.Unit)}");
@@ -551,6 +569,38 @@ namespace SRCAuthoring.Templates
                     yield return "Exit";
                 }
             }
+        }
+
+        /// <summary>名前のあるパイロットか（ザコ・汎用は同じ名前で何人でも作れる。名前のあるパイロットは 1 人だけで、2 度目の Create はエラー）</summary>
+        public static bool IsNamed(string pilot) =>
+            !string.IsNullOrWhiteSpace(pilot) && !pilot.Contains("(ザコ)") && !pilot.Contains("(汎用)");
+
+        /// <summary>
+        /// 援軍を置く。もう出ている名前のあるパイロット（落ちたユニットのパイロット）は Create できないので、
+        /// Unit で機体を作って Ride で乗せ、ChangeParty で陣営を戻して（Unit の機体は味方）、Launch で出す（VB 版と同じ書き方）
+        /// </summary>
+        private static IEnumerable<string> Reinforce(string side, QuickUnit u, HashSet<string> named)
+        {
+            if (!IsNamed(u.Pilot) || named.Add(u.Pilot))
+            {
+                foreach (var line in Create(side, u))
+                {
+                    yield return line;
+                }
+                yield break;
+            }
+            yield return $"# {u.Pilot}は落ちたユニットから、新しい機体に乗り換えて出る";
+            yield return $"Unit {Quote(u.Unit)} {Math.Max(0, Math.Min(MaxRank, u.Rank))}";
+            yield return $"Ride {Quote(u.Pilot)}";
+            if (side != "味方")
+            {
+                yield return $"ChangeParty {Quote(u.Pilot)} {side}";
+            }
+            if (u.BossRank >= 0)
+            {
+                yield return $"BossRank {Math.Min(MaxBossRank, u.BossRank)}";
+            }
+            yield return $"Launch {Quote(u.Pilot)} {u.X} {u.Y}";
         }
 
         /// <summary>ユニットを置く。ボスなら続けて BossRank（Create で選ばれたユニットに付く）</summary>
