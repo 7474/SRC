@@ -114,6 +114,8 @@ export class MapEditor {
               <span><i class="me-party-dot" style="background:${PARTY_COLORS['敵']}"></i>${t('map.party.enemy')}</span>
               <span><i class="me-party-dot" style="background:${PARTY_COLORS['中立']}"></i>${t('map.party.neutral')}</span>
               <span><i class="me-party-dot" style="background:${PARTY_COLORS['ＮＰＣ']}"></i>${t('map.party.npc')}</span>
+              <span><i class="me-party-dot me-dot-event"></i>${t('map.legend.byEvent')}</span>
+              <span><i class="me-party-dot me-dot-goal"></i>${t('map.legend.goal')}</span>
             </div>
             <ul class="me-placements me-static" role="listbox"></ul>
             <p class="hint me-placements-empty" hidden>${t('map.placements.empty')}</p>
@@ -407,9 +409,13 @@ export class MapEditor {
       li.dataset.id = item.id;
       li.setAttribute('aria-selected', String(item.id === this.selectedPlacement?.id));
       const color = PARTY_COLORS[item.party] ?? '#6e7681';
-      const title = item.unit || item.pilot || item.command;
-      const sub = item.pilot && item.pilot !== item.unit ? `${item.pilot} · ` : '';
-      li.innerHTML = `<i class="me-party-dot" style="background:${color}"></i><span class="me-pl-main" title="${escapeHtml(`${item.file}:${item.line} ${item.command}`)}">${escapeHtml(title)}</span><span class="me-pl-meta">${escapeHtml(sub)}(${item.x},${item.y})</span>`;
+      const goal = item.command === '進入';
+      const title = goal ? `${item.command} ${item.unit}` : item.unit || item.pilot || item.command;
+      // 出来事で出るユニットは、どの出来事か（ラベル）を添える
+      const sub = (item.pilot && item.pilot !== item.unit ? `${item.pilot} · ` : '') + (item.byEvent && !goal && item.label ? `${item.label} · ` : '');
+      const dot = goal ? '<i class="me-party-dot me-dot-goal"></i>'
+        : `<i class="me-party-dot${item.byEvent ? ' me-dot-event' : ''}" style="${item.byEvent ? `color:${color}` : `background:${color}`}"></i>`;
+      li.innerHTML = `${dot}<span class="me-pl-main" title="${escapeHtml(`${item.file}:${item.line} ${item.command}`)}">${escapeHtml(title)}</span><span class="me-pl-meta">${escapeHtml(sub)}(${item.x},${item.y})</span>`;
       li.addEventListener('click', () => {
         this.selectPlacement(item);
         this.scrollToCell(item.x, item.y);
@@ -760,6 +766,10 @@ export class MapEditor {
   }
 
   drawUnitToken(ctx, cx, cy, size, item, alpha, selected) {
+    if (item.command === '進入') {
+      this.drawGoal(ctx, cx, cy, size, item, alpha, selected);
+      return;
+    }
     const color = PARTY_COLORS[item.party] ?? '#6e7681';
     const pad = Math.max(2, size * 0.08);
     const left = cx - size / 2 + pad;
@@ -787,10 +797,44 @@ export class MapEditor {
     }
     ctx.strokeStyle = selected ? '#ffd400' : color;
     ctx.lineWidth = selected ? 3 : 2;
-    if (item.command === 'Organize') {
+    // 出来事で出るユニット（援軍など。7474/SRC#1692）は破線の枠
+    if (item.command === 'Organize' || item.byEvent) {
       ctx.setLineDash([3, 2]);
     }
     ctx.strokeRect(left, top, w, w);
+    ctx.restore();
+  }
+
+  /** 進入の目標のマス（7474/SRC#1692）: マス全体を黄色で塗り、旗を立てる */
+  drawGoal(ctx, cx, cy, size, item, alpha, selected) {
+    const left = cx - size / 2;
+    const top = cy - size / 2;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = 'rgba(255, 212, 0, 0.30)';
+    ctx.fillRect(left + 1, top + 1, size - 2, size - 2);
+    ctx.strokeStyle = selected ? '#ffffff' : '#ffd400';
+    ctx.lineWidth = selected ? 3 : 2;
+    ctx.setLineDash([5, 3]);
+    ctx.strokeRect(left + 1.5, top + 1.5, size - 3, size - 3);
+    ctx.setLineDash([]);
+    if (size >= 12) {
+      // 旗
+      const poleX = cx - size * 0.18;
+      ctx.strokeStyle = '#ffd400';
+      ctx.lineWidth = Math.max(1.5, size * 0.06);
+      ctx.beginPath();
+      ctx.moveTo(poleX, cy + size * 0.32);
+      ctx.lineTo(poleX, cy - size * 0.32);
+      ctx.stroke();
+      ctx.fillStyle = '#ffd400';
+      ctx.beginPath();
+      ctx.moveTo(poleX, cy - size * 0.32);
+      ctx.lineTo(poleX + size * 0.4, cy - size * 0.18);
+      ctx.lineTo(poleX, cy - size * 0.04);
+      ctx.closePath();
+      ctx.fill();
+    }
     ctx.restore();
   }
 

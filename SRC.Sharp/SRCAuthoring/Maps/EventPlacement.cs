@@ -197,6 +197,12 @@ namespace SRCAuthoring.Maps
         public bool Editable { get; set; }
         /// <summary>この項目が指すマップ（シナリオ相対パス）</summary>
         public string MapPath { get; set; } = "";
+
+        /// <summary>
+        /// 出来事で出る（援軍など。スタート・プロローグ以外のラベルの配置）か、進入の目標のマス（7474/SRC#1692）。
+        /// マップでは、始めからいるユニットと分けて描く
+        /// </summary>
+        public bool ByEvent => Command == "進入" || (!string.IsNullOrEmpty(Label) && Label != "スタート" && Label != "プロローグ");
     }
 
     /// <summary>
@@ -442,6 +448,12 @@ namespace SRCAuthoring.Maps
                     if (trimmed.EndsWith(":", StringComparison.Ordinal) && trimmed.Length > 1)
                     {
                         currentLabel = trimmed.Substring(0, trimmed.Length - 1).Trim();
+                        // 進入の目標のマス（7474/SRC#1692）。ラベルの前のマップ（話のマップ）に重ねる
+                        if (currentMap != null && SamePath(currentMap, target)
+                            && TryExtractEnterLabel(path, n + 1, rawLine, currentMap, !lineContinued, out var enter))
+                        {
+                            result.Add(enter);
+                        }
                         continue;
                     }
                     if (!TrySplitWithSpans(rawLine, out var tokens) || tokens.Count == 0)
@@ -786,6 +798,7 @@ namespace SRCAuthoring.Maps
             }
             w.WriteBoolean("editable", item.Editable);
             w.WriteString("mapPath", item.MapPath ?? "");
+            w.WriteBoolean("byEvent", item.ByEvent);
             w.WriteEndObject();
         }
 

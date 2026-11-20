@@ -118,6 +118,33 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual(9, map2[2].Y);
         }
 
+        /// <summary>援軍（出来事で出るユニット）と進入の目標のマスをマップに重ねる（7474/SRC#1692）</summary>
+        [TestMethod]
+        public void ParseForMap_MarksReinforcementsAndEnterGoals()
+        {
+            var eve = string.Join("\n",
+                "スタート:",
+                "Create 味方 機体 0 主人公 1 2 2",
+                "Exit",
+                "ターン 2 敵:",
+                "Create 敵 機体 0 敵兵(ザコ) 1 9 9",
+                "Exit",
+                "進入 主人公 12 3:",
+                "GameClear",
+                "");
+            var items = EventPlacementParser.ParseForMap("第1話.map", new[] { ("第1話.eve", eve) });
+            Assert.AreEqual(3, items.Count);
+            Assert.IsFalse(items[0].ByEvent);
+            Assert.IsTrue(items[1].ByEvent);
+            Assert.AreEqual("ターン 2 敵", items[1].Label);
+            var goal = items[2];
+            Assert.AreEqual(("進入", "主人公", 12, 3, 7), (goal.Command, goal.Unit, goal.X, goal.Y, goal.Line));
+            Assert.IsTrue(goal.ByEvent && goal.Editable);
+            StringAssert.Contains(EventPlacementParser.ToJson(items), "\"byEvent\":true");
+            // 進入の目標もドラッグで座標を書き換えられる
+            Assert.AreEqual("進入 主人公 5 6:", EventPlacementParser.ReplaceLineCoordinates("進入 主人公 12 3:", 5, 6));
+        }
+
         [TestMethod]
         public void ParseForMap_LanternScenario_ResolvesUnitsAndCrossEpisodeLaunch()
         {
