@@ -33,7 +33,7 @@ SRC# でシナリオやデータを作るときの道具と、作り始めてか
 | SRC#Avalonia・SRC#Web | 作ったシナリオを遊ぶ（「[SRC#のインストール](SRCSharpのインストール.md)」） |
 | データビューア | 公開されているデータ（[SRC-Data](https://github.com/7474/SRC-Data) の GSC データパックなど）を、画像付きで見る・ユニットとパイロットを比べる（[https://7474.github.io/SRC/](https://7474.github.io/SRC/)）。データを作るときの参考に |
 
-VS Code 拡張と `srcsharp` は、.NET 10 SDK を入れてから入れます。
+VS Code 拡張と `srcsharp` は、.NET 11 SDK を入れてから入れます。
 
 ```
 dotnet tool install -g SRCSharpTools

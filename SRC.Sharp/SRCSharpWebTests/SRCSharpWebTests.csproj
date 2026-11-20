@@ -6,7 +6,7 @@
     パスの区切りを / として扱うコードがあるため、Linux（CI の test-web）で動かす
   -->
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>$(SrcSharpTargetFramework)</TargetFramework>
     <IsPackable>false</IsPackable>
     <Nullable>disable</Nullable>
   </PropertyGroup>

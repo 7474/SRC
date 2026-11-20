@@ -8,7 +8,7 @@
 
 - 場面の一覧は screens-scenes.txt
 - SRC#（SRCRender）の画像と音の記録は、SRCRenderTests の CompatScreensTests が書き出したもの
-  （既定は SRC.Sharp/SRCRenderTests/bin/*/net10.0/TestResults/e2e/compat-screens の新しいもの）
+  （既定は SRC.Sharp/SRCRenderTests/bin/*/net11.0/TestResults/e2e/compat-screens の新しいもの）
 - 実機（元の SRC・VB5 の Src.exe）のスクリーンショットは screens-expected/<ID>.png、
   聞いた音のメモは screens-expected/sounds.txt（1 行に「ID<TAB>聞いたこと」）
 - SRC#Form（Windows）のスクリーンショットは screens-form/<ID>.png

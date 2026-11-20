@@ -6,7 +6,7 @@
     VS Code 拡張のカスタムエディタ（同じ wwwroot を .vsix に入れる）の両方で動く。スレッドを使わない（クロスオリジン分離が要らない）
   -->
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>$(SrcSharpTargetFramework)</TargetFramework>
     <OutputType>Exe</OutputType>
     <Nullable>disable</Nullable>
     <RootNamespace>SRCStudio</RootNamespace>

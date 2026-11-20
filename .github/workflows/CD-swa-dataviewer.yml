@@ -44,7 +44,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
 
       # データビューア（SRCDataViewer）をサイトのルートに、SRC#Web（SRCSharpWeb）を web/ に置く。
       # SRC#Web はマルチスレッドの WebAssembly と SkiaSharp のネイティブライブラリのリンクに wasm-tools が必要。

@@ -40,7 +40,7 @@ MIDI を鳴らすには SoundFont（.sf2）が要ります。SRC#Avalonia には
 
 ## SRC#Form（Windows）
 
-1. [.NET 10 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/10.0) の x64 版を入れます。
+1. [.NET 11 デスクトップ ランタイム](https://dotnet.microsoft.com/download/dotnet/11.0) の x64 版を入れます。
 2. [Releases](https://github.com/7474/SRC/releases) から `SRCSharpForm.zip` を取って展開します。
 3. 展開した実行ファイル（`SRCSharpForm.exe`）と DLL を、SRC のフォルダにコピーします。
 4. `SRCSharpForm.exe` を実行して、シナリオ（.eve）を選びます（[SRCの起動](SRCの起動.md)）。

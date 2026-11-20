@@ -26,89 +26,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        private Timer _Timer2;
-
-        public Timer Timer2
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _Timer2;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_Timer2 != null)
-                {
-                    _Timer2.Tick -= Timer2_Tick;
-                }
-
-                _Timer2 = value;
-                if (_Timer2 != null)
-                {
-                    _Timer2.Tick += Timer2_Tick;
-                }
-            }
-        }
-
-        public TextBox txtComment;
-        public TextBox txtMorale2;
-        public TextBox txtMorale1;
-        public TextBox txtLevel2;
-        public TextBox txtLevel1;
-        public TextBox txtHP1;
-        public PictureBox picHP1;
-        public PictureBox picEN1;
-        public TextBox txtEN1;
-        public TextBox txtEN2;
-        public PictureBox picEN2;
-        public PictureBox picHP2;
-        public TextBox txtHP2;
-        public PictureBox picUnit2;
-        public PictureBox picUnit1;
-        private Timer _Timer1;
-
-        public Timer Timer1
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _Timer1;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick -= Timer1_Tick;
-                }
-
-                _Timer1 = value;
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick += Timer1_Tick;
-                }
-            }
-        }
-
-        private ListBox lstItems;
-        public PictureBox picBar;
-        private Label labCaption;
-        public Label labMorale2;
-        public Label labMorale1;
-        public Label labLevel2;
-        public PictureBox imgPilot2;
-        public Label labLevel1;
-        public PictureBox imgPilot1;
-        public Label labHP1;
-        public Label labEN1;
-        public Label labEN2;
-        public Label labHP2;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -645,5 +562,39 @@ namespace SRCSharpForm
             this.PerformLayout();
 
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        private Timer _Timer2;
+        public TextBox txtComment;
+        public TextBox txtMorale2;
+        public TextBox txtMorale1;
+        public TextBox txtLevel2;
+        public TextBox txtLevel1;
+        public TextBox txtHP1;
+        public PictureBox picHP1;
+        public PictureBox picEN1;
+        public TextBox txtEN1;
+        public TextBox txtEN2;
+        public PictureBox picEN2;
+        public PictureBox picHP2;
+        public TextBox txtHP2;
+        public PictureBox picUnit2;
+        public PictureBox picUnit1;
+        private Timer _Timer1;
+        private ListBox lstItems;
+        public PictureBox picBar;
+        private Label labCaption;
+        public Label labMorale2;
+        public Label labMorale1;
+        public Label labLevel2;
+        public PictureBox imgPilot2;
+        public Label labLevel1;
+        public PictureBox imgPilot1;
+        public Label labHP1;
+        public Label labEN1;
+        public Label labEN2;
+        public Label labHP2;
     }
 }

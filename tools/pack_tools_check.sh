@@ -13,8 +13,8 @@ DATA="$ROOT/SRC.Sharp/Compat/torres/Data"
 
 dotnet build "$ROOT/tools/pack-stats" -c Release -v q
 dotnet build "$ROOT/tools/pack-analysis" -c Release -v q
-PS="$ROOT/tools/pack-stats/bin/Release/net10.0/PackStats.dll"
-PA="$ROOT/tools/pack-analysis/bin/Release/net10.0/PackAnalysis.dll"
+PS="$ROOT/tools/pack-stats/bin/Release/net11.0/PackStats.dll"
+PA="$ROOT/tools/pack-analysis/bin/Release/net11.0/PackAnalysis.dll"
 
 # GSC データパックと同じ形（<パック>/ロボ・<パック>/拡張 の下に System と作品のフォルダ）にする
 rm -rf "$WORK/pack"

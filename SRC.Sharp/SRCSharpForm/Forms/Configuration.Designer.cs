@@ -31,150 +31,6 @@ namespace SRCSharpForm
 
             base.Dispose(Disposing);
         }
-        // Windows フォーム デザイナで必要です。
-        private System.ComponentModel.IContainer components;
-        public ToolTip ToolTip1;
-        public CheckBox chkExtendedAnimation;
-        public CheckBox chkMoveAnimation;
-        public CheckBox chkWeaponAnimation;
-        private TextBox _txtMP3Volume;
-
-        public TextBox txtMP3Volume
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _txtMP3Volume;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_txtMP3Volume != null)
-                {
-                    _txtMP3Volume.TextChanged -= txtMP3Volume_TextChanged;
-                }
-
-                _txtMP3Volume = value;
-                if (_txtMP3Volume != null)
-                {
-                    _txtMP3Volume.TextChanged += txtMP3Volume_TextChanged;
-                }
-            }
-        }
-
-        private HScrollBar _hscMP3Volume;
-
-        public HScrollBar hscMP3Volume
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _hscMP3Volume;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_hscMP3Volume != null)
-                {
-                    _hscMP3Volume.Scroll -= hscMP3Volume_Scroll;
-                }
-
-                _hscMP3Volume = value;
-                if (_hscMP3Volume != null)
-                {
-                    _hscMP3Volume.Scroll += hscMP3Volume_Scroll;
-                }
-            }
-        }
-
-        private Button _cmdCancel;
-
-        public Button cmdCancel
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _cmdCancel;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_cmdCancel != null)
-                {
-                    _cmdCancel.Click -= cmdCancel_Click;
-                }
-
-                _cmdCancel = value;
-                if (_cmdCancel != null)
-                {
-                    _cmdCancel.Click += cmdCancel_Click;
-                }
-            }
-        }
-
-        private Button _cmdOK;
-
-        public Button cmdOK
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _cmdOK;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_cmdOK != null)
-                {
-                    _cmdOK.Click -= cmdOK_Click;
-                }
-
-                _cmdOK = value;
-                if (_cmdOK != null)
-                {
-                    _cmdOK.Click += cmdOK_Click;
-                }
-            }
-        }
-
-        public CheckBox chkKeepEnemyBGM;
-        public ComboBox cboMessageSpeed;
-        public CheckBox chkAutoMoveCursor;
-        public CheckBox chkShowSquareLine;
-        public CheckBox chkShowTurn;
-        public CheckBox chkSpecialPowerAnimation;
-        private CheckBox _chkBattleAnimation;
-
-        public CheckBox chkBattleAnimation
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _chkBattleAnimation;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_chkBattleAnimation != null)
-                {
-                    _chkBattleAnimation.CheckStateChanged -= chkBattleAnimation_CheckStateChanged;
-                }
-
-                _chkBattleAnimation = value;
-                if (_chkBattleAnimation != null)
-                {
-                    _chkBattleAnimation.CheckStateChanged += chkBattleAnimation_CheckStateChanged;
-                }
-            }
-        }
-
-        public Label labMP3Volume;
-        public Label labMessageSpeed;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -451,5 +307,25 @@ namespace SRCSharpForm
             this.ResumeLayout(false);
 
         }
+
+        // Windows フォーム デザイナで必要です。
+        private System.ComponentModel.IContainer components;
+        public ToolTip ToolTip1;
+        public CheckBox chkExtendedAnimation;
+        public CheckBox chkMoveAnimation;
+        public CheckBox chkWeaponAnimation;
+        private TextBox _txtMP3Volume;
+        private HScrollBar _hscMP3Volume;
+        private Button _cmdCancel;
+        private Button _cmdOK;
+        public CheckBox chkKeepEnemyBGM;
+        public ComboBox cboMessageSpeed;
+        public CheckBox chkAutoMoveCursor;
+        public CheckBox chkShowSquareLine;
+        public CheckBox chkShowTurn;
+        public CheckBox chkSpecialPowerAnimation;
+        private CheckBox _chkBattleAnimation;
+        public Label labMP3Volume;
+        public Label labMessageSpeed;
     }
 }

@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
 /** srcsharp の .NET tool のパッケージ */
 export const TOOL_PACKAGE = 'SRCSharpTools';
 const DEFAULT_COMMAND = 'srcsharp';
-export const DOTNET_DOWNLOAD_URL = 'https://dotnet.microsoft.com/download/dotnet/10.0';
+export const DOTNET_DOWNLOAD_URL = 'https://dotnet.microsoft.com/download/dotnet/11.0';
 
 /** 動かす srcsharp */
 export interface ServerInfo {
@@ -150,7 +150,7 @@ export async function installServer(output: vscode.OutputChannel): Promise<boole
   if (!dotnet) {
     const open = '.NET のダウンロードを開く';
     const pick = await vscode.window.showErrorMessage(
-      'srcsharp を入れるには .NET 10 SDK が要ります。.NET を入れてから VS Code を起動し直してください。',
+      'srcsharp を入れるには .NET 11 SDK が要ります。.NET を入れてから VS Code を起動し直してください。',
       open,
     );
     if (pick === open) {

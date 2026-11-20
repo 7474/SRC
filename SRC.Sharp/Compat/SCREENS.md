@@ -74,7 +74,7 @@ ID と実機での操作は `screens-scenes.txt`。種類が「画面」のも�
 ## SRC# で流す
 
 ```sh
-# CompatScreensTests（CI と同じ）。画像と sounds.txt を bin/Debug/net10.0/TestResults/e2e/compat-screens/ に書き出す
+# CompatScreensTests（CI と同じ）。画像と sounds.txt を bin/Debug/net11.0/TestResults/e2e/compat-screens/ に書き出す
 dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatScreensTests"
 # 実機・SRC#・SRC#Form を並べた一覧（out/screens-report/index.html。out/ は git に入らない）
 python3 SRC.Sharp/Compat/screens_report.py
