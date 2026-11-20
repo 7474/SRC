@@ -478,7 +478,7 @@ namespace SRCAuthoring.Templates
             "  ]",
             "}");
 
-        private static string MultiLaunch(IReadOnlyList<string> episodes)
+        internal static string MultiLaunch(IReadOnlyList<string> episodes)
         {
             var configs = new List<string>
             {
@@ -574,7 +574,7 @@ namespace SRCAuthoring.Templates
             $"      - name: Play {episode} to the end",
             $"        run: srcsharp play \"{episode}.eve\" --script \"{episode}.play\" --app-path \"$RUNNER_TEMP/srcsharp/SRC.Sharp/Content/basic-data\" --skip-wait --seed 1");
 
-        private static string MultiWorkflow(IReadOnlyList<string> episodes)
+        internal static string MultiWorkflow(IReadOnlyList<string> episodes)
         {
             var steps = new List<string>
             {

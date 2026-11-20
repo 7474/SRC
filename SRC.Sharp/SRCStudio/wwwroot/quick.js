@@ -3,7 +3,7 @@
 // 作品のデータは 7474/SRC-Data（GSC データパック）の index.json と各ファイルを読む（studio.json の data）。
 // 場面のサンプル（マップと、置く位置・作品・ユニット・セリフ）は、場面のカタログ（studio.json の scenes）から読む。
 // どちらも SRC# のリポジトリの外に置き、差し替えられる（書式は docs/tools/quick-create.md）
-import { buildQuickBattle, decodeText, previewData } from './studio-core.js';
+import { buildQuickBattle, buildQuickCampaign, decodeText, previewData } from './studio-core.js';
 import { CLASS_COLORS } from './map-editor.js';
 import { makeZip } from './zip.js';
 import { storeForWeb, studioConfig, webIsSameOrigin, webPlayUrl } from './web-handoff.js';
@@ -69,6 +69,8 @@ export class QuickBuilder {
     /** 選んだ作品: { key, title, base, path, folder, files: [{ name, bytes }], units: [], pilots: [] } */
     this.titles = [];
     this.battle = newBattle();
+    /** 話（7474/SRC#1691）。this.battle は今開いている話。題名は 1 つ目の話の title */
+    this.episodes = [this.battle];
     /** 場面のカタログから読んだ場面（{ ...場面, base: カタログの URL }） */
     this.scenes = null;
     /** 読んだマップのマス（parseMap の tiles）。下書きには残さず、mapText から作り直す */
@@ -176,8 +178,8 @@ export class QuickBuilder {
         enemies: (e.enemies ?? []).map(unit),
         retreat: Boolean(e.retreat),
       }));
-      if (!b.title && scene.title) {
-        b.title = scene.title;
+      if (!this.title && scene.title) {
+        this.title = scene.title;
       }
     } else {
       // 置いたユニットを、場面の置く位置へ順に移す
@@ -311,6 +313,55 @@ export class QuickBuilder {
     return result;
   }
 
+  // ---- 話（7474/SRC#1691） ----
+
+  /** 前の話までに出た、名前のある味方のパイロット（次の話で置くと続けて出る） */
+  carriedPilots(index = this.episodes.indexOf(this.battle)) {
+    const named = p => p && !p.includes('(ザコ)') && !p.includes('(汎用)');
+    return [...new Set(this.episodes.slice(0, index).flatMap(b => [...b.allies, ...b.events.flatMap(e => e.allies)]).map(u => u.pilot).filter(named))];
+  }
+
+  async showEpisode(index) {
+    this.battle = this.episodes[index];
+    this.selected = null;
+    this.picking = null;
+    if (this.battle.mapSource && this.battle.mapText) {
+      if (await this.useMap(this.battle.mapSource, this.battle.mapText)) {
+        this.usePlain();
+      }
+    } else {
+      this.mapTiles = null;
+    }
+    this.saveDraft();
+    this.render();
+  }
+
+  /** 話を足す。前の話の味方とマップを写す（続けて出る味方は Launch になる） */
+  async addEpisode() {
+    const prev = this.episodes.at(-1);
+    const next = newBattle();
+    next.width = prev.width;
+    next.height = prev.height;
+    next.mapSource = prev.mapSource;
+    next.mapText = prev.mapText;
+    next.spots = prev.spots;
+    next.allies = prev.allies.map(u => ({ ...u }));
+    this.episodes.push(next);
+    await this.showEpisode(this.episodes.length - 1);
+    this.status(t('quick.episodeAdded', this.episodes.length), 'info');
+  }
+
+  async removeEpisode() {
+    const index = this.episodes.indexOf(this.battle);
+    if (this.episodes.length < 2 || !confirm(t('quick.episodeRemoveConfirm', index + 1))) {
+      return;
+    }
+    const title = this.title;
+    this.episodes.splice(index, 1);
+    this.title = title;
+    await this.showEpisode(Math.max(0, index - 1));
+  }
+
   // ---- ユニット ----
 
   addUnit(side) {
@@ -346,10 +397,22 @@ export class QuickBuilder {
 
   // ---- 書き出し ----
 
-  battleJson() {
-    const b = this.battle;
-    return JSON.stringify({
-      title: b.title || t('quick.defaultTitle'),
+  /** 題名（キャンペーンの題名。1 つ目の話に持つ） */
+  get title() {
+    return this.episodes[0].title ?? '';
+  }
+
+  set title(value) {
+    this.episodes[0].title = value;
+  }
+
+  battleJson(b = this.battle) {
+    return JSON.stringify(this.episodeObject(b));
+  }
+
+  episodeObject(b) {
+    return {
+      title: this.title || t('quick.defaultTitle'),
       dataTitles: this.titles.map(x => x.folder),
       width: b.width,
       height: b.height,
@@ -362,12 +425,21 @@ export class QuickBuilder {
       goal: b.goal,
       loss: b.loss,
       events: b.events,
+    };
+  }
+
+  /** 話が 2 つ以上なら、キャンペーンの JSON（7474/SRC#1691） */
+  campaignJson() {
+    return JSON.stringify({
+      title: this.title || t('quick.defaultTitle'),
+      dataTitles: this.titles.map(x => x.folder),
+      episodes: this.episodes.map(b => this.episodeObject(b)),
     });
   }
 
   /** zip の中身。エラーがあれば { errors } */
   async build() {
-    const result = await buildQuickBattle(this.battleJson());
+    const result = this.episodes.length > 1 ? await buildQuickCampaign(this.campaignJson()) : await buildQuickBattle(this.battleJson());
     if (result.errors.length) {
       return { errors: result.errors };
     }
@@ -393,11 +465,15 @@ export class QuickBuilder {
     const config = await studioConfig();
     const name = `${built.name}.zip`;
     await storeForWeb(name, built.zip, config.requires);
-    const url = await webPlayUrl(name);
+    const url = new URL(await webPlayUrl(name));
+    if (this.episodes.length > 1) {
+      // 話がいくつもあれば、第1話から始める
+      url.searchParams.set('eve', '第1話.eve');
+    }
     if (win) {
-      win.location.href = url;
+      win.location.href = url.toString();
     } else {
-      location.href = url;
+      location.href = url.toString();
     }
     this.status(t('quick.played', name), 'info');
   }
@@ -416,7 +492,12 @@ export class QuickBuilder {
 
   saveDraft() {
     try {
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({ battle: this.battle, titles: this.titles.filter(x => !x.system).map(x => x.key) }));
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({
+        battle: this.battle,
+        episodes: this.episodes,
+        current: this.episodes.indexOf(this.battle),
+        titles: this.titles.filter(x => !x.system).map(x => x.key),
+      }));
     } catch {
       // 残せなくても続ける
     }
@@ -427,7 +508,8 @@ export class QuickBuilder {
     const b = this.battle;
     return Boolean(
       this.titles.length
-      || b.title
+      || this.title
+      || this.episodes.length > 1
       || b.mapSource
       || b.mapText !== undefined
       || b.spots
@@ -459,7 +541,12 @@ export class QuickBuilder {
     if (!draft) {
       return;
     }
-    Object.assign(this.battle, draft.battle);
+    if (Array.isArray(draft.episodes) && draft.episodes.length) {
+      this.episodes = draft.episodes.map(e => Object.assign(newBattle(), e));
+      this.battle = this.episodes[Math.max(0, Math.min(draft.current ?? 0, this.episodes.length - 1))];
+    } else {
+      Object.assign(this.battle, draft.battle);
+    }
     if (this.battle.mapText && (await this.useMap(this.battle.mapSource, this.battle.mapText))) {
       this.usePlain();
     }
@@ -493,6 +580,7 @@ export class QuickBuilder {
     }
     this.titles = [];
     this.battle = newBattle();
+    this.episodes = [this.battle];
     this.mapTiles = null;
     this.selected = null;
     this.clearDraft();
@@ -531,6 +619,7 @@ export class QuickBuilder {
       this.loadScenes().then(() => this.render());
     }
     const chosen = this.titles.filter(x => !x.system);
+    const carried = this.carriedPilots();
     const galleryOpen = this.galleryOpen ?? false;
     const currentScene = scenes.find(sc => `scene:${sc.base}#${sc.id}` === b.mapSource);
     const sideTable = side => this.unitList(side).length ? `
@@ -635,6 +724,12 @@ export class QuickBuilder {
       <div class="q-toolbar">
         <button type="button" class="q-reset danger" title="${esc(t('quick.resetHint'))}" ${resetDisabled}>${esc(t('quick.reset'))}</button>
       </div>
+      <nav class="q-episodes" aria-label="${esc(t('quick.episodes'))}">
+        ${this.episodes.map((e, i) => `<button type="button" class="q-episode" data-index="${i}" aria-current="${e === b ? 'page' : 'false'}">${esc(t('quick.episode', i + 1))}</button>`).join('')}
+        <button type="button" class="q-add-episode">＋ ${esc(t('quick.addEpisode'))}</button>
+        ${this.episodes.length > 1 ? `<button type="button" class="q-remove-episode danger">${esc(t('quick.removeEpisode'))}</button>` : ''}
+      </nav>
+      ${this.episodes.length > 1 ? `<p class="hint q-episode-hint">${esc(t('quick.episodesHint'))}${carried.length ? ' ' + esc(t('quick.carried', carried.join('、'))) : ''}</p>` : ''}
       <details class="q-gallery" ${galleryOpen ? 'open' : ''}>
         <summary>${esc(t('quick.gallery'))}${scenes.length ? ` <span class="hint">${esc(t('quick.galleryCount', scenes.length))}</span>` : ''}</summary>
         <p class="hint">${esc(t('quick.galleryHint'))}</p>
@@ -714,7 +809,7 @@ export class QuickBuilder {
       <section class="q-step">
         <h2><span class="q-num">6</span>${esc(t('quick.stepPlay'))}</h2>
         <div class="q-fields">
-          <label class="q-field">${esc(t('quick.scenarioTitle'))} <input class="q-title" value="${esc(b.title)}" placeholder="${esc(t('quick.defaultTitle'))}"></label>
+          <label class="q-field">${esc(t('quick.scenarioTitle'))} <input class="q-title" value="${esc(this.title)}" placeholder="${esc(t('quick.defaultTitle'))}"></label>
         </div>
         <div class="q-actions">
           <button type="button" class="q-play primary">▶ ${esc(t('quick.play'))}</button>
@@ -889,7 +984,7 @@ export class QuickBuilder {
     });
 
     $('.q-title').addEventListener('input', ev => {
-      this.battle.title = ev.target.value;
+      this.title = ev.target.value;
       this.saveDraft();
     });
     const resize = () => {
@@ -972,6 +1067,9 @@ export class QuickBuilder {
     });
 
     this.bindEvents();
+    this.root.querySelectorAll('.q-episode').forEach(button => button.addEventListener('click', () => this.showEpisode(Number(button.dataset.index))));
+    $('.q-add-episode').addEventListener('click', () => this.addEpisode());
+    $('.q-remove-episode')?.addEventListener('click', () => this.removeEpisode());
     $('.q-play').addEventListener('click', () => this.play().catch(e => this.status(String(e.message ?? e), 'error')));
     $('.q-save').addEventListener('click', () => this.save().catch(e => this.status(String(e.message ?? e), 'error')));
     this.root.querySelectorAll('.q-reset').forEach(button => button.addEventListener('click', () => this.reset()));

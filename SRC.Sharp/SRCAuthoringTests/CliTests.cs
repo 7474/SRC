@@ -436,6 +436,73 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>
+        /// かんたん作成のキャンペーン（7474/SRC#1691）: 2 話を並べたシナリオが lint を通り、第1話から通しで遊ぶと、勝って第2話に進み、
+        /// 前の話の味方が続けて出る。第2話を単体で始めても（前の話のデータが無くても）遊べる
+        /// </summary>
+        [TestMethod]
+        public void QuickCampaign_PlaysThroughAndEachEpisodeStandalone()
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-campaign-" + Guid.NewGuid());
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                var template = Path.Combine(folder, "template");
+                Assert.AreEqual(0, Run("new", template).exitCode);
+                var data = Path.Combine(folder, "scenario", "Data", "テスト作品");
+                Directory.CreateDirectory(data);
+                File.Copy(Path.Combine(template, "Data", "robot.txt"), Path.Combine(data, "robot.txt"));
+                File.Copy(Path.Combine(template, "Data", "pilot.txt"), Path.Combine(data, "pilot.txt"));
+                var campaign = SRCAuthoring.Templates.QuickCampaignTemplate.FromJson(@"{
+  ""title"": ""二つの戦い"", ""dataTitles"": [""テスト作品""],
+  ""episodes"": [
+    { ""width"": 12, ""height"": 9,
+      ""allies"": [{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 30, ""x"": 3, ""y"": 5 }],
+      ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": 6, ""y"": 5 }],
+      ""opening"": [{ ""speaker"": ""主人公"", ""text"": ""第一の戦いだ"" }] },
+    { ""width"": 12, ""height"": 9,
+      ""allies"": [{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 1, ""x"": 4, ""y"": 4 }],
+      ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": 7, ""y"": 4 }],
+      ""opening"": [{ ""speaker"": ""主人公"", ""text"": ""第二の戦いだ"" }],
+      ""victory"": [{ ""speaker"": ""主人公"", ""text"": ""全部片付いた！"" }] }
+  ]
+}");
+                Assert.AreEqual(0, SRCAuthoring.Templates.QuickCampaignTemplate.Validate(campaign).Count, string.Join("\n", SRCAuthoring.Templates.QuickCampaignTemplate.Validate(campaign)));
+                var files = SRCAuthoring.Templates.QuickCampaignTemplate.Files(campaign);
+                CollectionAssert.IsSubsetOf(new[] { "第1話.eve", "第2話.eve", "第1話.map", "第2話.map", "第1話.play", "第2話.play", "全話.play", "README.md" }, files.Keys.ToArray());
+                StringAssert.Contains(files["第1話.eve"], "Continue 第2話.eve");
+                StringAssert.Contains(files["第2話.eve"], "If IsDefined(主人公, パイロット) = 0 Then");
+                StringAssert.Contains(files["第2話.eve"], "  Launch 主人公 4 4");
+                StringAssert.Contains(files["第2話.eve"], "GameClear");
+                foreach (var (path, text) in files)
+                {
+                    var target = Path.Combine(folder, "scenario", path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.WriteAllText(target, text);
+                }
+                var scenario = Path.Combine(folder, "scenario");
+                var (exitCode, stdout, stderr) = Run("lint", scenario, "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                // 通し: 第1話に勝ち、インターミッションで次のステージへ、第2話も勝つ（第1話のレベル 30 の主人公が続けて出る）
+                var through = Path.Combine(folder, "through.play");
+                File.WriteAllText(through, File.ReadAllText(Path.Combine(scenario, "全話.play")) + "expect message 第二の戦いだ\nexpect message 全部片付いた！\nexpect finished\n");
+                (exitCode, stdout, stderr) = Run("play", Path.Combine(scenario, "第1話.eve"), "--script", through, "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                // 単体: 第2話だけを始める（主人公はその場で作る）
+                (exitCode, stdout, stderr) = Run("play", Path.Combine(scenario, "第2話.eve"), "--script", Path.Combine(scenario, "第2話.play"), "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
         [TestMethod]
         public void NoArguments_PrintsUsageAndFails()
         {

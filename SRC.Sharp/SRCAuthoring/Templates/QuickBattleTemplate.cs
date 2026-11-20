@@ -412,29 +412,10 @@ namespace SRCAuthoring.Templates
         public static IReadOnlyDictionary<string, string> Files(QuickBattle b)
         {
             var name = FileName(b);
-            var lines = new List<string>
-            {
-                $"# {name} {Episode}",
-                "# SRC#Studio の「かんたん作成」で作ったシナリオ。このまま VS Code で開いて続きを書ける（README.md の「次にやること」と、ヘルプの「SRC#でシナリオ・データを作る」）",
-                "# 各ラベルの上の注釈（#）が、そのイベントがいつ起きて何をするか。直したいところを書き換えてよい（書き換えた後はただのイベント）",
-                "",
-                "# 読み込む作品のデータ（Data の下のフォルダ）",
-            };
-            lines.AddRange(b.DataTitles.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().Select(x => "@" + x.Trim()));
-            lines.Add("");
-            lines.Add("# マップを出し、ユニットを置いて、戦闘前の会話");
-            lines.Add("スタート:");
-            lines.Add($"ChangeMap {Episode}.map");
-            lines.AddRange(b.Allies.SelectMany(u => Create("味方", u)));
-            lines.AddRange(b.Enemies.SelectMany(u => Create("敵", u)));
-            lines.AddRange(Talk(b.Opening));
-            lines.Add("Exit");
-            lines.AddRange(EventBlocks(b));
-
             return new Dictionary<string, string>
             {
-                [Episode + ".eve"] = string.Join("\r\n", lines) + "\r\n",
-                [Episode + ".map"] = string.IsNullOrWhiteSpace(b.Map) ? new MapDocument(b.Width, b.Height, new MapTile(0, 0)).Serialize() : b.Map,
+                [Episode + ".eve"] = EpisodeEvent(b, name, Episode, "GameClear", new Dictionary<string, string>()),
+                [Episode + ".map"] = MapText(b),
                 [Episode + ".play"] = ScenarioTemplate.Lines(
                     $"# {Episode} を自動で最後まで遊ぶ手順（srcsharp play の PlayScript。書式は 7474/SRC の docs/gui/e2e-testing.md）",
                     $"#   srcsharp play {Episode}.eve --script {Episode}.play --app-path <SRC のフォルダか最小の汎用データ> --skip-wait",
@@ -447,8 +428,71 @@ namespace SRCAuthoring.Templates
                 ["README.md"] = Readme(name),
                 [".vscode/launch.json"] = ScenarioTemplate.Launch(Episode),
                 [".github/workflows/src-check.yml"] = ScenarioTemplate.Workflow(Episode),
-                [".gitignore"] = ScenarioTemplate.Lines("# SRC のセーブデータ・ログ", "*.src", "Save/", "Logs/", "srcsharp-logs/", "# 試し戦闘・場面の再生など（VS Code・srcsharp が作る）", ".srcsharp/"),
+                [".gitignore"] = Gitignore,
             };
+        }
+
+        internal static readonly string Gitignore = ScenarioTemplate.Lines("# SRC のセーブデータ・ログ", "*.src", "*.srcq", "Save/", "Logs/", "srcsharp-logs/", "# 試し戦闘・場面の再生など（VS Code・srcsharp が作る）", ".srcsharp/");
+
+        internal static string MapText(QuickBattle b) =>
+            string.IsNullOrWhiteSpace(b.Map) ? new MapDocument(b.Width, b.Height, new MapTile(0, 0)).Serialize() : b.Map;
+
+        /// <summary>
+        /// 1 話のイベント。win は勝ったときの命令（最後の話は GameClear、続く話は Continue 次の話.eve）。
+        /// carried は前の話から続けて出る味方（パイロット → 前の話の機体）。Launch で出し、機体が変われば乗り換える。
+        /// その話を単体で始めたとき（前の話のデータが無いとき）は、Create で作る（srcsharp new の複数話と同じ考え方）
+        /// </summary>
+        internal static string EpisodeEvent(QuickBattle b, string name, string episode, string win, IReadOnlyDictionary<string, string> carried)
+        {
+            var lines = new List<string>
+            {
+                $"# {name} {episode}",
+                "# SRC#Studio の「かんたん作成」で作ったシナリオ。このまま VS Code で開いて続きを書ける（README.md の「次にやること」と、ヘルプの「SRC#でシナリオ・データを作る」）",
+                "# 各ラベルの上の注釈（#）が、そのイベントがいつ起きて何をするか。直したいところを書き換えてよい（書き換えた後はただのイベント）",
+                "",
+                "# 読み込む作品のデータ（Data の下のフォルダ）",
+            };
+            lines.AddRange(b.DataTitles.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().Select(x => "@" + x.Trim()));
+            lines.Add("");
+            lines.Add("# マップを出し、ユニットを置いて、戦闘前の会話");
+            lines.Add("スタート:");
+            lines.Add($"ChangeMap {episode}.map");
+            foreach (var u in b.Allies)
+            {
+                if (carried.TryGetValue(u.Pilot ?? "", out var previousUnit))
+                {
+                    lines.AddRange(CarriedAlly(u, previousUnit));
+                }
+                else
+                {
+                    lines.AddRange(Create("味方", u));
+                }
+            }
+            lines.AddRange(b.Enemies.SelectMany(u => Create("敵", u)));
+            lines.AddRange(Talk(b.Opening));
+            lines.Add("Exit");
+            lines.AddRange(EventBlocks(b, win, carried.Keys));
+            return string.Join("\r\n", lines) + "\r\n";
+        }
+
+        /// <summary>前の話から続けて出る味方。前の話のデータがあれば Launch（機体が変われば Unit・Ride で乗り換える）、無ければ Create</summary>
+        private static IEnumerable<string> CarriedAlly(QuickUnit u, string previousUnit)
+        {
+            yield return $"# {u.Pilot}は前の話から続けて出る（この話を単体で始めたときは作る）";
+            yield return $"If IsDefined({Quote(u.Pilot)}, パイロット) = 0 Then";
+            foreach (var line in Create("味方", u))
+            {
+                yield return "  " + line;
+            }
+            yield return "Else";
+            if (!string.Equals(previousUnit, u.Unit, StringComparison.Ordinal))
+            {
+                yield return $"  # {previousUnit}から{u.Unit}に乗り換える";
+                yield return $"  Unit {Quote(u.Unit)} {Math.Max(0, Math.Min(MaxRank, u.Rank))}";
+                yield return $"  Ride {Quote(u.Pilot)}";
+            }
+            yield return $"  Launch {Quote(u.Pilot)} {u.X} {u.Y}";
+            yield return "EndIf";
         }
 
         /// <summary>README.md: 中身と、次にやること（VS Code で続きを書く → 遊ぶ → 出来事・話を足す → 強さを確かめる → 公開する）</summary>
@@ -481,7 +525,7 @@ namespace SRCAuthoring.Templates
         /// 勝利条件・出来事・勝ち負けのイベント。同じラベルになるものは 1 つにまとめ、会話 → 援軍 → 退く → 勝ち負けの順に書く。
         /// ラベルは VB 版の SRC と同じく 1 回だけ起きる（常時イベントにしない）
         /// </summary>
-        private static IEnumerable<string> EventBlocks(QuickBattle b)
+        private static IEnumerable<string> EventBlocks(QuickBattle b, string win = "GameClear", IEnumerable<string> carried = null)
         {
             var victory = b.Victory.Count > 0 ? b.Victory : new List<QuickLine> { new QuickLine { Speaker = "システム", Text = "勝利！" } };
             var blocks = new List<Block>();
@@ -503,7 +547,7 @@ namespace SRCAuthoring.Templates
             }
 
             // 名前のあるパイロット（ザコ・汎用でない）は 1 人だけ。落ちたあとに別の機体で出直すときは、乗り換えて出す
-            var named = new HashSet<string>(b.Allies.Concat(b.Enemies).Select(u => u.Pilot).Where(IsNamed));
+            var named = new HashSet<string>(b.Allies.Concat(b.Enemies).Select(u => u.Pilot).Where(IsNamed).Concat(carried ?? Enumerable.Empty<string>()));
             var goalText = ConditionText(b, out var lossText);
             var conditions = At("勝利条件:");
             conditions.Notes.Add("マップのコマンド「作戦目的」で出す");
@@ -556,7 +600,7 @@ namespace SRCAuthoring.Templates
                     // 倒す相手が退いたら勝ち
                     if (b.Goal?.Kind == "boss" && b.Goal.Target == e.Unit)
                     {
-                        Finish(block, victory, "GameClear", $"{e.Unit}が退いたら勝ち");
+                        Finish(block, victory, win, $"{e.Unit}が退いたら勝ち");
                     }
                 }
             }
@@ -564,14 +608,14 @@ namespace SRCAuthoring.Templates
             switch (b.Goal?.Kind)
             {
                 case "boss":
-                    Finish(At($"破壊 {Quote(b.Goal.Target)}:"), victory, "GameClear", $"{b.Goal.Target}を倒したら勝ち");
+                    Finish(At($"破壊 {Quote(b.Goal.Target)}:"), victory, win, $"{b.Goal.Target}を倒したら勝ち");
                     break;
                 case "survive":
-                    Finish(At(TurnLabel(b.Goal.Turns + 1, "味方")), victory, "GameClear", $"{b.Goal.Turns} ターン守りきったら勝ち（{b.Goal.Turns + 1} ターン目の味方のフェイズの始め）");
+                    Finish(At(TurnLabel(b.Goal.Turns + 1, "味方")), victory, win, $"{b.Goal.Turns} ターン守りきったら勝ち（{b.Goal.Turns + 1} ターン目の味方のフェイズの始め）");
                     break;
                 case "reach":
                     var who = string.IsNullOrWhiteSpace(b.Goal.Target) ? "味方" : Quote(b.Goal.Target);
-                    Finish(At($"進入 {who} {b.Goal.X} {b.Goal.Y}:"), victory, "GameClear", $"{(who == "味方" ? "味方" : b.Goal.Target)}が ({b.Goal.X},{b.Goal.Y}) に着いたら勝ち");
+                    Finish(At($"進入 {who} {b.Goal.X} {b.Goal.Y}:"), victory, win, $"{(who == "味方" ? "味方" : b.Goal.Target)}が ({b.Goal.X},{b.Goal.Y}) に着いたら勝ち");
                     break;
             }
             switch (b.Loss?.Kind)
@@ -584,7 +628,7 @@ namespace SRCAuthoring.Templates
                     break;
             }
             // 敵の全滅はいつでも勝ち、味方の全滅はいつでも負け
-            Finish(At("全滅 敵:"), victory, "GameClear", "敵が全滅したら勝ち");
+            Finish(At("全滅 敵:"), victory, win, "敵が全滅したら勝ち");
             Finish(At("全滅 味方:"), b.Defeat, "GameOver", "味方が全滅したら負け");
 
             foreach (var block in blocks)

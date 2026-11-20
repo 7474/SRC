@@ -481,6 +481,72 @@ test('かんたん作成の出来事: 勝ち負けの条件・援軍・戦闘中
   await expect(page.locator('.q-loss-turns')).toHaveValue('8');
 });
 
+test('かんたん作成の話を足す: 前の話の味方が続けて出て、勝つと次の話に進むシナリオになる（7474/SRC#1691）', async ({ page, context }) => {
+  await routeSrcData(page);
+  await open(page, 'quick');
+  await page.locator('.q-search').fill('ランタン');
+  await page.locator('.q-results button', { hasText: 'ランタン' }).click();
+  await expect(page.locator('.q-chosen li')).toHaveCount(1);
+  const setUnit = async (row, unit, pilot) => {
+    await row.locator('.q-unit').fill(unit);
+    await row.locator('.q-unit').dispatchEvent('change');
+    await row.locator('.q-pilot').fill(pilot);
+    await row.locator('.q-pilot').dispatchEvent('change');
+  };
+  await page.locator('.q-add[data-side="allies"]').click();
+  await setUnit(page.locator('tr[data-side="allies"]'), '灯機ホタル', 'ソラ');
+  await page.locator('.q-add[data-side="enemies"]').click();
+  await setUnit(page.locator('tr[data-side="enemies"]'), '灯機ツバメ', 'リオ');
+  await page.locator('.q-title').fill('campaign');
+  await page.locator('.q-title').dispatchEvent('input');
+
+  // 第2話を足す: 味方（ソラ）を写し、前の話から続けて出ることを示す
+  await page.locator('.q-add-episode').click();
+  await expect(page.locator('.q-episode')).toHaveCount(2);
+  await expect(page.locator('.q-episode[aria-current="page"]')).toHaveText('第2話');
+  await expect(page.locator('tr[data-side="allies"] .q-pilot')).toHaveValue('ソラ');
+  await expect(page.locator('.q-episode-hint')).toContainText('ソラ');
+  // 乗り換える（灯機ホタル → ランタン号）
+  await setUnit(page.locator('tr[data-side="allies"]'), 'ランタン号', 'ソラ');
+  await page.locator('.q-add[data-side="enemies"]').click();
+  await setUnit(page.locator('tr[data-side="enemies"]'), '灯機ホタル', 'ミュウ');
+  // 題名は 1 つの話ではなくシナリオのもの
+  await expect(page.locator('.q-title')).toHaveValue('campaign');
+
+  // 第1話に戻ると、第1話の敵が見える
+  await page.locator('.q-episode[data-index="0"]').click();
+  await expect(page.locator('tr[data-side="enemies"] .q-pilot')).toHaveValue('リオ');
+
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('.q-save').click()]);
+  expect(download.suggestedFilename()).toBe('campaign.zip');
+  const text = fs.readFileSync(await download.path()).toString('utf8');
+  for (const name of ['第1話.eve', '第2話.eve', '第1話.map', '第2話.map', '全話.play']) {
+    expect(text).toContain(name);
+  }
+  expect(text).toContain('Continue 第2話.eve');
+  expect(text).toMatch(/If IsDefined\(ソラ, パイロット\) = 0 Then\r\n  Create 味方 ランタン号 0 ソラ /);
+  expect(text).toMatch(/Else\r\n  # 灯機ホタルからランタン号に乗り換える\r\n  Unit ランタン号 0\r\n  Ride ソラ\r\n  Launch ソラ /);
+
+  // SRC#Web で遊ぶ: 第1話から始める
+  await context.route('**/web/**', route => route.fulfill({ contentType: 'text/html', body: '<p>SRC#Web</p>' }));
+  const [popup] = await Promise.all([context.waitForEvent('page'), page.locator('.q-play').click()]);
+  await expect.poll(() => popup.url()).toContain('stored=');
+  expect(decodeURIComponent(popup.url())).toContain('/web/?stored=campaign.zip&eve=第1話.eve');
+
+  // 下書きに 2 つの話が残る
+  await page.reload();
+  await expect(page.locator('body[data-ready="true"]')).toHaveCount(1, { timeout: 60 * 1000 });
+  await expect(page.locator('.q-episode')).toHaveCount(2);
+  await page.locator('.q-episode[data-index="1"]').click();
+  await expect(page.locator('tr[data-side="enemies"] .q-pilot')).toHaveValue('ミュウ');
+
+  // 話を消す
+  page.once('dialog', d => d.accept());
+  await page.locator('.q-remove-episode').click();
+  await expect(page.locator('.q-episode')).toHaveCount(1);
+  await expect(page.locator('.q-remove-episode')).toHaveCount(0);
+});
+
 test('かんたん作成: 足りないものは作らずに知らせる', async ({ page }) => {
   await routeSrcData(page);
   await open(page, 'quick');
