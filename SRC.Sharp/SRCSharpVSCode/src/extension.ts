@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import { spawn } from 'child_process';
 import * as vscode from 'vscode';
@@ -541,6 +543,85 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         program: eve,
         interactive: true,
       });
+    }),
+    // 強さの確かめ（srcsharp playtest。7474/SRC#1690）。開いている話を乱数を変えて自動で何回か遊び、結果を Markdown で横に出す
+    vscode.commands.registerCommand('srcsharp.playtest', async () => {
+      const file = activeEventFile()?.fsPath;
+      if (!file) {
+        vscode.window.showErrorMessage('SRC#: 強さを確かめる話（*.eve）を開いてください。');
+        return;
+      }
+      const runs = await vscode.window.showQuickPick(['3', '5', '10'], { title: 'SRC#: 何回遊ぶか（乱数を変えて自動で遊ぶ）', placeHolder: '5' });
+      if (!runs) {
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const report = path.join(os.tmpdir(), `srcsharp-playtest-${path.basename(file, path.extname(file))}.md`);
+      const done = await vscode.window.withProgress(
+        { location: vscode.ProgressLocation.Notification, title: `SRC#: 「${path.basename(file)}」を ${runs} 回自動で遊んでいます…` },
+        () => run('playtest', [file, '--runs', runs, '--output', report, ...(appPath ? ['--app-path', appPath] : [])], path.dirname(file)));
+      if (done !== undefined && fs.existsSync(report)) {
+        await vscode.commands.executeCommand('markdown.showPreviewToSide', vscode.Uri.file(report));
+      }
+    }),
+    // この話から遊ぶ（7474/SRC#1692）。通しの自動プレイ（全話.play の saveepisodes）が残した、この話の始めのセーブデータ（.srcsharp/episodes/話.srcs）から、
+    // 画面付きのデバッガで始める。無ければ、通しの自動プレイを動かして作る
+    vscode.commands.registerCommand('srcsharp.playFromEpisode', async () => {
+      const file = activeEventFile()?.fsPath;
+      if (!file) {
+        vscode.window.showErrorMessage('SRC#: 遊びたい話（*.eve）を開いてください。');
+        return;
+      }
+      const root = scenarioRoot(file);
+      const episode = path.basename(file, path.extname(file));
+      const save = path.join(root, '.srcsharp', 'episodes', `${episode}.srcs`);
+      if (!fs.existsSync(save)) {
+        const through = path.join(root, '全話.play');
+        const first = path.join(root, '第1話.eve');
+        if (!fs.existsSync(through) || !fs.existsSync(first)) {
+          vscode.window.showInformationMessage(`SRC#: 「${episode}」の始めのセーブデータがありません。通しの自動プレイの手順（全話.play）に「saveepisodes .srcsharp/episodes」を書いて遊ぶと、インターミッションのたびに作られます。`);
+          return;
+        }
+        const pick = await vscode.window.showInformationMessage(
+          `SRC#: 「${episode}」の始めのセーブデータがありません。第1話から通しで自動で遊んで作りますか？`, '作る');
+        if (pick !== '作る') {
+          return;
+        }
+        const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+        await vscode.window.withProgress(
+          { location: vscode.ProgressLocation.Notification, title: 'SRC#: 第1話から通しで自動で遊んでいます…' },
+          () => run('play', [first, '--script', through, '--skip-wait', '--seed', '1', ...(appPath ? ['--app-path', appPath] : [])], root));
+        if (!fs.existsSync(save)) {
+          vscode.window.showWarningMessage(`SRC#: 通しの自動プレイで「${episode}」まで進めませんでした（出力を見てください）。`);
+          return;
+        }
+      }
+      await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(root)), {
+        type: 'srcsharp',
+        request: 'launch',
+        name: `SRC# ${episode}から遊ぶ`,
+        program: save,
+        scenarioRoot: root,
+        interactive: true,
+      });
+    }),
+    // シナリオの見通し（srcsharp outline。7474/SRC#1692）。話ごとの部隊と登場人物・出来事・変数・台本を Markdown で横に出す（行へのリンク付き）
+    vscode.commands.registerCommand('srcsharp.showOutline', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const file = editor?.document.uri.scheme === 'file' ? editor.document.uri.fsPath : undefined;
+      const dir = file ? scenarioRoot(file) : workspaceDir();
+      if (!dir) {
+        vscode.window.showErrorMessage('SRC#: シナリオのフォルダを開いてください。');
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const report = path.join(dir, '.srcsharp', '見通し.md');
+      const done = await vscode.window.withProgress(
+        { location: vscode.ProgressLocation.Notification, title: 'SRC#: シナリオの見通しを作っています…' },
+        () => run('outline', [dir, '--output', report, ...(appPath ? ['--app-path', appPath] : [])], dir));
+      if (done !== undefined && fs.existsSync(report)) {
+        await vscode.commands.executeCommand('markdown.showPreviewToSide', vscode.Uri.file(report));
+      }
     }),
     vscode.commands.registerCommand('srcsharp.balance', async () => {
       const dir = workspaceDir();

@@ -229,6 +229,9 @@ main[hidden] { display: none; }
 .q-key.boss { background: #ffd400; border: 1px solid #000; border-radius: 50%; width: 9px; height: 9px; }
 .q-key.reinforce { background: #d0393e; opacity: 0.55; box-shadow: inset 4px 4px 0 #000; }
 .q-key.goal { border: 2px dashed #ffd400; width: 8px; height: 8px; }
+/* 話（7474/SRC#1691） */
+.q-episodes { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0; }
+.q-episode[aria-current="page"] { background: var(--accent, #2f6fd6); color: #fff; border-color: transparent; font-weight: 600; }
 /* 出来事（7474/SRC#1689） */
 .q-event { border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin: 10px 0; }
 .q-event legend { font-weight: 600; padding: 0 4px; }

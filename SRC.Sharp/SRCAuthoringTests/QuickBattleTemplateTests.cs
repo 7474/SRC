@@ -33,12 +33,15 @@ namespace SRCAuthoring.Tests
             var battle = QuickBattleTemplate.FromJson(Json);
             Assert.AreEqual(0, QuickBattleTemplate.Validate(battle).Count, string.Join("\n", QuickBattleTemplate.Validate(battle)));
             var files = QuickBattleTemplate.Files(battle);
-            CollectionAssert.AreEquivalent(new[] { "はじめての戦い.eve", "はじめての戦い.map" }, files.Keys.ToArray());
-            var eve = files["はじめての戦い.eve"].Split("\r\n");
+            CollectionAssert.AreEquivalent(new[] { "第1話.eve", "第1話.map", "第1話.play", "README.md", ".vscode/launch.json", ".github/workflows/src-check.yml", ".gitignore" }, files.Keys.ToArray());
+            StringAssert.StartsWith(files["README.md"], "# はじめての戦い");
+            StringAssert.Contains(files["README.md"], "## 次にやること");
+            StringAssert.Contains(files[".github/workflows/src-check.yml"], "srcsharp play \"第1話.eve\" --script \"第1話.play\"");
+            var eve = files["第1話.eve"].Split("\r\n");
 
             // 作品は重ねずに 1 回ずつ
             CollectionAssert.AreEqual(new[] { "@作品A", "@作品B" }, eve.Where(x => x.StartsWith("@")).ToArray());
-            CollectionAssert.Contains(eve, "ChangeMap はじめての戦い.map");
+            CollectionAssert.Contains(eve, "ChangeMap 第1話.map");
             CollectionAssert.Contains(eve, "Create 味方 見習い機 0 主人公 5 2 3");
             CollectionAssert.Contains(eve, "Create 敵 偵察機 0 \"敵兵(ザコ)\" 3 10 4");
             // ランクは Create の 3 番目の引数。ボスランクは Create のすぐ後の BossRank（Create で選ばれたユニットに付く）。ボスでなければ書かない
@@ -62,8 +65,8 @@ namespace SRCAuthoring.Tests
             var victory = System.Array.IndexOf(eve, "全滅 敵:");
             CollectionAssert.AreEqual(new[] { "Talk システム", "勝利！", "End", "GameClear" }, eve.Skip(victory + 1).Take(4).ToArray());
 
-            StringAssert.StartsWith(files["はじめての戦い.map"], "MapData");
-            var map = SRCAuthoring.Maps.MapDocument.Parse(System.Text.Encoding.UTF8.GetBytes(files["はじめての戦い.map"]));
+            StringAssert.StartsWith(files["第1話.map"], "MapData");
+            var map = SRCAuthoring.Maps.MapDocument.Parse(System.Text.Encoding.UTF8.GetBytes(files["第1話.map"]));
             Assert.AreEqual(12, map.Width);
             Assert.AreEqual(8, map.Height);
         }
@@ -115,7 +118,7 @@ namespace SRCAuthoring.Tests
         {
             var battle = QuickBattleTemplate.FromJson(EventsJson);
             Assert.AreEqual(0, QuickBattleTemplate.Validate(battle).Count, string.Join("\n", QuickBattleTemplate.Validate(battle)));
-            var eve = QuickBattleTemplate.Files(battle)["砦の戦い.eve"].Split("\r\n");
+            var eve = QuickBattleTemplate.Files(battle)["第1話.eve"].Split("\r\n");
             string[] Block(string label)
             {
                 var i = System.Array.IndexOf(eve, label);

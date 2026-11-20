@@ -100,7 +100,7 @@ namespace SRCAuthoring.Templates
             return written;
         }
 
-        private static string Lines(params string[] lines) => string.Join("\r\n", lines) + "\r\n";
+        internal static string Lines(params string[] lines) => string.Join("\r\n", lines) + "\r\n";
 
         private static string Json(string s) => "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
 
@@ -353,7 +353,8 @@ namespace SRCAuthoring.Templates
             $"# 第1話から第{episodes}話（最終話）まで通しで最後まで遊ぶ手順",
             $"#   srcsharp play 第1話.eve --script 全話.play --app-path <SRC のフォルダか最小の汎用データ> --skip-wait",
             "choose どうする あきらめる",
-            "choose コマンド 次のステージへ",
+            "# インターミッションのたびに、次の話の始めの状態を .srcsharp/episodes/第N話.srcs に残してから次のステージへ（VS Code の「この話から遊ぶ」で使う）",
+            "saveepisodes .srcsharp/episodes",
             "auto 300",
             $"turns {20 * episodes}",
             "expect message クリアしました",
@@ -456,7 +457,7 @@ namespace SRCAuthoring.Templates
             return Lines(lines.ToArray());
         }
 
-        private static string Launch(string episode) => Lines(
+        internal static string Launch(string episode) => Lines(
             "{",
             "  \"version\": \"0.2.0\",",
             "  \"configurations\": [",
@@ -478,7 +479,7 @@ namespace SRCAuthoring.Templates
             "  ]",
             "}");
 
-        private static string MultiLaunch(IReadOnlyList<string> episodes)
+        internal static string MultiLaunch(IReadOnlyList<string> episodes)
         {
             var configs = new List<string>
             {
@@ -521,7 +522,7 @@ namespace SRCAuthoring.Templates
                 "}");
         }
 
-        private static string Workflow(string episode) => Lines(
+        internal static string Workflow(string episode) => Lines(
             "# SRC# のデータの検査と、最後まで自動で遊べるかの確かめ（srcsharp new のひな形）",
             "# 汎用データは SRC# の最小の汎用データ（7474/SRC の SRC.Sharp/Content/basic-data）を使う。",
             "# SRC のフルパッケージの汎用データを使うシナリオは、その置き場所に合わせて --app-path を変える",
@@ -574,7 +575,7 @@ namespace SRCAuthoring.Templates
             $"      - name: Play {episode} to the end",
             $"        run: srcsharp play \"{episode}.eve\" --script \"{episode}.play\" --app-path \"$RUNNER_TEMP/srcsharp/SRC.Sharp/Content/basic-data\" --skip-wait --seed 1");
 
-        private static string MultiWorkflow(IReadOnlyList<string> episodes)
+        internal static string MultiWorkflow(IReadOnlyList<string> episodes)
         {
             var steps = new List<string>
             {

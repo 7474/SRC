@@ -259,10 +259,52 @@ namespace SRCStudio
                     w.WriteStringValue(e);
                 }
                 w.WriteEndArray();
+                // zip とフォルダの名前（題名からファイル名に使えない文字を除いたもの）
+                w.WriteString("name", battle != null ? SRCAuthoring.Templates.QuickBattleTemplate.FileName(battle) : "");
                 w.WriteStartObject("files");
                 if (errors.Count == 0)
                 {
                     foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
+                    {
+                        w.WriteString(path, text);
+                    }
+                }
+                w.WriteEndObject();
+                w.WriteEndObject();
+            }
+            return Encoding.UTF8.GetString(stream.ToArray());
+        }
+
+        /// <summary>かんたん作成のキャンペーン（話を並べたもの。7474/SRC#1691）。{ errors, name, files }</summary>
+        [JSExport]
+        internal static string BuildQuickCampaign(string json)
+        {
+            using var stream = new MemoryStream();
+            using (var w = new Utf8JsonWriter(stream))
+            {
+                w.WriteStartObject();
+                IReadOnlyList<string> errors;
+                SRCAuthoring.Templates.QuickCampaign campaign = null;
+                try
+                {
+                    campaign = SRCAuthoring.Templates.QuickCampaignTemplate.FromJson(json);
+                    errors = SRCAuthoring.Templates.QuickCampaignTemplate.Validate(campaign);
+                }
+                catch (JsonException ex)
+                {
+                    errors = new[] { ex.Message };
+                }
+                w.WriteStartArray("errors");
+                foreach (var e in errors)
+                {
+                    w.WriteStringValue(e);
+                }
+                w.WriteEndArray();
+                w.WriteString("name", campaign != null ? SRCAuthoring.Templates.QuickBattleTemplate.FileName(new SRCAuthoring.Templates.QuickBattle { Title = campaign.Title }) : "");
+                w.WriteStartObject("files");
+                if (errors.Count == 0)
+                {
+                    foreach (var (path, text) in SRCAuthoring.Templates.QuickCampaignTemplate.Files(campaign))
                     {
                         w.WriteString(path, text);
                     }

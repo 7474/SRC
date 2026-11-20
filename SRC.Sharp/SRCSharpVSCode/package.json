@@ -451,6 +451,24 @@
         "icon": "$(debug-alt)"
       },
       {
+        "command": "srcsharp.playFromEpisode",
+        "title": "この話から遊ぶ（前の話までの状態で）",
+        "category": "SRC#",
+        "icon": "$(debug-step-over)"
+      },
+      {
+        "command": "srcsharp.showOutline",
+        "title": "シナリオの見通し（出来事・台本・変数・登場人物）",
+        "category": "SRC#",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "srcsharp.playtest",
+        "title": "この話の強さを確かめる（自動で何回か遊ぶ）",
+        "category": "SRC#",
+        "icon": "$(pulse)"
+      },
+      {
         "command": "srcsharp.lint",
         "title": "ワークスペースを lint する",
         "category": "SRC#"
@@ -578,6 +596,14 @@
         },
         {
           "command": "srcsharp.autoPlay",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.playtest",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.playFromEpisode",
           "when": "editorLangId == src-eve"
         },
         {

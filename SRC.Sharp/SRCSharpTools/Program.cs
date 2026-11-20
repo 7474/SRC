@@ -67,6 +67,10 @@ namespace SRCSharpTools
                     return await LintAsync(positional, options);
                 case "play":
                     return Play(positional, options);
+                case "playtest":
+                    return Playtest(positional, options);
+                case "outline":
+                    return Outline(positional, options);
                 case "balance":
                     return Balance(positional, options);
                 case "new":
@@ -280,6 +284,84 @@ namespace SRCSharpTools
                 Console.WriteLine(runner.IsTerminated ? "terminated" : "stopped");
                 return 0;
             }
+        }
+
+        /// <summary>
+        /// 強さの確かめ（7474/SRC#1690）。1 話を、乱数を変えて --runs 回自動で遊び、勝ち負け・ターン数・落ちた味方と直し方の手がかりを出す。
+        /// 結果は Markdown（既定）か JSON。止まった回（自動プレイが進めなくなった）は勝ち負けに数えない
+        /// </summary>
+        private static int Playtest(List<string> paths, Dictionary<string, string> options)
+        {
+            if (paths.Count != 1)
+            {
+                Console.Error.WriteLine(Strings.PlayRequiresOneEventFile);
+                return 2;
+            }
+            var eve = Path.GetFullPath(paths[0]);
+            options.TryGetValue("app-path", out var appPath);
+            if (!string.IsNullOrEmpty(appPath))
+            {
+                appPath = Path.GetFullPath(appPath);
+            }
+            var scenarioRoot = options.TryGetValue("scenario-root", out var root)
+                ? Path.GetFullPath(root)
+                : SRCAuthoring.Analysis.ScenarioAnalyzer.FindRunRoot(eve);
+            var runs = options.TryGetValue("runs", out var r) ? int.Parse(r, CultureInfo.InvariantCulture) : 5;
+            var firstSeed = options.TryGetValue("seed", out var s) ? int.Parse(s, CultureInfo.InvariantCulture) : 1;
+            var turns = options.TryGetValue("turns", out var t) ? int.Parse(t, CultureInfo.InvariantCulture) : 30;
+            var policy = options.TryGetValue("policy", out var p) ? p : "smart";
+            // 画面を見ないので、決まった時間だけ待つ処理は飛ばす
+            SRCCore.Lib.GeneralLib.SkipWait = true;
+            var summary = new PlaytestSummary { Scenario = Path.GetFileName(eve), TurnLimit = turns, Policy = policy };
+            using (var logHost = CreateLogHost("playtest", LogOutputs.None))
+            {
+                for (var i = 0; i < runs; i++)
+                {
+                    using var runner = new ScreenScenarioRunner(appPath ?? scenarioRoot, logHost.LoggerFactory);
+                    logHost.ApplyConfig(runner.Session.SRC.SystemConfig);
+                    var run = SRCPlay.Playtest.RunOnce(runner, eve, scenarioRoot, firstSeed + i, turns, policy);
+                    summary.Runs.Add(run);
+                    // 進み具合（標準エラー。結果は標準出力かファイル）
+                    Console.Error.WriteLine($"{i + 1}/{runs} seed {run.Seed}: {PlaytestSummary.Label(run.Outcome)} {run.Turns}T");
+                }
+            }
+            var text = options.TryGetValue("format", out var format) && format == "json" ? summary.ToJson() : summary.ToMarkdown();
+            if (options.TryGetValue("output", out var output))
+            {
+                File.WriteAllText(output, text, new UTF8Encoding(false));
+            }
+            else
+            {
+                Console.Write(text);
+            }
+            // --min-wins を下回れば終了コード 1（CI で場面の強さを見張る）
+            if (options.TryGetValue("min-wins", out var minWins) && summary.Count("win") < int.Parse(minWins, CultureInfo.InvariantCulture))
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        /// <summary>シナリオの見通し（7474/SRC#1692）: 部隊と登場人物・出来事の一覧・変数・台本を Markdown（既定）か JSON で出す</summary>
+        private static int Outline(List<string> paths, Dictionary<string, string> options)
+        {
+            var target = Path.GetFullPath(paths.Count > 0 ? paths[0] : Directory.GetCurrentDirectory());
+            options.TryGetValue("app-path", out var appPath);
+            var outline = ScenarioOutline.Analyze(target, string.IsNullOrEmpty(appPath) ? null : Path.GetFullPath(appPath));
+            options.TryGetValue("output", out var output);
+            var text = options.TryGetValue("format", out var format) && format == "json"
+                ? outline.ToJson()
+                : outline.ToMarkdown(string.IsNullOrEmpty(output) ? null : Path.GetDirectoryName(Path.GetFullPath(output)));
+            if (!string.IsNullOrEmpty(output))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output)));
+                File.WriteAllText(output, text, new UTF8Encoding(false));
+            }
+            else
+            {
+                Console.Write(text);
+            }
+            return 0;
         }
 
         private static void WriteState(ScreenScenarioRunner runner, ScenarioStateRecorder recorder, string path)

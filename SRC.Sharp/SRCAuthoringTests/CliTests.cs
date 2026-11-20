@@ -295,9 +295,11 @@ namespace SRCAuthoring.Tests
                 Assert.AreEqual(0, SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle).Count);
                 foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
                 {
-                    File.WriteAllText(Path.Combine(folder, "scenario", path), text);
+                    var target = Path.Combine(folder, "scenario", path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.WriteAllText(target, text);
                 }
-                var eve = Path.Combine(folder, "scenario", "荒野の戦い.eve");
+                var eve = Path.Combine(folder, "scenario", "第1話.eve");
 
                 var (exitCode, stdout, stderr) = Run("lint", Path.Combine(folder, "scenario"), "--app-path", basicData);
                 Assert.AreEqual(0, exitCode, stdout + stderr);
@@ -355,9 +357,11 @@ namespace SRCAuthoring.Tests
                 Assert.AreEqual(0, SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle).Count, string.Join("\n", SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle)));
                 foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
                 {
-                    File.WriteAllText(Path.Combine(folder, "scenario", path), text);
+                    var target = Path.Combine(folder, "scenario", path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.WriteAllText(target, text);
                 }
-                var eve = Path.Combine(folder, "scenario", "出来事の戦い.eve");
+                var eve = Path.Combine(folder, "scenario", "第1話.eve");
 
                 var (exitCode, stdout, stderr) = Run("lint", Path.Combine(folder, "scenario"), "--app-path", basicData);
                 Assert.AreEqual(0, exitCode, stdout + stderr);
@@ -366,6 +370,136 @@ namespace SRCAuthoring.Tests
                 File.WriteAllText(play, $"auto 400\nturns 15\nexpect message {talk}\nexpect message {ending}\nexpect finished\nexpect error none\n");
                 (exitCode, stdout, stderr) = Run("play", eve, "--script", play, "--app-path", basicData, "--skip-wait", "--seed", "1");
                 Assert.AreEqual(0, exitCode, File.ReadAllText(eve) + stdout + stderr);
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 強さの確かめ（7474/SRC#1690）: 乱数を変えて自動で遊び、勝ち・負け（ターン切れ）を、GameClear・GameOver に着いたかで分ける
+        /// </summary>
+        [TestMethod]
+        [DataRow(false, "win")]
+        [DataRow(true, "lose")]
+        public void Playtest_CountsWinsAndLossesByTheEnding(bool turnLimit, string expected)
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-playtest-" + Guid.NewGuid());
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                var template = Path.Combine(folder, "template");
+                Assert.AreEqual(0, Run("new", template).exitCode);
+                var data = Path.Combine(folder, "scenario", "Data", "テスト作品");
+                Directory.CreateDirectory(data);
+                File.Copy(Path.Combine(template, "Data", "robot.txt"), Path.Combine(data, "robot.txt"));
+                File.Copy(Path.Combine(template, "Data", "pilot.txt"), Path.Combine(data, "pilot.txt"));
+                // 勝つ回は近くの弱い敵、負ける回は 1 ターンで決着しない遠い敵と、1 ターンを過ぎたら負け
+                var battle = SRCAuthoring.Templates.QuickBattleTemplate.FromJson($@"{{
+  ""title"": ""強さ"", ""dataTitles"": [""テスト作品""], ""width"": {(turnLimit ? 40 : 12)}, ""height"": 9,
+  ""allies"": [{{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 30, ""x"": 3, ""y"": 5 }}],
+  ""enemies"": [{{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": {(turnLimit ? 40 : 6)}, ""y"": 5 }}],
+  ""loss"": {(turnLimit ? @"{ ""kind"": ""turns"", ""turns"": 1 }" : @"{ ""kind"": ""annihilate"" }")}
+}}");
+                foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
+                {
+                    var target = Path.Combine(folder, "scenario", path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.WriteAllText(target, text);
+                }
+                var eve = Path.Combine(folder, "scenario", "第1話.eve");
+                var (exitCode, stdout, stderr) = Run("playtest", eve, "--app-path", basicData, "--runs", "2", "--turns", "10", "--format", "json", "--min-wins", "1");
+                Assert.AreEqual(expected == "win" ? 0 : 1, exitCode, stdout + stderr);
+                using var json = System.Text.Json.JsonDocument.Parse(stdout);
+                var runs = json.RootElement.GetProperty("runs").EnumerateArray().ToList();
+                Assert.AreEqual(2, runs.Count);
+                CollectionAssert.AreEqual(new[] { 1, 2 }, runs.Select(x => x.GetProperty("seed").GetInt32()).ToArray());
+                Assert.IsTrue(runs.All(x => x.GetProperty("outcome").GetString() == expected), stdout);
+                Assert.AreEqual(2, json.RootElement.GetProperty("counts").GetProperty(expected).GetInt32());
+                Assert.IsTrue(json.RootElement.GetProperty("hints").GetArrayLength() > 0);
+                if (expected == "lose")
+                {
+                    // ターン切れの負けは、2 ターン目の味方のフェイズの始め
+                    Assert.IsTrue(runs.All(x => x.GetProperty("turns").GetInt32() == 2), stdout);
+                }
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// かんたん作成のキャンペーン（7474/SRC#1691）: 2 話を並べたシナリオが lint を通り、第1話から通しで遊ぶと、勝って第2話に進み、
+        /// 前の話の味方が続けて出る。第2話を単体で始めても（前の話のデータが無くても）遊べる
+        /// </summary>
+        [TestMethod]
+        public void QuickCampaign_PlaysThroughAndEachEpisodeStandalone()
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-campaign-" + Guid.NewGuid());
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                var template = Path.Combine(folder, "template");
+                Assert.AreEqual(0, Run("new", template).exitCode);
+                var data = Path.Combine(folder, "scenario", "Data", "テスト作品");
+                Directory.CreateDirectory(data);
+                File.Copy(Path.Combine(template, "Data", "robot.txt"), Path.Combine(data, "robot.txt"));
+                File.Copy(Path.Combine(template, "Data", "pilot.txt"), Path.Combine(data, "pilot.txt"));
+                var campaign = SRCAuthoring.Templates.QuickCampaignTemplate.FromJson(@"{
+  ""title"": ""二つの戦い"", ""dataTitles"": [""テスト作品""],
+  ""episodes"": [
+    { ""width"": 12, ""height"": 9,
+      ""allies"": [{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 30, ""x"": 3, ""y"": 5 }],
+      ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": 6, ""y"": 5 }],
+      ""opening"": [{ ""speaker"": ""主人公"", ""text"": ""第一の戦いだ"" }] },
+    { ""width"": 12, ""height"": 9,
+      ""allies"": [{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 1, ""x"": 4, ""y"": 4 }],
+      ""enemies"": [{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": 7, ""y"": 4 }],
+      ""opening"": [{ ""speaker"": ""主人公"", ""text"": ""第二の戦いだ"" }],
+      ""victory"": [{ ""speaker"": ""主人公"", ""text"": ""全部片付いた！"" }] }
+  ]
+}");
+                Assert.AreEqual(0, SRCAuthoring.Templates.QuickCampaignTemplate.Validate(campaign).Count, string.Join("\n", SRCAuthoring.Templates.QuickCampaignTemplate.Validate(campaign)));
+                var files = SRCAuthoring.Templates.QuickCampaignTemplate.Files(campaign);
+                CollectionAssert.IsSubsetOf(new[] { "第1話.eve", "第2話.eve", "第1話.map", "第2話.map", "第1話.play", "第2話.play", "全話.play", "README.md" }, files.Keys.ToArray());
+                StringAssert.Contains(files["第1話.eve"], "Continue 第2話.eve");
+                StringAssert.Contains(files["第2話.eve"], "If IsDefined(主人公, パイロット) = 0 Then");
+                StringAssert.Contains(files["第2話.eve"], "  Launch 主人公 4 4");
+                StringAssert.Contains(files["第2話.eve"], "GameClear");
+                foreach (var (path, text) in files)
+                {
+                    var target = Path.Combine(folder, "scenario", path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.WriteAllText(target, text);
+                }
+                var scenario = Path.Combine(folder, "scenario");
+                var (exitCode, stdout, stderr) = Run("lint", scenario, "--app-path", basicData);
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                // 通し: 第1話に勝ち、インターミッションで次のステージへ、第2話も勝つ（第1話のレベル 30 の主人公が続けて出る）
+                var through = Path.Combine(folder, "through.play");
+                File.WriteAllText(through, File.ReadAllText(Path.Combine(scenario, "全話.play")) + "expect message 第二の戦いだ\nexpect message 全部片付いた！\nexpect finished\n");
+                (exitCode, stdout, stderr) = Run("play", Path.Combine(scenario, "第1話.eve"), "--script", through, "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+                // 通しの途中で、第2話の始めの状態（セーブデータ）が残り、そこから第2話を遊べる（「この話から遊ぶ」）
+                var save = Path.Combine(scenario, ".srcsharp", "episodes", "第2話.srcs");
+                Assert.IsTrue(File.Exists(save), stdout);
+                var fromSave = Path.Combine(folder, "from-save.play");
+                File.WriteAllText(fromSave, "choose コマンド 次のステージへ\nauto 400\nturns 30\nexpect message 第二の戦いだ\nexpect message 全部片付いた！\nexpect finished\nexpect error none\n");
+                (exitCode, stdout, stderr) = Run("play", save, "--script", fromSave, "--app-path", basicData, "--scenario-root", scenario, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+
+                // 単体: 第2話だけを始める（主人公はその場で作る）
+                (exitCode, stdout, stderr) = Run("play", Path.Combine(scenario, "第2話.eve"), "--script", Path.Combine(scenario, "第2話.play"), "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
             }
             finally
             {

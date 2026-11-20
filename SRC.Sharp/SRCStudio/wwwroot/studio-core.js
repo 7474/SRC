@@ -167,6 +167,12 @@ export async function buildQuickBattle(json) {
   return JSON.parse(core.BuildQuickBattle(json));
 }
 
+/** かんたん作成のキャンペーン（話を並べたもの。7474/SRC#1691）。{ errors, name, files } */
+export async function buildQuickCampaign(json) {
+  const core = await studioCore();
+  return JSON.parse(core.BuildQuickCampaign(json));
+}
+
 /** 素材の参照を調べる対象ファイル（*.eve と素材を参照する Data/*.txt）か */
 export function isAssetTarget(path) {
   const name = path.replace(/\\/g, '/').split('/').pop() ?? '';

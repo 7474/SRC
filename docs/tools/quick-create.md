@@ -14,15 +14,32 @@
 
 ## 作るもの
 
-zip の中身は普通のシナリオで、`srcsharp lint`・VS Code 拡張・SRC#Avalonia でもそのまま使える。
+zip の中身は普通のシナリオで、`srcsharp new` のひな形と同じ形（7474/SRC#1691）。`srcsharp lint`・VS Code 拡張・SRC#Avalonia でもそのまま使え、話を足せば `srcsharp new --episodes` の形になる。zip とフォルダの名前は題名。
 
 | ファイル | 中身 |
 |---|---|
-| `題名.eve` | `@作品`（作品のデータの読み込み）・`スタート:`（`ChangeMap`・`Create`（ランクは 3 番目の引数）・ボスなら続けて `BossRank`・戦闘の前の `Talk`）・`勝利条件:`（作戦目的）・出来事のイベント（下の「出来事」）・`全滅 敵:`（勝ち。`GameClear`）・`全滅 味方:`（負け。`GameOver`）。どのラベルにも何が起きるかの注釈（`#`）を付ける |
-| `題名.map` | 選んだマップ。平地なら大きさを決めた平地 |
+| `第1話.eve` | `@作品`（作品のデータの読み込み）・`スタート:`（`ChangeMap`・`Create`（ランクは 3 番目の引数）・ボスなら続けて `BossRank`・戦闘の前の `Talk`）・`勝利条件:`（作戦目的）・出来事のイベント（下の「出来事」）・`全滅 敵:`（勝ち。`GameClear`）・`全滅 味方:`（負け。`GameOver`）。どのラベルにも何が起きるかの注釈（`#`）を付ける |
+| `第1話.map` | 選んだマップ。平地なら大きさを決めた平地 |
+| `第1話.play` | 自動で最後まで遊ぶ手順（`srcsharp play`。30 ターンまで遊び、終わること・イベントのエラーが無いことを確かめる。勝ち負けは乱数で変わるので確かめず、強さは `srcsharp playtest` で見る） |
+| `README.md` | 中身と「次にやること」（VS Code で開く → 遊ぶ → 出来事を足す・直す → 話を足す → 強さを確かめる → 公開する） |
+| `.vscode/launch.json`・`.github/workflows/src-check.yml`・`.gitignore` | `srcsharp new` と同じ（F5 で遊ぶ・push のたびに lint と自動プレイ） |
 | `Data/作品/…` | 選んだ作品のデータ（SRCCore が作品のフォルダから読むファイルだけ。名前は小文字にそろえる） |
 
 イベントは `SRCAuthoring.Templates.QuickBattleTemplate`（SRC#Studio の `BuildQuickBattle`）が作る。セリフのうち、命令や注釈に読まれる行（`End`・`Talk` などで始まる行・`#` で始まる行）は頭に全角の空白を足す。話す人が置いたユニットのパイロットでなければ作らずに知らせる（`Talk` は定義の無い名前で止まるため）。
+
+## 話を足す（キャンペーン）
+
+画面の上の「＋ 話を足す」で、話を並べたシナリオにできる（7474/SRC#1691。SRCAuthoring の `QuickCampaignTemplate`）。話ごとに、マップ・ユニット・出来事・セリフを、1 話のときと同じ画面で決める。足した話には、前の話の味方とマップを写す。題名と作品はシナリオで 1 つ。
+
+| 項目 | 書き方 |
+|---|---|
+| 話のつなぎ | 勝つと `Continue 第N話.eve`（インターミッションをはさんで次の話へ）。最後の話は `GameClear` |
+| 続けて出る味方 | 前の話までに出た、名前のある味方（`(ザコ)`・`(汎用)` の付かないパイロット）を次の話でも置くと、`Launch` で続けて出す（レベル・経験は前の話のまま）。機体を変えたら `Unit`・`Ride` で乗り換える。その話を単体で始めたとき（前の話のデータが無いとき）は `If IsDefined(パイロット, パイロット) = 0 Then` で `Create` する |
+| 加入・離脱 | 初めて置く味方は `Create`（加入）。前の話に出て、この話で置かなかった味方は、部隊に残ったまま出撃しない |
+| 作るファイル | `srcsharp new --episodes` と同じ形: `第N話.eve`・`第N話.map`・`第N話.play`（単体。勝ったら次の話の前のインターミッションで止まる）・`全話.play`（通し。インターミッションでは「次のステージへ」）・`.vscode/launch.json`・`.github/workflows/src-check.yml`（lint・通し・各話の単体）・README.md |
+| SRC#Web で遊ぶ | `?stored=題名.zip&eve=第1話.eve` で第1話から始める |
+
+分岐（選択肢で話が変わる）・話をまたぐ変数・離脱のイベントは、VS Code で書く（かんたん作成は話を並べるところまで）。VS Code で直したものを、かんたん作成に戻すことはできない（一方向）。下書きには、すべての話を残す。
 
 ## 出来事
 
@@ -128,6 +145,7 @@ SRC#Studio は、作った zip を SRC#Web の「追加したアーカイブ」�
 ## テスト
 
 - `SRCAuthoringTests/QuickBattleTemplateTests.cs`: イベント・マップの書き方、出来事のラベル（まとめ方・注釈）、足りないもの・食い違う条件の知らせ
+- `SRCAuthoringTests/CliTests.cs` の `QuickCampaign_PlaysThroughAndEachEpisodeStandalone`: 2 話のキャンペーンが lint を通り、通しで第1話に勝って第2話に進み（前の話の味方が続けて出る）、第2話を単体でも遊べる
 - `SRCAuthoringTests/CliTests.cs` の `QuickBattle_LintsCleanAndPlaysToTheEnd`・`QuickBattleEvents_LintCleanAndEndAsTheConditionsSay`: 作ったシナリオが最小の汎用データで lint を通り、自動で遊ぶと条件どおりに終わる（敵の全滅・倒す・守りきる・ターン切れ。援軍の会話が出る）
-- `SRCSharpWeb.E2E/tests/studio.spec.js` の「かんたん作成」: 作品選び・配置・セリフ・出来事・zip・SRC#Web への受け渡し・下書き・場面のカタログ（一覧のカードとマップの欄・出来事。7474/SRC-Data の代わりを返す）
+- `SRCSharpWeb.E2E/tests/studio.spec.js` の「かんたん作成」: 作品選び・配置・セリフ・出来事・話を足す・zip・SRC#Web への受け渡し・下書き・場面のカタログ（一覧のカードとマップの欄・出来事。7474/SRC-Data の代わりを返す）
 - `SRCSharpWeb.E2E/tests/web.spec.js`: `?stored=` で開き、求める素材を重ねて始める

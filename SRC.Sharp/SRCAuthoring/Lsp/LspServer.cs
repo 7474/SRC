@@ -165,6 +165,8 @@ namespace SRCAuthoring.Lsp
                             ["definitionProvider"] = true,
                             ["hoverProvider"] = true,
                             ["completionProvider"] = new JsonObject { ["triggerCharacters"] = new JsonArray() },
+                            // 名前を変える（7474/SRC#1692）
+                            ["renameProvider"] = new JsonObject { ["prepareProvider"] = true },
                         },
                         ["serverInfo"] = new JsonObject { ["name"] = "srcsharp" },
                     };
@@ -231,6 +233,10 @@ namespace SRCAuthoring.Lsp
                     return Hover(@params);
                 case "textDocument/completion":
                     return Completion(@params);
+                case "textDocument/prepareRename":
+                    return PrepareRename(@params);
+                case "textDocument/rename":
+                    return Rename(@params);
                 case "srcsharp/placementAt":
                     return PlacementAt(@params);
                 case "srcsharp/eventFlow":
@@ -590,6 +596,63 @@ namespace SRCAuthoring.Lsp
                 }
             }
             return null;
+        }
+
+        /// <summary>名前を変えられる所なら、その範囲と今の名前</summary>
+        private JsonNode PrepareRename(JsonNode @params)
+        {
+            var (path, line, character) = Position(@params);
+            var (name, start) = ScenarioRename.NameAt(LineText(path, line), character);
+            if (!ScenarioRename.IsRenamable(name))
+            {
+                return null;
+            }
+            return new JsonObject
+            {
+                ["range"] = new JsonObject
+                {
+                    ["start"] = new JsonObject { ["line"] = line, ["character"] = start },
+                    ["end"] = new JsonObject { ["line"] = line, ["character"] = start + name.Length },
+                },
+                ["placeholder"] = name,
+            };
+        }
+
+        /// <summary>
+        /// 名前を変える（7474/SRC#1692）。シナリオのイベントとデータの全体で、語として書いた所を変える（ScenarioRename）。
+        /// 開いている文書は保存前の内容で探す
+        /// </summary>
+        private JsonNode Rename(JsonNode @params)
+        {
+            var (path, line, character) = Position(@params);
+            var newName = @params["newName"]?.GetValue<string>();
+            var (oldName, _) = ScenarioRename.NameAt(LineText(path, line), character);
+            if (!ScenarioRename.IsRenamable(oldName) || !ScenarioRename.IsRenamable(newName) || oldName == newName)
+            {
+                return null;
+            }
+            var root = DataLinter.IsDataFileName(path) || IsMessageDataFile(path)
+                ? ScenarioAnalyzer.FindScenarioRoot(path)
+                : AnalysisFor(path).ScenarioRoot ?? ScenarioAnalyzer.FindScenarioRoot(path);
+            var changes = new JsonObject();
+            foreach (var (file, spans) in ScenarioRename.FindAll(root, oldName, DocumentText))
+            {
+                var edits = new JsonArray();
+                foreach (var s in spans)
+                {
+                    edits.Add(new JsonObject
+                    {
+                        ["range"] = new JsonObject
+                        {
+                            ["start"] = new JsonObject { ["line"] = s.Line, ["character"] = s.Start },
+                            ["end"] = new JsonObject { ["line"] = s.Line, ["character"] = s.Start + s.Length },
+                        },
+                        ["newText"] = newName,
+                    });
+                }
+                changes[PathToUri(file)] = edits;
+            }
+            return new JsonObject { ["changes"] = changes };
         }
 
         private JsonNode Definition(JsonNode @params)
