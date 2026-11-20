@@ -223,6 +223,37 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>見通しの気づいたこと（7474/SRC#1692）を、開いた・保存したイベントの診断（情報）として出す</summary>
+        [TestMethod]
+        public void Lsp_PublishesOutlineFindingsAsInformation()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                var eve = scenario.Write("第1話.eve", "スタート:", "ChangeMap 第1話.map", "Create 味方 機体A 0 主人公 1 2 2", "Set 手がかり 1", "Exit", "破壊 幽霊:", "Exit", "全滅 敵:", "GameClear");
+                var uri = LspServer.PathToUri(eve);
+                var server = new LspServer(client.ServerInput, client.ServerOutput) { Debounce = TimeSpan.FromMilliseconds(10) };
+                var run = Task.Run(() => server.RunAsync());
+                Request(client, "initialize", new JsonObject { ["capabilities"] = new JsonObject() });
+                Notify(client, "initialized", new JsonObject());
+                Notify(client, "textDocument/didOpen", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri, ["languageId"] = "src-eve", ["version"] = 1, ["text"] = System.IO.File.ReadAllText(eve) },
+                });
+                var diagnostics = client.WaitFor(x => x["method"]?.GetValue<string>() == "textDocument/publishDiagnostics"
+                    && x["params"]["uri"].GetValue<string>() == uri
+                    && x["params"]["diagnostics"].AsArray().Any(d => d["code"]?.GetValue<string>() == "outline"), "outline findings")["params"]["diagnostics"].AsArray();
+                var ghost = diagnostics.Single(d => d["message"].GetValue<string>().Contains("幽霊"));
+                Assert.AreEqual(5, ghost["range"]["start"]["line"].GetValue<int>());
+                Assert.AreEqual(3, ghost["severity"].GetValue<int>());
+                Assert.IsTrue(diagnostics.Any(d => d["message"].GetValue<string>().Contains("「手がかり」")));
+
+                Request(client, "shutdown", null);
+                Notify(client, "exit", null);
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
+
         /// <summary>イベントのデータの名前の参照（診断・ホバー・定義へ移動・補完）とコマンドのホバー（7474/SRC#1642）</summary>
         [TestMethod]
         public void Lsp_DataReferencesAndCommandHelp()

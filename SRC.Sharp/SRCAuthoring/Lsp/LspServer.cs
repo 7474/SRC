@@ -35,6 +35,12 @@ namespace SRCAuthoring.Lsp
         // データの診断を送ったファイル（Data のフォルダ → ファイル）。直ったファイルの診断を消すのに使う
         private readonly ConcurrentDictionary<string, HashSet<string>> dataPublished = new ConcurrentDictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
 
+        // シナリオの見通しの「気づいたこと」（7474/SRC#1692）。シナリオのフォルダ → ファイル → 診断。保存した内容で、シナリオ全体を見て作る
+        private readonly ConcurrentDictionary<string, Dictionary<string, List<SrcDiagnostic>>> outlineFindings = new ConcurrentDictionary<string, Dictionary<string, List<SrcDiagnostic>>>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>見通しの気づいたこと（起きない出来事・読まない変数など）を、イベントの診断（情報）として出すか（初期化オプションの outlineFindings）</summary>
+        public bool OutlineFindings { get; set; } = true;
+
         /// <summary>データに動かす規則のグループ（初期化オプションの rules。VS Code 拡張の srcsharp.rules）</summary>
         public IReadOnlyList<string> RuleGroups { get; set; } = Rules.RuleGroups.Default;
         private readonly ILogger log;
@@ -140,6 +146,10 @@ namespace SRCAuthoring.Lsp
                         setLogLevel?.Invoke(logLevel);
                     }
                     // 規則のグループ（VS Code 拡張の srcsharp.rules。文字列か配列）
+                    if (@params?["initializationOptions"]?["outlineFindings"] is JsonValue outlineOption && outlineOption.TryGetValue<bool>(out var outlineOn))
+                    {
+                        OutlineFindings = outlineOn;
+                    }
                     var rules = @params?["initializationOptions"]?["rules"];
                     if (rules != null)
                     {
@@ -184,7 +194,7 @@ namespace SRCAuthoring.Lsp
                         }
                         else
                         {
-                            Schedule(path, TimeSpan.Zero);
+                            Schedule(path, TimeSpan.Zero, outline: true);
                         }
                         return null;
                     }
@@ -209,7 +219,7 @@ namespace SRCAuthoring.Lsp
                         }
                         else
                         {
-                            Schedule(path, TimeSpan.Zero);
+                            Schedule(path, TimeSpan.Zero, outline: true);
                         }
                         return null;
                     }
@@ -264,7 +274,7 @@ namespace SRCAuthoring.Lsp
             return new Uri(OverlayFileSystem.Normalize(path)).AbsoluteUri;
         }
 
-        private void Schedule(string path, TimeSpan delay)
+        private void Schedule(string path, TimeSpan delay, bool outline = false)
         {
             var cts = new CancellationTokenSource();
             if (pending.TryRemove(path, out var old))
@@ -295,7 +305,13 @@ namespace SRCAuthoring.Lsp
                     {
                         return;
                     }
-                    await PublishAsync(path, analysis.DiagnosticsFor(path).ToList());
+                    await PublishAsync(path, analysis.DiagnosticsFor(path).Concat(FindingsFor(path)).ToList());
+                    // 済んだ（見通しが送り直してよい）
+                    pending.TryRemove(new KeyValuePair<string, CancellationTokenSource>(path, cts));
+                    if (outline && OutlineFindings && path.EndsWith(".eve", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(analysis.ScenarioRoot))
+                    {
+                        ScheduleOutline(analysis.ScenarioRoot);
+                    }
                 }
                 catch (OperationCanceledException)
                 {
@@ -303,6 +319,86 @@ namespace SRCAuthoring.Lsp
                 catch (Exception ex)
                 {
                     log.LogError(ex, "解析できません {Path}", path);
+                }
+            });
+        }
+
+        /// <summary>見通しの気づいたことのうち、path のもの</summary>
+        private IEnumerable<SrcDiagnostic> FindingsFor(string path)
+        {
+            foreach (var byFile in outlineFindings.Values)
+            {
+                if (byFile.TryGetValue(path, out var list))
+                {
+                    return list;
+                }
+            }
+            return Enumerable.Empty<SrcDiagnostic>();
+        }
+
+        /// <summary>
+        /// シナリオの見通しを作り直し、気づいたことを診断（情報）として出す（7474/SRC#1692）。シナリオ全体を見るので、開いた・保存したときだけ。
+        /// 開いているイベントは、イベントの診断と合わせて送り直す
+        /// </summary>
+        private void ScheduleOutline(string scenarioRoot)
+        {
+            var key = "outline:" + scenarioRoot;
+            var cts = new CancellationTokenSource();
+            if (pending.TryRemove(key, out var old))
+            {
+                old.Cancel();
+            }
+            pending[key] = cts;
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.Delay(Debounce, cts.Token);
+                    await analyzing.WaitAsync(cts.Token);
+                    Dictionary<string, List<SrcDiagnostic>> byFile;
+                    try
+                    {
+                        cts.Token.ThrowIfCancellationRequested();
+                        var outline = ScenarioOutline.Analyze(scenarioRoot, analyzer.AppPath);
+                        byFile = outline.Findings
+                            .Where(f => !string.IsNullOrEmpty(f.File) && f.Line > 0)
+                            .GroupBy(f => OverlayFileSystem.Normalize(Path.GetFullPath(Path.Combine(outline.ScenarioRoot ?? scenarioRoot, f.File))), StringComparer.OrdinalIgnoreCase)
+                            .ToDictionary(g => g.Key, g => g.Select(f => new SrcDiagnostic
+                            {
+                                File = g.Key,
+                                Line = f.Line,
+                                Severity = DiagnosticSeverity.Information,
+                                Message = f.Message,
+                                RuleId = "outline",
+                            }).ToList(), StringComparer.OrdinalIgnoreCase);
+                    }
+                    finally
+                    {
+                        analyzing.Release();
+                    }
+                    if (cts.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    var previous = outlineFindings.TryGetValue(scenarioRoot, out var p) ? p.Keys.ToList() : new List<string>();
+                    outlineFindings[scenarioRoot] = byFile;
+                    // 気づいたことのあるファイルと、前に送ったファイルを送り直す（イベントの解析を待っているファイルは、その解析が送る）
+                    foreach (var file in byFile.Keys.Concat(previous).Distinct(StringComparer.OrdinalIgnoreCase))
+                    {
+                        if (pending.ContainsKey(file))
+                        {
+                            continue;
+                        }
+                        var events = analyses.TryGetValue(file, out var a) ? a.DiagnosticsFor(file) : Enumerable.Empty<SrcDiagnostic>();
+                        await PublishAsync(file, events.Concat(FindingsFor(file)).ToList());
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    log.LogError(ex, "見通しを作れません {Path}", scenarioRoot);
                 }
             });
         }
