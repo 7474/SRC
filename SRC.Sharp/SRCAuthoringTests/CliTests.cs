@@ -402,7 +402,10 @@ namespace SRCAuthoring.Tests
             (exitCode, stdout, _) = Run("event-text", lantern, "--line", turn2.ToString());
             Assert.AreEqual(1, exitCode);
             StringAssert.Contains(stdout, "\"error\":");
-            var file = Path.Combine(Path.GetTempPath(), "srcs-edit-" + Guid.NewGuid() + ".eve");
+            // シナリオのフォルダ（一時フォルダの全体を見ないよう、専用のフォルダに置く）
+            var dir = Path.Combine(Path.GetTempPath(), "srcs-edit-" + Guid.NewGuid());
+            Directory.CreateDirectory(Path.Combine(dir, "Data"));
+            var file = Path.Combine(dir, "第1話.eve");
             try
             {
                 File.WriteAllText(file, "破壊 リオ:\r\nTalk リオ\r\nまだ……\r\nEnd\r\nExit\r\n");
@@ -415,7 +418,7 @@ namespace SRCAuthoring.Tests
             }
             finally
             {
-                File.Delete(file);
+                Directory.Delete(dir, true);
             }
         }
 
