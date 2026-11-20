@@ -64,6 +64,8 @@ export class Controller implements vscode.Disposable {
         // データに動かす規則のグループ（空なら none。srcsharp lint --rules と同じ）
         rules: ruleGroups(),
         logLevel: vscode.workspace.getConfiguration('srcsharp').get<string>('logLevel') || undefined,
+        // 見通しの気づいたことを診断に出すか（7474/SRC#1692）
+        outlineFindings: vscode.workspace.getConfiguration('srcsharp').get<boolean>('outlineFindings', true),
       },
       // Language Server のログ（window/logMessage）も同じ出力パネルに出す
       outputChannel: this.output,
