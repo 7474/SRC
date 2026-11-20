@@ -21,6 +21,12 @@ updates:
       update-types:
       - minor
       - patch
+  # SkiaSharp 4.157 以降は .NET 11.0.0 の Mono の AOT コンパイラで落ちる（Directory.Packages.props のコメント）。
+  # 修正の入った .NET 11 のサービスの版に上げたら消す
+  ignore:
+  - dependency-name: 'SkiaSharp*'
+    versions:
+    - '>= 4.157.0'
   package-ecosystem: nuget
   schedule:
     interval: daily

@@ -7,7 +7,7 @@ SRC# のアプリ・ツール・テストが使う .NET のメジャーを上げ
 | 何 | どこ | 内容 |
 |---|---|---|
 | ターゲットフレームワーク | `SRC.Sharp/Directory.Build.props` の `SrcSharpTargetFramework` | 既定は `net11.0`。各プロジェクトは `$(SrcSharpTargetFramework)` を使う（SRC#Form は `$(SrcSharpTargetFramework)-windows`）。ライブラリの SRCCore・SRCRender・SRCSound は `netstandard2.1` のまま |
-| パッケージの版 | `SRC.Sharp/Directory.Packages.props` | .NET の版（`Microsoft.AspNetCore.Components.WebAssembly*`・`Microsoft.Extensions.*`・`System.*`）は 11.0.0。SkiaSharp は 4.157.0（.NET 11 の WebAssembly 向けのネイティブライブラリが入っている版。下の「.NET 11 で変えたこと」） |
+| パッケージの版 | `SRC.Sharp/Directory.Packages.props` | .NET の版（`Microsoft.AspNetCore.Components.WebAssembly*`・`Microsoft.Extensions.*`・`System.*`）は 11.0.0。SkiaSharp は 4.156.2（.NET 11 の WebAssembly 向けのネイティブライブラリが入っていて、AOT で落ちない版。下の「.NET 11 で変えたこと」） |
 | SDK | `global.json`（`11.0.100`・`rollForward: latestFeature`）と、ワークフローの `dotnet-version: 11.0.x` | CI・Packages・Publish-*・CD-*。GitHub Actions のイメージは新しい SDK を先に持つので、`global.json` で SDK のメジャーを固める（#1599） |
 | Docker | `SRC.Sharp/SRCDataLinter/Dockerfile` | `mcr.microsoft.com/dotnet/*:11.0-resolute`（Ubuntu 26.04。.NET 11 には noble 版のイメージが無い） |
 
@@ -23,7 +23,7 @@ dotnet build SRC.Sharp/SRC.Sharp.sln -p:SrcSharpTargetFramework=net12.0 -p:Enabl
 
 | 何 | 内容 | 対応 |
 |---|---|---|
-| SkiaSharp | SkiaSharp の WebAssembly のネイティブライブラリは Emscripten の版ごとに入っている。.NET 11 は Emscripten 6.0.2 を使うが、4.155 以前には 3.1.34・3.1.56・5.0.6 向けしか無く、リンクできない（`undefined symbol: saveSetjmp`） | 6.0.2 向けが入った正式版（4.156.0 から）の 4.157.0 に全体をそろえた。管理側のライブラリには `net11.0` のターゲットがまだ無く、`net10.0` 向けのものが使われる |
+| SkiaSharp | SkiaSharp の WebAssembly のネイティブライブラリは Emscripten の版ごとに入っている。.NET 11 は Emscripten 6.0.2 を使うが、4.155 以前には 3.1.34・3.1.56・5.0.6 向けしか無く、リンクできない（`undefined symbol: saveSetjmp`） | 6.0.2 向けが入った正式版（4.156.0 から）の 4.156.2 に全体をそろえた。管理側のライブラリには `net11.0` のターゲットがまだ無く、`net10.0` 向けのものが使われる。4.157.0 は LibraryImport に `[UnmanagedCallConv]` が付き、.NET 11.0.0 の Mono の AOT コンパイラが SRC#Web の発行で落ちる（`sgen-alloc.c:409`。[dotnet/runtime#136351](https://github.com/dotnet/runtime/issues/136351)・[mono/SkiaSharp#5840](https://github.com/mono/SkiaSharp/issues/5840)）ので、修正（[dotnet/runtime#136627](https://github.com/dotnet/runtime/pull/136627)）の入ったサービスの版に上げるまで 4.156.x に留める（`.github/dependabot.yml` で 4.157 以降を除いている） |
 | SRC#Web が始まらない | マルチスレッドの WebAssembly で、起動の後に作ったスレッドが読み込み前の Web Worker に当たると止まる。SRC#Web では最初のタイマー（`Task.Delay` など）で止まり、そのあとは JS の呼び出しの結果も戻らず「読み込み中」のままになる。.NET 11.0.0 の正式版でも直っていない（[dotnet/runtime#136492](https://github.com/dotnet/runtime/issues/136492)。Emscripten の更新で `worker.loaded` が立たなくなった） | `index.html` の `Blazor.start` で、起動時に読み込んでおく Web Worker を増やす（`withConfig({ pthreadPoolInitialSize: 24 })`。既定は 7）。回避を外すと動かない。上流で直ったら消す（[#1704](https://github.com/7474/SRC/issues/1704)） |
 | Blazor WebAssembly のパッケージ | `Microsoft.AspNetCore.Components.WebAssembly`（`.DevServer`）は SDK とメジャーをそろえる | 11.0.0 にした |
 | SRC#Form の WinForms のアナライザー | Designer のファイルに手で書いたメンバー（VB の WithEvents から変換したプロパティ）が WFO3001 のエラーになる | プロパティを `*.Events.cs` に移した（動きは変わらない） |
