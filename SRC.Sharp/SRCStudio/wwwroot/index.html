@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SRC#Studio</title>
+  <link rel="stylesheet" href="studio.css" />
+  <script type="module" src="studio.js"></script>
+</head>
+<body>
+  <header class="studio-header">
+    <h1>SRC#Studio</h1>
+    <div class="studio-tabs" role="tablist">
+      <button type="button" role="tab" id="tab-quick" aria-selected="true" aria-controls="quick-section" data-t="studio.tabQuick"></button>
+      <button type="button" role="tab" id="tab-map" aria-selected="false" aria-controls="map-section" data-t="studio.tabMap"></button>
+      <button type="button" role="tab" id="tab-data" aria-selected="false" aria-controls="data-section" data-t="studio.tabData"></button>
+      <button type="button" role="tab" id="tab-assets" aria-selected="false" aria-controls="assets-section" data-t="studio.tabAssets"></button>
+    </div>
+  </header>
+  <p id="loading" data-t="loading" hidden></p>
+  <!-- マップ・データのプレビューで使うフォルダ（かんたん作成では隠す） -->
+  <div id="workspace" class="workspace" hidden>
+    <p class="hint" data-t="studio.intro"></p>
+    <div class="folders">
+      <button type="button" id="open-app" data-t="studio.openApp"></button>
+      <input type="file" id="app-input" webkitdirectory multiple hidden />
+      <span id="app-folder"></span>
+      <button type="button" id="open-scenario" data-t="studio.openScenario"></button>
+      <input type="file" id="scenario-input" webkitdirectory multiple hidden />
+      <span id="scenario-folder"></span>
+    </div>
+    <div class="files">
+      <button type="button" id="new-map" data-t="studio.newMap"></button>
+      <button type="button" id="save" class="primary" data-t="studio.save" disabled></button>
+      <button type="button" id="download" data-t="studio.download"></button>
+      <span id="file-name"></span>
+      <button type="button" id="save-events" class="primary" data-t="studio.saveEvents" hidden></button>
+      <span id="events-status" hidden></span>
+    </div>
+  </div>
+  <div id="message" hidden></div>
+  <section id="quick-section" role="tabpanel" aria-labelledby="tab-quick" hidden></section>
+  <section id="data-section" role="tabpanel" aria-labelledby="tab-data" hidden>
+    <p class="hint" data-t="studio.dataHint"></p>
+    <div id="data-empty" class="empty-state">
+      <p data-t="studio.dataEmpty"></p>
+      <button type="button" class="primary" data-open="scenario" data-t="studio.openScenario"></button>
+    </div>
+    <div id="data-chooser" class="data-chooser" hidden>
+      <label><span data-t="studio.dataFiles"></span> <select id="data-files"></select></label>
+      <button type="button" id="save-data" class="primary" data-t="studio.saveData" disabled></button>
+    </div>
+    <div id="preview"></div>
+  </section>
+  <section id="assets-section" role="tabpanel" aria-labelledby="tab-assets" hidden>
+    <p class="hint" data-t="studio.assetsHint"></p>
+    <div id="assets-empty" class="empty-state">
+      <p data-t="studio.assetsEmpty"></p>
+      <button type="button" class="primary" data-open="scenario" data-t="studio.openScenario"></button>
+    </div>
+    <div id="assets-view" hidden></div>
+  </section>
+  <main id="map-section" role="tabpanel" aria-labelledby="tab-map" hidden>
+    <div id="map-empty" class="empty-state">
+      <p data-t="studio.mapEmpty"></p>
+      <button type="button" class="primary" data-new-map data-t="studio.newMap"></button>
+      <button type="button" data-open="scenario" data-t="studio.openScenario"></button>
+    </div>
+    <nav id="maps-section" hidden>
+      <h2 data-t="studio.maps"></h2>
+      <ul id="maps"></ul>
+    </nav>
+    <section id="editor" hidden></section>
+  </main>
+</body>
+</html>

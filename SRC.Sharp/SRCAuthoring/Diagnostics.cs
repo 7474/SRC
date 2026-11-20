@@ -16,6 +16,8 @@ namespace SRCAuthoring
         public string Message { get; set; }
         /// <summary>問題のあったデータの種類や名前（あれば）</summary>
         public string Source { get; set; }
+        /// <summary>規則の ID（規則の診断だけ。読み込みの誤りは null）</summary>
+        public string RuleId { get; set; }
 
         public override string ToString()
         {
@@ -26,7 +28,8 @@ namespace SRCAuthoring
                 _ => "info",
             };
             // SRCDataLinter と同じ書式（src-lint.json の problemMatcher で読める）
-            return $"{File}({Line}): {severity}: {Message}" + (string.IsNullOrEmpty(Source) ? "" : $"[{Source}]");
+            return $"{File}({Line}): {severity}: {Message}" + (string.IsNullOrEmpty(Source) ? "" : $"[{Source}]")
+                + (string.IsNullOrEmpty(RuleId) ? "" : $" ({RuleId})");
         }
     }
 }

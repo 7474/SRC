@@ -82,7 +82,7 @@ namespace SRCCore.Events.Tests
             return src;
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(1, 1, "WN")]
         [DataRow(4, 1, "EN")]
         [DataRow(1, 3, "WS")]
@@ -96,7 +96,7 @@ namespace SRCCore.Events.Tests
             Assert.AreEqual(expected, src.Expression.GetValueAsString("記録"));
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(1, 2, "W")]
         [DataRow(4, 2, "E")]
         [DataRow(2, 1, "N")]

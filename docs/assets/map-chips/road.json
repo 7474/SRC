@@ -1,0 +1,1428 @@
+{
+  "terrain": "road",
+  "count": 360,
+  "exists": "0-201 400-426 500-510 600-638 800-865 1000-1011 2000-2002",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 1,
+      "kind": "strip",
+      "neighbor": "connects",
+      "tiles": {
+        "0": [
+          "E",
+          "W"
+        ],
+        "1": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "多車線の道路（白い破線と橙の中央線）。0 横、1 縦",
+      "confidence": "high"
+    },
+    {
+      "from": 2,
+      "to": 5,
+      "kind": "corner",
+      "neighbor": "plain",
+      "description": "多車線道路の曲がり角。外側の角に緑の草",
+      "confidence": "guess",
+      "tiles": {
+        "2": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "3": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "4": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "5": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        }
+      }
+    },
+    {
+      "from": 6,
+      "to": 10,
+      "kind": "junction",
+      "neighbor": "connects",
+      "description": "無地のアスファルトに白い車線のT字・十字の印（10 が十字）",
+      "confidence": "guess",
+      "tiles": {
+        "6": {
+          "sides": [
+            "E",
+            "S",
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "T marking stem taken as the branch"
+        },
+        "7": {
+          "sides": [
+            "N",
+            "S",
+            "W"
+          ],
+          "confidence": "guess"
+        },
+        "8": {
+          "sides": [
+            "N",
+            "E",
+            "W"
+          ],
+          "confidence": "guess"
+        },
+        "9": {
+          "sides": [
+            "N",
+            "E",
+            "S"
+          ],
+          "confidence": "guess"
+        },
+        "10": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ]
+      }
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "kind": "end",
+      "description": "縦の多車線道路：11 上に白い停止線、12 下に白い分岐の三角",
+      "confidence": "high",
+      "tiles": {
+        "11": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "12": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess",
+          "note": "orange center line runs E-W despite description saying vertical"
+        }
+      }
+    },
+    {
+      "from": 13,
+      "to": 20,
+      "kind": "variant",
+      "description": "0〜10 と同じ道路の別版：13 横、14 縦、15〜18 曲がり角（16・17 は角が砂色）、19・20 T字の印",
+      "confidence": "guess"
+    },
+    {
+      "from": 21,
+      "to": 27,
+      "kind": "strip",
+      "neighbor": "snow",
+      "description": "白い雪の地面に灰色の道：21 縦、22 横、23 十字、24〜27 曲がり角",
+      "confidence": "high",
+      "tiles": {
+        "21": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "22": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "23": {
+          "sides": [
+            "N",
+            "E",
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "24": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "25": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "26": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "27": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        }
+      }
+    },
+    {
+      "from": 28,
+      "to": 34,
+      "kind": "edge",
+      "neighbor": "plain",
+      "description": "草に囲まれた砂色の広場（各辺・角）",
+      "confidence": "guess",
+      "tiles": {
+        "28": [
+          "N",
+          "W",
+          "SE"
+        ],
+        "29": [
+          "N",
+          "E",
+          "SW"
+        ],
+        "30": [
+          "S",
+          "W",
+          "NE"
+        ],
+        "31": [
+          "E",
+          "S",
+          "NW"
+        ],
+        "32": [
+          "N",
+          "S"
+        ],
+        "33": [
+          "E",
+          "W"
+        ],
+        "34": [
+          "NE",
+          "SE",
+          "SW",
+          "NW"
+        ]
+      }
+    },
+    {
+      "from": 35,
+      "to": 35,
+      "kind": "base",
+      "description": "灰色の砂利",
+      "confidence": "high"
+    },
+    {
+      "from": 36,
+      "to": 39,
+      "kind": "object",
+      "description": "駐車場（36・37 空き、38・39 車あり）",
+      "confidence": "high"
+    },
+    {
+      "from": 40,
+      "to": 50,
+      "kind": "junction",
+      "neighbor": "connects",
+      "description": "草地の上の細い道：40・41 曲がり角、42 横、44 北向きの分岐、45 縦、43・46〜50 T字と十字",
+      "confidence": "guess",
+      "tiles": {
+        "40": [
+          "E",
+          "S"
+        ],
+        "41": [
+          "S",
+          "W"
+        ],
+        "42": [
+          "E",
+          "W"
+        ],
+        "43": [
+          "N",
+          "E"
+        ],
+        "44": [
+          "N",
+          "W"
+        ],
+        "45": [
+          "N",
+          "S"
+        ],
+        "46": [
+          "N",
+          "E",
+          "S"
+        ],
+        "47": [
+          "E",
+          "S",
+          "W"
+        ],
+        "48": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ],
+        "49": [
+          "N",
+          "E",
+          "W"
+        ],
+        "50": [
+          "N",
+          "S",
+          "W"
+        ]
+      }
+    },
+    {
+      "from": 51,
+      "to": 68,
+      "kind": "edge",
+      "neighbor": "curb",
+      "description": "アスファルトに白い縁石の線（各辺・角・平行線）",
+      "confidence": "guess",
+      "tiles": {
+        "51": [
+          "N"
+        ],
+        "52": [
+          "S"
+        ],
+        "53": [
+          "W"
+        ],
+        "54": [
+          "E"
+        ],
+        "55": [
+          "N",
+          "W"
+        ],
+        "56": [
+          "N",
+          "E"
+        ],
+        "57": [
+          "E",
+          "S"
+        ],
+        "58": [
+          "S",
+          "W"
+        ],
+        "59": {
+          "sides": [],
+          "confidence": "guess",
+          "note": "curb line runs horizontally through the middle (W-E), no edge"
+        },
+        "60": {
+          "sides": [
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "mid horizontal line + W edge lower half"
+        },
+        "61": {
+          "sides": [
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "mid horizontal line + W edge upper half"
+        },
+        "62": {
+          "sides": [
+            "E"
+          ],
+          "confidence": "guess",
+          "note": "mid horizontal line + E edge upper half"
+        },
+        "63": {
+          "sides": [
+            "E"
+          ],
+          "confidence": "guess",
+          "note": "mid horizontal line + E edge"
+        },
+        "64": {
+          "sides": [],
+          "confidence": "guess",
+          "note": "vertical line through middle (N-S), no edge"
+        },
+        "65": {
+          "sides": [
+            "N"
+          ],
+          "confidence": "guess",
+          "note": "vertical mid line + N edge west half"
+        },
+        "66": {
+          "sides": [
+            "N"
+          ],
+          "confidence": "guess",
+          "note": "vertical mid line + N edge"
+        },
+        "67": {
+          "sides": [
+            "S"
+          ],
+          "confidence": "guess",
+          "note": "vertical mid line + S edge east half"
+        },
+        "68": {
+          "sides": [
+            "S"
+          ],
+          "confidence": "guess",
+          "note": "vertical mid line + S edge"
+        }
+      }
+    },
+    {
+      "from": 69,
+      "to": 74,
+      "kind": "decoration",
+      "description": "横断歩道の縞（69〜71 横縞、72〜74 縦縞）",
+      "confidence": "high"
+    },
+    {
+      "from": 75,
+      "to": 78,
+      "kind": "variant",
+      "description": "75 無地のアスファルト、76 灰色の舗装、77 ひし形の印、78 十字の線",
+      "confidence": "high"
+    },
+    {
+      "from": 79,
+      "to": 95,
+      "kind": "edge",
+      "neighbor": "asphalt",
+      "description": "アスファルトの上の灰色の歩道／島（縁取り付きの各辺・角・横長・縦長）",
+      "confidence": "guess",
+      "tiles": {
+        "79": [
+          "S"
+        ],
+        "80": [
+          "N"
+        ],
+        "81": [
+          "E"
+        ],
+        "82": [
+          "W"
+        ],
+        "83": [
+          "E",
+          "S"
+        ],
+        "84": [
+          "S",
+          "W"
+        ],
+        "85": [
+          "N",
+          "W"
+        ],
+        "86": [
+          "N",
+          "E"
+        ],
+        "87": [
+          "S"
+        ],
+        "88": [
+          "N"
+        ],
+        "89": [
+          "N",
+          "S",
+          "W"
+        ],
+        "90": [
+          "N",
+          "S"
+        ],
+        "91": [
+          "N",
+          "E",
+          "S"
+        ],
+        "92": [
+          "N",
+          "E",
+          "W"
+        ],
+        "93": [
+          "E",
+          "W"
+        ],
+        "94": [
+          "E",
+          "S",
+          "W"
+        ],
+        "95": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "curb"
+        }
+      }
+    },
+    {
+      "from": 96,
+      "to": 121,
+      "kind": "edge",
+      "neighbor": "curb",
+      "description": "アスファルトに丸角の白い縁石の線（各辺・角）",
+      "confidence": "guess",
+      "tiles": {
+        "96": [
+          "E",
+          "W"
+        ],
+        "97": [
+          "N",
+          "E"
+        ],
+        "98": [
+          "E",
+          "S"
+        ],
+        "99": [
+          "S",
+          "W"
+        ],
+        "100": [
+          "N",
+          "W"
+        ],
+        "101": [
+          "NW",
+          "NE"
+        ],
+        "102": [
+          "NE",
+          "SE"
+        ],
+        "103": [
+          "SE",
+          "SW"
+        ],
+        "104": [
+          "NW",
+          "SW"
+        ],
+        "105": [
+          "S",
+          "NW",
+          "NE"
+        ],
+        "106": [
+          "W",
+          "NE",
+          "SE"
+        ],
+        "107": [
+          "N",
+          "SE",
+          "SW"
+        ],
+        "108": [
+          "E",
+          "NW",
+          "SW"
+        ],
+        "109": [
+          "NW",
+          "NE",
+          "SE",
+          "SW"
+        ],
+        "110": [
+          "NW"
+        ],
+        "111": [
+          "NE"
+        ],
+        "112": [
+          "SE"
+        ],
+        "113": [
+          "SW"
+        ],
+        "114": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "asphalt",
+          "confidence": "guess"
+        },
+        "115": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "asphalt",
+          "confidence": "guess"
+        },
+        "116": {
+          "sides": [
+            "NW"
+          ],
+          "neighbor": "asphalt"
+        },
+        "117": {
+          "sides": [
+            "NE"
+          ],
+          "neighbor": "asphalt"
+        },
+        "118": [
+          "N",
+          "W"
+        ],
+        "119": [
+          "N",
+          "E"
+        ],
+        "120": [
+          "E",
+          "S"
+        ],
+        "121": [
+          "S",
+          "W"
+        ]
+      }
+    },
+    {
+      "from": 122,
+      "to": 124,
+      "kind": "edge",
+      "neighbor": "void",
+      "description": "黒い闇と灰色・アスファルトの斜めの境（124 全面黒）",
+      "confidence": "high",
+      "tiles": {
+        "122": [
+          "N",
+          "W"
+        ],
+        "123": [
+          "N",
+          "W"
+        ],
+        "124": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ]
+      }
+    },
+    {
+      "from": 125,
+      "to": 128,
+      "kind": "decoration",
+      "description": "矢印の印：125 上、126 右、127 下、128 左",
+      "confidence": "high"
+    },
+    {
+      "from": 129,
+      "to": 134,
+      "kind": "object",
+      "description": "129・130 丸いマンホール、131 木の板のふた、132〜134 横 3 マスの木の板",
+      "confidence": "high"
+    },
+    {
+      "from": 135,
+      "to": 135,
+      "kind": "base",
+      "description": "灰色の舗装",
+      "confidence": "high"
+    },
+    {
+      "from": 136,
+      "to": 155,
+      "kind": "edge",
+      "neighbor": "sea",
+      "description": "青い水に面した灰色の岸壁（各辺・角・突堤）",
+      "confidence": "guess",
+      "tiles": {
+        "136": [
+          "S"
+        ],
+        "137": [
+          "N"
+        ],
+        "138": [
+          "E"
+        ],
+        "139": [
+          "W"
+        ],
+        "140": [
+          "E",
+          "S"
+        ],
+        "141": [
+          "S",
+          "W"
+        ],
+        "142": [
+          "N",
+          "W"
+        ],
+        "143": [
+          "N",
+          "E"
+        ],
+        "144": [
+          "S"
+        ],
+        "145": [
+          "N"
+        ],
+        "146": [
+          "N",
+          "S",
+          "W"
+        ],
+        "147": [
+          "N",
+          "S"
+        ],
+        "148": [
+          "N",
+          "E",
+          "S"
+        ],
+        "149": [
+          "N",
+          "E",
+          "W"
+        ],
+        "150": [
+          "E",
+          "W"
+        ],
+        "151": [
+          "E",
+          "S",
+          "W"
+        ],
+        "152": [
+          "SE"
+        ],
+        "153": [
+          "SW"
+        ],
+        "154": [
+          "NW"
+        ],
+        "155": [
+          "NE"
+        ]
+      }
+    },
+    {
+      "from": 156,
+      "to": 161,
+      "kind": "edge",
+      "description": "アスファルトの白線（160 は半円）",
+      "confidence": "guess",
+      "tiles": {
+        "156": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "curb",
+          "confidence": "guess",
+          "note": "line on S edge west half + perpendicular line up to N"
+        },
+        "157": {
+          "sides": [
+            "E"
+          ],
+          "neighbor": "curb",
+          "confidence": "guess",
+          "note": "line on E edge south half + perpendicular line to W"
+        },
+        "158": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "curb",
+          "confidence": "guess",
+          "note": "line on N edge east half + perpendicular line to S"
+        },
+        "159": {
+          "sides": [
+            "W"
+          ],
+          "neighbor": "curb",
+          "confidence": "guess",
+          "note": "line on W edge north half + perpendicular line to E"
+        },
+        "160": {
+          "sides": [
+            "S",
+            "E"
+          ],
+          "neighbor": "curb",
+          "confidence": "guess",
+          "note": "left half of semicircle (pairs with 161)"
+        },
+        "161": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "curb",
+          "confidence": "guess",
+          "note": "right half of semicircle"
+        }
+      }
+    },
+    {
+      "from": 162,
+      "to": 162,
+      "kind": "object",
+      "description": "灰色の舗装の上の信号（赤・青）",
+      "confidence": "guess"
+    },
+    {
+      "from": 163,
+      "to": 164,
+      "kind": "decoration",
+      "description": "アスファルトの白い半円の線",
+      "confidence": "high"
+    },
+    {
+      "from": 165,
+      "to": 170,
+      "kind": "edge",
+      "neighbor": "void",
+      "description": "黒い闇と灰色・アスファルトの斜め・縦の境",
+      "confidence": "high",
+      "tiles": {
+        "165": {
+          "sides": [
+            "N",
+            "E",
+            "S",
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "only a small SE triangle is not void"
+        },
+        "166": {
+          "sides": [
+            "N",
+            "E",
+            "S",
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "only a small SE triangle is not void"
+        },
+        "167": {
+          "sides": [
+            "N",
+            "S",
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "void covers west ~70%"
+        },
+        "168": [
+          "N",
+          "W"
+        ],
+        "169": [
+          "N",
+          "W"
+        ],
+        "170": {
+          "sides": [
+            "N",
+            "S",
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "void covers west ~70%"
+        }
+      }
+    },
+    {
+      "from": 171,
+      "to": 186,
+      "kind": "edge",
+      "neighbor": "deep_sea",
+      "description": "暗い青の深い海に面した灰色の岸壁（各辺・角）",
+      "confidence": "guess",
+      "tiles": {
+        "171": [
+          "N",
+          "W"
+        ],
+        "172": [
+          "N"
+        ],
+        "173": [
+          "N",
+          "E"
+        ],
+        "174": [
+          "W"
+        ],
+        "175": [
+          "N"
+        ],
+        "176": [
+          "E"
+        ],
+        "177": [
+          "S",
+          "W"
+        ],
+        "178": [
+          "S"
+        ],
+        "179": [
+          "E",
+          "S"
+        ],
+        "180": [
+          "SE"
+        ],
+        "181": [
+          "SW"
+        ],
+        "182": [
+          "N",
+          "E",
+          "W"
+        ],
+        "183": [
+          "NE"
+        ],
+        "184": [
+          "NW"
+        ],
+        "185": [
+          "E",
+          "W"
+        ],
+        "186": [
+          "S"
+        ]
+      }
+    },
+    {
+      "from": 187,
+      "to": 187,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 188,
+      "to": 191,
+      "kind": "edge",
+      "neighbor": "deep_sea",
+      "description": "深い海に面した岸壁（続き）",
+      "confidence": "guess",
+      "tiles": {
+        "188": [
+          "E",
+          "S",
+          "W"
+        ],
+        "189": [
+          "N",
+          "W"
+        ],
+        "190": [
+          "N"
+        ],
+        "191": [
+          "N",
+          "E"
+        ]
+      }
+    },
+    {
+      "from": 192,
+      "to": 197,
+      "kind": "decoration",
+      "description": "横断歩道（192〜194 横縞、195〜197 縦縞、上半分／下半分の版）",
+      "confidence": "guess"
+    },
+    {
+      "from": 198,
+      "to": 201,
+      "kind": "object",
+      "description": "茶色の土の下のトンネルの入口に続く道路",
+      "confidence": "guess"
+    },
+    {
+      "from": 400,
+      "to": 425,
+      "kind": "style",
+      "style": "dark_grass",
+      "description": "濃い緑の草地版：400〜407 多車線道路（曲がり・直線・T字）、408〜414 砂色の広場、415〜425 細い道",
+      "confidence": "guess"
+    },
+    {
+      "from": 426,
+      "to": 426,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 500,
+      "to": 510,
+      "kind": "style",
+      "style": "sand",
+      "neighbor": "sand",
+      "description": "橙色の砂地の上の細い道（40〜50 と同じ組）",
+      "confidence": "high"
+    },
+    {
+      "from": 600,
+      "to": 635,
+      "kind": "corner",
+      "description": "多車線道路の T字の印（600〜605）と直線（606・607）、曲がり角（608〜635、角の地面が緑・橙・白・茶など）",
+      "confidence": "guess",
+      "tiles": {
+        "600": {
+          "sides": [
+            "E",
+            "S",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess",
+          "note": "T marking stem taken as the branch"
+        },
+        "601": {
+          "sides": [
+            "N",
+            "S",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "602": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "603": {
+          "sides": [
+            "N",
+            "E",
+            "S"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "604": {
+          "sides": [
+            "N",
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess"
+        },
+        "605": {
+          "sides": [
+            "N",
+            "E",
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "606": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "607": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "608": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "609": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "610": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "611": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "612": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "613": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "614": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "615": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "616": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "617": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "618": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "619": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "620": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "621": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "622": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "623": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "624": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "625": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "626": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "627": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "628": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "629": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "630": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "631": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "632": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "connects"
+        },
+        "633": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        },
+        "634": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "connects"
+        },
+        "635": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "connects"
+        }
+      }
+    },
+    {
+      "from": 636,
+      "to": 637,
+      "kind": "end",
+      "description": "縦の多車線道路：636 分岐の三角、637 停止線",
+      "confidence": "high",
+      "tiles": {
+        "636": {
+          "sides": [
+            "E",
+            "W"
+          ],
+          "neighbor": "connects",
+          "confidence": "guess",
+          "note": "orange center line runs E-W"
+        },
+        "637": {
+          "sides": [
+            "N",
+            "S"
+          ],
+          "neighbor": "connects"
+        }
+      }
+    },
+    {
+      "from": 638,
+      "to": 638,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 800,
+      "to": 820,
+      "kind": "style",
+      "style": "grid",
+      "neighbor": "asphalt",
+      "description": "格子模様の明るい舗装の歩道／島をアスファルトの上に置いたもの（79〜 の別画風）",
+      "confidence": "guess"
+    },
+    {
+      "from": 821,
+      "to": 841,
+      "kind": "style",
+      "style": "grid",
+      "neighbor": "sea",
+      "description": "格子模様の岸壁、青い海に面する（825 は信号）",
+      "confidence": "guess"
+    },
+    {
+      "from": 842,
+      "to": 862,
+      "kind": "style",
+      "style": "grid",
+      "neighbor": "deep_sea",
+      "description": "格子模様の岸壁、深い海に面する",
+      "confidence": "guess"
+    },
+    {
+      "from": 863,
+      "to": 865,
+      "kind": "edge",
+      "neighbor": "void",
+      "description": "黒い闇と格子舗装の斜め・縦の境",
+      "confidence": "high",
+      "tiles": {
+        "863": [
+          "N",
+          "W"
+        ],
+        "864": {
+          "sides": [
+            "N",
+            "E",
+            "S",
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "only a small SE triangle is not void"
+        },
+        "865": {
+          "sides": [
+            "N",
+            "S",
+            "W"
+          ],
+          "confidence": "guess",
+          "note": "void covers west ~70%"
+        }
+      }
+    },
+    {
+      "from": 1000,
+      "to": 1010,
+      "kind": "style",
+      "style": "night",
+      "description": "夜（黒地）の道路の印：1000 十字、1001 縦、1002 横、1003・1004 曲がり角、1005〜1010 T字",
+      "confidence": "high"
+    },
+    {
+      "from": 1011,
+      "to": 1011,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2002,
+      "kind": "object",
+      "style": "alt",
+      "description": "別画風：2000 マンホール、2001・2002 木の板のふた",
+      "confidence": "high"
+    }
+  ],
+  "rules": "400 番台は濃い草地版、500 番台は砂地版、600 番台は角の地面違い、800 番台は格子舗装の別画風、1000 番台は夜版"
+}

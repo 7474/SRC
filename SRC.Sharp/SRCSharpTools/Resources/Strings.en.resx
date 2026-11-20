@@ -17,12 +17,34 @@
     <value>srcsharp: authoring tools for SRC# data and scenarios
 
 Usage:
-  srcsharp lint &lt;directory or file&gt;... [--format text|sarif] [--output file]
-      Check data (*.txt) and events (*.eve). Exit code 1 if problems are found
+  srcsharp lint &lt;directory or file&gt;... [--format text|sarif] [--output file] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path SRC folder]
+      Check data (*.txt) and events (*.eve). Exit code 1 if problems are found. --rules selects rule groups (default src; rule findings of the information level do not affect the exit code). --list-rules lists the rules
   srcsharp play &lt;event file&gt; [--script file.play] [--out directory] [--app-path SRC folder] [--scenario-root scenario folder] [--steps count] [--skip-wait]
       Run a scenario without a screen. Without --script, advance messages and pick the first choice. With --skip-wait, fixed waits (animations, messages, Wait) are skipped. --scenario-root sets the scenario folder (the base of Data, Lib and Continue); by default, an event file in a subfolder without Data uses the nearest parent folder with Data.
+  srcsharp playtest &lt;event file&gt; [--runs n] [--seed n] [--turns n] [--policy smart|advance|hold] [--format md|json] [--output file] [--min-wins n] [--app-path SRC folder] [--scenario-root scenario folder]
+      Check the difficulty: auto-play one episode several times with different random seeds (default 5 runs, up to 30 turns) and report wins, losses, timeouts and stalls, turn counts, lost allies and hints for tuning. Exit code 1 when wins are below --min-wins
+  srcsharp outline [scenario folder or event file] [--format md|json] [--output file] [--app-path SRC folder]
+      Scenario overview: per-episode party and cast (joins, carried units, leaves, lines per speaker), the event list (trigger, when, conditions, actions), variables (where they are set and read) and the script (talk and telops in episode order)
+  srcsharp event-text [event file] [--line N] [--json event JSON]
+      Add or edit an event (--line N prints the event at that line as form JSON; with --json, prints the edited event): turn a trigger (turn, attack, damaged, destroyed) with talk, reinforcements and retreat into an ordinary event label with comments. With an event file, names are checked against the scenario's cast
+  srcsharp start-state episode.eve [--output file] [--force]
+      Write a starter event (.srcsharp/start/episode.eve) that builds the party, money and global variables by hand and continues into that episode
   srcsharp balance &lt;directory or file&gt;... [--format md|csv] [--output file]
       List unit data stats and outliers
+  srcsharp new &lt;folder&gt; [--title title] [--episodes count] [--app-path SRC folder] [--force]
+      Create a new scenario template (events, maps and data, autoplay script, VS Code settings, CI). When --episodes is 2 or more, creates multiple episodes with intermission and shared events. Existing files are kept (--force overwrites)
+  srcsharp flow [scenario folder or event file] [--format md|mmd|json] [--output file] [--app-path SRC folder] [--scenario-root scenario folder]
+      Trace Continue, next stage, Exec, IntermissionCommand, Load and GameClear across events and output the episode flow diagram (defaults to the current directory)
+  srcsharp assets [scenario folder] [--format md|json|readme] [--output file] [--app-path SRC folder] [--ext-data folder] [--ext-data2 folder] [--fail-on-missing]
+      List images, sounds and maps referenced by data and events, with where they are referenced and where they were found in SRC search order (scenario, extended data, SRC). Also lists names built from expressions and unreferenced files. readme drafts a "Required assets" section for README. --fail-on-missing exits with 1 if any asset is missing (does not obtain or redistribute assets)
+  srcsharp trial &lt;scenario folder&gt; [--unit unit] [--pilot pilot] [--enemy unit] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
+      Create a trial battle event in .srcsharp/trial/ that fights units and pilots from the scenario data against an enemy, and print its path (run it with play or the debugger). --list prints the units and pilots as JSON
+  srcsharp event-flow &lt;event file&gt; [--format md|mmd|json] [--output file] [--app-path SRC folder] [--scenario-root scenario folder]
+      Trace event triggers, labels, Call, Goto and Require across one event file (and its includes and Requires) and output an event flow diagram
+  srcsharp talk-preview &lt;event file&gt; [--line line] [--block index] [--stdin] [--input file] [--format json|png] [--out directory] [--output file] [--no-images] [--app-path SRC folder] [--scenario-root scenario folder]
+      Render Talk and AutoTalk blocks using the game message window and output per-page PNG images or JSON
+  srcsharp anime-preview &lt;file or folder&gt; [--list] [--file file] [--line line] [--kind animation|ext_animation|effect|subroutine] [--target name] [--situation situation] [--spec spec] [--attacker unit] [--attacker-pilot pilot] [--defender unit] [--defender-pilot pilot] [--play-once] [--out image file] [--app-path SRC folder] [--scenario-root scenario folder]
+      Prepare .srcsharp/preview/ to play one animation.txt, ext_animation.txt, effect.txt entry or generic battle animation subroutine with fixed attacker and defender units. --list outputs entries as JSON, --play-once plays it once
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -48,6 +70,10 @@ Common options:
   <data name="LintSummary" xml:space="preserve">
     <value>Checked {0} files, {1} problems</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Unknown rule group: {0} (one of {1})</value>
+    <comment>{0}: the given value, {1}: the allowed groups</comment>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Specify exactly one event file</value>
   </data>
@@ -68,5 +94,59 @@ Common options:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Unknown search method: {0} (hybrid, bm25, or vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Specify one folder to create the scenario in</value>
+  </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Episode count must be an integer &gt;= 1: {0}</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Created the template in {0} ({1} files)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Skipped existing files: {0} (use --force to overwrite)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Specify at most one scenario folder or event file</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Scenario folder or event file not found: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Unknown output format: {0} (md, mmd, or json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Specify at most one scenario folder</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Scenario folder not found: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Unknown output format: {0} (md, json, or readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} assets ({1} missing), {2} unverifiable references, {3} unreferenced files</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Specify one scenario folder</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Created a trial battle: {0}/{1} vs {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Event file not found: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Specify exactly one event file to preview</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>Wrote {0} preview page images to {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Target data/event file or folder not found: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>No previewable battle animation or special effect definition was found</value>
   </data>
 </root>

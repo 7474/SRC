@@ -1,0 +1,15 @@
+{
+  "terrain": "destroyed_road",
+  "count": 8,
+  "exists": "0-7",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 7,
+      "kind": "variant",
+      "description": "穴とがれきで壊れたアスファルト道路。0・3・4・6 縦、1・2・5・7 横。端の色（緑の草・橙の砂・濃い草）が違う。4・5 は中央線あり",
+      "confidence": "guess"
+    }
+  ],
+  "rules": ""
+}

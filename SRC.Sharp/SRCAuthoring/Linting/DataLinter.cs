@@ -1,6 +1,7 @@
 using ShiftJISExtension;
 using SRCCore.Exceptions;
 using SRCCore.Filesystem;
+using SRCAuthoring.Rules;
 using SRCCore.TestLib;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace SRCAuthoring.Linting
         public List<string> NotSupportedFiles { get; } = new List<string>();
         /// <summary>問題があったか（警告を含む。SRCDataLinter の終了コードと同じ判定）</summary>
         public bool HasError { get; set; }
+        /// <summary>読み込んだデータの名前の一覧（イベントの参照の検査・エディタの補完に使う）</summary>
+        public Analysis.DataCatalog Catalog { get; set; } = Analysis.DataCatalog.Empty;
     }
 
     /// <summary>
@@ -35,6 +38,12 @@ namespace SRCAuthoring.Linting
 
         /// <summary>1 ファイル検査するごとに呼ぶ（検査したファイル、何件目（1 始まり）、全体の件数）。進み具合の表示に使う</summary>
         public Action<string, int, int> Progress { get; set; }
+
+        /// <summary>動かす規則のグループ（RuleGroups）。既定は src。空なら規則を動かさない</summary>
+        public IReadOnlyList<string> RuleGroups { get; set; } = Rules.RuleGroups.Default;
+
+        /// <summary>規則を選ぶ元（省くと組み込みの規則。テストで差し替える）</summary>
+        public IReadOnlyList<IDataRule> AvailableRules { get; set; }
 
         /// <summary>ディレクトリ（中の *.txt と *.eve）またはファイルを検査する</summary>
         /// <param name="systemFiles">先に読み込む汎用データ（Data\System の sp.txt・alias.txt など）。検査の対象にせず、問題も報告しない。
@@ -59,6 +68,7 @@ namespace SRCAuthoring.Linting
                 .Concat(targets.Where(x => File.Exists(x)))
                 .ToList();
 
+            actionNames = new HashSet<string>();
             foreach (var file in (systemFiles ?? Enumerable.Empty<string>()).Where(x => File.Exists(x) && !x.EndsWith(".eve", StringComparison.OrdinalIgnoreCase)))
             {
                 var ignored = new LintResult();
@@ -66,6 +76,7 @@ namespace SRCAuthoring.Linting
                 {
                     if (await proc.ExecuteAsync(src, new FileInfo(file), ignored))
                     {
+                        CollectActionNames(src, file);
                         break;
                     }
                 }
@@ -80,12 +91,85 @@ namespace SRCAuthoring.Linting
                     if (await proc.ExecuteAsync(src, new FileInfo(file), result))
                     {
                         processed.Add(file);
+                        CollectActionNames(src, file);
                         result.CheckedFiles.Add(Path.GetFullPath(file));
                         Progress?.Invoke(file, processed.Count, files.Count);
                     }
                 }
             }
+            RunRules(src, result);
+            CheckDataReferences(src, files, result);
             return result;
+        }
+
+        /// <summary>
+        /// イベントのコマンドが名前で指すユニット・パイロット・アイテムが、読み込んだデータにあるか（7474/SRC#1642）。
+        /// その種類のデータが 1 つも無ければ調べない（ほかの場所のデータを使うシナリオがあるため）
+        /// </summary>
+        private static void CheckDataReferences(SRCCore.SRC src, IReadOnlyCollection<string> files, LintResult result)
+        {
+            var catalog = Analysis.DataCatalog.FromSrc(src, files.Select(Path.GetFullPath));
+            result.Catalog = catalog;
+            foreach (var file in files.Where(x => x.EndsWith(".eve", StringComparison.OrdinalIgnoreCase)))
+            {
+                string text;
+                try
+                {
+                    text = Analysis.DataReferenceText.Read(file);
+                }
+                catch (IOException)
+                {
+                    continue;
+                }
+                var diagnostics = Analysis.DataReferenceChecker.Check(Analysis.DataReferenceChecker.Find(file, text), catalog).ToList();
+                result.Diagnostics.AddRange(diagnostics);
+                result.HasError |= diagnostics.Count > 0;
+            }
+        }
+
+        private HashSet<string> actionNames = new HashSet<string>();
+
+        /// <summary>
+        /// 読み込んだファイルのユニット・パイロット・アイテムの武器・アビリティ・特殊能力の名前を集める。
+        /// 同じ名前のデータを後のファイルが置き換えても、前のファイルの名前を残す（多くの作品をまとめて調べるとき）
+        /// </summary>
+        private void CollectActionNames(SRCCore.SRC src, string file)
+        {
+            var path = Path.GetFullPath(file);
+            bool InFile(SRCCore.Models.DataLocation location) => location != null && location.FileName == path;
+            var names = src.UDList.Items.Where(x => InFile(x.Location))
+                    .SelectMany(u => u.Weapons.Select(w => w.Name).Concat(u.Abilities.Select(a => a.Name)).Concat(u.Features.Select(f => f.Name)))
+                .Concat(src.PDList.Items.Where(x => InFile(x.Location))
+                    .SelectMany(p => p.Weapons.Select(w => w.Name).Concat(p.Abilities.Select(a => a.Name)).Concat(p.Features.Select(f => f.Name))))
+                .Concat(src.IDList.Items
+                    .SelectMany(i => i.Weapons.Select(w => w.Name).Concat(i.Abilities.Select(a => a.Name)).Concat(i.Features.Select(f => f.Name))));
+            actionNames.UnionWith(names.Where(x => !string.IsNullOrEmpty(x)));
+        }
+
+        /// <summary>読み込めたデータに、選んだグループの規則をかける。対象は検査したファイルで定義されたデータだけ</summary>
+        private void RunRules(SRCCore.SRC src, LintResult result)
+        {
+            var selected = DataRuleCatalog.Select(RuleGroups ?? Array.Empty<string>(), AvailableRules);
+            if (!selected.Any())
+            {
+                return;
+            }
+            var targets = new HashSet<string>(result.CheckedFiles, StringComparer.Ordinal);
+            bool IsTarget(SRCCore.Models.DataLocation location) => location != null && targets.Contains(Path.GetFullPath(location.FileName));
+            var context = new DataRuleContext
+            {
+                Src = src,
+                Units = src.UDList.Items.Where(x => IsTarget(x.Location)).ToList(),
+                Pilots = src.PDList.Items.Where(x => IsTarget(x.Location)).ToList(),
+                Messages = src.MDList.Items.Where(x => IsTarget(x.Location)).ToList(),
+                Dialogs = src.DDList.Items.Where(x => IsTarget(x.Location)).ToList(),
+                ResolveFile = x => string.IsNullOrEmpty(x) ? x : Path.GetFullPath(x),
+                ActionNames = actionNames,
+            };
+            var diagnostics = DataRuleCatalog.Run(selected, context);
+            result.Diagnostics.AddRange(diagnostics);
+            // 「情報」は問題に数えない（版を上げただけで lint の終了コードを変えない）
+            result.HasError |= diagnostics.Any(x => x.Severity != DiagnosticSeverity.Information);
         }
 
         private static async Task<Stream> OpenUtf8Async(SRCCore.SRC src, FileInfo file)
@@ -116,6 +200,8 @@ namespace SRCAuthoring.Linting
                 this.filePattern = new Regex(filePattern, RegexOptions.IgnoreCase);
                 this.lintProc = lintProc;
             }
+
+            public bool Matches(string fileName) => filePattern.IsMatch(fileName);
 
             /// <summary>対象のファイルなら検査して true</summary>
             public async Task<bool> ExecuteAsync(SRCCore.SRC src, FileInfo file, LintResult result)
@@ -153,18 +239,25 @@ namespace SRCAuthoring.Linting
             }
         }
 
+        /// <summary>データのファイル（種類ごとの読み込み処理で検査するもの）の名前か</summary>
+        public static bool IsDataFileName(string fileName)
+        {
+            var name = Path.GetFileName(fileName ?? "");
+            return LintProcs.Take(LintProcs.Length - 1).Any(x => x.Matches(name));
+        }
+
         private static readonly LintProcDef[] LintProcs = new LintProcDef[]
         {
-            new LintProcDef("^sp.txt$|^mind.txt$", async (src, file, _) => src.SPDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^alias.txt$", async (src, file, _) => src.ALDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^unit.txt$|^robot.txt$", async (src, file, _) => src.UDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot.txt$", async (src, file, _) => src.PDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^non_pilot.txt$", async (src, file, _) => src.NPDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot_message.txt$", async (src, file, _) => src.MDList.Load(file.Name, false, await OpenUtf8Async(src, file))),
-            new LintProcDef("^pilot_dialog.txt$", async (src, file, _) => src.DDList.Load(file.Name, await OpenUtf8Async(src, file))),
-            new LintProcDef("^effect.txt$", async (src, file, _) => src.EDList.Load(file.Name, true, await OpenUtf8Async(src, file))),
-            new LintProcDef("^animation.txt$", async (src, file, _) => src.ADList.Load(file.Name, false, await OpenUtf8Async(src, file))),
-            new LintProcDef("^item.txt$", async (src, file, _) => src.IDList.Load(file.Name, await OpenUtf8Async(src, file))),
+            new LintProcDef("^sp.txt$|^mind.txt$", async (src, file, _) => src.SPDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^alias.txt$", async (src, file, _) => src.ALDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^unit.txt$|^robot.txt$", async (src, file, _) => src.UDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot.txt$", async (src, file, _) => src.PDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^non_pilot.txt$", async (src, file, _) => src.NPDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot_message.txt$", async (src, file, _) => src.MDList.Load(file.FullName, false, await OpenUtf8Async(src, file))),
+            new LintProcDef("^pilot_dialog.txt$", async (src, file, _) => src.DDList.Load(file.FullName, await OpenUtf8Async(src, file))),
+            new LintProcDef("^effect.txt$", async (src, file, _) => src.EDList.Load(file.FullName, true, await OpenUtf8Async(src, file))),
+            new LintProcDef("^animation.txt$", async (src, file, _) => src.ADList.Load(file.FullName, false, await OpenUtf8Async(src, file))),
+            new LintProcDef("^item.txt$", async (src, file, _) => src.IDList.Load(file.FullName, await OpenUtf8Async(src, file))),
             new LintProcDef(".*", (src, file, result) =>
             {
                 if (file.Name.ToLowerInvariant().EndsWith(".eve"))

@@ -37,6 +37,7 @@ namespace SRCDataViewer
                 })
                 .AddSingleton<SrcDataContainer>()
                 .AddSingleton<ArchiveCatalog>()
+                .AddSingleton<AnalysisStore>()
                 .AddSingleton<MidiRenderer>()
                 // HttpClient（Scoped）を使う。WebAssembly では Scoped もアプリの間 1 つ
                 .AddScoped<BgmPlayer>()

@@ -1,0 +1,95 @@
+{
+  "terrain": "space_current",
+  "count": 12,
+  "exists": "0-11",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 1,
+      "kind": "base",
+      "style": "black_space",
+      "description": "宇宙の流れ（白い縞の流れ模様）：0=横向きの縞、1=縦向きの縞",
+      "confidence": "guess"
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "kind": "edge",
+      "style": "black_space",
+      "neighbor": "space",
+      "tiles": {
+        "2": [
+          "N",
+          "W"
+        ],
+        "3": [
+          "N",
+          "E"
+        ]
+      },
+      "description": "流れの帯が斜めに切れる端（黒い宇宙との境目）：2=北西側が宇宙、3=北東側が宇宙",
+      "confidence": "guess"
+    },
+    {
+      "from": 4,
+      "to": 4,
+      "kind": "variant",
+      "description": "流れ模様の別版",
+      "confidence": "high"
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "kind": "edge",
+      "style": "black_space",
+      "neighbor": "space",
+      "tiles": {
+        "5": [
+          "S",
+          "W"
+        ],
+        "6": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "斜めの端：5=南西側が宇宙、6=南東側が宇宙",
+      "confidence": "guess"
+    },
+    {
+      "from": 7,
+      "to": 7,
+      "kind": "variant",
+      "description": "流れ模様の別版",
+      "confidence": "high"
+    },
+    {
+      "from": 8,
+      "to": 11,
+      "kind": "style",
+      "style": "blue_space",
+      "neighbor": "space",
+      "tiles": {
+        "8": [
+          "N",
+          "W"
+        ],
+        "9": [
+          "N",
+          "E"
+        ],
+        "10": [
+          "S",
+          "W"
+        ],
+        "11": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "2・3・5・6 と同じ斜めの端の青い宇宙版（8=北西,9=北東,10=南西,11=南東が宇宙）",
+      "confidence": "guess"
+    }
+  ],
+  "rules": ""
+}

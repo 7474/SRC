@@ -127,3 +127,20 @@ test('汎用データ: GSC データパックの形（<パック>/System）も�
   expect(result.bodyOnly).toContainEqual(expect.stringMatching(/独自の気合というスペシャルパワーは存在しません/));
   expect(result.bodyOnly.filter(m => /集中/.test(m))).toEqual([]);
 });
+
+test('規則: 既定の src のグループの規則を info で返し、rules で GSC やロボダンのグループを選べる（srcsharp lint --rules と同じ）', async ({ page }) => {
+  const zip = makeZip([
+    file('シナリオ/Data/robot.txt', [
+      '海の機体', '海の機体, うみのきたい, 汎用, 1, 2', '陸海, 4, M, 1000, 100', '特殊能力なし', '3000, 100, 600, 60', 'AAAA, -.bmp',
+      'パンチ, 1000, 1, 1, +0, -, -, -, AAAA, +0, 格突', '',
+    ].join('\n')),
+  ]);
+  const ruled = (result) => result.diagnostics.filter(d => d.ruleId).map(d => `${d.ruleId} ${d.file}:${d.line} ${d.severity}`);
+
+  expect(ruled(await lint(page, zip))).toEqual(['unit-transportation-invalid シナリオ/Data/robot.txt:3 info']);
+  expect(ruled(await lint(page, zip, { rules: [] }))).toEqual([]);
+  const gsc = ruled(await lint(page, zip, { rules: ['src', 'gsc-robo'] }));
+  expect(gsc).toContain('weapon-range1-infight シナリオ/Data/robot.txt:7 warning');
+  const robodun = ruled(await lint(page, zip, { rules: ['robodun'] }));
+  expect(robodun).toContain('robodun-weapon-range1-infight シナリオ/Data/robot.txt:7 info');
+});

@@ -17,12 +17,26 @@
     <value>srcsharp: เครื่องมือช่วยสร้างข้อมูลและซีนาริโอของ SRC#
 
 วิธีใช้:
-  srcsharp lint &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format text|sarif] [--output ไฟล์]
+  srcsharp lint &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format text|sarif] [--output ไฟล์] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path โฟลเดอร์ SRC]
       ตรวจสอบข้อมูล (*.txt) และอีเวนต์ (*.eve) หากพบปัญหาจะจบด้วยโค้ด 1
   srcsharp play &lt;ไฟล์อีเวนต์&gt; [--script ไฟล์.play] [--out ไดเรกทอรี] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ซีนาริโอ] [--steps จำนวน] [--skip-wait]
       รันซีนาริโอโดยไม่แสดงหน้าจอ หากไม่ระบุ --script จะเลื่อนข้อความและเลือกตัวเลือกแรกไปเรื่อย ๆ เมื่อใช้ --skip-wait จะข้ามการรอตามเวลาที่กำหนด (แอนิเมชัน ข้อความ Wait) --scenario-root กำหนดโฟลเดอร์ซีนาริโอ (ฐานของ Data, Lib และ Continue) หากไม่ระบุ ไฟล์อีเวนต์ในโฟลเดอร์ย่อยที่ไม่มี Data จะใช้โฟลเดอร์แม่ที่ใกล้ที่สุดที่มี Data
   srcsharp balance &lt;ไดเรกทอรีหรือไฟล์&gt;... [--format md|csv] [--output ไฟล์]
       แสดงรายการค่าสถานะในข้อมูลยูนิตและค่าที่ผิดปกติ
+  srcsharp new &lt;โฟลเดอร์&gt; [--title ชื่อเรื่อง] [--episodes n] [--app-path โฟลเดอร์ SRC] [--force]
+      สร้างแม่แบบฉากใหม่ (อีเวนต์ แผนที่ และข้อมูลของตอนแรก ขั้นตอนเล่นอัตโนมัติ การตั้งค่า VS Code และ CI) ไฟล์ที่มีอยู่แล้วจะไม่ถูกเขียนทับ (--force เพื่อเขียนทับ) เมื่อ --episodes ตั้งแต่ 2 ขึ้นไป จะสร้างหลายตอนพร้อมช่วงพัก (intermission)
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      ติดตาม Continue, ด่านถัดไป, Exec, IntermissionCommand, Load และ GameClear ระหว่างอีเวนต์ แล้วแสดงแผนภาพการเชื่อมต่อของแต่ละตอน (ค่าเริ่มต้นคือโฟลเดอร์ปัจจุบัน)
+  srcsharp assets [โฟลเดอร์ฉาก] [--format md|json|readme] [--output ไฟล์] [--app-path โฟลเดอร์ SRC] [--ext-data โฟลเดอร์] [--ext-data2 โฟลเดอร์] [--fail-on-missing]
+      แสดงรายการภาพ เสียง และแผนที่ที่ข้อมูลและอีเวนต์อ้างถึง พร้อมตำแหน่งที่อ้างถึงและตำแหน่งที่พบตามลำดับการค้นหาของ SRC (ฉาก → ข้อมูลเสริม → SRC) และแสดงชื่อที่สร้างจากนิพจน์และไฟล์ที่ไม่ถูกอ้างถึง readme สร้างร่างหัวข้อ "ไฟล์ที่ต้องใช้" สำหรับ README --fail-on-missing จะจบด้วยรหัส 1 หากมีไฟล์ที่หาไม่พบ (ไม่จัดหาหรือแจกจ่ายไฟล์)
+  srcsharp trial &lt;โฟลเดอร์ฉาก&gt; [--unit ยูนิต] [--pilot นักบิน] [--enemy ยูนิต] [--enemy-pilot นักบิน] [--level จำนวน] [--enemies จำนวน] [--list]
+      สร้างอีเวนต์การต่อสู้ทดลองที่ให้ยูนิตและนักบินจากข้อมูลฉากสู้กับศัตรูใน .srcsharp/trial/ แล้วแสดงพาธ (รันด้วย play หรือดีบักเกอร์) --list แสดงยูนิตและนักบินเป็น JSON
+  srcsharp event-flow &lt;ไฟล์เหตุการณ์&gt; [--format md|mmd|json] [--output ไฟล์] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ฉาก]
+      ติดตามทริกเกอร์ ป้ายกำกับ Call Goto และ Require ในไฟล์เหตุการณ์เดียว (รวมถึง include และ Require) แล้วแสดงแผนผังลำดับเหตุการณ์
+  srcsharp talk-preview &lt;ไฟล์เหตุการณ์&gt; [--line บรรทัด] [--block หมายเลข] [--stdin] [--input ไฟล์] [--format json|png] [--out ไดเรกทอรี] [--output ไฟล์] [--no-images] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ฉาก]
+      วาดบล็อก Talk และ AutoTalk ด้วยหน้าต่างข้อความของเกม แล้วส่งออกเป็นภาพ PNG แยกตามหน้าหรือ JSON
+  srcsharp anime-preview &lt;ไฟล์หรือโฟลเดอร์&gt; [--list] [--file ไฟล์] [--line บรรทัด] [--kind animation|ext_animation|effect|subroutine] [--target ชื่อ] [--situation สถานการณ์] [--spec ค่ากำหนด] [--attacker ยูนิต] [--attacker-pilot นักบิน] [--defender ยูนิต] [--defender-pilot นักบิน] [--play-once] [--out ไฟล์ภาพ] [--app-path โฟลเดอร์ SRC] [--scenario-root โฟลเดอร์ฉาก]
+      สร้างไฟล์เตรียมเล่น (.srcsharp/preview/) สำหรับนิยาม animation.txt, ext_animation.txt, effect.txt หรือแอนิเมชันต่อสู้ทั่วไป 1 รายการโดยกำหนดฝ่ายโจมตีและฝ่ายป้องกัน --list แสดงรายการเป็น JSON, --play-once เล่น 1 ครั้ง
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -48,6 +62,9 @@
   <data name="LintSummary" xml:space="preserve">
     <value>ตรวจสอบ {0} ไฟล์ พบปัญหา {1} รายการ</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>ไม่รู้จักกลุ่มกฎ: {0} (ต้องเป็นหนึ่งใน {1})</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>โปรดระบุไฟล์อีเวนต์ 1 ไฟล์</value>
   </data>
@@ -68,5 +85,59 @@
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>ไม่รู้จักวิธีค้นหา: {0} (hybrid, bm25 หรือ vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>ระบุโฟลเดอร์หนึ่งโฟลเดอร์สำหรับสร้างฉาก</value>
+  </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>จำนวนตอนต้องเป็นจำนวนเต็มตั้งแต่ 1 ขึ้นไป: {0}</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>สร้างแม่แบบใน {0} แล้ว ({1} ไฟล์)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>ข้ามไฟล์ที่มีอยู่แล้ว: {0} (ใช้ --force เพื่อเขียนทับ)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>ระบุโฟลเดอร์ฉากหรือไฟล์อีเวนต์ได้ไม่เกินหนึ่งรายการ</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>ไม่พบโฟลเดอร์ฉากหรือไฟล์อีเวนต์: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>ไม่รู้จักรูปแบบผลลัพธ์: {0} (md, mmd หรือ json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>ระบุโฟลเดอร์ฉากได้ไม่เกินหนึ่งโฟลเดอร์</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>ไม่พบโฟลเดอร์ฉาก: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>ไม่รู้จักรูปแบบผลลัพธ์: {0} (md, json หรือ readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>ไฟล์ {0} รายการ (หาไม่พบ {1}) อ้างอิงที่ตรวจสอบไม่ได้ {2} จุด ไฟล์ที่ไม่ถูกอ้างถึง {3} รายการ</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>ระบุโฟลเดอร์ฉากหนึ่งโฟลเดอร์</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>สร้างการต่อสู้ทดลองแล้ว: {0}/{1} ปะทะ {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>ไม่พบไฟล์เหตุการณ์ที่จะวิเคราะห์: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>โปรดระบุไฟล์เหตุการณ์สำหรับแสดงตัวอย่าง 1 ไฟล์</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>บันทึกภาพตัวอย่าง {0} หน้าไปยัง {1} แล้ว</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>ไม่พบไฟล์ข้อมูล/เหตุการณ์หรือโฟลเดอร์เป้าหมาย: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>ไม่พบนิยามแอนิเมชันการต่อสู้หรือเอฟเฟกต์พิเศษที่แสดงตัวอย่างได้</value>
   </data>
 </root>

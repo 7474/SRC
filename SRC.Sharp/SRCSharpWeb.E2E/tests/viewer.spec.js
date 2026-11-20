@@ -76,3 +76,123 @@ test('音のタブで、効果音と MIDI が並び、MIDI を合成して鳴ら
   await page.getByRole('button', { name: '合成して鳴らす' }).first().click();
   await expect(page.locator('.src-bgm-bar')).toBeVisible({ timeout: 60 * 1000 });
 });
+
+test('比べる: 組の評価を並べ替え、横並べにし、作品と自分のデータの位置を見る（#1628）', async ({ page }) => {
+  await page.goto('./');
+  await page.locator('a.navbar-item[href="compare"]').click();
+  const ranking = page.locator('.src-compare-ranking');
+  await expect(ranking).toBeVisible({ timeout: 60 * 1000 });
+  // 既定は初動火力の実効性能の大きい順。いちばん上は主人公／主役機
+  await expect(ranking.locator('tbody tr').first()).toContainText('主人公');
+  await expect(ranking.locator('tbody tr')).toHaveCount(4);
+  // 区分で絞る
+  await page.locator('.src-compare-filters select').first().selectOption('Sharp');
+  await expect(ranking.locator('tbody tr')).toHaveCount(1);
+  await page.locator('.src-compare-filters select').first().selectOption('');
+  // 2 組を横並べに足す
+  await ranking.locator('tbody tr').nth(0).locator('button').click();
+  await ranking.locator('tbody tr').nth(1).locator('button').click();
+  await page.locator('a[data-tab="side"]').click();
+  const side = page.locator('.src-compare-side');
+  await expect(side).toBeVisible();
+  await expect(side.locator('thead th')).toHaveCount(3);
+  await expect(page.locator('svg.src-radar polygon[fill-opacity]')).toHaveCount(2);
+  // URL に選んだ組が残る（読み直しても同じ並び）
+  expect(page.url()).toContain('pairs=');
+  await page.reload();
+  await expect(page.locator('.src-compare-side thead th')).toHaveCount(3, { timeout: 60 * 1000 });
+  // 作品: 役割表の無い作品だけに絞る
+  await page.locator('a[data-tab="works"]').click();
+  const works = page.locator('.src-compare-works');
+  await expect(works.locator('tbody tr')).toHaveCount(3);
+  await page.getByLabel(/役割表の無い作品だけ|Only titles without a role table/).check();
+  await expect(works.locator('tbody tr')).toHaveCount(2);
+  // 位置: 自分のデータ（Sharp）の組が、ほかの区分の中でどこにいるか
+  await page.locator('a[data-tab="position"]').click();
+  const position = page.locator('.src-compare-position');
+  await expect(position.locator('tbody tr')).toHaveCount(1);
+  await expect(position).toContainText('自作の主人公');
+  await expect(position.locator('.src-compare-bar').first()).toBeVisible();
+});
+
+test('比べる: 推定の組を外し、ユニット・パイロットだけでも比べる（#1635・#1636）', async ({ page }) => {
+  await page.goto('./compare');
+  const ranking = page.locator('.src-compare-ranking');
+  await expect(ranking).toBeVisible({ timeout: 60 * 1000 });
+  // 既定は確かな組だけ。推定の組を含めると、いちばん強い推定の組が上に来て、印が付く
+  await expect(ranking).not.toContainText('推定の隊長');
+  await page.locator('.src-compare-sure input').uncheck();
+  await expect(ranking.locator('tbody tr')).toHaveCount(5);
+  await expect(ranking.locator('tbody tr').first()).toContainText('推定の隊長');
+  await expect(ranking.locator('tbody tr').first().locator('.src-compare-guess')).toBeVisible();
+  expect(page.url()).toContain('guess=1');
+  // ユニットだけ: 組の無いユニットも並ぶ。HP の大きい順
+  await page.locator('.src-compare-mode button[data-mode="unit"]').click();
+  const single = page.locator('.src-compare-single');
+  await expect(single.locator('tbody tr')).toHaveCount(6);
+  await expect(single.locator('tbody tr').first()).toContainText('乗り手の無い機体');
+  await single.locator('tbody tr').nth(0).locator('button').click();
+  await single.locator('tbody tr').nth(1).locator('button').click();
+  await page.locator('a[data-tab="side"]').click();
+  await expect(page.locator('.src-compare-single-side thead th')).toHaveCount(3);
+  await expect(page.locator('svg.src-radar polygon[fill-opacity]')).toHaveCount(2);
+  expect(page.url()).toContain('mode=unit');
+  expect(page.url()).toContain('units=');
+  // パイロットだけ: 格闘の大きい順（帯は既定の最上位）
+  await page.locator('.src-compare-mode button[data-mode="pilot"]').click();
+  await page.locator('a[data-tab="ranking"]').click();
+  await expect(single.locator('tbody tr')).toHaveCount(5);
+  await expect(single.locator('tbody tr').first()).toContainText('推定の隊長');
+});
+
+test('比べる: スマートフォンの幅で横にはみ出さない（#1634）', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./compare');
+  const ranking = page.locator('.src-compare-ranking');
+  await expect(ranking).toBeVisible({ timeout: 60 * 1000 });
+  // 絞り込みは畳まれていて、ボタンで開く
+  await expect(page.locator('.src-compare-filters')).toBeHidden();
+  await page.locator('.src-compare-filters-toggle').click();
+  await expect(page.locator('.src-compare-filters')).toBeVisible();
+  for (const mode of ['pair', 'unit', 'pilot']) {
+    await page.locator(`.src-compare-mode button[data-mode="${mode}"]`).click();
+    const width = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(width, mode).toBeLessThanOrEqual(390);
+  }
+  // 本文の左右に余白がある
+  const box = await page.locator('.src-compare h1').boundingBox();
+  expect(box.x).toBeGreaterThanOrEqual(12);
+});
+
+test('データビューア: ユニットとパイロットをコピーし、VS Code へ送るリンクを持つ（7474/SRC#1656）', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__copied = [];
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText: async text => { window.__copied.push(text); } },
+      configurable: true,
+    });
+  });
+  await page.goto(archive('scenarios/test'));
+  await expect(page.getByText('テスト機').first()).toBeVisible({ timeout: 60 * 1000 });
+  const unitCard = page.locator('#unit-テスト機');
+  const unitCopy = unitCard.locator('.src-copy-data');
+  const unitVsCode = unitCard.locator('.src-send-vscode');
+  await expect(unitCopy).toBeVisible();
+  const unitHref = await unitVsCode.getAttribute('href');
+  expect(unitHref).toContain('vscode://koudenpa.src-vscode/addData?kind=unit');
+  expect(decodeURIComponent(unitHref)).toContain('テスト機');
+  await unitCopy.click();
+  await expect(unitCopy).toContainText(/コピーしました|Copied/);
+  expect(await page.evaluate(() => window.__copied.at(-1))).toContain('テスト機');
+
+  await page.getByText('Pilot', { exact: true }).click();
+  const pilotCard = page.locator('#pilot-テストパイロット');
+  const pilotCopy = pilotCard.locator('.src-copy-data');
+  const pilotVsCode = pilotCard.locator('.src-send-vscode');
+  await expect(pilotCopy).toBeVisible({ timeout: 60 * 1000 });
+  const pilotHref = await pilotVsCode.getAttribute('href');
+  expect(pilotHref).toContain('vscode://koudenpa.src-vscode/addData?kind=pilot');
+  await pilotCopy.click();
+  await expect(pilotCopy).toContainText(/コピーしました|Copied/);
+  expect((await page.evaluate(() => window.__copied.length))).toBeGreaterThanOrEqual(2);
+});

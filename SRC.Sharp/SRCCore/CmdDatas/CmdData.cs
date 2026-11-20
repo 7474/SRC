@@ -76,6 +76,12 @@ namespace SRCCore.CmdDatas
                 SRC.EventLog.LogWarning("未対応のコマンド {File}({Line}): {Data}", EventData.File, EventData.LineNum, EventData.Data);
                 return EventData.NextID;
             }
+            catch (OperationCanceledException)
+            {
+                // ゲームスレッドを止める合図（シナリオの終了・画面を閉じたときの待ちのループ）。
+                // イベントのエラーにせずに外へ通し、GameThread に受け止めさせる（#1552）
+                throw;
+            }
             catch (Exception ex)
             {
                 SRC.EventLog.LogError(ex, "コマンドの実行中のエラー {File}({Line}): {Data}", EventData.File, EventData.LineNum, EventData.Data);
@@ -99,12 +105,17 @@ namespace SRCCore.CmdDatas
 
         public IEnumerable<CmdArgument> GetArgs()
         {
-            return Enumerable.Range(1, ArgNum).Select(x => GetArgRaw(x));
+            // 括弧の閉じていない行（ArgNum = -1）は、コマンド名だけを返す（list(1) だけがある VB の Parse と同じ）
+            return Enumerable.Range(1, Math.Max(ArgNum, 1)).Select(x => GetArgRaw(x));
         }
 
         // idx番目の引数を返す
         public CmdArgument GetArgRaw(int idx)
         {
+            if (idx >= 2)
+            {
+                ThrowIfNoArgsArray(idx);
+            }
             if (idx - 1 < args.Count)
             {
                 // オフセット分引いた値を返す
@@ -113,6 +124,20 @@ namespace SRCCore.CmdDatas
             else
             {
                 return CmdArgument.Empty;
+            }
+        }
+
+        // VB 版の Parse は、引数の無いコマンドでは引数の配列（strArgs(2 To ArgNum)）を作らないので、
+        // 引数を読むと実行時エラー（「イベントデータが不正です」）になる。
+        // 元の SRC の実機で、引数の無い Incr・Ride・UnSet がこのエラーになることを確かめた（probe-bounds。#1511・#1550）。
+        // SRC# の引数の 1 番目はコマンド名なので GetArgRaw(1) は読めるが、元の SRC の strArgs(1) は無い。
+        // 元の SRC が引数の数を確かめずに GetArgAsString(ArgNum) を読むコマンド（Create・Launch・MapAttack）は、
+        // 読む前にこれを呼んで、引数の無いときのエラーを合わせる
+        protected void ThrowIfNoArgsArray(int idx)
+        {
+            if (ArgNum == 1)
+            {
+                throw new IndexOutOfRangeException($"引数の無いコマンドの {idx} 番目の引数を読んだ");
             }
         }
 

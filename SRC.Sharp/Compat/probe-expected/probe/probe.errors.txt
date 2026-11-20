@@ -1,0 +1,143 @@
+probe.eve：77行目
+イベントデータが不正です
+76: Call 記録 "VB5.割り算.Mod0" "<エラー>"
+77: Call 記録 "VB5.割り算.Mod0" (5 Mod 0)
+78: Exit
+----
+probe.eve：83行目
+イベントデータが不正です
+82: Call 記録 "VB5.割り算.Mod0.0" "<エラー>"
+83: Call 記録 "VB5.割り算.Mod0.0" (5 Mod 0.4)
+84: Exit
+----
+probe.eve：89行目
+イベントデータが不正です
+88: Call 記録 "VB5.浮動小数点.累乗のあふれ" "<エラー>"
+89: Call 記録 "VB5.浮動小数点.累乗のあふれ" (10 ^ 400)
+90: Exit
+----
+probe.eve：94行目
+イベントデータが不正です
+93: Call 記録 "VB5.浮動小数点.積のあふれ" "<エラー>"
+94: Call 記録 "VB5.浮動小数点.積のあふれ" (1e308 * 10)
+95: Exit
+----
+probe.eve：100行目
+イベントデータが不正です
+99: Call 記録 "VB5.浮動小数点.負の数の累乗" "<エラー>"
+100: Call 記録 "VB5.浮動小数点.負の数の累乗" ((-8) ^ 0.5)
+101: Exit
+----
+probe.eve：106行目
+イベントデータが不正です
+105: Call 記録 "VB5.浮動小数点.Sqr(-1)" "<エラー>"
+106: Call 記録 "VB5.浮動小数点.Sqr(-1)" Sqr(-1)
+107: Exit
+----
+probe.eve：112行目
+イベントデータが不正です
+111: Call 記録 "VB5.あふれ.\のLong" "<エラー>"
+112: Call 記録 "VB5.あふれ.\のLong" (1e10 \ 1)
+113: Exit
+----
+probe.eve：117行目
+イベントデータが不正です
+116: Call 記録 "VB5.あふれ.ModのLong" "<エラー>"
+117: Call 記録 "VB5.あふれ.ModのLong" (1e10 Mod 7)
+118: Exit
+----
+probe.eve：127行目
+イベントデータが不正です
+126: Call 記録 "VB5.あふれ.\のLongの上限+1" "<エラー>"
+127: Call 記録 "VB5.あふれ.\のLongの上限+1" (2147483648 \ 1)
+128: Exit
+----
+probe.eve：139行目
+イベントデータが不正です
+138: Call 記録 "VB5.実行時エラー.Mid(0)" "<エラー>"
+139: Call 記録 "VB5.実行時エラー.Mid(0)" Mid("abc",0,1)
+140: Exit
+----
+probe.eve：144行目
+イベントデータが不正です
+143: Call 記録 "VB5.実行時エラー.Left(-1)" "<エラー>"
+144: Call 記録 "VB5.実行時エラー.Left(-1)" Left("abc",-1)
+145: Exit
+----
+probe.eve：149行目
+イベントデータが不正です
+148: Call 記録 "VB5.実行時エラー.Right(-1)" "<エラー>"
+149: Call 記録 "VB5.実行時エラー.Right(-1)" Right("abc",-1)
+150: Exit
+----
+probe.eve：159行目
+イベントデータが不正です
+158: Call 記録 "VB5.実行時エラー.Chr(70000)" "<エラー>"
+159: Call 記録 "VB5.実行時エラー.Chr(70000)" Chr(70000)
+160: Exit
+----
+probe.eve：164行目
+イベントデータが不正です
+163: Call 記録 "VB5.実行時エラー.Asc(空)" "<エラー>"
+164: Call 記録 "VB5.実行時エラー.Asc(空)" Asc("")
+165: Exit
+----
+probe.eve：169行目
+イベントデータが不正です
+168: Call 記録 "VB5.実行時エラー.String(-1)" "<エラー>"
+169: Call 記録 "VB5.実行時エラー.String(-1)" String(-1,"a")
+170: Exit
+----
+probe.eve：174行目
+イベントデータが不正です
+173: Call 記録 "VB5.実行時エラー.InStr(0)" "<エラー>"
+174: Call 記録 "VB5.実行時エラー.InStr(0)" InStr("abc","b",0)
+175: Exit
+----
+probe.eve：185行目
+イベントデータが不正です
+184: Call 記録 "VB5.実行時エラー.String(空)" "<エラー>"
+185: Call 記録 "VB5.実行時エラー.String(空)" String(3,"")
+186: Exit
+----
+probe.eve：191行目
+イベントデータが不正です
+190: Call 記録 "VB5.実行時エラー.InStrRev(0)" "<エラー>"
+191: Call 記録 "VB5.実行時エラー.InStrRev(0)" InStrRev("abcabc","c",0)
+192: Exit
+----
+probe.eve：197行目
+イベントデータが不正です
+196: Call 記録 "VB5.実行時エラー.Replace(3,3)" "<エラー>"
+197: Call 記録 "VB5.実行時エラー.Replace(3,3)" Replace("abcde","c","X",3,3)
+198: Exit
+----
+probe.eve：202行目
+イベントデータが不正です
+201: Call 記録 "VB5.実行時エラー.MidB(0)" "<エラー>"
+202: Call 記録 "VB5.実行時エラー.MidB(0)" MidB("abc",0,1)
+203: Exit
+----
+probe.eve：207行目
+イベントデータが不正です
+206: Call 記録 "VB5.実行時エラー.LeftB(-1)" "<エラー>"
+207: Call 記録 "VB5.実行時エラー.LeftB(-1)" LeftB("abc",-1)
+208: Exit
+----
+probe.eve：214行目
+イベントデータが不正です
+213: Set あふれＩＤ UnitID(あふれ機)
+214: RankUp あふれＩＤ 65541
+215: Call 記録 "VB5.あふれ.RankUp" Rank(あふれ機)
+----
+probe.eve：221行目
+イベントデータが不正です
+220: Call 記録 "VB5.あふれ.IncreaseMorale" "<エラー>"
+221: IncreaseMorale あふれ機 65541
+222: Call 記録 "VB5.あふれ.IncreaseMorale" Morale(あふれ機)
+----
+probe.eve：1116行目
+イベントデータが不正です
+1115: Call 記録 "Format.書式の種類.0d" Format(12,"0d")
+1116: Call 記録 "Format.書式の種類.No.0" Format(5,"No.0")
+1117: Call 記録 "Format.書式の種類.Level 0" Format(5,"Level 0")

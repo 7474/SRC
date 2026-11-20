@@ -17,7 +17,7 @@
 | シナリオ E2E | コーパス（`SRC.Sharp/E2E/`）を入力スクリプトでプレイしたときの挙動。イベントコマンドの網羅 | フロントエンドごとの見た目・入力の仕組み | `SRCRenderTests`（`E2ECorpusTests`・画面のシナリオのテスト）・`tools/compat_play.py`（互換性の検証用のシナリオ `SRC.Sharp/Compat/*.play` を最初から最後まで） | `test-srccore-linux`・`test-compat-scenario` |
 | VRT | `SRCRender` が描いた画面が基準画像と一致すること | フロントエンドの部品（ボタン・メニュー）の見た目 | `SRCRenderTests`（`Baselines/`） | `test-srccore-linux` |
 | フロントエンド E2E | 起動・描画・入力の経路と、そのフロントエンドにしか無い機能 | シナリオの挙動（シナリオ E2E が担う） | `SRCSharpAvaloniaTests`（Avalonia.Headless。起動の引数と `--smoke` の終了コード・効果音の再生の呼び出しも）・`SRCSharpWeb.E2E`（Playwright。読み込み・ブラウザ内保存・URL・タッチ・カタログ。ブラウザで動く lint）・`SRCSharpVSCode/test`（VS Code の中で拡張が有効になり、コマンドと言語が登録されること。`xvfb-run -a npm test`） | `test-tools-linux`・`test-web`・`test-lint` |
-| 配布物 | 配る形でビルド・発行でき、最低限動くこと（`srcsharp` の各コマンドの終了コードと出力は、ユニットの `SRCAuthoringTests` の `CliTests` が確かめる）。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help` |
+| 配布物 | 配る形でビルド・発行でき、最低限動くこと（`srcsharp` の各コマンドの終了コードと出力は、ユニットの `SRCAuthoringTests` の `CliTests` が確かめる）。master への push ごとに、リリースと同じ作り方の SRC#Avalonia（linux・windows は `--smoke` で起動、macOS は作るだけ）と srcsharp の .NET tool を確かめる（`Packages.yml`） | 機能の正しさ | Docker イメージ（`srcsharp`）・VS Code 拡張・SRC#Form の発行・SRC#Help（Jekyll）・試作の `tools/pack-stats`・`tools/pack-analysis`（7474/SRC-Data の GitHub Pages が使う。小さなデータで落ちないことだけを確かめる。`tools/pack_tools_check.sh`） | `docker-srcdatalinter`・`test-tools-linux`・`build-and-test-srcs`・`build-help`・`test-pack-tools` |
 | 版の揃い | アプリ・ライブラリ・VS Code 拡張の版、拡張の CHANGELOG、リリースの案内（`docs/releases`）が揃っていること | 公開できること（タグの push のときに公開ワークフローが確かめ直す） | `tools/release.py check` | `release-check`（文書だけの PR でも動く） |
 | Windows 固有 | WinForms の SRC#Form を含むソリューション全体のビルド、大文字・小文字を区別しないファイルシステムでの `SRCCore`、Windows の実フォントの寸法、SkiaSharp のネイティブライブラリ | シナリオ E2E・VRT（Linux を正とする） | `SRCCoreTests`・`SRCRenderTests` の `WindowsFontMetricsTests`・`SkiaFontsTests` | `build-and-test-srcs` |
 | データビューア | 置いたサイトのアーカイブ（シナリオ・パック）を読み、データ・画像（データで使っているかの印と絞り込み）・音・BGM の帯（画面を移っても鳴り続け、止められる）が動くこと | 7474/SRC-Data の作品のデータ | `SRCSharpWeb.E2E/tests/viewer.spec.js`（アーカイブは `viewer-fixtures.mjs` が作る） | `test-viewer` |
@@ -89,11 +89,12 @@ flowchart LR
   changes -->|SRC#Web・発行の設定を変えた PR| aot[test-web-aot<br/>SRC#Web の AOT 版の Playwright]
   changes -->|コードの変更あり| viewer[test-viewer<br/>データビューアの Playwright]
   changes -->|コードの変更あり| compat[test-compat-scenario<br/>検証用のシナリオの lint・通しのプレイ・ゴールデン]
+  changes -->|コードの変更あり| pack[test-pack-tools<br/>tools/pack-stats・pack-analysis の試作]
   changes -->|コードの変更あり| docker[docker-srcdatalinter]
   changes -->|コードの変更あり| win[build-and-test-srcs<br/>Windows 固有]
   changes -->|ヘルプの変更あり| help[build-help]
   PR -->|常に| release[release-check<br/>版・CHANGELOG・リリースの案内]
-  core & tools & web & aot & viewer & lint & compat & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
+  core & tools & web & aot & viewer & lint & compat & pack & docker & win & help & release --> gate{{ci-passed<br/>必須チェック}}
   PR -->|待たない| coverage[coverage<br/>計測・変えた行・Mackerel は push のみ]
 ```
 

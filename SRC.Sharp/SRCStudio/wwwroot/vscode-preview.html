@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <!-- VS Code 拡張（src/preview.ts）が、内容のセキュリティポリシーと studio/ の Webview の URI を埋めて Webview に出す -->
+  <meta http-equiv="Content-Security-Policy" content="{{csp}}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{base}}studio.css" />
+  <script src="{{base}}vscode-boot.js" data-module="vscode-preview.js"></script>
+</head>
+<body class="vscode">
+  <section id="preview"></section>
+</body>
+</html>

@@ -40,6 +40,8 @@ namespace SRCAuthoring.Analysis
         public List<EveInclude> Includes { get; } = new List<EveInclude>();
         /// <summary>読み込んだイベントの行（include 先を含む）</summary>
         public IList<EventDataLine> Lines { get; set; } = new List<EventDataLine>();
+        /// <summary>解析したコマンド（include 先を含む）</summary>
+        public IList<CmdData> Commands { get; set; } = new List<CmdData>();
 
         public IEnumerable<SrcDiagnostic> DiagnosticsFor(string file)
             => Diagnostics.Where(x => SamePath(x.File, file));
@@ -152,6 +154,7 @@ namespace SRCAuthoring.Analysis
 
             var lines = src.Event.EventData ?? new List<EventDataLine>();
             result.Lines = lines;
+            result.Commands = src.Event.EventCmd ?? new List<CmdData>();
             foreach (var line in lines)
             {
                 var data = line.Data ?? "";
@@ -172,6 +175,8 @@ namespace SRCAuthoring.Analysis
             var cmds = src.Event.EventCmd ?? new List<CmdData>();
             var assigned = new HashSet<string>(cmds
                 .Where(x => x.Name == CmdType.SetCmd || x.Name == CmdType.LocalCmd || x.Name == CmdType.GlobalCmd)
+                // 引数の無いコマンドの 2 番目の引数は読まない（CmdData.GetArgRaw が例外を投げる）
+                .Where(x => x.ArgNum >= 2)
                 .Select(x => x.GetArg(2))
                 .Where(x => !string.IsNullOrEmpty(x)));
             var required = RequiredLabels(src, cmds);
@@ -190,6 +195,10 @@ namespace SRCAuthoring.Analysis
                 var original = cmd.EventData.ID >= 0 && cmd.EventData.ID < data.Count ? data[cmd.EventData.ID].Data ?? "" : "";
                 var keyword = original.TrimStart().Split(' ', '\t')[0].ToLowerInvariant();
                 if (keyword != "call" && keyword != "goto")
+                {
+                    continue;
+                }
+                if (cmd.ArgNum < 2)
                 {
                     continue;
                 }
@@ -216,7 +225,7 @@ namespace SRCAuthoring.Analysis
         {
             var labels = new HashSet<string>();
             var files = cmds
-                .Where(x => x.Name == CmdType.RequireCmd)
+                .Where(x => x.Name == CmdType.RequireCmd && x.ArgNum >= 2)
                 .Select(x => x.GetArg(2))
                 .Where(x => !string.IsNullOrEmpty(x) && x.IndexOfAny(new[] { '$', '(' }) < 0)
                 .Distinct();

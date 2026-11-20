@@ -24,13 +24,15 @@ namespace SRCCore.VB
         });
 
         // Shift-JIS encoding with fallback for incomplete multi-byte characters, cached for performance
+        // 途中で切れた 2 バイト文字は、Windows の cp932 の変換（VB の StrConv(..., vbUnicode)）と同じく既定の文字「・」（U+30FB）にする
+        // （元の SRC の実機で LeftB("5月5日",2) は「5・」。#1550）
         private static readonly Lazy<System.Text.Encoding> _shiftJISEncodingWithFallback = new Lazy<System.Text.Encoding>(() =>
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             return System.Text.Encoding.GetEncoding(
                 "Shift_JIS",
                 new System.Text.EncoderReplacementFallback(""),
-                new System.Text.DecoderReplacementFallback("")
+                new System.Text.DecoderReplacementFallback("・")
             );
         });
 

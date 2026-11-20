@@ -1,0 +1,119 @@
+{
+  "terrain": "levelonfloor",
+  "count": 49,
+  "exists": "0-11 100-111 200-224",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "edge",
+      "style": "navy",
+      "neighbor": "lower_floor",
+      "tiles": {
+        "0": [
+          "N",
+          "W"
+        ],
+        "1": [
+          "N"
+        ],
+        "2": [
+          "N",
+          "E"
+        ]
+      },
+      "description": "紺色の床の上の一段高い床の輪郭（青い線）。0=北西角,1=北辺,2=北東角,3〜5=西辺・東辺など縦の辺",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 11,
+      "kind": "edge",
+      "style": "navy",
+      "neighbor": "lower_floor",
+      "description": "紺色の段差床の手前側（黒い段差面つき）：6=南西,7=南,8=南東、9〜11=狭い段差の内角・短い段差",
+      "confidence": "guess"
+    },
+    {
+      "from": 100,
+      "to": 111,
+      "kind": "edge",
+      "style": "gray",
+      "neighbor": "lower_floor",
+      "description": "0〜11 と同じ並びの灰色の床版（段差面は明るい灰色）",
+      "confidence": "guess"
+    },
+    {
+      "from": 200,
+      "to": 211,
+      "kind": "edge",
+      "style": "bright_grass",
+      "neighbor": "lower_floor",
+      "tiles": {
+        "200": [
+          "N",
+          "W"
+        ],
+        "201": [
+          "N"
+        ],
+        "202": [
+          "N",
+          "E"
+        ],
+        "203": [
+          "W"
+        ],
+        "205": [
+          "E"
+        ],
+        "206": [
+          "S",
+          "W"
+        ],
+        "207": [
+          "S"
+        ],
+        "208": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "明るい緑の草地の上の一段高い暗い緑の台地。200=北西,201=北,202=北東,203=西,204〜205=西/東の辺（崖の縦線）,206〜208=南側（灰色の崖面）,209〜211=崖面の角の組み合わせ",
+      "confidence": "guess"
+    },
+    {
+      "from": 212,
+      "to": 224,
+      "kind": "edge",
+      "style": "dark_grass",
+      "neighbor": "lower_floor",
+      "tiles": {
+        "212": [
+          "N",
+          "W"
+        ],
+        "213": [
+          "N"
+        ],
+        "214": [
+          "N",
+          "E"
+        ],
+        "215": [
+          "W"
+        ],
+        "217": [
+          "E"
+        ],
+        "218": [
+          "S",
+          "W"
+        ]
+      },
+      "description": "200〜211 と同じ並びの暗い草地版（224 は追加の角）",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "0 台=紺の床、100 台=灰色の床、200 台=草地の台地（212〜は暗い草地）。各組は同じ並び（+100/+12 で対応）"
+}

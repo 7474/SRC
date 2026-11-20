@@ -1,5 +1,6 @@
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 
@@ -172,7 +173,7 @@ namespace SRCRender.Compat
             {
                 foreach (var line in SplitLines(s))
                 {
-                    canvas.DrawText(line, x, y + SkiaFonts.Ascent(skFont), SKTextAlign.Left, skFont, paint);
+                    SkiaFonts.DrawText(canvas, line, x, y + SkiaFonts.Ascent(skFont), SKTextAlign.Left, skFont, paint);
                     y += SkiaFonts.LineHeight(skFont);
                 }
             }
@@ -186,7 +187,7 @@ namespace SRCRender.Compat
                 var width = 0f;
                 foreach (var line in lines)
                 {
-                    width = Math.Max(width, skFont.MeasureText(line));
+                    width = Math.Max(width, SkiaFonts.MeasureText(skFont, line));
                 }
                 return new SizeF(width, SkiaFonts.LineHeight(skFont) * Math.Max(1, lines.Length));
             }
@@ -493,7 +494,178 @@ namespace SRCRender.Compat
             {
                 requestedMetrics.Add(font, metrics);
             }
+            if (IsFixedPitchName(name))
+            {
+                MarkFixedPitch(font);
+            }
             return font;
+        }
+
+        // ---- 等幅の指定の文字の並べ方（7474/SRC#1650） ----
+        //
+        // 元の SRC の ＭＳ 明朝・ＭＳ ゴシックは、Shift_JIS の 1 バイトの文字が全角の半分、2 バイトの文字が全角の幅で、
+        // リスト・ステータスなどは文字列のバイト数（半角 1・全角 2）で桁を揃える。代わりの書体（Noto Sans Mono CJK JP など）は、
+        // ギリシャ文字・キリル文字・°・引用符など（Shift_JIS では 2 バイト）を半角でも全角でもない幅で描くので桁がずれる。
+        // 等幅の指定で作ったフォントは、文字ごとに Shift_JIS のバイト数の升目（1 バイト = フォントの大きさの半分）に置いて描き・測る。
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<SKFont, object> fixedPitchFonts
+            = new System.Runtime.CompilerServices.ConditionalWeakTable<SKFont, object>();
+        private static readonly object FixedPitchMark = new object();
+
+        /// <summary>このフォントを等幅の指定として扱う（Shift_JIS のバイト数の升目に並べる）</summary>
+        public static void MarkFixedPitch(SKFont font)
+        {
+            fixedPitchFonts.Remove(font);
+            fixedPitchFonts.Add(font, FixedPitchMark);
+        }
+
+        /// <summary>等幅の指定として作ったフォントか</summary>
+        public static bool IsFixedPitch(SKFont font) => font != null && fixedPitchFonts.TryGetValue(font, out _);
+
+        // 文字ごとの Shift_JIS のバイト数（0: Shift_JIS に無い）。初めて使うときに作る
+        private static byte[] sjisBytes;
+
+        private static byte[] SjisBytes()
+        {
+            if (sjisBytes != null)
+            {
+                return sjisBytes;
+            }
+            var table = new byte[0x10000];
+            try
+            {
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                var sjis = System.Text.Encoding.GetEncoding(932, System.Text.EncoderFallback.ExceptionFallback, System.Text.DecoderFallback.ExceptionFallback);
+                var buffer = new char[1];
+                for (var c = 0x20; c < 0x10000; c++)
+                {
+                    if (c >= 0xD800 && c <= 0xDFFF)
+                    {
+                        continue;
+                    }
+                    buffer[0] = (char)c;
+                    try
+                    {
+                        table[c] = (byte)sjis.GetByteCount(buffer);
+                    }
+                    catch (System.Text.EncoderFallbackException)
+                    {
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Shift_JIS を使えない環境では、すべて書体の幅から決める
+            }
+            sjisBytes = table;
+            return table;
+        }
+
+        /// <summary>
+        /// 升目の数（半角 1・全角 2）。Shift_JIS にある文字はそのバイト数、無い文字（絵文字など）は書体の幅を半角の幅で割って丸めた数
+        /// </summary>
+        private static int Cells(SKFont font, string ch)
+        {
+            if (ch.Length == 1)
+            {
+                var n = SjisBytes()[ch[0]];
+                if (n > 0)
+                {
+                    return n;
+                }
+            }
+            var half = font.Size / 2;
+            return half <= 0 ? 0 : (int)Math.Round(font.MeasureText(ch) / half);
+        }
+
+        /// <summary>文字（サロゲートペアは 1 文字）ごとに分ける</summary>
+        private static IEnumerable<string> TextElements(string text)
+        {
+            for (var i = 0; i < text.Length; i++)
+            {
+                if (char.IsHighSurrogate(text[i]) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
+                {
+                    yield return text.Substring(i, 2);
+                    i++;
+                }
+                else
+                {
+                    yield return text.Substring(i, 1);
+                }
+            }
+        }
+
+        /// <summary>文字列の幅。等幅の指定のフォントは升目の数 × 半角の幅、ほかは書体の幅</summary>
+        public static float MeasureText(SKFont font, string text)
+        {
+            text = text ?? "";
+            if (!IsFixedPitch(font))
+            {
+                return font.MeasureText(text);
+            }
+            var cells = 0;
+            foreach (var ch in TextElements(text))
+            {
+                cells += Cells(font, ch);
+            }
+            return cells * font.Size / 2;
+        }
+
+        /// <summary>
+        /// 文字列を描く（SKCanvas.DrawText と同じ引数。y はベースライン）。等幅の指定のフォントは、文字ごとに升目の中央に置く。
+        /// 書体の幅が升目と同じ文字が続く所は、まとめて描く
+        /// </summary>
+        public static void DrawText(SKCanvas canvas, string text, float x, float y, SKTextAlign align, SKFont font, SKPaint paint)
+        {
+            text = text ?? "";
+            if (!IsFixedPitch(font))
+            {
+                canvas.DrawText(text, x, y, align, font, paint);
+                return;
+            }
+            var width = MeasureText(font, text);
+            var left = align == SKTextAlign.Center ? x - width / 2 : align == SKTextAlign.Right ? x - width : x;
+            var half = font.Size / 2;
+            var run = new System.Text.StringBuilder();
+            var runLeft = left;
+            var pen = left;
+            void Flush()
+            {
+                if (run.Length > 0)
+                {
+                    canvas.DrawText(run.ToString(), runLeft, y, SKTextAlign.Left, font, paint);
+                    run.Clear();
+                }
+            }
+            foreach (var ch in TextElements(text))
+            {
+                var cell = Cells(font, ch) * half;
+                var advance = font.MeasureText(ch);
+                if (Math.Abs(advance - cell) < 0.01f)
+                {
+                    if (run.Length == 0)
+                    {
+                        runLeft = pen;
+                    }
+                    run.Append(ch);
+                }
+                else if (advance > cell && cell > 0)
+                {
+                    // 升目より広い字形（等幅でない代わりの書体の W・M など）は、横に縮めて升目に収める（隣の文字に重ねない）
+                    Flush();
+                    var scaleX = font.ScaleX;
+                    font.ScaleX = scaleX * cell / advance;
+                    canvas.DrawText(ch, pen, y, SKTextAlign.Left, font, paint);
+                    font.ScaleX = scaleX;
+                }
+                else
+                {
+                    Flush();
+                    canvas.DrawText(ch, pen + (cell - advance) / 2, y, SKTextAlign.Left, font, paint);
+                }
+                pen += cell;
+            }
+            Flush();
         }
 
         /// <summary>

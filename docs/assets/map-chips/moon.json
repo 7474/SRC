@@ -1,0 +1,57 @@
+{
+  "terrain": "moon",
+  "count": 11,
+  "exists": "0-10",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "object",
+      "style": "black",
+      "description": "黒い宇宙に浮かぶ 1 マスの小さな月",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 4,
+      "kind": "object",
+      "style": "black",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "2×2 の大きな月（右側が欠けた影）",
+      "confidence": "high"
+    },
+    {
+      "from": 5,
+      "to": 5,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 6,
+      "kind": "object",
+      "style": "blue",
+      "description": "小さな月（青い宇宙背景）",
+      "confidence": "high"
+    },
+    {
+      "from": 7,
+      "to": 10,
+      "kind": "object",
+      "style": "blue",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "2×2 の大きな月（青い宇宙背景）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "青背景版は黒背景の番号＋6"
+}

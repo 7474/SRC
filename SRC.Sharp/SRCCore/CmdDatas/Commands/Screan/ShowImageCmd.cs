@@ -17,7 +17,9 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            if (ArgNum < 2)
+            // 元の SRC は引数の数を確かめずに GetArgAsString(2) を読む。
+            // 引数が無いと引数の配列（strArgs）が無いので「イベントデータが不正です」になる（GetArgRaw が例外を投げる。#1511）
+            if (ArgNum < 1)
             {
                 throw new EventErrorException(this, "ShowImageコマンドの引数の数が違います");
             }

@@ -1,0 +1,222 @@
+// SRC#Studio のマップ作成ツールを、VS Code 拡張のカスタムエディタ（Webview）で動かす（7474/SRC#1641）。
+// ファイルの読み書きは拡張（SRCSharpVSCode の src/mapEditor.ts）が行い、メッセージでやり取りする。
+//   拡張 → 画面: { type: 'init', roots: [{ name, files }], mapPath, text, lang, focus? } / { type: 'update', text } / { type: 'eventsUpdated', file? } / { type: 'focus', focus } / { type: 'file', id, bytes } / { type: 'fileError', id, message }
+//   画面 → 拡張: { type: 'ready' } / { type: 'loaded', terrains, width, height, placements } / { type: 'edit', text } / { type: 'editEvent', file, line, expectedLine, newLine } / { type: 'insertEvent', file, at, expectedLine, lines } / { type: 'playScene', text, label } / { type: 'read', id, root, path } / { type: 'undo' } / { type: 'redo' } / { type: 'reopenAsText' } / { type: 'error', message }
+import { loadWorkspace, findImage, findFile, imageNumbers, parseMap, serializeMap, autoConnectMap, decodeText, parsePlacements, replacePlacementCoordinates, computeMoveRange, timelineBlocks, buildTimeline, insertTimelineMove, timelineScene } from './studio-core.js';
+import { MapEditor } from './map-editor.js';
+import { t } from './i18n.js';
+
+// vscode-boot.js が acquireVsCodeApi() の結果を置き、エラーを拡張に伝える仕組みを用意している
+const vscode = window.srcsharpVsCode;
+const pending = new Map();
+let nextId = 1;
+let roots = [];
+let lastText = null;
+let currentMapPath = '';
+const eventCache = new Map();
+
+function read(root, path) {
+  const id = nextId++;
+  vscode.postMessage({ type: 'read', id, root, path });
+  return new Promise((resolve, reject) => pending.set(id, { resolve, reject }));
+}
+
+const normPath = p => String(p ?? '').replace(/\\/g, '/').replace(/^\.\//, '').toLowerCase();
+
+const editor = new MapEditor(document.getElementById('editor'), {
+  async loadImage(bitmap, no) {
+    const found = await findImage(bitmap, no);
+    if (!found) {
+      return null;
+    }
+    return createImageBitmap(new Blob([await read(found.root, found.path)]));
+  },
+  async loadUnitImage(bitmap) {
+    if (!bitmap || bitmap === '-.bmp') {
+      return null;
+    }
+    const found = await findFile([`Bitmap/Unit/${bitmap}`, `Bitmap/${bitmap}`]);
+    if (!found) {
+      return null;
+    }
+    return createImageBitmap(new Blob([await read(found.root, found.path)]));
+  },
+  imageNumbers,
+  serialize: serializeMap,
+  autoConnect: autoConnectMap,
+  computeMoveRange,
+  async onEditPlacement(item, x, y) {
+    const key = [...eventCache.keys()].find(k => normPath(k) === normPath(item.file));
+    if (!key) {
+      return;
+    }
+    const text = eventCache.get(key);
+    const eol = text.includes('\r\n') ? '\r\n' : '\n';
+    const lines = text.replace(/\r\n/g, '\n').split('\n');
+    const origLine = lines[item.line - 1];
+    if (origLine == null) {
+      return;
+    }
+    const newLine = await replacePlacementCoordinates(origLine, x, y);
+    if (newLine === origLine) {
+      return;
+    }
+    lines[item.line - 1] = newLine;
+    eventCache.set(key, lines.join(eol));
+    vscode.postMessage({ type: 'editEvent', file: key, line: item.line, expectedLine: origLine, newLine });
+    await refreshPlacements();
+  },
+  // 人形劇（7474/SRC#1694）
+  timeline: {
+    async blocks() {
+      const files = new Set(editor.placements.map(p => normPath(p.file)));
+      const paths = [...eventCache.keys()];
+      const targets = paths.some(k => files.has(normPath(k))) ? paths.filter(k => files.has(normPath(k))) : paths;
+      const blocks = [];
+      for (const file of targets) {
+        for (const b of await timelineBlocks(eventCache.get(file))) {
+          blocks.push({ ...b, file });
+        }
+      }
+      return blocks;
+    },
+    build: (file, line) => buildTimeline(eventCache.get(file) ?? '', line, editor.map),
+    async insertMove(file, after, name, x, y) {
+      const before = eventCache.get(file);
+      if (before == null) {
+        return null;
+      }
+      const result = await insertTimelineMove(before, after, name, x, y);
+      // 差し込んだ行（前後の同じ行を除いた残り）を VS Code の文書に書き足す
+      const a = before.replace(/\r\n/g, '\n').split('\n');
+      const b = result.text.replace(/\r\n/g, '\n').split('\n');
+      let at = 0;
+      while (at < a.length && a[at] === b[at]) {
+        at++;
+      }
+      const lines = b.slice(at, at + (b.length - a.length));
+      eventCache.set(file, result.text);
+      vscode.postMessage({ type: 'insertEvent', file, at, expectedLine: at > 0 ? a[at - 1] : undefined, lines });
+      await refreshPlacements();
+      return result;
+    },
+    async editMove(file, line, x, y) {
+      await editor.options.onEditPlacement({ file, line }, x, y);
+    },
+    // 場面の再生（7474/SRC#1694）: 拡張が .srcsharp/scene/場面の再生.eve に書いて、デバッガで動かす
+    async play(file, line) {
+      const text = await timelineScene(eventCache.get(file) ?? '', line, currentMapPath);
+      if (text) {
+        const label = editor.puppetBlocks.find(b => b.file === file && b.line === line)?.label ?? `${file}:${line}`;
+        vscode.postMessage({ type: 'playScene', text, label });
+      }
+    },
+  },
+  onEdit(text) {
+    lastText = text;
+    vscode.postMessage({ type: 'edit', text });
+  },
+  // 元に戻すは VS Code の文書の元に戻す（Ctrl+Z も VS Code が受ける）
+  undo: { undo: () => vscode.postMessage({ type: 'undo' }), redo: () => vscode.postMessage({ type: 'redo' }) },
+});
+
+async function refreshPlacements() {
+  if (!currentMapPath || !roots[0]) {
+    editor.setPlacements([]);
+    return;
+  }
+  const eveFiles = roots[0].files.filter(f => f.toLowerCase().endsWith('.eve'));
+  const events = [];
+  for (const f of eveFiles) {
+    if (!eventCache.has(f)) {
+      try {
+        eventCache.set(f, decodeText(await read(0, f)));
+      } catch {
+        continue;
+      }
+    }
+    events.push({ path: f, text: eventCache.get(f) });
+  }
+  editor.setPlacements(await parsePlacements(currentMapPath, events));
+}
+
+function showError(message) {
+  const box = document.getElementById('message');
+  box.hidden = !message;
+  box.textContent = message ?? '';
+  document.getElementById('reopen').hidden = !message;
+}
+
+async function showText(text, keepHistory) {
+  const map = await parseMap(new TextEncoder().encode(text));
+  if (map.error) {
+    // SRC のマップでないもの（JavaScript のソースマップなど）は、テキストで開き直せるようにする
+    showError(t('studio.mapError', map.error));
+    return;
+  }
+  showError(null);
+  editor.setMap(map, keepHistory);
+}
+
+document.getElementById('reopen').addEventListener('click', () => vscode.postMessage({ type: 'reopenAsText' }));
+
+window.addEventListener('message', async ev => {
+  const msg = ev.data;
+  switch (msg.type) {
+    case 'init': {
+      roots = msg.roots.map((r, i) => ({ name: r.name, files: r.files, read: path => read(i, path) }));
+      currentMapPath = msg.mapPath ?? '';
+      eventCache.clear();
+      const result = await loadWorkspace(roots);
+      if (result.errors.length) {
+        vscode.postMessage({ type: 'error', message: t('studio.terrainErrors', result.errors.join(' / ')) });
+      }
+      editor.setTerrains(result.terrains);
+      lastText = msg.text;
+      await showText(msg.text, false);
+      await refreshPlacements();
+      if (msg.focus) {
+        await editor.focusPlacement(msg.focus);
+      }
+      document.body.dataset.ready = 'true';
+      vscode.postMessage({ type: 'loaded', terrains: result.terrains.length, width: editor.map?.width ?? 0, height: editor.map?.height ?? 0, placements: editor.placements.length });
+      break;
+    }
+    case 'update':
+      // 自分の編集が返ってきたものは描き直さない（VS Code の元に戻す・外での変更だけ）
+      if (msg.text !== lastText) {
+        lastText = msg.text;
+        await showText(msg.text, true);
+      }
+      break;
+    case 'eventsUpdated':
+      if (msg.file) {
+        const target = normPath(msg.file);
+        for (const k of [...eventCache.keys()]) {
+          if (normPath(k) === target) {
+            eventCache.delete(k);
+          }
+        }
+        if (roots[0] && !roots[0].files.some(f => normPath(f) === target)) {
+          roots[0].files.push(msg.file);
+        }
+      } else {
+        eventCache.clear();
+      }
+      await refreshPlacements();
+      break;
+    case 'focus':
+      await editor.focusPlacement(msg.focus);
+      break;
+    case 'file':
+      pending.get(msg.id)?.resolve(new Uint8Array(msg.bytes));
+      pending.delete(msg.id);
+      break;
+    case 'fileError':
+      pending.get(msg.id)?.reject(new Error(msg.message));
+      pending.delete(msg.id);
+      break;
+  }
+});
+
+vscode.postMessage({ type: 'ready' });

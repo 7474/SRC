@@ -1,0 +1,34 @@
+{
+  "terrain": "moon_ground",
+  "count": 7,
+  "exists": "0-6",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "description": "灰色の月面",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "kind": "decoration",
+      "description": "クレーター（大・小）",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 6,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "大きな暗いクレーターの四分円（2×2）",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

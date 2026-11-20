@@ -50,6 +50,7 @@ MIDI を鳴らすには SoundFont（.sf2）が要ります。SRC#Avalonia には
 ## シナリオを作る人へ
 
 - データの検査（lint）・シナリオの自動プレイ・バランスの集計には、.NET tool の `srcsharp` を使えます（`dotnet tool install -g SRCSharpTools`）。
-- シナリオを VS Code で書くときは、拡張 [SRC](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode)（`koudenpa.src-vscode`）を使えます。イベントの診断・補完・デバッガ・画面での実行ができます。
+  - lint は、読み込みの誤りのほかに、書き間違い（移動可能地形の「海」など、SRC が意図どおりに扱わないデータ）も「情報」として知らせます。GSC データパックの書き方の決まりなども、`srcsharp lint --rules src,gsc-ext` のように選んで調べられます（`--list-rules` で一覧）。
+- シナリオを VS Code で書くときは、拡張 [SRC](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode)（`koudenpa.src-vscode`）を使えます。イベントとデータの診断・補完・デバッガ・画面での実行ができます。
 
 詳しくは [リポジトリの README](https://github.com/7474/SRC#readme) を見てください。

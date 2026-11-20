@@ -1,0 +1,54 @@
+{
+  "terrain": "comet",
+  "count": 9,
+  "exists": "0-8",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "object",
+      "style": "space",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "彗星（右下に頭、左上に尾）を 2×2 マスで組む（黒い星空）",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "kind": "object",
+      "style": "blue",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "青い空版の上段",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 6,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "kind": "object",
+      "style": "blue",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "青い空版の下段",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0〜3 が黒い宇宙、4・5・7・8 が青い背景の同じ 2×2（6 は欠番）"
+}

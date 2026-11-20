@@ -2,6 +2,7 @@ using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Units;
+using SRCCore.VB;
 using System;
 using System.Linq;
 
@@ -28,14 +29,15 @@ namespace SRCCore.CmdDatas.Commands
                             throw new EventErrorException(this, uname + "というユニットは存在しません");
                         }
 
-                        rk = GetArgAsLong(3);
+                        // VB 版の rk は Integer。範囲を超えるとあふれ（エラー）
+                        rk = VBMath.CInt(GetArgAsLong(3));
                         break;
                     }
 
                 case 2:
                     {
                         u = Event.SelectedUnitForEvent;
-                        rk = GetArgAsLong(2);
+                        rk = VBMath.CInt(GetArgAsLong(2));
                         break;
                     }
 

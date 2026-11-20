@@ -408,6 +408,37 @@ namespace SRCCore.Coverage.Tests
         }
 
         [TestMethod]
+        [Timeout(20000)]
+        public void ExitGame_NoExitEve_GuiKeepsProcess_StopsWithoutError()
+        {
+            // Web・Avalonia のように IGUI.Terminate が false を返してプロセスを終えない GUI でも、
+            // 元の SRC の TerminateSRC（End）と同じく先へ進まない。進むと空のファイル名で Exit.eve を読もうとして
+            // 「中にプロローグイベントが定義されていません」を出していた（#1552）
+            using var f = new SrcPlayDataSaveFixture();
+            var gui = new MockGUI { MainFormHideHandler = () => { } };
+            f.Src.GUI = gui;
+
+            f.Src.ExitGame();
+
+            Assert.IsTrue(gui.TerminateCalled);
+            Assert.AreEqual(0, gui.ErrorMessages.Count, string.Join("\n", gui.ErrorMessages));
+        }
+
+        [TestMethod]
+        [Timeout(20000)]
+        public void GameOver_NoGameOverEve_GuiKeepsProcess_StopsWithoutError()
+        {
+            using var f = new SrcPlayDataSaveFixture();
+            var gui = new MockGUI { MainFormHideHandler = () => { } };
+            f.Src.GUI = gui;
+
+            f.Src.GameOver();
+
+            Assert.IsTrue(gui.TerminateCalled);
+            Assert.AreEqual(0, gui.ErrorMessages.Count, string.Join("\n", gui.ErrorMessages));
+        }
+
+        [TestMethod]
         public void GameClear_Terminates()
         {
             // VB: GameClear は TerminateSRC するだけ

@@ -174,8 +174,11 @@ namespace SRCCore.TestLib
             throw new GUINotImplementedException(nameof(Confirm));
         }
 
+        /// <summary>DataErrorMessage を呼ばれた順の引数（ダイアログを出したかをテストで見る）</summary>
+        public List<InvalidSrcData> DataErrorMessages { get; } = new List<InvalidSrcData>();
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
         {
+            DataErrorMessages.Add(new InvalidSrcData(msg, fname, line_num, line_buf, dname));
             Console.Error.WriteLine(msg);
         }
 
@@ -277,8 +280,11 @@ namespace SRCCore.TestLib
             throw new GUINotImplementedException(nameof(EraseUnitBitmap));
         }
 
+        /// <summary>ErrorMessage を呼ばれた順のメッセージ</summary>
+        public List<string> ErrorMessages { get; } = new List<string>();
         public void ErrorMessage(string msg)
         {
+            ErrorMessages.Add(msg);
             Console.Error.WriteLine(msg);
         }
 

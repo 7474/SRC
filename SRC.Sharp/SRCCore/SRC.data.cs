@@ -1,6 +1,9 @@
+using Microsoft.Extensions.Logging;
 using SRCCore.Exceptions;
+using SRCCore.Extensions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,9 +19,73 @@ namespace SRCCore
         {
             continuesErrors.Clear();
         }
+        /// <summary>
+        /// データの誤りを、元の SRC と同じくダイアログ（GUI.DataErrorMessage）に出すか。ゲームとして実行するとき（ScreenSession・SRC#Form）だけ真にする。
+        /// 偽（既定）のときは、lint・ScenarioAnalyzer・BalanceReport・HotReloader・テストのために、続ける誤りを DataErrors に集めるだけにし、
+        /// 打ち切る誤りは例外（InvalidSrcDataException）を呼び出し元に返すだけにする（終了しない）
+        /// </summary>
+        public bool ShowDataErrorDialogs { get; set; }
+
+        /// <summary>
+        /// 読み込みを続けるデータの誤り。元の SRC の各 DataList の Load が DataErrorMessage を直に呼んで続けるところ。
+        /// DataErrors に集め、ShowDataErrorDialogs が真ならダイアログを出す（閉じるまで待つ）
+        /// </summary>
         public void AddDataError(InvalidSrcData error)
         {
             continuesErrors.Add(error);
+            if (ShowDataErrorDialogs)
+            {
+                Log.LogWarning("データの誤り {File}({Line}): {Data}: {Message} {Text}", error.fname, error.line_num, error.dname, error.msg, error.line_buf);
+                GUI?.DataErrorMessage(error.msg, error.fname, error.line_num, error.line_buf, error.dname);
+            }
+        }
+
+        /// <summary>
+        /// データのファイルを開いて読む。元の SRC の各 DataList の Load の ErrorHandler に当たる:
+        /// 開けなければ「fname が開けません。」、読み込みを打ち切る誤り（InvalidSrcDataException）では DataErrorMessage を出してから TerminateSRC する。
+        /// ShowDataErrorDialogs が偽のときは、ダイアログを出さず終了もせず、例外をそのまま呼び出し元に返す。
+        /// ShowDataErrorDialogs が真でも、TerminateSRC が終了しない GUI（SRC#Web・SRC#Avalonia のセッション・テスト）のために、終了の後に例外を投げ直す
+        /// （Event.LoadEventData2 の打ち切りと同じ形）
+        /// </summary>
+        /// <param name="openErrorMessage">開けないときのメッセージの後ろ（PilotDataList.cls だけ「。」が無い）</param>
+        internal void LoadDataFile(string fname, Action<Stream> load, string openErrorMessage = "が開けません。")
+        {
+            Stream stream;
+            try
+            {
+                stream = FileSystem.OpenText(Config.SRCCompatibilityMode, fname);
+                if (stream == null)
+                {
+                    throw new FileNotFoundException(fname + openErrorMessage, fname);
+                }
+            }
+            catch (Exception ex) when (ShowDataErrorDialogs)
+            {
+                // 元の SRC: line_num = 0（Open で誤り）なら ErrorMessage fname & "が開けません。"
+                Log.LogError(ex, "データのファイルを開けません {File}", fname);
+                GUI?.ErrorMessage(fname + openErrorMessage);
+                TerminateSRC();
+                throw;
+            }
+
+            using (stream)
+            {
+                try
+                {
+                    load(stream);
+                }
+                catch (InvalidSrcDataException ex) when (ShowDataErrorDialogs)
+                {
+                    // 元の SRC: Close #FileNumber して DataErrorMessage err_msg, fname, line_num, line_buf, data_name の後 TerminateSRC
+                    foreach (var error in ex.InvalidDataList)
+                    {
+                        Log.LogError("データの誤りで読み込みを打ち切ります {File}({Line}): {Data}: {Message} {Text}", error.fname, error.line_num, error.dname, error.msg, error.line_buf);
+                        GUI?.DataErrorMessage(error.msg, error.fname, error.line_num, error.line_buf, error.dname);
+                    }
+                    TerminateSRC();
+                    throw;
+                }
+            }
         }
 
         // 作品new_titleのデータを読み込み
@@ -38,7 +105,8 @@ namespace SRCCore
                 TerminateSRC();
             };
             // 元の SRC は読み込みの実行時エラーを「Src.ini内のExtDataPathの値が不正です」で終了する（On Error）。
-            // SRC# はデータの誤りを DataErrors に集め、それ以外の例外はそのまま呼び出し元に返す
+            // データの誤りは各 DataList の Load が受け持つ（元の SRC と同じく、ShowDataErrorDialogs ならダイアログを出し、打ち切る誤りでは終了する）。
+            // SRC# はそれ以外の例外をそのまま呼び出し元に返す
             LoadDataDirectory(fpath);
 
             // ロードのインジケータ表示を行う。

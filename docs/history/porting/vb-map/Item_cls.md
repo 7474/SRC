@@ -33,5 +33,5 @@ VB 版の `SRC/SRC_20121125/Item.cls` の手続きと、C# の対応（[説明](
 | Function IsAvailable | 201 | 218 | `SRCCore/Items/Item.cs` Item.IsAvailable | 一致 | 分岐ごとに突き合わせた（Disable・装備個所・武器クラスと防具クラス・必要技能と不必要技能・「～装備」・パイロット能力付加と強化・エリアス）。ALDList の AliasType のループは AliasData.HasType にした |
 | Sub Dump | 422 | 8 | `SRCCore/SRC.save.cs` SRC.DumpData | SRC#で不要 | JSON のセーブ形式（SRC# の利便性）。ID・ItemName・UnitId・Exist・Activated を保存する |
 | Sub Restore | 432 | 14 | `SRCCore/Items/Item.cs` Item.Restore | SRC#で不要 | JSON から読み込み、SRC の参照だけを戻す |
-| Sub RestoreLinkInfo | 448 | 12 | `SRCCore/Items/Item.cs` Item.Unit | SRC#で不要 | Unit は JSON の UnitId で UList から引く。VB と同じく、ユニットが無ければ空になる |
+| Sub RestoreLinkInfo | 448 | 12 | `SRCCore/Items/Item.cs` Item.Unit | SRC#で不要 | Unit は JSON の UnitId で UList から引く。VB と同じく、ユニットが無ければ空になる。VB はこの後の Unit.RestoreLinkInfo の AddItem0 で、装備しているユニットを持ち主にし直す。C# も Unit.Restore で同じく設定する（#1579） |
 | Sub RestoreParameter | 462 | 9 | （なし） | SRC#で不要 | VB も読み飛ばすだけ |

@@ -1,0 +1,82 @@
+{
+  "terrain": "bush",
+  "count": 71,
+  "exists": "0-29 500-514 550-554 600-604 1000-1015",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 4,
+      "kind": "variant",
+      "description": "明るい草地に小さな茂み（位置違い）",
+      "confidence": "high"
+    },
+    {
+      "from": 5,
+      "to": 5,
+      "kind": "object",
+      "description": "桜の木（ピンクの花）",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 11,
+      "kind": "object",
+      "description": "プール/噴水の水槽。6–8=横3マス,9–10=横2マス,11=細い縁",
+      "confidence": "guess"
+    },
+    {
+      "from": 12,
+      "to": 19,
+      "kind": "object",
+      "description": "公園の設備。12/18–19=街灯付きベンチ,13–14=木のベンチ(2マス),15=ベンチの横,16–17=街灯",
+      "confidence": "guess"
+    },
+    {
+      "from": 20,
+      "to": 23,
+      "kind": "object",
+      "description": "20=大きな木,21=砂の上のサボテン,22=小さな木,23=若い草",
+      "confidence": "high"
+    },
+    {
+      "from": 24,
+      "to": 29,
+      "kind": "decoration",
+      "description": "草地の小さな尾根/盛り土の線（24/27–28=山形,25–26/29=斜めの線）",
+      "confidence": "guess"
+    },
+    {
+      "from": 500,
+      "to": 514,
+      "kind": "style",
+      "style": "olive",
+      "description": "濃い緑の草地版（500–504=茂み,505=大木,506=桜,507=小木,508=若草,509–514=尾根）",
+      "confidence": "high"
+    },
+    {
+      "from": 550,
+      "to": 554,
+      "kind": "variant",
+      "neighbor": "dirt",
+      "description": "赤茶の地面に茂み（位置違い）",
+      "confidence": "high"
+    },
+    {
+      "from": 600,
+      "to": 604,
+      "kind": "variant",
+      "neighbor": "snow",
+      "description": "雪の上の霜のついた茂み（位置違い）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1015,
+      "kind": "style",
+      "style": "overlay",
+      "description": "背景透明の重ね用。1000–1004=茂み,1005=大木,1006=桜,1007=若草,1008=小木,1009–1014=尾根,1015=サボテン",
+      "confidence": "high"
+    }
+  ],
+  "rules": "背景の違いで番号帯が分かれる: 0=明るい草地,500=濃い緑,550=赤茶の地面,600=雪,1000=背景透明"
+}

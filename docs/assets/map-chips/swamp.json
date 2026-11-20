@@ -1,0 +1,557 @@
+{
+  "terrain": "swamp",
+  "count": 93,
+  "exists": "0-92",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 8,
+      "kind": "edge",
+      "style": "water_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "0": [
+          "N",
+          "W"
+        ],
+        "1": [
+          "N"
+        ],
+        "2": [
+          "N",
+          "E"
+        ],
+        "3": [
+          "W"
+        ],
+        "4": [
+          "NE",
+          "SE",
+          "SW",
+          "NW"
+        ],
+        "5": [
+          "E"
+        ],
+        "6": [
+          "S",
+          "W"
+        ],
+        "7": [
+          "S"
+        ],
+        "8": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "青緑の沼の岸（3×3：0=北西,1=北,2=北東,3=西,4=中央,5=東,6=南西,7=南,8=南東）。陸は明るい緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "kind": "edge",
+      "style": "water_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "9": [
+          "N",
+          "W"
+        ],
+        "10": [
+          "N",
+          "E"
+        ]
+      },
+      "description": "斜めの外角：9=北西、10=北東に草地",
+      "confidence": "high"
+    },
+    {
+      "from": 11,
+      "to": 11,
+      "kind": "strip",
+      "style": "water_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "11": [
+          "W",
+          "E"
+        ]
+      },
+      "description": "東西が草地の細い沼",
+      "confidence": "high"
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "kind": "edge",
+      "style": "water_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "12": [
+          "S",
+          "W"
+        ],
+        "13": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "斜めの外角：12=南西、13=南東に草地",
+      "confidence": "high"
+    },
+    {
+      "from": 14,
+      "to": 14,
+      "kind": "strip",
+      "style": "water_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "14": [
+          "W",
+          "E"
+        ]
+      },
+      "description": "東西が草地の沼（別版）",
+      "confidence": "high"
+    },
+    {
+      "from": 15,
+      "to": 16,
+      "kind": "strip",
+      "style": "water_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "15": [
+          "N",
+          "S"
+        ],
+        "16": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "南北が草地の沼",
+      "confidence": "high"
+    },
+    {
+      "from": 17,
+      "to": 17,
+      "kind": "base",
+      "description": "青緑の沼（縁なし）",
+      "confidence": "high"
+    },
+    {
+      "from": 18,
+      "to": 18,
+      "kind": "edge",
+      "style": "water_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "18": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ]
+      },
+      "description": "四方が草地の 1 マスの沼",
+      "confidence": "high"
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "kind": "variant",
+      "description": "枯れ草や岩が散らばる沼（荒れた湿地）",
+      "confidence": "guess"
+    },
+    {
+      "from": 21,
+      "to": 29,
+      "kind": "edge",
+      "style": "mud_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "21": [
+          "N",
+          "W"
+        ],
+        "22": [
+          "N"
+        ],
+        "23": [
+          "N",
+          "E"
+        ],
+        "24": [
+          "W"
+        ],
+        "25": [],
+        "26": [
+          "E"
+        ],
+        "27": [
+          "S",
+          "W"
+        ],
+        "28": [
+          "S"
+        ],
+        "29": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "黒っぽい泥沼の岸（3×3、25=中央）。陸は明るい緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 30,
+      "to": 37,
+      "kind": "edge",
+      "style": "mud_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "30": [
+          "N",
+          "W"
+        ],
+        "31": [
+          "N",
+          "E"
+        ],
+        "32": [
+          "W",
+          "E"
+        ],
+        "33": [
+          "S",
+          "W"
+        ],
+        "34": [
+          "S",
+          "E"
+        ],
+        "35": [
+          "W",
+          "E"
+        ],
+        "36": [
+          "N",
+          "S"
+        ],
+        "37": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "泥沼の斜め外角と水路：30=北西,31=北東,32=東西,33=南西,34=南東,35=東西,36〜37=南北",
+      "confidence": "high"
+    },
+    {
+      "from": 38,
+      "to": 38,
+      "kind": "edge",
+      "style": "mud_bright",
+      "neighbor": "plain",
+      "tiles": {
+        "38": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ]
+      },
+      "description": "四方が草地の 1 マスの泥沼",
+      "confidence": "high"
+    },
+    {
+      "from": 39,
+      "to": 47,
+      "kind": "edge",
+      "style": "water_dark",
+      "neighbor": "plain",
+      "tiles": {
+        "39": [
+          "N",
+          "W"
+        ],
+        "40": [
+          "N"
+        ],
+        "41": [
+          "N",
+          "E"
+        ],
+        "42": [
+          "W"
+        ],
+        "43": [
+          "NE",
+          "SE",
+          "SW",
+          "NW"
+        ],
+        "44": [
+          "E"
+        ],
+        "45": [
+          "S",
+          "W"
+        ],
+        "46": [
+          "S"
+        ],
+        "47": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "青緑の沼の岸（3×3、43=中央）。陸は暗い緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 48,
+      "to": 55,
+      "kind": "edge",
+      "style": "water_dark",
+      "neighbor": "plain",
+      "tiles": {
+        "48": [
+          "N",
+          "W"
+        ],
+        "49": [
+          "N",
+          "E"
+        ],
+        "50": [
+          "W",
+          "E"
+        ],
+        "51": [
+          "S",
+          "W"
+        ],
+        "52": [
+          "S",
+          "E"
+        ],
+        "53": [
+          "W",
+          "E"
+        ],
+        "54": [
+          "N",
+          "S"
+        ],
+        "55": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "斜め外角と水路：48=北西,49=北東,50=東西,51=南西,52=南東,53=東西,54〜55=南北",
+      "confidence": "high"
+    },
+    {
+      "from": 56,
+      "to": 56,
+      "kind": "edge",
+      "style": "water_dark",
+      "neighbor": "plain",
+      "tiles": {
+        "56": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ]
+      },
+      "description": "四方が暗い草地の 1 マスの沼",
+      "confidence": "high"
+    },
+    {
+      "from": 57,
+      "to": 65,
+      "kind": "edge",
+      "style": "mud_dark",
+      "neighbor": "plain",
+      "tiles": {
+        "57": [
+          "N",
+          "W"
+        ],
+        "58": [
+          "N"
+        ],
+        "59": [
+          "N",
+          "E"
+        ],
+        "60": [
+          "W"
+        ],
+        "61": [
+          "N",
+          "E",
+          "S",
+          "W"
+        ],
+        "62": [
+          "E"
+        ],
+        "63": [
+          "S",
+          "W"
+        ],
+        "64": [
+          "S"
+        ],
+        "65": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "泥沼の岸（3×3）で陸は暗い草地。中央の位置 61 は四方が草地の 1 マスの泥沼",
+      "confidence": "high"
+    },
+    {
+      "from": 66,
+      "to": 73,
+      "kind": "edge",
+      "style": "mud_dark",
+      "neighbor": "plain",
+      "tiles": {
+        "66": [
+          "N",
+          "W"
+        ],
+        "67": [
+          "N",
+          "E"
+        ],
+        "68": [
+          "W",
+          "E"
+        ],
+        "69": [
+          "S",
+          "W"
+        ],
+        "70": [
+          "S",
+          "E"
+        ],
+        "71": [
+          "W",
+          "E"
+        ],
+        "72": [
+          "N",
+          "S"
+        ],
+        "73": [
+          "N",
+          "S"
+        ]
+      },
+      "description": "斜め外角と水路：66=北西,67=北東,68=東西,69=南西,70=南東,71=東西,72〜73=南北",
+      "confidence": "high"
+    },
+    {
+      "from": 74,
+      "to": 74,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 75,
+      "to": 83,
+      "kind": "edge",
+      "style": "water_bright_alt",
+      "neighbor": "plain",
+      "tiles": {
+        "75": [
+          "N",
+          "W"
+        ],
+        "76": [
+          "N"
+        ],
+        "77": [
+          "N",
+          "E"
+        ],
+        "78": [
+          "W"
+        ],
+        "79": {
+          "sides": [],
+          "neighbor": "none"
+        },
+        "80": [
+          "E"
+        ],
+        "81": [
+          "S",
+          "W"
+        ],
+        "82": [
+          "S"
+        ],
+        "83": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "青緑の沼の岸の別版（3×3、岸に茶色の縁取り、陸は明るい草地）。中央 79 は Can't Use",
+      "confidence": "guess"
+    },
+    {
+      "from": 84,
+      "to": 92,
+      "kind": "edge",
+      "style": "water_dark_alt",
+      "neighbor": "plain",
+      "tiles": {
+        "84": [
+          "N",
+          "W"
+        ],
+        "85": [
+          "N"
+        ],
+        "86": [
+          "N",
+          "E"
+        ],
+        "87": [
+          "W"
+        ],
+        "88": {
+          "sides": [],
+          "neighbor": "none"
+        },
+        "89": [
+          "E"
+        ],
+        "90": [
+          "S",
+          "W"
+        ],
+        "91": [
+          "S"
+        ],
+        "92": [
+          "S",
+          "E"
+        ]
+      },
+      "description": "同じ別版で陸が暗い草地（3×3）。中央 88 は Can't Use",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "各組は 3×3 の岸（北西→南東の行順）＋斜め外角 4・東西水路 2・南北水路 2・小池 1。0 台=青緑×明るい草地、21 台=泥×明るい草地、39 台=青緑×暗い草地、57 台=泥×暗い草地、75/84 台=別版の 3×3"
+}

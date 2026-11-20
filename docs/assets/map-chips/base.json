@@ -1,0 +1,203 @@
+{
+  "terrain": "base",
+  "count": 123,
+  "exists": "0-119 1000-1002",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "object",
+      "description": "アンテナ塔（0・3）と配管の継ぎ目（1・2）",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 23,
+      "kind": "object",
+      "description": "基地の施設：4–5 格納庫、6–8 コンテナ置き場、9 ヘリポート、10–14 建物、15–17 暗い屋根・シャッター、18–22 縞の大型設備（20 草、21 水に面する）、23 塔",
+      "confidence": "high"
+    },
+    {
+      "from": 24,
+      "to": 32,
+      "kind": "edge",
+      "neighbor": "plain",
+      "description": "灰色の地面にコンクリートの縁石（区画線）の辺・角。草地の縁付き",
+      "confidence": "guess"
+    },
+    {
+      "from": 33,
+      "to": 38,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "建物の屋根（36–38 は横3マスの大きなビル）",
+      "confidence": "guess"
+    },
+    {
+      "from": 39,
+      "to": 46,
+      "kind": "edge",
+      "description": "コンクリートの縁石の辺・角・T字",
+      "confidence": "guess"
+    },
+    {
+      "from": 47,
+      "to": 47,
+      "kind": "object",
+      "description": "黄の縁のハッチ扉",
+      "confidence": "high"
+    },
+    {
+      "from": 48,
+      "to": 49,
+      "kind": "edge",
+      "description": "コンクリートの縁石",
+      "confidence": "guess"
+    },
+    {
+      "from": 50,
+      "to": 53,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "学校・町の区画（建物・プール・グラウンド）",
+      "confidence": "guess"
+    },
+    {
+      "from": 54,
+      "to": 57,
+      "kind": "strip",
+      "neighbor": "connects",
+      "description": "地面を走る配管（パイプライン）",
+      "confidence": "guess"
+    },
+    {
+      "from": 58,
+      "to": 65,
+      "kind": "object",
+      "description": "58 発射台のシャトル、59 赤いロケット、60–61 戦闘機・ジェット機、62 パラボラアンテナ、63 オレンジのコンテナ、64 灰色の設備、65 緑のドーム",
+      "confidence": "high"
+    },
+    {
+      "from": 66,
+      "to": 77,
+      "kind": "strip",
+      "neighbor": "connects",
+      "description": "配管。横・縦、継ぎ目（バルブ）付き、草地の縁付き",
+      "confidence": "guess"
+    },
+    {
+      "from": 78,
+      "to": 83,
+      "kind": "decoration",
+      "description": "滑走路（白線・中央線・端の印）",
+      "confidence": "high"
+    },
+    {
+      "from": 84,
+      "to": 85,
+      "kind": "object",
+      "description": "円筒形のタンク（サイロ）",
+      "confidence": "high"
+    },
+    {
+      "from": 86,
+      "to": 86,
+      "kind": "decoration",
+      "description": "滑走路",
+      "confidence": "high"
+    },
+    {
+      "from": 87,
+      "to": 88,
+      "kind": "strip",
+      "neighbor": "connects",
+      "description": "配管（草地の縁付き）",
+      "confidence": "guess"
+    },
+    {
+      "from": 89,
+      "to": 89,
+      "kind": "decoration",
+      "description": "滑走路の端",
+      "confidence": "high"
+    },
+    {
+      "from": 90,
+      "to": 98,
+      "kind": "edge",
+      "neighbor": "plain",
+      "description": "縁石の辺・角（草地の縁付き）",
+      "confidence": "guess"
+    },
+    {
+      "from": 99,
+      "to": 110,
+      "kind": "strip",
+      "neighbor": "connects",
+      "description": "配管（継ぎ目付き、草地の縁付き）",
+      "confidence": "guess"
+    },
+    {
+      "from": 111,
+      "to": 111,
+      "kind": "object",
+      "description": "水辺の縞の設備",
+      "confidence": "high"
+    },
+    {
+      "from": 112,
+      "to": 113,
+      "kind": "edge",
+      "description": "縁石の角",
+      "confidence": "guess"
+    },
+    {
+      "from": 114,
+      "to": 114,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 115,
+      "to": 116,
+      "kind": "edge",
+      "description": "縁石の角",
+      "confidence": "guess"
+    },
+    {
+      "from": 117,
+      "to": 119,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "横3マスの大きな格納庫ゲート（砂地の上）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1002,
+      "kind": "object",
+      "style": "transparent",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "横3マスの大きな格納庫ゲート（背景なし）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "1000 番台は 117〜119 の背景なし版"
+}

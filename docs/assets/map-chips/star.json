@@ -1,0 +1,86 @@
+{
+  "terrain": "star",
+  "count": 24,
+  "exists": "0-11 1000-1011",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "object",
+      "style": "black",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "オレンジの恒星（太陽）",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 7,
+      "kind": "object",
+      "style": "black",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "水色〜白の恒星",
+      "confidence": "high"
+    },
+    {
+      "from": 8,
+      "to": 11,
+      "kind": "object",
+      "style": "black",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "暗い赤の恒星",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1003,
+      "kind": "object",
+      "style": "blue",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "オレンジの恒星（太陽）（青い宇宙背景）",
+      "confidence": "high"
+    },
+    {
+      "from": 1004,
+      "to": 1007,
+      "kind": "object",
+      "style": "blue",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "水色〜白の恒星（青い宇宙背景）",
+      "confidence": "high"
+    },
+    {
+      "from": 1008,
+      "to": 1011,
+      "kind": "object",
+      "style": "blue",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "暗い赤の恒星（青い宇宙背景）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "1000 番台は青背景の同じ組（番号＋1000）"
+}

@@ -18,8 +18,8 @@ VB 版の `SRC/SRC_20121125/Units.cls` の手続きと、C# の対応（[説明]
 | Function IsDefined2 | 356 | 11 | `SRCCore/Units/Units.cs` Units.IsDefined2 | 一致 |  |
 | Sub Update | 369 | 332 | `SRCCore/Units/Units.cs` Units.Update・Units.CanSplitOnUpdate・Units.CanCombineOnUpdate | 一致 | 母艦から降ろす・修理と治療（費用と表示）・待機に戻す・3 段階の形態の処理・暴走時パイロット・ダミーパイロット・一時的な形態・破棄と非味方の削除・Reset・Update(True) を分岐ごとに突き合わせた。形態が変わる処理と削除は複製した一覧を回す |
 | Sub Save | 704 | 33 | `SRCCore/SRC.save.cs` SRC.SaveData | SRC#で不要 | JSON のセーブ形式 |
-| Sub Load | 740 | 64 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | JSON のセーブ形式。旧形式の ID の変換（SaveDataVersion<10700）は要らない。VB は読み込んだユニットを味方にし FullRecover してから LoadLinkInfo の Update(True) と Reset を呼ぶ。C# は LoadData の中で UList.Update と Reset を呼ぶ。VB の SaveData の前には必ず UList.Update があるので、状態は同じ |
-| Sub LoadLinkInfo | 806 | 84 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | 他形態・パイロット・サポート・アイテムのつながりは JSON（ID）で戻る。旧形式の互換は要らない |
+| Sub Load | 740 | 64 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | JSON のセーブ形式。旧形式の ID の変換（SaveDataVersion<10700）は要らない。VB は読み込んだユニットを味方にし FullRecover してから LoadLinkInfo の Update(True) と Reset を呼ぶ。C# は LoadData の中で UList.Update を呼んでいて、特殊能力を読み込む前に一時的な形態を消す処理が走り、変形の形態などが消えていた。VB と同じく各ユニットの Update(True) と Reset だけを呼ぶようにした（#1579）。VB の SaveData の前には必ず UList.Update があるので、ユニットは味方だけ |
+| Sub LoadLinkInfo | 806 | 84 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | 他形態・パイロット・サポート・アイテムのつながりは JSON（ID）で戻る。アイテムの持ち主は、VB と同じく装備しているユニット（AddItem0）にする。LoadData でアイテムの持ち主を空にしてから、Unit.Restore で設定する（#1579。合体した後などは Item.Unit が空のまま装備していることがある）。VB は持ち主が空のアイテムだけを CurrentForm に AddItem0 するが、C# は装備していた形態に付け、いくつかのユニットが同じアイテムを持つときは後のユニットが持ち主になる（JSON は装備していた形態で書くので、ふつうは同じ）。旧形式の互換は要らない |
 | Sub Dump | 893 | 9 | `SRCCore/SRC.save.cs` SRC.DumpData | SRC#で不要 | JSON のセーブ形式 |
 | Sub Restore | 904 | 20 | `SRCCore/Units/Units.cs` Units.Restore | SRC#で不要 | JSON から読み込み、各ユニットの SRC の参照を戻す |
 | Sub RestoreLinkInfo | 926 | 10 | `SRCCore/SRC.save.cs` SRC.RestoreData | SRC#で不要 | JSON のセーブ形式。各ユニットの Unit.RestoreLinkInfo は呼んでいる |

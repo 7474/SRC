@@ -2,7 +2,7 @@
   "name": "src-vscode",
   "displayName": "SRC# Authoring",
   "description": "Authoring support for SRC (Simulation RPG Construction) event scripts (*.eve): diagnostics, outline, go to definition, completion, an event debugger with the game screen, a control panel and a settings page. Installs the srcsharp .NET tool for you.",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "publisher": "koudenpa",
   "icon": "media/icon.png",
   "license": "GPL-3.0-or-later",
@@ -36,7 +36,10 @@
   },
   "activationEvents": [
     "onDebugResolve:srcsharp",
-    "workspaceContains:**/*.eve"
+    "workspaceContains:**/*.eve",
+    "onCustomEditor:srcsharp.mapEditor",
+    "onCommand:srcsharp.newScenario",
+    "onUri"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -121,6 +124,29 @@
           "default": "",
           "description": "SRC 本体のフォルダ（Lib や共通の Data を探す）。空ならシナリオのフォルダの親から探す"
         },
+        "srcsharp.rules": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "src",
+              "gsc-robo",
+              "gsc-ext",
+              "robodun"
+            ],
+            "enumDescriptions": [
+              "SRC の仕様と食い違うデータ（既定）",
+              "GSC データパックのロボ基準の書き方の決まり",
+              "GSC データパックの拡張基準の書き方の決まり",
+              "ロボダン（ロボッとダンジョンＢ！）の UnitChecker.eve の観点（ロボダンの基準）"
+            ]
+          },
+          "uniqueItems": true,
+          "default": [
+            "src"
+          ],
+          "description": "データ（robot.txt・pilot.txt など）に動かす規則のグループ。保存したときに、シナリオの Data のフォルダを srcsharp lint --rules と同じく調べ、エディタと問題パネルに出す。空なら規則を動かさない（読み込みの誤りは出す）"
+        },
         "srcsharp.language": {
           "type": "string",
           "default": "",
@@ -183,6 +209,11 @@
           "type": "boolean",
           "default": true,
           "description": "SRC# のデバッグを始めたら画面のビューを開く"
+        },
+        "srcsharp.outlineFindings": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "イベントを開いた・保存したときに、シナリオの見通しの「気づいたこと」（起きない出来事・設定するだけの変数・1 文字違いの変数・勝ちの終わり方が無い話）を、問題パネルに情報として出す。シナリオ全体を調べるので、大きなシナリオで重ければ切る（変えたら Language Server を再起動）"
         },
         "srcsharp.logLevel": {
           "type": "string",
@@ -408,6 +439,53 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "srcsharp.newScenario",
+        "title": "新しいシナリオを作る",
+        "category": "SRC#"
+      },
+      {
+        "command": "srcsharp.showPreview",
+        "title": "データのプレビュー",
+        "category": "SRC#",
+        "icon": "$(open-preview)"
+      },
+      {
+        "command": "srcsharp.trialBattle",
+        "title": "試し戦闘",
+        "category": "SRC#",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "srcsharp.playFromEpisode",
+        "title": "この話から遊ぶ（前の話までの状態で）",
+        "category": "SRC#",
+        "icon": "$(debug-step-over)"
+      },
+      {
+        "command": "srcsharp.addEvent",
+        "title": "出来事を足す（きっかけ・会話・撤退をフォームで選ぶ）",
+        "category": "SRC#",
+        "icon": "$(add)"
+      },
+      {
+        "command": "srcsharp.editEvent",
+        "title": "出来事を直す（カーソルのある出来事をフォームで直す）",
+        "category": "SRC#",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "srcsharp.showOutline",
+        "title": "シナリオの見通し（出来事・台本・変数・登場人物）",
+        "category": "SRC#",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "srcsharp.playtest",
+        "title": "この話の強さを確かめる（自動で何回か遊ぶ）",
+        "category": "SRC#",
+        "icon": "$(pulse)"
+      },
+      {
         "command": "srcsharp.lint",
         "title": "ワークスペースを lint する",
         "category": "SRC#"
@@ -427,6 +505,48 @@
         "title": "開いているイベントを自動プレイ（画面付き・早送り）",
         "category": "SRC#",
         "icon": "$(run-all)"
+      },
+      {
+        "command": "srcsharp.showOnMap",
+        "title": "イベントの座標をマップで見る",
+        "category": "SRC#",
+        "icon": "$(location)"
+      },
+      {
+        "command": "srcsharp.showEpisodeFlow",
+        "title": "話のつながりの図を表示",
+        "category": "SRC#",
+        "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "srcsharp.showEventFlow",
+        "title": "イベントの流れの図を表示",
+        "category": "SRC#",
+        "icon": "$(type-hierarchy)"
+      },
+      {
+        "command": "srcsharp.previewTalk",
+        "title": "会話をプレビュー",
+        "category": "SRC#",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "srcsharp.previewAnimation",
+        "title": "戦闘アニメ・特殊効果をプレビュー",
+        "category": "SRC#",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "srcsharp.replayAnimationPreview",
+        "title": "戦闘アニメ・特殊効果をもう一度再生",
+        "category": "SRC#",
+        "icon": "$(debug-rerun)"
+      },
+      {
+        "command": "srcsharp.showAssets",
+        "title": "素材の一覧（揃っているか）を表示",
+        "category": "SRC#",
+        "icon": "$(file-media)"
       }
     ],
     "menus": {
@@ -448,6 +568,10 @@
         }
       ],
       "debug/toolBar": [
+        {
+          "command": "srcsharp.replayAnimationPreview",
+          "when": "debugType == srcsharp"
+        },
         {
           "command": "srcsharp.reload",
           "when": "debugType == srcsharp"
@@ -492,6 +616,42 @@
           "when": "editorLangId == src-eve"
         },
         {
+          "command": "srcsharp.playtest",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.playFromEpisode",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.addEvent",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.editEvent",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.showOnMap",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.previewTalk",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.showEventFlow",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.previewAnimation",
+          "when": "editorLangId == src-eve || resourceFilename =~ /^(animation|ext_animation|effect)\\.txt$/i"
+        },
+        {
+          "command": "srcsharp.replayAnimationPreview",
+          "when": "debugType == srcsharp"
+        },
+        {
           "command": "srcsharp.reload",
           "when": "debugType == srcsharp"
         },
@@ -499,8 +659,79 @@
           "command": "srcsharp.cancelReload",
           "when": "debugType == srcsharp"
         }
+      ],
+      "editor/context": [
+        {
+          "command": "srcsharp.previewTalk",
+          "when": "editorLangId == src-eve",
+          "group": "navigation@1"
+        },
+        {
+          "command": "srcsharp.showEventFlow",
+          "when": "editorLangId == src-eve",
+          "group": "navigation@2"
+        },
+        {
+          "command": "srcsharp.previewAnimation",
+          "when": "editorLangId == src-eve || resourceFilename =~ /^(animation|ext_animation|effect)\\.txt$/i",
+          "group": "navigation@3"
+        },
+        {
+          "command": "srcsharp.showOnMap",
+          "when": "editorLangId == src-eve",
+          "group": "navigation@4"
+        },
+        {
+          "command": "srcsharp.editEvent",
+          "when": "editorLangId == src-eve",
+          "group": "navigation@5"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "srcsharp.previewTalk",
+          "when": "resourceLangId == src-eve",
+          "group": "navigation"
+        },
+        {
+          "command": "srcsharp.showEventFlow",
+          "when": "resourceLangId == src-eve",
+          "group": "navigation"
+        },
+        {
+          "command": "srcsharp.showEpisodeFlow",
+          "when": "resourceLangId == src-eve",
+          "group": "navigation"
+        },
+        {
+          "command": "srcsharp.previewAnimation",
+          "when": "resourceLangId == src-eve || resourceFilename =~ /^(animation|ext_animation|effect)\\.txt$/i",
+          "group": "navigation"
+        },
+        {
+          "command": "srcsharp.showPreview",
+          "when": "resourceFilename =~ /^(robot|unit|pilot|pilot_message|pilot_dialog)\\.txt$/i",
+          "group": "navigation"
+        },
+        {
+          "command": "srcsharp.trialBattle",
+          "when": "resourceFilename =~ /^(robot|unit|pilot|pilot_message|pilot_dialog)\\.txt$/i",
+          "group": "navigation"
+        }
       ]
-    }
+    },
+    "customEditors": [
+      {
+        "viewType": "srcsharp.mapEditor",
+        "displayName": "SRC#Studio マップ作成ツール",
+        "selector": [
+          {
+            "filenamePattern": "*.map"
+          }
+        ],
+        "priority": "default"
+      }
+    ]
   },
   "scripts": {
     "check-types": "tsc -p ./ --noEmit",
@@ -518,10 +749,10 @@
     "@types/vscode": "~1.91.0",
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.1.0",
-    "@vscode/vsce": "^4.1.0",
+    "@vscode/vsce": "^4.1.1",
     "esbuild": "^0.28.2",
     "mocha": "^12.0.3",
-    "ovsx": "^1.3.0",
+    "ovsx": "^1.4.0",
     "typescript": "~7.0.2"
   },
   "overrides": {

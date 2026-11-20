@@ -39,6 +39,8 @@ namespace SRCSharpWeb.Tests
         [DataRow("C.SRCS", true)]
         [DataRow("test.eve", false)]
         [DataRow("a.srcs.bak", false)]
+        [DataRow("old/a.src", true)]
+        [DataRow("a.src.bak", false)]
         public void IsSaveFile(string name, bool expected)
         {
             Assert.AreEqual(expected, SaveSync.IsSaveFile(name));

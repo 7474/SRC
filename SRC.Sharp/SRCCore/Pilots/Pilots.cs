@@ -15,7 +15,7 @@ namespace SRCCore.Pilots
 {
     // 作成されたパイロットのデータを管理するリストクラス
     [JsonObject(MemberSerialization.OptIn)]
-    public class Pilots
+    public partial class Pilots
     {
         // パイロット一覧
         [JsonProperty]

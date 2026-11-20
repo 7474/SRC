@@ -1,0 +1,147 @@
+{
+  "terrain": "slope",
+  "count": 192,
+  "exists": "0-65 500-535 1500-1514 1600-1605 1700-1705 1800-1817 1850-1867 1900-1920 5000-5005",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 31,
+      "kind": "object",
+      "description": "丘の斜面・坂道（明るい草地と赤茶の地面）。0/12–14=赤茶の地面の丸太の段(東西方向),1/6–11/29=草地の石ふち付き坂(東西方向),2–3/20/23/26–28/30=草地の坂(南北方向),4–5/18–19/21–22/24–25=赤茶の地面の坂(南北方向),15–17/31=赤茶の地面の坂(東西方向)",
+      "confidence": "guess"
+    },
+    {
+      "from": 32,
+      "to": 32,
+      "kind": "object",
+      "description": "灰色の石段",
+      "confidence": "high"
+    },
+    {
+      "from": 33,
+      "to": 40,
+      "kind": "object",
+      "neighbor": "sea",
+      "description": "水辺に降りる坂。33/36/39/40=東西方向で南(または北)が水,34–35/37–38=南北方向で横が水(37–38 は深い水)",
+      "confidence": "guess"
+    },
+    {
+      "from": 41,
+      "to": 41,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 42,
+      "to": 49,
+      "kind": "object",
+      "description": "草地の広い岩の斜面の組（42–44=上段,45–46=中段,47–49=下段）",
+      "confidence": "guess"
+    },
+    {
+      "from": 50,
+      "to": 50,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 51,
+      "to": 61,
+      "kind": "object",
+      "description": "51–53=草地の坂の上端,54–61=赤茶の地面の広い斜面の組（42–49 と同じ形）",
+      "confidence": "guess"
+    },
+    {
+      "from": 62,
+      "to": 62,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 63,
+      "to": 65,
+      "kind": "object",
+      "description": "赤茶の地面の坂(東西方向)の端",
+      "confidence": "guess"
+    },
+    {
+      "from": 500,
+      "to": 531,
+      "kind": "style",
+      "style": "olive",
+      "description": "濃い緑の草地版の坂（0 番台の草地の坂・水辺の坂・広い斜面に対応）",
+      "confidence": "guess"
+    },
+    {
+      "from": 532,
+      "to": 532,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 533,
+      "to": 535,
+      "kind": "style",
+      "style": "olive",
+      "description": "濃い緑版の坂の上端",
+      "confidence": "guess"
+    },
+    {
+      "from": 1500,
+      "to": 1514,
+      "kind": "object",
+      "description": "屋内・公園の階段。1500–1502=白い階段,1503–1506=赤じゅうたんの階段(金の手すり),1507=灰色の石段,1508–1514=緑の公園の階段(手すり付き、向き違い)",
+      "confidence": "guess"
+    },
+    {
+      "from": 1600,
+      "to": 1605,
+      "kind": "object",
+      "description": "暗い紺色の金属の階段(宇宙基地風)",
+      "confidence": "guess"
+    },
+    {
+      "from": 1700,
+      "to": 1705,
+      "kind": "object",
+      "description": "灰色のコンクリートの階段(向き違い)",
+      "confidence": "guess"
+    },
+    {
+      "from": 1800,
+      "to": 1817,
+      "kind": "object",
+      "style": "green_stone",
+      "description": "緑がかった石の階段。1800–1806=横段(手すり側の違い),1807–1810/1813–1815=斜めの階段側壁,1811–1812/1816–1817=縦段",
+      "confidence": "guess"
+    },
+    {
+      "from": 1850,
+      "to": 1867,
+      "kind": "style",
+      "style": "beige",
+      "description": "ベージュの石の階段（並びは 1800–1817 と同じ）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1900,
+      "to": 1920,
+      "kind": "style",
+      "style": "olive",
+      "description": "オリーブ色の石の階段（並びは 1800 番台と同じ、1918–1920 追加）",
+      "confidence": "guess"
+    },
+    {
+      "from": 5000,
+      "to": 5005,
+      "kind": "object",
+      "description": "背景透明の横から見た階段の側面(三角)。5000–5001=緑灰,5002–5003=ベージュ,5004–5005=オリーブ、偶数=右下がり/奇数=右上がり",
+      "confidence": "guess"
+    }
+  ],
+  "rules": "0 番台=明るい草地、500 番台=濃い緑の草地。1500 番台以降は屋内の階段で、1800/1850/1900 番台は同じ並びの色違い"
+}

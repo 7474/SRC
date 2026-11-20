@@ -53,7 +53,7 @@ flowchart LR
 |---|---|---|---|
 | `CI.yml` | PR・master への push | ビルドとテスト、版と案内の確かめ（`release-check`）。結果を `ci-passed` にまとめる。push のときだけカバレッジを計る（`coverage`） | `ci-passed`（ブランチ保護の必須チェック）・Mackerel（サービス `SRCS` のカバレッジ） |
 | `Packages.yml` | master への push（`SRC.Sharp/` を変えたとき）・手動 | 配る形で作って起動を確かめる。SRC#Avalonia の単一ファイル（linux-x64・win-x64 は `--smoke` で起動、win-arm64・osx は作るだけ）と、srcsharp の pack → tool install → `--version`・`lint`（#1359） | なし（確かめるだけ。Actions の成果物に 7 日残す） |
-| `CD-pages.yml` | master への push | データビューア（`SRCDataViewer`）をルートに、SRC#Web を `web/` に置いて発行する | GitHub Pages（https://7474.github.io/SRC/ ・ https://7474.github.io/SRC/web/ ） |
+| `CD-pages.yml` | master への push | データビューア（`SRCDataViewer`）をルートに、SRC#Web を `web/` に、SRC#Studio（マップ作成ツール）を `studio/` に置いて発行する | GitHub Pages（https://7474.github.io/SRC/ ・ https://7474.github.io/SRC/web/ ・ https://7474.github.io/SRC/studio/ ） |
 | `CD-swa-dataviewer.yml` | master への push・PR（`SRC.Sharp/` を変えたとき） | `CD-pages.yml` と同じ構成を発行する。PR ではプレビュー環境に出して E2E を流し、PR が閉じたら閉じる | Static Web Apps（https://srcv.7474.jp/ ） |
 | `CD-swa-help.yml` | master への push・PR（`SRC.Sharp.Help/` を変えたとき） | ヘルプ（Jekyll）を発行する。プレビュー環境の扱いは上と同じ | Static Web Apps（https://srch.7474.jp/ ） |
 | `CD-swa-cleanup-previews.yml` | 毎日 03:17 JST・手動・このワークフローを変えた PR | PR が閉じたのに残っているプレビュー環境を閉じる | Static Web Apps |
@@ -69,14 +69,14 @@ flowchart LR
 
 | 公開先 | 中身 | 更新されるとき | 版 |
 |---|---|---|---|
-| https://src.koudenpa.net/ | SRC#Web・データビューア・lint（SRCLintWeb）を組み込んだサイト | 7474/SRC-Site の配信のとき。その時点の 7474/SRC の master を取り込む（下の「7474/SRC-Site とのつながり」） | master |
+| https://src.koudenpa.net/ | SRC#Web・データビューア・lint（SRCLintWeb）・SRC#Studio を組み込んだサイト | 7474/SRC-Site の配信のとき。その時点の 7474/SRC の master を取り込む（下の「7474/SRC-Site とのつながり」） | master |
 | https://7474.github.io/SRC/ ・ `/web/` | データビューア・SRC#Web | master への push ごと | master（開発版） |
 | https://srcv.7474.jp/ ・ `/web/` | データビューア・SRC#Web | `SRC.Sharp/` を変えた master への push ごと | master（開発版） |
 | https://srch.7474.jp/ | ヘルプ | `SRC.Sharp.Help/` を変えた master への push ごと | master |
 | GitHub Releases | SRC#Form・SRC#Avalonia・SRC#Web の zip、VS Code 拡張の .vsix、リリースの案内 | タグの push | タグ |
 | NuGet | `SRCCore`・`SRCDataLinter`・`SRCSharpTools`（`srcsharp`） | タグの push | タグ |
 | Docker Hub | `koudenpa/srcdatalinter:<タグ>`・`latest` | タグの push | タグ |
-| GitHub Releases の `dev`（プレリリース） | 開発版：SRC#Avalonia・srcsharp の nupkg・VS Code 拡張の .vsix・SRC#Web・lint・データビューアの zip、`manifest.json` | `SRC.Sharp/` を変えた master への push ごと（`Packages.yml` の起動の確かめが通ったとき。添付を入れ替える） | master（開発版。[バージョンの管理](./versioning.md)の「開発版」） |
+| GitHub Releases の `dev`（プレリリース） | 開発版：SRC#Avalonia・srcsharp の nupkg・VS Code 拡張の .vsix・SRC#Web・lint・データビューア・SRC#Studio の zip、`manifest.json` | `SRC.Sharp/` を変えた master への push ごと（`Packages.yml` の起動の確かめが通ったとき。添付を入れ替える） | master（開発版。[バージョンの管理](./versioning.md)の「開発版」） |
 | Docker Hub | `koudenpa/srcdatalinter:dev` | 同上 | master（開発版） |
 | Visual Studio Marketplace・Open VSX | `koudenpa.src-vscode` | タグの push（公開済みの版なら飛ばす） | タグ |
 | Mackerel（サービス `SRCS`） | カバレッジ（行・分岐） | master への push ごと | master |
@@ -90,6 +90,7 @@ flowchart LR
 | SRC#Web（`SRCSharpWeb`） | `/play/` で遊ぶ | SRC-Site の配信（main への push・PR・手動） |
 | lint（`SRCLintWeb`） | シナリオの投稿の前の確かめ | 同上 |
 | データビューア（`SRCDataViewer`） | `/viewer/` でシナリオ・共有パックを見る | 同上 |
+| SRC#Studio（`SRCStudio.zip`） | `/studio/` でかんたん作成・マップ作成ツール。隣の `studio.json` を SRC-Site の SRC#Web（`/play/`）と素材に書き換える（[かんたん作成](./tools/quick-create.md)） | 同上 |
 | `srcsharp`（`SRCSharpTools`） | サンドボックスのシナリオを画面なしで通す | SRC-Site のサンドボックスの CI（`sandbox/` を変えたとき・毎週） |
 
 取り込む 7474/SRC の版は、SRC-Site の変数 `SRC_REF`（既定は `master`）で決まる。**7474/SRC をマージしても、src.koudenpa.net には SRC-Site が次に配信するまで入らない。** すぐに入れるには、SRC-Site の `Deploy` ワークフローを手動で動かす（配信先 `production`）。いま配信している版は https://src.koudenpa.net/play/version.txt で分かる。

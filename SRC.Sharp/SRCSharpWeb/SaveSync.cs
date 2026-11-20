@@ -6,7 +6,7 @@ using System.Linq;
 namespace SRCSharpWeb
 {
     /// <summary>
-    /// ゲームがシナリオのフォルダに書いたセーブデータ（.srcs・.srcq）と設定ファイル（Src.ini・srcs.json）を受け取る。
+    /// ゲームがシナリオのフォルダに書いたセーブデータ（.srcs・.srcq。取り込んだ元の SRC のセーブデータ .src も）と設定ファイル（Src.ini・srcs.json）を受け取る。
     /// 受け取ったものはブラウザ（IndexedDB）に保存し、次にシナリオを開くときに戻す。
     /// 設定ファイルは、プレイ中に変えたシナリオの設定（SRCCore の ScenarioConfig が書き戻す）をシナリオごとに残すため
     /// （元の SRC がシナリオの Src.ini に書き込むのと同じ）。
@@ -14,7 +14,8 @@ namespace SRCSharpWeb
     /// </summary>
     public sealed class SaveSync
     {
-        private static readonly string[] Extensions = { ".srcs", ".srcq" };
+        // .src は元の SRC のセーブデータ（取り込んで続きを遊ぶ。#1577）
+        private static readonly string[] Extensions = { ".srcs", ".srcq", ".src" };
         // SRCCore.Config.SrcIni.FileName・ScenarioConfig.JsonFileName
         private static readonly string[] SettingsFiles = { "Src.ini", "srcs.json" };
         private readonly HashSet<string> written = new HashSet<string>(StringComparer.Ordinal);

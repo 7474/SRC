@@ -449,12 +449,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            str_result = GeneralLib.FormatNum(lnum + rnum);
+                            str_result = GeneralLib.FormatNum(VBMath.Checked(lnum + rnum));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            num_result = lnum + rnum;
+                            num_result = VBMath.Checked(lnum + rnum);
                         }
 
                         break;
@@ -483,12 +483,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            str_result = GeneralLib.FormatNum(lnum - rnum);
+                            str_result = GeneralLib.FormatNum(VBMath.Checked(lnum - rnum));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            num_result = lnum - rnum;
+                            num_result = VBMath.Checked(lnum - rnum);
                         }
 
                         break;
@@ -517,12 +517,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            str_result = GeneralLib.FormatNum(lnum * rnum);
+                            str_result = GeneralLib.FormatNum(VBMath.Checked(lnum * rnum));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            num_result = lnum * rnum;
+                            num_result = VBMath.Checked(lnum * rnum);
                         }
 
                         break;
@@ -550,7 +550,7 @@ namespace SRCCore.Expressions
 
                         if (rnum != 0d)
                         {
-                            num_result = lnum / rnum;
+                            num_result = VBMath.Checked(lnum / rnum);
                         }
                         else
                         {
@@ -592,7 +592,8 @@ namespace SRCCore.Expressions
 
                         if (rnum != 0d)
                         {
-                            num_result = VBMath.IntDiv(lnum, VBMath.CLng(rnum));
+                            // VB の \ は、割る前に両辺を Long に丸める（Mod と同じ）。Long に収まらなければエラー（あふれ）
+                            num_result = VBMath.CLng(lnum) / VBMath.CLng(rnum);
                         }
                         else
                         {
@@ -669,12 +670,12 @@ namespace SRCCore.Expressions
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            str_result = GeneralLib.FormatNum(Math.Pow(lnum, rnum));
+                            str_result = GeneralLib.FormatNum(VBMath.Checked(Math.Pow(lnum, rnum)));
                         }
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            num_result = Math.Pow(lnum, rnum);
+                            num_result = VBMath.Checked(Math.Pow(lnum, rnum));
                         }
 
                         break;
@@ -1416,6 +1417,7 @@ namespace SRCCore.Expressions
         }
 
         // 項を評価
+        // 「"…"」「`…`」「(…」の項を数値として求められたときは、VB と同じく StrToDbl（数値に読めなければ 0。NaN・無限大も 0）で数値にする（7474/SRC#1556）
         public ValueType EvalTerm(string expr, ValueType etype, out string str_result, out double num_result)
         {
             ValueType EvalTermRet = ValueType.UndefinedType;
@@ -1461,7 +1463,7 @@ namespace SRCCore.Expressions
 
                         if (etype != ValueType.StringType)
                         {
-                            num_result = Conversions.ToDouble(str_result);
+                            num_result = GeneralLib.StrToDbl(str_result);
                         }
 
                         EvalTermRet = ValueType.StringType;
@@ -1488,7 +1490,7 @@ namespace SRCCore.Expressions
                             str_result = expr;
                             if (etype != ValueType.StringType)
                             {
-                                num_result = Conversions.ToDouble(str_result);
+                                num_result = GeneralLib.StrToDbl(str_result);
                             }
 
                             EvalTermRet = ValueType.StringType;
@@ -1543,7 +1545,7 @@ namespace SRCCore.Expressions
 
                         if (etype != ValueType.StringType)
                         {
-                            num_result = Conversions.ToDouble(str_result);
+                            num_result = GeneralLib.StrToDbl(str_result);
                         }
 
                         EvalTermRet = ValueType.StringType;

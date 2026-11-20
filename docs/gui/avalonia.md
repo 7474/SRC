@@ -62,7 +62,7 @@ flowchart LR
 
 ### 表示上の違い
 
-- **フォント**: ＭＳ 明朝・ＭＳ ゴシックが無い環境では、等幅の指定（ＭＳ 明朝・ＭＳ ゴシック）を Noto Sans Mono CJK JP、明朝系のプロポーショナル指定を Noto Serif CJK JP、それ以外を Noto Sans CJK JP で描く。空白で桁を揃えている表示（ステータス・武器一覧など）がずれないよう、等幅の指定は必ず等幅フォントにする。行の高さは ＭＳ 明朝と同じ 1em として扱う（Noto CJK の行の高さ 1.448em のままだと行がずれて下が見切れる）
+- **フォント**: ＭＳ 明朝・ＭＳ ゴシックが無い環境では、等幅の指定（ＭＳ 明朝・ＭＳ ゴシック）を Noto Sans Mono CJK JP、明朝系のプロポーショナル指定を Noto Serif CJK JP、それ以外を Noto Sans CJK JP で描く。空白で桁を揃えている表示（ステータス・武器一覧など）がずれないよう、等幅の指定は必ず等幅フォントにし、さらに文字ごとに Shift_JIS のバイト数の升目（半角 = 全角の半分）に置いて描き・測る（`SkiaFonts.DrawText`・`MeasureText`。代わりの書体はギリシャ文字・キリル文字・°・引用符などを半角でも全角でもない幅で描くため。7474/SRC#1650）。行の高さは ＭＳ 明朝と同じ 1em として扱う（Noto CJK の行の高さ 1.448em のままだと行がずれて下が見切れる）
 - **文字の縦位置**: 元の SRC（GDI）は指定位置を文字の上端とし、ベースラインをフォントの ascent（OS/2 の usWinAscent）だけ下げる。行の高さ（`TextHeight`）は ascent + descent。代わりのフォントで描く場合も、指定されたフォント名の Windows での寸法（`SRCRender/Compat/WindowsFontMetrics.cs`）で配置する。メイリオは行の高さが約 1.5em と大きく、これを使わないと文字の位置や `TextHeight` による縦の中央寄せがずれる
     - 表の値の一部は公開情報からの暫定値（`Verified = false`）。Windows では `SRCRenderTests` の `WindowsFontMetricsTests.MatchesInstalledWindowsFonts` が実フォントを GDI+（`FontFamily.GetCellAscent` など）で測って照合し、表に貼れる形で `TestResults/fontmetrics.txt` に書き出す（CI の Windows ジョブの成果物 `windows-font-metrics`）。暫定値が残っている間はこのテストは Inconclusive になる
     - 確かめる手順: Windows で `dotnet test SRC.Sharp/SRCRenderTests --filter MatchesInstalledWindowsFonts` を実行し、書き出された値で表を更新して `Verified` を `true` にする

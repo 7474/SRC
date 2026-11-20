@@ -52,7 +52,7 @@ namespace SRCRender.Tests
                 "検証, けんしょう, 男性, 汎用, AAAA, 100",
                 "特殊能力なし",
                 "120, 130, 140, 150, 160, 170, 普通",
-                "ＳＰ, 10, 根性, 1",
+                "ＳＰ, 10",
                 "-.bmp, -.mid",
                 "");
             workspace.Write("test.eve",

@@ -17,12 +17,26 @@
     <value>srcsharp: SRC# 資料與劇本製作輔助工具
 
 用法:
-  srcsharp lint &lt;目錄或檔案&gt;... [--format text|sarif] [--output 檔案]
+  srcsharp lint &lt;目錄或檔案&gt;... [--format text|sarif] [--output 檔案] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path SRC 資料夾]
       檢查資料（*.txt）與事件（*.eve）。發現問題時結束代碼為 1
   srcsharp play &lt;事件檔案&gt; [--script 檔案.play] [--out 目錄] [--app-path SRC資料夾] [--scenario-root 劇本資料夾] [--steps 步數] [--skip-wait]
       在無畫面狀態下執行劇本。未指定 --script 時，自動推進訊息，選項選擇第一項。指定 --skip-wait 時略過固定等待（動畫、訊息、Wait）。--scenario-root 指定劇本資料夾（Data、Lib、Continue 的基準）；未指定時，位於沒有 Data 的子資料夾中的事件檔案使用最近的含 Data 的上層資料夾。
   srcsharp balance &lt;目錄或檔案&gt;... [--format md|csv] [--output 檔案]
       列出單位資料的能力值與異常值
+  srcsharp new &lt;資料夾&gt; [--title 標題] [--episodes n] [--app-path SRC 資料夾] [--force]
+      建立新劇本的範本（第一話的事件、地圖與資料，自動遊玩步驟，VS Code 設定，CI）。已有的檔案不覆寫（--force 覆寫）--episodes 為 2 以上時，建立帶幕間（intermission）的多話劇本。
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      追蹤事件之間的 Continue、下一關、Exec、IntermissionCommand、Load、GameClear，輸出各話之間的連接圖（預設是目前資料夾）
+  srcsharp assets [劇本資料夾] [--format md|json|readme] [--output 檔案] [--app-path SRC 資料夾] [--ext-data 資料夾] [--ext-data2 資料夾] [--fail-on-missing]
+      列出資料和事件引用的圖像、聲音、地圖，以及引用位置和依 SRC 相同順序（劇本 → 擴充資料 → SRC 本體）尋找的結果。也列出用運算式組成的名稱和未被引用的素材。readme 輸出寫入 README 的「所需素材」草稿。--fail-on-missing 在有找不到的素材時以結束代碼 1 結束（不涉及素材的取得和再散布）
+  srcsharp trial &lt;劇本資料夾&gt; [--unit 機體] [--pilot 駕駛員] [--enemy 機體] [--enemy-pilot 駕駛員] [--level 數] [--enemies 數] [--list]
+      在 .srcsharp/trial/ 建立讓劇本資料中的機體與駕駛員和敵人戰鬥的試戰事件，並輸出其路徑（以 play 或除錯器執行）。--list 以 JSON 輸出資料中的機體與駕駛員
+  srcsharp event-flow &lt;事件檔案&gt; [--format md|mmd|json] [--output 檔案] [--app-path SRC 資料夾] [--scenario-root 劇本資料夾]
+      追蹤單一事件檔案（及其 include 與 Require）中的觸發器、標籤、Call、Goto、Require，並輸出事件流程圖
+  srcsharp talk-preview &lt;事件檔案&gt; [--line 行] [--block 編號] [--stdin] [--input 檔案] [--format json|png] [--out 目錄] [--output 檔案] [--no-images] [--app-path SRC 資料夾] [--scenario-root 劇本資料夾]
+      使用遊戲訊息視窗繪製 Talk 與 AutoTalk 區塊，輸出依頁拆分的 PNG 圖片或 JSON
+  srcsharp anime-preview &lt;檔案或資料夾&gt; [--list] [--file 檔案] [--line 行] [--kind animation|ext_animation|effect|subroutine] [--target 名稱] [--situation 場合] [--spec 指定] [--attacker 機體] [--attacker-pilot 駕駛員] [--defender 機體] [--defender-pilot 駕駛員] [--play-once] [--out 圖片檔案] [--app-path SRC 資料夾] [--scenario-root 劇本資料夾]
+      產生用於以固定攻擊方與防禦方播放單一 animation.txt、ext_animation.txt、effect.txt 定義或通用戰鬥動畫的準備檔案（.srcsharp/preview/）。--list 以 JSON 輸出清單，--play-once 播放一次
   srcsharp lsp
       Language Server（標準輸入輸出）
   srcsharp dap
@@ -48,6 +62,9 @@
   <data name="LintSummary" xml:space="preserve">
     <value>已檢查 {0} 個檔案，發現 {1} 個問題</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>未知的規則群組：{0}（應為 {1} 之一）</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>請指定一個事件檔案</value>
   </data>
@@ -68,5 +85,59 @@
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>未知的搜尋方法：{0}（hybrid、bm25 或 vector）</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>請指定一個用於建立劇本的資料夾</value>
+  </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>話數必須是 1 以上的整數: {0}</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>已在 {0} 建立範本（{1} 個檔案）</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>已略過既有檔案：{0}（使用 --force 覆寫）</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>最多只能指定一個劇本資料夾或事件檔案</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>找不到劇本資料夾或事件檔案: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>未知的輸出格式: {0}（md、mmd 或 json）</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>最多只能指定一個劇本資料夾</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>找不到劇本資料夾: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>未知的輸出格式: {0}（md、json 或 readme）</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>素材 {0} 個（找不到 {1}）·無法確認的引用 {2} 處·未引用的素材 {3} 個</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>請指定一個劇本資料夾</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>已建立試戰：{0}/{1} 對 {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>找不到要解析的事件檔案: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>請指定一個要預覽的事件檔案</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>已將 {0} 頁圖片寫入 {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>找不到目標資料/事件檔案或資料夾: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>找不到可預覽的戰鬥動畫或特殊效果定義</value>
   </data>
 </root>

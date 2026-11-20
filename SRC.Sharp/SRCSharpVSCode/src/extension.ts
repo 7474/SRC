@@ -1,13 +1,29 @@
+import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import { spawn } from 'child_process';
 import * as vscode from 'vscode';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { pickAppPath, suggestAppPath } from './appPath';
-import { HotReload } from './hotReload';
+import { AssetReportData, AssetsPanel } from './assets';
+import { EventFlowGraphData, EventFlowPanel } from './eventFlow';
+import { EpisodeFlowPanel, ScenarioFlowData } from './flow';
+import { MapEditorProvider } from './mapEditor';
+import { DataPreviewPanel } from './preview';
+import { HotReload, scenarioRoot } from './hotReload';
 import { PanelProvider } from './panel';
 import { ScreenView } from './screen';
 import { installServer, resolveServer, serverCommand, ServerInfo, serverVersion } from './server';
 import { SettingsView } from './settings';
+import { TalkPreviewData, TalkPreviewPanel } from './talkPreview';
+import { SrcUriHandler } from './uriHandler';
+import { EventFormValue, eventForm } from './eventForm';
+
+/** データに動かす規則のグループ（設定 srcsharp.rules）。空なら none */
+export function ruleGroups(): string[] {
+  const rules = vscode.workspace.getConfiguration('srcsharp').get<string[]>('rules', ['src']);
+  return rules.length ? rules : ['none'];
+}
 
 /** srcsharp と Language Server の状態 */
 export class Controller implements vscode.Disposable {
@@ -40,10 +56,17 @@ export class Controller implements vscode.Disposable {
     const lsp = serverCommand(this.server, 'lsp');
     const serverOptions: ServerOptions = { command: lsp.command, args: lsp.args, options: { env: this.server.env } };
     const clientOptions: LanguageClientOptions = {
-      documentSelector: [{ scheme: 'file', language: 'src-eve' }],
+      documentSelector: [
+        { scheme: 'file', language: 'src-eve' },
+        { scheme: 'file', language: 'src-data' },
+      ],
       initializationOptions: {
         appPath: vscode.workspace.getConfiguration('srcsharp').get<string>('appPath') || undefined,
+        // データに動かす規則のグループ（空なら none。srcsharp lint --rules と同じ）
+        rules: ruleGroups(),
         logLevel: vscode.workspace.getConfiguration('srcsharp').get<string>('logLevel') || undefined,
+        // 見通しの気づいたことを診断に出すか（7474/SRC#1692）
+        outlineFindings: vscode.workspace.getConfiguration('srcsharp').get<boolean>('outlineFindings', true),
       },
       // Language Server のログ（window/logMessage）も同じ出力パネルに出す
       outputChannel: this.output,
@@ -70,6 +93,13 @@ export class Controller implements vscode.Disposable {
       }
     }
     this.setState('stopped');
+  }
+
+  async sendRequest<T = unknown>(method: string, params: unknown): Promise<T | undefined> {
+    if (!this.client || this.clientState !== 'running') {
+      return undefined;
+    }
+    return await this.client.sendRequest<T>(method, params);
   }
 
   private setState(state: Controller['clientState']): void {
@@ -145,6 +175,123 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   };
   context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(showStatus));
   showStatus();
+
+  // マップ（.map）のカスタムエディタ（SRC#Studio のマップ作成ツール。7474/SRC#1641）
+  const mapEditor = new MapEditorProvider(context);
+  interface PlacementAtResult {
+    mapPath: string;
+    fullMapPath: string;
+    x: number;
+    y: number;
+    command: string;
+    unit: string;
+    file: string;
+    line: number;
+  }
+  context.subscriptions.push(
+    mapEditor,
+    vscode.window.registerCustomEditorProvider(MapEditorProvider.viewType, mapEditor, { webviewOptions: { retainContextWhenHidden: true } }),
+    // テスト用（画面の WebAssembly が動き、地形とマップを読めたか）。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._mapEditorStatus', (uri: vscode.Uri) => mapEditor.loaded.get(uri.toString())),
+    // イベント行の座標をマップ作成ツール上で開いて確認する（7474/SRC#1653）
+    vscode.commands.registerCommand('srcsharp.showOnMap', async (args?: { uri?: string; line?: number }) => {
+      const editor = vscode.window.activeTextEditor;
+      const targetUri = args?.uri ?? (editor?.document.languageId === 'src-eve' ? editor.document.uri.toString() : undefined);
+      const targetLine = args?.line ?? editor?.selection.active.line;
+      if (!targetUri || targetLine === undefined) {
+        vscode.window.showInformationMessage('SRC#: イベントファイル（*.eve）の座標がある行を選んでください。');
+        return;
+      }
+      if (controller.clientState !== 'running') {
+        if (!controller.server.found) {
+          void promptInstall();
+        } else {
+          vscode.window.showInformationMessage('SRC#: Language Server の起動を待ってからもう一度お試しください。');
+        }
+        return;
+      }
+      const res = await controller.sendRequest<PlacementAtResult | null>('srcsharp/placementAt', {
+        textDocument: { uri: targetUri },
+        position: { line: targetLine, character: 0 },
+      });
+      if (!res) {
+        vscode.window.showInformationMessage('SRC#: この行にはマップ上の座標がありません。');
+        return;
+      }
+      if (!res.fullMapPath) {
+        vscode.window.showInformationMessage(`SRC#: マップファイル（${res.mapPath || '未指定'}）が見つかりません。`);
+        return;
+      }
+      await mapEditor.openMapAt(res.fullMapPath, {
+        file: res.file,
+        line: res.line,
+        x: res.x,
+        y: res.y,
+        command: res.command,
+        unit: res.unit,
+      });
+    }),
+    vscode.languages.registerHoverProvider({ scheme: 'file', language: 'src-eve' }, {
+      async provideHover(document, position) {
+        if (controller.clientState !== 'running') {
+          return undefined;
+        }
+        const res = await controller.sendRequest<PlacementAtResult | null>('srcsharp/placementAt', {
+          textDocument: { uri: document.uri.toString() },
+          position: { line: position.line, character: position.character },
+        });
+        if (!res?.fullMapPath) {
+          return undefined;
+        }
+        const q = encodeURIComponent(JSON.stringify([{ uri: document.uri.toString(), line: position.line }]));
+        const md = new vscode.MarkdownString(`[マップの上で見る（${res.x}, ${res.y}）](command:srcsharp.showOnMap?${q})`);
+        md.isTrusted = true;
+        return new vscode.Hover(md);
+      },
+    }),
+  );
+
+  // データのプレビュー（SRC#Studio。7474/SRC#1643）
+  const dataPreview = new DataPreviewPanel(context);
+  // 話のつながりの図（7474/SRC#1652）
+  const episodeFlow = new EpisodeFlowPanel();
+  // イベントの流れの図・会話のプレビュー（7474/SRC#1655）
+  const eventFlow = new EventFlowPanel(controller);
+  const talkPreview = new TalkPreviewPanel();
+  context.subscriptions.push(
+    dataPreview,
+    episodeFlow,
+    eventFlow,
+    talkPreview,
+    vscode.commands.registerCommand('srcsharp.showPreview', () => dataPreview.show()),
+    // テスト用（プレビューに出したもの）。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._previewStatus', () => dataPreview.getStatus()),
+    vscode.commands.registerCommand('srcsharp.showEpisodeFlow', (target?: string) => episodeFlow.show(target)),
+    // テスト用（話のつながりの図）。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._flowStatus', () => episodeFlow.getStatus()),
+    vscode.commands.registerCommand('srcsharp._showFlowData', (data: ScenarioFlowData) => episodeFlow.showData(data)),
+    vscode.commands.registerCommand('srcsharp.showEventFlow', (target?: string) => eventFlow.show(target)),
+    vscode.commands.registerCommand('srcsharp._eventFlowStatus', () => eventFlow.getStatus()),
+    vscode.commands.registerCommand('srcsharp._showEventFlowData', (data: EventFlowGraphData) => eventFlow.showData(data)),
+    vscode.commands.registerCommand('srcsharp.previewTalk', (uri?: vscode.Uri, line?: number) => talkPreview.show(uri, line)),
+    vscode.commands.registerCommand('srcsharp._talkPreviewStatus', () => talkPreview.getStatus()),
+    vscode.commands.registerCommand('srcsharp._showTalkPreviewData', (data: TalkPreviewData) => talkPreview.showData(data)),
+  );
+
+  // 素材の一覧（揃っているか。7474/SRC#1654）
+  const assets = new AssetsPanel();
+  // データビューアからデータを受け取る（7474/SRC#1656）
+  const uriHandler = new SrcUriHandler();
+  context.subscriptions.push(
+    assets,
+    vscode.window.registerUriHandler(uriHandler),
+    vscode.commands.registerCommand('srcsharp.showAssets', (target?: string) => assets.show(target)),
+    // テスト用。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._assetsStatus', () => assets.getStatus()),
+    vscode.commands.registerCommand('srcsharp._showAssetsData', (data: AssetReportData) => assets.showData(data)),
+    vscode.commands.registerCommand('srcsharp._handleUri', (uri: vscode.Uri | string, target?: 'new' | vscode.Uri) =>
+      uriHandler.handle(typeof uri === 'string' ? vscode.Uri.parse(uri) : uri, target)),
+  );
 
   // 操作パネル
   context.subscriptions.push(vscode.window.registerTreeDataProvider('srcsharp.panel', new PanelProvider(controller)));
@@ -284,6 +431,292 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         await run('lint', [dir], dir);
       }
     }),
+    // 新しいシナリオのひな形（srcsharp new。7474/SRC#1640・#1652）。作ったフォルダを開く
+    vscode.commands.registerCommand('srcsharp.newScenario', async () => {
+      const picked = await vscode.window.showOpenDialog({
+        canSelectFolders: true,
+        canSelectFiles: false,
+        canSelectMany: false,
+        openLabel: 'ここにシナリオを作る',
+        title: 'SRC#: 新しいシナリオを作るフォルダ（空のフォルダを選ぶか作る）',
+      });
+      if (!picked?.[0]) {
+        return;
+      }
+      const folder = picked[0].fsPath;
+      const title = await vscode.window.showInputBox({ title: 'SRC#: シナリオの題名', value: path.basename(folder) });
+      if (title === undefined) {
+        return;
+      }
+      const episodes = await vscode.window.showInputBox({
+        title: 'SRC#: 話数（1 以上）',
+        value: '1',
+        prompt: '1 は単発、2 以上で各話・インターミッション・通しプレイ付きの複数話を作成',
+        validateInput: (v) => (/^[1-9]\d*$/.test(v.trim()) ? undefined : '1 以上の整数を入力してください'),
+      });
+      if (episodes === undefined) {
+        return;
+      }
+      const epCount = episodes.trim();
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const args = [folder, '--title', title, '--episodes', epCount, ...(appPath ? ['--app-path', appPath] : [])];
+      if ((await run('new', args, folder)) === undefined) {
+        return;
+      }
+      const open = await vscode.window.showInformationMessage(`SRC#: ${folder} にシナリオのひな形（${epCount} 話）を作りました。`, 'フォルダを開く');
+      if (open) {
+        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(folder));
+      }
+    }),
+    // 試し戦闘（srcsharp trial。7474/SRC#1643）。データのユニット・パイロットを選び、敵と戦うイベントを作って画面付きで動かす
+    vscode.commands.registerCommand('srcsharp.trialBattle', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const file = editor?.document.uri.scheme === 'file' ? editor.document.uri.fsPath : vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+      if (!file) {
+        vscode.window.showErrorMessage('SRC#: シナリオのデータかイベントを開いてください。');
+        return;
+      }
+      const root = scenarioRoot(editor ? file : path.join(file, 'x'));
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const appArgs = appPath ? ['--app-path', appPath] : [];
+      const listed = await run('trial', [root, '--list', ...appArgs], root);
+      if (listed === undefined) {
+        return;
+      }
+      let data: { units: string[]; pilots: string[]; messageTypes?: Record<string, string> };
+      try {
+        data = JSON.parse(listed.trim().split('\n').pop() ?? '{}');
+      } catch {
+        vscode.window.showErrorMessage('SRC#: シナリオのデータを読めませんでした。');
+        return;
+      }
+      if (data.units.length === 0 || data.pilots.length === 0) {
+        vscode.window.showErrorMessage('SRC#: シナリオのデータにユニットとパイロットが要ります。');
+        return;
+      }
+      // カーソルのあるユニット・パイロット（pilot_message/dialog のメッセージタイプや複数人見出しも含む）を先頭に
+      const near = (names: string[], map?: Record<string, string>): string[] => {
+        if (!editor) {
+          return names;
+        }
+        const lines = editor.document.getText().split(/\r?\n/).slice(0, editor.selection.active.line + 1).reverse().map((x) => x.trim());
+        for (const line of lines) {
+          if (names.includes(line)) {
+            return [line, ...names.filter((x) => x !== line)];
+          }
+          const firstToken = line.split(/\s+/)[0];
+          const mapped = map?.[line] ?? map?.[firstToken] ?? (names.includes(firstToken) ? firstToken : undefined);
+          if (mapped && names.includes(mapped)) {
+            return [mapped, ...names.filter((x) => x !== mapped)];
+          }
+        }
+        return names;
+      };
+      const pick = (items: string[], title: string) => vscode.window.showQuickPick(items, { title: `SRC# 試し戦闘: ${title}` });
+      const unit = await pick(near(data.units), '味方のユニット');
+      const pilot = unit && (await pick(near(data.pilots, data.messageTypes), '味方のパイロット'));
+      const enemy = pilot && (await pick([unit, ...data.units.filter((x) => x !== unit)], '敵のユニット'));
+      const generic = data.pilots.filter((x) => x !== pilot);
+      const enemyPilot = enemy && (await pick([...generic.filter((x) => /\((ザコ|汎用)\)/.test(x)), ...generic.filter((x) => !/\((ザコ|汎用)\)/.test(x))], '敵のパイロット（ザコか汎用）'));
+      if (!enemyPilot) {
+        return;
+      }
+      const focusPick = await vscode.window.showQuickPick(
+        [
+          { label: '標準', description: '通常の配置で戦う', value: 'normal' },
+          { label: '攻撃・とどめ', description: '隣に HP 10% の敵を置く（攻撃・武器・とどめのセリフ）', value: 'attack' },
+          { label: '回避', description: '低レベルの敵を隣に置く（回避のセリフ）', value: 'evade' },
+          { label: '被弾', description: '味方 HP 70% で格上の敵を隣に置く（ダメージのセリフ）', value: 'damage' },
+          { label: '破壊', description: '味方 HP 1% で強敵を隣に置く（破壊・脱出のセリフ）', value: 'destroy' },
+        ],
+        { title: 'SRC# 試し戦闘: 試したい場面' },
+      );
+      if (!focusPick) {
+        return;
+      }
+      const created = await run('trial', [root, '--unit', unit, '--pilot', pilot, '--enemy', enemy, '--enemy-pilot', enemyPilot, '--focus', focusPick.value, ...appArgs], root);
+      const eve = created?.trim().split('\n').pop();
+      if (!eve) {
+        return;
+      }
+      await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(root)), {
+        type: 'srcsharp',
+        request: 'launch',
+        name: 'SRC# 試し戦闘',
+        program: eve,
+        interactive: true,
+      });
+    }),
+    // 強さの確かめ（srcsharp playtest。7474/SRC#1690）。開いている話を乱数を変えて自動で何回か遊び、結果を Markdown で横に出す
+    vscode.commands.registerCommand('srcsharp.playtest', async () => {
+      const file = activeEventFile()?.fsPath;
+      if (!file) {
+        vscode.window.showErrorMessage('SRC#: 強さを確かめる話（*.eve）を開いてください。');
+        return;
+      }
+      const runs = await vscode.window.showQuickPick(['3', '5', '10'], { title: 'SRC#: 何回遊ぶか（乱数を変えて自動で遊ぶ）', placeHolder: '5' });
+      if (!runs) {
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const report = path.join(os.tmpdir(), `srcsharp-playtest-${path.basename(file, path.extname(file))}.md`);
+      const done = await vscode.window.withProgress(
+        { location: vscode.ProgressLocation.Notification, title: `SRC#: 「${path.basename(file)}」を ${runs} 回自動で遊んでいます…` },
+        () => run('playtest', [file, '--runs', runs, '--output', report, ...(appPath ? ['--app-path', appPath] : [])], path.dirname(file)));
+      if (done !== undefined && fs.existsSync(report)) {
+        await vscode.commands.executeCommand('markdown.showPreviewToSide', vscode.Uri.file(report));
+      }
+    }),
+    // この話から遊ぶ（7474/SRC#1692）。通しの自動プレイ（全話.play の saveepisodes）が残した、この話の始めのセーブデータ（.srcsharp/episodes/話.srcs）から、
+    // 画面付きのデバッガで始める。無ければ、通しの自動プレイを動かして作る
+    vscode.commands.registerCommand('srcsharp.playFromEpisode', async () => {
+      const file = activeEventFile()?.fsPath;
+      if (!file) {
+        vscode.window.showErrorMessage('SRC#: 遊びたい話（*.eve）を開いてください。');
+        return;
+      }
+      const root = scenarioRoot(file);
+      const episode = path.basename(file, path.extname(file));
+      const save = path.join(root, '.srcsharp', 'episodes', `${episode}.srcs`);
+      // 手で決めた始めの値（srcsharp start-state のひな形を作者が書き換えたもの）。あれば、それで始める
+      const start = path.join(root, '.srcsharp', 'start', `${episode}.eve`);
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      if (!fs.existsSync(save) && fs.existsSync(start)) {
+        await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(root)), {
+          type: 'srcsharp',
+          request: 'launch',
+          name: `SRC# ${episode}から遊ぶ（手で決めた始めの値）`,
+          program: start,
+          scenarioRoot: root,
+          interactive: true,
+        });
+        return;
+      }
+      if (!fs.existsSync(save)) {
+        const through = path.join(root, '全話.play');
+        const first = path.join(root, '第1話.eve');
+        const canPlayThrough = fs.existsSync(through) && fs.existsSync(first);
+        const byHand = '始めの値を手で決める';
+        const playThrough = '第1話から通しで遊んで作る';
+        const pick = await vscode.window.showInformationMessage(
+          `SRC#: 「${episode}」の始めのセーブデータがありません。${canPlayThrough ? '第1話から通しで自動で遊んで作るか、' : ''}部隊・資金・変数を手で決めて始めますか？`,
+          ...(canPlayThrough ? [playThrough, byHand] : [byHand]));
+        if (pick === byHand) {
+          const created = await run('start-state', [file, ...(appPath ? ['--app-path', appPath] : [])], root);
+          const target = created?.trim().split('\n').pop();
+          if (target && fs.existsSync(target)) {
+            await vscode.window.showTextDocument(vscode.Uri.file(target));
+            vscode.window.showInformationMessage(`SRC#: 部隊・資金・変数を書き換えてから、もう一度「この話から遊ぶ」を選んでください（${path.relative(root, target)}）。`);
+          }
+          return;
+        }
+        if (pick !== playThrough) {
+          return;
+        }
+        await vscode.window.withProgress(
+          { location: vscode.ProgressLocation.Notification, title: 'SRC#: 第1話から通しで自動で遊んでいます…' },
+          () => run('play', [first, '--script', through, '--skip-wait', '--seed', '1', ...(appPath ? ['--app-path', appPath] : [])], root));
+        if (!fs.existsSync(save)) {
+          vscode.window.showWarningMessage(`SRC#: 通しの自動プレイで「${episode}」まで進めませんでした（出力を見てください）。`);
+          return;
+        }
+      }
+      await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(root)), {
+        type: 'srcsharp',
+        request: 'launch',
+        name: `SRC# ${episode}から遊ぶ`,
+        program: save,
+        scenarioRoot: root,
+        interactive: true,
+      });
+    }),
+    // 出来事を足す（srcsharp event-text。7474/SRC#1692）。きっかけ・会話・撤退をフォームで選び、かんたん作成と同じ書き方のイベントを開いている .eve の最後に足す
+    vscode.commands.registerCommand('srcsharp.addEvent', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const file = activeEventFile()?.fsPath;
+      if (!editor || !file || editor.document.uri.fsPath !== file) {
+        vscode.window.showErrorMessage('SRC#: 出来事を足す話（*.eve）を開いてください。');
+        return;
+      }
+      const ev = await eventForm(editor.document, '出来事を足す');
+      if (!ev) {
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const text = await run('event-text', [file, '--json', JSON.stringify(ev), ...(appPath ? ['--app-path', appPath] : [])], path.dirname(file));
+      if (!text?.trim()) {
+        return;
+      }
+      const doc = editor.document;
+      const end = doc.lineAt(doc.lineCount - 1).range.end;
+      const eol = doc.eol === vscode.EndOfLine.CRLF ? '\r\n' : '\n';
+      const lead = doc.getText().length === 0 || /\n\s*$/.test(doc.getText()) ? eol : eol + eol;
+      await editor.edit((b) => b.insert(end, lead + text.replace(/\r?\n/g, eol)));
+      const last = doc.lineCount - 1;
+      editor.revealRange(new vscode.Range(last, 0, last, 0));
+    }),
+    // 出来事を直す（srcsharp event-text --line。7474/SRC#1692）。カーソルのある出来事をフォームに読み戻し、直した書き方でその出来事だけを置き換える。
+    // 援軍などフォームに出ない行はそのまま残す。分岐のある出来事など、フォームで直せないものは理由を出す
+    vscode.commands.registerCommand('srcsharp.editEvent', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const file = activeEventFile()?.fsPath;
+      if (!editor || !file || editor.document.uri.fsPath !== file) {
+        vscode.window.showErrorMessage('SRC#: 直したい出来事のある話（*.eve）を開いてください。');
+        return;
+      }
+      const doc = editor.document;
+      if (doc.isDirty) {
+        await doc.save();
+      }
+      const line = String(editor.selection.active.line + 1);
+      const found = await run('event-text', [file, '--line', line], path.dirname(file));
+      let match: { start: number; end: number; error?: string; event?: EventFormValue; kept?: number } | undefined;
+      try {
+        match = found ? JSON.parse(found.trim().split('\n').pop() ?? '') : undefined;
+      } catch {
+        match = undefined;
+      }
+      if (!match || match.error || !match.event) {
+        vscode.window.showWarningMessage(`SRC#: この出来事はフォームで直せません。${match?.error ?? ''}`);
+        return;
+      }
+      const version = doc.version;
+      const ev = await eventForm(doc, `出来事を直す（${match.start}〜${match.end} 行${match.kept ? `・フォームに出ない ${match.kept} 行はそのまま` : ''}）`, match.event);
+      if (!ev) {
+        return;
+      }
+      if (doc.version !== version) {
+        vscode.window.showWarningMessage('SRC#: フォームの間にファイルが変わったので、直すのをやめました。もう一度選んでください。');
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const text = await run('event-text', [file, '--line', line, '--json', JSON.stringify(ev), ...(appPath ? ['--app-path', appPath] : [])], path.dirname(file));
+      if (!text?.trim()) {
+        return;
+      }
+      const eol = doc.eol === vscode.EndOfLine.CRLF ? '\r\n' : '\n';
+      const range = new vscode.Range(match.start - 1, 0, match.end - 1, doc.lineAt(match.end - 1).range.end.character);
+      await editor.edit((b) => b.replace(range, text.replace(/\r?\n$/, '').replace(/\r?\n/g, eol)));
+      editor.revealRange(new vscode.Range(match.start - 1, 0, match.start - 1, 0));
+    }),
+    // シナリオの見通し（srcsharp outline。7474/SRC#1692）。話ごとの部隊と登場人物・出来事・変数・台本を Markdown で横に出す（行へのリンク付き）
+    vscode.commands.registerCommand('srcsharp.showOutline', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const file = editor?.document.uri.scheme === 'file' ? editor.document.uri.fsPath : undefined;
+      const dir = file ? scenarioRoot(file) : workspaceDir();
+      if (!dir) {
+        vscode.window.showErrorMessage('SRC#: シナリオのフォルダを開いてください。');
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const report = path.join(dir, '.srcsharp', '見通し.md');
+      const done = await vscode.window.withProgress(
+        { location: vscode.ProgressLocation.Notification, title: 'SRC#: シナリオの見通しを作っています…' },
+        () => run('outline', [dir, '--output', report, ...(appPath ? ['--app-path', appPath] : [])], dir));
+      if (done !== undefined && fs.existsSync(report)) {
+        await vscode.commands.executeCommand('markdown.showPreviewToSide', vscode.Uri.file(report));
+      }
+    }),
     vscode.commands.registerCommand('srcsharp.balance', async () => {
       const dir = workspaceDir();
       if (!dir) {
@@ -298,6 +731,136 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       const file = activeEventFile()?.fsPath;
       if (file) {
         await run('play', [file], path.dirname(file));
+      }
+    }),
+    vscode.commands.registerCommand('srcsharp.previewAnimation', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const doc = editor?.document;
+      if (!doc || doc.uri.scheme !== 'file') {
+        vscode.window.showErrorMessage('SRC#: animation.txt・ext_animation.txt・effect.txt またはイベントファイル（*.eve）を開いてください。');
+        return;
+      }
+      const file = doc.uri.fsPath;
+      const lowerName = path.basename(file).toLowerCase();
+      const isAnimData = lowerName === 'animation.txt' || lowerName === 'ext_animation.txt' || lowerName === 'effect.txt';
+      const isEve = doc.languageId === 'src-eve' || lowerName.endsWith('.eve');
+      if (!isAnimData && !isEve) {
+        vscode.window.showInformationMessage('SRC#: animation.txt・ext_animation.txt・effect.txt またはイベントファイル（*.eve）で使えます。');
+        return;
+      }
+      if (doc.isDirty) {
+        await doc.save();
+      }
+      const server = resolveServer();
+      if (!server.found) {
+        void promptInstall();
+        return;
+      }
+      const runAnimeCli = (args: string[]): Promise<string> => new Promise((resolve, reject) => {
+        const c = serverCommand(server, 'anime-preview', args);
+        const child = spawn(c.command, c.args, { cwd: path.dirname(file), env: server.env });
+        let stdout = '';
+        let stderr = '';
+        child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+        child.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+        child.on('error', reject);
+        child.on('close', (code) => {
+          if (code === 0) {
+            resolve(stdout);
+          } else {
+            reject(new Error(stderr.trim() || `srcsharp anime-preview が終了コード ${code} で失敗しました`));
+          }
+        });
+      });
+
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const appArgs = appPath ? ['--app-path', appPath] : [];
+      const line1 = editor.selection.active.line + 1;
+      interface AnimeListPayload {
+        file: string;
+        scenarioRoot: string;
+        appPath: string;
+        defaultSetup: { attackerUnit: string; attackerPilot: string; defenderUnit: string; defenderPilot: string };
+        selectedIndex: number;
+        entries: { index: number; kind: string; file: string; line: number; target: string; situation: string; spec: string }[];
+      }
+      let listData: AnimeListPayload;
+      try {
+        const raw = await runAnimeCli([file, '--line', String(line1), '--list', ...appArgs]);
+        listData = JSON.parse(raw) as AnimeListPayload;
+      } catch (e) {
+        vscode.window.showErrorMessage(`SRC#: 戦闘アニメ・特殊効果を読めませんでした: ${(e as Error)?.message ?? e}`);
+        return;
+      }
+      if (!listData.entries || listData.entries.length === 0) {
+        vscode.window.showInformationMessage('SRC#: このファイルに再生できる戦闘アニメ・特殊効果・汎用戦闘アニメの定義が見つかりませんでした。');
+        return;
+      }
+      const selected = listData.entries[listData.selectedIndex >= 0 ? listData.selectedIndex : 0];
+      if (screen.isAnimationPreviewActive(listData.scenarioRoot)) {
+        try {
+          await screen.replayAnimationPreview({
+            kind: selected.kind,
+            file: selected.file,
+            line: selected.line,
+            target: selected.target,
+            situation: selected.situation,
+            spec: selected.spec,
+            ...listData.defaultSetup,
+          });
+          screen.show(true);
+          return;
+        } catch {
+          // 既に終わったセッションなら新しく起動する
+        }
+      }
+      interface AnimePrepPayload {
+        program: string;
+        scenarioRoot: string;
+        appPath: string;
+        animationPreview: Record<string, unknown>;
+      }
+      let prep: AnimePrepPayload;
+      try {
+        const raw = await runAnimeCli([
+          file,
+          '--line', String(selected.line),
+          '--kind', selected.kind,
+          '--scenario-root', listData.scenarioRoot,
+          ...appArgs,
+        ]);
+        prep = JSON.parse(raw) as AnimePrepPayload;
+      } catch (e) {
+        vscode.window.showErrorMessage(`SRC#: 演出プレビューの準備に失敗しました: ${(e as Error)?.message ?? e}`);
+        return;
+      }
+      await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(listData.scenarioRoot)), {
+        type: 'srcsharp',
+        request: 'launch',
+        name: `SRC# 演出プレビュー: ${selected.target} - ${selected.situation}`,
+        program: prep.program,
+        scenarioRoot: prep.scenarioRoot,
+        appPath: prep.appPath,
+        interactive: true,
+        animationPreview: prep.animationPreview,
+      });
+    }),
+    vscode.commands.registerCommand('srcsharp.replayAnimationPreview', async () => {
+      if (!screen.isAnimationPreviewActive()) {
+        vscode.window.showInformationMessage('SRC#: 戦闘アニメ・特殊効果のプレビューを実行していません。');
+        return;
+      }
+      const activePreviewFile = vscode.debug.activeDebugSession?.configuration?.animationPreview?.file as string | undefined;
+      if (activePreviewFile) {
+        const openDoc = vscode.workspace.textDocuments.find((d) => path.resolve(d.uri.fsPath) === path.resolve(activePreviewFile));
+        if (openDoc?.isDirty) {
+          await openDoc.save();
+        }
+      }
+      try {
+        await screen.replayAnimationPreview();
+      } catch (e) {
+        vscode.window.showWarningMessage(`SRC#: もう一度再生できませんでした: ${(e as Error)?.message ?? e}`);
       }
     }),
     vscode.commands.registerCommand('srcsharp.autoPlay', () => autoPlay()),
@@ -321,7 +884,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   let restartTimer: NodeJS.Timeout | undefined;
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((e) => {
-      if (!['srcsharp.serverPath', 'srcsharp.serverArgs', 'srcsharp.appPath', 'srcsharp.language', 'srcsharp.logLevel'].some((k) => e.affectsConfiguration(k))) {
+      if (!['srcsharp.serverPath', 'srcsharp.serverArgs', 'srcsharp.appPath', 'srcsharp.rules', 'srcsharp.language', 'srcsharp.logLevel'].some((k) => e.affectsConfiguration(k))) {
         return;
       }
       // 設定画面の保存は複数の値を続けて書くため、まとめて 1 度だけ起動し直す

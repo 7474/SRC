@@ -184,6 +184,36 @@ namespace SRCRender
             }
         }
 
+        /// <summary>メッセージのページが描かれ、クリックや時間を待ち始める直前に呼ばれる（会話プレビュー用）</summary>
+        public Action OnMessagePageRendered { get; set; }
+
+        /// <summary>メッセージ待ちを 1 回進める（会話プレビュー用）</summary>
+        public void AdvanceMessage() => isFormClicked = true;
+
+        /// <summary>メッセージウィンドウだけを PNG として書き出す（会話プレビュー用）</summary>
+        public byte[] RenderMessageWindowPng()
+        {
+            lock (renderLock)
+            {
+                if (disposed)
+                {
+                    return Array.Empty<byte>();
+                }
+                using (var bitmap = renderer.RenderMessageWindow(frmMessage))
+                {
+                    if (bitmap == null)
+                    {
+                        return Array.Empty<byte>();
+                    }
+                    using (var image = SKImage.FromBitmap(bitmap))
+                    using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+                    {
+                        return data.ToArray();
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region 待ち
@@ -1085,7 +1115,15 @@ namespace SRCRender
 
         public bool Terminate()
         {
-            return host.Terminate();
+            var exit = host.Terminate();
+            // 元の SRC の TerminateSRC は End で戻らない。ホストがプロセスを終えずにゲームスレッドを止めた（SRC#Web）ときは、
+            // ここで止める合図を投げて、GameClear などの後でイベントやマップの処理（オートプレイなど）が続かないようにする（#1552）。
+            // 合図は GameThread が受け止めて、スレッドを静かに終える
+            if (!exit && game.IsCurrentThread && game.IsStopping)
+            {
+                throw new OperationCanceledException("The scenario was terminated.");
+            }
+            return exit;
         }
 
         public int MainWidth { get; set; }

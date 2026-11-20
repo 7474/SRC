@@ -6,3 +6,6 @@ node_modules/**
 test/**
 .vscode-test.mjs
 .vscode-test/**
+# SRC#Studio の事前圧縮（.br・.gz）は要らない
+studio/**/*.br
+studio/**/*.gz

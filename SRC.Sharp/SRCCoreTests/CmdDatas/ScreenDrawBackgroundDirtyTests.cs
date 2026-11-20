@@ -36,7 +36,7 @@ namespace SRCCore.CmdDatas.Tests
             cmd.Exec();
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Arc 100 100 50 0 90")]
         [DataRow("Circle 100 100 50")]
         [DataRow("Line 10 10 100 100")]
@@ -52,7 +52,7 @@ namespace SRCCore.CmdDatas.Tests
             Assert.IsTrue(src.Map.IsMapDirty);
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow("Circle 100 100 50")]
         [DataRow("Line 10 10 100 100")]
         public void DrawOnScreen_DoesNotMarkMapDirty(string cmdText)

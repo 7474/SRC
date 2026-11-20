@@ -1,0 +1,36 @@
+{
+  "terrain": "powerplant",
+  "count": 10,
+  "exists": "0-9",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "object",
+      "description": "発電所の灰色の機械（赤いメーター付き）",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 4,
+      "kind": "object",
+      "description": "水色のガラス窓",
+      "confidence": "high"
+    },
+    {
+      "from": 5,
+      "to": 7,
+      "kind": "object",
+      "description": "石壁の炉（6 は炎）",
+      "confidence": "high"
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "kind": "object",
+      "description": "暗い木の棚、檻",
+      "confidence": "guess"
+    }
+  ],
+  "rules": ""
+}

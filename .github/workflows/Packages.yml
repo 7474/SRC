@@ -107,15 +107,16 @@ jobs:
           # 開発版の版（例: 0.5.6-dev.123）になっている
           out/tool/srcsharp --version | tee version.txt
           grep -q -- "-dev.$SRCSHARP_DEV_BUILD" version.txt
-          # 問題の無いシナリオは 0、問題のあるもの（共通の SP を持たない battle-basic）は件数を出して 1 で終わる
+          # 問題の無いシナリオは 0、問題のあるもの（実機との比較のデータの誤りのケース。ユニットのサイズが無い）は件数を出して 1 で終わる。
+          # battle-basic は定義していないスペシャルパワーを除いた（7ce4be55）ので、問題の無いデータになった
           out/tool/srcsharp lint SRC.Sharp/E2E/unit-cmd-map
           set +e
-          out/tool/srcsharp lint SRC.Sharp/E2E/battle-basic/Data > lint.txt 2>&1
+          out/tool/srcsharp lint SRC.Sharp/Compat/probe-errors/unit-missing-size/Data > lint.txt 2>&1
           code=$?
           set -e
           cat lint.txt
           test "$code" -eq 1
-          grep -q 'スペシャルパワーは存在しません' lint.txt
+          grep -q 'サイズの設定が抜けています' lint.txt
       - uses: actions/upload-artifact@v7
         with:
           name: srcsharp-nupkg
@@ -143,7 +144,7 @@ jobs:
           path: src-vscode-*.vsix
           retention-days: 7
 
-  # SRC#Web（AOT。リリースの SRCSharpWeb.zip と同じ）・ブラウザで動く lint・データビューアの発行物（外部のサイトに置く zip）
+  # SRC#Web（AOT。リリースの SRCSharpWeb.zip と同じ）・ブラウザで動く lint・データビューア・SRC#Studio の発行物（外部のサイトに置く zip）
   web:
     runs-on: ubuntu-24.04
     steps:
@@ -160,6 +161,9 @@ jobs:
             dotnet publish "SRC.Sharp/$p/$p.csproj" -c Release -o "out/$p" -p:SrcSharpDevBuild=$SRCSHARP_DEV_BUILD
             (cd "out/$p/wwwroot" && zip -qr "../../../$p.zip" .)
           done
+          # SRC#Studio（マップ作成ツール・かんたん作成。7474/SRC#1659）。置く側は隣の studio.json を、そのサイトの SRC#Web の場所・素材に書き換える
+          tools/studio_bundle.sh out/SRCStudio
+          (cd out/SRCStudio && zip -qr ../../SRCStudio.zip .)
       - uses: actions/upload-artifact@v7
         with:
           name: web

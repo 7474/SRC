@@ -1,12 +1,16 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SRCAuthoring.Analysis;
+using SRCAuthoring.Linting;
+using SRCAuthoring.Maps;
 using SRCAuthoring.Protocol;
+using SRCAuthoring.Rules;
 using SRCCore.Events;
 using SRCCore.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
@@ -16,7 +20,8 @@ using System.Threading.Tasks;
 namespace SRCAuthoring.Lsp
 {
     /// <summary>
-    /// イベントファイル（*.eve）の Language Server。
+    /// イベントファイル（*.eve）とデータ（robot.txt・pilot.txt など）の Language Server。
+    /// データは保存した内容で、シナリオの Data のフォルダ全体を DataLinter（srcsharp lint と同じ）で調べる。
     /// https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/
     /// </summary>
     public sealed class LspServer
@@ -27,6 +32,17 @@ namespace SRCAuthoring.Lsp
         private readonly ConcurrentDictionary<string, ScenarioAnalysis> analyses = new ConcurrentDictionary<string, ScenarioAnalysis>(StringComparer.OrdinalIgnoreCase);
         private readonly ConcurrentDictionary<string, CancellationTokenSource> pending = new ConcurrentDictionary<string, CancellationTokenSource>(StringComparer.OrdinalIgnoreCase);
         private bool shutdown;
+        // データの診断を送ったファイル（Data のフォルダ → ファイル）。直ったファイルの診断を消すのに使う
+        private readonly ConcurrentDictionary<string, HashSet<string>> dataPublished = new ConcurrentDictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+
+        // シナリオの見通しの「気づいたこと」（7474/SRC#1692）。シナリオのフォルダ → ファイル → 診断。保存した内容で、シナリオ全体を見て作る
+        private readonly ConcurrentDictionary<string, Dictionary<string, List<SrcDiagnostic>>> outlineFindings = new ConcurrentDictionary<string, Dictionary<string, List<SrcDiagnostic>>>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>見通しの気づいたこと（起きない出来事・読まない変数など）を、イベントの診断（情報）として出すか（初期化オプションの outlineFindings）</summary>
+        public bool OutlineFindings { get; set; } = true;
+
+        /// <summary>データに動かす規則のグループ（初期化オプションの rules。VS Code 拡張の srcsharp.rules）</summary>
+        public IReadOnlyList<string> RuleGroups { get; set; } = Rules.RuleGroups.Default;
         private readonly ILogger log;
         private readonly Action<LogLevel?> setLogLevel;
 
@@ -38,6 +54,13 @@ namespace SRCAuthoring.Lsp
 
         /// <param name="loggerFactory">ログの出力先。ログは window/logMessage でクライアントにも送る</param>
         /// <param name="setLogLevel">初期化オプションの logLevel を反映する</param>
+        /// <summary>ヘルプの説明（コマンド・特殊能力・属性のホバーと補完）。srcsharp が同梱のヘルプから作って渡す</summary>
+        public HelpReference Help { get; set; } = HelpReference.Empty;
+
+        /// <summary>シナリオのフォルダごとの、データの名前の一覧（データを調べたときに作り直す）</summary>
+        private readonly ConcurrentDictionary<string, DataCatalog> catalogs = new ConcurrentDictionary<string, DataCatalog>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, TerrainCatalog> terrainCatalogs = new ConcurrentDictionary<string, TerrainCatalog>(StringComparer.OrdinalIgnoreCase);
+
         public LspServer(Stream input, Stream output, ILoggerFactory loggerFactory = null, Action<LogLevel?> setLogLevel = null)
         {
             stream = new MessageStream(input, output);
@@ -122,7 +145,26 @@ namespace SRCAuthoring.Lsp
                     {
                         setLogLevel?.Invoke(logLevel);
                     }
-                    log.LogInformation("Language Server を開始 SRC のフォルダ: {AppPath}", analyzer.AppPath ?? "");
+                    // 規則のグループ（VS Code 拡張の srcsharp.rules。文字列か配列）
+                    if (@params?["initializationOptions"]?["outlineFindings"] is JsonValue outlineOption && outlineOption.TryGetValue<bool>(out var outlineOn))
+                    {
+                        OutlineFindings = outlineOn;
+                    }
+                    var rules = @params?["initializationOptions"]?["rules"];
+                    if (rules != null)
+                    {
+                        try
+                        {
+                            RuleGroups = Rules.RuleGroups.Parse(rules is JsonArray array
+                                ? string.Join(",", array.Select(x => x?.GetValue<string>()))
+                                : rules.GetValue<string>());
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            log.LogWarning("規則のグループを読めません: {Message}", ex.Message);
+                        }
+                    }
+                    log.LogInformation("Language Server を開始 SRC のフォルダ: {AppPath} 規則: {Rules}", analyzer.AppPath ?? "", string.Join(",", RuleGroups));
                     return new JsonObject
                     {
                         ["capabilities"] = new JsonObject
@@ -133,6 +175,8 @@ namespace SRCAuthoring.Lsp
                             ["definitionProvider"] = true,
                             ["hoverProvider"] = true,
                             ["completionProvider"] = new JsonObject { ["triggerCharacters"] = new JsonArray() },
+                            // 名前を変える（7474/SRC#1692）
+                            ["renameProvider"] = new JsonObject { ["prepareProvider"] = true },
                         },
                         ["serverInfo"] = new JsonObject { ["name"] = "srcsharp" },
                     };
@@ -144,7 +188,14 @@ namespace SRCAuthoring.Lsp
                         var doc = @params["textDocument"];
                         var path = UriToPath(doc["uri"].GetValue<string>());
                         documents[path] = doc["text"].GetValue<string>();
-                        Schedule(path, TimeSpan.Zero);
+                        if (DataLinter.IsDataFileName(path))
+                        {
+                            ScheduleData(path);
+                        }
+                        else
+                        {
+                            Schedule(path, TimeSpan.Zero, outline: true);
+                        }
                         return null;
                     }
                 case "textDocument/didChange":
@@ -152,13 +203,24 @@ namespace SRCAuthoring.Lsp
                         var path = UriToPath(@params["textDocument"]["uri"].GetValue<string>());
                         var changes = @params["contentChanges"].AsArray();
                         documents[path] = changes[changes.Count - 1]["text"].GetValue<string>();
-                        Schedule(path, Debounce);
+                        // データは保存した内容で調べる
+                        if (!DataLinter.IsDataFileName(path))
+                        {
+                            Schedule(path, Debounce);
+                        }
                         return null;
                     }
                 case "textDocument/didSave":
                     {
                         var path = UriToPath(@params["textDocument"]["uri"].GetValue<string>());
-                        Schedule(path, TimeSpan.Zero);
+                        if (DataLinter.IsDataFileName(path))
+                        {
+                            ScheduleData(path);
+                        }
+                        else
+                        {
+                            Schedule(path, TimeSpan.Zero, outline: true);
+                        }
                         return null;
                     }
                 case "textDocument/didClose":
@@ -166,7 +228,11 @@ namespace SRCAuthoring.Lsp
                         var path = UriToPath(@params["textDocument"]["uri"].GetValue<string>());
                         documents.TryRemove(path, out _);
                         analyses.TryRemove(path, out _);
-                        _ = PublishAsync(path, new List<SrcDiagnostic>());
+                        // データの診断はフォルダ全体のものなので、閉じても消さない
+                        if (!DataLinter.IsDataFileName(path))
+                        {
+                            _ = PublishAsync(path, new List<SrcDiagnostic>());
+                        }
                         return null;
                     }
                 case "textDocument/documentSymbol":
@@ -177,6 +243,14 @@ namespace SRCAuthoring.Lsp
                     return Hover(@params);
                 case "textDocument/completion":
                     return Completion(@params);
+                case "textDocument/prepareRename":
+                    return PrepareRename(@params);
+                case "textDocument/rename":
+                    return Rename(@params);
+                case "srcsharp/placementAt":
+                    return PlacementAt(@params);
+                case "srcsharp/eventFlow":
+                    return EventFlow(@params);
                 default:
                     if (method != null && method.StartsWith("$/"))
                     {
@@ -200,7 +274,7 @@ namespace SRCAuthoring.Lsp
             return new Uri(OverlayFileSystem.Normalize(path)).AbsoluteUri;
         }
 
-        private void Schedule(string path, TimeSpan delay)
+        private void Schedule(string path, TimeSpan delay, bool outline = false)
         {
             var cts = new CancellationTokenSource();
             if (pending.TryRemove(path, out var old))
@@ -231,7 +305,13 @@ namespace SRCAuthoring.Lsp
                     {
                         return;
                     }
-                    await PublishAsync(path, analysis.DiagnosticsFor(path).ToList());
+                    await PublishAsync(path, analysis.DiagnosticsFor(path).Concat(FindingsFor(path)).ToList());
+                    // 済んだ（見通しが送り直してよい）
+                    pending.TryRemove(new KeyValuePair<string, CancellationTokenSource>(path, cts));
+                    if (outline && OutlineFindings && path.EndsWith(".eve", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(analysis.ScenarioRoot))
+                    {
+                        ScheduleOutline(analysis.ScenarioRoot);
+                    }
                 }
                 catch (OperationCanceledException)
                 {
@@ -243,12 +323,217 @@ namespace SRCAuthoring.Lsp
             });
         }
 
+        /// <summary>見通しの気づいたことのうち、path のもの</summary>
+        private IEnumerable<SrcDiagnostic> FindingsFor(string path)
+        {
+            foreach (var byFile in outlineFindings.Values)
+            {
+                if (byFile.TryGetValue(path, out var list))
+                {
+                    return list;
+                }
+            }
+            return Enumerable.Empty<SrcDiagnostic>();
+        }
+
+        /// <summary>
+        /// シナリオの見通しを作り直し、気づいたことを診断（情報）として出す（7474/SRC#1692）。シナリオ全体を見るので、開いた・保存したときだけ。
+        /// 開いているイベントは、イベントの診断と合わせて送り直す
+        /// </summary>
+        private void ScheduleOutline(string scenarioRoot)
+        {
+            var key = "outline:" + scenarioRoot;
+            var cts = new CancellationTokenSource();
+            if (pending.TryRemove(key, out var old))
+            {
+                old.Cancel();
+            }
+            pending[key] = cts;
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.Delay(Debounce, cts.Token);
+                    await analyzing.WaitAsync(cts.Token);
+                    Dictionary<string, List<SrcDiagnostic>> byFile;
+                    try
+                    {
+                        cts.Token.ThrowIfCancellationRequested();
+                        var outline = ScenarioOutline.Analyze(scenarioRoot, analyzer.AppPath);
+                        byFile = outline.Findings
+                            .Where(f => !string.IsNullOrEmpty(f.File) && f.Line > 0)
+                            .GroupBy(f => OverlayFileSystem.Normalize(Path.GetFullPath(Path.Combine(outline.ScenarioRoot ?? scenarioRoot, f.File))), StringComparer.OrdinalIgnoreCase)
+                            .ToDictionary(g => g.Key, g => g.Select(f => new SrcDiagnostic
+                            {
+                                File = g.Key,
+                                Line = f.Line,
+                                Severity = DiagnosticSeverity.Information,
+                                Message = f.Message,
+                                RuleId = "outline",
+                            }).ToList(), StringComparer.OrdinalIgnoreCase);
+                    }
+                    finally
+                    {
+                        analyzing.Release();
+                    }
+                    if (cts.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    var previous = outlineFindings.TryGetValue(scenarioRoot, out var p) ? p.Keys.ToList() : new List<string>();
+                    outlineFindings[scenarioRoot] = byFile;
+                    // 気づいたことのあるファイルと、前に送ったファイルを送り直す（イベントの解析を待っているファイルは、その解析が送る）
+                    foreach (var file in byFile.Keys.Concat(previous).Distinct(StringComparer.OrdinalIgnoreCase))
+                    {
+                        if (pending.ContainsKey(file))
+                        {
+                            continue;
+                        }
+                        var events = analyses.TryGetValue(file, out var a) ? a.DiagnosticsFor(file) : Enumerable.Empty<SrcDiagnostic>();
+                        await PublishAsync(file, events.Concat(FindingsFor(file)).ToList());
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    log.LogError(ex, "見通しを作れません {Path}", scenarioRoot);
+                }
+            });
+        }
+
+        /// <summary>データのファイルのある Data のフォルダ（いちばん近い親の Data。無ければファイルのあるフォルダ）</summary>
+        public static string DataRootOf(string file)
+        {
+            for (var d = Path.GetDirectoryName(file); !string.IsNullOrEmpty(d); d = Path.GetDirectoryName(d))
+            {
+                if (string.Equals(Path.GetFileName(d), "Data", StringComparison.OrdinalIgnoreCase))
+                {
+                    return d;
+                }
+            }
+            return Path.GetDirectoryName(file);
+        }
+
+        private void ScheduleData(string path)
+        {
+            var root = DataRootOf(path);
+            var key = "data:" + root;
+            var cts = new CancellationTokenSource();
+            if (pending.TryRemove(key, out var old))
+            {
+                old.Cancel();
+            }
+            pending[key] = cts;
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await analyzing.WaitAsync(cts.Token);
+                    LintResult result;
+                    try
+                    {
+                        cts.Token.ThrowIfCancellationRequested();
+                        result = await LintDataAsync(root);
+                    }
+                    finally
+                    {
+                        analyzing.Release();
+                    }
+                    catalogs[Path.GetDirectoryName(root)] = result.Catalog;
+                    if (!cts.IsCancellationRequested)
+                    {
+                        await PublishDataAsync(root, result);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    log.LogError(ex, "データを調べられません {Path}", root);
+                }
+            });
+        }
+
+        /// <summary>Data のフォルダを srcsharp lint と同じく調べる。SRC 本体の Data\System のデータを先に読む</summary>
+        public Task<LintResult> LintDataAsync(string dataRoot)
+        {
+            var scenarioRoot = Path.GetDirectoryName(dataRoot);
+            var appPath = analyzer.AppPath ?? ScenarioAnalyzer.FindAppPath(scenarioRoot);
+            var system = new List<string>();
+            var systemDir = appPath == null ? null : Path.Combine(appPath, "Data", "System");
+            if (systemDir != null && Directory.Exists(systemDir) && !ScenarioAnalysis.SamePath(Path.GetFullPath(systemDir), Path.GetFullPath(Path.Combine(dataRoot, "System"))))
+            {
+                system.AddRange(Directory.EnumerateFiles(systemDir, "*.txt"));
+            }
+            return new DataLinter { RuleGroups = RuleGroups }.LintAsync(new[] { dataRoot }, scenarioRoot, system);
+        }
+
+        private async Task PublishDataAsync(string dataRoot, LintResult result)
+        {
+            // データのファイルの診断だけを送る（イベントの診断はイベントの解析が送る）
+            var byFile = result.Diagnostics
+                .Where(x => !string.IsNullOrEmpty(x.File) && DataLinter.IsDataFileName(x.File))
+                .GroupBy(x => OverlayFileSystem.Normalize(x.File), StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.ToList(), StringComparer.OrdinalIgnoreCase);
+            var previous = dataPublished.TryGetValue(dataRoot, out var p) ? p : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var file in previous.Where(x => !byFile.ContainsKey(x)))
+            {
+                await PublishAsync(file, new List<SrcDiagnostic>());
+            }
+            foreach (var (file, diagnostics) in byFile)
+            {
+                await PublishAsync(file, diagnostics);
+            }
+            dataPublished[dataRoot] = new HashSet<string>(byFile.Keys, StringComparer.OrdinalIgnoreCase);
+        }
+
         /// <summary>path を開いている内容で解析し、結果を覚えておく</summary>
         public ScenarioAnalysis Analyze(string path)
         {
             var analysis = analyzer.Analyze(path, documents.ToDictionary(x => x.Key, x => x.Value));
+            // イベントのコマンドが名前で指すデータ（ユニット・パイロット・アイテム）が、シナリオのデータにあるか（7474/SRC#1642）
+            var catalog = CatalogFor(analysis.ScenarioRoot);
+            analysis.Diagnostics.AddRange(DataReferenceChecker.Check(DataReferenceChecker.Find(path, DocumentText(path)), catalog));
             analyses[path] = analysis;
             return analysis;
+        }
+
+        /// <summary>シナリオのデータの名前の一覧。まだ無ければ Data のフォルダを調べて作る</summary>
+        public DataCatalog CatalogFor(string scenarioRoot)
+        {
+            if (string.IsNullOrEmpty(scenarioRoot))
+            {
+                return DataCatalog.Empty;
+            }
+            return catalogs.GetOrAdd(scenarioRoot, root =>
+            {
+                var data = Path.Combine(root, "Data");
+                if (!Directory.Exists(data))
+                {
+                    return DataCatalog.Empty;
+                }
+                try
+                {
+                    return LintDataAsync(data).GetAwaiter().GetResult().Catalog;
+                }
+                catch (Exception ex)
+                {
+                    log.LogWarning(ex, "データを読めません {Path}", data);
+                    return DataCatalog.Empty;
+                }
+            });
+        }
+
+        private string DocumentText(string path)
+        {
+            if (documents.TryGetValue(path, out var text))
+            {
+                return text;
+            }
+            return File.Exists(path) ? DataReferenceText.Read(path) : "";
         }
 
         private ScenarioAnalysis AnalysisFor(string path)
@@ -261,13 +546,19 @@ namespace SRCAuthoring.Lsp
             var items = new JsonArray();
             foreach (var d in diagnostics)
             {
-                items.Add(new JsonObject
+                var item = new JsonObject
                 {
                     ["range"] = LineRange(d.Line),
                     ["severity"] = d.Severity switch { DiagnosticSeverity.Error => 1, DiagnosticSeverity.Warning => 2, _ => 3 },
                     ["source"] = "srcsharp",
-                    ["message"] = d.Message,
-                });
+                    // データの診断には、どのデータか（ユニット・パイロットの名前）を付ける
+                    ["message"] = d.Message + (string.IsNullOrEmpty(d.Source) || !DataLinter.IsDataFileName(path) ? "" : $" [{d.Source}]"),
+                };
+                if (!string.IsNullOrEmpty(d.RuleId))
+                {
+                    item["code"] = d.RuleId;
+                }
+                items.Add(item);
             }
             return stream.WriteAsync(new JsonObject
             {
@@ -349,19 +640,181 @@ namespace SRCAuthoring.Lsp
                 @params["position"]["character"].GetValue<int>());
         }
 
+        private static bool IsMessageDataFile(string path)
+        {
+            var name = Path.GetFileName(path ?? "");
+            return string.Equals(name, "pilot_message.txt", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(name, "pilot_dialog.txt", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private DataCatalog CatalogForDataFile(string path)
+        {
+            var scenarioRoot = ScenarioAnalyzer.FindScenarioRoot(path);
+            if (!string.IsNullOrEmpty(scenarioRoot))
+            {
+                return CatalogFor(scenarioRoot);
+            }
+            var dataRoot = DataRootOf(path);
+            if (!string.IsNullOrEmpty(dataRoot))
+            {
+                var parent = Path.GetDirectoryName(dataRoot);
+                var cat = string.IsNullOrEmpty(parent) ? DataCatalog.Empty : CatalogFor(parent);
+                if (cat.Entries.Count > 0 || cat.Weapons.Count > 0)
+                {
+                    return cat;
+                }
+            }
+            return DataCatalog.Empty;
+        }
+
+        /// <summary>行の character 付近にあるタグ（<...>）、変数（$(...)）、または括弧内トークン（(...)）</summary>
+        private static string DelimitedTokenAt(string text, int character, char open, char close)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return null;
+            }
+            var pos = Math.Max(0, Math.Min(character, text.Length - 1));
+            for (var i = pos; i >= 0; i--)
+            {
+                if (text[i] == close && i < pos)
+                {
+                    break;
+                }
+                if (text[i] == open)
+                {
+                    var end = text.IndexOf(close, i + 1);
+                    if (end > i && pos <= end)
+                    {
+                        return text.Substring(i, end - i + 1);
+                    }
+                    break;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>名前を変えられる所なら、その範囲と今の名前</summary>
+        private JsonNode PrepareRename(JsonNode @params)
+        {
+            var (path, line, character) = Position(@params);
+            var (name, start) = ScenarioRename.NameAt(LineText(path, line), character);
+            if (!ScenarioRename.IsRenamable(name))
+            {
+                return null;
+            }
+            return new JsonObject
+            {
+                ["range"] = new JsonObject
+                {
+                    ["start"] = new JsonObject { ["line"] = line, ["character"] = start },
+                    ["end"] = new JsonObject { ["line"] = line, ["character"] = start + name.Length },
+                },
+                ["placeholder"] = name,
+            };
+        }
+
+        /// <summary>
+        /// 名前を変える（7474/SRC#1692）。シナリオのイベントとデータの全体で、語として書いた所を変える（ScenarioRename）。
+        /// 開いている文書は保存前の内容で探す
+        /// </summary>
+        private JsonNode Rename(JsonNode @params)
+        {
+            var (path, line, character) = Position(@params);
+            var newName = @params["newName"]?.GetValue<string>();
+            var (oldName, _) = ScenarioRename.NameAt(LineText(path, line), character);
+            if (!ScenarioRename.IsRenamable(oldName) || !ScenarioRename.IsRenamable(newName) || oldName == newName)
+            {
+                return null;
+            }
+            var root = DataLinter.IsDataFileName(path) || IsMessageDataFile(path)
+                ? ScenarioAnalyzer.FindScenarioRoot(path)
+                : AnalysisFor(path).ScenarioRoot ?? ScenarioAnalyzer.FindScenarioRoot(path);
+            var changes = new JsonObject();
+            foreach (var (file, spans) in ScenarioRename.FindAll(root, oldName, DocumentText))
+            {
+                var edits = new JsonArray();
+                foreach (var s in spans)
+                {
+                    edits.Add(new JsonObject
+                    {
+                        ["range"] = new JsonObject
+                        {
+                            ["start"] = new JsonObject { ["line"] = s.Line, ["character"] = s.Start },
+                            ["end"] = new JsonObject { ["line"] = s.Line, ["character"] = s.Start + s.Length },
+                        },
+                        ["newText"] = newName,
+                    });
+                }
+                changes[PathToUri(file)] = edits;
+            }
+            return new JsonObject { ["changes"] = changes };
+        }
+
         private JsonNode Definition(JsonNode @params)
         {
             var (path, line, character) = Position(@params);
+            var word = WordAt(LineText(path, line), character);
+            if (IsMessageDataFile(path))
+            {
+                var catalog = CatalogForDataFile(path);
+                var dataEntry = catalog.FindPilotOrMessageType(word) ?? catalog.Find(DataKind.Unit, word);
+                if (dataEntry?.File != null)
+                {
+                    return Location(dataEntry.File, dataEntry.Line);
+                }
+                var weapon = catalog.FindWeapon(word);
+                if (weapon?.File != null)
+                {
+                    return Location(weapon.File, weapon.Line);
+                }
+                return null;
+            }
+            if (DataLinter.IsDataFileName(path))
+            {
+                return null;
+            }
             var analysis = AnalysisFor(path);
             var include = analysis.Includes.FirstOrDefault(x => ScenarioAnalysis.SamePath(x.File, path) && x.Line == line + 1);
             if (include?.ResolvedPath != null)
             {
                 return Location(include.ResolvedPath, 1);
             }
-            var word = WordAt(LineText(path, line), character);
             var label = analysis.Labels.FirstOrDefault(x => x.Name == word);
-            return label == null ? null : Location(label.File, label.Line);
+            if (label != null)
+            {
+                return Location(label.File, label.Line);
+            }
+            // データの名前（Create・Unit・Pilot・Item の引数）からデータの定義へ
+            var entry = DataAt(path, line, character, analysis);
+            return entry?.File == null ? null : Location(entry.File, entry.Line);
         }
+
+        /// <summary>イベントの line 行（0 始まり）の character の位置にある、データの名前の参照が指すデータ</summary>
+        private DataEntry DataAt(string path, int line, int character, ScenarioAnalysis analysis)
+        {
+            var reference = DataReferenceChecker.Find(path, DocumentText(path))
+                .FirstOrDefault(r => r.Line == line + 1 && character >= r.Column && character <= r.Column + r.Length);
+            return reference == null ? null : CatalogFor(analysis.ScenarioRoot).Find(reference.Kind, reference.Name);
+        }
+
+        /// <summary>行の最初の語（コマンド）にカーソルがあれば、その語</summary>
+        private static string CommandAt(string text, int character)
+        {
+            var trimmed = text.TrimStart();
+            var start = text.Length - trimmed.Length;
+            var end = start;
+            while (end < text.Length && !char.IsWhiteSpace(text[end]))
+            {
+                end++;
+            }
+            return character >= start && character <= end && end > start ? text.Substring(start, end - start) : null;
+        }
+
+        private static JsonObject Markdown(string value) => new JsonObject
+        {
+            ["contents"] = new JsonObject { ["kind"] = "markdown", ["value"] = value },
+        };
 
         private static JsonObject Location(string file, int line)
         {
@@ -371,21 +824,236 @@ namespace SRCAuthoring.Lsp
         private JsonNode Hover(JsonNode @params)
         {
             var (path, line, character) = Position(@params);
+            var text = LineText(path, line);
+            // メッセージ・ダイアログデータ: シチュエーション・タグの説明、パイロット・ユニット・武器の要約
+            if (IsMessageDataFile(path))
+            {
+                var angle = DelimitedTokenAt(text, character, '<', '>');
+                if (angle != null)
+                {
+                    var doc = Help.Situation(angle);
+                    if (doc != null)
+                    {
+                        return Markdown(doc);
+                    }
+                }
+                var paren = DelimitedTokenAt(text, character, '(', ')');
+                if (paren != null)
+                {
+                    if (character > 0 && text.IndexOf("$(", StringComparison.Ordinal) >= 0)
+                    {
+                        var idx = text.LastIndexOf("$(", Math.Min(character, text.Length - 1), StringComparison.Ordinal);
+                        if (idx >= 0)
+                        {
+                            var closeIdx = text.IndexOf(')', idx);
+                            if (closeIdx >= character)
+                            {
+                                var varDoc = Help.Situation(text.Substring(idx, closeIdx - idx + 1));
+                                if (varDoc != null)
+                                {
+                                    return Markdown(varDoc);
+                                }
+                            }
+                        }
+                    }
+                    var modDoc = Help.Situation(paren);
+                    if (modDoc != null)
+                    {
+                        return Markdown(modDoc);
+                    }
+                }
+                var wordAtCursor = WordAt(text, character);
+                var sitDoc = Help.Situation(wordAtCursor);
+                if (sitDoc != null)
+                {
+                    return Markdown(sitDoc);
+                }
+                var catalog = CatalogForDataFile(path);
+                var pilot = catalog.FindPilotOrMessageType(wordAtCursor);
+                if (pilot != null)
+                {
+                    var note = pilot.Name != wordAtCursor && pilot.Nickname != wordAtCursor ? $"（メッセージタイプ `{wordAtCursor}`）  \n" : "";
+                    return Markdown(note + pilot.Summary + (pilot.File == null ? "" : $"  \n{Path.GetFileName(pilot.File)}:{pilot.Line}"));
+                }
+                var weapon = catalog.FindWeapon(wordAtCursor);
+                if (weapon != null)
+                {
+                    return Markdown(weapon.Summary + (weapon.File == null ? "" : $"  \n{Path.GetFileName(weapon.File)}:{weapon.Line}"));
+                }
+                var unit = catalog.Find(DataKind.Unit, wordAtCursor);
+                if (unit != null)
+                {
+                    return Markdown(unit.Summary + (unit.File == null ? "" : $"  \n{Path.GetFileName(unit.File)}:{unit.Line}"));
+                }
+                var kw = Help.Keyword(wordAtCursor);
+                return kw == null ? null : Markdown(kw);
+            }
+            // データのファイル: 特殊能力・武器の属性の説明（ヘルプ）
+            if (DataLinter.IsDataFileName(path))
+            {
+                var keyword = Help.Keyword(WordAt(text, character));
+                return keyword == null ? null : Markdown(keyword);
+            }
             var analysis = AnalysisFor(path);
-            var word = WordAt(LineText(path, line), character);
+            var word = WordAt(text, character);
             var label = analysis.Labels.FirstOrDefault(x => x.Name == word);
-            if (label == null)
+            if (label != null)
+            {
+                return Markdown($"ラベル `{label.Name}`  \n{Path.GetFileName(label.File)}:{label.Line}");
+            }
+            var info = InspectLinePlacement(path, line + 1, analysis.ScenarioRoot);
+            var entry = DataAt(path, line, character, analysis);
+            if (entry != null)
+            {
+                var summary = entry.Summary + (entry.File == null ? "" : $"  \n{Path.GetFileName(entry.File)}:{entry.Line}");
+                if (info != null)
+                {
+                    summary += "\n\n---\n\n" + FormatPlacementMarkdown(info);
+                }
+                return Markdown(summary);
+            }
+            var command = Help.Command(CommandAt(text, character));
+            if (info != null)
+            {
+                var coord = FormatPlacementMarkdown(info);
+                return Markdown(command == null ? coord : command + "\n\n---\n\n" + coord);
+            }
+            return command == null ? null : Markdown(command);
+        }
+
+        private JsonNode PlacementAt(JsonNode @params)
+        {
+            var (path, line, _) = Position(@params);
+            if (DataLinter.IsDataFileName(path))
+            {
+                return null;
+            }
+            var scenarioRoot = ScenarioAnalyzer.FindScenarioRoot(path);
+            var info = InspectLinePlacement(path, line + 1, scenarioRoot);
+            if (info == null)
             {
                 return null;
             }
             return new JsonObject
             {
-                ["contents"] = new JsonObject
-                {
-                    ["kind"] = "markdown",
-                    ["value"] = $"ラベル `{label.Name}`  \n{Path.GetFileName(label.File)}:{label.Line}",
-                },
+                ["mapPath"] = info.Item.MapPath ?? "",
+                ["fullMapPath"] = info.FullMapPath ?? "",
+                ["x"] = info.Item.X,
+                ["y"] = info.Item.Y,
+                ["command"] = info.Item.Command,
+                ["party"] = info.Item.Party ?? "",
+                ["unit"] = info.Item.Unit ?? "",
+                ["pilot"] = info.Item.Pilot ?? "",
+                ["label"] = info.Item.Label ?? "",
+                ["terrainName"] = info.TerrainName ?? "",
+                ["file"] = info.Item.File,
+                ["line"] = info.Item.Line,
+                ["editable"] = info.Item.Editable,
             };
+        }
+
+        private JsonNode EventFlow(JsonNode @params)
+        {
+            var uri = @params?["textDocument"]?["uri"]?.GetValue<string>() ?? @params?["uri"]?.GetValue<string>();
+            if (string.IsNullOrEmpty(uri))
+            {
+                return null;
+            }
+            var path = UriToPath(uri);
+            if (DataLinter.IsDataFileName(path))
+            {
+                return null;
+            }
+            // 未保存の変更や開いているファイルを含めた解析結果をそのまま使う（7474/SRC#1655）
+            var analysis = Analyze(path);
+            var overlays = documents.ToDictionary(x => x.Key, x => x.Value);
+            var graph = new EventFlowAnalyzer { AppPath = analyzer.AppPath }.Analyze(analysis, overlays, analyzer.AppPath);
+            return JsonNode.Parse(graph.ToJson());
+        }
+
+        private sealed class LinePlacementDetail
+        {
+            public PlacementItem Item { get; set; }
+            public string FullMapPath { get; set; }
+            public string TerrainName { get; set; }
+        }
+
+        private LinePlacementDetail InspectLinePlacement(string path, int lineNumber, string scenarioRoot)
+        {
+            var text = DocumentText(path);
+            if (string.IsNullOrEmpty(text))
+            {
+                return null;
+            }
+            var relPath = !string.IsNullOrEmpty(scenarioRoot) && path.StartsWith(scenarioRoot, StringComparison.OrdinalIgnoreCase)
+                ? EventPlacementParser.NormalizePath(Path.GetRelativePath(scenarioRoot, path))
+                : Path.GetFileName(path);
+            var item = EventPlacementParser.InspectLine(relPath, text, lineNumber);
+            if (item == null)
+            {
+                return null;
+            }
+            string fullMapPath = null;
+            string terrainName = null;
+            if (!string.IsNullOrEmpty(scenarioRoot) && !string.IsNullOrEmpty(item.MapPath))
+            {
+                var candidate = Path.Combine(scenarioRoot, item.MapPath.Replace('/', Path.DirectorySeparatorChar));
+                if (File.Exists(candidate))
+                {
+                    fullMapPath = OverlayFileSystem.Normalize(candidate);
+                    terrainName = ResolveTerrainName(scenarioRoot, candidate, item.X, item.Y);
+                }
+            }
+            return new LinePlacementDetail { Item = item, FullMapPath = fullMapPath, TerrainName = terrainName };
+        }
+
+        private string ResolveTerrainName(string scenarioRoot, string mapFile, int x, int y)
+        {
+            try
+            {
+                var doc = MapDocument.Parse(File.ReadAllBytes(mapFile));
+                if (x < 1 || y < 1 || x > doc.Width || y > doc.Height)
+                {
+                    return null;
+                }
+                var tile = doc.Layer != null && !doc.Layer[x - 1, y - 1].IsEmpty
+                    ? doc.Layer[x - 1, y - 1]
+                    : doc.Tiles[x - 1, y - 1];
+                var terrains = GetTerrainCatalog(scenarioRoot);
+                var info = terrains.Terrains.FirstOrDefault(t => t.Id == tile.Terrain);
+                return info != null ? $"{info.Name} ({tile.Terrain})" : tile.Terrain.ToString(CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private TerrainCatalog GetTerrainCatalog(string scenarioRoot)
+        {
+            return terrainCatalogs.GetOrAdd(scenarioRoot ?? "", root =>
+            {
+                var files = new List<(string, byte[])>();
+                var appPath = analyzer.AppPath ?? ScenarioAnalyzer.FindAppPath(root) ?? AppContext.BaseDirectory;
+                foreach (var dir in new[] { appPath, root }.Where(d => !string.IsNullOrEmpty(d)))
+                {
+                    var terrainFile = Path.Combine(dir, "Data", "System", "terrain.txt");
+                    if (File.Exists(terrainFile))
+                    {
+                        files.Add((terrainFile, File.ReadAllBytes(terrainFile)));
+                    }
+                }
+                return TerrainCatalog.Load(files);
+            });
+        }
+
+        private static string FormatPlacementMarkdown(LinePlacementDetail detail)
+        {
+            var item = detail.Item;
+            var mapPart = string.IsNullOrEmpty(item.MapPath) ? "（マップ未指定）" : $"`{item.MapPath}`";
+            var terrainPart = string.IsNullOrEmpty(detail.TerrainName) ? "" : $"・地形: {detail.TerrainName}";
+            var who = string.IsNullOrEmpty(item.Unit) ? "" : $" — {item.Unit}";
+            return $"マップ {mapPart} の座標 **({item.X}, {item.Y})**{terrainPart}{who}";
         }
 
         /// <summary>イベントコマンドの名前（CmdType から）</summary>
@@ -402,10 +1070,96 @@ namespace SRCAuthoring.Lsp
         {
             var (path, _, _) = Position(@params);
             var items = new JsonArray();
+            if (IsMessageDataFile(path))
+            {
+                var seen = new HashSet<string>(StringComparer.Ordinal);
+                void AddItem(string label, int kind, string detail, string doc)
+                {
+                    if (string.IsNullOrEmpty(label) || !seen.Add(label))
+                    {
+                        return;
+                    }
+                    var obj = new JsonObject { ["label"] = label, ["kind"] = kind, ["detail"] = detail };
+                    if (!string.IsNullOrEmpty(doc))
+                    {
+                        obj["documentation"] = new JsonObject { ["kind"] = "markdown", ["value"] = doc };
+                    }
+                    items.Add(obj);
+                }
+
+                foreach (var sit in Help.Situations.Concat(Rules.SrcRules.StandardSituations).OrderBy(x => x, StringComparer.Ordinal))
+                {
+                    if (sit.StartsWith("<", StringComparison.Ordinal) || sit.StartsWith("$", StringComparison.Ordinal) || sit.StartsWith("(", StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+                    AddItem(sit, 14, "シチュエーション", Help.Situation(sit));
+                }
+                foreach (var sub in Rules.SrcRules.StandardSubSituations.OrderBy(x => x, StringComparer.Ordinal))
+                {
+                    AddItem($"({sub})", 14, "攻撃サブシチュエーション", Help.Situation(sub));
+                }
+                foreach (var mod in new[] { "(対瀕死)", "(対強敵)", "(対ザコ)", "(対男性)", "(対女性)", "(対自分)", "(対高回避率)", "(対低回避率)", "(対高命中率)", "(対低命中率)" })
+                {
+                    AddItem(mod, 14, "相手限定シチュエーション", Help.Situation(mod));
+                }
+                foreach (var tag in new[] { "<B>", "</B>", "<I>", "</I>", "<BIG>", "</BIG>", "<SMALL>", "</SMALL>", "<SIZE=14>", "</SIZE>", "<COLOR=red>", "</COLOR>", "<LT>", "<GT>" })
+                {
+                    AddItem(tag, 14, "メッセージタグ", Help.Situation(tag));
+                }
+                foreach (var v in new[] { "$(ユニット)", "$(パイロット)", "$(武器)", "$(損傷率)", "$(相手ユニット)", "$(相手パイロット)", "$(相手武器)", "$(相手損傷率)" })
+                {
+                    AddItem(v, 6, "メッセージ変数", Help.Situation(v));
+                }
+
+                var catalog = CatalogForDataFile(path);
+                foreach (var entry in catalog.Entries.Where(e => e.Kind == DataKind.Pilot))
+                {
+                    AddItem(entry.Name, 12, "パイロット", entry.Summary);
+                }
+                foreach (var mt in catalog.MessageTypes)
+                {
+                    AddItem(mt, 12, "メッセージタイプ", catalog.FindPilotOrMessageType(mt)?.Summary);
+                }
+                foreach (var w in catalog.Weapons)
+                {
+                    AddItem(w.Name, 12, string.IsNullOrEmpty(w.UnitName) ? "武器" : $"武器（{w.UnitName}）", w.Summary);
+                }
+                foreach (var entry in catalog.Entries.Where(e => e.Kind == DataKind.Unit))
+                {
+                    AddItem(entry.Name, 12, "ユニット", entry.Summary);
+                }
+                foreach (var sp in catalog.SpecialPowers)
+                {
+                    AddItem(sp, 14, "スペシャルパワー", null);
+                }
+                return items;
+            }
+            // データのファイル: 特殊能力・武器の属性（ヘルプにあるもの）
+            if (DataLinter.IsDataFileName(path))
+            {
+                foreach (var keyword in Help.Keywords.OrderBy(x => x, StringComparer.Ordinal))
+                {
+                    // 14: Keyword
+                    items.Add(new JsonObject
+                    {
+                        ["label"] = keyword,
+                        ["kind"] = 14,
+                        ["documentation"] = new JsonObject { ["kind"] = "markdown", ["value"] = Help.Keyword(keyword) },
+                    });
+                }
+                return items;
+            }
             foreach (var name in CommandNames())
             {
                 // 14: Keyword
-                items.Add(new JsonObject { ["label"] = name, ["kind"] = 14 });
+                var item = new JsonObject { ["label"] = name, ["kind"] = 14 };
+                var doc = Help.Command(name);
+                if (doc != null)
+                {
+                    item["documentation"] = new JsonObject { ["kind"] = "markdown", ["value"] = doc };
+                }
+                items.Add(item);
             }
             if (analyses.TryGetValue(path, out var analysis))
             {
@@ -413,6 +1167,17 @@ namespace SRCAuthoring.Lsp
                 {
                     // 3: Function
                     items.Add(new JsonObject { ["label"] = label, ["kind"] = 3, ["detail"] = "ラベル" });
+                }
+                // シナリオのデータの名前（12: Value）
+                foreach (var entry in CatalogFor(analysis.ScenarioRoot).Entries)
+                {
+                    items.Add(new JsonObject
+                    {
+                        ["label"] = entry.Name,
+                        ["kind"] = 12,
+                        ["detail"] = DataReferenceChecker.KindName(entry.Kind),
+                        ["documentation"] = new JsonObject { ["kind"] = "markdown", ["value"] = entry.Summary },
+                    });
                 }
             }
             return items;

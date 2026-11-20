@@ -1,6 +1,7 @@
 // データビューアの E2E（tests/viewer.spec.js）が読む、置いたサイトのアーカイブ（docs/gui/dataviewer.md）を作る（#1361）。
 // 使い方: node viewer-fixtures.mjs <データビューアを置いたフォルダ> [SoundFont の .sf2]
-// - viewer.json: アーカイブの一覧の URL
+// - viewer.json: アーカイブの一覧の URL と、組の評価の一覧（analysis/index.json）の URL
+// - e2e/analysis/: 組の評価（「比べる」の頁）
 // - e2e/index.json: シナリオ 1 つ・素材のパック 1 つ・SoundFont のパック 1 つ（.sf2 を渡したとき）
 // - e2e/<アーカイブ>/files.json と中のファイル
 import fs from 'node:fs';
@@ -95,5 +96,45 @@ for (const [id, a] of Object.entries(archives)) {
 fs.writeFileSync(path.join(root, 'e2e', 'index.json'), JSON.stringify({
   format: 1, name: 'E2E', ...(soundFont ? { soundFont: 'packs/soundfont' } : {}), archives: list,
 }, null, 1));
-fs.writeFileSync(path.join(root, 'viewer.json'), JSON.stringify({ archiveIndexes: ['e2e/index.json'] }));
+// 組の評価（「比べる」の頁。7474/SRC-Data の Pages の analysis/*.json と同じ形。tools/pack-analysis/README.md の「JSON」）
+const uses = ['ボス戦', 'ザコ掃討', '回避・囮', '遊撃', '長距離', '支援'];
+const indices = ['初動火力', 'ボス火力', 'ザコ掃討', '耐久力', '回避', '遊撃', '長距離', 'マップ兵器'];
+const bands = ['経験値200以上', '経験値180-199', '経験値160-179', '経験値120-159', '経験値120未満', '名前なし'];
+const pair = (work, pilot, unit, band, rank, base, grades, guess = false) => ({
+  work, how: guess ? 'クラスの一致' : rank ? '役割表' : '名前の一致', confidence: guess ? '推定' : '確か', band, role: '戦闘', rank,
+  pilot: { name: pilot, nickname: pilot, bitmap: '', class: '', exp: 180, sp: 60, stats: { 格闘: 150, 射撃: 150, 命中: 150, 回避: 150, 技量: 150, 反応: 150 }, specialPowers: ['熱血'] },
+  unit: { name: unit, nickname: unit, bitmap: '', class: '', exp: 180, hp: 4000, en: 200, armor: 1200, mobility: 100, speed: 6, size: 'M', topWeapon: { name: '必殺技', power: 4000, minRange: 1, maxRange: 1 } },
+  evaluated: true,
+  grades: Object.fromEntries(uses.map((u, i) => [u, grades[i]])),
+  percentiles: Object.fromEntries(uses.map((u, i) => [u, 10 + i * 10 + (base > 100 ? 0 : 30)])),
+  indices: Object.fromEntries(indices.map((x, i) => [x, { effective: base + i * 5, simple: base - i * 3 }])),
+  gap: 5, values: {},
+});
+// 組にしない比較（pilots・units）は、組のパイロット・ユニットに、作品・帯・組の相手を足したもの。extraUnits は組の無いユニット
+const analysisSet = (pack, works, pairs, extraUnits = []) => ({
+  format: 2, pack, generatedAt: '2026-11-14T00:00:00Z', level: 30, seed: 1, sample: 400,
+  uses, indices, bands, opponents: {}, referenceCounts: {}, works, pairs,
+  pilots: pairs.map((p, i) => ({ ...p.pilot, stats: { ...p.pilot.stats, 格闘: 150 + i * 10 }, work: p.work, band: p.band, role: p.role, unit: p.unit.name, confidence: p.confidence })),
+  units: pairs.map((p, i) => ({ ...p.unit, hp: 4000 + i * 1000, work: p.work, pilots: [p.pilot.name], band: p.band, values: { 最大攻撃力: 4000, 移動後攻撃力: 3000, 最大射程: 1, マップ兵器: 0 } }))
+    .concat(extraUnits.map(u => ({ ...pairs[0].unit, ...u, values: { 最大攻撃力: 2000, 移動後攻撃力: 2000, 最大射程: 3, マップ兵器: 0 } }))),
+});
+fs.mkdirSync(path.join(root, 'e2e', 'analysis'), { recursive: true });
+fs.writeFileSync(path.join(root, 'e2e', 'analysis', 'pairs-ロボ.json'), JSON.stringify(analysisSet('ロボ',
+  [{ name: '比較の作品Ａ', pairs: 2, declared: 1 }, { name: '比較の作品Ｂ', pairs: 1, declared: 0 }],
+  [
+    pair('比較の作品Ａ', '主人公', '主役機', '経験値200以上', '主人公格', 180, 'SABCDS'),
+    pair('比較の作品Ａ', '脇役', '量産機', '経験値200以上', '', 90, 'CCCDDD'),
+    pair('比較の作品Ｂ', 'ライバル', 'ライバル機', '経験値200以上', '', 140, 'ABBCCC'),
+    // クラスの一致で組んだ（推定の）組。既定の「確かな組だけ」では出ない
+    pair('比較の作品Ｂ', '推定の隊長', '推定の機体', '経験値200以上', '', 300, 'SSSSSS', true),
+  ],
+  [{ name: '乗り手の無い機体', work: '比較の作品Ｂ', hp: 9000 }])));
+fs.writeFileSync(path.join(root, 'e2e', 'analysis', 'pairs-Sharp.json'), JSON.stringify(analysisSet('拡張',
+  [{ name: '自作の作品', pairs: 1, declared: 0 }],
+  [pair('自作の作品', '自作の主人公', '自作の機体', '経験値200以上', '', 120, 'BBBCCC')])));
+fs.writeFileSync(path.join(root, 'e2e', 'analysis', 'index.json'), JSON.stringify({
+  format: 1, generatedAt: '2026-11-14T00:00:00Z',
+  files: [{ section: 'ロボ', file: 'pairs-ロボ.json' }, { section: 'Sharp', file: 'pairs-Sharp.json' }],
+}));
+fs.writeFileSync(path.join(root, 'viewer.json'), JSON.stringify({ archiveIndexes: ['e2e/index.json'], analysisIndex: 'e2e/analysis/index.json' }));
 console.log(`データビューアのアーカイブを ${root} に置いた（${list.length} 個）`);

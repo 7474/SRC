@@ -8,3 +8,10 @@
 #
 # 例:
 # probe/probe.eve	日付.DiffTime.75秒	（理由と、SRCとの互換性.md の節）
+probe/probe.eve	関数.Font.色	元の SRC でも流すたびに #000000 と #FFFFFF が入れ替わる（picMain(0) の、その時点の文字の色。描画のタイミングに左右される）
+probe/probe.eve	日付.DiffTime.75秒	元の SRC の書き誤り（Second(d2 - d1) で秒の桁だけを返す）を再現しない。SRCとの互換性.md の「イベント・変数・関数」
+probe/probe.eve	日付.DiffTime.1日	同上
+probe/probe.eve	日付.DiffTime.負	同上
+probe/probe.eve	関数.InStrRevB	InStrB 関数と同じく Shift_JIS のバイト数で数えた位置を返す（元の SRC の実機は InStrRevB("5月5日","5") に 5 を返す。バイトの位置は 4）。SRCとの互換性.md の「イベント・変数・関数」
+probe/probe.eve	システム変数.セーブデータファイル名	セーブファイルの拡張子は .srcs（セーブファイルに互換性は無い）。SRCとの互換性.md の「セーブファイル」
+probe/probe.eve	VB5.実行時エラー.Chr(-1)	元の SRC は 0xFF の 1 バイト（Shift_JIS の文字でない）を書き出す。文字として意味が無いので比べない

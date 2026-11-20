@@ -1,0 +1,15 @@
+{
+  "terrain": "mars_plain",
+  "count": 1,
+  "exists": "0",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "base",
+      "description": "一様な茶色の平地（火星の平原）",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

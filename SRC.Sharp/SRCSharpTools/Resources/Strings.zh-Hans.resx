@@ -17,12 +17,26 @@
     <value>srcsharp: SRC# 数据与剧本制作辅助工具
 
 用法:
-  srcsharp lint &lt;目录或文件&gt;... [--format text|sarif] [--output 文件]
+  srcsharp lint &lt;目录或文件&gt;... [--format text|sarif] [--output 文件] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path SRC 文件夹]
       检查数据（*.txt）和事件（*.eve）。发现问题时退出码为 1
   srcsharp play &lt;事件文件&gt; [--script 文件.play] [--out 目录] [--app-path SRC文件夹] [--scenario-root 剧本文件夹] [--steps 步数] [--skip-wait]
       在无画面状态下运行剧本。未指定 --script 时，自动推进消息，选项选择第一项。指定 --skip-wait 时跳过固定等待（动画、消息、Wait）。--scenario-root 指定剧本文件夹（Data、Lib、Continue 的基准）；未指定时，位于没有 Data 的子文件夹中的事件文件使用最近的含 Data 的上级文件夹。
   srcsharp balance &lt;目录或文件&gt;... [--format md|csv] [--output 文件]
       列出单位数据的能力值及异常值
+  srcsharp new &lt;文件夹&gt; [--title 标题] [--episodes n] [--app-path SRC 文件夹] [--force]
+      创建新剧本的模板（第一话的事件、地图和数据，自动游玩步骤，VS Code 设置，CI）。已有的文件不覆盖（--force 覆盖）--episodes 为 2 以上时，创建带幕间（intermission）的多话剧本。
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      追踪事件之间的 Continue、下一关、Exec、IntermissionCommand、Load、GameClear，输出各话之间的连接图（默认是当前文件夹）
+  srcsharp assets [剧本文件夹] [--format md|json|readme] [--output 文件] [--app-path SRC 文件夹] [--ext-data 文件夹] [--ext-data2 文件夹] [--fail-on-missing]
+      列出数据和事件引用的图像、声音、地图，以及引用位置和按 SRC 相同顺序（剧本 → 扩展数据 → SRC 本体）查找的结果。也列出用表达式组成的名称和未被引用的素材。readme 输出写入 README 的“所需素材”草稿。--fail-on-missing 在有找不到的素材时以退出码 1 结束（不涉及素材的获取和再分发）
+  srcsharp trial &lt;剧本文件夹&gt; [--unit 机体] [--pilot 驾驶员] [--enemy 机体] [--enemy-pilot 驾驶员] [--level 数] [--enemies 数] [--list]
+      在 .srcsharp/trial/ 创建让剧本数据中的机体和驾驶员与敌人战斗的试战事件，并输出其路径（用 play 或调试器运行）。--list 以 JSON 输出数据中的机体和驾驶员
+  srcsharp event-flow &lt;事件文件&gt; [--format md|mmd|json] [--output 文件] [--app-path SRC 文件夹] [--scenario-root 剧本文件夹]
+      追踪单个事件文件（及其 include 和 Require）中的触发器、标签、Call、Goto、Require，并输出事件流程图
+  srcsharp talk-preview &lt;事件文件&gt; [--line 行] [--block 序号] [--stdin] [--input 文件] [--format json|png] [--out 目录] [--output 文件] [--no-images] [--app-path SRC 文件夹] [--scenario-root 剧本文件夹]
+      使用游戏消息窗口渲染 Talk 和 AutoTalk 块，输出按页拆分的 PNG 图像或 JSON
+  srcsharp anime-preview &lt;文件或文件夹&gt; [--list] [--file 文件] [--line 行] [--kind animation|ext_animation|effect|subroutine] [--target 名称] [--situation 场合] [--spec 指定] [--attacker 机体] [--attacker-pilot 驾驶员] [--defender 机体] [--defender-pilot 驾驶员] [--play-once] [--out 图像文件] [--app-path SRC 文件夹] [--scenario-root 剧本文件夹]
+      生成用于使用固定攻击方和防御方播放单个 animation.txt、ext_animation.txt、effect.txt 定义或通用战斗动画的准备文件（.srcsharp/preview/）。--list 以 JSON 输出列表，--play-once 播放一次
   srcsharp lsp
       Language Server（标准输入输出）
   srcsharp dap
@@ -48,6 +62,9 @@
   <data name="LintSummary" xml:space="preserve">
     <value>已检查 {0} 个文件，发现 {1} 个问题</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>未知的规则组：{0}（应为 {1} 之一）</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>请指定一个事件文件</value>
   </data>
@@ -68,5 +85,59 @@
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>未知的搜索方法：{0}（hybrid、bm25 或 vector）</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>请指定一个用于创建剧本的文件夹</value>
+  </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>话数必须是 1 以上的整数: {0}</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>已在 {0} 创建模板（{1} 个文件）</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>已跳过已有文件：{0}（使用 --force 覆盖）</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>最多只能指定一个剧本文件夹或事件文件</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>找不到剧本文件夹或事件文件: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>未知的输出格式: {0}（md、mmd 或 json）</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>最多只能指定一个剧本文件夹</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>找不到剧本文件夹: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>未知的输出格式: {0}（md、json 或 readme）</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>素材 {0} 个（找不到 {1}）·无法确认的引用 {2} 处·未引用的素材 {3} 个</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>请指定一个剧本文件夹</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>已创建试战：{0}/{1} 对 {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>找不到要解析的事件文件: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>请指定一个要预览的事件文件</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>已将 {0} 页图像写入 {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>找不到目标数据/事件文件或文件夹: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>未找到可预览的战斗动画或特殊效果定义</value>
   </data>
 </root>

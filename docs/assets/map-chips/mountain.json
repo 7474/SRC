@@ -1,0 +1,426 @@
+{
+  "terrain": "mountain",
+  "count": 79,
+  "exists": "0-34 36-66 1000-1012",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "edge",
+      "neighbor": "plain",
+      "tiles": {
+        "0": [
+          "N",
+          "W"
+        ],
+        "1": [
+          "N"
+        ],
+        "2": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "3": [
+          "S",
+          "W"
+        ],
+        "4": [
+          "S"
+        ],
+        "5": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        }
+      },
+      "description": "岩山（灰褐色）の山脈、周りは明るい草地。0–1=北の縁(上に明るい草地),2=内側,3=南西の縁,4=南の縁,5=内側/東寄り",
+      "confidence": "guess"
+    },
+    {
+      "from": 6,
+      "to": 11,
+      "kind": "edge",
+      "neighbor": "woods",
+      "tiles": {
+        "6": [
+          "N",
+          "W"
+        ],
+        "7": [
+          "N"
+        ],
+        "8": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "9": [
+          "S",
+          "W"
+        ],
+        "10": [
+          "S"
+        ],
+        "11": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        }
+      },
+      "description": "岩山（灰褐色）の山脈、周りは森。6–7=北の縁(上に森),8=内側,9=南西の縁,10=南の縁,11=内側/東寄り",
+      "confidence": "guess"
+    },
+    {
+      "from": 12,
+      "to": 17,
+      "kind": "edge",
+      "neighbor": "snow",
+      "tiles": {
+        "12": [
+          "N",
+          "W"
+        ],
+        "13": [
+          "N"
+        ],
+        "14": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "15": [
+          "S",
+          "W"
+        ],
+        "16": [
+          "S"
+        ],
+        "17": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        }
+      },
+      "description": "岩山（灰褐色）の山脈、周りは雪。12–13=北の縁(上に雪),14=内側,15=南西の縁,16=南の縁,17=内側/東寄り",
+      "confidence": "guess"
+    },
+    {
+      "from": 18,
+      "to": 23,
+      "kind": "edge",
+      "neighbor": "desert",
+      "tiles": {
+        "18": [
+          "N",
+          "W"
+        ],
+        "19": [
+          "N"
+        ],
+        "20": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "21": [
+          "S",
+          "W"
+        ],
+        "22": [
+          "S"
+        ],
+        "23": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        }
+      },
+      "description": "岩山（灰褐色）の山脈、周りは砂漠。18–19=北の縁(上に砂漠),20=内側,21=南西の縁,22=南の縁,23=内側/東寄り",
+      "confidence": "guess"
+    },
+    {
+      "from": 24,
+      "to": 48,
+      "kind": "edge",
+      "style": "red_rock",
+      "description": "赤茶の岩山の山脈。周りの地面違いの組（24–28=草地,29–34=森,36–41=雪,42–48=砂漠 付近、境目は推測）。35 欠番",
+      "confidence": "guess",
+      "tiles": {
+        "24": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "plain"
+        },
+        "25": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "plain"
+        },
+        "26": {
+          "sides": [],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "27": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "plain"
+        },
+        "28": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "29": {
+          "sides": [],
+          "neighbor": "woods",
+          "confidence": "guess"
+        },
+        "30": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "woods"
+        },
+        "31": {
+          "sides": [
+            "N"
+          ],
+          "neighbor": "woods"
+        },
+        "32": {
+          "sides": [],
+          "neighbor": "woods",
+          "confidence": "guess"
+        },
+        "33": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "woods",
+          "confidence": "guess"
+        },
+        "34": {
+          "sides": [
+            "E",
+            "S"
+          ],
+          "neighbor": "woods",
+          "confidence": "guess"
+        },
+        "36": {
+          "sides": [],
+          "neighbor": "snow",
+          "confidence": "guess"
+        },
+        "37": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "snow"
+        },
+        "38": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "snow"
+        },
+        "39": {
+          "sides": [],
+          "neighbor": "snow",
+          "confidence": "guess"
+        },
+        "40": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "snow",
+          "confidence": "guess"
+        },
+        "41": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "snow",
+          "confidence": "guess"
+        },
+        "42": {
+          "sides": [],
+          "neighbor": "snow",
+          "confidence": "guess"
+        },
+        "43": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "desert"
+        },
+        "44": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "desert"
+        },
+        "45": {
+          "sides": [],
+          "neighbor": "desert",
+          "confidence": "guess"
+        },
+        "46": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "desert",
+          "confidence": "guess"
+        },
+        "47": {
+          "sides": [
+            "S"
+          ],
+          "neighbor": "desert",
+          "confidence": "guess"
+        },
+        "48": {
+          "sides": [],
+          "neighbor": "desert",
+          "confidence": "guess"
+        }
+      }
+    },
+    {
+      "from": 49,
+      "to": 53,
+      "kind": "object",
+      "description": "1マスの独立した岩山。49=草地,50=森,51=雪,52=砂漠,53=濃い緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 54,
+      "to": 54,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 55,
+      "to": 60,
+      "kind": "edge",
+      "style": "olive",
+      "neighbor": "plain",
+      "description": "濃い緑の草地版の灰褐色の山脈（並びは 0–5 と同じ）",
+      "confidence": "guess",
+      "tiles": {
+        "55": [
+          "N",
+          "W"
+        ],
+        "56": [
+          "N",
+          "E"
+        ],
+        "57": {
+          "sides": [
+            "SW"
+          ],
+          "confidence": "guess"
+        },
+        "58": [
+          "S",
+          "W"
+        ],
+        "59": [
+          "S"
+        ],
+        "60": {
+          "sides": [
+            "SE"
+          ],
+          "confidence": "guess"
+        }
+      }
+    },
+    {
+      "from": 61,
+      "to": 66,
+      "kind": "edge",
+      "style": "olive",
+      "description": "濃い緑の草地版の赤茶の岩山",
+      "confidence": "guess",
+      "tiles": {
+        "61": {
+          "sides": [
+            "N",
+            "W"
+          ],
+          "neighbor": "plain"
+        },
+        "62": {
+          "sides": [
+            "N",
+            "E"
+          ],
+          "neighbor": "plain"
+        },
+        "63": {
+          "sides": [],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "64": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "plain"
+        },
+        "65": {
+          "sides": [
+            "S",
+            "W"
+          ],
+          "neighbor": "plain",
+          "confidence": "guess"
+        },
+        "66": {
+          "sides": [],
+          "neighbor": "plain",
+          "confidence": "guess"
+        }
+      }
+    },
+    {
+      "from": 1000,
+      "to": 1012,
+      "kind": "style",
+      "style": "overlay",
+      "description": "背景透明の重ね用。1000–1005=灰褐色の山脈,1006–1011=赤茶の岩山,1012=独立した岩山",
+      "confidence": "high"
+    }
+  ],
+  "rules": "6 枚ずつ周りの地面が変わる（0=草地,6=森,12=雪,18=砂漠）。24 以降は赤茶の岩山、49–53 は独立峰、55 以降は濃い緑の草地、1000 番台は背景透明"
+}

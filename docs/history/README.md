@@ -8,3 +8,4 @@
 | [conversion-log.md](./conversion-log.md) | VB から C# に変換したときに使ったツール |
 | [gui/gui-migration-study.md](./gui/gui-migration-study.md) | GUI 実装の移行の検討（候補の比較と移行の手順） |
 | [assets/redistribution-study.md](./assets/redistribution-study.md) | 素材データの再配布の検討 |
+| [tools/balance-pack.md](./tools/balance-pack.md) | 準拠データパックに応じたバランスの検査の設計（#1388。実装したのは規則の検査だけで、続きは #1607）と、利用者向けの説明の下書き（[balance-pack-guide.md](./tools/balance-pack-guide.md)）・GSC データパックの分析の試作結果（[balance-pack-analysis.md](./tools/balance-pack-analysis.md)）・読み物（[balance-pack-reading.md](./tools/balance-pack-reading.md)） |

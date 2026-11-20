@@ -146,6 +146,7 @@ MIDI の SoundFont（.sf2）も素材として配信できます。シナリオ�
 | `?catalog=https://example.com/catalog.json` | そのカタログも一覧に出す（その表示の間だけ。保存はしない） |
 | `?catalog=…&play=…` | 別のサイトのカタログのシナリオをすぐに始める |
 | `?archive=https://example.com/a.zip&eve=start.eve` | zip を直接読んで始める。`root`・`requires`（素材の `id` をカンマ区切り）も指定できる |
+| `?stored=名前.zip` | 利用者が追加したシナリオ（ブラウザの IndexedDB）をすぐに始める。追加したときの `requires`（素材の `id`）があれば、カタログのその素材を重ねる。SRC#Studio のかんたん作成が、同じサイトのブラウザに入れてから開くのに使う（[かんたん作成](../tools/quick-create.md)）。`allowUserArchives`・`allowUserScenarios` が `true` のときだけ使える |
 | `?log=Debug` | ブラウザのコンソールに出すログのレベル（`Trace`・`Debug`・`Information`・`Warning`・`Error`）。ほかの指定と組み合わせられる（[ログの設計](../logging.md)） |
 
 一覧の各シナリオの「リンク」が、そのシナリオを直接開く URL です。`catalog`・`archive` は `allowUserCatalogs` が `true` のときだけ使えます。
@@ -154,7 +155,7 @@ MIDI の SoundFont（.sf2）も素材として配信できます。シナリオ�
 
 `allowUserArchives` が `true` のとき、利用者は一覧の画面で次のものを追加できます。追加したものはブラウザ（IndexedDB）に保存され、次回も使えます。
 
-- シナリオの zip（`allowUserScenarios`）: 一覧から選んで遊ぶ
+- シナリオの zip（`allowUserScenarios`）: 一覧から選んで遊ぶ。SRC#Studio のかんたん作成が入れたものは、遊ぶ前にカタログの素材（`requires`）を重ねる
 - 素材の zip（`allowUserAssets`）: どのシナリオでも読み込む。シナリオが求める素材（`requires`）の後に読み込むので、同じ名前のファイルは利用者のものが使われる
 
 シナリオ 1 本だけを配信するサイトの例（利用者の追加を許さず、開いたらすぐに始める）:

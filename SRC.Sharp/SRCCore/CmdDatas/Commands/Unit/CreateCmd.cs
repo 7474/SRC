@@ -16,6 +16,8 @@ namespace SRCCore.CmdDatas.Commands
         {
             string opt;
             var num = ArgNum;
+            // 元の SRC は引数の数を確かめずに GetArgAsString(num) で strArgs(num) を読むので、引数が無いと「イベントデータが不正です」になる（#1511）
+            ThrowIfNoArgsArray(num);
             switch (GetArgAsString(num) ?? "")
             {
                 case "非同期":

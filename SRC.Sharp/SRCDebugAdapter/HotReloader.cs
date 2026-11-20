@@ -204,11 +204,21 @@ namespace SRCDebugAdapter
                 {
                     // 最初の読み込みと同じ順に読む。同じ名前のデータは上書きされる（消したデータは残る）
                     src.ClearDataError();
-                    foreach (var title in src.Titles.ToList())
+                    // 読み直しの誤りはダイアログに出さず、診断として返す（ゲームのダイアログで止めない）
+                    var showDialogs = src.ShowDataErrorDialogs;
+                    src.ShowDataErrorDialogs = false;
+                    try
                     {
-                        src.IncludeData(title);
+                        foreach (var title in src.Titles.ToList())
+                        {
+                            src.IncludeData(title);
+                        }
+                        src.LoadLocalData();
                     }
-                    src.LoadLocalData();
+                    finally
+                    {
+                        src.ShowDataErrorDialogs = showDialogs;
+                    }
                     foreach (var error in src.DataErrors)
                     {
                         diagnostics.Add(new SrcDiagnostic { File = error.fname, Line = error.line_num, Severity = DiagnosticSeverity.Warning, Message = $"{error.dname}: {error.msg}" });

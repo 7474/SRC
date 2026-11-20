@@ -12,9 +12,11 @@
 | Windows・macOS・Linux で遊ぶ | SRC#Avalonia（推奨） | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpAvalonia-<OS>.zip`・[簡易実行手順](#srcavalonia)・[ドキュメント](./docs/gui/avalonia.md) |
 | 開発版を試す | SRC#Avalonia・`srcsharp`・VS Code 拡張・SRC#Web の zip | master にマージされるたびに入れ替わる [開発版（`dev`）](https://github.com/7474/SRC/releases/tag/dev)・Docker の `koudenpa/srcdatalinter:dev`（[バージョンの管理](./docs/versioning.md#開発版)） |
 | Windows（x64）で遊ぶ | SRC#Form（維持） | [Releases](https://github.com/7474/SRC/releases) の `SRCSharpForm.zip`・[簡易実行手順](#srcform) |
-| データを見る | データビューア | https://7474.github.io/SRC/ ・ https://srcv.7474.jp/ |
-| データ・シナリオを作る | `srcsharp`（lint・自動プレイ・バランス集計） | [作成支援ツール](./docs/tools/authoring.md) |
-| シナリオを VS Code で書く | VS Code 拡張 | Marketplace の [SRC](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode)（`koudenpa.src-vscode`）・[使い方](./SRC.Sharp/SRCSharpVSCode/README.md) |
+| データを見る・比べる | データビューア | https://7474.github.io/SRC/ ・ https://srcv.7474.jp/ |
+| データ・シナリオを作る（入口） | 道具と流れ | ヘルプの「[SRC#でシナリオ・データを作る](https://srch.7474.jp/SRCSharpでシナリオ・データを作る)」 |
+| シナリオ・データを VS Code で書く | VS Code 拡張「SRC# Authoring」（診断・補完・デバッガ・マップ作成ツール・データのプレビュー・試し戦闘） | Marketplace の [SRC# Authoring](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode)（`koudenpa.src-vscode`）・[使い方](./SRC.Sharp/SRCSharpVSCode/README.md) |
+| かんたん作成・マップを描く・データを見る（ブラウザ） | SRC#Studio（かんたん作成・マップ作成ツール（配置・人形劇・場面の再生）・データのプレビュー・素材の一覧） | https://src.koudenpa.net/studio/ （リリース版）・ https://7474.github.io/SRC/studio/ （開発版）・[SRC#Studio](./SRC.Sharp/SRCStudio/README.md) |
+| ひな形・検査・自動プレイ・試し戦闘（コマンドライン） | `srcsharp`（`new`・`lint`・`play`・`playtest`・`trial`・`assets`・`flow`・`event-flow`・`outline`・`talk-preview`・`anime-preview`・`balance`・`help`） | `dotnet tool install -g SRCSharpTools`・[作成支援ツール](./docs/tools/authoring.md) |
 | CI でデータを検査する | SRCDataLinter | [GitHub Action](https://github.com/7474/SRC-DataLinter)・[Docker イメージ](https://hub.docker.com/r/koudenpa/srcdatalinter) |
 
 ヘルプは https://srch.7474.jp/ にあります。
@@ -88,6 +90,8 @@
 | [SRCDataLinter](./SRC.Sharp/SRCDataLinter) | SRC のデータのバリデータ | .NET 11 |
 | [SRCPlay](./SRC.Sharp/SRCPlay)・[SRCAuthoring](./SRC.Sharp/SRCAuthoring)・[SRCDebugAdapter](./SRC.Sharp/SRCDebugAdapter) | 自動プレイ・Language Server・デバッガの部品 | .NET 11 |
 | [SRCSharpTools](./SRC.Sharp/SRCSharpTools) | 作成支援ツール `srcsharp`（.NET tool） | .NET 11 |
+| [SRCStudio](./SRC.Sharp/SRCStudio) | SRC#Studio（かんたん作成・マップ作成ツール・データのプレビュー・素材の一覧。WebAssembly。ブラウザと VS Code 拡張） | .NET 11 |
+| [SRCLintWeb](./SRC.Sharp/SRCLintWeb) | ブラウザで動く lint（投稿サイトが使う） | .NET 11 |
 | [SRCSharpVSCode](./SRC.Sharp/SRCSharpVSCode) | VS Code 拡張 | VS Code |
 
 バージョンは、アプリが `3.x.x`、ライブラリ・ツールが `0.x.x` です。元の SRC と区別するため、アプリはメジャーを 3 にしています（[バージョンの管理](./docs/versioning.md)）。

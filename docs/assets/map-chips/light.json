@@ -1,0 +1,47 @@
+{
+  "terrain": "light",
+  "count": 18,
+  "exists": "0-3 1000-1013",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 3,
+      "kind": "decoration",
+      "description": "黒背景の光源（0 星形の光、1 小さな灯り 4 つ、2 たいまつ、3 虹色の光球）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1003,
+      "kind": "style",
+      "style": "overlay",
+      "description": "0–3 の白背景（重ね置き）版",
+      "confidence": "high"
+    },
+    {
+      "from": 1004,
+      "to": 1009,
+      "kind": "decoration",
+      "style": "overlay",
+      "description": "黄・青白の灯り（燭台・壁掛けの灯）",
+      "confidence": "high"
+    },
+    {
+      "from": 1010,
+      "to": 1011,
+      "kind": "object",
+      "style": "overlay",
+      "description": "黄・青白の燭台",
+      "confidence": "high"
+    },
+    {
+      "from": 1012,
+      "to": 1013,
+      "kind": "object",
+      "style": "overlay",
+      "description": "黄・青白い光の篝火",
+      "confidence": "high"
+    }
+  ],
+  "rules": "1000 番台は下地なし。"
+}

@@ -1,0 +1,24 @@
+{
+  "terrain": "rock_reef",
+  "count": 4,
+  "exists": "0-3",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 1,
+      "kind": "variant",
+      "style": "shallow",
+      "description": "青緑の浅い海に岩礁（灰色の岩が点在）",
+      "confidence": "high"
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "kind": "style",
+      "style": "deep",
+      "description": "濃い青の海に岩礁（0〜1 の深い海版）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0〜1 浅い海、2〜3 深い海"
+}

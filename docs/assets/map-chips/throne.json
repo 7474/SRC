@@ -1,0 +1,30 @@
+{
+  "terrain": "throne",
+  "count": 5,
+  "exists": "0-1 3 1000-1001",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 1,
+      "kind": "object",
+      "description": "0 赤い玉座、1 金枠の赤い玉座",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 3,
+      "kind": "object",
+      "description": "茶色の石の玉座",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1001,
+      "kind": "style",
+      "style": "alt",
+      "description": "0・1 の別版",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

@@ -7,6 +7,10 @@ SRC#（Simulation RPG Construction Sharp）の設計・運用のドキュメン�
 
 ## 📚 ドキュメント一覧 / Document Index
 
+### 🧩 構成 / Architecture
+
+- **[コンポーネントの構成](./architecture.md)** — プロジェクトの層と参照の関係、守ること（開発者向け）
+
 ### 🖥️ GUI / GUI
 
 - **[GUI の構成](./gui/README.md)** — フロントエンド（SRC#Form・SRC#Avalonia・SRC#Web）と、共通の SRCCore・SRCRender・SRCSound の関係
@@ -36,7 +40,8 @@ SRC#（Simulation RPG Construction Sharp）の設計・運用のドキュメン�
 
 ### 🛠️ 作成支援ツール / Authoring Tools
 
-- **[作成支援ツール](./tools/authoring.md)** — データの lint・バランス集計、シナリオの自動プレイ・イベントのデバッガ（CLI `srcsharp` と VS Code 拡張）
+- **[かんたん作成](./tools/quick-create.md)** — SRC#Studio で、作品のキャラを選んで置き、セリフを書いて、すぐ SRC#Web で遊ぶ。サイトごとの設定（`studio.json`）と、場面のサンプルのカタログの書式
+- **[作成支援ツール](./tools/authoring.md)** — マップ作成ツール（SRC#Studio。ブラウザと VS Code）、データの lint（書き間違いを見つける規則のグループ `src`・`gsc-robo`・`gsc-ext`・`robodun`）・バランス集計、シナリオの自動プレイ・イベントのデバッガ（CLI `srcsharp`・VS Code 拡張・ブラウザの lint）
 - **[VS Code 拡張の使い方](../SRC.Sharp/SRCSharpVSCode/README.md)** — 導入・設定・デバッガの構成・文字コード・トラブルシューティング
 
 ### 📦 素材 / Assets

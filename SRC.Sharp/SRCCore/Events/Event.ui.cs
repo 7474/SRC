@@ -39,7 +39,14 @@ namespace SRCCore.Events
                 var preLine = EventData[line.ID - 1];
                 buf = buf + preLine.LineNum + ": " + preLine.Data + Constants.vbCr + Constants.vbLf;
             }
-            buf = buf + line.LineNum + ": " + line.Data + Constants.vbCr + Constants.vbLf;
+            // VB 版はイベントデータの行をそのまま出す。サブルーチンの呼び出しとして読んだ行（CmdParser が「Call 」を前に付ける）も、
+            // 書いたとおりに出す（元の SRC の実機で確かめた。probe-errors/eve-unknown。#1550）
+            var data = line.Data;
+            if (line.ID >= 0 && line.ID < EventData.Count && EventData[line.ID].LineNum == line.LineNum && EventData[line.ID].File == line.File)
+            {
+                data = EventData[line.ID].Data;
+            }
+            buf = buf + line.LineNum + ": " + data + Constants.vbCr + Constants.vbLf;
             if (line.ID < EventData.Count - 1)
             {
                 var afterLine = EventData[line.ID + 1];

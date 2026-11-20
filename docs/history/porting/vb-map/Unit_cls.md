@@ -23,7 +23,7 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Property Get HP | 506 | 3 | `SRCCore/Units/Unit.props.cs` Unit.HP | 一致 |  |
 | Property Let HP | 510 | 8 | `SRCCore/Units/Unit.props.cs` Unit.HP | 一致 |  |
 | Property Get EN | 520 | 3 | `SRCCore/Units/Unit.props.cs` Unit.EN | 一致 |  |
-| Property Let EN | 524 | 9 | `SRCCore/Units/Unit.props.cs` Unit.EN | 一致 | VB の intEN は Integer（Long を代入する。あふれのチェックはしない設定）。C# は int |
+| Property Let EN | 524 | 9 | `SRCCore/Units/Unit.props.cs` Unit.EN | 一致 | VB の intEN は Integer（Long を代入する）。あふれのチェックをしない設定だが、Long から Integer への変換のあふれは実機でエラーになった（#1550 の RankUp。[説明](README.md#実機で確かめた結果)）ので、32767 を超える ＥＮ は VB ではエラーになると考えられる。C# は int（あふれない） |
 | Property Get Speed0 | 536 | 3 | `SRCCore/Units/Unit.props.cs` Unit.Speed0 | 一致 |  |
 | Property Get Speed | 540 | 56 | `SRCCore/Units/Unit.props.cs` Unit.Speed | 一致 |  |
 | Property Get Transportation | 599 | 30 | `SRCCore/Units/Unit.props.cs` Unit.Transportation | 一致 |  |
@@ -109,7 +109,7 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Function ConditionLevel | 4832 | 8 | `SRCCore/Units/Unit.condition.cs` Unit.ConditionLevel | 一致 |  |
 | Sub SetConditionLevel | 4842 | 5 | （見つからない） | SRC#で不要 | 呼び出し元（Unit.attackcheck.cs のダミー・盾）が IsConditionSatisfied で確かめてから `Condition(name).Level` に代入している。C# ではコメントアウトされている |
 | Function ConditionData | 4849 | 8 | `SRCCore/Units/Unit.condition.cs` Unit.ConditionData | 一致 |  |
-| Sub UpdateCondition | 4859 | 59 | `SRCCore/Units/Unit.condition.cs` Unit.UpdateCondition | 一致 | VB は For Each の中で Remove している。C# は CloneList で全部を回す。VB6 の Collection は今の要素を消しても次へ進めると考えて一致とした（資料では確かめていない） |
+| Sub UpdateCondition | 4859 | 59 | `SRCCore/Units/Unit.condition.cs` Unit.UpdateCondition | 一致 | VB は For Each の中で Remove している。C# は CloneList で全部を回す。VB5 の Collection は今の要素を消しても次へ進む（すべて消え、次の要素を飛ばさない）。VB5 の実機で確かめた（#1550 の VB5.ForEach.特殊状態.*） |
 | Function Weapon | 4923 | 3 | `SRCCore/Units/Unit.weapon.cs` Unit.Weapon | 一致 | 範囲外は null を返す（VB は実行時エラー。SRC# の利便性） |
 | Function CountWeapon | 4928 | 3 | `SRCCore/Units/Unit.weapon.cs` Unit.CountWeapon | 一致 |  |
 | Function WeaponNickname | 4933 | 9 | `SRCCore/Units/UnitWeapon.cs` UnitWeapon.WeaponNickname | 一致 |  |
@@ -214,10 +214,10 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Sub StandBy | 24831 | 264 | `SRCCore/Units/Unit.map.cs` Unit.StandBy | 修正済み | #1498。登場時アニメの条件 `BitmapID > 0` を `!IsBitmapHidden()` にした（以前は画像のファイル名が空でないかで判定していた）。コマごとの `picMain(0).Refresh` に当たる UpdateScreen を足した。BitmapID の作成は SRC# では要らない |
 | Sub Move | 25097 | 143 | `SRCCore/Units/Unit.map.cs` Unit.Move | 修正済み | #1498。合体の判定を VB のとおり「移動先のユニットの合体能力（3 要素）の相手の CurrentForm が自分」にした（以前は自分の合体能力と合体制限・行動不能などで判定していた）。最後の Update で、空を飛べない空中のユニットが戻る前提は変えていない |
 | Sub Jump | 25242 | 119 | `SRCCore/Units/Unit.map.cs` Unit.Jump | 修正済み | #1498。探す前に x,y を移動先にしていたため、空き位置が無いと移動先にいるユニットの上に置いていた。VB のとおり元の位置に戻す |
-| Sub Escape | 25363 | 60 | `SRCCore/Units/Unit.map.cs` Unit.Escape | 一致 | 載せているユニットを降ろす処理（VB は For Each の中で Remove する）は、C# ではすべて降ろす |
+| Sub Escape | 25363 | 60 | `SRCCore/Units/Unit.map.cs` Unit.Escape | 一致 | 載せているユニットを降ろす処理（VB は For Each の中で Remove する）は、C# ではすべて降ろす。VB も 2 機ともが降りる（次の要素を飛ばさない）ことを VB5 の実機で確かめた（#1550 の VB5.ForEach.母艦.*） |
 | Sub Land | 25425 | 136 | `SRCCore/Units/Unit.map.cs` Unit.Land | 修正済み | #1498。気力の低下を `SubPilots`（1 人目を除く）から、メインパイロット以外の全パイロットにした。メインが追加パイロットのとき 1 人目も下がる。is_event のときの BitmapID の処理は SRC# では要らない |
 | Sub Transform | 25563 | 343 | `SRCCore/Units/Unit.map.cs` Unit.Transform | 一致 | VB の BitmapID の作り直し（MakeUnitBitmap）は、SRC# では描画のときに画像を引くので要らない。使っていない変数 `counter` を消した |
-| Sub Combine | 25908 | 427 | `SRCCore/Units/Unit.map.cs` Unit.Combine | 修正済み | 合体形態を指定しないときの相手の探し方を VB に合わせた（#1498）。まずユニット名が一致するものを探し、無ければ IsEqual（他形態の名前）で探す。データが 3 つでない「合体」は、例外にせず飛ばす（以前は CombineFeature が例外を出していた） |
+| Sub Combine | 25908 | 427 | `SRCCore/Units/Unit.map.cs` Unit.Combine | 修正済み | 合体形態を指定しないときの相手の探し方を VB に合わせた（#1498）。まずユニット名が一致するものを探し、無ければ IsEqual（他形態の名前）で探す。データが 3 つでない「合体」は、例外にせず飛ばす（以前は CombineFeature が例外を出していた）。変形した形態から合体すると、合体後のユニットが装備したアイテムの Item.Unit は空になる（AddItem で合体後のユニットに付けた後、「デフォルトの形態に変形させておく」の Transform が AddItem0 で元の形態に付け直し、「１番目のユニットのアイテムを外す」の DeleteItem が空にする）。VB も同じなので変えない。セーブデータを読むと装備しているユニットが持ち主になる（#1579） |
 | Sub Split | 26337 | 290 | `SRCCore/Units/Unit.map.cs` Unit.Split | 修正済み | １番機へのアイテムの受け渡しを AddItem0 から AddItem に直した（装備個所が足りなければ外す）。行動回数を受け継ぐ先を、１番機ではなく並びの１番目（VB の `i = 1`）で決めるように直した（#1498）。VB の「格納」の分岐は `.CountOtherForm` で `.UnitOnBoard(j)` を回す不具合があり、たいてい 91 のエラーになる。SRC# は LoadSameUnit で母艦に正しく載せるので、そのままにした。分離先が無いときのメッセージは VB では `LIndex(buf, i - 1)`（一つ前の名前）を出すが、SRC# は正しい名前を出す（VB の不具合なので直していない） |
 | Function GetExp | 26632 | 234 | `SRCCore/Units/Unit.action2.cs` Unit.GetExp | 一致 | 追加サポートが Nothing のとき、VB は 91 のエラーになり、SRC# は飛ばす |
 | Sub ChangeParty | 26868 | 41 | `SRCCore/Units/Unit.action2.cs` Unit.ChangeParty | 一致 | BitmapID の作り直しは SRC# では要らない |
@@ -256,7 +256,7 @@ VB 版の `SRC/SRC_20121125/Unit.cls` の手続きと、C# の対応（[説明](
 | Sub DismissSlave | 29127 | 22 | `SRCCore/Units/Unit.summon.cs` Unit.DismissSlave | 一致 |  |
 | Sub Dump | 29153 | 84 | `SRCCore/Units/Unit.cs` Unit.LinkData | 修正済み | SRC# は JSON で保存。特殊状態・効果中の SP・アビリティの残り回数（番号順）・追加サポートの ID を保存していなかったので足した（このブランチ） |
 | Sub Restore | 29239 | 163 | `SRCCore/Units/Unit.cs` Unit.Restore | 修正済み | 特殊状態・SP・追加サポート（Unit と IsAdditionalSupport も設定）を戻す。サポートは VB の AddSupport と同じく名前をキーにする（ID をキーにしていたので Support(名前) で引けなかった）。VB はレベルを StrToLng で整数に丸めるが、clevel を Double で宣言しており誤りとみなして丸めない |
-| Sub RestoreLinkInfo | 29404 | 107 | `SRCCore/Units/Unit.cs` Unit.RestoreLinkInfo | 修正済み | 新しく作った。Update の後で SetStock を番号で戻す。SRC.RestoreData（`SRCCore/SRC.save.cs`）から呼ぶ。武器の残弾数は WData と一緒に保存し、Update で名前で照合する（VB は番号。データを変えない限り同じ） |
+| Sub RestoreLinkInfo | 29404 | 107 | `SRCCore/Units/Unit.cs` Unit.RestoreLinkInfo | 修正済み | 新しく作った。Update の後で SetStock を番号で戻す。SRC.RestoreData（`SRCCore/SRC.save.cs`）から呼ぶ。つながり（他形態・パイロット・アイテムなど）は JSON の ID から Unit.Restore で戻す。アイテムは VB の AddItem0 と同じく持ち主もこのユニットにする（#1579）。武器の残弾数は WData と一緒に保存し、Update で名前で照合する（VB は番号。データを変えない限り同じ） |
 | Sub RestoreParameter | 29513 | 95 | `SRCCore/Units/Unit.cs` Unit.RestoreLinkInfo | 一致 | HP・EN は JSON の lngHP・intEN で戻し、RestoreLinkInfo の Update を通る。読み込んだ後の値は同じ |
 | Function IsOperational | 29613 | 17 | `SRCCore/Units/Unit.lookup.cs` Unit.IsOperational | 一致 |  |
 | Function IsEqual | 29632 | 17 | `SRCCore/Units/Unit.lookup.cs` Unit.IsEqual | 一致 |  |

@@ -44,5 +44,43 @@ namespace SRCSharpTools.Resources
         public static string UnknownSearchMethod(string method) => Format(nameof(UnknownSearchMethod), method);
 
         public static string LintSummary(int files, int problems) => Format(nameof(LintSummary), files, problems);
+
+        public static string NewRequiresFolder => Get(nameof(NewRequiresFolder));
+
+        public static string NewInvalidEpisodes(string value) => Format(nameof(NewInvalidEpisodes), value);
+
+        public static string NewCreated(string folder, int count) => Format(nameof(NewCreated), folder, count);
+
+        public static string NewSkipped(string files) => Format(nameof(NewSkipped), files);
+
+        public static string FlowRequiresAtMostOnePath => Get(nameof(FlowRequiresAtMostOnePath));
+
+        public static string FlowPathNotFound(string path) => Format(nameof(FlowPathNotFound), path);
+
+        public static string UnknownFlowFormat(string format) => Format(nameof(UnknownFlowFormat), format);
+
+        public static string AssetsRequiresAtMostOneFolder => Get(nameof(AssetsRequiresAtMostOneFolder));
+
+        public static string AssetsFolderNotFound(string path) => Format(nameof(AssetsFolderNotFound), path);
+
+        public static string UnknownAssetsFormat(string format) => Format(nameof(UnknownAssetsFormat), format);
+
+        public static string AssetsSummary(int assets, int missing, int dynamic, int unused) => Format(nameof(AssetsSummary), assets, missing, dynamic, unused);
+
+        public static string TrialRequiresFolder => Get(nameof(TrialRequiresFolder));
+
+        public static string TrialCreated(string unit, string pilot, string enemy, string enemyPilot) => Format(nameof(TrialCreated), unit, pilot, enemy, enemyPilot);
+
+        public static string EventFlowRequiresEventFile(string path) => Format(nameof(EventFlowRequiresEventFile), path);
+
+        public static string TalkPreviewRequiresEventFile => Get(nameof(TalkPreviewRequiresEventFile));
+
+        public static string TalkPreviewPagesWritten(int count, string dir) => Format(nameof(TalkPreviewPagesWritten), count, dir);
+
+        public static string AnimePreviewPathNotFound(string path) => Format(nameof(AnimePreviewPathNotFound), path);
+
+        public static string AnimePreviewNoEntry => Get(nameof(AnimePreviewNoEntry));
+
+        public static string UnknownRuleGroup(string value, string groups) => Format(nameof(UnknownRuleGroup), value, groups);
     }
 }

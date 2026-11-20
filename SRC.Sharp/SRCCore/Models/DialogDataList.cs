@@ -59,10 +59,8 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
-            {
-                Load(fname, stream);
-            }
+            // 元の SRC の Load の ErrorHandler（開けない・打ち切る誤りのダイアログと TerminateSRC）
+            SRC.LoadDataFile(fname, stream => Load(fname, stream));
         }
 
         public void Load(string fname, Stream stream)
@@ -90,18 +88,21 @@ namespace SRCCore.Models
                         throw reader.InvalidDataException("", "");
                     }
                     var pilot_list = GeneralLib.LNormalize(line_buf);
+                    var pilotListLine = reader.LineNumber;
                     if (IsDefined(pilot_list))
                     {
                         Delete(pilot_list);
                     }
 
                     DialogData dd = Add(pilot_list);
+                    dd.Location ??= new DataLocation(reader.FileName, pilotListLine);
                     // 元の SRC と同じく、ファイルの終わりでも GetLine は空文字列を返す
                     line_buf = reader.GetLine();
                     while (Strings.Len(line_buf) > 0)
                     {
                         // シチューション
                         var d = dd.AddDialog(line_buf);
+                        d.Location = new DataLocation(reader.FileName, reader.LineNumber);
                         while (true)
                         {
                             // 元の SRC はファイルの終わりで読み込みを終える
@@ -140,7 +141,7 @@ namespace SRCCore.Models
                             }
 
                             var msg = Strings.Trim(Strings.Mid(line_buf, ret + 1));
-                            d.AddMessage(pname, msg);
+                            d.AddMessage(pname, msg).Location = new DataLocation(reader.FileName, reader.LineNumber);
                         }
                     }
                 }

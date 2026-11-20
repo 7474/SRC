@@ -1,0 +1,184 @@
+{
+  "terrain": "gate",
+  "count": 32,
+  "exists": "0-11 1000-1005 2000-2007 2009-2012 3000 4000",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 0,
+      "kind": "object",
+      "description": "石壁のアーチ門、向こうに明るい緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 1,
+      "to": 1,
+      "kind": "object",
+      "description": "石壁のアーチ門、向こうは灰色の床",
+      "confidence": "high"
+    },
+    {
+      "from": 2,
+      "to": 2,
+      "kind": "object",
+      "description": "石壁のアーチ門、中は暗く斜めに光が差す（下り階段）",
+      "confidence": "guess"
+    },
+    {
+      "from": 3,
+      "to": 3,
+      "kind": "object",
+      "description": "石壁の鉄格子の扉（牢）",
+      "confidence": "high"
+    },
+    {
+      "from": 4,
+      "to": 4,
+      "kind": "object",
+      "description": "木枠の暗い戸口",
+      "confidence": "high"
+    },
+    {
+      "from": 5,
+      "to": 5,
+      "kind": "object",
+      "description": "石壁のアーチ門、向こうに暗い緑の草地",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 6,
+      "kind": "object",
+      "description": "金色の枠の扉（中は暗く、開いた扉）",
+      "confidence": "guess"
+    },
+    {
+      "from": 7,
+      "to": 7,
+      "kind": "object",
+      "description": "岩の洞窟風のトンネル口",
+      "confidence": "high"
+    },
+    {
+      "from": 8,
+      "to": 8,
+      "kind": "object",
+      "description": "2 と同じ暗いアーチ（光の差し方違い）",
+      "confidence": "guess"
+    },
+    {
+      "from": 9,
+      "to": 9,
+      "kind": "object",
+      "description": "金色の扉（閉じた／装飾付き）",
+      "confidence": "guess"
+    },
+    {
+      "from": 10,
+      "to": 10,
+      "kind": "object",
+      "description": "2 と同じ暗いアーチの別版",
+      "confidence": "guess"
+    },
+    {
+      "from": 11,
+      "to": 11,
+      "kind": "object",
+      "description": "石壁のアーチ門、向こうは灰色のタイル床",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1001,
+      "kind": "object",
+      "description": "幕のかかった広い入口（1000=茶色の装飾幕、1001=青い幕）",
+      "confidence": "guess"
+    },
+    {
+      "from": 1002,
+      "to": 1002,
+      "kind": "object",
+      "description": "枠付きの暗い四角い入口",
+      "confidence": "high"
+    },
+    {
+      "from": 1003,
+      "to": 1003,
+      "kind": "object",
+      "description": "白い壁の中の戸口",
+      "confidence": "high"
+    },
+    {
+      "from": 1004,
+      "to": 1005,
+      "kind": "placeholder",
+      "description": "Can't Use",
+      "confidence": "high"
+    },
+    {
+      "from": 2000,
+      "to": 2002,
+      "kind": "object",
+      "description": "暗い出入口：2000=黒い枠の開口、2001=灰色の壁の扉、2002=赤い壁に緑の扉",
+      "confidence": "high"
+    },
+    {
+      "from": 2003,
+      "to": 2005,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "上に灰色の縁がある黒いシャッター状の開口（横 3 マス：2003=西端,2004=中央,2005=東端）",
+      "confidence": "guess"
+    },
+    {
+      "from": 2006,
+      "to": 2007,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "上部に斜めの縞（警告色）のある黒い開口（横 2 マス）",
+      "confidence": "guess"
+    },
+    {
+      "from": 2009,
+      "to": 2010,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "クリーム色の壁に挟まれた黒い開口（横 2 マス：2009=西半分,2010=東半分）",
+      "confidence": "guess"
+    },
+    {
+      "from": 2011,
+      "to": 2012,
+      "kind": "object",
+      "description": "暗い四角の穴（2011=縁が明るい、2012=暗い）",
+      "confidence": "guess"
+    },
+    {
+      "from": 3000,
+      "to": 3000,
+      "kind": "object",
+      "description": "紫色の壁のアーチ門",
+      "confidence": "high"
+    },
+    {
+      "from": 4000,
+      "to": 4000,
+      "kind": "object",
+      "description": "石壁のアーチ門、中が白（透過用）",
+      "confidence": "high"
+    }
+  ],
+  "rules": "0 番台=石壁のアーチ門と扉、1000 番台=幕や広い入口、2000 番台=近代的な暗い開口、3000/4000=色違いのアーチ。2008 は欠番"
+}

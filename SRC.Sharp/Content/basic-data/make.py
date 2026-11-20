@@ -9,7 +9,7 @@ SRC のフルパッケージの汎用データ（グラフィック集など）�
 
 - Data/System/terrain.txt: 地形データ。地形の番号と名前は汎用データと同じにする（汎用データ用のマップをそのまま使える）
 - Data/System/sp.txt: スペシャルパワーデータ。ヘルプ（スペシャルパワー.md）の効果の説明から書いた
-- Bitmap/Map/<名前>/<名前>0000.bmp: 地形の画像（32×32）
+- Bitmap/Map/<名前>/<名前><番号:04d>.bmp: 地形の画像（32×32。基本 0000 と、汎用グラフィック集と同じ意味の変種・境目）
 - Bitmap/Unit/OBJ_*.bmp: ユニットの画像（32×32、白が透過色）
 - Sound/*.wav: 効果音（汎用効果音集と同じ名前）。ノイズと波形を数式で合成する（録音や音声生成 AI は使わない）
 - Midi/*.mid: SRC が場面ごとに鳴らす BGM（Opening・Briefing・Intermission・Subtitle・Map1〜6・default）。規則で音符を並べて作曲する
@@ -50,6 +50,19 @@ TERRAINS = [
     (48, "発電所", "powerplant", "陸", 2, 15, 15, "ＥＮ回復Lv2"),
     (49, "廃墟", "remains", "陸", 2, 20, 20, ""),
     (83, "マグマ", "lava", "陸", 3, -10, 10, "ＨＰ減少Lv3=火"),
+    # 宇宙・月面（7474/SRC#1659。かんたん作成の宇宙の場面）。番号・名前・地形タイプ・修正は汎用データと同じ
+    (5, "宇宙空間", "space", "宇宙", 1, 0, 0, ""),
+    (12, "暗礁空間", "asteroids", "宇宙", 2, 20, 20, ""),
+    (13, "残骸", "wrecks", "宇宙", 2, 20, 20, ""),
+    (28, "コロニー", "colony", "宇宙", 2, 20, 20, "ＥＮ回復Lv1"),
+    (35, "宇宙要塞", "space_fortress", "宇宙", 2, 30, 30, "ＨＰ回復Lv1 ＥＮ回復Lv2"),
+    (36, "宇宙ドック", "space_dock", "宇宙", 2, 10, 10, "ＨＰ回復Lv2 ＥＮ回復Lv3"),
+    (6, "地球", "earth", "宇宙", 1, 0, 0, ""),
+    (7, "月", "moon", "宇宙", 1, 0, 0, ""),
+    (8, "月面", "moon_ground", "月面", 1, 0, 0, ""),
+    (14, "クレーター(小)", "small_crater", "月面", 2, 20, 20, ""),
+    (24, "月面都市", "moon_city", "月面", 2, 25, 25, "ＥＮ回復Lv1"),
+    (62, "月面基地", "moon_base", "月面", 2, 30, 30, "ＨＰ回復Lv1 ＥＮ回復Lv2"),
 ]
 
 # 名称, 読み, 短縮名, 消費ＳＰ, 対象, 持続期間, 適用条件, 効果, 解説
@@ -102,132 +115,775 @@ def save(image, path):
     full = os.path.join(HERE, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
     # 8 ビットの BMP（汎用データと同じ形式）。色数が少ないので減色しても見た目は変わらない
-    image.convert("RGB").quantize(colors=64, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).save(full, "BMP")
+    image.convert("RGB").quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).save(full, "BMP")
 
 
-def speckle(d, rnd, colors, count, size=1):
-    for _ in range(count):
-        x, y = rnd.randrange(SIZE), rnd.randrange(SIZE)
-        d.rectangle([x, y, x + size - 1, y + size - 1], fill=rnd.choice(colors))
+def _clamp8(v):
+    return 0 if v < 0 else (255 if v > 255 else int(round(v)))
 
 
-def tile(name):
-    rnd = random.Random(name)
-    grass = (96, 168, 72)
-    im = Image.new("RGB", (SIZE, SIZE), grass)
-    d = ImageDraw.Draw(im)
-    if name == "plain":
-        speckle(d, rnd, [(84, 152, 62), (112, 184, 84)], 40)
-        for _ in range(4):
-            x, y = rnd.randrange(2, 29), rnd.randrange(3, 30)
-            d.line([x, y, x - 1, y - 2], fill=(70, 130, 52))
-            d.line([x + 1, y, x + 2, y - 2], fill=(70, 130, 52))
-    elif name == "bush":
-        speckle(d, rnd, [(84, 152, 62), (112, 184, 84)], 30)
-        for cx, cy in [(8, 10), (22, 8), (14, 22), (26, 24)]:
-            d.ellipse([cx - 5, cy - 4, cx + 5, cy + 4], fill=(56, 120, 48), outline=(36, 84, 32))
-            d.point([cx - 2, cy - 2], fill=(110, 170, 80))
-    elif name == "woods":
-        im.paste((62, 128, 52), [0, 0, SIZE, SIZE])
-        for cx, cy in [(8, 9), (23, 7), (15, 20), (6, 26), (26, 25)]:
-            d.polygon([(cx, cy - 7), (cx - 6, cy + 4), (cx + 6, cy + 4)], fill=(30, 96, 40), outline=(20, 64, 28))
-            d.rectangle([cx - 1, cy + 4, cx, cy + 6], fill=(96, 64, 32))
-    elif name == "mountain":
-        im.paste((120, 156, 84), [0, 0, SIZE, SIZE])
-        d.polygon([(2, 30), (14, 4), (26, 30)], fill=(140, 110, 80), outline=(90, 68, 48))
-        d.polygon([(14, 30), (23, 12), (31, 30)], fill=(122, 94, 66), outline=(90, 68, 48))
-        d.polygon([(11, 10), (14, 4), (17, 10)], fill=(240, 240, 240))
-    elif name == "waste_land":
-        im.paste((176, 156, 108), [0, 0, SIZE, SIZE])
-        speckle(d, rnd, [(150, 130, 88), (196, 178, 128), (130, 112, 76)], 70)
-        d.line([4, 20, 10, 23, 16, 21], fill=(120, 100, 68))
-    elif name == "rock":
-        im.paste((176, 156, 108), [0, 0, SIZE, SIZE])
-        speckle(d, rnd, [(150, 130, 88)], 30)
-        for box in [[3, 6, 15, 16], [16, 14, 29, 26], [5, 20, 13, 28]]:
-            d.ellipse(box, fill=(128, 128, 128), outline=(72, 72, 72))
-            d.arc(box, 200, 260, fill=(200, 200, 200))
-    elif name == "hill":
-        speckle(d, rnd, [(84, 152, 62), (112, 184, 84)], 30)
-        d.pieslice([-2, 8, 33, 44], 180, 360, fill=(132, 180, 88), outline=(80, 128, 56))
-        d.arc([4, 14, 27, 40], 210, 330, fill=(160, 204, 112))
-    elif name == "sea":
-        im.paste((48, 96, 192), [0, 0, SIZE, SIZE])
-        for y in range(4, SIZE, 8):
-            for x in range((y // 8 % 2) * 8, SIZE, 16):
-                d.arc([x, y, x + 8, y + 5], 200, 340, fill=(140, 184, 240))
-    elif name == "river":
-        im.paste((64, 128, 208), [0, 0, SIZE, SIZE])
-        d.line([0, 0, 0, SIZE], fill=(96, 168, 72), width=3)
-        d.line([31, 0, 31, SIZE], fill=(96, 168, 72), width=3)
-        for y in range(4, SIZE, 9):
-            d.line([8, y, 14, y + 2], fill=(160, 200, 244))
-            d.line([18, y + 4, 24, y + 6], fill=(160, 200, 244))
-    elif name == "road":
-        im.paste((150, 150, 150), [0, 0, SIZE, SIZE])
-        speckle(d, rnd, [(136, 136, 136), (164, 164, 164)], 40)
-        d.line([0, 15, SIZE, 15], fill=(236, 236, 220), width=2)
-        for x in range(2, SIZE, 8):
-            d.line([x, 15, x + 3, 15], fill=(150, 150, 150), width=2)
-    elif name == "bridge":
-        im.paste((64, 128, 208), [0, 0, SIZE, SIZE])
-        d.rectangle([0, 6, SIZE, 25], fill=(160, 112, 64))
-        for x in range(0, SIZE, 4):
-            d.line([x, 6, x, 25], fill=(120, 80, 44))
-        d.line([0, 6, SIZE, 6], fill=(80, 52, 28))
-        d.line([0, 25, SIZE, 25], fill=(80, 52, 28))
-    elif name == "town":
-        speckle(d, rnd, [(84, 152, 62)], 20)
-        for x, y, roof in [(3, 5, (196, 64, 48)), (17, 3, (64, 96, 176)), (9, 18, (176, 120, 48)), (21, 18, (196, 64, 48))]:
-            d.rectangle([x, y + 4, x + 9, y + 11], fill=(232, 220, 196), outline=(96, 80, 64))
-            d.polygon([(x - 1, y + 4), (x + 5, y), (x + 10, y + 4)], fill=roof, outline=(80, 40, 32))
-            d.rectangle([x + 4, y + 8, x + 5, y + 11], fill=(96, 64, 40))
-    elif name == "building":
-        im.paste((150, 150, 150), [0, 0, SIZE, SIZE])
-        for x, top in [(2, 4), (17, 10)]:
-            d.rectangle([x, top, x + 12, 30], fill=(176, 188, 204), outline=(72, 80, 96))
-            for wy in range(top + 3, 28, 4):
-                for wx in range(x + 2, x + 11, 4):
-                    d.rectangle([wx, wy, wx + 1, wy + 1], fill=(72, 112, 176))
-    elif name == "base":
-        im.paste((150, 150, 150), [0, 0, SIZE, SIZE])
-        d.rectangle([3, 12, 28, 29], fill=(112, 124, 104), outline=(56, 64, 48))
-        d.chord([3, 4, 28, 20], 180, 360, fill=(128, 140, 120), outline=(56, 64, 48))
-        d.rectangle([12, 20, 19, 29], fill=(64, 64, 64))
-        d.line([16, 2, 16, 8], fill=(56, 64, 48))
-        d.rectangle([17, 2, 21, 4], fill=(200, 48, 48))
-    elif name == "castle":
-        speckle(d, rnd, [(84, 152, 62)], 20)
-        d.rectangle([4, 10, 27, 29], fill=(176, 172, 160), outline=(88, 84, 76))
-        for x in range(4, 28, 6):
-            d.rectangle([x, 6, x + 3, 10], fill=(176, 172, 160), outline=(88, 84, 76))
-        d.rectangle([13, 20, 18, 29], fill=(72, 52, 36))
-        d.rectangle([9, 14, 10, 16], fill=(40, 40, 40))
-        d.rectangle([21, 14, 22, 16], fill=(40, 40, 40))
-    elif name == "powerplant":
-        im.paste((150, 150, 150), [0, 0, SIZE, SIZE])
-        d.rectangle([3, 14, 20, 29], fill=(188, 180, 160), outline=(80, 76, 64))
-        d.polygon([(22, 29), (24, 6), (29, 6), (31, 29)], fill=(200, 196, 188), outline=(80, 76, 64))
-        d.polygon([(8, 10), (12, 2), (11, 8), (15, 8), (10, 16), (11, 10)], fill=(248, 216, 48), outline=(160, 120, 0))
-    elif name == "remains":
-        im.paste((150, 140, 120), [0, 0, SIZE, SIZE])
-        speckle(d, rnd, [(110, 104, 92), (176, 168, 148)], 60)
-        d.polygon([(4, 28), (4, 10), (9, 6), (12, 14), (12, 28)], fill=(128, 128, 128), outline=(64, 64, 64))
-        d.polygon([(18, 28), (18, 16), (24, 12), (28, 20), (28, 28)], fill=(112, 112, 112), outline=(64, 64, 64))
-    elif name == "ruins":
-        im.paste((176, 160, 112), [0, 0, SIZE, SIZE])
-        speckle(d, rnd, [(150, 136, 92)], 40)
-        for x in (5, 14, 23):
-            d.rectangle([x, 9, x + 4, 28], fill=(216, 204, 172), outline=(120, 108, 84))
-        d.rectangle([3, 5, 20, 9], fill=(216, 204, 172), outline=(120, 108, 84))
-    elif name == "lava":
-        im.paste((168, 40, 16), [0, 0, SIZE, SIZE])
-        for _ in range(8):
-            x, y = rnd.randrange(SIZE), rnd.randrange(SIZE)
-            d.ellipse([x - 3, y - 2, x + 3, y + 2], fill=rnd.choice([(248, 136, 24), (252, 200, 64)]))
-        speckle(d, rnd, [(96, 24, 16)], 20, 2)
+def _mix(c1, c2, t):
+    if t <= 0.0:
+        return c1
+    if t >= 1.0:
+        return c2
+    return (_clamp8(c1[0] + (c2[0] - c1[0]) * t),
+            _clamp8(c1[1] + (c2[1] - c1[1]) * t),
+            _clamp8(c1[2] + (c2[2] - c1[2]) * t))
+
+
+def _shade(c, delta):
+    return (_clamp8(c[0] + delta), _clamp8(c[1] + delta), _clamp8(c[2] + delta))
+
+
+def _hash2(ix, iy, seed):
+    h = (ix * 374761393 + iy * 668265263 + seed * 1442695041) & 0xFFFFFFFF
+    h = ((h ^ (h >> 13)) * 1274126177) & 0xFFFFFFFF
+    h = h ^ (h >> 16)
+    return (h / 0xFFFFFFFF) * 2.0 - 1.0
+
+
+def pnoise(x, y, freq, seed):
+    """周期 SIZE (=32) で継ぎ目の出ない 2D バリューノイズ（[-1, 1]）"""
+    fx = (x % SIZE) * freq / SIZE
+    fy = (y % SIZE) * freq / SIZE
+    ix = int(math.floor(fx))
+    iy = int(math.floor(fy))
+    tx = fx - ix
+    ty = fy - iy
+    ux = tx * tx * (3.0 - 2.0 * tx)
+    uy = ty * ty * (3.0 - 2.0 * ty)
+    x0 = ix % freq
+    x1 = (ix + 1) % freq
+    y0 = iy % freq
+    y1 = (iy + 1) % freq
+    n00 = _hash2(x0, y0, seed)
+    n10 = _hash2(x1, y0, seed)
+    n01 = _hash2(x0, y1, seed)
+    n11 = _hash2(x1, y1, seed)
+    nx0 = n00 + (n10 - n00) * ux
+    nx1 = n01 + (n11 - n01) * ux
+    return nx0 + (nx1 - nx0) * uy
+
+
+def fbm(x, y, seed, base_freq=4, octaves=3):
+    """継ぎ目の出ないマルチオクターブ・ノイズ（おおむね [-1, 1]）"""
+    total = 0.0
+    amp = 0.55
+    norm = 0.0
+    freq = base_freq
+    for o in range(octaves):
+        total += pnoise(x, y, freq, seed + o * 97) * amp
+        norm += amp
+        amp *= 0.5
+        freq *= 2
+    return total / norm
+
+
+def _seed(key):
+    h = 2166136261
+    for ch in str(key).encode("utf-8"):
+        h = ((h ^ ch) * 16777619) & 0xFFFFFFFF
+    return h
+
+
+def _draw_canvas(fn):
+    im = Image.new("RGB", (SIZE, SIZE))
+    px = im.load()
+    for y in range(SIZE):
+        for x in range(SIZE):
+            px[x, y] = fn(x, y)
+    return im
+
+
+def plain_color(x, y, no=0):
+    """明るい緑の草地。全地形の草地縁で共通して使うため継ぎ目が出ない"""
+    n = fbm(x, y, 101, base_freq=4, octaves=3)
+    fine = pnoise(x, y, 16, 131)
+    # 1〜5: タイル内側にだけ濃い草・茂みの揺らぎを出す（境界の 4px は no=0 と一致させて継ぎ目を無くす）
+    dark_bias = 0.0
+    edge_dist = min(x, SIZE - 1 - x, y, SIZE - 1 - y)
+    edge_fade = min(1.0, edge_dist / 4.0)
+    if 1 <= no <= 5 and edge_fade > 0.0:
+        nx = (x - 15.5) / 14.0
+        ny = (y - 15.5) / 14.0
+        if no == 1:
+            dark_bias = max(0.0, -nx * 0.7 + 0.3)
+        elif no == 2:
+            dark_bias = max(0.0, (-nx + ny) * 0.55 + 0.2)
+        elif no == 3:
+            dark_bias = max(0.0, -nx * 0.6 + 0.25 + 0.15 * n)
+        elif no == 4:
+            dark_bias = max(0.0, (nx - ny) * 0.55 + 0.2)
+        elif no == 5:
+            dark_bias = max(0.0, nx * 0.6 + 0.25 + 0.15 * n)
+        dark_bias = max(0.0, dark_bias - 0.15) * (0.6 + 0.4 * max(0.0, n)) * edge_fade
+    base = (88, 158, 66)
+    c = _shade(base, n * 16 + fine * 6 - dark_bias * 18)
+    # さりげない草の穂（周期的シードで配置）
+    h = _hash2(x, y, 177 + no * 19)
+    if h > 0.945 and no != 0 and edge_fade > 0.5:
+        c = _shade(c, -15)
+    elif _hash2(x, y, 177) > 0.965:
+        c = _shade(c, 16)
+    return c
+
+
+def water_color(x, y, deep=False, river=False):
+    """青ユニット枠（#2f6fd6 等）と明度・色相で分離する落ち着いた青緑（ティール）の水面"""
+    n = fbm(x, y, 211, base_freq=4, octaves=3)
+    # わずかな横方向の波紋（周期 32 に合わせる）
+    wave_v = math.sin((y / SIZE) * math.tau * 4 + n * 2.4 + math.sin((x / SIZE) * math.tau * 2) * 0.8)
+    if deep:
+        base = (19, 68, 80)
+        c = _shade(base, n * 10 + wave_v * 5)
+    elif river:
+        base = (26, 94, 102)
+        c = _shade(base, n * 11 + wave_v * 7)
     else:
-        raise ValueError(name)
+        base = (24, 84, 94)
+        c = _shade(base, n * 11 + wave_v * 7)
+    # 小さな水面のきらめき（青過多にせず緑寄りティールに留める）
+    if wave_v > 0.86 and n > 0.12:
+        c = _mix(c, (96, 162, 160), 0.45)
+    return c
+
+
+def moon_color(x, y):
+    """灰色の月面レゴリス"""
+    n = fbm(x, y, 307, base_freq=4, octaves=3)
+    grad = fbm((x - 1) % SIZE, (y - 1) % SIZE, 307, base_freq=4, octaves=3) - n
+    return _shade((144, 146, 154), n * 16 - grad * 18)
+
+
+def space_color(x, y, no=0):
+    """黒地の宇宙背景とまばらな星"""
+    neb = fbm(x, y, 401, base_freq=2, octaves=2)
+    base = (8 + max(0, int((neb + 0.5) * 6)), 11 + max(0, int((neb + 0.5) * 6)), 28 + max(0, int((neb + 0.5) * 10)))
+    cell_x, cell_y = x // 8, y // 8
+    sx = (cell_x * 8 + int((_hash2(cell_x, cell_y, 409 + no * 31) * 0.5 + 0.5) * 6) + 1) % SIZE
+    sy = (cell_y * 8 + int((_hash2(cell_x, cell_y, 433 + no * 37) * 0.5 + 0.5) * 6) + 1) % SIZE
+    if (x, y) == (sx, sy) and _hash2(cell_x, cell_y, 449 + no * 13) > -0.15:
+        tint = _hash2(cell_x, cell_y, 461 + no * 17)
+        if tint > 0.4:
+            return (248, 240, 200)
+        if tint < -0.3:
+            return (196, 212, 255)
+        return (236, 240, 248)
+    return base
+
+
+def _side_dist(x, y, sides, width=7, corner_r=11):
+    """
+    指定した方角の「境界からの内側への距離」を返す。
+    N/E/S/W は辺からの距離、NE/SE/SW/NW はその角からの距離の補数（内角用）。
+    返り値 s > 0 なら「その方角の陸地/隣地形側」、0 前後が境界線。
+    """
+    wobble = fbm(x, y, 503, base_freq=4, octaves=2) * 1.6
+    best = -99.0
+    if "N" in sides:
+        best = max(best, width - y + wobble)
+    if "S" in sides:
+        best = max(best, width - (SIZE - 1 - y) + wobble)
+    if "W" in sides:
+        best = max(best, width - x + wobble)
+    if "E" in sides:
+        best = max(best, width - (SIZE - 1 - x) + wobble)
+    # 隣り合う 2 辺の場合は角のカーブを滑らかにする
+    for cy_s, sy in (("N", 0), ("S", SIZE - 1)):
+        for cx_s, sx in (("W", 0), ("E", SIZE - 1)):
+            c_key = cy_s + cx_s
+            if c_key in sides:
+                dist = math.hypot(x - sx, y - sy)
+                best = max(best, corner_r - dist + wobble * 0.8)
+    return best
+
+
+# basic-data が生成するマップチップ番号（docs/assets/map-chips/*.json に準拠）
+TILE_NUMBERS = {
+    "plain": [0, 1, 2, 3, 4, 5, 10, 11, 12, 13],
+    "woods": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    "sea": [0, 1, 2, 3, 4, 5, 6, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44],
+    "river": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 82, 145, 146, 147, 150],
+    "road": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "bridge": [0, 1, 2, 500, 501],
+    "mountain": [0, 1, 2, 3, 4, 5, 49],
+    "waste_land": [0, 17, 18, 19, 20, 21, 22, 23, 24],
+    "lava": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "space": list(range(0, 14)),
+    "asteroids": [0, 1, 2, 3],
+    "town": [0, 1, 2],
+    "moon_ground": [0, 1, 2],
+    "small_crater": [0, 6, 7],
+}
+
+SEA_SIDES = {
+    1: ("S",), 2: ("W",), 3: ("N",), 4: ("E",),
+    24: ("E",), 25: ("N",), 26: ("W",), 27: ("S",),
+    28: ("NW",), 29: ("NE",),
+    31: ("SW",), 32: ("SE",), 33: ("NW",), 34: ("NE",),
+    35: ("N", "W"), 36: ("SW",), 37: ("SE",),
+    38: ("S", "W"), 39: ("N", "W"), 40: ("N", "E"), 41: ("N", "E"),
+    42: ("S", "W"), 43: ("E", "S"), 44: ("N", "E", "S"),
+}
+
+RIVER_SIDES = {
+    0: ("N", "W"), 1: ("N",), 2: ("N", "E"),
+    3: ("W",), 4: ("NE", "SE", "SW", "NW"), 5: ("E",),
+    6: ("S", "W"), 7: ("S",), 8: ("S", "E"),
+    9: ("N", "S"), 10: ("N", "S"), 11: ("W", "E"),
+    82: (),
+}
+
+WOODS_SIDES = {
+    2: ("NE",), 3: ("S",), 4: ("S", "W"), 5: ("N",), 6: ("NE",),
+    7: ("E", "S", "W"), 8: ("N", "E", "S", "W"), 9: ("NW",),
+    10: ("N",), 11: ("E",), 12: ("S",), 13: ("W",),
+}
+
+MOUNTAIN_SIDES = {
+    0: ("N", "W"), 1: ("N",), 2: ("SW",), 3: ("S", "W"), 4: ("S",), 5: ("SE",),
+    49: ("N", "E", "S", "W"),
+}
+
+WASTE_SIDES = {
+    17: ("N", "W"), 18: ("N",), 19: ("N", "E"),
+    20: ("W",), 21: ("E",),
+    22: ("S", "W"), 23: ("S",), 24: ("S", "E"),
+}
+
+LAVA_SIDES = {
+    0: ("N", "W"), 1: ("N",), 2: ("N", "E"),
+    3: ("W",), 4: (), 5: ("E",),
+    6: ("S", "W"), 7: ("S",), 8: ("S", "E"),
+}
+
+ROAD_SIDES = {
+    0: ("E", "W"), 1: ("N", "S"),
+    2: ("S", "W"), 3: ("N", "W"), 4: ("N", "E"), 5: ("E", "S"),
+    6: ("E", "S", "W"), 7: ("N", "S", "W"), 8: ("N", "E", "W"), 9: ("N", "E", "S"),
+    10: ("N", "E", "S", "W"),
+}
+
+
+def _paint_trees(im, sides, variant):
+    """森（woods）を描く。周囲の草地 edge を残しつつ、左上光・影付きの樹冠を重ねる"""
+    px = im.load()
+    d = ImageDraw.Draw(im)
+    # まず草地背景で始める（木々の隙間も草地に馴染む）
+    for y in range(SIZE):
+        for x in range(SIZE):
+            px[x, y] = plain_color(x, y)
+    # 木を置く領域に濃い下草を敷く
+    is_edge = bool(sides)
+    for y in range(SIZE):
+        for x in range(SIZE):
+            sd = _side_dist(x, y, sides, width=6, corner_r=10) if is_edge else -5.0
+            if sd < -0.5:
+                px[x, y] = _mix(px[x, y], (36, 86, 36), 0.72)
+            elif sd < 1.2:
+                px[x, y] = _mix(px[x, y], (52, 114, 46), 0.45)
+
+    # 樹冠の配置（境界を避けつつ自然に詰める）
+    clusters = [
+        (7, 7, 7), (17, 6, 7), (26, 8, 6),
+        (5, 16, 7), (14, 15, 8), (24, 17, 7),
+        (8, 25, 7), (18, 26, 7), (27, 25, 6),
+    ]
+    if variant == 1:
+        clusters = [
+            (9, 6, 7), (20, 7, 7), (27, 10, 6),
+            (6, 15, 7), (16, 14, 8), (25, 18, 7),
+            (9, 25, 7), (19, 25, 7), (26, 26, 6),
+        ]
+    for cx, cy, r in clusters:
+        if is_edge and _side_dist(cx, cy, sides, width=7, corner_r=11) > 1.5:
+            continue
+        # 木の影（右下）
+        d.ellipse([cx - r + 1, cy - r + 2, cx + r + 1, cy + r + 2], fill=(24, 58, 26))
+        # 本体（深緑）
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(38, 106, 44), outline=(22, 62, 26))
+        # 左上からのハイライト
+        d.ellipse([cx - r + 2, cy - r + 1, cx + r - 3, cy + r - 4], fill=(64, 138, 56))
+        d.ellipse([cx - r + 3, cy - r + 2, cx, cy], fill=(104, 176, 74))
+
+    # 14: 木の実（赤い実）、15: 小さな花
+    if variant == 14:
+        for bx, by in [(8, 7), (15, 14), (24, 16), (11, 24), (20, 25), (18, 6)]:
+            d.point([bx, by], fill=(216, 56, 52))
+            d.point([bx + 1, by + 1], fill=(168, 36, 36))
+    elif variant == 15:
+        for fx, fy, fc in [(7, 8, (244, 224, 96)), (16, 15, (248, 244, 220)), (23, 17, (244, 224, 96)), (10, 24, (248, 244, 220)), (19, 25, (244, 210, 120))]:
+            d.point([fx, fy], fill=fc)
+
+
+def _paint_mountain(sides, standalone=False):
+    def pixel(x, y):
+        c = plain_color(x, y)
+        sd = _side_dist(x, y, sides, width=5 if not standalone else 3, corner_r=8)
+        if sd > 0.8:
+            return c
+        cx = 16.0
+        cy = 17.0 if standalone else 16.0
+        gx = fbm((x + 1) % SIZE, y, 601, base_freq=8, octaves=2) - fbm((x - 1) % SIZE, y, 601, base_freq=8, octaves=2)
+        gy = fbm(x, (y + 1) % SIZE, 601, base_freq=8, octaves=2) - fbm(x, (y - 1) % SIZE, 601, base_freq=8, octaves=2)
+        detail = fbm(x, y, 601, base_freq=4, octaves=3)
+        if standalone:
+            rx = abs(x - cx) / 13.0
+            ry = abs(y - cy) / 13.0
+            ridge = 1.0 - max(rx * 0.85 + ry * 0.55, math.hypot(rx, ry) * 0.78)
+            h = ridge + detail * 0.18
+            if h < 0.05:
+                return c
+            slope_light = ((cx - x) + (cy - y)) * 0.04 - (gx + gy) * 1.4
+            if sd > -0.8:
+                return _mix(c, (88, 74, 58), 0.65)
+            if h > 0.64:
+                return _shade((224, 226, 232), slope_light * 18)
+            col = _shade((132, 114, 94), slope_light * 36 + detail * 18)
+            return _mix(col, (76, 62, 48), 0.35) if h < 0.22 else col
+
+        # 山脈タイル（0..5）: 周期ノイズによる岩の尾根がタイル間でそのままつながる
+        ridge = 0.55 + detail * 0.35
+        # 裾野（sides 方向）に近づくと高度が下がり、北西/南東の斜面陰影が付く
+        if sd > -3.5:
+            ridge -= (sd + 3.5) * 0.10
+        ridge_line = abs(fbm(x, y, 613, base_freq=2, octaves=2))
+        slope_light = -(gx + gy) * 1.9 + ((-0.4 if "N" in sides else 0.0) + (-0.4 if "W" in sides else 0.0))
+        if sd > -0.8:
+            return _mix(c, (88, 74, 58), 0.65)
+        if ridge > 0.66 and ridge_line < 0.18:
+            # 尾根筋の明るいハイライト（控えめな岩の稜線）
+            return _shade((196, 186, 174), slope_light * 18)
+        col = _shade((128, 110, 90), slope_light * 34 + detail * 24)
+        if ridge < 0.34:
+            col = _mix(col, (76, 62, 48), 0.38)
+        return col
+
+    return _draw_canvas(pixel)
+
+
+def _paint_road(sides):
+    px_im = _draw_canvas(lambda x, y: plain_color(x, y))
+    px = px_im.load()
+    lo, hi = 7, 24  # 道幅 18px
+    cx1, cx2 = 15, 16
+    for y in range(SIZE):
+        for x in range(SIZE):
+            in_center = (lo <= x <= hi) and (lo <= y <= hi)
+            in_arm = (
+                ("N" in sides and lo <= x <= hi and y <= hi)
+                or ("S" in sides and lo <= x <= hi and y >= lo)
+                or ("W" in sides and lo <= y <= hi and x <= hi)
+                or ("E" in sides and lo <= y <= hi and x >= lo)
+            )
+            if not (in_center or in_arm):
+                continue
+            # 路肩縁の判定（隣接 4 近傍が道外なら縁石）
+            on_border = False
+            for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                c_ok = (lo <= nx <= hi) and (lo <= ny <= hi)
+                a_ok = (
+                    ("N" in sides and lo <= nx <= hi and ny <= hi)
+                    or ("S" in sides and lo <= nx <= hi and ny >= lo)
+                    or ("W" in sides and lo <= ny <= hi and nx <= hi)
+                    or ("E" in sides and lo <= ny <= hi and nx >= lo)
+                )
+                if not (c_ok or a_ok):
+                    on_border = True
+                    break
+            if on_border:
+                px[x, y] = (86, 90, 96)
+                continue
+            noise_v = fbm(x, y, 701, base_freq=8, octaves=2)
+            col = _shade((138, 140, 146), noise_v * 10)
+            # 白い側線（路面縁から 2px 内側）
+            # 中央線（オレンジ・白破線）
+            on_h_line = ("W" in sides and x <= 14 and y in (cx1, cx2)) or ("E" in sides and x >= 17 and y in (cx1, cx2))
+            on_v_line = ("N" in sides and y <= 14 and x in (cx1, cx2)) or ("S" in sides and y >= 17 and x in (cx1, cx2))
+            is_straight_h = set(sides) == {"E", "W"}
+            is_straight_v = set(sides) == {"N", "S"}
+            if is_straight_h and y in (cx1, cx2) and (x % 8 < 5):
+                col = (232, 188, 76)
+            elif is_straight_v and x in (cx1, cx2) and (y % 8 < 5):
+                col = (232, 188, 76)
+            elif (on_h_line and (x % 6 < 4)) or (on_v_line and (y % 6 < 4)):
+                col = (230, 232, 224)
+            px[x, y] = col
+    return px_im
+
+
+def _paint_bridge(no):
+    horizontal = no in (1, 501)
+    road_style = no in (0, 500, 501)
+    im = _draw_canvas(lambda x, y: water_color(x, y, river=True))
+    px = im.load()
+    lo, hi = 5, 26
+    for y in range(SIZE):
+        for x in range(SIZE):
+            u, v = (y, x) if horizontal else (x, y)  # u=横断, v=進行方向
+            if u < lo or u > hi:
+                # 橋の落ちる影（右下側）
+                if u in (hi + 1, hi + 2):
+                    px[x, y] = _shade(px[x, y], -16)
+                continue
+            if road_style:
+                if u in (lo, hi):
+                    px[x, y] = (72, 76, 84)
+                elif u in (lo + 1, hi - 1):
+                    px[x, y] = (188, 192, 200) if u == lo + 1 else (120, 124, 132)
+                elif u in (15, 16) and v % 8 < 5:
+                    px[x, y] = (232, 188, 76)
+                else:
+                    px[x, y] = _shade((144, 146, 152), fbm(x, y, 719, base_freq=8, octaves=2) * 8)
+            else:
+                # 木の橋（石の縁＋木の横板）
+                if u in (lo, hi):
+                    px[x, y] = (68, 50, 32)
+                elif u in (lo + 1, hi - 1):
+                    px[x, y] = (176, 156, 120) if u == lo + 1 else (112, 88, 56)
+                else:
+                    plank = (164, 118, 68) if (v // 4) % 2 == 0 else (152, 108, 60)
+                    if v % 4 == 0:
+                        plank = (108, 74, 40)
+                    px[x, y] = _shade(plank, fbm(x, y, 733, base_freq=8, octaves=2) * 8)
+    return im
+
+
+def tile(name, no=0):
+    rnd = random.Random(f"{name}:{no}")
+    if name == "plain":
+        if 10 <= no <= 13:
+            c_dir = {10: ("NE",), 11: ("SE",), 12: ("SW",), 13: ("NW",)}[no]
+            return _draw_canvas(lambda x, y: (
+                water_color(x, y) if _side_dist(x, y, c_dir, corner_r=10) > 1.2
+                else ((188, 182, 140) if _side_dist(x, y, c_dir, corner_r=10) > 0.0 else plain_color(x, y))
+            ))
+        return _draw_canvas(lambda x, y: plain_color(x, y, no))
+
+    if name == "bush":
+        im = _draw_canvas(lambda x, y: plain_color(x, y))
+        d = ImageDraw.Draw(im)
+        for cx, cy in [(8, 10), (22, 8), (14, 22), (25, 24)]:
+            d.ellipse([cx - 4, cy - 3, cx + 6, cy + 5], fill=(38, 86, 36))
+            d.ellipse([cx - 5, cy - 4, cx + 5, cy + 4], fill=(56, 126, 48), outline=(32, 76, 30))
+            d.ellipse([cx - 3, cy - 3, cx + 1, cy], fill=(104, 174, 76))
+        return im
+
+    if name == "woods":
+        sides = WOODS_SIDES.get(no, ())
+        im = Image.new("RGB", (SIZE, SIZE))
+        _paint_trees(im, sides, no)
+        return im
+
+    if name == "mountain":
+        sides = MOUNTAIN_SIDES.get(no, ("N", "W"))
+        return _paint_mountain(sides, standalone=(no == 49))
+
+    if name == "waste_land":
+        sides = WASTE_SIDES.get(no, ())
+        def wpx(x, y):
+            n = fbm(x, y, 811, base_freq=4, octaves=3)
+            grad = fbm((x - 1) % SIZE, (y - 1) % SIZE, 811, base_freq=4, octaves=3) - n
+            wc = _shade((176, 144, 92), n * 22 - grad * 20)
+            if _hash2(x, y, 823) > 0.91:
+                wc = _shade(wc, -24)
+            if sides:
+                sd = _side_dist(x, y, sides, width=6, corner_r=9)
+                if sd > 0.8:
+                    return plain_color(x, y)
+                if sd > -0.7:
+                    return _mix(wc, plain_color(x, y), 0.45)
+            return wc
+        return _draw_canvas(wpx)
+
+    if name == "rock":
+        im = _draw_canvas(lambda x, y: _shade((168, 144, 98), fbm(x, y, 829, base_freq=4, octaves=3) * 18))
+        d = ImageDraw.Draw(im)
+        for box in [[3, 6, 15, 16], [16, 14, 29, 26], [5, 20, 14, 28]]:
+            d.ellipse([box[0] + 1, box[1] + 2, box[2] + 1, box[3] + 2], fill=(96, 82, 56))
+            d.ellipse(box, fill=(132, 132, 136), outline=(64, 64, 68))
+            d.arc(box, 195, 275, fill=(196, 198, 204), width=2)
+        return im
+
+    if name == "hill":
+        def hpx(x, y):
+            c = plain_color(x, y)
+            dx = (x - 16.0) / 14.0
+            dy = (y - 18.0) / 12.0
+            d2 = dx * dx + dy * dy
+            if d2 < 1.0:
+                elev = (1.0 - d2)
+                light = (-dx - dy) * 20 * elev
+                hc = _shade((122, 182, 82), light + fbm(x, y, 839, base_freq=6, octaves=2) * 10)
+                if d2 > 0.78:
+                    return _mix(c, (72, 120, 48), 0.7)
+                return _mix(c, hc, min(1.0, elev * 1.8))
+            return c
+        return _draw_canvas(hpx)
+
+    if name == "sea":
+        if no == 6:
+            return _draw_canvas(lambda x, y: water_color(x, y, deep=True))
+        if no == 5:
+            im = _draw_canvas(lambda x, y: water_color(x, y))
+            d = ImageDraw.Draw(im)
+            d.line([16, 7, 16, 25], fill=(168, 212, 212))
+            d.line([16, 7, 10, 23], fill=(208, 232, 232))
+            d.line([16, 7, 22, 23], fill=(208, 232, 232))
+            d.line([13, 19, 19, 19], fill=(144, 196, 196))
+            return im
+        sides = SEA_SIDES.get(no, ())
+        thin = 24 <= no <= 27
+        w = 4 if thin else 6
+        def spx(x, y):
+            wc = water_color(x, y)
+            if not sides:
+                return wc
+            sd = _side_dist(x, y, sides, width=w, corner_r=10)
+            if sd > 0.5:
+                return plain_color(x, y)
+            if sd > -0.7:
+                return (184, 178, 134)
+            if sd > -2.0:
+                return _mix(wc, (186, 216, 214), 0.6)
+            return wc
+        return _draw_canvas(spx)
+
+    if name == "river":
+        if no in (145, 146, 147, 150):
+            # 川の先端（指定方向のみ水が抜け、他方向は草地に丸くすぼまる）
+            open_dir = {145: "E", 146: "W", 147: "S", 150: "N"}[no]
+            closed = tuple(s for s in ("N", "E", "S", "W") if s != open_dir)
+            def endpx(x, y):
+                sd = _side_dist(x, y, closed, width=7, corner_r=11)
+                if sd > 0.6:
+                    return plain_color(x, y)
+                if sd > -0.8:
+                    return (94, 134, 68)
+                return water_color(x, y, river=True)
+            return _draw_canvas(endpx)
+        sides = RIVER_SIDES.get(no, ())
+        def rpx(x, y):
+            wc = water_color(x, y, river=True)
+            if not sides:
+                return wc
+            sd = _side_dist(x, y, sides, width=5, corner_r=4.5 if no == 4 else 8)
+            if sd > 0.5:
+                return plain_color(x, y)
+            if sd > -0.7:
+                return (96, 136, 70)
+            if sd > -1.7:
+                return _mix(wc, (164, 206, 204), 0.45)
+            return wc
+        return _draw_canvas(rpx)
+
+    if name == "road":
+        return _paint_road(ROAD_SIDES.get(no, ("E", "W")))
+
+    if name == "bridge":
+        return _paint_bridge(no)
+
+    if name == "town":
+        im = _draw_canvas(lambda x, y: plain_color(x, y))
+        d = ImageDraw.Draw(im)
+        if no == 0:
+            houses = [(3, 5, 9, 8, (188, 66, 52)), (18, 16, 9, 8, (64, 102, 168)), (5, 19, 8, 7, (176, 122, 54))]
+        elif no == 1:
+            houses = [(3, 4, 12, 10, (168, 76, 58)), (17, 13, 11, 10, (72, 112, 164))]
+        else:
+            houses = [(4, 6, 8, 7, (176, 118, 52)), (19, 17, 8, 7, (188, 66, 52))]
+        for x, y, w, h, roof in houses:
+            d.rectangle([x + 1, y + 5, x + w + 1, y + h + 4], fill=(56, 88, 40))
+            d.rectangle([x, y + 4, x + w, y + h + 3], fill=(228, 218, 196), outline=(88, 74, 60))
+            d.polygon([(x - 1, y + 4), (x + w // 2, y), (x + w + 1, y + 4)], fill=roof, outline=(72, 40, 32))
+            d.rectangle([x + w // 2 - 1, y + h, x + w // 2 + 1, y + h + 3], fill=(92, 62, 42))
+        return im
+
+    if name == "building":
+        im = _draw_canvas(lambda x, y: _shade((136, 140, 146), fbm(x, y, 853, base_freq=8, octaves=2) * 8))
+        d = ImageDraw.Draw(im)
+        for x, top, w in [(3, 4, 12), (17, 9, 12)]:
+            d.rectangle([x + 2, top + 2, x + w + 2, 30], fill=(82, 86, 94))
+            d.rectangle([x, top, x + w, 29], fill=(176, 188, 202), outline=(68, 76, 92))
+            d.rectangle([x + 1, top + 1, x + w - 1, top + 2], fill=(208, 218, 230))
+            for wy in range(top + 4, 27, 4):
+                for wx in range(x + 2, x + w - 1, 4):
+                    d.rectangle([wx, wy, wx + 2, wy + 2], fill=(76, 120, 176))
+        return im
+
+    if name == "base":
+        im = _draw_canvas(lambda x, y: _shade((136, 140, 144), fbm(x, y, 859, base_freq=8, octaves=2) * 8))
+        d = ImageDraw.Draw(im)
+        d.rectangle([4, 13, 29, 30], fill=(76, 80, 76))
+        d.rectangle([3, 12, 28, 29], fill=(116, 128, 108), outline=(52, 60, 48))
+        d.chord([3, 4, 28, 20], 180, 360, fill=(136, 148, 128), outline=(52, 60, 48))
+        d.rectangle([12, 20, 19, 29], fill=(56, 60, 64))
+        d.line([16, 2, 16, 8], fill=(52, 60, 48))
+        d.rectangle([17, 2, 22, 5], fill=(204, 52, 48))
+        return im
+
+    if name == "castle":
+        im = _draw_canvas(lambda x, y: plain_color(x, y))
+        d = ImageDraw.Draw(im)
+        d.rectangle([5, 11, 29, 30], fill=(52, 80, 40))
+        d.rectangle([4, 10, 27, 29], fill=(176, 172, 162), outline=(82, 78, 70))
+        for x in range(4, 28, 6):
+            d.rectangle([x, 6, x + 3, 10], fill=(186, 182, 172), outline=(82, 78, 70))
+        d.rectangle([13, 20, 18, 29], fill=(72, 52, 36))
+        d.rectangle([8, 14, 10, 16], fill=(40, 40, 44))
+        d.rectangle([21, 14, 23, 16], fill=(40, 40, 44))
+        return im
+
+    if name == "powerplant":
+        im = _draw_canvas(lambda x, y: _shade((138, 142, 146), fbm(x, y, 863, base_freq=8, octaves=2) * 8))
+        d = ImageDraw.Draw(im)
+        d.rectangle([3, 14, 20, 29], fill=(188, 180, 160), outline=(78, 74, 62))
+        d.polygon([(22, 29), (24, 6), (29, 6), (31, 29)], fill=(202, 198, 190), outline=(78, 74, 62))
+        d.polygon([(8, 10), (12, 2), (11, 8), (15, 8), (10, 16), (11, 10)], fill=(244, 212, 52), outline=(144, 104, 16))
+        return im
+
+    if name == "remains":
+        im = _draw_canvas(lambda x, y: _shade((144, 134, 116), fbm(x, y, 877, base_freq=6, octaves=3) * 18))
+        d = ImageDraw.Draw(im)
+        d.polygon([(4, 28), (4, 10), (9, 6), (13, 14), (13, 28)], fill=(128, 126, 122), outline=(64, 62, 60))
+        d.polygon([(18, 28), (18, 16), (24, 12), (28, 20), (28, 28)], fill=(112, 110, 106), outline=(64, 62, 60))
+        return im
+
+    if name == "ruins":
+        im = _draw_canvas(lambda x, y: _shade((172, 154, 110), fbm(x, y, 881, base_freq=6, octaves=3) * 16))
+        d = ImageDraw.Draw(im)
+        for x in (5, 14, 23):
+            d.rectangle([x, 9, x + 4, 28], fill=(214, 202, 170), outline=(116, 104, 80))
+        d.rectangle([3, 5, 20, 9], fill=(220, 208, 178), outline=(116, 104, 80))
+        return im
+
+    if name == "lava":
+        sides = LAVA_SIDES.get(no, ())
+        def lpx(x, y):
+            n = fbm(x, y, 907, base_freq=4, octaves=3)
+            heat = max(0.0, min(1.0, (n + 0.65) / 1.3))
+            lc = _mix((168, 36, 16), (248, 164, 36), heat)
+            if heat > 0.78:
+                lc = _mix(lc, (252, 220, 84), (heat - 0.78) * 3.0)
+            if sides:
+                sd = _side_dist(x, y, sides, width=5, corner_r=9)
+                if sd > 0.6:
+                    return _shade((54, 48, 52), n * 14)
+                if sd > -0.8:
+                    return _mix((86, 44, 32), lc, 0.4)
+            return lc
+        return _draw_canvas(lpx)
+
+    if name in SPACE_TILES:
+        return space_tile(name, no)
+
+    raise ValueError(name)
+
+
+SPACE_TILES = {"space", "asteroids", "wrecks", "colony", "space_fortress", "space_dock", "earth", "moon",
+               "moon_ground", "small_crater", "moon_city", "moon_base"}
+
+
+def _draw_crater(d, cx, cy, r, bg_light=172):
+    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(116, 118, 126), outline=(88, 90, 98))
+    d.arc([cx - r, cy - r, cx + r, cy + r], 195, 345, fill=(bg_light, bg_light + 2, bg_light + 8), width=1)
+    d.ellipse([cx - r // 2, cy - r // 2, cx + r // 2, cy + r // 2], fill=(100, 102, 110))
+
+
+def space_tile(name, no=0):
+    """宇宙（地形タイプ 宇宙）と月面（月面）の地形の画像"""
+    if name in ("moon_ground", "small_crater", "moon_city", "moon_base"):
+        im = _draw_canvas(moon_color)
+        d = ImageDraw.Draw(im)
+        if name == "moon_ground":
+            if no == 1:
+                _draw_crater(d, 16, 16, 7, 186)
+            elif no == 2:
+                _draw_crater(d, 9, 10, 4, 184)
+                _draw_crater(d, 22, 21, 5, 184)
+        elif name == "small_crater":
+            if no == 0:
+                _draw_crater(d, 16, 16, 10, 196)
+            elif no == 6:
+                _draw_crater(d, 16, 16, 6, 194)
+            elif no == 7:
+                _draw_crater(d, 10, 11, 5, 194)
+                _draw_crater(d, 22, 21, 5, 194)
+        elif name == "moon_city":
+            for box in [[2, 14, 16, 30], [14, 6, 30, 22], [18, 20, 30, 32]]:
+                d.chord(box, 180, 360, fill=(176, 208, 232), outline=(80, 100, 120))
+                d.line([box[0], (box[1] + box[3]) // 2, box[2], (box[1] + box[3]) // 2], fill=(80, 100, 120))
+            for x, y in [(6, 19), (10, 20), (19, 11), (24, 12), (22, 24)]:
+                d.rectangle([x, y, x + 1, y + 1], fill=(248, 232, 120))
+        elif name == "moon_base":
+            d.rectangle([3, 13, 28, 29], fill=(120, 128, 136), outline=(60, 64, 72))
+            d.chord([3, 5, 28, 21], 180, 360, fill=(136, 144, 152), outline=(60, 64, 72))
+            d.rectangle([12, 20, 19, 29], fill=(56, 60, 68))
+            d.line([24, 2, 24, 8], fill=(60, 64, 72))
+            d.ellipse([21, 0, 27, 4], outline=(200, 204, 212))
+        return im
+
+    im = _draw_canvas(lambda x, y: space_color(x, y, no if name == "space" else 0))
+    d = ImageDraw.Draw(im)
+    if name == "space":
+        if no >= 7:
+            # 明るい星（十字の光）が多い変種
+            rnd = random.Random(f"space-bright-{no}")
+            for _ in range(3):
+                sx, sy = rnd.randrange(3, 28), rnd.randrange(3, 28)
+                c = rnd.choice([(240, 248, 255), (255, 244, 208), (200, 224, 255)])
+                d.point([sx, sy], fill=(255, 255, 255))
+                d.line([sx - 2, sy, sx + 2, sy], fill=c)
+                d.line([sx, sy - 2, sx, sy + 2], fill=c)
+        return im
+
+    if name == "asteroids":
+        rock_sets = {
+            0: [[5, 6, 13, 13], [19, 18, 27, 25]],
+            1: [[3, 5, 13, 14], [18, 4, 27, 12], [11, 18, 22, 27]],
+            2: [[2, 4, 13, 13], [17, 2, 28, 11], [8, 17, 22, 29], [24, 18, 31, 25]],
+            3: [[1, 3, 13, 13], [15, 2, 29, 13], [3, 15, 16, 28], [17, 16, 30, 29], [11, 10, 20, 18]],
+        }
+        for box in rock_sets.get(no, rock_sets[2]):
+            d.ellipse(box, fill=(116, 98, 84), outline=(58, 48, 42))
+            d.arc(box, 190, 275, fill=(176, 156, 136), width=2)
+    elif name == "wrecks":
+        d.polygon([(3, 8), (14, 4), (17, 10), (6, 14)], fill=(128, 132, 140), outline=(70, 72, 80))
+        d.polygon([(18, 18), (29, 15), (30, 24), (20, 27)], fill=(112, 116, 124), outline=(70, 72, 80))
+        d.line([8, 22, 14, 28], fill=(150, 154, 162), width=2)
+        d.line([22, 5, 27, 9], fill=(150, 154, 162))
+        d.point([(12, 7), (25, 20)], fill=(248, 160, 64))
+    elif name == "colony":
+        d.rectangle([4, 9, 27, 22], fill=(180, 184, 192), outline=(90, 94, 104))
+        d.ellipse([0, 9, 8, 22], fill=(160, 164, 172), outline=(90, 94, 104))
+        d.ellipse([24, 9, 31, 22], fill=(200, 204, 212), outline=(90, 94, 104))
+        for x in range(7, 24, 4):
+            d.line([x, 10, x, 21], fill=(70, 110, 170))
+        d.polygon([(6, 9), (16, 2), (26, 9)], fill=(90, 120, 170), outline=(60, 80, 120))
+        d.polygon([(6, 22), (16, 29), (26, 22)], fill=(90, 120, 170), outline=(60, 80, 120))
+    elif name == "space_fortress":
+        d.polygon([(4, 28), (2, 16), (10, 4), (22, 4), (30, 16), (28, 28)], fill=(88, 84, 92), outline=(48, 44, 52))
+        d.polygon([(10, 20), (16, 10), (22, 20)], fill=(112, 106, 118), outline=(48, 44, 52))
+        for x, y in [(7, 14), (24, 13), (12, 24), (20, 25), (16, 7)]:
+            d.rectangle([x, y, x + 1, y + 1], fill=(248, 96, 64))
+    elif name == "space_dock":
+        d.rectangle([3, 3, 28, 6], fill=(150, 156, 166), outline=(80, 86, 96))
+        d.rectangle([3, 25, 28, 28], fill=(150, 156, 166), outline=(80, 86, 96))
+        for x in (4, 15, 26):
+            d.rectangle([x, 6, x + 2, 25], fill=(130, 136, 146), outline=(80, 86, 96))
+        for y in (10, 15, 20):
+            d.line([7, y, 25, y], fill=(110, 116, 126))
+        d.point([(9, 4), (22, 27)], fill=(120, 248, 120))
+    elif name == "earth":
+        d.ellipse([-14, 2, 30, 46], fill=(40, 96, 200), outline=(140, 190, 255))
+        d.polygon([(2, 14), (10, 10), (14, 18), (8, 24), (4, 22)], fill=(72, 148, 72))
+        d.polygon([(16, 22), (24, 20), (26, 30), (18, 31)], fill=(84, 156, 76))
+        d.arc([-6, 8, 18, 30], 180, 260, fill=(236, 240, 248))
+    elif name == "moon":
+        d.ellipse([4, 4, 28, 28], fill=(200, 200, 196), outline=(140, 140, 136))
+        for box in [[9, 10, 15, 16], [18, 15, 25, 22], [12, 20, 16, 24]]:
+            d.ellipse(box, fill=(168, 168, 164))
     return im
 
 
@@ -642,7 +1298,13 @@ def main():
     write("Data/System/terrain.txt", terrain_txt())
     write("Data/System/sp.txt", sp_txt())
     for _, _, bitmap, *_ in TERRAINS:
-        save(tile(bitmap), f"Bitmap/Map/{bitmap}/{bitmap}0000.bmp")
+        tile_dir = os.path.join(HERE, "Bitmap", "Map", bitmap)
+        if os.path.isdir(tile_dir):
+            for entry in os.listdir(tile_dir):
+                if entry.endswith(".bmp"):
+                    os.remove(os.path.join(tile_dir, entry))
+        for no in TILE_NUMBERS.get(bitmap, [0]):
+            save(tile(bitmap, no), f"Bitmap/Map/{bitmap}/{bitmap}{no:04d}.bmp")
     for name in UNITS:
         save(unit(name), f"Bitmap/Unit/{name}.bmp")
     for name in BGMS:

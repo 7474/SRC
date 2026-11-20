@@ -1,0 +1,64 @@
+@* 指数のレーダーチャート（SVG）。系列ごとに色を変え、実効性能を実線、単純数字を破線で描く（250 で頭打ち） *@
+<svg class="src-radar" viewBox="0 0 @Size @Size" role="img" aria-label="@Title">
+    @for (var ring = 1; ring <= 5; ring++)
+    {
+        <polygon points="@Ring(ring * 50)" class="src-radar-grid" />
+    }
+    @for (var i = 0; i < Axes.Count; i++)
+    {
+        var (x, y) = Point(i, Max);
+        <line x1="@Center" y1="@Center" x2="@F(x)" y2="@F(y)" class="src-radar-grid" />
+        var (lx, ly) = Point(i, Max * 1.13);
+        @* Razor はコードの中の <text> を特別に扱うので、文字列で出す *@
+        @((MarkupString)$"<text x=\"{F(lx)}\" y=\"{F(ly)}\" class=\"src-radar-label\" text-anchor=\"middle\" dominant-baseline=\"middle\">{System.Net.WebUtility.HtmlEncode(Axes[i])}</text>")
+    }
+    @* 中央値（100）の線 *@
+    <polygon points="@Ring(100)" class="src-radar-median" />
+    @for (var s = 0; s < Series.Count; s++)
+    {
+        var series = Series[s];
+        var color = Colors[s % Colors.Length];
+        if (series.Simple != null)
+        {
+            <polygon points="@Shape(series.Simple)" fill="none" stroke="@color" stroke-width="1.5" stroke-dasharray="4 3" />
+        }
+        <polygon points="@Shape(series.Effective)" fill="@color" fill-opacity="0.12" stroke="@color" stroke-width="2" />
+    }
+</svg>
+
+@code {
+    public sealed class RadarSeries
+    {
+        public string Name { get; set; }
+        /// <summary>軸ごとの値（無ければ null → 0）</summary>
+        public IReadOnlyList<double?> Effective { get; set; }
+        public IReadOnlyList<double?> Simple { get; set; }
+    }
+
+    /// <summary>系列の色（横並べの見出しと揃える）</summary>
+    public static readonly string[] Colors = { "#3273dc", "#e8590c", "#2b8a3e", "#ae3ec9" };
+
+    [Parameter] public IReadOnlyList<string> Axes { get; set; } = Array.Empty<string>();
+    [Parameter] public IReadOnlyList<RadarSeries> Series { get; set; } = Array.Empty<RadarSeries>();
+    [Parameter] public string Title { get; set; } = "";
+
+    private const double Size = 320;
+    private const double Center = Size / 2;
+    private const double Radius = 115;
+    private const double Max = 250;
+
+    private (double x, double y) Point(int axis, double value)
+    {
+        var angle = -Math.PI / 2 + 2 * Math.PI * axis / Math.Max(1, Axes.Count);
+        var r = Radius * Math.Min(Max * 1.13, Math.Max(0, value)) / Max;
+        return (Center + r * Math.Cos(angle), Center + r * Math.Sin(angle));
+    }
+
+    private static string F(double v) => v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
+
+    private string Ring(double value) =>
+        string.Join(" ", Enumerable.Range(0, Axes.Count).Select(i => Point(i, value)).Select(p => $"{F(p.x)},{F(p.y)}"));
+
+    private string Shape(IReadOnlyList<double?> values) =>
+        string.Join(" ", Enumerable.Range(0, Axes.Count).Select(i => Point(i, Math.Min(Max, values.ElementAtOrDefault(i) ?? 0))).Select(p => $"{F(p.x)},{F(p.y)}"));
+}

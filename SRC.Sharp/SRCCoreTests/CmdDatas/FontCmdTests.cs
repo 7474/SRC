@@ -100,6 +100,17 @@ namespace SRCCore.CmdDatas.Tests
         }
 
         [TestMethod]
+        public void Exec_StopSignal_IsNotEventError()
+        {
+            // ゲームスレッドを止める合図（OperationCanceledException。シナリオの終了・画面を閉じたとき）は、
+            // 「イベントデータが不正です」にせずに外へ通す（握りつぶすと、SRC#Web で GameClear の後もゲームが進んだ。#1552）
+            var (src, gui) = CreateSrc();
+            gui.SetDrawFontHandler = o => throw new System.OperationCanceledException();
+            Assert.ThrowsExactly<System.OperationCanceledException>(() => CreateCmd(src, "Font 12pt").Exec());
+            Assert.AreEqual(0, src.DataErrors.Count);
+        }
+
+        [TestMethod]
         public void FontCmd_Regular_ClearsBoldAndItalic()
         {
             // 元の SRC（CmdData.cls の ExecFontCmd）は Regular で太字・斜体を解除する（#905）

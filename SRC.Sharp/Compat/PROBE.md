@@ -6,7 +6,7 @@
 - SRC# では `SRCRenderTests` の `CompatProbeTests` が同じシナリオを流す（CI で毎回）。実機の出力（期待値）が `probe-expected/` にあれば比べ、無ければ SRC# の出力を書き出すだけで成功する
 - Src.exe を動かすのは手作業なので、1 回の実行（下の「[Windows で流す手順](#windows-で流す手順)」）で必要な値をすべて取れるようにしている。画面と音の見比べ（#1553。[SCREENS.md](SCREENS.md)）のスクリーンショットも、同じ作業の続きで撮る
 
-**未確認**：このシナリオはまだ元の SRC で流していない。元の SRC（`SRC/SRC_20121125` の `CmdData.cls`・`Expression.bas`）にあるコマンドと関数だけを使い、書式をそのソースに合わせて書いたが、元の SRC で動くかは確かめていない。
+2026-11-12 に、日本語版の Windows 11 で元の SRC（Ver.2.2.33）に流し、出力を `probe-expected/` に置いた（環境は `probe-expected/environment.txt`）。12 のケースとも最後まで流れ、Src.exe は落ちなかった。画面と音の見比べ（#1553）はまだ撮っていない。
 
 ## 置き場所と構成
 
@@ -18,7 +18,9 @@
 | `probe-bounds/incr.eve`・`unset.eve`・`ride.eve` | 範囲外の引数の参照（#1511）。引数の無い `Incr`・`UnSet`・`Ride`。Src.exe ごと落ちるかもしれないので、コマンドごとにイベントファイルを分けた。`out_incr.txt` などに書き出す |
 | `probe-errors/<ケース>/probe.eve` | データの読み込みのエラー。ケースごとに誤ったデータ（またはイベントファイル）を置き、元の SRC が出すメッセージと、読み込みを打ち切るか続けるかを見る。続ければ `out_probe.txt` に、どのデータが読めたかと値を書き出す |
 | `probe-expected/` | 実機の出力（期待値）を置く。`probe_pack.py import` で取り込む。`known-differences.txt` に理由のある違いを書く |
-| `probe_pack.py` | 元の SRC に渡す形（Shift_JIS・CRLF。`export_sjis.py` と同じ変換）に書き出す（`export`）。Windows から持ち帰った結果を `probe-expected/` に取り込む（`import`）。画面と音の見比べ（`screens/`。#1553。[SCREENS.md](SCREENS.md)）も一緒に書き出し、スクリーンショットと音のメモを `screens-expected/`・`screens-form/` に取り込む |
+| `probe_pack.py` | 元の SRC に渡す形（Shift_JIS・CRLF。`export_sjis.py` と同じ変換）に書き出す（`export`）。Windows から持ち帰った結果を `probe-expected/` に取り込む（`import`）。画面と音の見比べ（`screens/`。#1553。[SCREENS.md](SCREENS.md)）も一緒に書き出し、スクリーンショットと音のメモを `screens-expected/`・`screens-form/` に取り込む。セーブデータの見本（#1577）を作る `torres/` と `savedata/savedata.eve` も書き出し、持ち帰った見本を `savedata-expected/` に取り込む |
+| `savedata/savedata.eve` | 元の SRC のセーブデータ（中断データ・クリアデータ）の見本を作るシナリオ（#1577）。`torres/` のデータを使うので、書き出すときと SRC# のテストでは `torres/` に置く。乱数を使わないので、元の SRC と SRC# で同じ状態になる |
+| `savedata-expected/` | 実機で作ったセーブデータの見本（`suspend.src`・`clear.src`。Shift_JIS のまま）。`probe_pack.py import` で取り込む。`SRCRenderTests` の `CompatSaveDataTests` が SRC# で読み、SRC# が同じ所で書いた状態と比べる（見本が無ければ、元の SRC の書き出しを写した `VbSaveDataWriter` で書いたものを読む）。`torres/` には、元の SRC で torres を通したとき（#1549）に保存した中断データ・クリアデータを置く（手で写す）。中断データからは再開し、クリアデータからは次の話を始める |
 
 `probe/` は `Data` を持つので、CI の `test-compat-scenario`（`tools/compat_play.py`）が `srcsharp lint` と SRCDataLinter に掛ける。`probe-bounds/`・`probe-errors/` は誤りをわざと入れているので、`Data` を直下に置かず、lint に掛からないようにしている。
 
@@ -38,7 +40,7 @@
 
 ## Windows で流す手順
 
-1 回で済むように、#1550 のプローブと、#1553 の画面と音の見比べ（[SCREENS.md](SCREENS.md)）の手順を 1 つにまとめた。日本語版の Windows で、元の SRC（Ver.2.2.33 の Src.exe）を使う。見比べには、スピーカー（BGM の MIDI と効果音を聞く）と、30 分ほどの時間が要る。
+1 回で済むように、#1550 のプローブと、#1553 の画面と音の見比べ（[SCREENS.md](SCREENS.md)）と、#1577 のセーブデータの見本の手順を 1 つにまとめた。日本語版の Windows で、元の SRC（Ver.2.2.33 の Src.exe）を使う。見比べには、スピーカー（BGM の MIDI と効果音を聞く）と、30 分ほどの時間が要る。
 
 1. **書き出す**（Python 3 があればどの OS でもよい。リポジトリのルートで）
 
@@ -46,7 +48,7 @@
    python3 SRC.Sharp/Compat/probe_pack.py export --zip
    ```
 
-   `SRC.Sharp/Compat/out/probe-pack/`（と `SRC.Sharp/Compat/out/probe-pack.zip`。`out/` は git に入らない）ができる。中身は `probe/`・`probe-bounds/`・`probe-errors/`・`screens/` と、すべてのケースを順に開いてから見比べを始める `run_probe.bat`、見比べだけを始める `run_screens.bat`、場面ごとに画面を撮る `capture_screens.ps1`。テキストは Shift_JIS・CRLF になっている
+   `SRC.Sharp/Compat/out/probe-pack/`（と `SRC.Sharp/Compat/out/probe-pack.zip`。`out/` は git に入らない）ができる。中身は `probe/`・`probe-bounds/`・`probe-errors/`・`screens/`・`torres/`（`torres\savedata.eve` を含む）と、すべてのケースを順に開いてから見比べとセーブデータの見本に進む `run_probe.bat`、見比べだけを始める `run_screens.bat`、セーブデータの見本だけを作る `run_savedata.bat`、場面ごとに画面を撮る `capture_screens.ps1`。テキストは Shift_JIS・CRLF になっている
 2. **Windows に写す**。`probe-pack.zip` を写して展開する。場所はどこでもよい（例: `C:\probe-pack`。SRC 本体のフォルダの下でなくてよい）。シナリオが `out_*.txt` などを書くので、書き込めるフォルダにする
 3. **SRC 本体を確かめる**。Src.exe のフォルダに `Data\System\terrain.txt` があること（元の SRC は本体の地形データが無いと起動しない。中身はどの版の汎用データのものでもよい。プローブと見比べは 1000 番台の自前の地形だけを使う）。汎用データ・汎用戦闘アニメ・効果音集は要らない（見比べの場面 31 は本体の `Lib\ユニットステータス表示.eve` を使う。本体にあるかを控える）。Src.exe がすでに起動していたら終わらせる（2 つは起動できない）。画面の拡大率（DPI）は 100% にしておく（スクリーンショットの大きさが変わらないように）
 4. **プローブを流す**。`run_probe.bat` をメモ帳で開き、`set SRC_EXE=C:\SRC\Src.exe` を Src.exe の場所に直して保存し、ダブルクリックで実行する。12 のケースを順に Src.exe で開く（`start /wait "" Src.exe "<フォルダ>\<イベント>.eve"`。元の SRC は起動の引数に渡したイベントファイルを開き、そのフォルダをシナリオのフォルダにする。`SRC.bas` の `Main`）。1 つ終わるたびに「続行するには何かキーを押してください」で止まる
@@ -61,26 +63,44 @@
    - 音の場面（`snd-1` など）は、聞いたこと（鳴ったか・切り替わったか・繰り返すか）を書いて Enter。`screens-sounds.txt` に残る。何が鳴るはずかは [SCREENS.md の音の一覧](SCREENS.md#音の一覧)。場面 23（武器の一覧）で BGM が変わるか、その後のコマンドで戻るかも、次の音の場面のメモに書く
    - 後半（場面 20〜29）は、メニューや一覧を出して撮る。戻るときは右クリック（メニューが残ったら、メニューの外をクリックして閉じる）。最後にマップコマンドの「ターン終了」で、インターミッション（場面 30〜32）へ進む
    - 途中で止めたら、`powershell -ExecutionPolicy Bypass -File capture_screens.ps1 -From <場面の ID>` で続きから撮れる（`-SrcExe` を付けなければ Src.exe を起動しない）
-6. **SRC#Form の画面**（Windows で SRC#Form を動かせるとき）。SRC#Form の `Src.ini` 相当の設定はシナリオの `screens\Src.ini` から読むので、同じ設定になる。
+6. **セーブデータの見本**（#1577）。見比べが終わると、`run_probe.bat` が続けて Src.exe に `torres\savedata.eve` を 2 回開かせる（見本だけを作り直すときは `run_savedata.bat`。`SRC_EXE` を同じく直す）。敵はいないので、プレイヤーは何も動かさない
+   - 1 回目：メッセージをクリックで進め、1 ターン目の味方フェイズになったら、マップを右クリックしてマップのコマンドの「中断」を選ぶ。保存のダイアログで、`torres` のフォルダに `suspend.src` の名前で保存する（出た名前の「savedataを中断.src」のままでもよい）。Src.exe が終わる
+   - 2 回目：1 ターン目の味方フェイズになったら、マップのコマンドの「ターン終了」を選ぶ。2 ターン目に入るとインターミッションになるので、「データセーブ」を選び、`torres` のフォルダに `clear.src` の名前で保存する（出た名前の「savedataまでクリア.src」のままでもよい）。最後に「終了」で終える
+   - 途中でエラーのダイアログが出たら、文言を `torres\errors_savedata.txt` に貼り付けてから OK を押す
+7. **SRC#Form の画面**（Windows で SRC#Form を動かせるとき）。SRC#Form の `Src.ini` 相当の設定はシナリオの `screens\Src.ini` から読むので、同じ設定になる。
 
    ```bat
    powershell -NoProfile -ExecutionPolicy Bypass -File capture_screens.ps1 -SrcExe <SRCSharpForm.exe の場所> -ProcessName SRCSharpForm -OutDir screens-form-shots
    ```
 
-   で、同じ手順で `screens-form-shots\<ID>.png` と `screens-form-shots\sounds.txt` を作る（SRC#Form は Shift_JIS のシナリオも読める）
-7. **回収する**。`C:\probe-pack` のフォルダをまとめて zip にして持ち帰る（要るのは各フォルダの `out_*.txt`・`errors_*.txt` と、`screens-shots\`・`screens-sounds.txt`・`screens-form-shots\`）。あわせて、Windows の版・画面の拡大率・Src.exe の版（タイトル画面かバージョン情報）・本体の `Lib` と `Midi`・`Sound` の有無・流した日を控える
-8. **リポジトリに置く**。持ち帰った zip を展開し、リポジトリのルートで
+   で、同じ手順で `screens-form-shots\<ID>.png` と `screens-form-shots\sounds.txt` を作る（SRC#Form は Shift_JIS のシナリオも読める）。SRC#Form は実行ファイルのフォルダを SRC のフォルダにするので、ビルドした SRC#Form のフォルダに `SRC.Sharp/Content/basic-data` の中身を写し、空の `Bitmap\Event` フォルダを作っておく（無いと「Bitmapフォルダがありません」などで止まる）。SRC#Form の確かめのダイアログ（ターン終了など）は Windows の標準のダイアログではないので、OK をクリックする
+8. **回収する**。`C:\probe-pack` のフォルダをまとめて zip にして持ち帰る（要るのは各フォルダの `out_*.txt`・`errors_*.txt` と、`screens-shots\`・`screens-sounds.txt`・`screens-form-shots\`、`torres\suspend.src`・`torres\clear.src`）。あわせて、Windows の版・画面の拡大率・Src.exe の版（タイトル画面かバージョン情報）・本体の `Lib` と `Midi`・`Sound` の有無・流した日を控える
+9. **リポジトリに置く**。持ち帰った zip を展開し、リポジトリのルートで
 
    ```sh
    python3 SRC.Sharp/Compat/probe_pack.py import <展開したフォルダ>/probe-pack
    ```
 
-   を実行すると、`SRC.Sharp/Compat/probe-expected/<フォルダ>/<イベント>.txt`（出力）と `<イベント>.errors.txt`（エラーのダイアログ）が UTF-8・LF で、`screens-expected/<ID>.png`・`screens-expected/sounds.txt`（Src.exe）と `screens-form/<ID>.png`・`screens-form/sounds.txt`（SRC#Form）ができる。控えた環境は `probe-expected/environment.txt` と `screens-expected/environment.txt` に書く。これらをコミットする（PR に載せる）
-9. **比べる**。
+   を実行すると、`SRC.Sharp/Compat/probe-expected/<フォルダ>/<イベント>.txt`（出力）と `<イベント>.errors.txt`（エラーのダイアログ）が UTF-8・LF で、`screens-expected/<ID>.png`・`screens-expected/sounds.txt`（Src.exe）と `screens-form/<ID>.png`・`screens-form/sounds.txt`（SRC#Form）、`savedata-expected/suspend.src`・`savedata-expected/clear.src`（セーブデータの見本。Shift_JIS のまま）ができる。控えた環境は `probe-expected/environment.txt` と `screens-expected/environment.txt` に書く。これらをコミットする（PR に載せる）
+10. **比べる**。
    - プローブ：`dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatProbeTests"`。違う項目が出たら、直すか、理由を `probe-expected/known-differences.txt` と [SRCとの互換性](../../SRC.Sharp.Help/src/SRCとの互換性.md) に書く。VB5 のランタイムの 4 つの動作は、対応表（`docs/history/porting/vb-map/`）の説明の「推定」を「VB5 の実機で確かめた」に書き換える
+   - セーブデータ：`dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatSaveDataTests"`。実機の見本を SRC# で読み、SRC# が同じ所で書いた中断データ（JSON）から読んだ状態・データセーブしたときの状態と比べる（ユニット・パイロット・アイテム・資金・ターン・変数・マップ・イベントラベル）。違いが出たら、読み込み（`SRCCore/SRC.save.vb.cs` など。[形式](../../docs/history/porting/vb-savedata.md)）を直すか、理由を [SRCとの互換性](../../SRC.Sharp.Help/src/SRCとの互換性.md) に書く
    - 画面と音：`dotnet test SRC.Sharp/SRCRenderTests/SRCRenderTests.csproj --filter "FullyQualifiedName~CompatScreensTests"` の後に `python3 SRC.Sharp/Compat/screens_report.py` で並べた一覧（`SRC.Sharp/Compat/out/screens-report/index.html`）を作る（CI の `compat-screens` の成果物にも出る）。配置・色・文字・大きさの違いと、音の違いを [SCREENS.md の「見比べた結果」](SCREENS.md#見比べた結果) に書き、直すか互換性の一覧に載せる
 
 出力に足りない項目があれば、シナリオに足して、もう一度だけ流す（#1550 の「必要なもの」）。
+
+### 自動で流す（プローブだけ）
+
+手順 4 は、書き出したフォルダの `run_probe_auto.ps1` で自動で流せる。12 のケースを順に Src.exe で開き、エラーのフォーム（タイトルが「エラー」）が出たら文字の欄を読み取って `errors_<イベント>.txt` に書き、フォームを閉じて続ける（手で OK を押すのと同じく、イベントは次のラベルへ進む）。Src.exe が自分で終わるのを待つので、その間は Src.exe の画面に触れない。
+
+```bat
+powershell -NoProfile -ExecutionPolicy Bypass -File run_probe_auto.ps1 -SrcExe C:\SRC\Src.exe
+```
+
+- PowerShell の `Start-Process` で Src.exe を開くと、コマンドラインの末尾に空白が付く。元の SRC の `Main` は `Mid$(Command$(), 2, Len(Command$()) - 2)` で前後の `"` を外すので、末尾の `"` が残って `.eve` と判定できず、ファイルの選択ダイアログになる。`run_probe_auto.ps1` は `ProcessStartInfo` で開く
+- 取り込み（`import`）は、エラーのダイアログの 1 行目のファイル名からフォルダを除く（流した場所をリポジトリに残さない）
+
+流すたびに変わる値（`関数.Font.色` など。`known-differences.txt`）があるので、違いを調べるときは 2 回以上流して見比べる。
 
 
 ## SRC# で流す
@@ -99,7 +119,7 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 |---|---|
 | `<イベント>.txt` | SRC# の出力（UTF-8） |
 | `<イベント>.errors.txt` | SRC# が出したエラーのダイアログ（期待値の `.errors.txt` と同じ形。1 行目のファイル名はフォルダを除く） |
-| `<イベント>.dataerrors.txt` | SRC# がダイアログに出さずに集めたデータの誤り（`SRC.DataErrors`）と、読み込みを打ち切った例外 |
+| `<イベント>.dataerrors.txt` | SRC# が集めたデータの誤り（`SRC.DataErrors`）と、読み込みを打ち切った例外（どちらも元の SRC と同じくダイアログにも出し、`.errors.txt` に入る。#1550） |
 | `<イベント>.diff.txt` | 期待値との違い（期待値があるとき） |
 
 期待値が無くても、`probe/probe.eve` と `probe-bounds/*.eve` は SRC# で最後（「終了」）まで進むことを確かめる。
@@ -113,11 +133,11 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 | 範囲外の引数の参照（`BoundsCheck`。#1511） | `VB5.範囲外.Incr`・`.UnSet`・`.Ride`（`probe-bounds/*.eve`） | 引数の無いコマンド。Parse は `strArgs` を作らない。エラーのダイアログの文言（「Incrコマンドの引数の数が違います」か「イベントデータが不正です」か）と、Src.exe が落ちるか |
 | 〃 | `VB5.範囲外.Args(0)`・`Args(-1)`・`Args(2)`（`probe.eve`） | `Args` 関数は引数の数より大きい番号だけを確かめる。0 以下は `ArgStack` の上（前の呼び出しが残した値。`a2`・`a1`）を読むと読んでいる。SRC# は空文字列 |
 | 整数のあふれ（`OverflowCheck`） | `VB5.あふれ.RankUp`・`IncreaseMorale` | Integer の変数に 65541 を入れる。桁が落ちれば 5、エラーなら「`<エラー>`」 |
-| 〃 | `VB5.あふれ.\のLong`・`ModのLong`・`\のLongの上限`・`\のLongの上限+1` | `\`・`Mod` は Long に変換してから計算する |
+| 〃 | `VB5.あふれ.\のLong`・`ModのLong`・`\のLongの上限`・`\のLongの上限+1` | `\`・`Mod` は Long に変換してから計算する。SRC# は `\` も `Mod` と同じく Long に収まらなければエラーにした（#1564 の後。以前の SRC# は `\` だけ 10000000000 を返していた）。実機で桁が落ちる（`OverflowCheck=-1`）なら、両方を直す |
 | 〃 | `VB5.あふれ.文字列の数値`・`VB5.数値.24.*`（`1e400`） | `StrToDbl`（`IsNumeric` の後に `CDbl`。エラー処理なし） |
 | 0 での割り算（`FlPointCheck`） | `VB5.割り算.*`（`/0`・`0/0`・`\0`・`Mod0`・`Mod0.0`） | `/`・`\` は `Expression.bas` が 0 を確かめて 0 にする。`Mod` は確かめない（エラー 11 と読んでいる） |
 | 〃 | `VB5.浮動小数点.*`（`10 ^ 400`・`1e308 * 10`・`(-8) ^ 0.5`・`Sqr(-1)`） | 無限大・非数になるか、エラーになるか。値の書き方（`FormatNum`） |
-| （同じ表の続き。設定に関わらずエラーと読んでいるもの） | `VB5.実行時エラー.*`（`Mid(0)`・`Left(-1)`・`Right(-1)`・`Chr(-1)`・`Chr(70000)`・`Asc(空)`・`String(-1)`・`InStr(0)`・`LSet(-1)`） | VB の文字列関数の引数の誤り（エラー 5） |
+| （同じ表の続き。設定に関わらずエラーと読んでいるもの） | `VB5.実行時エラー.*`（`Mid(0)`・`Left(-1)`・`Right(-1)`・`Chr(-1)`・`Chr(70000)`・`Asc(空)`・`String(-1)`・`String(空)`・`InStr(0)`・`InStrRev(0)`・`Replace(3,3)`・`MidB(0)`・`LeftB(-1)`・`LSet(-1)`） | VB の文字列関数の引数の誤り（エラー 5）。SRC# は `Chr(-1)`・`LSet(-1)` 以外を「`<エラー>`」にした（#1564 の後）。`Chr(-1)` は日本語版の Windows（DBCS）の `Chr$` の範囲（-32768〜65535）の中なのでエラーにならないと読んでいる（推定）。`String(空)`（`String$(3, "")`）のエラーも推定 |
 | IsNumeric と数値の変換（#1534・#1545） | `VB5.数値.<番号>.文字列`・`.IsNumeric`・`.加算`・`.比較`・`.Int` | 下の表の文字列を変数に入れ、`IsNumeric` 関数（`GeneralLib.IsNumber`。`(` で始まるものは数値としない）・足し算（`StrToDbl`）・数値との比較・`Int` を見る |
 | 〃 | `VB5.数値.直書き.1e5`・`.1d5` | 式に直に書いた数値（`EvalTerm` は先頭が数字なら `IsNumeric` の後に `CDbl`） |
 | 〃 | `probe-errors/data-numeric` | データの数値の欄に `&H1000`・`1e3`・`1e2` を書く（データの読み込みも `IsNumeric` と `CLng`） |
@@ -146,7 +166,7 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 |---|---|
 | CallFunction の各関数 | `関数.*`。ヘルプの[関数](../../SRC.Sharp.Help/src/関数.md)の一覧（元の SRC の `Expression.bas` の `CallFunction` の `Case`）を、すべて 1 回以上呼ぶ。`Random` は `Random(1)`（必ず 1）、`GetTime` は 0 以上か、時刻・画面・フォント・キーに左右される `WX`・`WY`・`Font`（フォント名・サイズ）・`TextHeight`・`TextWidth`・`WindowWidth`・`WindowHeight`・`KeyState` は `参考.` にした。`LoadFileDialog`・`SaveFileDialog` はダイアログを出すので呼ばない |
 | Info の各項目 | `Info.ユニット.*`・`Info.パイロット.*`・`Info.パイロットデータ.*`・`Info.ユニットデータ.*`・`Info.非戦闘員.*`・`Info.アイテム.*`・`Info.スペシャルパワー.*`・`Info.マップ.*`・`Info.オプション.*`。ヘルプの [Info関数](../../SRC.Sharp.Help/src/Info関数.md) の情報種類 |
-| Format | `Format.*`。数値の書式（`#`・`0`・`,`・`%`・`E+`・`;`）、丸め（`0.125`・`2.5`・`-3.5`・`-0.4`）、名前の付いた書式（`Fixed`・`Standard`・`Percent`・`Currency`）、文字列（`@`・`!`）、日付の文字列（`yyyy年m月d日`・`aaa`） |
+| Format | `Format.*`。数値の書式（`#`・`0`・`,`・`%`・`E+`・`;`）、丸め（`0.125`・`2.5`・`-3.5`・`-0.4`）、名前の付いた書式（`General Number`・`Fixed`・`Standard`・`Percent`・`Scientific`・`Currency`・`Yes/No`・`True/False`・`On/Off`・`General Date`・`Long Date`・`Medium Date`・`Short Date`・`Long Time`・`Medium Time`・`Short Time`）、文字列（`@`・`!`）、日付・時刻の書式文字（`yyyy年m月d日`・`aaa`・`aaaa`・`ddd`〜`dddddd`・`mmm`・`mmmm`・`g`〜`ggg`・`e`・`ee`・`q`・`y`・`w`・`ww`・`c`・`h:m:s`・`AM/PM`・`AMPM`・`ttttt`）、書式の種類の決め方（`0d`・`No.0`・`Level 0`） |
 | 変数の型（数値と文字列） | `型.*`。`Set a 01` と `Set a "01"`、数値と文字列の比較・連結・演算子の優先順位、`\`・`Mod` の丸め、`FormatNum` の書き方（`1/3`・`1e20`・`1e-5`）、`HP()` に 0 を入れる |
 | 未定義の変数 | `未定義.*`。値・足し算・比較・`Len`・`IsVarDefined`・配列・`Count`、サブルーチンで作った変数と `Local`、`UnSet` |
 | システム変数 | `システム変数.*`。スタートのときと 1 ターン目（`システム変数.ターン.*`）。`AppPath`・`ExtDataPath`・`MouseX` は `参考.` |
@@ -186,16 +206,45 @@ srcsharp play <写したフォルダ>/probe/probe.eve --script <「auto 120」�
 
 出力の項目: `到達`・`ユニット.前`・`ユニット.誤り`・`ユニット.後`（読めたか）・`ユニット.誤り.<情報>`・`パイロット.*`・`終了`。
 
-## SRC# の出力と、元の SRC のコードから読んだ値の違い
+## 実機で確かめた結果（2026-11-12）
 
-実機で流す前に、SRC# の出力と元の SRC のコードを見比べて、違いそうだと分かったもの（推定。実機の出力で確かめる）。
+元の SRC の実機の出力（`probe-expected/`）と SRC# を比べて分かった違いと、その扱い。SRC# を実機に合わせたもののほか、わざと残した違い・比べても意味の無いものは `probe-expected/known-differences.txt` に理由を書いた。
 
-| 項目 | SRC# | 元の SRC のコードから読んだ値 |
+| 項目 | 元の SRC の実機 | 扱い |
 |---|---|---|
-| `日付.DiffTime.*` | 秒の差（75・86400・-75） | `Second(d2 - d1)`（差の秒の桁だけ。15・0・15） |
-| `Format.Fixed`・`Standard`・`Percent`・`Currency` | 書式の名前をそのまま返す | VB の `Format$` の名前の付いた書式（`1234.57`・`1,234.57`・`12.30%`・通貨記号の付いた `1,235`） |
-| `Format.日付`・`Format.日付.曜日` | 元の文字列（`2012/11/25`） | `Format$` は日付の文字列を日付として書く（`2012年11月25日`・`日`） |
-| `VB5.実行時エラー.Mid(0)`・`Left(-1)`・`Right(-1)`・`String(-1)`・`InStr(0)`・`Chr(70000)` | エラーにならない（空文字列・0・`?`） | VB の関数の引数の誤り（エラー 5）で「イベントデータが不正です」 |
-| `VB5.数値.08`（`(1)`）・`04`（`&H10`）・`09`（`￥100`）・`11`（`1-`）の `.加算` | 0 | `StrToDbl` は `IsNumeric` が真なら `CDbl` で読む（-1・16・100・-1。#1545） |
-| `probe-errors/data-numeric` | `&H1000` を誤り（最大ＨＰの設定が間違っています。）にする | `IsNumeric` が真なので `CLng` で 4096 と読む |
-| `probe-errors/*` のエラーのダイアログ | データの誤りをダイアログに出さない（`SRC.DataErrors` に集める。打ち切る誤りは例外で終わる） | `DataErrorMessage` でダイアログを出す |
+| `VB5.数値.*`（`&H10`・`&HFFFF`・`&O17`・`(1)`・`￥100`・`\100`・`1-`） | 数値として読む（16・65535・15・-1・100・100・-1）。`&H`・`&O` は符号なし。`IsNumeric("(1)")` は SRC の `IsNumber` が `(` を除くので 0 | 合わせた（`Conversions.TryParseVbNumber`） |
+| `probe-errors/data-numeric` | `&H1000` を 4096 と読み、ダイアログを出さない | 合わせた（同上） |
+| `VB5.数値.26.Int`・`Format.0.負の0` | `-0` は「0」。`Format(-0.4,"0")` も「0」 | 合わせた（`FormatNum`・`VbFormat`） |
+| `VB5.浮動小数点.*`（`10 ^ 400`・`1e308 * 10`・`(-8) ^ 0.5`・`Sqr(-1)`） | エラー（イベントデータが不正です） | 合わせた（`VBMath.Checked`） |
+| `VB5.あふれ.RankUp`・`IncreaseMorale` | エラー（Integer のあふれ） | 合わせた（`VBMath.CInt`） |
+| `VB5.範囲外.Incr`・`.Ride`・`.UnSet` | どれも「イベントデータが不正です」。Src.exe は落ちない | 合わせた（引数の無いコマンドの引数を読むとエラー。`CmdData.GetArgRaw`） |
+| `probe-errors/eve-unknown` のダイアログ | エラーの行を、書いたとおり（`Call` を付けずに）出す | 合わせた（`Event.DisplayEventErrorMessage`） |
+| `関数.LeftB.半端` | 途中で切れた 2 バイト文字は「・」 | 合わせた（`Strings` の Shift_JIS の変換） |
+| `Format.*` | 下の表 | 合わせた（`VbFormat`） |
+| `日付.DiffTime.*` | 15・0・15（秒の桁だけ。コードから読んだとおり） | わざと残した違い（ヘルプの SRCとの互換性） |
+| `関数.InStrRevB` | 5（バイトの位置は 4） | わざと残した違い（同上） |
+| `システム変数.セーブデータファイル名` | `.src` | わざと残した違い（セーブファイルに互換性は無い） |
+| `VB5.実行時エラー.Chr(-1)` | 0xFF の 1 バイト | 比べない（Shift_JIS の文字でない） |
+| `関数.Font.色` | 流すたびに `#000000` と `#FFFFFF` が入れ替わる | 比べない |
+
+`VB5.実行時エラー.*` の推定（`Chr(-1)` だけエラーにならない。`String(3,"")` はエラー）は、実機と同じだった。`\`・`Mod` の Long のあふれも、`\` と `Mod` の両方がエラーで、SRC#（#1564 の後）と同じだった。`VB5.SelectCase.*`・`VB5.ForEach.*` も、SRC# と同じだった。
+
+### Format（#1564 の推定と実機）
+
+| 項目 | #1564 の推定 | 元の SRC の実機 |
+|---|---|---|
+| `Format.Currency`・`.負` | `\1,235`・`-\1,235` | 同じ |
+| `Format.Medium Date` | `12/11/25` | `12-11-25` |
+| `Format.Medium Time`・`Format.時刻.AMPM` | `01:04 午後`・`1 午後` | 同じ |
+| `Format.Long Time`・`General Date`（時刻）・`日付.c`・`時刻.ttttt` | `13:04:05` | `13:04:05 `（終わりに空白） |
+| `Format.Yes/No`・`True/False`・`On/Off` | 英語 | 同じ |
+| `Format.General Number` | `1234.5` | 同じ |
+| `Format.日付.ggge`・`gge`・`ge`・`ee` | `平成24年`・`平24`・`H24`・`24` | 同じ |
+| `Format.日付.令和` | `令和1年` | `平成31年`（VB5 のランタイムは令和を知らない） |
+| `Format.日付.aaa`・`aaaa` | `日`・`日曜日` | 同じ |
+| `Format.日付.ddd`・`dddd` | `日`・`日曜日` | `Sun`・`Sunday` |
+| `Format.日付.mmm`・`mmmm` | `11`・`11月` | `Nov`・`November` |
+| `Format.日付.q y w ww` | `4 330 1 48` | 同じ |
+| `Format.空の書式.文字列` | `01.50` | `1.5`（数値の文字列は数値として書く） |
+| `Format.書式の種類.0d` | `12d` | 同じ |
+| `Format.書式の種類.No.0`・`Level 0` | `0o.0`・`L33v33l 0` | エラー（日付の書式の中の `0`） |

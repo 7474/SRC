@@ -17,12 +17,26 @@
     <value>srcsharp: outils de création de données et de scénarios pour SRC#
 
 Utilisation :
-  srcsharp lint &lt;dossier ou fichier&gt;... [--format text|sarif] [--output fichier]
+  srcsharp lint &lt;dossier ou fichier&gt;... [--format text|sarif] [--output fichier] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path dossier de SRC]
       Vérifie les données (*.txt) et les événements (*.eve). Code de sortie 1 en cas de problème
   srcsharp play &lt;fichier d'événements&gt; [--script fichier.play] [--out dossier] [--app-path dossier SRC] [--scenario-root dossier du scénario] [--steps nombre] [--skip-wait]
       Exécute un scénario sans affichage. Sans --script, fait défiler les messages et choisit la première option. Avec --skip-wait, les attentes fixes (animations, messages, Wait) sont ignorées. --scenario-root indique le dossier du scénario (base de Data, Lib et Continue) ; par défaut, un fichier d'événements dans un sous-dossier sans Data utilise le dossier parent le plus proche contenant Data.
   srcsharp balance &lt;dossier ou fichier&gt;... [--format md|csv] [--output fichier]
       Liste les statistiques des unités et les valeurs aberrantes
+  srcsharp new &lt;dossier&gt; [--title titre] [--episodes n] [--app-path dossier de SRC] [--force]
+      Crée un nouveau modèle de scénario (événement, carte et données du premier épisode, script de jeu automatique, réglages VS Code, CI). Les fichiers existants sont conservés (--force les écrase) Avec --episodes 2 ou plus, crée plusieurs épisodes avec intermission.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Suit Continue, étape suivante, Exec, IntermissionCommand, Load et GameClear entre les événements et affiche le diagramme des liens entre épisodes (dossier courant par défaut)
+  srcsharp assets [dossier du scénario] [--format md|json|readme] [--output fichier] [--app-path dossier SRC] [--ext-data dossier] [--ext-data2 dossier] [--fail-on-missing]
+      Liste les images, sons et cartes référencés par les données et événements, avec l'emplacement de la référence et l'endroit trouvé dans l'ordre de recherche de SRC (scénario, données étendues, SRC). Affiche aussi les noms construits par expression et les fichiers non référencés. readme produit un brouillon « Ressources nécessaires » pour le README. --fail-on-missing quitte avec 1 s'il manque une ressource (n'obtient ni ne redistribue de ressources)
+  srcsharp trial &lt;dossier du scénario&gt; [--unit unité] [--pilot pilote] [--enemy unité] [--enemy-pilot pilote] [--level n] [--enemies n] [--list]
+      Crée dans .srcsharp/trial/ un combat d’essai opposant des unités et pilotes des données du scénario à un ennemi, et affiche son chemin (à lancer avec play ou le débogueur). --list affiche les unités et pilotes en JSON
+  srcsharp event-flow &lt;fichier d'événements&gt; [--format md|mmd|json] [--output fichier] [--app-path dossier SRC] [--scenario-root dossier du scénario]
+      Suit les déclencheurs, étiquettes, Call, Goto et Require d'un fichier d'événements (avec ses include et Require) et produit un diagramme de flux
+  srcsharp talk-preview &lt;fichier d'événements&gt; [--line ligne] [--block index] [--stdin] [--input fichier] [--format json|png] [--out répertoire] [--output fichier] [--no-images] [--app-path dossier SRC] [--scenario-root dossier du scénario]
+      Affiche les blocs Talk et AutoTalk avec la fenêtre de message du jeu et produit des images PNG par page ou du JSON
+  srcsharp anime-preview &lt;fichier ou dossier&gt; [--list] [--file fichier] [--line ligne] [--kind animation|ext_animation|effect|subroutine] [--target nom] [--situation situation] [--spec spécification] [--attacker unité] [--attacker-pilot pilote] [--defender unité] [--defender-pilot pilote] [--play-once] [--out image] [--app-path dossier SRC] [--scenario-root dossier du scénario]
+      Prépare dans .srcsharp/preview/ la lecture d'une entrée de animation.txt, ext_animation.txt, effect.txt ou d'une animation de combat générique avec attaquant et défenseur fixes. --list liste en JSON, --play-once lit une fois
   srcsharp lsp
       Language Server (entrée/sortie standard)
   srcsharp dap
@@ -48,6 +62,9 @@ Options communes :
   <data name="LintSummary" xml:space="preserve">
     <value>{0} fichiers vérifiés, {1} problèmes</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Groupe de règles inconnu : {0} (l’un de : {1})</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Indiquez un seul fichier d'événements</value>
   </data>
@@ -68,5 +85,59 @@ Options communes :
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Méthode de recherche inconnue : {0} (hybrid, bm25 ou vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Indiquez un dossier où créer le scénario</value>
+  </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Le nombre d'épisodes doit être un entier ≥ 1 : {0}</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Modèle créé dans {0} ({1} fichiers)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Fichiers existants ignorés : {0} (--force pour écraser)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Indiquez au plus un dossier de scénario ou un fichier d'événements</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Dossier de scénario ou fichier d'événements introuvable : {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Format de sortie inconnu : {0} (md, mmd ou json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Indiquez au plus un dossier de scénario</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Dossier du scénario introuvable : {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Format de sortie inconnu : {0} (md, json ou readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} ressources ({1} manquantes), {2} références invérifiables, {3} fichiers non référencés</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Indiquez un dossier de scénario</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Combat d’essai créé : {0}/{1} contre {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Fichier d'événements introuvable : {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Spécifiez exactement un fichier d'événements à prévisualiser</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>{0} images d'aperçu enregistrées dans {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Fichier ou dossier cible de données/événements introuvable : {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Aucune définition d'animation de combat ou d'effet spécial prévisualisable trouvée</value>
   </data>
 </root>

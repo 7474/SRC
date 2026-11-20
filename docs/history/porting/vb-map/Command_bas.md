@@ -52,7 +52,7 @@ VB 版の `SRC/SRC_20121125/Command.bas` の手続きと、C# の対応（[説�
 | Sub QuickLoadCommand | 8488 | 21 | `SRCCore/Commands/Command.mapcommend.cs` Command.QuickLoadCommand | 一致 | ストリームで読む |
 | Sub QuickSaveCommand | 8513 | 16 | `SRCCore/Commands/Command.mapcommend.cs` Command.QuickSaveCommand | 一致 | ストリームで書く |
 | Sub DumpCommand | 8534 | 57 | `SRCCore/Commands/Command.mapcommend.cs` Command.DumpCommand | 一致 | VB にある「シナリオフォルダの外への保存」の確認は行わない。保存先は GUI の SelectSaveStream が決め、SRCCore はファイル名を受け取らないため |
-| Sub GlobalMapCommand | 8596 | 126 | `SRCCore/Commands/Command.mapcommend.cs` Command.GlobalMapCommand | 一致 | 縮小マップとユニット数の表示は GUI.DisplayGlobalMap（SRCRender・SRCSharpForm）にあり、VB と同じ |
+| Sub GlobalMapCommand | 8596 | 126 | `SRCCore/Commands/Command.mapcommend.cs` Command.GlobalMapCommand | 修正済み | 縮小マップとユニット数の表示は GUI.DisplayGlobalMap（SRCRender・SRCSharpForm）にある。#1556 の読み直しで、縮小マップの外を VB の灰色（&HC0C0C0）でなく黒で塗っていたこと、SRCSharpForm は縮小マップの位置を MapPWidth で求め、幅と高さを入れ替えて描いていたことを見つけて直した（SRCRenderTests の GlobalMapScreenTests） |
 | Sub SaveSelections | 8725 | 34 | `SRCCore/Commands/Command.state.cs` Command.SaveSelections | 一致 | 全部の項目を Clone して退避する。戻す項目を RestoreSelections で VB に合わせたので、結果は同じ |
 | Sub RestoreSelections | 8761 | 57 | `SRCCore/Commands/Command.state.cs` Command.RestoreSelections | 修正済み | #1521。退避したユニット・ターゲット（イベント用を含む）の CurrentForm を選ぶ。VB が記録する 13 の項目だけを戻し、コマンド・パイロット・アイテム・スペシャルパワー・合体技のパートナーは戻さない |
 | Sub SwapSelections | 8820 | 20 | `SRCCore/Commands/Command.state.cs` Command.SwapSelections | 一致 |  |

@@ -108,16 +108,103 @@ namespace SRCCore.VB
 
         public static double ToDouble(string Value)
         {
-            Value = NumericText(Value);
-            if (TryParseExponent(Value, out double exp))
+            return TryParseVbNumber(Value, out var ret) ? ret : 0d;
+        }
+
+        // 16 進数・8 進数（「&H10」「&O17」）。値は符号なしで読む（元の SRC の実機で「&HFFFF」は 65535。#1550）
+        private static readonly Regex HexPattern = new Regex(@"^&[hH]([0-9a-fA-F]{1,16})$", RegexOptions.CultureInvariant);
+        private static readonly Regex OctalPattern = new Regex(@"^&[oO]([0-7]{1,22})$", RegexOptions.CultureInvariant);
+
+        // VB の IsNumeric・CDbl（OLE Automation の VarParseNumFromStr）と同じく、文字列を数値として読む。
+        // 日本語版の Windows の元の SRC の実機で確かめた（SRC.Sharp/Compat/probe の VB5.数値.*。#1550）:
+        // 前後の空白と全角の文字（NumericText）、桁区切り「,」、指数（「1e5」「1d5」）、16 進数・8 進数（「&H10」「&O17」）、
+        // 通貨記号（「￥100」「\100」）、括弧で負の数（「(1)」は -1）、後ろの符号（「1-」は -1）を読む。
+        // Double を超える値（「1e400」）は数値でない
+        public static bool TryParseVbNumber(string value, out double result)
+        {
+            result = 0d;
+            var text = NumericText(value);
+            if (text.Length == 0)
             {
-                return exp;
+                return false;
             }
-            if (double.TryParse(Value, NumberStyles.Float | NumberStyles.AllowThousands, SrcCulture.Japanese, out double ret))
+            var negative = false;
+            if (text.Length > 2 && text[0] == '(' && text[text.Length - 1] == ')')
             {
-                return ret;
+                negative = true;
+                text = text.Substring(1, text.Length - 2).Trim(' ', '\t');
             }
-            return 0d;
+
+            var radix = HexPattern.Match(text);
+            var radixBase = 16;
+            if (!radix.Success)
+            {
+                radix = OctalPattern.Match(text);
+                radixBase = 8;
+            }
+            if (radix.Success)
+            {
+                ulong n;
+                try
+                {
+                    n = Convert.ToUInt64(radix.Groups[1].Value, radixBase);
+                }
+                catch (OverflowException)
+                {
+                    return false;
+                }
+                result = negative ? -(double)n : n;
+                return true;
+            }
+
+            // 符号（前か後ろ。括弧の中では使えない）と通貨記号（符号の前か後ろ）
+            var sign = 0;
+            if (text.Length > 0 && (text[0] == '+' || text[0] == '-'))
+            {
+                sign = text[0] == '-' ? -1 : 1;
+                text = text.Substring(1).TrimStart(' ', '\t');
+            }
+            if (text.Length > 0 && IsCurrencySymbol(text[0]))
+            {
+                text = text.Substring(1).TrimStart(' ', '\t');
+                if (sign == 0 && text.Length > 0 && (text[0] == '+' || text[0] == '-'))
+                {
+                    sign = text[0] == '-' ? -1 : 1;
+                    text = text.Substring(1).TrimStart(' ', '\t');
+                }
+            }
+            if (sign == 0 && text.Length > 1 && (text[text.Length - 1] == '+' || text[text.Length - 1] == '-'))
+            {
+                sign = text[text.Length - 1] == '-' ? -1 : 1;
+                text = text.Substring(0, text.Length - 1).TrimEnd(' ', '\t');
+            }
+            if (negative && sign != 0)
+            {
+                return false;
+            }
+            if (text.Length == 0 || text[0] == '+' || text[0] == '-')
+            {
+                return false;
+            }
+
+            double number;
+            if (!TryParseExponent(text, out number)
+                && !double.TryParse(text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, SrcCulture.Japanese, out number))
+            {
+                return false;
+            }
+            if (double.IsInfinity(number) || double.IsNaN(number))
+            {
+                return false;
+            }
+            result = negative || sign < 0 ? -number : number;
+            return true;
+        }
+
+        // 日本語版の Windows の通貨記号。Shift_JIS の 0x5C は「\」として読まれる
+        private static bool IsCurrencySymbol(char c)
+        {
+            return c == '\\' || c == '¥' || c == '￥';
         }
 
         // 以下 Microsoft.VisualBasic.Conversions とは関係ないが便宜上変換処理として配置している関数。

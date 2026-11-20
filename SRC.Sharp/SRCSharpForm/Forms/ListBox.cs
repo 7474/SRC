@@ -29,10 +29,13 @@ namespace SRCSharpForm
         private Brush BarForeBrush = new SolidBrush(Color.FromArgb(0, 0xc0, 0));
 
         // リストボックスのサイズ (通常:M 大型:L)
+        // VB の frmListBox は Load の時点（位置を決める前）で Form_Load が "M" にする。
+        // WinForms の Load は最初に表示するときなので、宣言で "M" にしておく（最初の一覧がメインのウィンドウの
+        // 下端ではなく中央に出ていた。元の SRC の実機の画面と見比べて分かった。#1553）
         // 幅
-        public string HorizontalSize;
+        public string HorizontalSize = "M";
         // 高さ
-        public string VerticalSize;
+        public string VerticalSize = "M";
 
         // Questionコマンド用変数
         public int CurrentTime;
@@ -397,10 +400,15 @@ namespace SRCSharpForm
                 {
                     lstItems.TopIndex = GeneralLib.MaxLng(GeneralLib.MinLng(GUI.TopItem - 1, lstItems.Items.Count - 1), 0);
                 }
-                lstItems.SelectedIndex = Math.Min(lstItems.Items.Count, GUI.TopItem) - 1;
+                if (lstItems.MultiColumn)
+                {
+                    lstItems.SelectedIndex = Math.Min(lstItems.Items.Count, GUI.TopItem) - 1;
+                }
             }
-            else if (lstItems.Items.Count > 0)
+            else if (lstItems.MultiColumn && lstItems.Items.Count > 0)
             {
+                // GUI.bas の ListBox は、複数列（.lstItems.Columns）のときだけ先頭の項目を選ぶ。
+                // ほかは ListIndex = -1 のまま（元の SRC の実機の画面で確かめた。#1553）
                 lstItems.SelectedIndex = 0;
             }
 
@@ -614,8 +622,11 @@ namespace SRCSharpForm
         {
             // リストボックスを常に手前に表示
             TopMost = true;
-            HorizontalSize = "M";
-            VerticalSize = "M";
+            // VB の Form_Load は HorizontalSize・VerticalSize を "M" にするが、VB では frmListBox に初めて触れた時点
+            // （EnlargeListBoxHeight などで大きさを変える前）に走る。WinForms の Load は最初に表示するときなので、
+            // ここで "M" に戻すと、表示する前に広げた分を忘れてしまう（中断データから再開したプロセスで、一覧を
+            // 一度も出さずにインターミッションへ進むと、次のステージで一覧が縮まず、次のインターミッションでさらに広がった。#1552）。
+            // "M" は宣言で入れてある
         }
 
         // リストボックスを閉じる

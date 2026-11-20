@@ -1,0 +1,91 @@
+{
+  "terrain": "desk",
+  "count": 87,
+  "exists": "0-29 500-511 1000-1017 1500-1508 1600-1611 1700-1705",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 5,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "肌色の机の天板（3×2）",
+      "confidence": "high"
+    },
+    {
+      "from": 6,
+      "to": 25,
+      "kind": "object",
+      "description": "机の正面・脚、木の棚・引き出し、サボテンの鉢、重厚な机",
+      "confidence": "high"
+    },
+    {
+      "from": 26,
+      "to": 26,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "kind": "object",
+      "description": "棚・椅子",
+      "confidence": "high"
+    },
+    {
+      "from": 29,
+      "to": 29,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 500,
+      "to": 511,
+      "kind": "object",
+      "description": "黄色い机（天板 500–505、前面装飾と脚 506–511）",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1015,
+      "kind": "object",
+      "description": "赤い食卓（1009–1010 料理と酒の乗った卓）",
+      "confidence": "high"
+    },
+    {
+      "from": 1016,
+      "to": 1017,
+      "kind": "placeholder",
+      "description": "Can't Use（欠番）",
+      "confidence": "high"
+    },
+    {
+      "from": 1500,
+      "to": 1508,
+      "kind": "object",
+      "description": "灰色の机とパイプ椅子",
+      "confidence": "high"
+    },
+    {
+      "from": 1600,
+      "to": 1611,
+      "kind": "object",
+      "description": "白床のパソコン机・計器卓",
+      "confidence": "high"
+    },
+    {
+      "from": 1700,
+      "to": 1705,
+      "kind": "style",
+      "style": "dark",
+      "description": "1600 番台の暗い紺色床版",
+      "confidence": "high"
+    }
+  ],
+  "rules": ""
+}

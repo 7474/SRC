@@ -17,12 +17,26 @@
     <value>srcsharp: narzędzia do tworzenia danych i scenariuszy SRC#
 
 Użycie:
-  srcsharp lint &lt;katalog lub plik&gt;... [--format text|sarif] [--output plik]
+  srcsharp lint &lt;katalog lub plik&gt;... [--format text|sarif] [--output plik] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path folder SRC]
       Sprawdza dane (*.txt) i zdarzenia (*.eve). Kod wyjścia 1, jeśli są problemy
   srcsharp play &lt;plik zdarzeń&gt; [--script plik.play] [--out katalog] [--app-path folder SRC] [--scenario-root folder scenariusza] [--steps liczba] [--skip-wait]
       Uruchamia scenariusz bez ekranu. Bez --script przewija komunikaty i wybiera pierwszą opcję. Z --skip-wait pomija stałe oczekiwania (animacje, komunikaty, Wait). --scenario-root wskazuje folder scenariusza (podstawę dla Data, Lib i Continue); domyślnie plik zdarzeń w podfolderze bez Data używa najbliższego folderu nadrzędnego z Data.
   srcsharp balance &lt;katalog lub plik&gt;... [--format md|csv] [--output plik]
       Zestawienie statystyk jednostek i wartości odstające
+  srcsharp new &lt;folder&gt; [--title tytuł] [--episodes n] [--app-path folder SRC] [--force]
+      Tworzy nowy szablon scenariusza (zdarzenie, mapa i dane pierwszego odcinka, skrypt autogry, ustawienia VS Code, CI). Istniejące pliki są zachowywane (--force je nadpisuje) Przy --episodes 2 lub więcej tworzy kilka odcinków z przerwą (intermission).
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Śledzi Continue, następny etap, Exec, IntermissionCommand, Load i GameClear między zdarzeniami i wypisuje diagram połączeń odcinków (domyślnie bieżący folder)
+  srcsharp assets [folder scenariusza] [--format md|json|readme] [--output plik] [--app-path folder SRC] [--ext-data folder] [--ext-data2 folder] [--fail-on-missing]
+      Wyświetla obrazy, dźwięki i mapy, do których odwołują się dane i zdarzenia, wraz z miejscem odwołania i miejscem znalezienia w kolejności wyszukiwania SRC (scenariusz, dane rozszerzone, SRC). Pokazuje też nazwy budowane wyrażeniami i pliki bez odwołań. readme tworzy szkic sekcji „Wymagane zasoby” do README. --fail-on-missing kończy z kodem 1, gdy czegoś brakuje (nie pozyskuje ani nie rozpowszechnia zasobów)
+  srcsharp trial &lt;folder scenariusza&gt; [--unit jednostka] [--pilot pilot] [--enemy jednostka] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
+      Tworzy w .srcsharp/trial/ walkę próbną jednostek i pilotów z danych scenariusza z wrogiem i wypisuje jej ścieżkę (uruchom przez play lub debuger). --list wypisuje jednostki i pilotów jako JSON
+  srcsharp event-flow &lt;plik zdarzeń&gt; [--format md|mmd|json] [--output plik] [--app-path folder SRC] [--scenario-root folder scenariusza]
+      Śledzi wyzwalacze zdarzeń, etykiety, Call, Goto i Require w jednym pliku zdarzeń (wraz z include i Require) i generuje diagram przepływu
+  srcsharp talk-preview &lt;plik zdarzeń&gt; [--line wiersz] [--block indeks] [--stdin] [--input plik] [--format json|png] [--out katalog] [--output plik] [--no-images] [--app-path folder SRC] [--scenario-root folder scenariusza]
+      Renderuje bloki Talk i AutoTalk w oknie wiadomości gry i zapisuje obrazy PNG na stronę lub JSON
+  srcsharp anime-preview &lt;plik lub folder&gt; [--list] [--file plik] [--line wiersz] [--kind animation|ext_animation|effect|subroutine] [--target nazwa] [--situation sytuacja] [--spec specyfikacja] [--attacker jednostka] [--attacker-pilot pilot] [--defender jednostka] [--defender-pilot pilot] [--play-once] [--out plik obrazu] [--app-path folder SRC] [--scenario-root folder scenariusza]
+      Przygotowuje pliki (.srcsharp/preview/) do odtworzenia jednej definicji animation.txt, ext_animation.txt, effect.txt lub ogólnej animacji walki ze stałym atakującym i broniącym. --list wypisuje listę JSON, --play-once odtwarza raz
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -48,6 +62,9 @@ Opcje wspólne:
   <data name="LintSummary" xml:space="preserve">
     <value>Sprawdzone pliki: {0}, problemy: {1}</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Nieznana grupa reguł: {0} (dozwolone: {1})</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Podaj dokładnie jeden plik zdarzeń</value>
   </data>
@@ -68,5 +85,59 @@ Opcje wspólne:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Nieznana metoda wyszukiwania: {0} (hybrid, bm25 lub vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Podaj jeden folder, w którym ma powstać scenariusz</value>
+  </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Liczba odcinków musi być liczbą całkowitą ≥ 1: {0}</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Utworzono szablon w {0} ({1} plików)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Pominięto istniejące pliki: {0} (--force, aby nadpisać)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Podaj co najwyżej jeden folder scenariusza lub plik zdarzeń</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Nie znaleziono folderu scenariusza ani pliku zdarzeń: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Nieznany format wyjścia: {0} (md, mmd lub json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Podaj co najwyżej jeden folder scenariusza</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Nie znaleziono folderu scenariusza: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Nieznany format wyjścia: {0} (md, json lub readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>Zasoby: {0} (brakuje {1}), odwołania nieweryfikowalne: {2}, pliki bez odwołań: {3}</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Podaj jeden folder scenariusza</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Utworzono walkę próbną: {0}/{1} przeciw {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Nie znaleziono pliku zdarzeń: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Podaj dokładnie jeden plik zdarzeń do podglądu</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>Zapisano {0} obrazów podglądu w {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Nie znaleziono docelowego pliku danych/zdarzeń lub folderu: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Nie znaleziono definicji animacji walki ani efektu specjalnego do podglądu</value>
   </data>
 </root>

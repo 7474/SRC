@@ -63,31 +63,83 @@ namespace SRCAuthoring.Analysis
             foreach (var file in files.Where(IsTarget))
             {
                 var reported = new HashSet<string>(StringComparer.Ordinal);
-                var lines = ReadText(file).Split('\n');
-                for (var i = 0; i < lines.Length; i++)
+                foreach (var token in Scan(ReadText(file)))
                 {
-                    var line = lines[i].Trim();
-                    if (line.StartsWith("#") || line.StartsWith("//"))
+                    if (token.Name != null && !Exists(token.Name) && reported.Add(token.Name))
                     {
-                        continue;
-                    }
-                    foreach (Match m in Token.Matches(line))
-                    {
-                        var name = AssetName(m.Groups["t"].Value);
-                        if (name != null && !Exists(name) && reported.Add(name))
+                        yield return new SrcDiagnostic
                         {
-                            yield return new SrcDiagnostic
-                            {
-                                File = file,
-                                Line = i + 1,
-                                Severity = DiagnosticSeverity.Information,
-                                Message = "素材が見つかりません: " + name,
-                                Source = name,
-                            };
-                        }
+                            File = file,
+                            Line = token.Line,
+                            Severity = DiagnosticSeverity.Information,
+                            Message = "素材が見つかりません: " + token.Name,
+                            Source = token.Name,
+                        };
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// テキスト（イベントかデータ）の中の素材の参照を、行ごとに返す（7474/SRC#1654 の素材の一覧と共通）。
+        /// 確かめられる名前は Name に、式で組み立てる名前（$(...)・"..." の連結など）は Name を null・Dynamic を true にする
+        /// </summary>
+        public static IEnumerable<AssetToken> Scan(string text)
+        {
+            var lines = (text ?? "").Split('\n');
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i].Trim();
+                if (line.StartsWith("#") || line.StartsWith("//"))
+                {
+                    continue;
+                }
+                var dynamicReported = false;
+                foreach (Match m in Token.Matches(line))
+                {
+                    var raw = m.Groups["t"].Value;
+                    var name = AssetName(raw);
+                    if (name != null)
+                    {
+                        yield return new AssetToken(i + 1, name, false, raw);
+                    }
+                    else if (!dynamicReported && IsDynamicAssetToken(raw))
+                    {
+                        // 1 行に式がいくつあっても 1 件にする（行を見れば分かる）
+                        dynamicReported = true;
+                        yield return new AssetToken(i + 1, null, true, line);
+                    }
+                }
+            }
+        }
+
+        /// <summary>素材の拡張子を持つが、式で組み立てるため名前を確かめられない字句か（ダミーの -.bmp などは除く）</summary>
+        public static bool IsDynamicAssetToken(string token)
+        {
+            var name = token.Trim();
+            var eq = name.IndexOf('=');
+            if (eq >= 0)
+            {
+                name = name.Substring(eq + 1).Trim();
+            }
+            var lower = name.ToLowerInvariant();
+            var ext = Extensions.FirstOrDefault(x => lower.Contains(x));
+            if (ext == null)
+            {
+                return false;
+            }
+            var stem = name.Substring(0, lower.IndexOf(ext, StringComparison.Ordinal)).Trim('(', ')');
+            if (stem == "-")
+            {
+                return false;
+            }
+            return stem.Length == 0 || name.IndexOfAny(new[] { '$', '%', '(', ')', '[', '*', '?' }) >= 0;
+        }
+
+        /// <summary>素材の拡張子か</summary>
+        public static bool HasAssetExtension(string path)
+        {
+            return Extensions.Any(x => path.EndsWith(x, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>素材のファイル名なら（/ 区切りにして）返す。式やダミーのファイル名は null</summary>
@@ -139,17 +191,39 @@ namespace SRCAuthoring.Analysis
         }
 
         // UTF-8 として正しく読めれば UTF-8、だめなら Shift_JIS（SRC のデータの文字コード）
-        private static string ReadText(string path)
+        internal static string ReadText(string path)
         {
-            var bytes = File.ReadAllBytes(path);
+            return DecodeText(File.ReadAllBytes(path));
+        }
+
+        /// <summary>バイト列を文字列にする（UTF-8 として正しく読めれば UTF-8、だめなら Shift_JIS）</summary>
+        public static string DecodeText(byte[] bytes)
+        {
             try
             {
-                return new UTF8Encoding(false, true).GetString(bytes);
+                return new UTF8Encoding(false, true).GetString(bytes).TrimStart('\uFEFF');
             }
             catch (DecoderFallbackException)
             {
                 return Encoding.GetEncoding(932).GetString(bytes);
             }
         }
+    }
+
+    /// <summary>テキストの中の素材の参照 1 件。Name が null なら式で組み立てる名前（Text はその行）</summary>
+    public sealed class AssetToken
+    {
+        public AssetToken(int line, string name, bool dynamic, string text)
+        {
+            Line = line;
+            Name = name;
+            Dynamic = dynamic;
+            Text = text;
+        }
+
+        public int Line { get; }
+        public string Name { get; }
+        public bool Dynamic { get; }
+        public string Text { get; }
     }
 }

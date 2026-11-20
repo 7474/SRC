@@ -340,7 +340,7 @@ else
                     <h2>@choosingTitle</h2>
                     <div class="task-body">
                         <p class="note">@L["ImportSaveNote"]</p>
-                        <InputFile id="import-save" OnChange="ImportSavesAsync" accept=".srcs,.srcq" multiple />
+                        <InputFile id="import-save" OnChange="ImportSavesAsync" accept=".srcs,.srcq,.src" multiple />
                         <p><button @onclick="BackToMenu">@L["Back"]</button></p>
                     </div>
                 </section>
@@ -526,6 +526,8 @@ else
         public long Size { get; set; }
         public double Added { get; set; }
         public string Kind { get; set; }
+        /// <summary>遊ぶ前に重ねるカタログの素材の id（SRC#Studio のかんたん作成が入れる。7474/SRC#1659）</summary>
+        public List<string> Requires { get; set; }
     }
 
     public class StoredSave
@@ -1088,7 +1090,22 @@ else
             mode = Mode.Menu;
 
             // URL・サイトの設定で指定されたシナリオをすぐに始める
-            if (site.AllowUserCatalogs && query.TryGetValue("archive", out var archiveUrl))
+            if (site.UserScenariosEnabled && query.TryGetValue("stored", out var storedName) && !string.IsNullOrEmpty(storedName))
+            {
+                // 追加したアーカイブ（SRC#Studio のかんたん作成が同じサイトのブラウザに入れたもの。7474/SRC#1659）
+                var archive = archives.FirstOrDefault(x => x.Name == storedName && x.Kind != CatalogEntry.KindAsset);
+                if (archive == null)
+                {
+                    status = L["ScenarioNotInCatalog", storedName];
+                }
+                else
+                {
+                    // eve: 始めるイベントファイル（SRC#Studio の場面の再生は 場面の再生.eve。7474/SRC#1694）
+                    query.TryGetValue("eve", out var storedEve);
+                    await PlayArchiveAsync(archive, storedEve);
+                }
+            }
+            else if (site.AllowUserCatalogs && query.TryGetValue("archive", out var archiveUrl))
             {
                 query.TryGetValue("eve", out var eve);
                 query.TryGetValue("root", out var root);
@@ -1625,13 +1642,23 @@ else
         return true;
     }
 
-    private Task PlayArchiveAsync(StoredArchive archive) => RunBusyAsync(async token =>
+    private Task PlayArchiveAsync(StoredArchive archive, string eve = null) => RunBusyAsync(async token =>
     {
-        if (!await PrepareAssetsAsync(null, token))
+        // 求める素材のうち、このサイトのカタログに無いもの（別のサイトで作ったなど）は重ねずに遊ぶ
+        var requires = (archive.Requires ?? new List<string>()).Where(id =>
+        {
+            var found = FindEntry(id, CatalogEntry.KindAsset) != null;
+            if (!found)
+            {
+                WebLogging.Log.LogWarning("追加したアーカイブ {Name} が求める素材 {Asset} がカタログにありません", archive.Name, id);
+            }
+            return found;
+        }).ToList();
+        if (!await PrepareAssetsAsync(requires, token))
         {
             return;
         }
-        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await GetStoredArchiveAsync(archive.Name, token), false), null, null, token);
+        await LoadAsync("archive-" + archive.Name, archive.Name, async () => new MemoryStream(await GetStoredArchiveAsync(archive.Name, token), false), eve, null, token);
     });
 
     /// <param name="fetch">zip を開く。展開したら CloseDownload で閉じる</param>
@@ -1840,6 +1867,9 @@ else
             return sf2 == null ? null : new MeltySynth.SoundFont(sf2);
         });
         session = new ScreenSession(host, ScenarioArchive.AppPath, soundPlayer: player, loggerFactory: LoggerFactory);
+        // シナリオが終了したら、ゲームスレッドに止まる合図を出す。次の待ち（DoEvents）で処理を抜けて、スレッドが終わる
+        var game = session.Game;
+        host.Terminating += () => game.Stop();
         // シナリオの設定ファイルのログの設定（Log セクション）
         WebLogging.ApplyConfig(session.SRC.SystemConfig);
         // ゲームがセーブデータを書き終えたら、UI のスレッドでブラウザに保存する
@@ -1854,6 +1884,12 @@ else
         session.Game.UnhandledException += (s, e) =>
         {
             WebLogging.Log.LogCritical(e.Exception, "ゲームの実行中の例外");
+            // データ・イベントファイルの誤りで読み込みを打ち切ったとき（元の SRC と同じく、誤りのダイアログを出して終了した後）は、
+            // 終了のために投げ直した例外なので、エラーの報告には送らない（誤りのダイアログは ErrorShown で送っている）
+            if (host.Terminated || e.Exception is SRCCore.Exceptions.InvalidSrcDataException)
+            {
+                return;
+            }
             host.ReportError(e.Exception.GetType().FullName, e.Exception.Message, e.Exception.ToString());
         };
         // イベントエラーなど、ゲームが出すエラーのダイアログも送る（シナリオの行は errorreport.js が添える）

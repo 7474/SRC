@@ -1,0 +1,146 @@
+{
+  "terrain": "rock",
+  "count": 53,
+  "exists": "0-38 42-53 1000-1001",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 1,
+      "kind": "base",
+      "description": "オレンジの岩場の地面（1 は石あり）",
+      "confidence": "high"
+    },
+    {
+      "from": 2,
+      "to": 2,
+      "kind": "object",
+      "description": "草地の墓石",
+      "confidence": "high"
+    },
+    {
+      "from": 3,
+      "to": 8,
+      "kind": "variant",
+      "description": "肌色の床・机の面",
+      "confidence": "high"
+    },
+    {
+      "from": 9,
+      "to": 11,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "机（脚付き）",
+      "confidence": "guess"
+    },
+    {
+      "from": 12,
+      "to": 14,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 1,
+        "order": "row"
+      },
+      "description": "横長の長椅子",
+      "confidence": "guess"
+    },
+    {
+      "from": 15,
+      "to": 20,
+      "kind": "object",
+      "description": "15–16 テレビ・戸棚、17 鉢植えのサボテン、18–19 棚・椅子、20 茶の床",
+      "confidence": "high"
+    },
+    {
+      "from": 21,
+      "to": 28,
+      "kind": "object",
+      "description": "ベッド・布団（木の枠）",
+      "confidence": "guess"
+    },
+    {
+      "from": 29,
+      "to": 29,
+      "kind": "object",
+      "description": "草地に刺さった剣",
+      "confidence": "high"
+    },
+    {
+      "from": 30,
+      "to": 38,
+      "kind": "object",
+      "object": {
+        "width": 3,
+        "height": 3,
+        "order": "row"
+      },
+      "description": "赤い大きな絨毯（または卓）",
+      "confidence": "high"
+    },
+    {
+      "from": 42,
+      "to": 45,
+      "kind": "object",
+      "description": "白いベッド（金属の枠）",
+      "confidence": "guess"
+    },
+    {
+      "from": 46,
+      "to": 47,
+      "kind": "object",
+      "description": "石の井戸（46 荒地、47 草地の上）",
+      "confidence": "high"
+    },
+    {
+      "from": 48,
+      "to": 49,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "緑に光る培養槽の上段",
+      "confidence": "high"
+    },
+    {
+      "from": 50,
+      "to": 50,
+      "kind": "object",
+      "description": "箪笥",
+      "confidence": "high"
+    },
+    {
+      "from": 51,
+      "to": 52,
+      "kind": "object",
+      "object": {
+        "width": 2,
+        "height": 2,
+        "order": "row"
+      },
+      "description": "緑に光る培養槽の下段",
+      "confidence": "high"
+    },
+    {
+      "from": 53,
+      "to": 53,
+      "kind": "object",
+      "description": "金庫・操作盤",
+      "confidence": "high"
+    },
+    {
+      "from": 1000,
+      "to": 1001,
+      "kind": "object",
+      "style": "transparent",
+      "description": "背景なしの小石・岩",
+      "confidence": "high"
+    }
+  ],
+  "rules": "39〜41 は欠番"
+}

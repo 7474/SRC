@@ -15,7 +15,7 @@ VB 版の `SRC/SRC_20121125/Pilots.cls` の手続きと、C# の対応（[説明
 | Function IsDefined2 | 192 | 11 | `SRCCore/Pilots/Pilots.cs` Pilots.IsDefined2 | 一致 |  |
 | Sub Update | 205 | 48 | `SRCCore/Pilots/Pilots.cs` Pilots.Update | 一致 | 削除しながら列挙するため、C# はリストを写してから回す |
 | Sub Save | 256 | 37 | `SRCCore/SRC.save.cs` SRC.SaveData | SRC#で不要 | SRC# は PList を JSON でそのまま保存する（コメントアウトのコードあり） |
-| Sub Load | 295 | 41 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | JSON から戻して PList.Restore → PList.Update。VB は追加パイロット・サポートを除いて保存し、読み込むときに全員を「味方」・生存・全回復で Add し直す。SRC# は Update で味方以外・破棄・追加パイロットを消し、残りを全回復するので、インターミッションでの保存なら同じ状態になる。シナリオの途中で SaveData コマンドを使ったときだけ違う（下の 5） |
+| Sub Load | 295 | 41 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | JSON から戻して PList.Restore。VB は追加パイロット・サポートを除いて保存し、読み込むときに全員を「味方」・生存・全回復で Add し直す。SRC# は以前は PList.Update で味方以外・破棄・追加パイロットを消し、残りを全回復していた（シナリオの途中で SaveData コマンドを使ったときに違った）。VB の LoadData は PList.Update を呼ばないので、LoadData で追加パイロット・追加サポートを消し、残りを「味方」・生存にして全回復する（#1579） |
 | Sub LoadLinkInfo | 338 | 65 | `SRCCore/SRC.save.cs` SRC.LoadData | SRC#で不要 | ユニットとのつながりは JSON（UnitId・Unit.Restore）で戻す。離脱（Away）も保存している |
 | Sub Dump | 406 | 23 | `SRCCore/SRC.save.cs` SRC.DumpData | SRC#で不要 | JSON。VB と違い追加パイロットも保存する（VB は読み込んだ後に作り直す） |
 | Sub Restore | 431 | 20 | `SRCCore/Pilots/Pilots.cs` Pilots.Restore | SRC#で不要 | JSON から戻した各パイロットに SRC を付け直す |

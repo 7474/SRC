@@ -12,4 +12,4 @@ VB 版の `SRC/SRC_20121125/NonPilotDataList.cls` の手続きと、C# の対応
 | Function Item | 67 | 17 | `SRCCore/Models/NonPilotDataList.cs` NonPilotDataList.Item | 一致 | キーが無ければ愛称（Nickname0）と序数で比べる |
 | Function IsDefined | 86 | 19 | `SRCCore/Models/NonPilotDataList.cs` NonPilotDataList.IsDefined | 一致 |  |
 | Function IsDefined2 | 107 | 11 | `SRCCore/Models/NonPilotDataList.cs` NonPilotDataList.IsDefined2 | 一致 |  |
-| Sub Load | 120 | 97 | `SRCCore/Models/NonPilotDataList.cs` NonPilotDataList.Load | 修正済み | 大文字・小文字や全角・半角だけが違う名前のデータがあると、VB は Collection のキーの重複で実行時エラーになり読み込みを打ち切る。C# もデータエラーで打ち切るようにした（#1498）。.bmp 以外の画像も受け付けるのは SRC# の拡張（#1212） |
+| Sub Load | 120 | 97 | `SRCCore/Models/NonPilotDataList.cs` NonPilotDataList.Load | 修正済み | 大文字・小文字や全角・半角だけが違う名前のデータがあると、VB は Collection のキーの重複で実行時エラーになり読み込みを打ち切る。C# もデータエラーで打ち切るようにした（#1498）。.bmp 以外の画像も受け付けるのは SRC# の拡張（#1212）。ErrorHandler（開けないときの「fname が開けません。」、打ち切る誤りの DataErrorMessage と TerminateSRC）は SRC.LoadDataFile が受け持つ。ゲームとして実行するとき（SRC.ShowDataErrorDialogs）だけダイアログを出して終了し、続ける誤りも SRC.AddDataError でダイアログに出す（#1550） |

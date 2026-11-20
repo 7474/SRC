@@ -1,0 +1,15 @@
+{
+  "terrain": "mars_slope",
+  "count": 3,
+  "exists": "0-2",
+  "ranges": [
+    {
+      "from": 0,
+      "to": 2,
+      "kind": "variant",
+      "description": "赤茶色の火星の斜面（0 縦の溝、1 横の溝、2 曲がる溝）",
+      "confidence": "guess"
+    }
+  ],
+  "rules": ""
+}

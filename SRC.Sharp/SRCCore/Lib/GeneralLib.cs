@@ -759,6 +759,11 @@ namespace SRCCore.Lib
         public static string FormatNum(double n)
         {
             string FormatNumRet = default;
+            // 負の 0 は「0」と書く（.NET は「-0」と書く。元の SRC の実機は Int("-0") も「0」。#1550）
+            if (n == 0d)
+            {
+                n = 0d;
+            }
             if (n % 1 == 0d)
             {
                 FormatNumRet = n.ToString("0", SrcCulture.Japanese);

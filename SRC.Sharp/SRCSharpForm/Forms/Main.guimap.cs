@@ -21,8 +21,20 @@ namespace SRCSharpForm
         public int MainPHeight => GUI.MainHeight * MapCellPx;
 
         private Pen MapLinePen = new Pen(Color.FromArgb(100, 100, 100));
-        private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
-        private Brush UnitMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
+        // 元の SRC は、マスクした地形（picMaskedBack）を 1 画素おきの灰色、行動済みのユニットを 1 画素おきの黒で描く
+        // （SRCRender の ScreenGUI.map.cs と同じ。半透明の塗りでは色が残り、実機と違って見えた。#1553）
+        private Brush MapMaskBrush = CheckerBrush(Color.FromArgb(140, 140, 140));
+        private Brush UnitMaskBrush = CheckerBrush(Color.Black);
+
+        private static Brush CheckerBrush(Color color)
+        {
+            var bitmap = new Bitmap(2, 2);
+            bitmap.SetPixel(0, 0, Color.Transparent);
+            bitmap.SetPixel(1, 1, Color.Transparent);
+            bitmap.SetPixel(1, 0, color);
+            bitmap.SetPixel(0, 1, color);
+            return new TextureBrush(bitmap);
+        }
 
         /// <summary>
         /// マップ画面全体のバッファ。
@@ -671,12 +683,15 @@ namespace SRCSharpForm
                     }
                 }
 
-                // 見やすいように背景を設定
-                g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
+                // VB（GlobalMapCommand）と同じく、画面を灰色（&HC0C0C0）で塗る
+                using (var back = new SolidBrush(Color.FromArgb(0xC0, 0xC0, 0xC0)))
+                {
+                    g.FillRectangle(back, 0, 0, MainPWidth, MainPHeight);
+                }
 
-                // マップ全体を縮小して描画
+                // マップ全体を mwidth × mheight に縮小して画面の中央に描画（VB: StretchBlt の位置は (MainPWidth - mwidth) \ 2）
                 g.DrawImage(buf,
-                    new Rectangle((MapPWidth - mwidth) / 2, (MapPHeight - mheight) / 2, mheight, mwidth),
+                    new Rectangle((MainPWidth - mwidth) / 2, (MainPHeight - mheight) / 2, mwidth, mheight),
                     new Rectangle(0, 0, buf.Width, buf.Height),
                     GraphicsUnit.Pixel);
             }

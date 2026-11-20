@@ -24,6 +24,9 @@ const IMAGE = /\.(bmp|png|jpe?g|gif)$/i;
 
 /** ファイルの変化を読み直しの種類にする。関係の無いファイルは undefined */
 export function kindOf(file: string): keyof Kinds | undefined {
+  if (file.split(/[\\/]/).some((x) => x.toLowerCase() === '.srcsharp')) {
+    return undefined;
+  }
   const lower = file.toLowerCase();
   if (lower.endsWith('.eve')) {
     return 'events';

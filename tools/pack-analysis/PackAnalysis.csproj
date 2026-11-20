@@ -2,7 +2,7 @@
 
   <!--
     準拠データパックの分析の試作（docs/tools/balance-pack-analysis.md のサンプル計測を再現する）。
-    srcsharp の機能ではない。ソリューション・CI には入れない。使い方は README.md。
+    srcsharp の機能ではない。ソリューションには入れない。CI は tools/pack_tools_check.sh。使い方は README.md。
   -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>

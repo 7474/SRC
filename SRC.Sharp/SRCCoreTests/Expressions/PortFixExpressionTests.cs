@@ -205,11 +205,15 @@ namespace SRCCore.Expressions.Tests
 
         [TestMethod]
         [Timeout(10000)]
-        public void InStrRev_StartLessThanOne_ReturnsZero()
+        public void InStrRev_StartLessThanOne_IsVbError5()
         {
+            // 元の SRC は InStr(num - Len(buf2) + 1, buf, buf2) から始める。開始位置が 1 未満なら VB の InStr のエラー 5
+            // （CmdData.cls の Exec で「イベントデータが不正です」。#1564 で見直した）
             var (src, _) = CreateSrc();
-            Assert.AreEqual(0d, src.Expression.GetValueAsDouble("InStrRev(\"abcabc\", \"bc\", 0)"));
-            Assert.AreEqual(0d, src.Expression.GetValueAsDouble("InStrRev(\"abcabc\", \"bc\", -5)"));
+            Assert.Throws<SRCCore.Exceptions.VbRuntimeErrorException>(() => src.Expression.GetValueAsDouble("InStrRev(\"abcabc\", \"bc\", 0)"));
+            Assert.Throws<SRCCore.Exceptions.VbRuntimeErrorException>(() => src.Expression.GetValueAsDouble("InStrRev(\"abcabc\", \"bc\", -5)"));
+            Assert.Throws<SRCCore.Exceptions.VbRuntimeErrorException>(() => src.Expression.GetValueAsDouble("InStrRev(\"abcabc\", \"bc\", 1)"));
+            Assert.AreEqual(0d, src.Expression.GetValueAsDouble("InStrRev(\"abcabc\", \"bc\", 2)"));
             Assert.AreEqual(2d, src.Expression.GetValueAsDouble("InStrRev(\"abcabc\", \"bc\", 4)"));
             Assert.AreEqual(5d, src.Expression.GetValueAsDouble("InStrRev(\"abcabc\", \"bc\")"));
         }

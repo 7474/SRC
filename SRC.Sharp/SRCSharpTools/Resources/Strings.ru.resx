@@ -17,12 +17,26 @@
     <value>srcsharp: инструменты для создания данных и сценариев SRC#
 
 Использование:
-  srcsharp lint &lt;каталог или файл&gt;... [--format text|sarif] [--output файл]
+  srcsharp lint &lt;каталог или файл&gt;... [--format text|sarif] [--output файл] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path папка SRC]
       Проверить данные (*.txt) и события (*.eve). При ошибках код возврата 1
   srcsharp play &lt;файл события&gt; [--script файл.play] [--out каталог] [--app-path папка SRC] [--scenario-root папка сценария] [--steps число] [--skip-wait]
       Запустить сценарий без экрана. Без --script сообщения пролистываются, выбирается первый вариант. С --skip-wait пропускаются фиксированные ожидания (анимации, сообщения, Wait). --scenario-root задаёт папку сценария (основа для Data, Lib и Continue); по умолчанию файл события в подпапке без Data использует ближайшую родительскую папку с Data.
   srcsharp balance &lt;каталог или файл&gt;... [--format md|csv] [--output файл]
       Таблица характеристик юнитов и выбросы
+  srcsharp new &lt;папка&gt; [--title название] [--episodes n] [--app-path папка SRC] [--force]
+      Создаёт шаблон нового сценария (событие, карта и данные первого эпизода, сценарий автоигры, настройки VS Code, CI). Существующие файлы не перезаписываются (--force перезаписывает) При --episodes 2 и более создаёт несколько эпизодов с интермиссией.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Прослеживает Continue, следующий этап, Exec, IntermissionCommand, Load и GameClear между событиями и выводит схему связей эпизодов (по умолчанию текущая папка)
+  srcsharp assets [папка сценария] [--format md|json|readme] [--output файл] [--app-path папка SRC] [--ext-data папка] [--ext-data2 папка] [--fail-on-missing]
+      Выводит изображения, звуки и карты, на которые ссылаются данные и события, с местом ссылки и местом, где они найдены в порядке поиска SRC (сценарий, расширенные данные, SRC). Также показывает имена, собираемые выражениями, и файлы без ссылок. readme создаёт черновик раздела «Необходимые ресурсы» для README. --fail-on-missing завершает с кодом 1, если чего-то нет (не получает и не распространяет ресурсы)
+  srcsharp trial &lt;папка сценария&gt; [--unit юнит] [--pilot пилот] [--enemy юнит] [--enemy-pilot пилот] [--level n] [--enemies n] [--list]
+      Создаёт в .srcsharp/trial/ пробный бой юнитов и пилотов из данных сценария против врага и выводит путь (запускайте через play или отладчик). --list выводит юнитов и пилотов в JSON
+  srcsharp event-flow &lt;файл событий&gt; [--format md|mmd|json] [--output файл] [--app-path папка SRC] [--scenario-root папка сценария]
+      Отслеживает триггеры, метки, Call, Goto и Require в одном файле событий (включая include и Require) и выводит схему потока событий
+  srcsharp talk-preview &lt;файл событий&gt; [--line строка] [--block индекс] [--stdin] [--input файл] [--format json|png] [--out каталог] [--output файл] [--no-images] [--app-path папка SRC] [--scenario-root папка сценария]
+      Отрисовывает блоки Talk и AutoTalk в игровом окне сообщений и выводит постраничные PNG-изображения или JSON
+  srcsharp anime-preview &lt;файл или папка&gt; [--list] [--file файл] [--line строка] [--kind animation|ext_animation|effect|subroutine] [--target имя] [--situation ситуация] [--spec параметры] [--attacker юнит] [--attacker-pilot пилот] [--defender юнит] [--defender-pilot пилот] [--play-once] [--out файл изображения] [--app-path папка SRC] [--scenario-root папка сценария]
+      Подготавливает файлы (.srcsharp/preview/) для воспроизведения одной записи animation.txt, ext_animation.txt, effect.txt или общей боевой анимации с заданными атакующим и защищающимся. --list выводит список в JSON, --play-once проигрывает один раз
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -48,6 +62,9 @@
   <data name="LintSummary" xml:space="preserve">
     <value>Проверено файлов: {0}, проблем: {1}</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Неизвестная группа правил: {0} (допустимо {1})</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Укажите ровно один файл события</value>
   </data>
@@ -68,5 +85,59 @@
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Неизвестный метод поиска: {0} (hybrid, bm25 или vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Укажите одну папку для сценария</value>
+  </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Количество эпизодов должно быть целым числом ≥ 1: {0}</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Шаблон создан в {0} (файлов: {1})</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Пропущены существующие файлы: {0} (--force для перезаписи)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>Укажите не более одной папки сценария или файла событий</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Папка сценария или файл событий не найдены: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Неизвестный формат вывода: {0} (md, mmd или json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>Укажите не более одной папки сценария</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Папка сценария не найдена: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Неизвестный формат вывода: {0} (md, json или readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>Ресурсов: {0} (не найдено {1}), непроверяемых ссылок: {2}, файлов без ссылок: {3}</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Укажите одну папку сценария</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Пробный бой создан: {0}/{1} против {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Файл событий не найден: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Укажите ровно один файл событий для предпросмотра</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>Записано {0} страниц предпросмотра в {1}</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Целевой файл данных/событий или папка не найдены: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Не найдено определений боевой анимации или спецэффектов для предпросмотра</value>
   </data>
 </root>

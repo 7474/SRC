@@ -1,5 +1,5 @@
 # 「トレス島試験記録」の第八話（終話）を単体で始めて、中断とクイックセーブからの再開を確かめ、
-# 標的を決まった手順で倒してゲームクリアまで進める（srcsharp play の PlayScript。#1549）
+# 統率（同時援護攻撃）・接触・味方の援護防御・援護攻撃・損傷率を決まった手順で通し、標的を倒してゲームクリアまで進める（srcsharp play の PlayScript。#1549）
 #   srcsharp play Compat/torres/ep08.eve --script Compat/torres-ep08.play --app-path Content/basic-data --skip-wait
 
 choose 試験は失敗した あきらめる
@@ -9,6 +9,9 @@ choose 試験は失敗した あきらめる
 #===============================================================
 auto 60
 expect eval HP(標本Ａ) = 1000
+expect eval HP(標本Ｂ) = 4000
+# スタートの SetSkill で、ノアに統率Lv1（同時援護攻撃 1 回）が付いている
+expect eval Info(ユニット, UnitID(白瀬ノア), 残り同時援護攻撃数) = 1
 # 中断：起動し直して再開する
 savefile default
 cell 1 1 right
@@ -39,7 +42,7 @@ dialog OK
 auto 30
 expect eval Status(標本Ｃ) = 出撃
 expect eval HP(標本Ｃ) = 1000
-# 3 つの標的を、ダメージ固定の武器で一撃ずつ倒す
+# 3 つの標的を倒す。標的Ｃは、ダメージ固定の武器で一撃で倒す
 cell 3 13
 menu 攻撃
 wait list
@@ -47,10 +50,48 @@ list 固定砲
 cell 5 12
 auto 60
 expect eval Status(標本Ｃ) = 破壊
+
+# 統率：統率を持つノアが減衰ニードル（固・1000）で重装訓練標的Ｂ（ＨＰ 4000）を撃つと、隣のダイチ（援護Lv1）が同時援護攻撃をする。
+# 統率の攻撃と同時援護攻撃は必ずクリティカルになる（元の SRC の Unit.Attack）。標的Ｂは装甲が厚く、固でない武器は最低の 10 しか
+# 与えないので、ダイチは吸着アンカー（固・1200）を選ぶ。ノアの 1500 とダイチの 1800 で、残りＨＰは 700（クリティカルでなければ 1800）。
+# 同時援護攻撃と援護攻撃の回数が 1 つずつ減り、援護したダイチの行動は残る
 cell 5 7
 menu 攻撃
 wait list
 list 減衰ニードル
+cell 5 9
+auto 60
+expect eval HP(標本Ｂ) = 700
+expect eval Info(ユニット, UnitID(白瀬ノア), 残り同時援護攻撃数) = 0
+expect eval Info(ユニット, UnitID(岩城ダイチ), 残りサポートアタック数) = 0
+expect eval Action(ダイチ) = 1
+# 接触と味方の援護防御：攻撃を終えたノアの隣にダイチがいるので、接触のラベルが動く。イベントの Attack（通常戦闘）で
+# 錆蟲がダイチを撃つと、隣のノア（援護防御Lv2）がかばう。ダイチのＨＰは減らず、ノアの援護防御の回数が 1 つ減る
+expect message 錆蟲を一体放します
+expect eval 接触記録 = 1
+expect eval HP(ダイチ) = Info(ユニット, UnitID(ダイチ), 最大ＨＰ)
+expect eval HP(ノア) < Info(ユニット, UnitID(ノア), 最大ＨＰ)
+expect eval Info(ユニット, UnitID(白瀬ノア), 残りサポートガード数) = 1
+expect eval Status(針蟲) = 待機
+
+# 援護攻撃と損傷率：リンが掘削ドレイン（固・1000）で大型訓練標的（ＨＰ 8000）を撃つと、隣のカイ（援護攻撃Lv1）が加わる。
+# リンの一撃だけでは損傷率は 12%（クリティカルでも 18%）で、カイが加わって 20% を超え、損傷率のラベルで大型訓練標的が退く
+cell 7 6
+menu 攻撃
+wait list
+list 掘削ドレイン
+cell 7 5
+auto 60
+expect eval Info(ユニット, UnitID(湊カイ), 残りサポートアタック数) = 0
+expect eval Action(カイ) = 1
+expect message 損傷率 20% を超えました
+expect eval 損傷率記録 = 1
+expect eval Status(標本Ｄ) = 待機
+# 行動の残ったダイチが、吸着アンカー（固・1200）で標的Ｂ（残りＨＰ 700）を倒す
+cell 5 8
+menu 攻撃
+wait list
+list 吸着アンカー
 cell 5 9
 auto 60
 expect eval Status(標本Ｂ) = 破壊

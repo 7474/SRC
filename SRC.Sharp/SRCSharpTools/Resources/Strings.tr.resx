@@ -17,12 +17,26 @@
     <value>srcsharp: SRC# verileri ve senaryoları için geliştirme araçları
 
 Kullanım:
-  srcsharp lint &lt;dizin veya dosya&gt;... [--format text|sarif] [--output dosya]
+  srcsharp lint &lt;dizin veya dosya&gt;... [--format text|sarif] [--output dosya] [--rules src,gsc-robo,gsc-ext,robodun|none] [--list-rules] [--app-path SRC klasörü]
       Verileri (*.txt) ve olayları (*.eve) denetler. Sorun varsa çıkış kodu 1
   srcsharp play &lt;olay dosyası&gt; [--script dosya.play] [--out dizin] [--app-path SRC klasörü] [--scenario-root senaryo klasörü] [--steps sayı] [--skip-wait]
       Senaryoyu ekransız çalıştırır. --script yoksa mesajları geçer ve ilk seçeneği seçer. --skip-wait ile sabit beklemeler (animasyonlar, mesajlar, Wait) atlanır. --scenario-root senaryo klasörünü (Data, Lib ve Continue için temel) belirtir; varsayılan olarak Data içermeyen bir alt klasördeki olay dosyası, Data içeren en yakın üst klasörü kullanır.
   srcsharp balance &lt;dizin veya dosya&gt;... [--format md|csv] [--output dosya]
       Birim verilerinin istatistik listesi ve aykırı değerler
+  srcsharp new &lt;klasör&gt; [--title başlık] [--episodes n] [--app-path SRC klasörü] [--force]
+      Yeni bir senaryo şablonu oluşturur (ilk bölümün olayı, haritası ve verileri, otomatik oynama betiği, VS Code ayarları, CI). Var olan dosyalar korunur (--force üzerine yazar) --episodes 2 veya daha fazlaysa ara bölümlü (intermission) birden çok bölüm oluşturur.
+  srcsharp flow [&lt;dir|file.eve&gt;] [--format md|mmd|json] [--output file] [--app-path dir] [--scenario-root dir]
+      Olaylar arasında Continue, sonraki aşama, Exec, IntermissionCommand, Load ve GameClear izlenir ve bölüm bağlantı diyagramı çıkarılır (varsayılan: geçerli klasör)
+  srcsharp assets [senaryo klasörü] [--format md|json|readme] [--output dosya] [--app-path SRC klasörü] [--ext-data klasör] [--ext-data2 klasör] [--fail-on-missing]
+      Veri ve olayların başvurduğu görüntü, ses ve haritaları, başvuru yeri ve SRC arama sırasında (senaryo, genişletilmiş veri, SRC) bulunduğu yerle birlikte listeler. İfadeyle oluşturulan adları ve başvurulmayan dosyaları da gösterir. readme, README için "Gerekli varlıklar" taslağı üretir. --fail-on-missing eksik varsa 1 ile çıkar (varlık edinmez veya yeniden dağıtmaz)
+  srcsharp trial &lt;senaryo klasörü&gt; [--unit birim] [--pilot pilot] [--enemy birim] [--enemy-pilot pilot] [--level n] [--enemies n] [--list]
+      Senaryo verilerindeki birim ve pilotları bir düşmanla savaştıran deneme savaşını .srcsharp/trial/ içinde oluşturur ve yolunu yazdırır (play veya hata ayıklayıcıyla çalıştırın). --list birim ve pilotları JSON olarak yazdırır
+  srcsharp event-flow &lt;olay dosyası&gt; [--format md|mmd|json] [--output dosya] [--app-path SRC klasörü] [--scenario-root senaryo klasörü]
+      Tek bir olay dosyasındaki (ve include ile Require hedeflerindeki) tetikleyicileri, etiketleri, Call, Goto ve Require bağlantılarını izleyip akış şeması üretir
+  srcsharp talk-preview &lt;olay dosyası&gt; [--line satır] [--block sıra] [--stdin] [--input dosya] [--format json|png] [--out dizin] [--output dosya] [--no-images] [--app-path SRC klasörü] [--scenario-root senaryo klasörü]
+      Talk ve AutoTalk bloklarını oyunun mesaj penceresiyle çizip sayfa başına PNG görselleri veya JSON çıktısı üretir
+  srcsharp anime-preview &lt;dosya veya klasör&gt; [--list] [--file dosya] [--line satır] [--kind animation|ext_animation|effect|subroutine] [--target ad] [--situation durum] [--spec tanım] [--attacker birim] [--attacker-pilot pilot] [--defender birim] [--defender-pilot pilot] [--play-once] [--out görsel dosyası] [--app-path SRC klasörü] [--scenario-root senaryo klasörü]
+      animation.txt, ext_animation.txt, effect.txt içindeki bir tanımı veya genel savaş animasyonunu sabit saldıran ve savunan ile oynatmak için .srcsharp/preview/ hazırlar. --list JSON listeler, --play-once bir kez oynatır
   srcsharp lsp
       Language Server (stdio)
   srcsharp dap
@@ -48,6 +62,9 @@ Ortak seçenekler:
   <data name="LintSummary" xml:space="preserve">
     <value>{0} dosya denetlendi, {1} sorun</value>
   </data>
+  <data name="UnknownRuleGroup" xml:space="preserve">
+    <value>Bilinmeyen kural grubu: {0} ({1} değerlerinden biri olmalı)</value>
+  </data>
   <data name="PlayRequiresOneEventFile" xml:space="preserve">
     <value>Tam olarak bir olay dosyası belirtin</value>
   </data>
@@ -68,5 +85,59 @@ Ortak seçenekler:
   </data>
   <data name="UnknownSearchMethod" xml:space="preserve">
     <value>Bilinmeyen arama yöntemi: {0} (hybrid, bm25 veya vector)</value>
+  </data>
+  <data name="NewRequiresFolder" xml:space="preserve">
+    <value>Senaryonun oluşturulacağı tek bir klasör belirtin</value>
+  </data>
+  <data name="NewInvalidEpisodes" xml:space="preserve">
+    <value>Bölüm sayısı 1 veya daha büyük bir tam sayı olmalıdır: {0}</value>
+  </data>
+  <data name="NewCreated" xml:space="preserve">
+    <value>Şablon {0} içinde oluşturuldu ({1} dosya)</value>
+  </data>
+  <data name="NewSkipped" xml:space="preserve">
+    <value>Var olan dosyalar atlandı: {0} (üzerine yazmak için --force)</value>
+  </data>
+  <data name="FlowRequiresAtMostOnePath" xml:space="preserve">
+    <value>En fazla bir senaryo klasörü veya olay dosyası belirtin</value>
+  </data>
+  <data name="FlowPathNotFound" xml:space="preserve">
+    <value>Senaryo klasörü veya olay dosyası bulunamadı: {0}</value>
+  </data>
+  <data name="UnknownFlowFormat" xml:space="preserve">
+    <value>Bilinmeyen çıktı biçimi: {0} (md, mmd veya json)</value>
+  </data>
+  <data name="AssetsRequiresAtMostOneFolder" xml:space="preserve">
+    <value>En fazla bir senaryo klasörü belirtin</value>
+  </data>
+  <data name="AssetsFolderNotFound" xml:space="preserve">
+    <value>Senaryo klasörü bulunamadı: {0}</value>
+  </data>
+  <data name="UnknownAssetsFormat" xml:space="preserve">
+    <value>Bilinmeyen çıktı biçimi: {0} (md, json veya readme)</value>
+  </data>
+  <data name="AssetsSummary" xml:space="preserve">
+    <value>{0} varlık ({1} eksik), {2} doğrulanamayan başvuru, {3} başvurulmayan dosya</value>
+  </data>
+  <data name="TrialRequiresFolder" xml:space="preserve">
+    <value>Bir senaryo klasörü belirtin</value>
+  </data>
+  <data name="TrialCreated" xml:space="preserve">
+    <value>Deneme savaşı oluşturuldu: {0}/{1} - {2}/{3}</value>
+  </data>
+  <data name="EventFlowRequiresEventFile" xml:space="preserve">
+    <value>Olay dosyası bulunamadı: {0}</value>
+  </data>
+  <data name="TalkPreviewRequiresEventFile" xml:space="preserve">
+    <value>Önizleme için tam olarak bir olay dosyası belirtin</value>
+  </data>
+  <data name="TalkPreviewPagesWritten" xml:space="preserve">
+    <value>{0} önizleme sayfası görseli {1} konumuna yazıldı</value>
+  </data>
+  <data name="AnimePreviewPathNotFound" xml:space="preserve">
+    <value>Hedef veri/olay dosyası veya klasörü bulunamadı: {0}</value>
+  </data>
+  <data name="AnimePreviewNoEntry" xml:space="preserve">
+    <value>Önizlenebilir savaş animasyonu veya özel efekt tanımı bulunamadı</value>
   </data>
 </root>

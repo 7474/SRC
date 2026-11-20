@@ -74,6 +74,7 @@ namespace SRCSharpAvalonia
                 var window = new MainWindow();
                 desktop.MainWindow = window;
                 desktop.Exit += (s, e) => Stop();
+                window.TerminateHandler = () => TerminateScenario(window);
                 var savedScale = ReadDisplayScale(config);
                 if (savedScale.HasValue)
                 {
@@ -353,6 +354,19 @@ namespace SRCSharpAvalonia
         }
 
         /// <summary>
+        /// シナリオの終了（TerminateSRC。中断・ゲームクリア・Quit など）。元の SRC はウィンドウを閉じ、音を止めるなどの後始末をしてから End する。
+        /// ゲームスレッドから Environment.Exit すると、描画と音が動いたままプロセスを終えようとして、ネイティブのコードで落ちる（0xC0000409）。
+        /// そこで、ゲームスレッドに止まる合図を出してウィンドウを閉じ、通常の終了（desktop.Exit から Stop）で後始末をして終える。
+        /// false を返すので、ゲームスレッドは TerminateSRC から戻らずに止まる（ScreenGUI.Terminate）
+        /// </summary>
+        internal bool TerminateScenario(MainWindow window)
+        {
+            session?.Game.Stop();
+            Avalonia.Threading.Dispatcher.UIThread.Post(window.Close);
+            return false;
+        }
+
+        /// <summary>
         /// 引数のファイル（無ければ選ばせたファイル）でシナリオを始める。
         /// shutdown は終了コードを受け取ってアプリを終える（デスクトップのライフタイムの Shutdown）
         /// </summary>
@@ -404,7 +418,7 @@ namespace SRCSharpAvalonia
                 SuggestedStartLocation = lastFolder == null ? null : await window.StorageProvider.TryGetFolderFromPathAsync(lastFolder),
                 FileTypeFilter = new[]
                 {
-                    new FilePickerFileType("SRC# files") { Patterns = new[] { "*.eve", "*.srcs", "*.srcq" } },
+                    new FilePickerFileType("SRC# files") { Patterns = new[] { "*.eve", "*.srcs", "*.srcq", "*.src" } },
                 },
             });
             var file = files.FirstOrDefault()?.TryGetLocalPath();

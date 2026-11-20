@@ -1,0 +1,5 @@
+probe.eve：16行目
+EndIfに対応するIfがありません
+15: 使わないラベル:
+16: EndIf
+17: Exit

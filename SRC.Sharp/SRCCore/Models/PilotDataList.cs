@@ -121,10 +121,8 @@ namespace SRCCore.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            using (var stream = SRC.FileSystem.OpenText(SRC.Config.SRCCompatibilityMode, fname))
-            {
-                Load(fname, stream);
-            }
+            // 元の SRC の Load の ErrorHandler（開けない・打ち切る誤りのダイアログと TerminateSRC）。PilotDataList.cls だけ「が開けません」に「。」が無い
+            SRC.LoadDataFile(fname, stream => Load(fname, stream), openErrorMessage: "が開けません");
         }
 
         public void Load(string fname, Stream stream)
@@ -210,9 +208,11 @@ namespace SRCCore.Models
                 {
                     pd = Add(data_name);
                 }
+                pd.Location = new DataLocation(reader.FileName, reader.LineNumber);
 
                 // 愛称, 読み仮名, 性別, クラス, 地形適応, 経験値
                 line_buf = reader.GetLine();
+                pd.Location.SetFieldLine("地形適応", reader.LineNumber);
 
                 // 書式チェックのため、コンマの数を数えておく
                 int comma_num = 0;
@@ -768,6 +768,7 @@ namespace SRCCore.Models
                 }
 
                 // 格闘
+                pd.Location.SetFieldLine("格闘", reader.LineNumber);
                 if (Strings.Len(line_buf) == 0)
                 {
                     throw reader.InvalidDataException(@"格闘攻撃力の設定が抜けています。", data_name);
@@ -904,6 +905,7 @@ namespace SRCCore.Models
 
                 // スペシャルパワー
                 line_buf = reader.GetLine();
+                pd.Location.SetFieldLine("スペシャルパワー", reader.LineNumber);
                 switch (line_buf ?? "")
                 {
                     // スペシャルパワーを持っていない
