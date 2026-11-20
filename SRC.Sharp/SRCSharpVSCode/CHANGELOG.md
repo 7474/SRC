@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.5.8
+
+- The version follows the SRC# library version (srcsharp 0.5.8).
+- **Requires the .NET 11 SDK** (srcsharp 0.5.8 targets .NET 11). Install it from https://dotnet.microsoft.com/download/dotnet/11.0, then update srcsharp with `dotnet tool update -g SRCSharpTools`.
+- Add the SRC#Studio map editor as a custom editor for `.map` files ("SRC#Studio マップ作成ツール"). It shows the units placed by the events on the map, lets you drag them to rewrite the coordinates, and plays a scene step by step ("人形劇"). Hovers in `.eve` files link to the position on the map ("SRC#: イベントの座標をマップで見る").
+- Add commands: "SRC#: 新しいシナリオを作る", "SRC#: データのプレビュー" (with table editing of weapons, abilities, stats and terrain adaptation), "SRC#: 試し戦闘", "SRC#: 話のつながりの図を表示", "SRC#: イベントの流れの図を表示", "SRC#: 会話をプレビュー", "SRC#: 戦闘アニメ・特殊効果をプレビュー", "SRC#: 素材の一覧（揃っているか）を表示", "SRC#: この話の強さを確かめる（自動で何回か遊ぶ）", "SRC#: シナリオの見通し（出来事・台本・変数・登場人物）", "SRC#: 出来事を足す（きっかけ・会話・撤退をフォームで選ぶ）", "SRC#: 出来事を直す（カーソルのある出来事をフォームで直す）" and "SRC#: この話から遊ぶ（前の話までの状態で）".
+- The language server reports diagnostics for data files with the rule group chosen in the new `srcsharp.rules` setting (default `src`), warns about unit, pilot and item names in events that are not in the data, and adds hovers, go to definition, completion and rename for data names, variables and labels. Command hovers show the help text. Data files get completion and hovers for special abilities and weapon attributes, and `pilot_message.txt`/`pilot_dialog.txt` get completion for situations.
+- Show the scenario outline findings as information diagnostics in event files. Turn them off with the new `srcsharp.outlineFindings` setting.
+- Add data from the SRC# data viewer with its "VS Code で追加" button (`vscode://koudenpa.src-vscode/addData`).
+
 ## 0.5.7
 
 - The version follows the SRC# library version (srcsharp 0.5.7).
