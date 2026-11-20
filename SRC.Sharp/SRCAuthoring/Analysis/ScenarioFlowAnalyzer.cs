@@ -821,11 +821,21 @@ namespace SRCAuthoring.Analysis
 
         private static void WalkDirectory(string root, string dir, List<string> result)
         {
-            foreach (var file in Directory.GetFiles(dir, "*.eve"))
+            // 読めないフォルダ（権限の無いもの）は飛ばす
+            string[] files;
+            try
+            {
+                files = Directory.GetFiles(dir, "*.eve", new EnumerationOptions { IgnoreInaccessible = true });
+            }
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                return;
+            }
+            foreach (var file in files)
             {
                 result.Add(Path.GetFullPath(file));
             }
-            foreach (var sub in Directory.GetDirectories(dir))
+            foreach (var sub in Directory.GetDirectories(dir, "*", new EnumerationOptions { IgnoreInaccessible = true }))
             {
                 var name = Path.GetFileName(sub);
                 if (IgnoredDirectories.Contains(name))

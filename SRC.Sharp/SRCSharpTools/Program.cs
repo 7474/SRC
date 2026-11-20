@@ -73,6 +73,8 @@ namespace SRCSharpTools
                     return Outline(positional, options);
                 case "event-text":
                     return EventText(positional, options);
+                case "start-state":
+                    return StartState(positional, options);
                 case "balance":
                     return Balance(positional, options);
                 case "new":
@@ -372,6 +374,27 @@ namespace SRCSharpTools
         /// </summary>
         private static int EventText(List<string> paths, Dictionary<string, string> options)
         {
+            // 出来事を直す: --line の行の出来事をフォームの項目（JSON）で出す。--json も渡すと、その出来事を直した書き方を出す
+            SRCAuthoring.Templates.EventBlockMatch editing = null;
+            if (options.TryGetValue("line", out var lineText))
+            {
+                if (paths.Count == 0 || !File.Exists(paths[0]) || !int.TryParse(lineText, out var lineNumber))
+                {
+                    Console.Error.WriteLine("srcsharp event-text イベントファイル --line 行 [--json 出来事の JSON]");
+                    return 2;
+                }
+                editing = SRCAuthoring.Templates.QuickBattleTemplate.FindEvent(File.ReadAllText(paths[0]), lineNumber);
+                if (!options.ContainsKey("json"))
+                {
+                    Console.WriteLine(editing.ToJson());
+                    return editing.Error == null ? 0 : 1;
+                }
+                if (editing.Error != null)
+                {
+                    Console.Error.WriteLine(editing.Error);
+                    return 1;
+                }
+            }
             if (!options.TryGetValue("json", out var json))
             {
                 Console.Error.WriteLine("srcsharp event-text [イベントファイル] --json 出来事の JSON");
@@ -382,7 +405,10 @@ namespace SRCSharpTools
             {
                 var outline = ScenarioOutline.Analyze(Path.GetFullPath(paths[0]), options.TryGetValue("app-path", out var appPath) ? appPath : null);
                 var people = outline.Episodes.SelectMany(e => e.Joins.Concat(e.Launches).Concat(e.Enemies).Concat(e.Speakers.Keys)).Distinct();
-                foreach (var error in SRCAuthoring.Templates.QuickBattleTemplate.ValidateEvent(json, people))
+                var kept = editing != null && editing.KeepBefore.Count + editing.KeepAfter.Count > 0;
+                foreach (var error in SRCAuthoring.Templates.QuickBattleTemplate.ValidateEvent(json, people)
+                    // 直すとき、援軍などフォームに出ない行が残るなら、会話が無くてもよい
+                    .Where(e => !(kept && e.EndsWith("会話・援軍・退くのどれかを足してください", StringComparison.Ordinal))))
                 {
                     Console.Error.WriteLine(error);
                     exit = 1;
@@ -394,8 +420,44 @@ namespace SRCSharpTools
             var named = r.TryGetProperty("trigger", out var trigger) && trigger.GetString() == "destroyed" && r.TryGetProperty("unit", out var unit)
                 ? new[] { unit.GetString() }
                 : Array.Empty<string>();
-            Console.Write(SRCAuthoring.Templates.QuickBattleTemplate.EventText(json, named));
+            Console.Write(editing != null
+                ? SRCAuthoring.Templates.QuickBattleTemplate.RewriteEvent(json, editing, named)
+                : SRCAuthoring.Templates.QuickBattleTemplate.EventText(json, named));
             return exit;
+        }
+
+        /// <summary>
+        /// 途中の話を、手で決めた始めの値から遊ぶ（7474/SRC#1692）。話のイベントファイルから、部隊・資金・話をまたぐ変数を作って
+        /// その話へ Continue するイベントのひな形を、シナリオの .srcsharp/start/話.eve に書く（--output で場所を変える。もうあれば書かない）
+        /// </summary>
+        private static int StartState(List<string> paths, Dictionary<string, string> options)
+        {
+            if (paths.Count == 0 || !File.Exists(paths[0]))
+            {
+                Console.Error.WriteLine("srcsharp start-state 話のイベントファイル [--output ファイル] [--force]");
+                return 2;
+            }
+            var episode = Path.GetFullPath(paths[0]);
+            var outline = ScenarioOutline.Analyze(ScenarioAnalyzer.FindScenarioRoot(episode), options.TryGetValue("app-path", out var appPath) ? appPath : null);
+            var root = outline.ScenarioRoot ?? Path.GetDirectoryName(episode);
+            var rel = Path.GetRelativePath(root, episode).Replace('\\', '/');
+            var text = SRCAuthoring.Templates.StartStateTemplate.Build(outline, rel);
+            if (text == null)
+            {
+                Console.Error.WriteLine($"{rel} は話のつながりにありません");
+                return 1;
+            }
+            var output = options.TryGetValue("output", out var o) ? o
+                : Path.Combine(root, SRCAuthoring.Templates.StartStateTemplate.Folder, Path.GetFileNameWithoutExtension(episode) + ".eve");
+            if (File.Exists(output) && !options.ContainsKey("force"))
+            {
+                Console.WriteLine(output);
+                return 0;
+            }
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output)));
+            File.WriteAllText(output, text, new System.Text.UTF8Encoding(true));
+            Console.WriteLine(output);
+            return 0;
         }
 
         private static void WriteState(ScreenScenarioRunner runner, ScenarioStateRecorder recorder, string path)

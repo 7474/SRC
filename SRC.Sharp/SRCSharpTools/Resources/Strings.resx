@@ -25,8 +25,10 @@
       強さの確かめ。1 話を乱数を変えて自動で何回か遊び（既定 5 回・30 ターンまで）、勝ち・負け・時間切れ・止まった、ターン数、落ちた味方と、直し方の手がかりを出す。--min-wins を下回れば終了コード 1
   srcsharp outline [シナリオのフォルダかイベントファイル] [--format md|json] [--output ファイル] [--app-path SRCのフォルダ]
       シナリオの見通し。話ごとの部隊と登場人物（加入・続けて出る・離脱・話す人の行数）、出来事の一覧（きっかけ・いつ・条件・すること）、変数（設定と読む場所）、台本（会話・テロップを話の順に）を出す
-  srcsharp event-text [イベントファイル] --json 出来事の JSON
-      出来事を足す。きっかけ（turn・attack・damaged・destroyed）と会話・援軍・撤退の JSON から、普通の書き方のイベント（ラベルと注釈）を出す。イベントファイルを渡すと、シナリオに出てくる人と照らして書き間違いを知らせる
+  srcsharp event-text [イベントファイル] [--line 行] [--json 出来事の JSON]
+      出来事を足す・直す（--line 行: その行の出来事をフォームの項目の JSON で出す。--json と一緒なら、その出来事を直した書き方を出す）。きっかけ（turn・attack・damaged・destroyed）と会話・援軍・撤退の JSON から、普通の書き方のイベント（ラベルと注釈）を出す。イベントファイルを渡すと、シナリオに出てくる人と照らして書き間違いを知らせる
+  srcsharp start-state 話のイベントファイル [--output ファイル] [--force]
+      途中の話を、手で決めた始めの値から遊ぶためのイベント（部隊・資金・話をまたぐ変数を作ってその話へ Continue する）のひな形を、.srcsharp/start/話.eve に書く
   srcsharp balance &lt;ディレクトリかファイル&gt;... [--format md|csv] [--output ファイル]
       ユニットデータの能力値の一覧と外れ値
   srcsharp new &lt;フォルダ&gt; [--title タイトル] [--episodes 数] [--app-path SRCのフォルダ] [--force]

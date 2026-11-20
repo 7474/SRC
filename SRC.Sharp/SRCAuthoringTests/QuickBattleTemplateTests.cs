@@ -256,6 +256,49 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual(0, QuickBattleTemplate.ValidateEvent(@"{ ""trigger"": ""attack"", ""unit"": ""リオ"", ""target"": ""ソラ"", ""retreat"": true }", new[] { "リオ", "ソラ" }).Count);
         }
 
+        /// <summary>出来事を直す（7474/SRC#1692）。足した出来事をフォームの項目に読み戻し、援軍などフォームに出ない行は元の所に残して書き直す</summary>
+        [TestMethod]
+        public void FindEvent_ReadsBackAndRewritesKeepingOtherLines()
+        {
+            var block = QuickBattleTemplate.EventText(@"{ ""trigger"": ""attack"", ""unit"": ""リオ"", ""target"": ""シャア"", ""retreat"": true,
+  ""talk"": [{ ""speaker"": ""リオ"", ""text"": ""Exit なんてさせない"" }, { ""speaker"": ""シャア"", ""text"": ""ほう"" }],
+  ""enemies"": [{ ""unit"": ""ザク"", ""pilot"": ""兵(ザコ)"", ""x"": 5, ""y"": 6 }] }");
+            var text = "スタート:\r\nExit\r\n\r\n" + block;
+            var lines = text.Split("\r\n");
+            var labelLine = System.Array.IndexOf(lines, "攻撃 リオ シャア:") + 1;
+
+            // 注釈の行・ラベル・中のどこからでも同じ出来事
+            var m = QuickBattleTemplate.FindEvent(text, labelLine + 2);
+            Assert.IsNull(m.Error, m.Error);
+            Assert.AreEqual(m.Start, QuickBattleTemplate.FindEvent(text, labelLine - 1).Start);
+            Assert.AreEqual(labelLine - 1, m.Start);
+            Assert.AreEqual("Exit", lines[m.End - 1]);
+            using (var doc = System.Text.Json.JsonDocument.Parse(m.Json))
+            {
+                var r = doc.RootElement;
+                Assert.AreEqual("attack", r.GetProperty("trigger").GetString());
+                Assert.AreEqual("シャア", r.GetProperty("target").GetString());
+                Assert.IsTrue(r.GetProperty("retreat").GetBoolean());
+                // 全角空白を付けて書いたセリフも、元のセリフに戻る
+                Assert.AreEqual("Exit なんてさせない", r.GetProperty("talk")[0].GetProperty("text").GetString());
+                Assert.AreEqual("シャア", r.GetProperty("talk")[1].GetProperty("speaker").GetString());
+            }
+            // 援軍の行はフォームに出ないので、会話の後に残る
+            CollectionAssert.AreEqual(new[] { "Create 敵 ザク 0 \"兵(ザコ)\" 1 5 6" }, m.KeepAfter);
+
+            // 読み戻した項目で書き直すと、元と同じ
+            Assert.AreEqual(block, QuickBattleTemplate.RewriteEvent(m.Json, m));
+            // 撤退をやめて会話を変える
+            var edited = QuickBattleTemplate.RewriteEvent(@"{ ""trigger"": ""attack"", ""unit"": ""リオ"", ""target"": ""シャア"", ""talk"": [{ ""speaker"": ""リオ"", ""text"": ""行くよ"" }] }", m);
+            StringAssert.Contains(edited, "Talk リオ\r\n行くよ\r\nEnd\r\nCreate 敵 ザク 0 \"兵(ザコ)\" 1 5 6\r\nExit");
+            Assert.IsFalse(edited.Contains("Escape"));
+
+            // フォームで直せない出来事は理由を返す
+            StringAssert.Contains(QuickBattleTemplate.FindEvent(text, 1).Error, "きっかけ");
+            StringAssert.Contains(QuickBattleTemplate.FindEvent("ターン 2 味方:\nTalk 少女 13 13\nたすけて\nEnd\nExit\n", 3).Error, "会話");
+            StringAssert.Contains(QuickBattleTemplate.FindEvent("破壊 リオ:\nIf 好感度 > 2 Then\nGameOver\nEndIf\nExit\n", 1).Error, "分岐");
+        }
+
         [TestMethod]
         public void FileName_DropsCharactersFilesCannotHave()
         {

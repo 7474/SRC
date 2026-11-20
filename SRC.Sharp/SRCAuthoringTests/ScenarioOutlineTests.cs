@@ -113,6 +113,21 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>途中の話を、手で決めた始めの値から遊ぶひな形（7474/SRC#1692）。前の話までの部隊・設定・話をまたぐ変数を作って Continue する</summary>
+        [TestMethod]
+        public void StartState_BuildsPartySetupAndGlobalsBeforeTheEpisode()
+        {
+            var outline = ScenarioOutline.Analyze(Lantern());
+            var text = SRCAuthoring.Templates.StartStateTemplate.Build(outline, "ステージ/03_煤の工場.eve");
+            var lines = text.Split("\r\n");
+            Assert.AreEqual("@ランタン", lines[0]);
+            CollectionAssert.IsSubsetOf(new[] { "プロローグ:", "Load 煤の軍勢", "Option アイテム交換", "Unit 灯機ホタル 0", "Pilot ソラ 7", "Ride ソラ", "Pilot ミュウ 8", "Money 0", "Global 港の評判", "Set 港の評判 0" }, lines);
+            Assert.AreEqual("Continue ステージ\\03_煤の工場.eve", lines.Last(l => l.Length > 0));
+            // 第1話の前には加わった味方がいない
+            StringAssert.Contains(SRCAuthoring.Templates.StartStateTemplate.Build(outline, "01_灯の港.eve"), "前の話で加わった味方はいない");
+            Assert.IsNull(SRCAuthoring.Templates.StartStateTemplate.Build(outline, "無い.eve"));
+        }
+
         [TestMethod]
         [DataRow("ターン 全 敵", "turn", "毎ターンの敵のフェイズの始め")]
         [DataRow("破壊 シャア", "destroyed", "シャアが落ちたとき")]

@@ -60,6 +60,8 @@ namespace SRCAuthoring.Analysis
         public List<OutlineEvent> Events { get; } = new List<OutlineEvent>();
         /// <summary>Create 味方 で作る（加入）パイロット</summary>
         public List<string> Joins { get; } = new List<string>();
+        /// <summary>加入したパイロットの機体とレベル（Create 味方 の欄。始めの値を手で決めるひな形に使う）</summary>
+        public Dictionary<string, (string unit, int level)> JoinUnits { get; } = new Dictionary<string, (string, int)>(StringComparer.Ordinal);
         /// <summary>Launch で出す（続けて出る）パイロット</summary>
         public List<string> Launches { get; } = new List<string>();
         /// <summary>Leave で離れるパイロット</summary>
@@ -415,6 +417,10 @@ namespace SRCAuthoring.Analysis
                             {
                                 Act($"加入・出撃: {who}");
                                 AddOnce(episode.Joins, A(4));
+                                if (!episode.JoinUnits.ContainsKey(A(4)))
+                                {
+                                    episode.JoinUnits[A(4)] = (A(2), int.TryParse(A(5), out var level) ? level : 1);
+                                }
                                 episode.UnitNames.Add(A(2));
                             }
                             else

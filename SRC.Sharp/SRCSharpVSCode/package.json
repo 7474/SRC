@@ -468,6 +468,12 @@
         "icon": "$(add)"
       },
       {
+        "command": "srcsharp.editEvent",
+        "title": "出来事を直す（カーソルのある出来事をフォームで直す）",
+        "category": "SRC#",
+        "icon": "$(edit)"
+      },
+      {
         "command": "srcsharp.showOutline",
         "title": "シナリオの見通し（出来事・台本・変数・登場人物）",
         "category": "SRC#",
@@ -622,6 +628,10 @@
           "when": "editorLangId == src-eve"
         },
         {
+          "command": "srcsharp.editEvent",
+          "when": "editorLangId == src-eve"
+        },
+        {
           "command": "srcsharp.showOnMap",
           "when": "editorLangId == src-eve"
         },
@@ -670,6 +680,11 @@
           "command": "srcsharp.showOnMap",
           "when": "editorLangId == src-eve",
           "group": "navigation@4"
+        },
+        {
+          "command": "srcsharp.editEvent",
+          "when": "editorLangId == src-eve",
+          "group": "navigation@5"
         }
       ],
       "editor/title": [
