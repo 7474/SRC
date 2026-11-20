@@ -373,7 +373,7 @@ test('かんたん作成: 作品を選び、味方と敵を置き、セリフを
   expect(download.suggestedFilename()).toBe('first-battle.zip');
   const zip = fs.readFileSync(await download.path());
   const text = zip.toString('utf8');
-  for (const name of ['first-battle.eve', 'first-battle.map', 'Data/ランタン/unit.txt', 'Data/ランタン/pilot.txt', 'Data/ロボ_System/alias.txt']) {
+  for (const name of ['第1話.eve', '第1話.map', '第1話.play', 'README.md', '.vscode/launch.json', '.github/workflows/src-check.yml', 'Data/ランタン/unit.txt', 'Data/ランタン/pilot.txt', 'Data/ロボ_System/alias.txt']) {
     expect(text).toContain(name);
   }
   expect(text).toContain('@ロボ_System\r\n@ランタン');
@@ -542,7 +542,7 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
   const text = fs.readFileSync(await download.path()).toString('utf8');
   const source = fs.readFileSync(path.join(lantern, '01_灯の港.map'), 'utf8').replace(/^\uFEFF/, '');
   expect(text).toContain(source);
-  expect(text).toContain('ChangeMap harbor-battle.map');
+  expect(text).toContain('ChangeMap 第1話.map');
   expect(text).toMatch(/破壊 リオ:\r\nTalk リオ\r\nまだ終わらない……\r\nEnd\r\nCreate 敵 灯機ツバメ 0 グスタフ 9 16 4\r\n/);
 });
 

@@ -259,6 +259,8 @@ namespace SRCStudio
                     w.WriteStringValue(e);
                 }
                 w.WriteEndArray();
+                // zip とフォルダの名前（題名からファイル名に使えない文字を除いたもの）
+                w.WriteString("name", battle != null ? SRCAuthoring.Templates.QuickBattleTemplate.FileName(battle) : "");
                 w.WriteStartObject("files");
                 if (errors.Count == 0)
                 {

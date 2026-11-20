@@ -377,8 +377,8 @@ export class QuickBuilder {
         files.push({ path: `Data/${title.folder}/${f.name}`, data: f.bytes });
       }
     }
-    const eve = Object.keys(result.files).find(x => x.endsWith('.eve'));
-    return { errors: [], name: eve.replace(/\.eve$/, ''), zip: makeZip(files) };
+    // zip の名前は題名（中身は srcsharp new のひな形と同じ 第1話.eve など。7474/SRC#1691）
+    return { errors: [], name: result.name, zip: makeZip(files) };
   }
 
   async play() {

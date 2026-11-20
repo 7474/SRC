@@ -295,9 +295,11 @@ namespace SRCAuthoring.Tests
                 Assert.AreEqual(0, SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle).Count);
                 foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
                 {
-                    File.WriteAllText(Path.Combine(folder, "scenario", path), text);
+                    var target = Path.Combine(folder, "scenario", path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.WriteAllText(target, text);
                 }
-                var eve = Path.Combine(folder, "scenario", "荒野の戦い.eve");
+                var eve = Path.Combine(folder, "scenario", "第1話.eve");
 
                 var (exitCode, stdout, stderr) = Run("lint", Path.Combine(folder, "scenario"), "--app-path", basicData);
                 Assert.AreEqual(0, exitCode, stdout + stderr);
@@ -355,9 +357,11 @@ namespace SRCAuthoring.Tests
                 Assert.AreEqual(0, SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle).Count, string.Join("\n", SRCAuthoring.Templates.QuickBattleTemplate.Validate(battle)));
                 foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
                 {
-                    File.WriteAllText(Path.Combine(folder, "scenario", path), text);
+                    var target = Path.Combine(folder, "scenario", path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.WriteAllText(target, text);
                 }
-                var eve = Path.Combine(folder, "scenario", "出来事の戦い.eve");
+                var eve = Path.Combine(folder, "scenario", "第1話.eve");
 
                 var (exitCode, stdout, stderr) = Run("lint", Path.Combine(folder, "scenario"), "--app-path", basicData);
                 Assert.AreEqual(0, exitCode, stdout + stderr);
@@ -403,9 +407,11 @@ namespace SRCAuthoring.Tests
 }}");
                 foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
                 {
-                    File.WriteAllText(Path.Combine(folder, "scenario", path), text);
+                    var target = Path.Combine(folder, "scenario", path);
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.WriteAllText(target, text);
                 }
-                var eve = Path.Combine(folder, "scenario", "強さ.eve");
+                var eve = Path.Combine(folder, "scenario", "第1話.eve");
                 var (exitCode, stdout, stderr) = Run("playtest", eve, "--app-path", basicData, "--runs", "2", "--turns", "10", "--format", "json", "--min-wins", "1");
                 Assert.AreEqual(expected == "win" ? 0 : 1, exitCode, stdout + stderr);
                 using var json = System.Text.Json.JsonDocument.Parse(stdout);

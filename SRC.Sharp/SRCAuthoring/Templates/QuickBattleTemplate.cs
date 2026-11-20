@@ -401,14 +401,22 @@ namespace SRCAuthoring.Templates
             return goal;
         }
 
-        /// <summary>作るファイル（シナリオのフォルダからの相対パスと中身）。イベントは「名前.eve」、マップは「名前.map」</summary>
+        /// <summary>作る話のファイルの名前（srcsharp new のひな形と同じ。話を足すときは 第2話…）</summary>
+        public const string Episode = "第1話";
+
+        /// <summary>
+        /// 作るファイル（シナリオのフォルダからの相対パスと中身）。srcsharp new のひな形と同じ形（7474/SRC#1691）:
+        /// 第1話.eve・第1話.map・第1話.play（自動で最後まで遊ぶ手順）・.vscode/launch.json・.github/workflows/src-check.yml・README.md（次にやること）・.gitignore。
+        /// シナリオの名前（FileName）は、zip とフォルダの名前に使う
+        /// </summary>
         public static IReadOnlyDictionary<string, string> Files(QuickBattle b)
         {
             var name = FileName(b);
             var lines = new List<string>
             {
-                $"# {name}",
-                "# SRC#Studio の「かんたん作成」で作ったシナリオ。このまま VS Code で開いて続きを書ける（ヘルプの「SRC#でシナリオ・データを作る」）",
+                $"# {name} {Episode}",
+                "# SRC#Studio の「かんたん作成」で作ったシナリオ。このまま VS Code で開いて続きを書ける（README.md の「次にやること」と、ヘルプの「SRC#でシナリオ・データを作る」）",
+                "# 各ラベルの上の注釈（#）が、そのイベントがいつ起きて何をするか。直したいところを書き換えてよい（書き換えた後はただのイベント）",
                 "",
                 "# 読み込む作品のデータ（Data の下のフォルダ）",
             };
@@ -416,7 +424,7 @@ namespace SRCAuthoring.Templates
             lines.Add("");
             lines.Add("# マップを出し、ユニットを置いて、戦闘前の会話");
             lines.Add("スタート:");
-            lines.Add($"ChangeMap {name}.map");
+            lines.Add($"ChangeMap {Episode}.map");
             lines.AddRange(b.Allies.SelectMany(u => Create("味方", u)));
             lines.AddRange(b.Enemies.SelectMany(u => Create("敵", u)));
             lines.AddRange(Talk(b.Opening));
@@ -425,10 +433,49 @@ namespace SRCAuthoring.Templates
 
             return new Dictionary<string, string>
             {
-                [name + ".eve"] = string.Join("\r\n", lines) + "\r\n",
-                [name + ".map"] = string.IsNullOrWhiteSpace(b.Map) ? new MapDocument(b.Width, b.Height, new MapTile(0, 0)).Serialize() : b.Map,
+                [Episode + ".eve"] = string.Join("\r\n", lines) + "\r\n",
+                [Episode + ".map"] = string.IsNullOrWhiteSpace(b.Map) ? new MapDocument(b.Width, b.Height, new MapTile(0, 0)).Serialize() : b.Map,
+                [Episode + ".play"] = ScenarioTemplate.Lines(
+                    $"# {Episode} を自動で最後まで遊ぶ手順（srcsharp play の PlayScript。書式は 7474/SRC の docs/gui/e2e-testing.md）",
+                    $"#   srcsharp play {Episode}.eve --script {Episode}.play --app-path <SRC のフォルダか最小の汎用データ> --skip-wait",
+                    "# 味方フェイズを自動で動かし、30 ターンまで遊んで、終わること・イベントのエラーが無いことを確かめる。",
+                    "# 勝ち負けは乱数で変わるので確かめない。強さは srcsharp playtest（VS Code の「この話の強さを確かめる」）で見る",
+                    "auto 400",
+                    "turns 30",
+                    "expect finished",
+                    "expect error none"),
+                ["README.md"] = Readme(name),
+                [".vscode/launch.json"] = ScenarioTemplate.Launch(Episode),
+                [".github/workflows/src-check.yml"] = ScenarioTemplate.Workflow(Episode),
+                [".gitignore"] = ScenarioTemplate.Lines("# SRC のセーブデータ・ログ", "*.src", "Save/", "Logs/", "srcsharp-logs/", "# 試し戦闘・場面の再生など（VS Code・srcsharp が作る）", ".srcsharp/"),
             };
         }
+
+        /// <summary>README.md: 中身と、次にやること（VS Code で続きを書く → 遊ぶ → 出来事・話を足す → 強さを確かめる → 公開する）</summary>
+        private static string Readme(string name) => ScenarioTemplate.Lines(
+            $"# {name}",
+            "",
+            "SRC#Studio の「かんたん作成」で作ったシナリオです。中身は `srcsharp new` のひな形と同じ形の、普通の SRC のシナリオです。",
+            "",
+            "| ファイル | 内容 |",
+            "|---|---|",
+            $"| `{Episode}.eve` | イベント。勝ち負けの条件や出来事は、注釈（`#`）付きの普通のイベントラベル |",
+            $"| `{Episode}.map` | マップ |",
+            "| `Data/作品/…` | 選んだ作品のデータ（GSC データパック） |",
+            $"| `{Episode}.play` | 自動で最後まで遊ぶ手順（`srcsharp play`）。CI で動かす |",
+            "| `.vscode/launch.json` | VS Code で F5 を押すと、開いているイベントを画面付きで動かす |",
+            "| `.github/workflows/src-check.yml` | GitHub に置くと、push のたびにデータを検査し、最後まで自動で遊べるかを確かめる |",
+            "",
+            "## 次にやること",
+            "",
+            "1. **VS Code で開く**: 拡張「SRC# Authoring」を入れ、このフォルダを開く。設定 `srcsharp.appPath` に SRC のフォルダ（無ければ SRC# の最小の汎用データ。7474/SRC の `SRC.Sharp/Content/basic-data`）を書く",
+            $"2. **遊ぶ**: `{Episode}.eve` を開いて F5。遊びながらイベントやデータを直して保存すると、その場で読み直す（ホットリロード）",
+            $"3. **出来事を足す・直す**: `{Episode}.eve` の注釈を手がかりに、会話・援軍・勝ち負けの条件を書き足す。マップ作成ツールの「配置」「人形劇」で、ユニットの位置や、動かしながら会話する場面を見ながら書ける",
+            "4. **話を足す**: `第2話.eve` を作り、`エピローグ:` で `Continue 第2話.eve` を書く（`srcsharp new --episodes 3` の形が見本。話のつながりは「SRC#: 話のつながりの図を表示」で見る）",
+            "5. **強さを確かめる**: 「SRC#: この話の強さを確かめる」（`srcsharp playtest`）で、自動で何回か遊んで勝ち負け・ターン数を見る",
+            "6. **公開する**: SRC#Web で遊べるように置く・zip にして配る（ヘルプの「SRC#Webの使い方」）",
+            "",
+            "作り方の流れは、SRC# のヘルプの「SRC#でシナリオ・データを作る」を見てください。");
 
         /// <summary>
         /// 勝利条件・出来事・勝ち負けのイベント。同じラベルになるものは 1 つにまとめ、会話 → 援軍 → 退く → 勝ち負けの順に書く。

@@ -14,12 +14,15 @@
 
 ## 作るもの
 
-zip の中身は普通のシナリオで、`srcsharp lint`・VS Code 拡張・SRC#Avalonia でもそのまま使える。
+zip の中身は普通のシナリオで、`srcsharp new` のひな形と同じ形（7474/SRC#1691）。`srcsharp lint`・VS Code 拡張・SRC#Avalonia でもそのまま使え、話を足せば `srcsharp new --episodes` の形になる。zip とフォルダの名前は題名。
 
 | ファイル | 中身 |
 |---|---|
-| `題名.eve` | `@作品`（作品のデータの読み込み）・`スタート:`（`ChangeMap`・`Create`（ランクは 3 番目の引数）・ボスなら続けて `BossRank`・戦闘の前の `Talk`）・`勝利条件:`（作戦目的）・出来事のイベント（下の「出来事」）・`全滅 敵:`（勝ち。`GameClear`）・`全滅 味方:`（負け。`GameOver`）。どのラベルにも何が起きるかの注釈（`#`）を付ける |
-| `題名.map` | 選んだマップ。平地なら大きさを決めた平地 |
+| `第1話.eve` | `@作品`（作品のデータの読み込み）・`スタート:`（`ChangeMap`・`Create`（ランクは 3 番目の引数）・ボスなら続けて `BossRank`・戦闘の前の `Talk`）・`勝利条件:`（作戦目的）・出来事のイベント（下の「出来事」）・`全滅 敵:`（勝ち。`GameClear`）・`全滅 味方:`（負け。`GameOver`）。どのラベルにも何が起きるかの注釈（`#`）を付ける |
+| `第1話.map` | 選んだマップ。平地なら大きさを決めた平地 |
+| `第1話.play` | 自動で最後まで遊ぶ手順（`srcsharp play`。30 ターンまで遊び、終わること・イベントのエラーが無いことを確かめる。勝ち負けは乱数で変わるので確かめず、強さは `srcsharp playtest` で見る） |
+| `README.md` | 中身と「次にやること」（VS Code で開く → 遊ぶ → 出来事を足す・直す → 話を足す → 強さを確かめる → 公開する） |
+| `.vscode/launch.json`・`.github/workflows/src-check.yml`・`.gitignore` | `srcsharp new` と同じ（F5 で遊ぶ・push のたびに lint と自動プレイ） |
 | `Data/作品/…` | 選んだ作品のデータ（SRCCore が作品のフォルダから読むファイルだけ。名前は小文字にそろえる） |
 
 イベントは `SRCAuthoring.Templates.QuickBattleTemplate`（SRC#Studio の `BuildQuickBattle`）が作る。セリフのうち、命令や注釈に読まれる行（`End`・`Talk` などで始まる行・`#` で始まる行）は頭に全角の空白を足す。話す人が置いたユニットのパイロットでなければ作らずに知らせる（`Talk` は定義の無い名前で止まるため）。

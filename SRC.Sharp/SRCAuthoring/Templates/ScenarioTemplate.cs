@@ -100,7 +100,7 @@ namespace SRCAuthoring.Templates
             return written;
         }
 
-        private static string Lines(params string[] lines) => string.Join("\r\n", lines) + "\r\n";
+        internal static string Lines(params string[] lines) => string.Join("\r\n", lines) + "\r\n";
 
         private static string Json(string s) => "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
 
@@ -456,7 +456,7 @@ namespace SRCAuthoring.Templates
             return Lines(lines.ToArray());
         }
 
-        private static string Launch(string episode) => Lines(
+        internal static string Launch(string episode) => Lines(
             "{",
             "  \"version\": \"0.2.0\",",
             "  \"configurations\": [",
@@ -521,7 +521,7 @@ namespace SRCAuthoring.Templates
                 "}");
         }
 
-        private static string Workflow(string episode) => Lines(
+        internal static string Workflow(string episode) => Lines(
             "# SRC# のデータの検査と、最後まで自動で遊べるかの確かめ（srcsharp new のひな形）",
             "# 汎用データは SRC# の最小の汎用データ（7474/SRC の SRC.Sharp/Content/basic-data）を使う。",
             "# SRC のフルパッケージの汎用データを使うシナリオは、その置き場所に合わせて --app-path を変える",
