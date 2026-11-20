@@ -380,6 +380,23 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>出来事を足す（7474/SRC#1692）。VS Code のフォームが呼ぶ srcsharp event-text</summary>
+        [TestMethod]
+        public void EventText_PrintsTheEventAndChecksNamesAgainstTheScenario()
+        {
+            var lantern = Path.Combine(Path.GetDirectoryName(corpus), "Content", "lantern", "01_灯の港.eve");
+            var (exitCode, stdout, stderr) = Run("event-text", lantern, "--json", @"{ ""trigger"": ""turn"", ""turn"": 3, ""phase"": ""味方"", ""talk"": [{ ""speaker"": ""ソラ"", ""text"": ""見えた！"" }] }");
+            Assert.AreEqual(0, exitCode, stderr);
+            StringAssert.Contains(stdout, "ターン 3 味方:\r\nTalk ソラ\r\n見えた！\r\nEnd\r\nExit");
+
+            (exitCode, stdout, stderr) = Run("event-text", lantern, "--json", @"{ ""trigger"": ""attack"", ""unit"": ""ソラ"", ""target"": ""だれか"", ""talk"": [{ ""speaker"": ""ソラ"", ""text"": ""x"" }] }");
+            Assert.AreEqual(1, exitCode);
+            StringAssert.Contains(stderr, "戦う相手");
+            StringAssert.Contains(stdout, "攻撃 ソラ だれか:");
+
+            Assert.AreEqual(2, Run("event-text", lantern).exitCode);
+        }
+
         /// <summary>
         /// 強さの確かめ（7474/SRC#1690）: 乱数を変えて自動で遊び、勝ち・負け（ターン切れ）を、GameClear・GameOver に着いたかで分ける
         /// </summary>

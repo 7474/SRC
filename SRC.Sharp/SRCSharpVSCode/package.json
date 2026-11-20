@@ -457,6 +457,12 @@
         "icon": "$(debug-step-over)"
       },
       {
+        "command": "srcsharp.addEvent",
+        "title": "出来事を足す（きっかけ・会話・撤退をフォームで選ぶ）",
+        "category": "SRC#",
+        "icon": "$(add)"
+      },
+      {
         "command": "srcsharp.showOutline",
         "title": "シナリオの見通し（出来事・台本・変数・登場人物）",
         "category": "SRC#",
@@ -604,6 +610,10 @@
         },
         {
           "command": "srcsharp.playFromEpisode",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.addEvent",
           "when": "editorLangId == src-eve"
         },
         {

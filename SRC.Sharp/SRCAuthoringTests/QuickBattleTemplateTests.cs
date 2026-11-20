@@ -238,6 +238,24 @@ namespace SRCAuthoring.Tests
             CollectionAssert.Contains(errors, "出来事 1: 「シャア」はもう出ています。名前のあるパイロットが別の機体で出直せるのは、そのパイロットが落ちたときの出来事だけです");
         }
 
+        /// <summary>出来事を足す（7474/SRC#1692）。かんたん作成と同じ書き方の 1 つのイベントだけを出す（勝利条件・全滅は出さない）</summary>
+        [TestMethod]
+        public void EventText_WritesOneEventLikeQuickCreate()
+        {
+            var text = QuickBattleTemplate.EventText(@"{ ""trigger"": ""damaged"", ""unit"": ""リオ"", ""ratio"": 60, ""retreat"": true,
+  ""talk"": [{ ""speaker"": ""リオ"", ""text"": ""ここまでか……"" }] }");
+            var lines = text.Split("\r\n");
+            Assert.AreEqual("損傷率 リオ 60:", lines[1]);
+            CollectionAssert.IsSubsetOf(new[] { "Talk リオ", "ここまでか……", "End", "Escape リオ", "Exit" }, lines);
+            StringAssert.StartsWith(lines[0], "# リオの損傷率が 60% 以上");
+            Assert.IsFalse(text.Contains("勝利条件") || text.Contains("全滅"), text);
+
+            // 出てくる人と照らす
+            CollectionAssert.Contains(QuickBattleTemplate.ValidateEvent(@"{ ""trigger"": ""attack"", ""unit"": ""リオ"", ""target"": ""だれか"" }", new[] { "リオ", "ソラ" }).ToList(),
+                "出来事 1: 戦う相手を、置いたユニットのパイロットから選んでください");
+            Assert.AreEqual(0, QuickBattleTemplate.ValidateEvent(@"{ ""trigger"": ""attack"", ""unit"": ""リオ"", ""target"": ""ソラ"", ""retreat"": true }", new[] { "リオ", "ソラ" }).Count);
+        }
+
         [TestMethod]
         public void FileName_DropsCharactersFilesCannotHave()
         {

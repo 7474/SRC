@@ -71,6 +71,8 @@ namespace SRCSharpTools
                     return Playtest(positional, options);
                 case "outline":
                     return Outline(positional, options);
+                case "event-text":
+                    return EventText(positional, options);
                 case "balance":
                     return Balance(positional, options);
                 case "new":
@@ -362,6 +364,38 @@ namespace SRCSharpTools
                 Console.Write(text);
             }
             return 0;
+        }
+
+        /// <summary>
+        /// 出来事を足す（7474/SRC#1692）。出来事の JSON（かんたん作成の出来事と同じ項目）から、普通の書き方のイベント（ラベルと注釈）を標準出力に出す。
+        /// イベントファイルを渡すと、シナリオに出てくる人と照らして書き間違いを標準エラーに出す（終了コード 1。出力はする）
+        /// </summary>
+        private static int EventText(List<string> paths, Dictionary<string, string> options)
+        {
+            if (!options.TryGetValue("json", out var json))
+            {
+                Console.Error.WriteLine("srcsharp event-text [イベントファイル] --json 出来事の JSON");
+                return 2;
+            }
+            var exit = 0;
+            if (paths.Count > 0 && File.Exists(paths[0]))
+            {
+                var outline = ScenarioOutline.Analyze(Path.GetFullPath(paths[0]), options.TryGetValue("app-path", out var appPath) ? appPath : null);
+                var people = outline.Episodes.SelectMany(e => e.Joins.Concat(e.Launches).Concat(e.Enemies).Concat(e.Speakers.Keys)).Distinct();
+                foreach (var error in SRCAuthoring.Templates.QuickBattleTemplate.ValidateEvent(json, people))
+                {
+                    Console.Error.WriteLine(error);
+                    exit = 1;
+                }
+            }
+            // 落ちたパイロットが別の機体で出直す援軍は、乗り換えて出す
+            using var doc = System.Text.Json.JsonDocument.Parse(json);
+            var r = doc.RootElement;
+            var named = r.TryGetProperty("trigger", out var trigger) && trigger.GetString() == "destroyed" && r.TryGetProperty("unit", out var unit)
+                ? new[] { unit.GetString() }
+                : Array.Empty<string>();
+            Console.Write(SRCAuthoring.Templates.QuickBattleTemplate.EventText(json, named));
+            return exit;
         }
 
         private static void WriteState(ScreenScenarioRunner runner, ScenarioStateRecorder recorder, string path)
