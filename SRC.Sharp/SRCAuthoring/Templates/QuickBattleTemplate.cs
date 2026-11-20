@@ -101,7 +101,7 @@ namespace SRCAuthoring.Templates
     /// 普通のイベント（.eve）とマップ（.map）を作る。データ（作品のフォルダ）は画面の側がシナリオの Data の下に置く。
     /// 作ったものは VS Code でそのまま開いて続きを書ける。
     /// </summary>
-    public static class QuickBattleTemplate
+    public static partial class QuickBattleTemplate
     {
         public const int MaxSize = 50;
         public const int MaxRank = 20;

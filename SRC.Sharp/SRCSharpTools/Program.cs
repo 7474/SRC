@@ -372,6 +372,27 @@ namespace SRCSharpTools
         /// </summary>
         private static int EventText(List<string> paths, Dictionary<string, string> options)
         {
+            // 出来事を直す: --line の行の出来事をフォームの項目（JSON）で出す。--json も渡すと、その出来事を直した書き方を出す
+            SRCAuthoring.Templates.EventBlockMatch editing = null;
+            if (options.TryGetValue("line", out var lineText))
+            {
+                if (paths.Count == 0 || !File.Exists(paths[0]) || !int.TryParse(lineText, out var lineNumber))
+                {
+                    Console.Error.WriteLine("srcsharp event-text イベントファイル --line 行 [--json 出来事の JSON]");
+                    return 2;
+                }
+                editing = SRCAuthoring.Templates.QuickBattleTemplate.FindEvent(File.ReadAllText(paths[0]), lineNumber);
+                if (!options.ContainsKey("json"))
+                {
+                    Console.WriteLine(editing.ToJson());
+                    return editing.Error == null ? 0 : 1;
+                }
+                if (editing.Error != null)
+                {
+                    Console.Error.WriteLine(editing.Error);
+                    return 1;
+                }
+            }
             if (!options.TryGetValue("json", out var json))
             {
                 Console.Error.WriteLine("srcsharp event-text [イベントファイル] --json 出来事の JSON");
@@ -382,7 +403,10 @@ namespace SRCSharpTools
             {
                 var outline = ScenarioOutline.Analyze(Path.GetFullPath(paths[0]), options.TryGetValue("app-path", out var appPath) ? appPath : null);
                 var people = outline.Episodes.SelectMany(e => e.Joins.Concat(e.Launches).Concat(e.Enemies).Concat(e.Speakers.Keys)).Distinct();
-                foreach (var error in SRCAuthoring.Templates.QuickBattleTemplate.ValidateEvent(json, people))
+                var kept = editing != null && editing.KeepBefore.Count + editing.KeepAfter.Count > 0;
+                foreach (var error in SRCAuthoring.Templates.QuickBattleTemplate.ValidateEvent(json, people)
+                    // 直すとき、援軍などフォームに出ない行が残るなら、会話が無くてもよい
+                    .Where(e => !(kept && e.EndsWith("会話・援軍・退くのどれかを足してください", StringComparison.Ordinal))))
                 {
                     Console.Error.WriteLine(error);
                     exit = 1;
@@ -394,7 +418,9 @@ namespace SRCSharpTools
             var named = r.TryGetProperty("trigger", out var trigger) && trigger.GetString() == "destroyed" && r.TryGetProperty("unit", out var unit)
                 ? new[] { unit.GetString() }
                 : Array.Empty<string>();
-            Console.Write(SRCAuthoring.Templates.QuickBattleTemplate.EventText(json, named));
+            Console.Write(editing != null
+                ? SRCAuthoring.Templates.QuickBattleTemplate.RewriteEvent(json, editing, named)
+                : SRCAuthoring.Templates.QuickBattleTemplate.EventText(json, named));
             return exit;
         }
 

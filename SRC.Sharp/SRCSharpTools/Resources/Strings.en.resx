@@ -25,8 +25,8 @@ Usage:
       Check the difficulty: auto-play one episode several times with different random seeds (default 5 runs, up to 30 turns) and report wins, losses, timeouts and stalls, turn counts, lost allies and hints for tuning. Exit code 1 when wins are below --min-wins
   srcsharp outline [scenario folder or event file] [--format md|json] [--output file] [--app-path SRC folder]
       Scenario overview: per-episode party and cast (joins, carried units, leaves, lines per speaker), the event list (trigger, when, conditions, actions), variables (where they are set and read) and the script (talk and telops in episode order)
-  srcsharp event-text [event file] --json event JSON
-      Add an event: turn a trigger (turn, attack, damaged, destroyed) with talk, reinforcements and retreat into an ordinary event label with comments. With an event file, names are checked against the scenario's cast
+  srcsharp event-text [event file] [--line N] [--json event JSON]
+      Add or edit an event (--line N prints the event at that line as form JSON; with --json, prints the edited event): turn a trigger (turn, attack, damaged, destroyed) with talk, reinforcements and retreat into an ordinary event label with comments. With an event file, names are checked against the scenario's cast
   srcsharp balance &lt;directory or file&gt;... [--format md|csv] [--output file]
       List unit data stats and outliers
   srcsharp new &lt;folder&gt; [--title title] [--episodes count] [--app-path SRC folder] [--force]

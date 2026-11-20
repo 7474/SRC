@@ -395,6 +395,28 @@ namespace SRCAuthoring.Tests
             StringAssert.Contains(stdout, "攻撃 ソラ だれか:");
 
             Assert.AreEqual(2, Run("event-text", lantern).exitCode);
+
+            // 出来事を直す: --line の出来事をフォームの項目で出す。ランタン号の「ターン 2 味方」は Talk に位置があるので直せない
+            var lines = File.ReadAllLines(lantern);
+            var turn2 = Array.IndexOf(lines, "ターン 2 味方:") + 1;
+            (exitCode, stdout, _) = Run("event-text", lantern, "--line", turn2.ToString());
+            Assert.AreEqual(1, exitCode);
+            StringAssert.Contains(stdout, "\"error\":");
+            var file = Path.Combine(Path.GetTempPath(), "srcs-edit-" + Guid.NewGuid() + ".eve");
+            try
+            {
+                File.WriteAllText(file, "破壊 リオ:\r\nTalk リオ\r\nまだ……\r\nEnd\r\nExit\r\n");
+                (exitCode, stdout, stderr) = Run("event-text", file, "--line", "3");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "\"start\":1,\"end\":5,\"event\":{\"trigger\":\"destroyed\",\"unit\":\"リオ\"");
+                (exitCode, stdout, stderr) = Run("event-text", file, "--line", "3", "--json", @"{ ""trigger"": ""destroyed"", ""unit"": ""リオ"", ""talk"": [{ ""speaker"": ""ソラ"", ""text"": ""リオ！"" }] }");
+                Assert.AreEqual(0, exitCode, stderr);
+                StringAssert.Contains(stdout, "破壊 リオ:\r\nTalk ソラ\r\nリオ！\r\nEnd\r\nExit");
+            }
+            finally
+            {
+                File.Delete(file);
+            }
         }
 
         /// <summary>

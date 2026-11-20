@@ -17,6 +17,7 @@ import { installServer, resolveServer, serverCommand, ServerInfo, serverVersion 
 import { SettingsView } from './settings';
 import { TalkPreviewData, TalkPreviewPanel } from './talkPreview';
 import { SrcUriHandler } from './uriHandler';
+import { EventFormValue, eventForm } from './eventForm';
 
 /** データに動かす規則のグループ（設定 srcsharp.rules）。空なら none */
 export function ruleGroups(): string[] {
@@ -615,96 +616,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         vscode.window.showErrorMessage('SRC#: 出来事を足す話（*.eve）を開いてください。');
         return;
       }
-      const title = (s: string) => `SRC# 出来事を足す: ${s}`;
-      // 出てくる人（Create・Launch・Talk・Unit のパイロット）
-      const cast: string[] = [];
-      for (const raw of editor.document.getText().split(/\r?\n/)) {
-        const t = raw.trim().split(/[\s　]+/);
-        const name = /^(Talk|AutoTalk|Launch|Ride)$/i.test(t[0]) ? t[1] : /^Create$/i.test(t[0]) ? t[5] : undefined;
-        if (name && !/^[-\d"$]/.test(name) && !cast.includes(name)) {
-          cast.push(name);
-        }
-      }
-      const other = '（名前を入力する）';
-      const person = async (s: string): Promise<string | undefined> => {
-        const picked = await vscode.window.showQuickPick([...cast, other], { title: title(s) });
-        if (picked !== other) {
-          return picked;
-        }
-        const typed = (await vscode.window.showInputBox({ title: title(s), prompt: 'パイロットの名前' }))?.trim();
-        if (typed && !cast.includes(typed)) {
-          cast.push(typed);
-        }
-        return typed || undefined;
-      };
-      const trigger = await vscode.window.showQuickPick(
-        [
-          { label: 'ターン', description: 'N ターン目の味方・敵のフェイズの始め', value: 'turn' },
-          { label: '戦うとき', description: '2 人が戦う前（どちらから仕掛けても）', value: 'attack' },
-          { label: '損傷率', description: 'ユニットの損傷率が N% 以上になったとき', value: 'damaged' },
-          { label: '落ちたとき', description: 'パイロットのユニットが破壊されたとき', value: 'destroyed' },
-        ],
-        { title: title('きっかけ') },
-      );
-      if (!trigger) {
+      const ev = await eventForm(editor.document, '出来事を足す');
+      if (!ev) {
         return;
-      }
-      const ev: Record<string, unknown> = { trigger: trigger.value };
-      if (trigger.value === 'turn') {
-        const turn = await vscode.window.showInputBox({ title: title('何ターン目'), value: '2', validateInput: (v) => (/^\d+$/.test(v.trim()) && +v > 0 ? undefined : '1 以上の数') });
-        const phase = turn && (await vscode.window.showQuickPick(['敵', '味方'], { title: title('どちらのフェイズの始め') }));
-        if (!phase) {
-          return;
-        }
-        ev.turn = +turn;
-        ev.phase = phase;
-      } else {
-        const unit = await person(trigger.value === 'attack' ? '戦う 1 人目' : 'だれの');
-        if (!unit) {
-          return;
-        }
-        ev.unit = unit;
-        if (trigger.value === 'attack') {
-          const target = await person('戦う相手');
-          if (!target) {
-            return;
-          }
-          ev.target = target;
-        }
-        if (trigger.value === 'damaged') {
-          const ratio = await vscode.window.showInputBox({ title: title('損傷率（%）'), value: '50', validateInput: (v) => (/^\d+$/.test(v.trim()) && +v > 0 && +v < 100 ? undefined : '1〜99') });
-          if (!ratio) {
-            return;
-          }
-          ev.ratio = +ratio;
-        }
-      }
-      const talk: { speaker: string; text: string }[] = [];
-      const done = '（会話はここまで）';
-      for (;;) {
-        const picked = await vscode.window.showQuickPick([done, ...cast, other], { title: title(`会話 ${talk.length + 1} 行目を話す人`) });
-        if (picked === undefined) {
-          return;
-        }
-        if (picked === done) {
-          break;
-        }
-        const speaker = picked === other ? (await vscode.window.showInputBox({ title: title('話す人'), prompt: 'パイロットの名前' }))?.trim() : picked;
-        const text = speaker && (await vscode.window.showInputBox({ title: title(`${speaker} のセリフ`) }));
-        if (speaker && text) {
-          if (!cast.includes(speaker)) {
-            cast.push(speaker);
-          }
-          talk.push({ speaker, text });
-        }
-      }
-      ev.talk = talk;
-      if (trigger.value === 'attack' || trigger.value === 'damaged') {
-        const retreat = await vscode.window.showQuickPick(['撤退させない', '会話のあとで撤退させる'], { title: title(`${ev.unit} を撤退させるか`) });
-        if (!retreat) {
-          return;
-        }
-        ev.retreat = retreat !== '撤退させない';
       }
       const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
       const text = await run('event-text', [file, '--json', JSON.stringify(ev), ...(appPath ? ['--app-path', appPath] : [])], path.dirname(file));
@@ -718,6 +632,50 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       await editor.edit((b) => b.insert(end, lead + text.replace(/\r?\n/g, eol)));
       const last = doc.lineCount - 1;
       editor.revealRange(new vscode.Range(last, 0, last, 0));
+    }),
+    // 出来事を直す（srcsharp event-text --line。7474/SRC#1692）。カーソルのある出来事をフォームに読み戻し、直した書き方でその出来事だけを置き換える。
+    // 援軍などフォームに出ない行はそのまま残す。分岐のある出来事など、フォームで直せないものは理由を出す
+    vscode.commands.registerCommand('srcsharp.editEvent', async () => {
+      const editor = vscode.window.activeTextEditor;
+      const file = activeEventFile()?.fsPath;
+      if (!editor || !file || editor.document.uri.fsPath !== file) {
+        vscode.window.showErrorMessage('SRC#: 直したい出来事のある話（*.eve）を開いてください。');
+        return;
+      }
+      const doc = editor.document;
+      if (doc.isDirty) {
+        await doc.save();
+      }
+      const line = String(editor.selection.active.line + 1);
+      const found = await run('event-text', [file, '--line', line], path.dirname(file));
+      let match: { start: number; end: number; error?: string; event?: EventFormValue; kept?: number } | undefined;
+      try {
+        match = found ? JSON.parse(found.trim().split('\n').pop() ?? '') : undefined;
+      } catch {
+        match = undefined;
+      }
+      if (!match || match.error || !match.event) {
+        vscode.window.showWarningMessage(`SRC#: この出来事はフォームで直せません。${match?.error ?? ''}`);
+        return;
+      }
+      const version = doc.version;
+      const ev = await eventForm(doc, `出来事を直す（${match.start}〜${match.end} 行${match.kept ? `・フォームに出ない ${match.kept} 行はそのまま` : ''}）`, match.event);
+      if (!ev) {
+        return;
+      }
+      if (doc.version !== version) {
+        vscode.window.showWarningMessage('SRC#: フォームの間にファイルが変わったので、直すのをやめました。もう一度選んでください。');
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const text = await run('event-text', [file, '--line', line, '--json', JSON.stringify(ev), ...(appPath ? ['--app-path', appPath] : [])], path.dirname(file));
+      if (!text?.trim()) {
+        return;
+      }
+      const eol = doc.eol === vscode.EndOfLine.CRLF ? '\r\n' : '\n';
+      const range = new vscode.Range(match.start - 1, 0, match.end - 1, doc.lineAt(match.end - 1).range.end.character);
+      await editor.edit((b) => b.replace(range, text.replace(/\r?\n$/, '').replace(/\r?\n/g, eol)));
+      editor.revealRange(new vscode.Range(match.start - 1, 0, match.start - 1, 0));
     }),
     // シナリオの見通し（srcsharp outline。7474/SRC#1692）。話ごとの部隊と登場人物・出来事・変数・台本を Markdown で横に出す（行へのリンク付き）
     vscode.commands.registerCommand('srcsharp.showOutline', async () => {
