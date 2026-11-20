@@ -21,6 +21,8 @@ Usage:
       Check data (*.txt) and events (*.eve). Exit code 1 if problems are found. --rules selects rule groups (default src; rule findings of the information level do not affect the exit code). --list-rules lists the rules
   srcsharp play &lt;event file&gt; [--script file.play] [--out directory] [--app-path SRC folder] [--scenario-root scenario folder] [--steps count] [--skip-wait]
       Run a scenario without a screen. Without --script, advance messages and pick the first choice. With --skip-wait, fixed waits (animations, messages, Wait) are skipped. --scenario-root sets the scenario folder (the base of Data, Lib and Continue); by default, an event file in a subfolder without Data uses the nearest parent folder with Data.
+  srcsharp playtest &lt;event file&gt; [--runs n] [--seed n] [--turns n] [--policy smart|advance|hold] [--format md|json] [--output file] [--min-wins n] [--app-path SRC folder] [--scenario-root scenario folder]
+      Check the difficulty: auto-play one episode several times with different random seeds (default 5 runs, up to 30 turns) and report wins, losses, timeouts and stalls, turn counts, lost allies and hints for tuning. Exit code 1 when wins are below --min-wins
   srcsharp balance &lt;directory or file&gt;... [--format md|csv] [--output file]
       List unit data stats and outliers
   srcsharp new &lt;folder&gt; [--title title] [--episodes count] [--app-path SRC folder] [--force]

@@ -48,7 +48,7 @@ flowchart LR
 flowchart TB
   VSCode["VS Code 拡張（主）<br/>部品を束ねる"]
   subgraph Parts["単独でも使える部品"]
-    CLI["srcsharp<br/>new・lint・play・trial・assets・flow・event-flow<br/>talk-preview・anime-preview・balance・help"]
+    CLI["srcsharp<br/>new・lint・play・playtest・trial・assets・flow・event-flow<br/>talk-preview・anime-preview・balance・help"]
     LSP["srcsharp lsp<br/>診断・補完・ホバー・定義へ移動"]
     DAP["srcsharp dap<br/>デバッガ・画面・ホットリロード"]
     Studio["SRC#Studio<br/>かんたん作成・マップ作成ツール（配置・人形劇・場面の再生）<br/>データのプレビュー・表で直す・比べる・素材の一覧"]
@@ -59,7 +59,7 @@ flowchart TB
 
 | 部品 | VS Code 拡張での使い方 | 単独での使い方 |
 |---|---|---|
-| `srcsharp`（CLI） | コマンド（新しいシナリオ・話のつながりの図・イベントの流れの図・会話のプレビュー・戦闘アニメのプレビュー・素材の一覧・lint・バランス・試し戦闘） | コマンドライン・CI（ひな形の GitHub Actions） |
+| `srcsharp`（CLI） | コマンド（新しいシナリオ・話のつながりの図・イベントの流れの図・会話のプレビュー・戦闘アニメのプレビュー・素材の一覧・lint・バランス・試し戦闘・強さの確かめ） | コマンドライン・CI（ひな形の GitHub Actions） |
 | Language Server（`srcsharp lsp`） | イベント・データの編集 | LSP に対応したほかのエディタ |
 | デバッガ（`srcsharp dap`） | F5・画面のタブ・ホットリロード・試し戦闘 | DAP に対応したほかのエディタ。画面なしの自動プレイは `srcsharp play` |
 | SRC#Studio | `.map` のカスタムエディタ（配置・人形劇。場面の再生はデバッガ）、データのプレビュー（横に開く） | ブラウザ（[https://src.koudenpa.net/studio/](https://src.koudenpa.net/studio/)・開発版 [https://7474.github.io/SRC/studio/](https://7474.github.io/SRC/studio/)）。インストールが要らない。かんたん作成・素材の一覧もここ。場面の再生は同じサイトの SRC#Web |
@@ -100,6 +100,7 @@ srcsharp assets [シナリオのフォルダ] [--format md|json|readme] [--outpu
 srcsharp trial <シナリオのフォルダ> [--unit ユニット] [--pilot パイロット] [--enemy ユニット] [--enemy-pilot パイロット] [--level 数] [--enemies 数] [--app-path SRCのフォルダ] [--list]
 srcsharp lint <ディレクトリかファイル>... [--format text|sarif] [--output ファイル] [--rules グループ,...|none] [--list-rules] [--app-path SRCのフォルダ]
 srcsharp play <イベントファイル> [--script ファイル.play] [--out ディレクトリ] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ] [--steps 数] [--skip-wait] [--seed 数] [--state ファイル]
+srcsharp playtest <イベントファイル> [--runs 数] [--seed 数] [--turns 数] [--policy smart|advance|hold] [--format md|json] [--output ファイル] [--min-wins 数] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
 srcsharp balance <ディレクトリかファイル>... [--format md|csv|weapons-csv] [--output ファイル]
 srcsharp lsp
 srcsharp dap
@@ -120,6 +121,7 @@ srcsharp --version
 | `play` | シナリオを画面なしで動かす。`--script` の書式は [E2E テスト](../gui/e2e-testing.md) の PlayScript。無ければメッセージを送り、選択肢は先頭を選んで進める。`--out` にスナップショットを保存する。`--skip-wait` を付けると、決まった時間だけ待つ処理（戦闘アニメ、メッセージの表示時間、ユニットの移動、`Wait` や `Telop` など）を眠らずに飛ばし、その分だけ時計（`GeneralLib.timeGetTime`）を進める。入力を待つポーリングは実時間のまま。`--scenario-root` はシナリオのフォルダ（`Data`・`Lib`・`Continue` の基準）。無ければイベントファイルのあるフォルダで、そこに `Data`・`src.ini` が無ければ、それを持ついちばん近い親（`Data\System` のある SRC 本体のフォルダは除く）。シナリオのサブフォルダに置いた章を単体で動かすのに使う。`--seed` は乱数の種（省くと起動のたびに変わる）。同じ種・同じスクリプトなら毎回同じ結果になる。`--state` には、各話（イベントファイル）の終わりの状態（資金・ユニットとパイロットの一覧・グローバル変数・イベントのエラー）を書く（互換性の検証用のシナリオのゴールデンに使う。`SRC.Sharp/Compat/README.md`） |
 | `help` | 同梱の [SRC# のヘルプ](../../SRC.Sharp.Help/README.md)（`SRC.Sharp.Help/src` の `*.md`、ビルドで srcsharp に埋め込む）を引く。項目はファイル名（`Askコマンド`・ページの中のリンク先の `Askコマンド.md#…` でもよい）か見出しで、大文字・小文字は区別しない。一致が無ければ前方一致（`Ask` → `Askコマンド`）、部分一致で探し、候補が複数なら一覧を出して終了コード 1。`--list` は項目の一覧（名前と見出しをタブで区切る）、`--search` は関連の高い順にページを出す（下の「ヘルプの検索」。ページごとに `項目<TAB>見出し<TAB>スコア` と、関係する行を `  行: 内容` で最大 3 行。`--limit` で件数、既定 10）、`--grep` は文字列を含む行を `項目:行: 内容` で出す、`--export` はすべてのページを元のファイル名で書き出す（AI のエージェントなどにリファレンスとして読ませる）。本文は日本語で、`--lang` では変わらない。項目を省くと使い方を出す |
 | `--version` | 版を出す（VS Code 拡張が表示に使う） |
+| `playtest` | 強さの確かめ（SRCPlay の `Playtest`。7474/SRC#1690）。1 話を、乱数の種を `--seed` から 1 ずつ変えて `--runs` 回（既定 5）、`--turns` ターン（既定 30）まで自動で遊ぶ（`play` の `auto`・`policy`・`turns` と同じ自動プレイ。待つ処理は飛ばす）。回ごとに勝ち（`GameClear` か `Continue` に着いた。1 話だけを見るので `Continue` で終える）・負け（`GameOver` に着いたか、味方が全滅した）・時間切れ・止まった（自動プレイが進めなくなった。勝ち負けに数えない）、終わったターン、落ちた味方、残った味方の HP を出し、勝ちの割合と直し方の手がかり（慣習に沿って、味方のレベルを大きく上げる直し方は勧めない）をまとめる。`--format md`（既定）・`json`。`--min-wins` を下回れば終了コード 1（CI で場面の強さを見張る）。自動で遊ぶ AI は人より弱いので、結果は「人ならこれより勝ちやすい」目安。VS Code のコマンド「この話の強さを確かめる」も同じ |
 | `balance` | unit.txt・robot.txt の能力値の一覧と、同じクラスのユニットの中での外れ値（\|z\| ≥ 2、5 体以上のクラス）。Markdown か CSV。準拠データパックの水準との比較と組の評価は未対応（https://github.com/7474/SRC/issues/1607。過去の設計は [履歴](../history/tools/balance-pack.md)） |
 
 `srcsharp` は .NET tool（[.NET tools](https://learn.microsoft.com/dotnet/core/tools/global-tools)）で、リリースのタグで NuGet に公開する（[バージョンの管理](../versioning.md)）。NuGet に無い版は、リポジトリから作って入れる。
@@ -342,7 +344,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | 項目 | 内容 |
 |---|---|
 | データの規則：パックの水準 | 準拠するパックの同じ層の実態との比較、役割表、組の評価、作品ごとの値で調べるパック定義（https://github.com/7474/SRC/issues/1607。試作は `tools/pack-stats`・`tools/pack-analysis` で、結果は 7474/SRC-Data の GitHub Pages にある） |
-| バランス：戦闘のシミュレーション | 指定した編成同士の戦闘を画面なしで多数回行い、勝率・ターン数を集計する（自動プレイの smart 方針を使う） |
+| バランス：ブラウザでの強さの確かめ | SRC#Studio のかんたん作成から、ブラウザの中で数回自動で遊ぶ。今は `srcsharp playtest`・VS Code の「この話の強さを確かめる」（7474/SRC#1690） |
 | バランス：期待ダメージの表 | パイロットとユニットの組み合わせで、COM.SelectWeapon・ExpDamage による期待ダメージを一覧にする |
 | エディタ：解析の高速化 | システムの Lib など、変わらない部分の解析結果を使い回す |
 | 画面：音 | `interactive` で、効果音・BGM を Webview の Web Audio で鳴らす |

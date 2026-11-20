@@ -451,6 +451,12 @@
         "icon": "$(debug-alt)"
       },
       {
+        "command": "srcsharp.playtest",
+        "title": "この話の強さを確かめる（自動で何回か遊ぶ）",
+        "category": "SRC#",
+        "icon": "$(pulse)"
+      },
+      {
         "command": "srcsharp.lint",
         "title": "ワークスペースを lint する",
         "category": "SRC#"
@@ -578,6 +584,10 @@
         },
         {
           "command": "srcsharp.autoPlay",
+          "when": "editorLangId == src-eve"
+        },
+        {
+          "command": "srcsharp.playtest",
           "when": "editorLangId == src-eve"
         },
         {

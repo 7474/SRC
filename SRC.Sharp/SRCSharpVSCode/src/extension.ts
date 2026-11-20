@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import { spawn } from 'child_process';
 import * as vscode from 'vscode';
@@ -541,6 +543,26 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         program: eve,
         interactive: true,
       });
+    }),
+    // 強さの確かめ（srcsharp playtest。7474/SRC#1690）。開いている話を乱数を変えて自動で何回か遊び、結果を Markdown で横に出す
+    vscode.commands.registerCommand('srcsharp.playtest', async () => {
+      const file = activeEventFile()?.fsPath;
+      if (!file) {
+        vscode.window.showErrorMessage('SRC#: 強さを確かめる話（*.eve）を開いてください。');
+        return;
+      }
+      const runs = await vscode.window.showQuickPick(['3', '5', '10'], { title: 'SRC#: 何回遊ぶか（乱数を変えて自動で遊ぶ）', placeHolder: '5' });
+      if (!runs) {
+        return;
+      }
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      const report = path.join(os.tmpdir(), `srcsharp-playtest-${path.basename(file, path.extname(file))}.md`);
+      const done = await vscode.window.withProgress(
+        { location: vscode.ProgressLocation.Notification, title: `SRC#: 「${path.basename(file)}」を ${runs} 回自動で遊んでいます…` },
+        () => run('playtest', [file, '--runs', runs, '--output', report, ...(appPath ? ['--app-path', appPath] : [])], path.dirname(file)));
+      if (done !== undefined && fs.existsSync(report)) {
+        await vscode.commands.executeCommand('markdown.showPreviewToSide', vscode.Uri.file(report));
+      }
     }),
     vscode.commands.registerCommand('srcsharp.balance', async () => {
       const dir = workspaceDir();

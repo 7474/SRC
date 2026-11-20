@@ -376,6 +376,60 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>
+        /// 強さの確かめ（7474/SRC#1690）: 乱数を変えて自動で遊び、勝ち・負け（ターン切れ）を、GameClear・GameOver に着いたかで分ける
+        /// </summary>
+        [TestMethod]
+        [DataRow(false, "win")]
+        [DataRow(true, "lose")]
+        public void Playtest_CountsWinsAndLossesByTheEnding(bool turnLimit, string expected)
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-playtest-" + Guid.NewGuid());
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                var template = Path.Combine(folder, "template");
+                Assert.AreEqual(0, Run("new", template).exitCode);
+                var data = Path.Combine(folder, "scenario", "Data", "テスト作品");
+                Directory.CreateDirectory(data);
+                File.Copy(Path.Combine(template, "Data", "robot.txt"), Path.Combine(data, "robot.txt"));
+                File.Copy(Path.Combine(template, "Data", "pilot.txt"), Path.Combine(data, "pilot.txt"));
+                // 勝つ回は近くの弱い敵、負ける回は 1 ターンで決着しない遠い敵と、1 ターンを過ぎたら負け
+                var battle = SRCAuthoring.Templates.QuickBattleTemplate.FromJson($@"{{
+  ""title"": ""強さ"", ""dataTitles"": [""テスト作品""], ""width"": {(turnLimit ? 40 : 12)}, ""height"": 9,
+  ""allies"": [{{ ""unit"": ""見習い機"", ""pilot"": ""主人公"", ""level"": 30, ""x"": 3, ""y"": 5 }}],
+  ""enemies"": [{{ ""unit"": ""偵察機"", ""pilot"": ""敵兵(ザコ)"", ""level"": 1, ""x"": {(turnLimit ? 40 : 6)}, ""y"": 5 }}],
+  ""loss"": {(turnLimit ? @"{ ""kind"": ""turns"", ""turns"": 1 }" : @"{ ""kind"": ""annihilate"" }")}
+}}");
+                foreach (var (path, text) in SRCAuthoring.Templates.QuickBattleTemplate.Files(battle))
+                {
+                    File.WriteAllText(Path.Combine(folder, "scenario", path), text);
+                }
+                var eve = Path.Combine(folder, "scenario", "強さ.eve");
+                var (exitCode, stdout, stderr) = Run("playtest", eve, "--app-path", basicData, "--runs", "2", "--turns", "10", "--format", "json", "--min-wins", "1");
+                Assert.AreEqual(expected == "win" ? 0 : 1, exitCode, stdout + stderr);
+                using var json = System.Text.Json.JsonDocument.Parse(stdout);
+                var runs = json.RootElement.GetProperty("runs").EnumerateArray().ToList();
+                Assert.AreEqual(2, runs.Count);
+                CollectionAssert.AreEqual(new[] { 1, 2 }, runs.Select(x => x.GetProperty("seed").GetInt32()).ToArray());
+                Assert.IsTrue(runs.All(x => x.GetProperty("outcome").GetString() == expected), stdout);
+                Assert.AreEqual(2, json.RootElement.GetProperty("counts").GetProperty(expected).GetInt32());
+                Assert.IsTrue(json.RootElement.GetProperty("hints").GetArrayLength() > 0);
+                if (expected == "lose")
+                {
+                    // ターン切れの負けは、2 ターン目の味方のフェイズの始め
+                    Assert.IsTrue(runs.All(x => x.GetProperty("turns").GetInt32() == 2), stdout);
+                }
+            }
+            finally
+            {
+                if (Directory.Exists(folder))
+                {
+                    Directory.Delete(folder, true);
+                }
+            }
+        }
+
         [TestMethod]
         public void NoArguments_PrintsUsageAndFails()
         {
