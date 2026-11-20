@@ -41,6 +41,8 @@ namespace SRCPlay
     ///                          （例: choose コマンド 次のステージへ … インターミッションで次のステージへ進む）
     ///   snapshot 名前          画面を保存する
     ///   savefile 名前|default|cancel  ファイルの保存のダイアログ（マップのコマンド「中断」など）に、シナリオのフォルダの中のその名前で答える
+    ///   saveepisodes フォルダ  インターミッションのたびに「データセーブ」で、次の話の名前のセーブデータ（フォルダ/第2話.srcs）を書いてから「次のステージへ」進む
+    ///                          （話ごとの始めの状態を残し、「この話から遊ぶ」で使う。7474/SRC#1692）
     ///                          （既定はキャンセル。default はダイアログが初めに示す名前）
     ///   resume [ファイル名]    シナリオが終わった後（中断の後）、SRC を起動し直してそのファイル（省略すると savefile で最後に書いたファイル）を実行する
     ///                          （中断データからの再開。ファイル名はシナリオのフォルダからの相対パス）
@@ -387,6 +389,9 @@ namespace SRCPlay
                 case "savefile":
                     SetSaveFile(Rest(args, 1));
                     break;
+                case "saveepisodes":
+                    SaveEpisodes(Rest(args, 1));
+                    break;
                 case "resume":
                     Resume(Rest(args, 1));
                     break;
@@ -431,6 +436,41 @@ namespace SRCPlay
                 }
                 var file = saveFileName == "default" ? request.InitialFile : saveFileName;
                 var path = Path.Combine(request.InitialDirectory ?? "", file);
+                lastSavedFile = path;
+                Record($"{DateTime.Now:HH:mm:ss} SAVEFILE {path}");
+                return path;
+            };
+        }
+
+        /// <summary>
+        /// saveepisodes フォルダ: インターミッションのコマンドのリストで「データセーブ」→「次のステージへ」を順に選び、
+        /// セーブのダイアログには「フォルダ/次の話の名前.srcs」（次ステージ の値のファイル名）で答える。フォルダはシナリオのフォルダからの相対パスでもよい
+        /// </summary>
+        private void SaveEpisodes(string folder)
+        {
+            if (string.IsNullOrEmpty(folder))
+            {
+                throw new PlayScriptException("saveepisodes フォルダ");
+            }
+            auto.SequenceRules.Add(new AutoPlayer.SequenceRule { Caption = "コマンド", Items = new List<string> { "データセーブ", "次のステージへ" } });
+            var count = 0;
+            runner.SaveFileHandler = request =>
+            {
+                // ゲームのスレッドはダイアログの答えを待って止まっているので、変数を読んでよい
+                string next = null;
+                try
+                {
+                    next = runner.Session.SRC.Expression.GetValueAsString("次ステージ");
+                }
+                catch (Exception)
+                {
+                    // 読めなければ番号の名前にする
+                }
+                count++;
+                var name = string.IsNullOrEmpty(next) ? $"after-{count}" : Path.GetFileNameWithoutExtension(next.Replace('\\', '/'));
+                var dir = Path.IsPathRooted(folder) ? folder : Path.Combine(request.InitialDirectory ?? "", folder);
+                Directory.CreateDirectory(dir);
+                var path = Path.Combine(dir, name + ".srcs");
                 lastSavedFile = path;
                 Record($"{DateTime.Now:HH:mm:ss} SAVEFILE {path}");
                 return path;

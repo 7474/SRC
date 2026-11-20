@@ -69,6 +69,8 @@ namespace SRCSharpTools
                     return Play(positional, options);
                 case "playtest":
                     return Playtest(positional, options);
+                case "outline":
+                    return Outline(positional, options);
                 case "balance":
                     return Balance(positional, options);
                 case "new":
@@ -336,6 +338,28 @@ namespace SRCSharpTools
             if (options.TryGetValue("min-wins", out var minWins) && summary.Count("win") < int.Parse(minWins, CultureInfo.InvariantCulture))
             {
                 return 1;
+            }
+            return 0;
+        }
+
+        /// <summary>シナリオの見通し（7474/SRC#1692）: 部隊と登場人物・出来事の一覧・変数・台本を Markdown（既定）か JSON で出す</summary>
+        private static int Outline(List<string> paths, Dictionary<string, string> options)
+        {
+            var target = Path.GetFullPath(paths.Count > 0 ? paths[0] : Directory.GetCurrentDirectory());
+            options.TryGetValue("app-path", out var appPath);
+            var outline = ScenarioOutline.Analyze(target, string.IsNullOrEmpty(appPath) ? null : Path.GetFullPath(appPath));
+            options.TryGetValue("output", out var output);
+            var text = options.TryGetValue("format", out var format) && format == "json"
+                ? outline.ToJson()
+                : outline.ToMarkdown(string.IsNullOrEmpty(output) ? null : Path.GetDirectoryName(Path.GetFullPath(output)));
+            if (!string.IsNullOrEmpty(output))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output)));
+                File.WriteAllText(output, text, new UTF8Encoding(false));
+            }
+            else
+            {
+                Console.Write(text);
             }
             return 0;
         }

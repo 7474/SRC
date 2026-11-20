@@ -48,8 +48,8 @@ flowchart LR
 flowchart TB
   VSCode["VS Code 拡張（主）<br/>部品を束ねる"]
   subgraph Parts["単独でも使える部品"]
-    CLI["srcsharp<br/>new・lint・play・playtest・trial・assets・flow・event-flow<br/>talk-preview・anime-preview・balance・help"]
-    LSP["srcsharp lsp<br/>診断・補完・ホバー・定義へ移動"]
+    CLI["srcsharp<br/>new・lint・play・playtest・trial・assets・flow・event-flow・outline<br/>talk-preview・anime-preview・balance・help"]
+    LSP["srcsharp lsp<br/>診断・補完・ホバー・定義へ移動・名前を変える"]
     DAP["srcsharp dap<br/>デバッガ・画面・ホットリロード"]
     Studio["SRC#Studio<br/>かんたん作成・マップ作成ツール（配置・人形劇・場面の再生）<br/>データのプレビュー・表で直す・比べる・素材の一覧"]
   end
@@ -101,6 +101,7 @@ srcsharp trial <シナリオのフォルダ> [--unit ユニット] [--pilot パ�
 srcsharp lint <ディレクトリかファイル>... [--format text|sarif] [--output ファイル] [--rules グループ,...|none] [--list-rules] [--app-path SRCのフォルダ]
 srcsharp play <イベントファイル> [--script ファイル.play] [--out ディレクトリ] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ] [--steps 数] [--skip-wait] [--seed 数] [--state ファイル]
 srcsharp playtest <イベントファイル> [--runs 数] [--seed 数] [--turns 数] [--policy smart|advance|hold] [--format md|json] [--output ファイル] [--min-wins 数] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
+srcsharp outline [シナリオのフォルダかイベントファイル] [--format md|json] [--output ファイル] [--app-path SRCのフォルダ]
 srcsharp balance <ディレクトリかファイル>... [--format md|csv|weapons-csv] [--output ファイル]
 srcsharp lsp
 srcsharp dap
@@ -110,7 +111,7 @@ srcsharp --version
 
 | コマンド | 内容 |
 |---|---|
-| `new` | 新しいシナリオのひな形を作る（SRCAuthoring の `ScenarioTemplate`。7474/SRC#1640・#1652）。最小の汎用データで遊べる 1 話（`第1話.eve`・`第1話.map`・`Data/robot.txt`・`Data/pilot.txt`）、最後まで自動で遊ぶ手順（`第1話.play`）、VS Code のデバッガの構成（`.vscode/launch.json`。`--app-path` があれば `.vscode/settings.json` の `srcsharp.appPath` も）、作者のリポジトリの CI（`.github/workflows/src-check.yml`。最小の汎用データで `lint`（SARIF をコードスキャンに渡す）と `play`）、README・.gitignore。`--episodes 2` 以上を指定すると、全話分のイベント・マップ・単体/通しプレイ（`全話.play`）と `Lib/include.eve`（共通の敗北・章題・報酬・単体開始用の `単体の部隊`）・`Lib/作戦会議.eve` を作る。既にあるファイルは上書きしない（`--force` で上書き）。VS Code のコマンド「新しいシナリオを作る」も同じ |
+| `new` | 新しいシナリオのひな形を作る（SRCAuthoring の `ScenarioTemplate`。7474/SRC#1640・#1652）。最小の汎用データで遊べる 1 話（`第1話.eve`・`第1話.map`・`Data/robot.txt`・`Data/pilot.txt`）、最後まで自動で遊ぶ手順（`第1話.play`）、VS Code のデバッガの構成（`.vscode/launch.json`。`--app-path` があれば `.vscode/settings.json` の `srcsharp.appPath` も）、作者のリポジトリの CI（`.github/workflows/src-check.yml`。最小の汎用データで `lint`（SARIF をコードスキャンに渡す）と `play`）、README・.gitignore。`--episodes 2` 以上を指定すると、全話分のイベント・マップ・単体/通しプレイ（`全話.play`。インターミッションのたびに `saveepisodes` で各話の始めの状態を `.srcsharp/episodes/第N話.srcs` に残し、VS Code の「この話から遊ぶ」が使う）と `Lib/include.eve`（共通の敗北・章題・報酬・単体開始用の `単体の部隊`）・`Lib/作戦会議.eve` を作る。既にあるファイルは上書きしない（`--force` で上書き）。VS Code のコマンド「新しいシナリオを作る」も同じ |
 | `flow` | シナリオの `Continue`・`次ステージ`・`Exec`・`IntermissionCommand`・`Load`・`GameClear` と `If`/`Switch` の分岐をたどり、話のつながりの図を出す（SRCAuthoring の `ScenarioFlowAnalyzer`。7474/SRC#1652）。`--format md`（既定、Mermaid 付きの Markdown）・`mmd`（Mermaid）・`json`（ノード・エッジ・警告の構造化データ）。VS Code のコマンド「話のつながりの図を表示」が `--format json` を使って SVG フローチャートを描き、クリックで該当ファイル・行へ飛べる |
 | `event-flow` | 1 つのイベントファイル（と include・Require 先）について、発火イベント・ラベル・`Call`・`Goto`・`Require` のつながりの図を出す（SRCAuthoring の `EventFlowAnalyzer`。7474/SRC#1655）。`--format md`（既定）・`mmd`・`json`。VS Code のコマンド「イベントの流れの図を表示」は LSP の `srcsharp/eventFlow` を使って SVG フローチャートを描き、クリックで該当ファイル・行へ飛べる |
 | `talk-preview` | イベントファイルの `Talk`・`AutoTalk` ブロックをゲームと同じメッセージウィンドウ（SRCRender の `TalkPreviewRunner`）で描画し、改ページごとの画像（PNG base64 の JSON または `--format png` で `page-NNN.png`）を出す（7474/SRC#1655）。シナリオを最初から遊ばずに見た目・改行・改ページ・顔グラフィックを確かめられる（`--stdin`・`--input` で未保存の内容も可）。VS Code のコマンド「会話をプレビュー」も同じ |
@@ -122,6 +123,7 @@ srcsharp --version
 | `help` | 同梱の [SRC# のヘルプ](../../SRC.Sharp.Help/README.md)（`SRC.Sharp.Help/src` の `*.md`、ビルドで srcsharp に埋め込む）を引く。項目はファイル名（`Askコマンド`・ページの中のリンク先の `Askコマンド.md#…` でもよい）か見出しで、大文字・小文字は区別しない。一致が無ければ前方一致（`Ask` → `Askコマンド`）、部分一致で探し、候補が複数なら一覧を出して終了コード 1。`--list` は項目の一覧（名前と見出しをタブで区切る）、`--search` は関連の高い順にページを出す（下の「ヘルプの検索」。ページごとに `項目<TAB>見出し<TAB>スコア` と、関係する行を `  行: 内容` で最大 3 行。`--limit` で件数、既定 10）、`--grep` は文字列を含む行を `項目:行: 内容` で出す、`--export` はすべてのページを元のファイル名で書き出す（AI のエージェントなどにリファレンスとして読ませる）。本文は日本語で、`--lang` では変わらない。項目を省くと使い方を出す |
 | `--version` | 版を出す（VS Code 拡張が表示に使う） |
 | `playtest` | 強さの確かめ（SRCPlay の `Playtest`。7474/SRC#1690）。1 話を、乱数の種を `--seed` から 1 ずつ変えて `--runs` 回（既定 5）、`--turns` ターン（既定 30）まで自動で遊ぶ（`play` の `auto`・`policy`・`turns` と同じ自動プレイ。待つ処理は飛ばす）。回ごとに勝ち（`GameClear` か `Continue` に着いた。1 話だけを見るので `Continue` で終える）・負け（`GameOver` に着いたか、味方が全滅した）・時間切れ・止まった（自動プレイが進めなくなった。勝ち負けに数えない）、終わったターン、落ちた味方、残った味方の HP を出し、勝ちの割合と直し方の手がかり（慣習に沿って、味方のレベルを大きく上げる直し方は勧めない）をまとめる。`--format md`（既定）・`json`。`--min-wins` を下回れば終了コード 1（CI で場面の強さを見張る）。自動で遊ぶ AI は人より弱いので、結果は「人ならこれより勝ちやすい」目安。VS Code のコマンド「この話の強さを確かめる」も同じ |
+| `outline` | シナリオの見通し（SRCAuthoring の `ScenarioOutline`。7474/SRC#1692）。話のつながり（`flow`）の順に各話（と include・Lib）を SRCCore の読み込み処理で読み、次を出す。**部隊と登場人物**: 話ごとの加入・出撃（`Create 味方`・`Join`）・続けて出る（`Launch`）・離脱（`Leave`）・相手（`Create 敵`）・次の話（`Continue`）と、話す人ごとの行数と出る話。**出来事**: ラベルごとのきっかけ・いつ（「2 ターン目の味方のフェイズの始め」「シャアが落ちたとき」など）・条件（`If`・`ElseIf`・`Switch`/`Case` は「変数 = 値」）・すること（会話の行数・配置・援軍・加入・撤退・乗り換え・勝ち負け・次の話・Call）。**変数**: `Set`・`Incr`・`Global`・`Local`・代入で設定する場所と、条件・式・命令の引数・`$()` で読む場所。**台本**: 会話（`Talk`・`AutoTalk`）とテロップを、話・出来事の順に話す人付きで。**気づいたこと**: どの話でも `Create`・`Launch` されない相手の `破壊`・`損傷率`・`攻撃`（起きない出来事）、設定するだけで読まない変数、1 文字違いの変数（書き間違い）、戦闘のある話に勝ちの終わり方（`全滅 敵`・`GameClear`・`Continue`）が無い、`Continue` の先が無い（話のつながりの警告）。どれにも行へのリンクを付ける（`--output` のフォルダからの相対）。`--format json` も。VS Code のコマンド「シナリオの見通し」は `.srcsharp/見通し.md` に書いて横に出す |
 | `balance` | unit.txt・robot.txt の能力値の一覧と、同じクラスのユニットの中での外れ値（\|z\| ≥ 2、5 体以上のクラス）。Markdown か CSV。準拠データパックの水準との比較と組の評価は未対応（https://github.com/7474/SRC/issues/1607。過去の設計は [履歴](../history/tools/balance-pack.md)） |
 
 `srcsharp` は .NET tool（[.NET tools](https://learn.microsoft.com/dotnet/core/tools/global-tools)）で、リリースのタグで NuGet に公開する（[バージョンの管理](../versioning.md)）。NuGet に無い版は、リポジトリから作って入れる。
@@ -237,6 +239,7 @@ docker run --rm -v /path/to/scenario:/s koudenpa/srcdatalinter:dev lint /s   # �
 | 補完 | コマンド名（ヘルプの説明付き）・ラベル・シナリオのデータの名前（ユニット・パイロット・アイテム） |
 | データの参照の診断 | Create・Unit・Pilot・Item の引数のユニット・パイロット・アイテムの名前（愛称でもよい）が、シナリオの Data のデータに無い（警告）。式（`$` を含む）・変数（Set・Local・Global・Incr で値を入れた名前）は見ない。その種類のデータがシナリオに 1 つも無ければ調べない（ほかの場所のデータを使うシナリオがあるため）。`srcsharp lint` とブラウザの lint も同じ（`DataReferenceChecker`） |
 | データのファイル | 特殊能力・武器の属性の補完と、ホバーでヘルプの説明（「…特殊能力…」「…属性…」の頁の節。`ＨＰ回復Lv2`・`弱点=風` のようにレベル・値を付けても引く） |
+| 名前を変える | `textDocument/prepareRename`・`textDocument/rename`（7474/SRC#1692。SRCAuthoring の `ScenarioRename`）。ユニット・パイロット・変数・ラベルの名前を、シナリオのフォルダの `*.eve` と Data の下のデータ（`robot.txt`・`unit.txt`・`pilot.txt`・`non_pilot.txt`・`pilot_message.txt`・`pilot_dialog.txt`・`item.txt`・`alias.txt`。`.srcsharp` は除く）で一度に変える。変えるのは前後が区切り（空白・引用符・括弧・カンマ・演算子・コロン）の所だけで、イベントの会話の文は `$(名前)` の中だけ、注釈（`#`・`//`）は変えない。括弧を含む名前（`敵兵(ザコ)`）も変えられる。開いている文書は保存前の内容で探す |
 | イベントの流れの図 | 独自のリクエスト `srcsharp/eventFlow`（`uri`・`appPath`・`scenarioRoot`）に、開いているイベントファイル（未保存の内容を反映）と include・Require 先の `EventFlowGraph`（発火イベント・ラベル・Call・Goto・Require）を返す |
 
 解析は、エディタで開いているファイルの内容を重ねたファイルシステム（`OverlayFileSystem`）で、SRCCore の `Event.LoadEventData` を動かして行う。本体と同じ検査をそのまま使う。

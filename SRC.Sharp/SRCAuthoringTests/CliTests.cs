@@ -489,6 +489,13 @@ namespace SRCAuthoring.Tests
                 File.WriteAllText(through, File.ReadAllText(Path.Combine(scenario, "全話.play")) + "expect message 第二の戦いだ\nexpect message 全部片付いた！\nexpect finished\n");
                 (exitCode, stdout, stderr) = Run("play", Path.Combine(scenario, "第1話.eve"), "--script", through, "--app-path", basicData, "--skip-wait", "--seed", "1");
                 Assert.AreEqual(0, exitCode, stdout + stderr);
+                // 通しの途中で、第2話の始めの状態（セーブデータ）が残り、そこから第2話を遊べる（「この話から遊ぶ」）
+                var save = Path.Combine(scenario, ".srcsharp", "episodes", "第2話.srcs");
+                Assert.IsTrue(File.Exists(save), stdout);
+                var fromSave = Path.Combine(folder, "from-save.play");
+                File.WriteAllText(fromSave, "choose コマンド 次のステージへ\nauto 400\nturns 30\nexpect message 第二の戦いだ\nexpect message 全部片付いた！\nexpect finished\nexpect error none\n");
+                (exitCode, stdout, stderr) = Run("play", save, "--script", fromSave, "--app-path", basicData, "--scenario-root", scenario, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
 
                 // 単体: 第2話だけを始める（主人公はその場で作る）
                 (exitCode, stdout, stderr) = Run("play", Path.Combine(scenario, "第2話.eve"), "--script", Path.Combine(scenario, "第2話.play"), "--app-path", basicData, "--skip-wait", "--seed", "1");

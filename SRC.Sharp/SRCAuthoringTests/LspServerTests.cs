@@ -171,6 +171,58 @@ namespace SRCAuthoring.Tests
             Assert.IsFalse(help.Keywords.Contains("書式"));
         }
 
+        /// <summary>名前を変える（7474/SRC#1692）: イベントとデータの全体で、語として書いた所だけを変える</summary>
+        [TestMethod]
+        public void Lsp_RenameAcrossEventsAndData()
+        {
+            using (var scenario = new TestScenario())
+            using (var client = new ProtocolClient())
+            {
+                var pilot = scenario.Write(System.IO.Path.Combine("Data", "pilot.txt"),
+                    "リオ", "リオ, りお, 女性, 汎用, AAAA, 60", "特殊能力なし", "100, 100, 100, 100, 100, 100, 普通", "ＳＰ, 0", "-.bmp, -.mid", "");
+                var other = scenario.Write("第2話.eve", "スタート:", "Launch リオ 3 3", "Talk リオ", "リオ、ここが正念場よ。", "End", "Exit");
+                var eve = scenario.Write("第1話.eve", "スタート:", "Exit");
+                var uri = LspServer.PathToUri(eve);
+                var server = new LspServer(client.ServerInput, client.ServerOutput) { Debounce = TimeSpan.FromMilliseconds(10) };
+                var run = Task.Run(() => server.RunAsync());
+                var init = Request(client, "initialize", new JsonObject { ["capabilities"] = new JsonObject() });
+                Assert.IsTrue(init["capabilities"]["renameProvider"]["prepareProvider"].GetValue<bool>());
+                Notify(client, "initialized", new JsonObject());
+                // 保存前の内容で探す
+                var text = "スタート:\nCreate 敵 機体 0 リオ 1 3 3\nTalk リオ\nリオンの風、$(リオ)の想い\nEnd\nExit\n\n破壊 リオ:\nExit";
+                Notify(client, "textDocument/didOpen", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri, ["languageId"] = "src-eve", ["version"] = 1, ["text"] = text },
+                });
+
+                var prepare = Request(client, "textDocument/prepareRename", Position(uri, 1, 15));
+                Assert.AreEqual("リオ", prepare["placeholder"].GetValue<string>());
+                Assert.AreEqual(14, prepare["range"]["start"]["character"].GetValue<int>());
+
+                var rename = Request(client, "textDocument/rename", new JsonObject
+                {
+                    ["textDocument"] = new JsonObject { ["uri"] = uri },
+                    ["position"] = new JsonObject { ["line"] = 7, ["character"] = 4 },
+                    ["newName"] = "リオ＝ナギ",
+                });
+                var changes = rename["changes"].AsObject();
+                // 第1話: Create・Talk・$(リオ)・破壊 のラベル（「リオンの風」は変えない）
+                var first = changes[uri].AsArray().Select(x => (x["range"]["start"]["line"].GetValue<int>(), x["range"]["start"]["character"].GetValue<int>())).ToList();
+                CollectionAssert.AreEquivalent(new[] { (1, 14), (2, 5), (3, 8), (7, 3) }, first);
+                // 第2話: Launch・Talk（会話の文の「リオ、」は変えない）
+                var second = changes[LspServer.PathToUri(other)].AsArray().Select(x => x["range"]["start"]["line"].GetValue<int>()).ToList();
+                CollectionAssert.AreEquivalent(new[] { 1, 2 }, second);
+                // データ: 名前の行と、愛称の欄
+                var data = changes[LspServer.PathToUri(pilot)].AsArray().Select(x => (x["range"]["start"]["line"].GetValue<int>(), x["range"]["start"]["character"].GetValue<int>())).ToList();
+                CollectionAssert.AreEquivalent(new[] { (0, 0), (1, 0) }, data);
+                Assert.IsTrue(changes[uri].AsArray().All(x => x["newText"].GetValue<string>() == "リオ＝ナギ"));
+
+                Request(client, "shutdown", null);
+                Notify(client, "exit", null);
+                Assert.IsTrue(run.Wait(TimeSpan.FromSeconds(10)));
+            }
+        }
+
         /// <summary>イベントのデータの名前の参照（診断・ホバー・定義へ移動・補完）とコマンドのホバー（7474/SRC#1642）</summary>
         [TestMethod]
         public void Lsp_DataReferencesAndCommandHelp()

@@ -23,6 +23,8 @@
       シナリオを画面なしで動かす。--script が無ければ、メッセージを送り、選択肢は先頭を選んで進める。--skip-wait を付けると、決まった時間だけ待つ処理（アニメーション、メッセージ、Wait など）を飛ばす。--scenario-root はシナリオのフォルダ（Data・Lib・Continue の基準）。無ければ、Data の無いサブフォルダのイベントファイルは、Data のあるいちばん近い親フォルダを使う。
   srcsharp playtest &lt;イベントファイル&gt; [--runs 数] [--seed 数] [--turns 数] [--policy smart|advance|hold] [--format md|json] [--output ファイル] [--min-wins 数] [--app-path SRCのフォルダ] [--scenario-root シナリオのフォルダ]
       強さの確かめ。1 話を乱数を変えて自動で何回か遊び（既定 5 回・30 ターンまで）、勝ち・負け・時間切れ・止まった、ターン数、落ちた味方と、直し方の手がかりを出す。--min-wins を下回れば終了コード 1
+  srcsharp outline [シナリオのフォルダかイベントファイル] [--format md|json] [--output ファイル] [--app-path SRCのフォルダ]
+      シナリオの見通し。話ごとの部隊と登場人物（加入・続けて出る・離脱・話す人の行数）、出来事の一覧（きっかけ・いつ・条件・すること）、変数（設定と読む場所）、台本（会話・テロップを話の順に）を出す
   srcsharp balance &lt;ディレクトリかファイル&gt;... [--format md|csv] [--output ファイル]
       ユニットデータの能力値の一覧と外れ値
   srcsharp new &lt;フォルダ&gt; [--title タイトル] [--episodes 数] [--app-path SRCのフォルダ] [--force]

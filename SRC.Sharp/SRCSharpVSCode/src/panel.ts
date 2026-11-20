@@ -88,6 +88,8 @@ export class PanelProvider implements vscode.TreeDataProvider<Node> {
       item('素材の一覧（揃っているか）', 'file-media', 'srcsharp.showAssets'),
       item('試し戦闘', 'debug-alt', 'srcsharp.trialBattle'),
       item('この話の強さを確かめる', 'pulse', 'srcsharp.playtest'),
+      item('この話から遊ぶ（前の話までの状態で）', 'debug-step-over', 'srcsharp.playFromEpisode'),
+      item('シナリオの見通し（出来事・台本・変数・登場人物）', 'list-tree', 'srcsharp.showOutline'),
       item('ワークスペースを lint', 'checklist', 'srcsharp.lint'),
       item('バランスレポートを作る', 'graph', 'srcsharp.balance'),
       item('設定', 'gear', 'srcsharp.openSettings'),

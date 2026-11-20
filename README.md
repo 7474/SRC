@@ -16,7 +16,7 @@
 | データ・シナリオを作る（入口） | 道具と流れ | ヘルプの「[SRC#でシナリオ・データを作る](https://srch.7474.jp/SRCSharpでシナリオ・データを作る)」 |
 | シナリオ・データを VS Code で書く | VS Code 拡張「SRC# Authoring」（診断・補完・デバッガ・マップ作成ツール・データのプレビュー・試し戦闘） | Marketplace の [SRC# Authoring](https://marketplace.visualstudio.com/items?itemName=koudenpa.src-vscode)（`koudenpa.src-vscode`）・[使い方](./SRC.Sharp/SRCSharpVSCode/README.md) |
 | かんたん作成・マップを描く・データを見る（ブラウザ） | SRC#Studio（かんたん作成・マップ作成ツール（配置・人形劇・場面の再生）・データのプレビュー・素材の一覧） | https://src.koudenpa.net/studio/ （リリース版）・ https://7474.github.io/SRC/studio/ （開発版）・[SRC#Studio](./SRC.Sharp/SRCStudio/README.md) |
-| ひな形・検査・自動プレイ・試し戦闘（コマンドライン） | `srcsharp`（`new`・`lint`・`play`・`playtest`・`trial`・`assets`・`flow`・`event-flow`・`talk-preview`・`anime-preview`・`balance`・`help`） | `dotnet tool install -g SRCSharpTools`・[作成支援ツール](./docs/tools/authoring.md) |
+| ひな形・検査・自動プレイ・試し戦闘（コマンドライン） | `srcsharp`（`new`・`lint`・`play`・`playtest`・`trial`・`assets`・`flow`・`event-flow`・`outline`・`talk-preview`・`anime-preview`・`balance`・`help`） | `dotnet tool install -g SRCSharpTools`・[作成支援ツール](./docs/tools/authoring.md) |
 | CI でデータを検査する | SRCDataLinter | [GitHub Action](https://github.com/7474/SRC-DataLinter)・[Docker イメージ](https://hub.docker.com/r/koudenpa/srcdatalinter) |
 
 ヘルプは https://srch.7474.jp/ にあります。

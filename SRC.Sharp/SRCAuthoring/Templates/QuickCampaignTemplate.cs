@@ -112,7 +112,8 @@ namespace SRCAuthoring.Templates
                 $"# 第1話から{names[^1]}まで通しで遊ぶ手順（インターミッションでは「次のステージへ」を選ぶ）",
                 $"#   srcsharp play 第1話.eve --script 全話.play --app-path <SRC のフォルダか最小の汎用データ> --skip-wait",
                 "# 勝ち負けは乱数で変わるので確かめない。各話の強さは srcsharp playtest で見る",
-                "choose コマンド 次のステージへ",
+                "# インターミッションのたびに、次の話の始めの状態を .srcsharp/episodes/第N話.srcs に残してから次のステージへ（VS Code の「この話から遊ぶ」で使う）",
+                "saveepisodes .srcsharp/episodes",
                 "auto 400",
                 $"turns {30 * c.Episodes.Count}",
                 "expect error none");
