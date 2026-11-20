@@ -73,6 +73,8 @@ namespace SRCSharpTools
                     return Outline(positional, options);
                 case "event-text":
                     return EventText(positional, options);
+                case "start-state":
+                    return StartState(positional, options);
                 case "balance":
                     return Balance(positional, options);
                 case "new":
@@ -422,6 +424,40 @@ namespace SRCSharpTools
                 ? SRCAuthoring.Templates.QuickBattleTemplate.RewriteEvent(json, editing, named)
                 : SRCAuthoring.Templates.QuickBattleTemplate.EventText(json, named));
             return exit;
+        }
+
+        /// <summary>
+        /// 途中の話を、手で決めた始めの値から遊ぶ（7474/SRC#1692）。話のイベントファイルから、部隊・資金・話をまたぐ変数を作って
+        /// その話へ Continue するイベントのひな形を、シナリオの .srcsharp/start/話.eve に書く（--output で場所を変える。もうあれば書かない）
+        /// </summary>
+        private static int StartState(List<string> paths, Dictionary<string, string> options)
+        {
+            if (paths.Count == 0 || !File.Exists(paths[0]))
+            {
+                Console.Error.WriteLine("srcsharp start-state 話のイベントファイル [--output ファイル] [--force]");
+                return 2;
+            }
+            var episode = Path.GetFullPath(paths[0]);
+            var outline = ScenarioOutline.Analyze(ScenarioAnalyzer.FindScenarioRoot(episode), options.TryGetValue("app-path", out var appPath) ? appPath : null);
+            var root = outline.ScenarioRoot ?? Path.GetDirectoryName(episode);
+            var rel = Path.GetRelativePath(root, episode).Replace('\\', '/');
+            var text = SRCAuthoring.Templates.StartStateTemplate.Build(outline, rel);
+            if (text == null)
+            {
+                Console.Error.WriteLine($"{rel} は話のつながりにありません");
+                return 1;
+            }
+            var output = options.TryGetValue("output", out var o) ? o
+                : Path.Combine(root, SRCAuthoring.Templates.StartStateTemplate.Folder, Path.GetFileNameWithoutExtension(episode) + ".eve");
+            if (File.Exists(output) && !options.ContainsKey("force"))
+            {
+                Console.WriteLine(output);
+                return 0;
+            }
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output)));
+            File.WriteAllText(output, text, new System.Text.UTF8Encoding(true));
+            Console.WriteLine(output);
+            return 0;
         }
 
         private static void WriteState(ScreenScenarioRunner runner, ScenarioStateRecorder recorder, string path)

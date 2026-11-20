@@ -380,6 +380,41 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>途中の話を、手で決めた始めの値から遊ぶ（7474/SRC#1692）。ひな形のイベントで部隊を作り、インターミッションを通ってその話が始まる</summary>
+        [TestMethod]
+        public void StartState_PlaysIntoTheEpisodeWithTheHandMadeParty()
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "srcs-start-" + Guid.NewGuid());
+            var lantern = Path.Combine(Path.GetDirectoryName(corpus), "Content", "lantern");
+            var basicData = Path.Combine(Path.GetDirectoryName(corpus), "Content", "basic-data");
+            try
+            {
+                foreach (var file in Directory.GetFiles(lantern, "*", SearchOption.AllDirectories))
+                {
+                    var target = Path.Combine(folder, Path.GetRelativePath(lantern, file));
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    File.Copy(file, target);
+                }
+                var (exitCode, stdout, stderr) = Run("start-state", Path.Combine(folder, "ステージ", "03_煤の工場.eve"));
+                Assert.AreEqual(0, exitCode, stderr);
+                var start = stdout.Trim();
+                Assert.AreEqual(Path.Combine(folder, ".srcsharp", "start", "03_煤の工場.eve"), start);
+                StringAssert.Contains(File.ReadAllText(start), "Pilot ソラ 7");
+
+                var script = Path.Combine(folder, "start.play");
+                File.WriteAllText(script, "saveepisodes .srcsharp/episodes\nauto 50\nturns 1\nexpect error none\n");
+                (exitCode, stdout, stderr) = Run("play", start, "--script", script, "--app-path", basicData, "--skip-wait", "--seed", "1");
+                Assert.AreEqual(0, exitCode, stdout + stderr);
+                // 第3話のマップで、手で決めた部隊が動いた
+                StringAssert.Contains(stdout + stderr, "PHASE 灯機ホタル");
+                Assert.IsTrue(File.Exists(Path.Combine(folder, ".srcsharp", "episodes", "03_煤の工場.srcs")));
+            }
+            finally
+            {
+                Directory.Delete(folder, true);
+            }
+        }
+
         /// <summary>出来事を足す（7474/SRC#1692）。VS Code のフォームが呼ぶ srcsharp event-text</summary>
         [TestMethod]
         public void EventText_PrintsTheEventAndChecksNamesAgainstTheScenario()

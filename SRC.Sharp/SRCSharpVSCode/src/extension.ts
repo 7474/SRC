@@ -578,19 +578,41 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       const root = scenarioRoot(file);
       const episode = path.basename(file, path.extname(file));
       const save = path.join(root, '.srcsharp', 'episodes', `${episode}.srcs`);
+      // 手で決めた始めの値（srcsharp start-state のひな形を作者が書き換えたもの）。あれば、それで始める
+      const start = path.join(root, '.srcsharp', 'start', `${episode}.eve`);
+      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+      if (!fs.existsSync(save) && fs.existsSync(start)) {
+        await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(root)), {
+          type: 'srcsharp',
+          request: 'launch',
+          name: `SRC# ${episode}から遊ぶ（手で決めた始めの値）`,
+          program: start,
+          scenarioRoot: root,
+          interactive: true,
+        });
+        return;
+      }
       if (!fs.existsSync(save)) {
         const through = path.join(root, '全話.play');
         const first = path.join(root, '第1話.eve');
-        if (!fs.existsSync(through) || !fs.existsSync(first)) {
-          vscode.window.showInformationMessage(`SRC#: 「${episode}」の始めのセーブデータがありません。通しの自動プレイの手順（全話.play）に「saveepisodes .srcsharp/episodes」を書いて遊ぶと、インターミッションのたびに作られます。`);
-          return;
-        }
+        const canPlayThrough = fs.existsSync(through) && fs.existsSync(first);
+        const byHand = '始めの値を手で決める';
+        const playThrough = '第1話から通しで遊んで作る';
         const pick = await vscode.window.showInformationMessage(
-          `SRC#: 「${episode}」の始めのセーブデータがありません。第1話から通しで自動で遊んで作りますか？`, '作る');
-        if (pick !== '作る') {
+          `SRC#: 「${episode}」の始めのセーブデータがありません。${canPlayThrough ? '第1話から通しで自動で遊んで作るか、' : ''}部隊・資金・変数を手で決めて始めますか？`,
+          ...(canPlayThrough ? [playThrough, byHand] : [byHand]));
+        if (pick === byHand) {
+          const created = await run('start-state', [file, ...(appPath ? ['--app-path', appPath] : [])], root);
+          const target = created?.trim().split('\n').pop();
+          if (target && fs.existsSync(target)) {
+            await vscode.window.showTextDocument(vscode.Uri.file(target));
+            vscode.window.showInformationMessage(`SRC#: 部隊・資金・変数を書き換えてから、もう一度「この話から遊ぶ」を選んでください（${path.relative(root, target)}）。`);
+          }
           return;
         }
-        const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+        if (pick !== playThrough) {
+          return;
+        }
         await vscode.window.withProgress(
           { location: vscode.ProgressLocation.Notification, title: 'SRC#: 第1話から通しで自動で遊んでいます…' },
           () => run('play', [first, '--script', through, '--skip-wait', '--seed', '1', ...(appPath ? ['--app-path', appPath] : [])], root));
