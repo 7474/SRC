@@ -682,6 +682,11 @@ test('マップの配置: .eve からユニットを読み込み、ドラッグ�
   await expect(page.locator('.me-placements li').first()).toBeVisible();
   await expect(page.locator('.me-placements')).toContainText('ランタン号');
   await expect(page.locator('.me-placements')).toContainText('祈り手');
+  // 出来事（ターン 2 味方）で出る祈り手は、破線の印とラベルを添える（7474/SRC#1692）
+  const prayer = page.locator('.me-placements li', { hasText: '祈り手' }).first();
+  await expect(prayer).toContainText('ターン 2 味方');
+  await expect(prayer.locator('.me-dot-event')).toHaveCount(1);
+  await expect(page.locator('.me-placements li', { hasText: 'ランタン号' }).first().locator('.me-dot-event')).toHaveCount(0);
 
   // ランタン号を選んで移動力の目安が出ることを確かめ、(3,8) から (5,10) へドラッグする
   await page.locator('.me-placements li', { hasText: 'ランタン号' }).click();

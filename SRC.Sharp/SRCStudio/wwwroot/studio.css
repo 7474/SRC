@@ -103,6 +103,8 @@ main[hidden] { display: none; }
 .me-legend { display: flex; flex-wrap: wrap; gap: 4px 8px; font-size: 0.8em; color: var(--muted); }
 .me-legend span { display: inline-flex; align-items: center; gap: 4px; }
 .me-party-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.me-dot-event { border: 1.5px dashed currentColor; background: transparent; box-sizing: border-box; }
+.me-dot-goal { background: rgba(255, 212, 0, 0.45); border: 1.5px dashed #ffd400; box-sizing: border-box; }
 .me-placements { list-style: none; margin: 0; padding: 0; max-height: 280px; overflow: auto; border: 1px solid var(--border); }
 .me-placements li { padding: 3px 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent); font-size: 0.9em; }
 .me-placements li:last-child { border-bottom: none; }
