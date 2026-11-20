@@ -24,12 +24,12 @@ dotnet build SRC.Sharp/SRC.Sharp.sln -p:SrcSharpTargetFramework=net12.0 -p:Enabl
 | 何 | 内容 | 対応 |
 |---|---|---|
 | SkiaSharp | SkiaSharp の WebAssembly のネイティブライブラリは Emscripten の版ごとに入っている。.NET 11 は Emscripten 6.0.2 を使うが、4.155 以前には 3.1.34・3.1.56・5.0.6 向けしか無く、リンクできない（`undefined symbol: saveSetjmp`） | 6.0.2 向けが入った正式版（4.156.0 から）の 4.157.0 に全体をそろえた。管理側のライブラリには `net11.0` のターゲットがまだ無く、`net10.0` 向けのものが使われる |
-| SRC#Web が始まらない | マルチスレッドの WebAssembly で、起動の後に作ったスレッドが読み込み前の Web Worker に当たると止まる。SRC#Web では最初のタイマー（`Task.Delay` など）で止まり、そのあとは JS の呼び出しの結果も戻らず「読み込み中」のままになる。.NET 11.0.0 の正式版でも直っていない（[dotnet/runtime#136492](https://github.com/dotnet/runtime/issues/136492)。Emscripten の更新で `worker.loaded` が立たなくなった） | `index.html` の `Blazor.start` で、起動時に読み込んでおく Web Worker を増やす（`withConfig({ pthreadPoolInitialSize: 24 })`。既定は 7）。上流で直ったら消す |
+| SRC#Web が始まらない | マルチスレッドの WebAssembly で、起動の後に作ったスレッドが読み込み前の Web Worker に当たると止まる。SRC#Web では最初のタイマー（`Task.Delay` など）で止まり、そのあとは JS の呼び出しの結果も戻らず「読み込み中」のままになる。.NET 11.0.0 の正式版でも直っていない（[dotnet/runtime#136492](https://github.com/dotnet/runtime/issues/136492)。Emscripten の更新で `worker.loaded` が立たなくなった） | `index.html` の `Blazor.start` で、起動時に読み込んでおく Web Worker を増やす（`withConfig({ pthreadPoolInitialSize: 24 })`。既定は 7）。回避を外すと動かない。上流で直ったら消す（[#1704](https://github.com/7474/SRC/issues/1704)） |
 | Blazor WebAssembly のパッケージ | `Microsoft.AspNetCore.Components.WebAssembly`（`.DevServer`）は SDK とメジャーをそろえる | 11.0.0 にした |
 | SRC#Form の WinForms のアナライザー | Designer のファイルに手で書いたメンバー（VB の WithEvents から変換したプロパティ）が WFO3001 のエラーになる | プロパティを `*.Events.cs` に移した（動きは変わらない） |
 | SRC#Form の警告 | WFO3002（Designer のフィールドはメソッドの後ろに置く）・WFO2000（`CurrentPaintFont` が毎回新しいものを返す） | WFO3002 はフィールドの宣言を `InitializeComponent` の後ろに移した。WFO2000 は写しを返すのが意図なので、理由を書いて抑えた |
 
-ほかの依存パッケージは版を変えずに .NET 11 で動く。
+ほかの依存パッケージは、上げたときの最新の正式版にした（Roslyn の `Microsoft.CodeAnalysis.*` は SDK 11.0.100 のコンパイラと同じ 5.12.0。SDK のコンパイラより新しくするとアナライザーを読み込めない）。
 
 ## サポートの期間
 
