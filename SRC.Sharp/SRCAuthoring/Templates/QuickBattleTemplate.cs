@@ -475,6 +475,34 @@ namespace SRCAuthoring.Templates
             return string.Join("\r\n", lines) + "\r\n";
         }
 
+        /// <summary>
+        /// 出来事 1 つのイベント（7474/SRC#1692 の「出来事を足す」。かんたん作成の出来事と同じ書き方）。
+        /// JSON は出来事の項目（trigger・turn・phase・unit・target・ratio・talk・allies・enemies・retreat）。
+        /// named はシナリオにもう出ている名前のあるパイロット（援軍で出直すときは乗り換えて出す）
+        /// </summary>
+        public static string EventText(string json, IEnumerable<string> named = null)
+        {
+            var b = FromJson("{\"events\": [" + json + "]}");
+            return string.Join("\r\n", EventBlocks(b, carried: named, eventsOnly: true).SkipWhile(l => l.Length == 0)) + "\r\n";
+        }
+
+        /// <summary>出来事 1 つの書き間違い（Validate と同じ規則のうち、出来事のもの）</summary>
+        public static IReadOnlyList<string> ValidateEvent(string json, IEnumerable<string> pilots)
+        {
+            var b = FromJson("{\"events\": [" + json + "]}");
+            var known = new HashSet<string>(pilots ?? Enumerable.Empty<string>()) { "" };
+            var errors = new List<string>();
+            var e = b.Events.FirstOrDefault();
+            if (e == null)
+            {
+                return new[] { "出来事がありません" };
+            }
+            // 出来事の検査だけを使う（はじめのユニットが無い場面としては調べない）
+            var all = new HashSet<string>(known.Concat(e.Allies.Concat(e.Enemies).Select(u => u.Pilot ?? "")));
+            ValidateConditions(new QuickBattle { Events = b.Events }, errors, all, all, all);
+            return errors;
+        }
+
         /// <summary>前の話から続けて出る味方。前の話のデータがあれば Launch（機体が変われば Unit・Ride で乗り換える）、無ければ Create</summary>
         private static IEnumerable<string> CarriedAlly(QuickUnit u, string previousUnit)
         {
@@ -525,7 +553,7 @@ namespace SRCAuthoring.Templates
         /// 勝利条件・出来事・勝ち負けのイベント。同じラベルになるものは 1 つにまとめ、会話 → 援軍 → 退く → 勝ち負けの順に書く。
         /// ラベルは VB 版の SRC と同じく 1 回だけ起きる（常時イベントにしない）
         /// </summary>
-        private static IEnumerable<string> EventBlocks(QuickBattle b, string win = "GameClear", IEnumerable<string> carried = null)
+        private static IEnumerable<string> EventBlocks(QuickBattle b, string win = "GameClear", IEnumerable<string> carried = null, bool eventsOnly = false)
         {
             var victory = b.Victory.Count > 0 ? b.Victory : new List<QuickLine> { new QuickLine { Speaker = "システム", Text = "勝利！" } };
             var blocks = new List<Block>();
@@ -548,10 +576,13 @@ namespace SRCAuthoring.Templates
 
             // 名前のあるパイロット（ザコ・汎用でない）は 1 人だけ。落ちたあとに別の機体で出直すときは、乗り換えて出す
             var named = new HashSet<string>(b.Allies.Concat(b.Enemies).Select(u => u.Pilot).Where(IsNamed).Concat(carried ?? Enumerable.Empty<string>()));
-            var goalText = ConditionText(b, out var lossText);
-            var conditions = At("勝利条件:");
-            conditions.Notes.Add("マップのコマンド「作戦目的」で出す");
-            conditions.Talk.Add(new QuickLine { Speaker = "システム", Text = $"勝利条件：{goalText}\n敗北条件：{lossText}" });
+            if (!eventsOnly)
+            {
+                var goalText = ConditionText(b, out var lossText);
+                var conditions = At("勝利条件:");
+                conditions.Notes.Add("マップのコマンド「作戦目的」で出す");
+                conditions.Talk.Add(new QuickLine { Speaker = "システム", Text = $"勝利条件：{goalText}\n敗北条件：{lossText}" });
+            }
 
             foreach (var e in b.Events)
             {
@@ -605,7 +636,7 @@ namespace SRCAuthoring.Templates
                 }
             }
 
-            switch (b.Goal?.Kind)
+            switch (eventsOnly ? null : b.Goal?.Kind)
             {
                 case "boss":
                     Finish(At($"破壊 {Quote(b.Goal.Target)}:"), victory, win, $"{b.Goal.Target}を倒したら勝ち");
@@ -618,7 +649,7 @@ namespace SRCAuthoring.Templates
                     Finish(At($"進入 {who} {b.Goal.X} {b.Goal.Y}:"), victory, win, $"{(who == "味方" ? "味方" : b.Goal.Target)}が ({b.Goal.X},{b.Goal.Y}) に着いたら勝ち");
                     break;
             }
-            switch (b.Loss?.Kind)
+            switch (eventsOnly ? null : b.Loss?.Kind)
             {
                 case "unit":
                     Finish(At($"破壊 {Quote(b.Loss.Target)}:"), b.Defeat, "GameOver", $"{b.Loss.Target}が落ちたら負け");
@@ -628,8 +659,11 @@ namespace SRCAuthoring.Templates
                     break;
             }
             // 敵の全滅はいつでも勝ち、味方の全滅はいつでも負け
-            Finish(At("全滅 敵:"), victory, win, "敵が全滅したら勝ち");
-            Finish(At("全滅 味方:"), b.Defeat, "GameOver", "味方が全滅したら負け");
+            if (!eventsOnly)
+            {
+                Finish(At("全滅 敵:"), victory, win, "敵が全滅したら勝ち");
+                Finish(At("全滅 味方:"), b.Defeat, "GameOver", "味方が全滅したら負け");
+            }
 
             foreach (var block in blocks)
             {
