@@ -7,8 +7,8 @@ SRC# のアプリ・ツール・テストが使う .NET のメジャーを上げ
 | 何 | どこ | 内容 |
 |---|---|---|
 | ターゲットフレームワーク | `SRC.Sharp/Directory.Build.props` の `SrcSharpTargetFramework` | 既定は `net11.0`。各プロジェクトは `$(SrcSharpTargetFramework)` を使う（SRC#Form は `$(SrcSharpTargetFramework)-windows`）。ライブラリの SRCCore・SRCRender・SRCSound は `netstandard2.1` のまま |
-| パッケージの版 | `SRC.Sharp/Directory.Packages.props` | .NET の版（`Microsoft.AspNetCore.Components.WebAssembly*`・`Microsoft.Extensions.*`・`System.*`）は 11.0.0。SRC#Web だけ SkiaSharp を 4.156 の RC にする（下の「.NET 11 で変えたこと」） |
-| SDK | ワークフローの `dotnet-version: 11.0.x` | CI・Packages・Publish-*・CD-* |
+| パッケージの版 | `SRC.Sharp/Directory.Packages.props` | .NET の版（`Microsoft.AspNetCore.Components.WebAssembly*`・`Microsoft.Extensions.*`・`System.*`）は 11.0.0。SkiaSharp は 4.157.0（.NET 11 の WebAssembly 向けのネイティブライブラリが入っている版。下の「.NET 11 で変えたこと」） |
+| SDK | `global.json`（`11.0.100`・`rollForward: latestFeature`）と、ワークフローの `dotnet-version: 11.0.x` | CI・Packages・Publish-*・CD-*。GitHub Actions のイメージは新しい SDK を先に持つので、`global.json` で SDK のメジャーを固める（#1599） |
 | Docker | `SRC.Sharp/SRCDataLinter/Dockerfile` | `mcr.microsoft.com/dotnet/*:11.0-resolute`（Ubuntu 26.04。.NET 11 には noble 版のイメージが無い） |
 
 次の .NET を手元で試すときは、その SDK を入れて `-p:SrcSharpTargetFramework=<TFM>` を付ける。
@@ -23,7 +23,7 @@ dotnet build SRC.Sharp/SRC.Sharp.sln -p:SrcSharpTargetFramework=net12.0 -p:Enabl
 
 | 何 | 内容 | 対応 |
 |---|---|---|
-| SRC#Web の SkiaSharp | SkiaSharp の WebAssembly のネイティブライブラリは Emscripten の版ごとに入っている。.NET 11 は Emscripten 6.0.2 を使うが、正式版の 4.155.0 には 3.1.34・3.1.56・5.0.6 向けしか無く、リンクできない（`undefined symbol: saveSetjmp`） | SRC#Web だけ 4.156.0-rc.1（6.0.2 向けが入っている）を使う（`Directory.Packages.props` の `MSBuildProjectName == 'SRCSharpWeb'` の `ItemGroup`）。デスクトップは 4.155.0 のまま。4.156.0 の正式版が出たら全体をそれにして、この `ItemGroup` を消す |
+| SkiaSharp | SkiaSharp の WebAssembly のネイティブライブラリは Emscripten の版ごとに入っている。.NET 11 は Emscripten 6.0.2 を使うが、4.155 以前には 3.1.34・3.1.56・5.0.6 向けしか無く、リンクできない（`undefined symbol: saveSetjmp`） | 6.0.2 向けが入った正式版（4.156.0 から）の 4.157.0 に全体をそろえた。管理側のライブラリには `net11.0` のターゲットがまだ無く、`net10.0` 向けのものが使われる |
 | SRC#Web が始まらない | マルチスレッドの WebAssembly で、起動の後に作ったスレッドが読み込み前の Web Worker に当たると止まる。SRC#Web では最初のタイマー（`Task.Delay` など）で止まり、そのあとは JS の呼び出しの結果も戻らず「読み込み中」のままになる。.NET 11.0.0 の正式版でも直っていない（[dotnet/runtime#136492](https://github.com/dotnet/runtime/issues/136492)。Emscripten の更新で `worker.loaded` が立たなくなった） | `index.html` の `Blazor.start` で、起動時に読み込んでおく Web Worker を増やす（`withConfig({ pthreadPoolInitialSize: 24 })`。既定は 7）。上流で直ったら消す |
 | Blazor WebAssembly のパッケージ | `Microsoft.AspNetCore.Components.WebAssembly`（`.DevServer`）は SDK とメジャーをそろえる | 11.0.0 にした |
 | SRC#Form の WinForms のアナライザー | Designer のファイルに手で書いたメンバー（VB の WithEvents から変換したプロパティ）が WFO3001 のエラーになる | プロパティを `*.Events.cs` に移した（動きは変わらない） |
@@ -41,8 +41,8 @@ dotnet build SRC.Sharp/SRC.Sharp.sln -p:SrcSharpTargetFramework=net12.0 -p:Enabl
 
 次の .NET の正式版が出てから行う（[.NET のリリース](https://github.com/dotnet/core/tree/main/release-notes)）。
 
-1. `SRC.Sharp/Directory.Build.props` の `SrcSharpTargetFramework` の既定を上げる。ターゲットを直に書いているプロジェクト（`SRC.Sharp` の外の `tools/pack-analysis`・`tools/pack-stats`）も上げる
-2. `SRC.Sharp/Directory.Packages.props` の .NET の版（`Microsoft.AspNetCore.Components.WebAssembly*`・`Microsoft.Extensions.*`・`System.*`）を新しい正式版にする。SRC#Web の SkiaSharp は、その .NET の Emscripten の版のネイティブライブラリが入っているかを確かめる（`skiasharp.nativeassets.webassembly` のパッケージの `buildTransitive/netstandard1.0/libSkiaSharp.a/<Emscripten の版>/`）
+1. `global.json` の SDK の版と、`SRC.Sharp/Directory.Build.props` の `SrcSharpTargetFramework` の既定を上げる。ターゲットを直に書いているプロジェクト（`SRC.Sharp` の外の `tools/pack-analysis`・`tools/pack-stats`）も上げる
+2. `SRC.Sharp/Directory.Packages.props` の .NET の版（`Microsoft.AspNetCore.Components.WebAssembly*`・`Microsoft.Extensions.*`・`System.*`）を新しい正式版にする。SkiaSharp は、その .NET の Emscripten の版のネイティブライブラリが入っているかを確かめる（`skiasharp.nativeassets.webassembly` のパッケージの `buildTransitive/netstandard1.0/libSkiaSharp.a/<Emscripten の版>/`）
 3. ワークフローの `dotnet-version` を上げる（CI・Packages・Publish-*・CD-*）
 4. `SRC.Sharp/SRCDataLinter/Dockerfile` の土台のイメージを上げる（Dependabot の対象外。`.github/dependabot.yml`）。Ubuntu の版のタグがあるかを [MCR](https://mcr.microsoft.com/v2/dotnet/runtime/tags/list) で確かめる
 5. 版を書いている所を直す: `README.md`、ヘルプ（動作環境・SRCSharpのインストール・SRCSharpFormの使い方・インストール時のエラーへの対処）、VS Code 拡張（`src/server.ts` の `DOTNET_DOWNLOAD_URL`・`src/settings.ts`・`package.json`・`README.md`）、`docs/logging.md`、`docs/releases/template.md`、出力先のパス（`bin/*/net11.0/`）を書いた文書とスクリプト（`tools/compat_play.py`・`SRC.Sharp/Compat`・`tools/pack-*`）

@@ -544,7 +544,7 @@ namespace SRCAuthoring.Templates
             "",
             "      - uses: actions/setup-dotnet@v4",
             "        with:",
-            "          dotnet-version: '10.0.x'",
+            "          dotnet-version: '11.0.x'",
             "",
             "      - name: Install srcsharp",
             "        run: dotnet tool install -g SRCSharpTools",

@@ -72,8 +72,8 @@ else
             await Task.Delay(2000, token);
             if (!token.IsCancellationRequested)
             {
+                // イベントハンドラーが終わると描き直されるので、StateHasChanged は要らない（BL0012）
                 copied = false;
-                StateHasChanged();
             }
         }
         catch (OperationCanceledException)
