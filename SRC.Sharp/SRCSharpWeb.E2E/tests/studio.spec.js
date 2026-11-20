@@ -307,6 +307,8 @@ async function routeSrcData(page, scenes = null) {
     'GSCデータパック/ロボ/ランタン/pilot.txt': fs.readFileSync(path.join(lantern, 'Data', 'ランタン', 'pilot.txt')),
     'GSCデータパック/ロボ/System/alias.txt': Buffer.from('# 別名\r\n'),
     'scenes/maps/harbor.map': fs.readFileSync(path.join(lantern, '01_灯の港.map')),
+    // 高さが 15 マスに満たないマップ（遊ぶときにドラッグでスクロールしない）
+    'scenes/maps/narrow.map': Buffer.from(['MapData', '', '20,14', ...Array(20 * 14).fill('17,0'), ''].join('\r\n')),
   };
   const requested = [];
   await page.route('https://raw.githubusercontent.com/7474/SRC-Data/master/**', route => {
@@ -582,6 +584,8 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
   await expect(page.locator('.q-gallery')).not.toHaveAttribute('open', '');
   await expect(page.locator('.q-map option:checked')).toHaveText('灯の港の戦い');
   await expect(page.locator('.q-scene-about')).toHaveText('港での小競り合い');
+  // 20×20 のマップなので、ドラッグでスクロールできないとは知らせない
+  await expect(page.locator('.q-small-map')).toHaveCount(0);
 
   // 何も選んでいなければ尋ねずに入れる
   await expect(page.locator('.q-chosen li')).toContainText('ランタン');
@@ -610,6 +614,26 @@ test('かんたん作成: 場面のカタログのサンプル（マップ・置
   expect(text).toContain(source);
   expect(text).toContain('ChangeMap 第1話.map');
   expect(text).toMatch(/破壊 リオ:\r\nTalk リオ\r\nまだ終わらない……\r\nEnd\r\nCreate 敵 灯機ツバメ 0 グスタフ 9 16 4\r\n/);
+});
+
+test('かんたん作成: 幅か高さが 15 マスに満たないマップは、遊ぶときにドラッグでスクロールできないことを知らせる', async ({ page }) => {
+  await routeSrcData(page, {
+    scenes: [{ id: 'narrow', title: '細い谷', map: 'maps/narrow.map', allies: [{ x: 3, y: 7 }], enemies: [{ x: 17, y: 7 }] }],
+  });
+  await open(page, 'quick');
+  // 平地は 15 マスより小さくできない（元の SRC は 15 マス未満のマップをドラッグでスクロールしない）
+  await expect(page.locator('.q-small-map')).toHaveCount(0);
+  await page.locator('.q-height').fill('10');
+  await page.locator('.q-height').dispatchEvent('change');
+  await expect(page.locator('.q-height')).toHaveValue('15');
+  await expect(page.locator('.q-small-map')).toHaveCount(0);
+
+  // 20×14 のサンプルのマップを選ぶと知らせる
+  await page.locator('.q-map').selectOption({ label: '細い谷' });
+  await expect(page.locator('.q-small-map')).toContainText('ドラッグしてスクロールできません');
+  // 平地に戻すと消える
+  await page.locator('.q-map').selectOption({ index: 0 });
+  await expect(page.locator('.q-small-map')).toHaveCount(0);
 });
 
 test('かんたん作成: 内容をリセットすると、選んだ作品・マップ・ユニット・セリフ・題名と下書きが消える', async ({ page }) => {

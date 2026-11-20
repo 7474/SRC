@@ -14,6 +14,9 @@ const DATA_FILES = new Set(['alias.txt', 'sp.txt', 'mind.txt', 'pilot.txt', 'non
   'pilot_message.txt', 'pilot_dialog.txt', 'effect.txt', 'animation.txt', 'ext_animation.txt', 'item.txt', 'include.eve']);
 const DRAFT_KEY = 'srcstudio.quick';
 const CELL = 26;
+// SRC は幅か高さが 15 マス未満のマップをドラッグでスクロールしない（Main.frm の picMain_MouseMove。SRC# も同じ）。
+// 平地はこれより小さくせず、選んだマップが小さければ知らせる
+const MIN_DRAG_SIZE = 15;
 
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -130,7 +133,9 @@ export class QuickBuilder {
   }
 
   usePlain() {
-    Object.assign(this.battle, { mapSource: '', mapText: undefined, spots: null });
+    const b = this.battle;
+    // 平地は 15 マスより小さくしない（選んでいたマップが小さくても）
+    Object.assign(b, { mapSource: '', mapText: undefined, spots: null, width: Math.max(MIN_DRAG_SIZE, b.width), height: Math.max(MIN_DRAG_SIZE, b.height) });
     this.mapTiles = null;
   }
 
@@ -778,11 +783,12 @@ export class QuickBuilder {
           <button type="button" class="q-map-file">${esc(t('quick.mapFile'))}</button>
           <input type="file" class="q-map-input" accept=".map" hidden>
           <span class="q-size" ${b.mapSource ? 'hidden' : ''}>
-            <label class="q-field">${esc(t('map.width'))} <input class="q-width" type="number" min="5" max="50" value="${b.width}"></label>
-            <label class="q-field">${esc(t('map.height'))} <input class="q-height" type="number" min="5" max="50" value="${b.height}"></label>
+            <label class="q-field">${esc(t('map.width'))} <input class="q-width" type="number" min="${MIN_DRAG_SIZE}" max="50" value="${b.width}"></label>
+            <label class="q-field">${esc(t('map.height'))} <input class="q-height" type="number" min="${MIN_DRAG_SIZE}" max="50" value="${b.height}"></label>
           </span>
         </div>
         ${currentScene?.description ? `<p class="q-scene-about">${esc(currentScene.description)}</p>` : ''}
+        ${b.width < MIN_DRAG_SIZE || b.height < MIN_DRAG_SIZE ? `<p class="q-small-map hint">${esc(t('quick.smallMap', MIN_DRAG_SIZE))}</p>` : ''}
         <p class="hint">${esc(t('quick.placeHint'))}</p>
         <p class="q-legend hint"><span class="q-key allies"></span>${esc(t('quick.allies'))}<span class="q-key enemies"></span>${esc(t('quick.enemies'))}<span class="q-key spot"></span>${esc(t('quick.spot'))}<span class="q-key boss"></span>${esc(t('quick.boss'))}<span class="q-key reinforce"></span>${esc(t('quick.reinforceKey'))}<span class="q-key goal"></span>${esc(t('quick.goalKey'))}</p>
         <div class="q-board"><canvas class="q-canvas"></canvas></div>
@@ -988,8 +994,11 @@ export class QuickBuilder {
       this.saveDraft();
     });
     const resize = () => {
-      this.battle.width = Math.max(5, Math.min(50, Number($('.q-width').value) || 20));
-      this.battle.height = Math.max(5, Math.min(50, Number($('.q-height').value) || 15));
+      this.battle.width = Math.max(MIN_DRAG_SIZE, Math.min(50, Number($('.q-width').value) || 20));
+      this.battle.height = Math.max(MIN_DRAG_SIZE, Math.min(50, Number($('.q-height').value) || 15));
+      $('.q-width').value = this.battle.width;
+      $('.q-height').value = this.battle.height;
+      $('.q-small-map')?.remove();
       this.clampUnits();
       this.saveDraft();
       this.drawBoard();
