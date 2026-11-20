@@ -208,6 +208,11 @@ namespace SRCAuthoring.Tests
             // 補助サブルーチンのみのファイルはノイズとして入らない
             Assert.IsFalse(lanternFlow.Nodes.Any(n => n.Path == "Lib/灯台の記録.eve"));
             Assert.IsFalse(lanternFlow.Nodes.Any(n => n.Path == "Lib/include.eve"));
+            // 加入・離脱を話に重ねる（7474/SRC#1692）
+            var first = lanternFlow.Nodes.Single(n => n.Path == "01_灯の港.eve");
+            CollectionAssert.IsSubsetOf(new[] { "ソラ", "リオ", "ミュウ" }, first.Joins);
+            CollectionAssert.Contains(lanternFlow.Nodes.Single(n => n.Path == "ステージ/04_月下の追撃.eve").Leaves, "グスタフ");
+            StringAssert.Contains(lanternFlow.ToMermaid(), "01_灯の港.eve<br/>＋");
 
             var torres = Path.Combine(root, "Compat", "torres");
             var torresFlow = new ScenarioFlowAnalyzer().Analyze(torres);

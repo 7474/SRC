@@ -14,6 +14,8 @@ export interface FlowNode {
   entry: boolean;
   line: number;
   labels: string[];
+  joins?: string[];
+  leaves?: string[];
 }
 
 export interface FlowEdge {
@@ -335,6 +337,7 @@ svg.flow-svg { display: block; min-width: 100%; }
 .node-group:hover .node-box { filter: brightness(1.15); stroke-width: 2.8; }
 .node-title { fill: var(--vscode-foreground); font-size: 12.5px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
 .node-sub { fill: var(--vscode-descriptionForeground); font-size: 10.5px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
+.node-cast { fill: var(--vscode-charts-green, #89d185); font-size: 10.5px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
 .edge-group { cursor: pointer; }
 .edge-path { fill: none; stroke: var(--vscode-foreground); stroke-opacity: 0.65; stroke-width: 1.7; }
 .edge-group.exec .edge-path { stroke-width: 2.5; stroke: var(--vscode-textLink-foreground); }
@@ -521,7 +524,9 @@ const SCRIPT = `
     }
 
     const NODE_W = 200;
-    const NODE_H = 52;
+    // 加入・離脱（7474/SRC#1692）を 3 行目に出すときは高くする
+    const castOf = (n) => [...(n.joins || []).map((x) => '＋' + x), ...(n.leaves || []).map((x) => '－' + x)].join(' ');
+    const NODE_H = nodes.some((n) => castOf(n)) ? 70 : 52;
     const GAP_X = 48;
     const GAP_Y = 64;
     const PAD = 32;
@@ -661,7 +666,10 @@ const SCRIPT = `
         rx: radius,
         ry: radius,
       });
-      rect.appendChild(svgEl('title', null, node.fullPath || node.path));
+      const cast = castOf(node);
+      rect.appendChild(svgEl('title', null, (node.fullPath || node.path)
+        + ((node.joins || []).length ? '\\n加入: ' + node.joins.join('、') : '')
+        + ((node.leaves || []).length ? '\\n離脱: ' + node.leaves.join('、') : '')));
       g.appendChild(rect);
 
       const mainTitle = truncate(node.kind === 'GameClear' ? 'クリア (GameClear)' : (node.kind === 'LoadData' ? 'Load: ' + node.title : node.title), 22);
@@ -673,9 +681,15 @@ const SCRIPT = `
             ? ''
             : truncate(node.path, 26);
 
-      g.appendChild(svgEl('text', { class: 'node-title', x: p.x + p.w / 2, y: p.y + (subTitle ? p.h * 0.38 : p.h * 0.5) }, mainTitle));
-      if (subTitle) {
-        g.appendChild(svgEl('text', { class: 'node-sub', x: p.x + p.w / 2, y: p.y + p.h * 0.7 }, subTitle));
+      if (cast) {
+        g.appendChild(svgEl('text', { class: 'node-title', x: p.x + p.w / 2, y: p.y + p.h * 0.27 }, mainTitle));
+        g.appendChild(svgEl('text', { class: 'node-sub', x: p.x + p.w / 2, y: p.y + p.h * 0.52 }, subTitle));
+        g.appendChild(svgEl('text', { class: 'node-cast', x: p.x + p.w / 2, y: p.y + p.h * 0.8 }, truncate(cast, 24)));
+      } else {
+        g.appendChild(svgEl('text', { class: 'node-title', x: p.x + p.w / 2, y: p.y + (subTitle ? p.h * 0.38 : p.h * 0.5) }, mainTitle));
+        if (subTitle) {
+          g.appendChild(svgEl('text', { class: 'node-sub', x: p.x + p.w / 2, y: p.y + p.h * 0.7 }, subTitle));
+        }
       }
 
       if (node.fullPath) {

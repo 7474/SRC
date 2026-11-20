@@ -47,6 +47,10 @@ namespace SRCAuthoring.Analysis
         public bool IsEntry { get; set; }
         public int FirstLine { get; set; } = 1;
         public List<string> Labels { get; } = new List<string>();
+        /// <summary>この話で加わる味方（Create 味方・Join のパイロット。7474/SRC#1692）</summary>
+        public List<string> Joins { get; } = new List<string>();
+        /// <summary>この話で抜ける味方（Leave）</summary>
+        public List<string> Leaves { get; } = new List<string>();
     }
 
     public sealed class FlowEdge
@@ -239,6 +243,8 @@ namespace SRCAuthoring.Analysis
                     entry = n.IsEntry,
                     line = n.FirstLine,
                     labels = n.Labels,
+                    joins = n.Joins,
+                    leaves = n.Leaves,
                 }),
                 edges = Edges.Select(e => new
                 {
@@ -283,8 +289,15 @@ namespace SRCAuthoring.Analysis
                 FlowNodeKind.LoadData => $"Load: {node.Title}",
                 FlowNodeKind.GameClear => "クリア\n(GameClear)",
                 FlowNodeKind.Missing => $"? {node.Title}\n(見つかりません)",
-                _ => node.Path,
+                _ => node.Path + CastLabel(node),
             };
+        }
+
+        /// <summary>加入・離脱（「＋ミュウ ／ －リオ」）</summary>
+        private static string CastLabel(FlowNode node)
+        {
+            var parts = node.Joins.Select(x => "＋" + x).Concat(node.Leaves.Select(x => "－" + x)).ToList();
+            return parts.Count == 0 ? "" : "\n" + string.Join(" ", parts);
         }
 
         private static string FormatEdgeLabel(FlowEdge edge)
@@ -491,6 +504,8 @@ namespace SRCAuthoring.Analysis
                 if (fileInfos.TryGetValue(relPath, out var sf))
                 {
                     node.Labels.AddRange(sf.Labels);
+                    node.Joins.AddRange(sf.Joins);
+                    node.Leaves.AddRange(sf.Leaves);
                     if (sf.Labels.Count > 0)
                     {
                         node.FirstLine = sf.FirstLabelLine;
@@ -986,6 +1001,23 @@ namespace SRCAuthoring.Analysis
 
                 var cond = BuildConditionString(condStack);
 
+                // 加入・離脱（話のつながりの図に重ねる）
+                if (cmd.Name == CmdType.CreateCmd && cmd.ArgNum >= 5 && cmd.GetArg(2) == "味方")
+                {
+                    AddOnce(scanned.Joins, cmd.GetArg(5));
+                }
+                else if (cmd.Name == CmdType.JoinCmd && cmd.ArgNum >= 2)
+                {
+                    AddOnce(scanned.Joins, cmd.GetArg(2));
+                }
+                else if (cmd.Name == CmdType.LeaveCmd)
+                {
+                    for (var j = 2; j <= cmd.ArgNum; j++)
+                    {
+                        AddOnce(scanned.Leaves, cmd.GetArg(j));
+                    }
+                }
+
                 if (cmd.Name == CmdType.SetCmd && cmd.ArgNum >= 3)
                 {
                     var varName = cmd.GetArg(2);
@@ -1363,6 +1395,14 @@ namespace SRCAuthoring.Analysis
             public bool IsDynamic { get; set; }
         }
 
+        private static void AddOnce(List<string> list, string name)
+        {
+            if (!string.IsNullOrEmpty(name) && !list.Contains(name))
+            {
+                list.Add(name);
+            }
+        }
+
         private sealed class ScannedFile
         {
             public string FullPath { get; set; }
@@ -1370,6 +1410,8 @@ namespace SRCAuthoring.Analysis
             public bool HasStageLabels { get; set; }
             public int FirstLabelLine { get; set; } = 1;
             public List<string> Labels { get; } = new List<string>();
+            public List<string> Joins { get; } = new List<string>();
+            public List<string> Leaves { get; } = new List<string>();
             public List<string> Includes { get; } = new List<string>();
             public List<RawEdge> NextStageAssignments { get; } = new List<RawEdge>();
             public List<RawEdge> RawEdges { get; } = new List<RawEdge>();

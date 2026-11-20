@@ -116,7 +116,7 @@ srcsharp new 私のシナリオ --title "私のシナリオ" --episodes 3
 
 ### 3.5. 話のつながり・イベントの流れ・会話を確かめる
 
-複数話や分岐が増えてきたら、VS Code の「SRC#: 話のつながりの図を表示」（イベントエディタ右上のボタン・操作パネル）を開きます。`Continue`・`次ステージ`・`Exec`・`IntermissionCommand`・`Load`・`GameClear` と `If`/`Switch` の分岐をたどり、話の流れの図を出します。図のノードや矢印をクリックすると、該当する `.eve` ファイルの行へ飛びます。
+複数話や分岐が増えてきたら、VS Code の「SRC#: 話のつながりの図を表示」（イベントエディタ右上のボタン・操作パネル）を開きます。`Continue`・`次ステージ`・`Exec`・`IntermissionCommand`・`Load`・`GameClear` と `If`/`Switch` の分岐をたどり、話の流れの図を出します。矢印には分岐の条件（`If` の式・`Switch` の値）を、話には加わる味方（＋）と抜ける味方（－）を添えます。図のノードや矢印をクリックすると、該当する `.eve` ファイルの行へ飛びます。
 
 コマンドラインでも Mermaid・Markdown・JSON で出せます。
 
