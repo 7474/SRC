@@ -669,7 +669,7 @@ jobs:
         fi
 
     - name: Generate Coverage Report
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.6.0
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.6.1
       with:
         reports: TestResults/**/coverage.cobertura.xml
         targetdir: CoverageReport
