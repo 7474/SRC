@@ -21,6 +21,8 @@ export class AssetsView {
     this.data = null;
     this.readmeText = '';
     this.filter = 'all';
+    this.kindFilter = '';
+    this.query = '';
     this.showReadme = false;
   }
 
@@ -61,7 +63,35 @@ export class AssetsView {
       this.hooks.onMessage?.(t(copied ? 'assets.readmeCopied' : 'assets.readmeReady'), 'info');
     });
     actions.append(refreshBtn, readmeBtn);
-    toolbar.append(actions);
+
+    const filters = el('div', 'assets-filters');
+    const kindSelect = el('select', 'assets-kind-filter');
+    kindSelect.setAttribute('aria-label', t('assets.col.kind'));
+    for (const [val, text] of [['', t('assets.kind.all')], ['image', t('assets.kind.image')], ['sound', t('assets.kind.sound')], ['map', t('assets.kind.map')]]) {
+      const opt = el('option', '', text);
+      opt.value = val;
+      if (val === this.kindFilter) {
+        opt.selected = true;
+      }
+      kindSelect.append(opt);
+    }
+    kindSelect.addEventListener('change', () => {
+      this.kindFilter = kindSelect.value;
+      this.renderContent();
+    });
+
+    const search = el('input', 'assets-search');
+    search.type = 'search';
+    search.value = this.query;
+    search.placeholder = t('assets.search');
+    search.setAttribute('aria-label', t('assets.search'));
+    search.addEventListener('input', () => {
+      this.query = search.value;
+      this.renderContent();
+    });
+    filters.append(kindSelect, search);
+
+    toolbar.append(actions, filters);
     this.root.append(toolbar);
 
     const rootsLine = (this.data.roots ?? [])
@@ -104,10 +134,28 @@ export class AssetsView {
       this.root.append(box);
     }
 
+    const content = el('div', 'assets-content');
+    this.root.append(content);
+    this.renderContent(content);
+  }
+
+  renderContent(content = this.root.querySelector('.assets-content')) {
+    if (!content || !this.data) {
+      return;
+    }
+    content.innerHTML = '';
+    const assets = this.data.assets ?? [];
+    const dynamic = this.data.dynamic ?? [];
+    const unused = this.data.unused ?? [];
+    const q = this.query.trim().toLowerCase();
+    const matchKind = a => !this.kindFilter || a.kind === this.kindFilter;
+    const matchText = text => !q || String(text ?? '').toLowerCase().includes(q);
+
     if (this.filter === 'all' || this.filter === 'missing' || this.filter === 'external') {
-      const list = this.filter === 'missing' ? assets.filter(a => a.missing)
+      const base = this.filter === 'missing' ? assets.filter(a => a.missing)
         : this.filter === 'external' ? assets.filter(a => !a.missing && a.foundIn !== 'scenario')
         : assets;
+      const list = base.filter(a => matchKind(a) && matchText(`${a.name} ${a.foundPath ?? ''} ${(a.usages ?? []).map(u => u.file).join(' ')}`));
       const sec = el('section', 'assets-block');
       sec.append(el('h3', '', t('assets.section.referenced')));
       if (list.length === 0) {
@@ -124,7 +172,30 @@ export class AssetsView {
         for (const a of list) {
           const tr = el('tr');
           tr.dataset.asset = a.name;
-          tr.append(el('td', 'assets-name', a.name));
+          const nameTd = el('td', 'assets-name');
+          if (a.kind === 'image' && !a.missing && this.hooks.loadImage && a.foundPath) {
+            const thumb = el('canvas', 'assets-thumb');
+            thumb.width = 24;
+            thumb.height = 24;
+            thumb.hidden = true;
+            thumb.title = a.foundPath;
+            nameTd.append(thumb);
+            this.hooks.loadImage(a.foundIn, a.foundPath).then(img => {
+              if (!img || !thumb.isConnected) {
+                return;
+              }
+              const ctx = thumb.getContext('2d');
+              const scale = Math.min(24 / img.width, 24 / img.height);
+              const w = Math.max(1, Math.round(img.width * scale));
+              const h = Math.max(1, Math.round(img.height * scale));
+              ctx.imageSmoothingEnabled = false;
+              ctx.clearRect(0, 0, 24, 24);
+              ctx.drawImage(img, Math.floor((24 - w) / 2), Math.floor((24 - h) / 2), w, h);
+              thumb.hidden = false;
+            }, () => {});
+          }
+          nameTd.append(document.createTextNode(a.name));
+          tr.append(nameTd);
           tr.append(el('td', '', KIND_LABELS[a.kind]?.() ?? a.kind));
           const where = el('td');
           if (a.missing) {
@@ -141,40 +212,42 @@ export class AssetsView {
         table.append(thead, tbody);
         sec.append(table);
       }
-      this.root.append(sec);
+      content.append(sec);
     }
 
     if (this.filter === 'all' || this.filter === 'dynamic') {
+      const list = dynamic.filter(d => matchText(`${d.file} ${d.text}`));
       const sec = el('section', 'assets-block');
       sec.append(el('h3', '', t('assets.section.dynamic')));
-      if (dynamic.length === 0) {
+      if (list.length === 0) {
         sec.append(el('p', 'hint', t('assets.none')));
       } else {
         const ul = el('ul', 'assets-list');
-        for (const d of dynamic) {
+        for (const d of list) {
           const li = el('li');
           li.append(el('span', 'assets-loc', `${d.file}:${d.line} `), el('code', '', d.text));
           ul.append(li);
         }
         sec.append(ul);
       }
-      this.root.append(sec);
+      content.append(sec);
     }
 
     if (this.filter === 'all' || this.filter === 'unused') {
+      const list = unused.filter(u => matchText(u));
       const sec = el('section', 'assets-block');
       sec.append(el('h3', '', t('assets.section.unused')));
       sec.append(el('p', 'hint', t('assets.unusedNote')));
-      if (unused.length === 0) {
+      if (list.length === 0) {
         sec.append(el('p', 'hint', t('assets.none')));
       } else {
         const ul = el('ul', 'assets-list');
-        for (const u of unused) {
+        for (const u of list) {
           ul.append(el('li', 'assets-name', u));
         }
         sec.append(ul);
       }
-      this.root.append(sec);
+      content.append(sec);
     }
   }
 

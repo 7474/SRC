@@ -17,6 +17,7 @@ export class OutlineView {
     this.section = 'findings';
     this.episode = '';
     this.speaker = '';
+    this.query = '';
     this.selected = null;
     this.talk = null;
   }
@@ -78,11 +79,20 @@ export class OutlineView {
     }
     this.root.append(tabs);
 
-    if (this.section === 'events' || this.section === 'script') {
+    if (this.section === 'events' || this.section === 'script' || this.section === 'variables') {
       this.root.append(this.filters());
     }
     const body = el('div', 'ol-body');
     this.root.append(body);
+    this.renderBody(body);
+  }
+
+  renderBody(body = this.root.querySelector('.ol-body')) {
+    if (!body || !this.data) {
+      return;
+    }
+    body.innerHTML = '';
+    this.talk = null;
     switch (this.section) {
       case 'findings':
         this.renderFindings(body);
@@ -102,24 +112,44 @@ export class OutlineView {
     }
   }
 
+  updateFilterCount(shown, total) {
+    const badge = this.root.querySelector('.ol-filter-count');
+    if (badge) {
+      badge.textContent = shown < total ? t('outline.count', shown, total) : '';
+    }
+  }
+
   filters() {
     const d = this.data;
     const box = el('div', 'ol-filters');
-    const episodes = select([['', t('outline.allEpisodes')], ...d.episodes.map(e => [e.title, e.title])], this.episode, v => {
-      this.episode = v;
-      this.render();
-    });
-    episodes.id = 'ol-episode';
-    box.append(label(t('outline.episode'), episodes));
+    if (this.section === 'events' || this.section === 'script') {
+      const episodes = select([['', t('outline.allEpisodes')], ...d.episodes.map(e => [e.title, e.title])], this.episode, v => {
+        this.episode = v;
+        this.renderBody();
+      });
+      episodes.id = 'ol-episode';
+      box.append(label(t('outline.episode'), episodes));
+    }
     if (this.section === 'script') {
       const speakers = [...new Set(d.script.map(l => l.speaker || ''))].filter(Boolean);
       const sp = select([['', t('outline.allSpeakers')], ...speakers.map(s => [s, s])], this.speaker, v => {
         this.speaker = v;
-        this.render();
+        this.renderBody();
       });
       sp.id = 'ol-speaker';
       box.append(label(t('outline.speaker'), sp));
     }
+    const search = el('input', 'ol-search');
+    search.type = 'search';
+    search.id = 'ol-search';
+    search.value = this.query;
+    search.placeholder = t('outline.search');
+    search.setAttribute('aria-label', t('outline.search'));
+    search.addEventListener('input', () => {
+      this.query = search.value;
+      this.renderBody();
+    });
+    box.append(search, el('span', 'ol-filter-count hint', ''));
     return box;
   }
 
@@ -172,18 +202,33 @@ export class OutlineView {
 
   renderEvents(body) {
     const d = this.data;
+    const q = this.query.trim().toLowerCase();
+    let total = 0;
     const rows = [];
     for (const e of d.episodes.filter(x => !this.episode || x.title === this.episode)) {
       for (const ev of e.events) {
-        rows.push([e.title, `${ev.always ? '*' : ''}${ev.label}`, ev.when, list(ev.conditions), list(ev.actions) + (ev.talkLines ? `（${t('outline.talkLines', ev.talkLines)}）` : ''), this.link(ev.file, ev.line)]);
+        total++;
+        const labelText = `${ev.always ? '*' : ''}${ev.label}`;
+        const condText = list(ev.conditions);
+        const actText = list(ev.actions) + (ev.talkLines ? `（${t('outline.talkLines', ev.talkLines)}）` : '');
+        if (q && !`${e.title} ${labelText} ${ev.when ?? ''} ${condText} ${actText} ${ev.file ?? ''}`.toLowerCase().includes(q)) {
+          continue;
+        }
+        rows.push([e.title, labelText, ev.when, condText, actText, this.link(ev.file, ev.line)]);
       }
     }
+    this.updateFilterCount(rows.length, total);
     body.append(table([t('outline.col.episode'), t('outline.col.label'), t('outline.col.when'), t('outline.col.conditions'), t('outline.col.actions'), t('outline.col.where')], rows));
   }
 
   renderScript(body) {
     const d = this.data;
-    const lines = d.script.filter(l => (!this.episode || l.episode === this.episode) && (!this.speaker || l.speaker === this.speaker));
+    const q = this.query.trim().toLowerCase();
+    const baseLines = d.script.filter(l => (!this.episode || l.episode === this.episode) && (!this.speaker || l.speaker === this.speaker));
+    const lines = q
+      ? baseLines.filter(l => `${l.episode ?? ''} ${l.event ?? ''} ${l.speaker ?? ''} ${l.text ?? ''} ${l.file ?? ''}`.toLowerCase().includes(q))
+      : baseLines;
+    this.updateFilterCount(lines.length, baseLines.length);
     const wrap = el('div', 'ol-script');
     const host = el('div', 'ol-talk');
     host.hidden = true;
@@ -192,7 +237,9 @@ export class OutlineView {
     }
     const tbl = table([t('outline.col.episode'), t('outline.col.event'), t('outline.col.speaker'), t('outline.col.text'), t('outline.col.where')], []);
     const tbody = tbl.querySelector('tbody');
-    for (const l of lines) {
+    const rowEls = [];
+    for (let idx = 0; idx < lines.length; idx++) {
+      const l = lines[idx];
       const tr = el('tr', l.kind === 'telop' ? 'ol-telop' : '');
       tr.tabIndex = 0;
       for (const v of [l.episode, l.event ?? '', l.kind === 'telop' ? t('outline.telop') : (l.speaker || t('outline.narration')), l.text]) {
@@ -211,11 +258,20 @@ export class OutlineView {
         if (ev.key === 'Enter' || ev.key === ' ') {
           ev.preventDefault();
           pick();
+        } else if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+          const nextIdx = idx + (ev.key === 'ArrowDown' ? 1 : -1);
+          if (nextIdx >= 0 && nextIdx < lines.length) {
+            ev.preventDefault();
+            const nextTr = rowEls[nextIdx];
+            nextTr.focus();
+            this.selectLine(lines[nextIdx], nextTr, host);
+          }
         }
       });
       if (this.selected === l) {
         tr.setAttribute('aria-selected', 'true');
       }
+      rowEls.push(tr);
       tbody.append(tr);
     }
     wrap.append(host, tbl);
@@ -249,6 +305,9 @@ export class OutlineView {
 
   renderVariables(body) {
     const d = this.data;
+    const q = this.query.trim().toLowerCase();
+    const vars = q ? d.variables.filter(v => `${v.name} ${v.global ? 'global' : ''}`.toLowerCase().includes(q)) : d.variables;
+    this.updateFilterCount(vars.length, d.variables.length);
     const sites = xs => {
       const span = el('span');
       xs.slice(0, 5).forEach((s, i) => {
@@ -263,7 +322,7 @@ export class OutlineView {
       return span;
     };
     body.append(table([t('outline.col.variable'), t('outline.col.scope'), t('outline.col.sets'), t('outline.col.reads')],
-      d.variables.map(v => [v.name, v.global ? 'Global' : '', sites(v.sets), sites(v.reads)])));
+      vars.map(v => [v.name, v.global ? 'Global' : '', sites(v.sets), sites(v.reads)])));
   }
 }
 
