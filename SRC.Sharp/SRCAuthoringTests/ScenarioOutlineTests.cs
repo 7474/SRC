@@ -113,6 +113,81 @@ namespace SRCAuthoring.Tests
             }
         }
 
+        /// <summary>届かないターン・その場にいない人の会話（7474/SRC#1692 の検査の残り）</summary>
+        [TestMethod]
+        public void Findings_ReportUnreachableTurnsAndAbsentSpeakers()
+        {
+            var dir = Path.Combine(Path.GetTempPath(), "srcs-outline-" + System.Guid.NewGuid());
+            Directory.CreateDirectory(Path.Combine(dir, "Data"));
+            try
+            {
+                File.WriteAllText(Path.Combine(dir, "第1話.eve"), string.Join("\r\n",
+                    "スタート:",
+                    "ChangeMap 第1話.map",
+                    "Create 味方 機体A 0 主人公 1 2 2",
+                    "Exit",
+                    "全滅 敵:",
+                    "Continue 第2話.eve",
+                    "ターン 0 味方:",
+                    "Exit",
+                    "ターン 3 敵:",
+                    "If 主人公 > 0 Then",
+                    "  GameOver",
+                    "EndIf",
+                    "Exit",
+                    "ターン 5 敵:",
+                    "GameOver",
+                    "Exit",
+                    "ターン 5 味方:",
+                    "Talk 主人公",
+                    "急ごう",
+                    "End",
+                    "Exit",
+                    "ターン 5 中立:",
+                    "Exit",
+                    "ターン 6 味方:",
+                    "Talk 相棒",
+                    "間に合わない",
+                    "End",
+                    "Talk 語り手",
+                    "時は流れ……",
+                    "End",
+                    "Exit",
+                    ""));
+                File.WriteAllText(Path.Combine(dir, "第2話.eve"), string.Join("\r\n",
+                    "プロローグ:",
+                    "Talk 相棒",
+                    "待たせたな",
+                    "End",
+                    "Exit",
+                    "スタート:",
+                    "ChangeMap 第1話.map",
+                    "Launch 主人公 2 2",
+                    "Create 味方 機体B 0 相棒 1 3 3",
+                    "Exit",
+                    "全滅 敵:",
+                    "GameClear",
+                    "Exit",
+                    ""));
+                var outline = ScenarioOutline.Analyze(dir);
+                var messages = outline.Findings.Select(f => f.Message).ToList();
+                CollectionAssert.Contains(messages, "「ターン 0 味方」は起きない（ターンは 1 から数える）");
+                CollectionAssert.Contains(messages, "「ターン 5 中立」は、その前の「ターン 5 敵」で話が終わるので届かない");
+                CollectionAssert.Contains(messages, "「ターン 6 味方」は、その前の「ターン 5 敵」で話が終わるので届かない");
+                CollectionAssert.Contains(messages, "「ターン 6 味方」で「相棒」が話すが、第1話では出撃も加入もしていない（その場にいないかもしれない）");
+                // 条件付きの GameOver（ターン 3 敵）では打ち切らない。同じターンの前のフェイズ（ターン 5 味方）は届く
+                Assert.IsFalse(messages.Any(m => m.StartsWith("「ターン 5 味方」") || m.Contains("「ターン 3 敵」で話が終わる")), string.Join("\n", messages));
+                // 出てくる人（主人公）・どの話でも出てこない名前（語り手）・プロローグの会話は知らせない
+                Assert.IsFalse(messages.Any(m => m.Contains("「主人公」が話す") || m.Contains("語り手") || m.StartsWith("「プロローグ」")), string.Join("\n", messages));
+                // 第2話では相棒が出撃している
+                Assert.AreEqual(1, messages.Count(m => m.Contains("「相棒」が話す")), string.Join("\n", messages));
+            }
+            finally
+            {
+                Directory.Delete(dir, true);
+            }
+        }
+
         /// <summary>途中の話を、手で決めた始めの値から遊ぶひな形（7474/SRC#1692）。前の話までの部隊・設定・話をまたぐ変数を作って Continue する</summary>
         [TestMethod]
         public void StartState_BuildsPartySetupAndGlobalsBeforeTheEpisode()
@@ -123,6 +198,11 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual("@ランタン", lines[0]);
             CollectionAssert.IsSubsetOf(new[] { "プロローグ:", "Load 煤の軍勢", "Option アイテム交換", "Unit 灯機ホタル 0", "Pilot ソラ 7", "Ride ソラ", "Pilot ミュウ 8", "Money 0", "Global 港の評判", "Set 港の評判 0" }, lines);
             Assert.AreEqual("Continue ステージ\\03_煤の工場.eve", lines.Last(l => l.Length > 0));
+            // 敵から味方になった人（第3話の ChangeParty ヴォルフ 味方）は、相手として出したときの機体とレベルで加わる
+            var fourth = SRCAuthoring.Templates.StartStateTemplate.Build(outline, "ステージ/04_月下の追撃.eve").Split("\r\n");
+            CollectionAssert.IsSubsetOf(new[] { "Unit 灰狼 0", "Pilot ヴォルフ 10", "Ride ヴォルフ" }, fourth);
+            // 加わった人の会話は「その場にいない」としない
+            Assert.IsFalse(outline.Findings.Any(f => f.Message.Contains("「ヴォルフ」が話す")), string.Join("\n", outline.Findings.Select(f => f.Message)));
             // 第1話の前には加わった味方がいない
             StringAssert.Contains(SRCAuthoring.Templates.StartStateTemplate.Build(outline, "01_灯の港.eve"), "前の話で加わった味方はいない");
             Assert.IsNull(SRCAuthoring.Templates.StartStateTemplate.Build(outline, "無い.eve"));

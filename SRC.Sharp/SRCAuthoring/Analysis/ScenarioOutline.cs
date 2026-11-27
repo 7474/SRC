@@ -58,7 +58,7 @@ namespace SRCAuthoring.Analysis
         public string File { get; set; }
         public string Title { get; set; }
         public List<OutlineEvent> Events { get; } = new List<OutlineEvent>();
-        /// <summary>Create 味方 で作る（加入）パイロット</summary>
+        /// <summary>Create 味方・Join・ChangeParty 味方 で加わる（加入）パイロット</summary>
         public List<string> Joins { get; } = new List<string>();
         /// <summary>加入したパイロットの機体とレベル（Create 味方 の欄。始めの値を手で決めるひな形に使う）</summary>
         public Dictionary<string, (string unit, int level)> JoinUnits { get; } = new Dictionary<string, (string, int)>(StringComparer.Ordinal);
@@ -216,6 +216,8 @@ namespace SRCAuthoring.Analysis
                     Findings.Add(new OutlineFinding { File = e.Events[0].File, Line = e.Events[0].Line, Message = $"{e.Title}に勝ちの終わり方（全滅 敵・GameClear・Continue）が無い" });
                 }
             }
+            CheckUnreachableTurns();
+            CheckAbsentSpeakers();
             foreach (var v in Variables)
             {
                 if (v.Sets.Count > 0 && v.Reads.Count == 0)
@@ -239,6 +241,82 @@ namespace SRCAuthoring.Analysis
             foreach (var w in flow.Warnings)
             {
                 Findings.Add(new OutlineFinding { File = string.IsNullOrEmpty(w.FullFile) ? w.File : Rel(w.FullFile), Line = w.Line, Message = w.Message });
+            }
+        }
+
+        /// <summary>フェイズの順（SRC.StartTurn の順: 味方 → 敵 → 中立 → ＮＰＣ）</summary>
+        private static readonly string[] Phases = { "味方", "敵", "中立", "ＮＰＣ" };
+
+        private static int PhaseIndex(string phase)
+        {
+            var i = Array.IndexOf(Phases, phase == "NPC" ? "ＮＰＣ" : phase);
+            return i < 0 ? 0 : i;
+        }
+
+        /// <summary>
+        /// 届かないターン: 条件の無いターンのイベントで話が終わる（勝ち・負け・次の話へ）のに、それより後のターンのイベントがある。
+        /// ターンは 1 から数える（SRC.StartTurn）ので、0 以下のターンも起きない
+        /// </summary>
+        private void CheckUnreachableTurns()
+        {
+            foreach (var e in Episodes)
+            {
+                var turns = new List<(OutlineEvent ev, int turn, int phase)>();
+                foreach (var ev in e.Events.Where(x => x.Kind == "turn"))
+                {
+                    var tokens = Tokens(ev.Label).Select(EventPlacementParser.Unquote).ToList();
+                    if (tokens.Count >= 2 && int.TryParse(tokens[1], out var n))
+                    {
+                        turns.Add((ev, n, PhaseIndex(tokens.Count >= 3 ? tokens[2] : "味方")));
+                    }
+                }
+                foreach (var (ev, n, _) in turns.Where(t => t.turn <= 0))
+                {
+                    Findings.Add(new OutlineFinding { File = ev.File, Line = ev.Line, Message = $"「{ev.Label}」は起きない（ターンは 1 から数える）" });
+                }
+                var end = turns
+                    .Where(t => t.turn > 0 && t.ev.Conditions.Count == 0 && t.ev.Actions.Any(a => a.StartsWith("勝ち") || a.StartsWith("負け") || a.StartsWith("次の話へ")))
+                    .OrderBy(t => t.turn).ThenBy(t => t.phase).FirstOrDefault();
+                if (end.ev == null)
+                {
+                    continue;
+                }
+                foreach (var (ev, n, phase) in turns.Where(t => t.turn > end.turn || (t.turn == end.turn && t.phase > end.phase)))
+                {
+                    Findings.Add(new OutlineFinding { File = ev.File, Line = ev.Line, Message = $"「{ev.Label}」は、その前の「{end.ev.Label}」で話が終わるので届かない" });
+                }
+            }
+        }
+
+        /// <summary>マップの上で起きる出来事（プロローグ・エピローグ・Call の先を除く）</summary>
+        private static readonly string[] OnMapKinds = { "start", "turn", "destroyed", "damaged", "annihilated", "attack", "talk", "enter", "other" };
+
+        /// <summary>
+        /// その場にいない人の会話: マップの上で起きる出来事の Talk の話す人が、どこかの話で出てくる（Create・Launch・Join する）パイロットなのに、
+        /// その話では出てこず、前の話までに加わってもいない（または離れた）。地の文・ナレーターなど、どの話でも出てこない名前は見ない
+        /// </summary>
+        private void CheckAbsentSpeakers()
+        {
+            var combatants = new HashSet<string>(Episodes.SelectMany(e => e.Joins.Concat(e.Launches).Concat(e.Enemies)), StringComparer.Ordinal);
+            var party = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var e in Episodes)
+            {
+                var present = new HashSet<string>(party.Concat(e.Joins).Concat(e.Launches).Concat(e.Enemies), StringComparer.Ordinal);
+                var reported = new HashSet<(string, string)>();
+                foreach (var line in Script.Where(l => l.Episode == e.Title && !string.IsNullOrEmpty(l.Speaker)))
+                {
+                    var ev = e.Events.FirstOrDefault(x => x.Label == line.Event);
+                    if (ev == null || !OnMapKinds.Contains(ev.Kind) || !combatants.Contains(line.Speaker) || present.Contains(line.Speaker))
+                    {
+                        continue;
+                    }
+                    if (reported.Add((ev.Label, line.Speaker)))
+                    {
+                        Findings.Add(new OutlineFinding { File = line.File, Line = line.Line, Message = $"「{ev.Label}」で「{line.Speaker}」が話すが、{e.Title}では出撃も加入もしていない（その場にいないかもしれない）" });
+                    }
+                }
+                party.UnionWith(e.Joins);
+                party.ExceptWith(e.Leaves);
             }
         }
 
@@ -307,6 +385,7 @@ namespace SRCAuthoring.Analysis
             var inTalk = false;
             var talkKind = "talk";
             string switchExpr = null;
+            var enemyUnits = new Dictionary<string, (string unit, int level)>(StringComparer.Ordinal);
             foreach (var line in analysis.Lines.Where(l => !l.IsSystemData))
             {
                 var data = (line.Data ?? "").Trim();
@@ -427,6 +506,10 @@ namespace SRCAuthoring.Analysis
                             {
                                 Act(current?.Kind == "start" || current?.Kind == "entry" ? $"配置: {who}" : $"援軍: {who}");
                                 AddOnce(episode.Enemies, A(4));
+                                if (!enemyUnits.ContainsKey(A(4)))
+                                {
+                                    enemyUnits[A(4)] = (A(2), int.TryParse(A(5), out var level) ? level : 1);
+                                }
                                 episode.UnitNames.Add(A(2));
                             }
                         }
@@ -454,6 +537,15 @@ namespace SRCAuthoring.Analysis
                         break;
                     case "changeparty":
                         Act($"陣営を変える: {string.Join(" ", tokens.Skip(1).Select(EventPlacementParser.Unquote))}");
+                        // 敵・中立から味方になる（ChangeParty パイロット 味方）のは加入として数える。機体とレベルは相手として出したときのもの
+                        if (tokens.Count >= 3 && A(2) == "味方")
+                        {
+                            AddOnce(episode.Joins, A(1));
+                            if (!episode.JoinUnits.ContainsKey(A(1)) && enemyUnits.TryGetValue(A(1), out var former))
+                            {
+                                episode.JoinUnits[A(1)] = former;
+                            }
+                        }
                         break;
                     case "gameclear":
                         Act("勝ち（GameClear）");
