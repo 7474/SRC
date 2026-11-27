@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>Wyślij do VS Code</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>Wykres punktowy</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>Oś X</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>Oś Y</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>Kliknij punkt, aby dodać go lub usunąć z porównania obok siebie (maks. 4).</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>Wypróbuj walkę w SRC#Studio</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>Wysyła wybrane pary podzielone na sojuszników i wrogów do szybkiego tworzenia w SRC#Studio.</value>
+  </data>
 </root>

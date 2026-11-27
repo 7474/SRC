@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>ส่งไปยัง VS Code</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>แผนภาพการกระจาย</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>แกน X</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>แกน Y</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>คลิกที่จุดเพื่อเพิ่มหรือนำออกจากการเทียบข้างกัน (สูงสุด 4 รายการ)</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>ลองสู้ 1 นัดใน SRC#Studio</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>ส่งคู่ที่เลือกโดยแบ่งเป็นฝ่ายเราและศัตรูไปยังโหมดสร้างด่วนของ SRC#Studio</value>
+  </data>
 </root>

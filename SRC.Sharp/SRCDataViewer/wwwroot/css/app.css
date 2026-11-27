@@ -21863,3 +21863,77 @@ main.container {
     }
 }
 
+/* 散布図エクスプローラー（7474/SRC#1715） */
+.src-scatter-wrap {
+    max-width: 780px;
+}
+
+.src-scatter {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+}
+
+.src-scatter-grid {
+    stroke: #e5e5e5;
+    stroke-width: 1;
+}
+
+.src-scatter-axis {
+    stroke: #999;
+    stroke-width: 1.2;
+}
+
+.src-scatter-tick {
+    font-size: 11px;
+    fill: #666;
+}
+
+.src-scatter-axis-label {
+    font-size: 12px;
+    font-weight: 600;
+    fill: #333;
+}
+
+.src-scatter-dot {
+    cursor: pointer;
+    transition: opacity 0.1s ease;
+}
+
+.src-scatter-dot:hover {
+    fill-opacity: 1;
+}
+
+.src-scatter-point-label {
+    font-size: 11px;
+    font-weight: 600;
+    fill: #111;
+    paint-order: stroke;
+    stroke: #fff;
+    stroke-width: 3px;
+}
+
+.src-scatter-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    color: #555;
+}
+
+.src-scatter-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.src-scatter-legend-item i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+

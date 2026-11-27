@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>VS Code'a gönder</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>Dağılım grafiği</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>X ekseni</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>Y ekseni</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>Yan yana karşılaştırmaya eklemek veya çıkarmak için bir noktaya tıklayın (en fazla 4).</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>SRC#Studio'da 1 savaş dene</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>Seçili çiftleri müttefik ve düşman olarak ayırıp SRC#Studio hızlı oluşturma ekranına gönderir.</value>
+  </data>
 </root>

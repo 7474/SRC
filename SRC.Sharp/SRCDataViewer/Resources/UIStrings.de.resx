@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>An VS Code senden</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>Streudiagramm</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>X-Achse</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>Y-Achse</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>Klicke auf einen Punkt, um ihn zum Vergleich (Nebeneinander) hinzuzufügen oder zu entfernen (max. 4).</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>Einen Kampf in SRC#Studio testen</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>Sendet die ausgewählten Paare aufgeteilt in Verbündete und Gegner an die Schnellerstellung von SRC#Studio.</value>
+  </data>
 </root>

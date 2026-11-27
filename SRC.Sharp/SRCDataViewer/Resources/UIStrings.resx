@@ -333,4 +333,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>VS Code へ送る</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>散布図</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>横軸（X）</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>縦軸（Y）</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>点をクリックすると横並べの候補に追加・解除できます（最大 4 件）。</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>SRC#Studio で 1 戦試す</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>並べた組を味方と敵に分けて SRC#Studio のかんたん作成へ送ります。</value>
+  </data>
 </root>

@@ -318,6 +318,7 @@ const quick = new QuickBuilder($('#quick-section'), {
   terrains: () => state.terrains,
   loadImage,
   download,
+  editMap: ({ width, height, mapText }) => openQuickMapInEditor(width, height, mapText),
 });
 
 function updateDirtyTabs() {
@@ -543,6 +544,43 @@ async function confirmDiscard() {
   return !state.dirty || confirm(t('studio.unsaved'));
 }
 
+async function openQuickMapInEditor(width, height, mapText) {
+  if (!(await confirmDiscard())) {
+    return;
+  }
+  let map;
+  if (mapText) {
+    map = await parseMap(new TextEncoder().encode(mapText));
+    if (map.error) {
+      showMessage(t('studio.mapError', map.error), 'error');
+      return;
+    }
+  } else {
+    const first = state.terrains[0];
+    map = newMap(width || 20, height || 15, { terrain: first?.id ?? 0, bitmap: 0 });
+  }
+  state.path = 'quick.map';
+  state.text = mapText ?? await serializeMap(map);
+  editor.setMap(map);
+  setDirty(false);
+  $('#apply-to-quick').hidden = false;
+  renderMapList();
+  showEditor();
+  selectTab('map');
+  editor.setPlacements([]);
+}
+
+$('#apply-to-quick').addEventListener('click', async () => {
+  if (!editor.map) {
+    return;
+  }
+  const text = state.text ?? await serializeMap(editor.map);
+  $('#apply-to-quick').hidden = true;
+  setDirty(false);
+  selectTab('quick');
+  await quick.applyCustomMap(text);
+});
+
 async function openMap(path) {
   if (!(await confirmDiscard())) {
     return;
@@ -554,6 +592,7 @@ async function openMap(path) {
   }
   state.path = path;
   state.text = null;
+  $('#apply-to-quick').hidden = true;
   editor.setMap(map);
   setDirty(false);
   renderMapList();
@@ -572,6 +611,7 @@ $('#new-map').addEventListener('click', async () => {
   const first = state.terrains[0];
   const map = newMap(20, 20, { terrain: first?.id ?? 0, bitmap: 0 });
   state.path = name.endsWith('.map') ? name : `${name}.map`;
+  $('#apply-to-quick').hidden = true;
   editor.setMap(map);
   state.text = await serializeMap(map);
   setDirty(true);
@@ -682,7 +722,9 @@ document.addEventListener('keydown', ev => {
   state.app = await basicData();
   await reloadWorkspace();
   // はじめて開いた人は、かんたん作成から（?tab= か、前に開いていたタブ）
-  let tab = new URLSearchParams(location.search).get('tab');
+  const params = new URLSearchParams(location.search);
+  const matchup = params.get('matchup');
+  let tab = matchup ? 'quick' : params.get('tab');
   try {
     tab ??= localStorage.getItem('srcstudio.tab');
   } catch {
@@ -690,6 +732,16 @@ document.addEventListener('keydown', ev => {
   }
   selectTab(TABS.includes(tab) ? tab : 'quick');
   await quick.restoreDraft();
+  if (matchup) {
+    await quick.applyMatchupParam(matchup);
+    try {
+      const cleaned = new URL(location.href);
+      cleaned.searchParams.delete('matchup');
+      history.replaceState(null, '', cleaned.toString());
+    } catch {
+      // URL を書き換えられなくても続ける
+    }
+  }
   $('#loading').hidden = true;
   document.body.dataset.ready = 'true';
 })();

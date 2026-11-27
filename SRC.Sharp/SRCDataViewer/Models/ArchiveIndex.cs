@@ -15,6 +15,8 @@ namespace SRCDataViewer.Models
         public ICollection<string> ArchiveIndexes { get; set; }
         /// <summary>組の評価の一覧（analysis/index.json）の URL。無ければ 7474/SRC-Data の Pages（「比べる」の頁）</summary>
         public string AnalysisIndex { get; set; }
+        /// <summary>SRC#Studio の URL（「比べる」から 1 戦試すリンク先）。無ければ ../studio/</summary>
+        public string StudioUrl { get; set; }
     }
 
     /// <summary>サイトが公開している zip（シナリオ・素材・パック）の一覧</summary>

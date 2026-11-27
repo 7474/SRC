@@ -1,0 +1,119 @@
+@* 散布図エクスプローラー（SVG。7474/SRC#1715）。X・Y 軸の 2 指標で全組・全ユニット・全パイロットを俯瞰し、点クリックで横並べ対象を選べる *@
+@using System.Globalization
+@using System.Net
+
+@{
+    var pts = Points ?? Array.Empty<ScatterPoint>();
+    var (minX, maxX) = Range(pts.Select(p => p.X));
+    var (minY, maxY) = Range(pts.Select(p => p.Y));
+    var groups = pts.Select(p => p.Group ?? "").Distinct().ToList();
+    var colorByGroup = groups.Select((g, i) => (g, c: Palette[i % Palette.Length])).ToDictionary(x => x.g, x => x.c);
+}
+
+<div class="src-scatter-wrap">
+    <svg class="src-scatter" viewBox="0 0 @W @H" role="img" aria-label="@Title">
+        @* グリッドと目盛り（5 分割） *@
+        @for (var i = 0; i <= 4; i++)
+        {
+            var t = i / 4.0;
+            var gx = PadL + PlotW * t;
+            var gy = PadT + PlotH * (1 - t);
+            var vx = minX + (maxX - minX) * t;
+            var vy = minY + (maxY - minY) * t;
+            <line x1="@F(gx)" y1="@F(PadT)" x2="@F(gx)" y2="@F(PadT + PlotH)" class="src-scatter-grid" />
+            <line x1="@F(PadL)" y1="@F(gy)" x2="@F(PadL + PlotW)" y2="@F(gy)" class="src-scatter-grid" />
+            @((MarkupString)$"<text x=\"{F(gx)}\" y=\"{F(PadT + PlotH + 16)}\" class=\"src-scatter-tick\" text-anchor=\"middle\">{FormatTick(vx)}</text>")
+            @((MarkupString)$"<text x=\"{F(PadL - 8)}\" y=\"{F(gy + 4)}\" class=\"src-scatter-tick\" text-anchor=\"end\">{FormatTick(vy)}</text>")
+        }
+        @* 軸線と軸ラベル *@
+        <line x1="@F(PadL)" y1="@F(PadT + PlotH)" x2="@F(PadL + PlotW)" y2="@F(PadT + PlotH)" class="src-scatter-axis" />
+        <line x1="@F(PadL)" y1="@F(PadT)" x2="@F(PadL)" y2="@F(PadT + PlotH)" class="src-scatter-axis" />
+        @((MarkupString)$"<text x=\"{F(PadL + PlotW / 2)}\" y=\"{F(H - 6)}\" class=\"src-scatter-axis-label\" text-anchor=\"middle\">{WebUtility.HtmlEncode(XLabel)}</text>")
+        @((MarkupString)$"<text x=\"16\" y=\"{F(PadT + PlotH / 2)}\" class=\"src-scatter-axis-label\" text-anchor=\"middle\" transform=\"rotate(-90 16 {F(PadT + PlotH / 2)})\">{WebUtility.HtmlEncode(YLabel)}</text>")
+
+        @* 未選択の点を先に描き、選択中の点を手前に重ねる *@
+        @foreach (var p in pts.Where(x => !x.Selected))
+        {
+            var cx = ToX(p.X, minX, maxX);
+            var cy = ToY(p.Y, minY, maxY);
+            var col = colorByGroup.GetValueOrDefault(p.Group ?? "", Palette[0]);
+            var tip = $"{p.Label} ({p.SubLabel})\n{XLabel}: {FormatTick(p.X)} / {YLabel}: {FormatTick(p.Y)}";
+            <circle cx="@F(cx)" cy="@F(cy)" r="4.5" fill="@col" fill-opacity="0.72" class="src-scatter-dot" @onclick="@(() => OnSelect.InvokeAsync(p.Key))">
+                <title>@tip</title>
+            </circle>
+        }
+        @foreach (var p in pts.Where(x => x.Selected))
+        {
+            var cx = ToX(p.X, minX, maxX);
+            var cy = ToY(p.Y, minY, maxY);
+            var col = colorByGroup.GetValueOrDefault(p.Group ?? "", Palette[0]);
+            var tip = $"{p.Label} ({p.SubLabel})\n{XLabel}: {FormatTick(p.X)} / {YLabel}: {FormatTick(p.Y)}";
+            <g class="src-scatter-dot is-selected" @onclick="@(() => OnSelect.InvokeAsync(p.Key))">
+                <circle cx="@F(cx)" cy="@F(cy)" r="7" fill="@col" stroke="#111" stroke-width="2">
+                    <title>@tip</title>
+                </circle>
+                @((MarkupString)$"<text x=\"{F(cx + 9)}\" y=\"{F(cy + 4)}\" class=\"src-scatter-point-label\">{WebUtility.HtmlEncode(p.Label)}</text>")
+            </g>
+        }
+    </svg>
+    @if (groups.Count > 1)
+    {
+        <div class="src-scatter-legend is-size-7 mt-1">
+            @foreach (var g in groups)
+            {
+                <span class="src-scatter-legend-item">
+                    <i style="background:@colorByGroup[g]"></i>@(string.IsNullOrEmpty(g) ? "-" : g)
+                </span>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    public sealed class ScatterPoint
+    {
+        public string Key { get; set; }
+        public string Label { get; set; }
+        public string SubLabel { get; set; }
+        public string Group { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public bool Selected { get; set; }
+    }
+
+    private static readonly string[] Palette = { "#3273dc", "#e8590c", "#2b8a3e", "#ae3ec9", "#c92a2a", "#0b7285", "#d9480f", "#5c7cfa" };
+
+    [Parameter] public IReadOnlyList<ScatterPoint> Points { get; set; } = Array.Empty<ScatterPoint>();
+    [Parameter] public string XLabel { get; set; } = "";
+    [Parameter] public string YLabel { get; set; } = "";
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public EventCallback<string> OnSelect { get; set; }
+
+    private const double W = 640;
+    private const double H = 400;
+    private const double PadL = 56;
+    private const double PadR = 24;
+    private const double PadT = 18;
+    private const double PadB = 42;
+    private const double PlotW = W - PadL - PadR;
+    private const double PlotH = H - PadT - PadB;
+
+    private static (double min, double max) Range(IEnumerable<double> vals)
+    {
+        var list = vals.ToList();
+        if (list.Count == 0) return (0, 100);
+        var min = list.Min();
+        var max = list.Max();
+        if (Math.Abs(max - min) < 1e-6)
+        {
+            return (Math.Max(0, min - 10), max + 10);
+        }
+        var pad = (max - min) * 0.06;
+        return (Math.Max(0, min - pad), max + pad);
+    }
+
+    private static double ToX(double v, double min, double max) => PadL + PlotW * Math.Clamp((v - min) / (max - min), 0, 1);
+    private static double ToY(double v, double min, double max) => PadT + PlotH * (1 - Math.Clamp((v - min) / (max - min), 0, 1));
+    private static string F(double v) => v.ToString("0.#", CultureInfo.InvariantCulture);
+    private static string FormatTick(double v) => Math.Abs(v) >= 100 ? v.ToString("0", CultureInfo.InvariantCulture) : v.ToString("0.#", CultureInfo.InvariantCulture);
+}

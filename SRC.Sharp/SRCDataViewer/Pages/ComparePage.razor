@@ -62,7 +62,7 @@
                         </select>
                     </div>
                 </div>
-                @if (currentTab == "ranking")
+                @if (currentTab is "ranking" or "scatter")
                 {
                     <div class="control">
                         <label class="label is-small">@L["CompareBand"]</label>
@@ -96,7 +96,42 @@
                     </div>
                     }
                 }
-                @if (mode != "pair")
+                @if (currentTab == "scatter")
+                {
+                    <div class="control">
+                        <label class="label is-small">@L["CompareAxisX"]</label>
+                        <div class="select is-small">
+                            <select class="src-compare-scatter-x" @bind="scatterX">
+                                @foreach (var m in ScatterMetrics)
+                                {
+                                    <option value="@m">@m</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <label class="label is-small">@L["CompareAxisY"]</label>
+                        <div class="select is-small">
+                            <select class="src-compare-scatter-y" @bind="scatterY">
+                                @foreach (var m in ScatterMetrics)
+                                {
+                                    <option value="@m">@m</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    @if (mode == "pair")
+                    {
+                        <div class="control">
+                            <label class="label is-small">&nbsp;</label>
+                            <div class="buttons has-addons">
+                                <button class="button is-small @(effective ? "is-selected is-info" : "")" @onclick="@(() => SetEffective(true))">@L["CompareEffective"]</button>
+                                <button class="button is-small @(!effective ? "is-selected is-info" : "")" @onclick="@(() => SetEffective(false))">@L["CompareSimple"]</button>
+                            </div>
+                        </div>
+                    }
+                }
+                else if (mode != "pair")
                 {
                     <div class="control">
                         <label class="label is-small">@L["CompareMetric"]</label>
@@ -222,6 +257,16 @@
                         <div class="column is-12-tablet is-5-desktop">
                             <RadarChart Axes="Store.Indices" Series="RadarSeries(pairs)" Title="@L["CompareSideBySide"]" />
                             <p class="is-size-7 has-text-grey">@L["CompareRadarHint"]</p>
+                            @if (pairs.Count >= 2)
+                            {
+                                <div class="mt-3">
+                                    <a class="button is-small is-info src-compare-play-studio" href="@StudioMatchupUrl(pairs)" target="_blank" rel="noopener" title="@L["ComparePlayInStudioHint"]">
+                                        <span class="icon is-small"><i class="fas fa-play"></i></span>
+                                        <span>@L["ComparePlayInStudio"]</span>
+                                    </a>
+                                    <p class="is-size-7 has-text-grey mt-1">@L["ComparePlayInStudioHint"]</p>
+                                </div>
+                            }
                             <p class="is-size-7 mt-2"><a href="@NavigationManager.Uri">@L["CompareShare"]</a></p>
                         </div>
                         <div class="column is-12-tablet is-7-desktop">
@@ -375,6 +420,13 @@
                     </div>
                     break;
                 }
+            case "scatter":
+                {
+                    var pts = PairScatterPoints();
+                    <p class="is-size-7 has-text-grey mb-2">@L["CompareScatterHint"]</p>
+                    <ScatterChart Points="pts" XLabel="@scatterX" YLabel="@scatterY" Title="@L["CompareScatter"]" OnSelect="Toggle" />
+                    break;
+                }
         }
     }
 </section>
@@ -416,6 +468,8 @@
     private bool sureOnly = true;
     private bool filtersOpen;
     private string singleMetric = "";
+    private string scatterX = "";
+    private string scatterY = "";
     /// <summary>モードごとの選んだもの（URL の pairs・units・pilots）</summary>
     private readonly Dictionary<string, List<string>> selections = new Dictionary<string, List<string>>
     {
@@ -438,6 +492,7 @@
         {
             ("ranking", L["CompareRanking"].Value),
             ("side", L["CompareSideBySide"].Value),
+            ("scatter", L["CompareScatter"].Value),
             ("works", L["CompareWorks"].Value),
             ("position", L["ComparePosition"].Value),
         }
@@ -445,12 +500,29 @@
         {
             ("ranking", L["CompareRanking"].Value),
             ("side", L["CompareSideBySide"].Value),
+            ("scatter", L["CompareScatter"].Value),
         };
 
     private IReadOnlyList<string> SingleMetrics => mode == "unit" ? AnalysisUnit.Metrics : AnalysisPilot.Metrics;
 
+    private IReadOnlyList<string> ScatterMetrics => mode == "pair" ? Store.Indices : SingleMetrics;
+
     /// <summary>レーダーチャートの軸（経験値を除く）</summary>
     private IReadOnlyList<string> SingleAxes => SingleMetrics.Where(m => m != "経験値").ToList();
+
+    private void EnsureScatterAxes()
+    {
+        var metrics = ScatterMetrics;
+        if (metrics.Count == 0) return;
+        if (!metrics.Contains(scatterX))
+        {
+            scatterX = mode == "unit" && metrics.Contains("装甲") ? "装甲" : metrics[0];
+        }
+        if (!metrics.Contains(scatterY))
+        {
+            scatterY = mode == "unit" && metrics.Contains("運動性") ? "運動性" : metrics.Count > 1 ? metrics[1] : metrics[0];
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -466,18 +538,20 @@
         {
             band = Store.Bands.FirstOrDefault() ?? "";
         }
+        EnsureScatterAxes();
     }
 
     protected override void OnParametersSet()
     {
         if (ModeParam is "pair" or "unit" or "pilot") mode = ModeParam;
         if (!string.IsNullOrEmpty(TabParam)) currentTab = TabParam;
-        if (mode != "pair" && currentTab != "side") currentTab = "ranking";
+        if (mode != "pair" && currentTab is not ("side" or "scatter")) currentTab = "ranking";
         if (QueryParam != null) filter = QueryParam;
         if (SectionParam != null) section = SectionParam;
         if (BandParam != null) band = BandParam;
         sureOnly = GuessParam != "1";
         if (!SingleMetrics.Contains(singleMetric)) singleMetric = SingleMetrics[0];
+        EnsureScatterAxes();
         foreach (var (m, param) in new[] { ("pair", PairsParam), ("unit", UnitsParam), ("pilot", PilotsParam) })
         {
             selections[m].Clear();
@@ -495,6 +569,7 @@
     private void SetTab(string tab)
     {
         currentTab = tab;
+        EnsureScatterAxes();
         Reset();
         UpdateUri();
     }
@@ -507,6 +582,9 @@
         if (mode == "unit") band = "";
         else if (band == NoBand) band = Store.Bands.FirstOrDefault() ?? "";
         singleMetric = SingleMetrics[0];
+        scatterX = "";
+        scatterY = "";
+        EnsureScatterAxes();
         Reset();
         UpdateUri();
     }
@@ -683,6 +761,74 @@
             Simple = Store.Indices.Select(m => p.IndexOf(m, false)).ToList(),
         }).ToList();
 
+    private IReadOnlyList<ScatterChart.ScatterPoint> PairScatterPoints() =>
+        Store.Pairs.Where(p => p.Evaluated && Sure(p) && Matches(p)
+            && (string.IsNullOrEmpty(band) || p.Band == band)
+            && (rank == "" || (rank == NoRank ? string.IsNullOrEmpty(p.Rank) : p.Rank == rank)))
+            .Select(p => (p, x: p.IndexOf(scatterX, effective), y: p.IndexOf(scatterY, effective)))
+            .Where(t => t.x.HasValue && t.y.HasValue)
+            .Select(t => new ScatterChart.ScatterPoint
+            {
+                Key = t.p.Key,
+                Label = t.p.Label,
+                SubLabel = $"{t.p.Work}（{t.p.Section}）",
+                Group = string.IsNullOrEmpty(t.p.Rank) ? t.p.Section : t.p.Rank,
+                X = t.x.Value,
+                Y = t.y.Value,
+                Selected = Selected.Contains(t.p.Key),
+            }).ToList();
+
+    private IReadOnlyList<ScatterChart.ScatterPoint> SingleScatterPoints() =>
+        AllSingles.Where(SingleMatches)
+            .Select(s => (s, x: s.ValueOf(scatterX), y: s.ValueOf(scatterY)))
+            .Where(t => t.x.HasValue && t.y.HasValue)
+            .Select(t => new ScatterChart.ScatterPoint
+            {
+                Key = t.s.Key,
+                Label = t.s.Name,
+                SubLabel = $"{t.s.Work}（{t.s.Section}）",
+                Group = t.s.Section,
+                X = t.x.Value,
+                Y = t.y.Value,
+                Selected = Selected.Contains(t.s.Key),
+            }).ToList();
+
+    /// <summary>横並べの組を味方・敵に分けて SRC#Studio のかんたん作成へ送る URL（7474/SRC#1715）</summary>
+    private string StudioMatchupUrl(IReadOnlyList<AnalysisPair> pairs)
+    {
+        var split = Math.Max(1, pairs.Count / 2);
+        var allies = pairs.Take(split).ToList();
+        var enemies = pairs.Skip(split).ToList();
+        var title = $"{allies[0].Pilot?.Name ?? allies[0].Unit?.Name} vs {enemies[0].Pilot?.Name ?? enemies[0].Unit?.Name}";
+        using var ms = new System.IO.MemoryStream();
+        using (var w = new System.Text.Json.Utf8JsonWriter(ms))
+        {
+            w.WriteStartObject();
+            w.WriteString("title", title);
+            WriteSide(w, "allies", allies);
+            WriteSide(w, "enemies", enemies);
+            w.WriteEndObject();
+        }
+        var json = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+        var studioBase = new Uri(new Uri(NavigationManager.BaseUri), Catalog.StudioUrl ?? "../studio/");
+        return $"{studioBase}?tab=quick&matchup={Uri.EscapeDataString(json)}";
+    }
+
+    private static void WriteSide(System.Text.Json.Utf8JsonWriter w, string prop, IEnumerable<AnalysisPair> side)
+    {
+        w.WriteStartArray(prop);
+        foreach (var p in side)
+        {
+            w.WriteStartObject();
+            w.WriteString("section", p.Section ?? "");
+            w.WriteString("work", p.Work ?? "");
+            w.WriteString("unit", p.Unit?.Name ?? "");
+            w.WriteString("pilot", p.Pilot?.Name ?? "");
+            w.WriteEndObject();
+        }
+        w.WriteEndArray();
+    }
+
     private string PilotImage(AnalysisPair p) => Image("Pilot", p.Pilot?.Bitmap);
     private string UnitImage(AnalysisPair p) => Image("Unit", p.Unit?.Bitmap);
 
@@ -717,6 +863,13 @@
     private RenderFragment SingleView() => __builder =>
     {
         <p class="is-size-7 has-text-grey mb-3 src-compare-single-hint">@L["CompareSingleHint"]</p>
+        if (currentTab == "scatter")
+        {
+            var pts = SingleScatterPoints();
+            <p class="is-size-7 has-text-grey mb-2">@L["CompareScatterHint"]</p>
+            <ScatterChart Points="pts" XLabel="@scatterX" YLabel="@scatterY" Title="@L["CompareScatter"]" OnSelect="Toggle" />
+            return;
+        }
         if (currentTab == "side")
         {
             var items = Selected.Select(k => Store.FindSingle(mode, k)).Where(x => x != null).ToList();

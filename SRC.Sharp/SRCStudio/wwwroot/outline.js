@@ -20,9 +20,18 @@ export class OutlineView {
     this.query = '';
     this.selected = null;
     this.talk = null;
+    this.playTimer = null;
+  }
+
+  stopPlay() {
+    if (this.playTimer != null) {
+      clearInterval(this.playTimer);
+      this.playTimer = null;
+    }
   }
 
   setData(outline) {
+    this.stopPlay();
     this.data = outline;
     const titles = new Set((outline?.episodes ?? []).map(e => e.title));
     if (!titles.has(this.episode)) {
@@ -48,6 +57,7 @@ export class OutlineView {
   }
 
   render() {
+    this.stopPlay();
     this.root.innerHTML = '';
     this.talk = null;
     const d = this.data;
@@ -88,6 +98,7 @@ export class OutlineView {
   }
 
   renderBody(body = this.root.querySelector('.ol-body')) {
+    this.stopPlay();
     if (!body || !this.data) {
       return;
     }
@@ -232,12 +243,76 @@ export class OutlineView {
     const wrap = el('div', 'ol-script');
     const host = el('div', 'ol-talk');
     host.hidden = true;
-    if (!this.hooks.previewTalk) {
-      this.talk = new MessageWindowPreview(host, { loadImage: this.hooks.loadImage });
-    }
+    let mwHost = host;
+    let barPrev = null;
+    let barNext = null;
+    let barPlay = null;
+    let barPos = null;
     const tbl = table([t('outline.col.episode'), t('outline.col.event'), t('outline.col.speaker'), t('outline.col.text'), t('outline.col.where')], []);
     const tbody = tbl.querySelector('tbody');
     const rowEls = [];
+    const syncBar = () => {
+      if (!barPos) {
+        return;
+      }
+      const cur = lines.indexOf(this.selected);
+      barPos.textContent = cur >= 0 ? `${cur + 1} / ${lines.length}` : `0 / ${lines.length}`;
+      barPrev.disabled = cur <= 0;
+      barNext.disabled = cur < 0 || cur >= lines.length - 1;
+      barPlay.textContent = this.playTimer != null ? `⏸ ${t('outline.pause')}` : `▶ ${t('outline.play')}`;
+      barPlay.setAttribute('aria-pressed', String(this.playTimer != null));
+    };
+    const goTo = idx => {
+      if (idx < 0 || idx >= lines.length) {
+        return false;
+      }
+      const tr = rowEls[idx];
+      this.selectLine(lines[idx], tr, host);
+      tr.scrollIntoView({ block: 'nearest' });
+      syncBar();
+      return true;
+    };
+    if (!this.hooks.previewTalk) {
+      const bar = el('div', 'ol-talk-bar');
+      barPrev = button(`◀ ${t('outline.prevLine')}`, () => {
+        this.stopPlay();
+        goTo(lines.indexOf(this.selected) - 1);
+      });
+      barPrev.className = 'ol-talk-prev';
+      barPlay = button(`▶ ${t('outline.play')}`, () => {
+        if (this.playTimer != null) {
+          this.stopPlay();
+          syncBar();
+          return;
+        }
+        if (lines.length === 0) {
+          return;
+        }
+        let cur = lines.indexOf(this.selected);
+        if (cur < 0 || cur >= lines.length - 1) {
+          goTo(0);
+        }
+        this.playTimer = setInterval(() => {
+          const next = lines.indexOf(this.selected) + 1;
+          if (!goTo(next)) {
+            this.stopPlay();
+            syncBar();
+          }
+        }, 2200);
+        syncBar();
+      });
+      barPlay.className = 'ol-talk-play';
+      barNext = button(`${t('outline.nextLine')} ▶`, () => {
+        this.stopPlay();
+        goTo(lines.indexOf(this.selected) + 1);
+      });
+      barNext.className = 'ol-talk-next';
+      barPos = el('span', 'ol-talk-pos hint', '');
+      bar.append(barPrev, barPlay, barNext, barPos);
+      mwHost = el('div', 'ol-talk-mw');
+      host.append(bar, mwHost);
+      this.talk = new MessageWindowPreview(mwHost, { loadImage: this.hooks.loadImage });
+    }
     for (let idx = 0; idx < lines.length; idx++) {
       const l = lines[idx];
       const tr = el('tr', l.kind === 'telop' ? 'ol-telop' : '');
@@ -248,7 +323,11 @@ export class OutlineView {
       const where = el('td');
       where.append(this.link(l.file, l.line));
       tr.append(where);
-      const pick = () => this.selectLine(l, tr, host);
+      const pick = () => {
+        this.stopPlay();
+        this.selectLine(l, tr, host);
+        syncBar();
+      };
       tr.addEventListener('click', ev => {
         if (!(ev.target instanceof HTMLAnchorElement)) {
           pick();
@@ -262,9 +341,11 @@ export class OutlineView {
           const nextIdx = idx + (ev.key === 'ArrowDown' ? 1 : -1);
           if (nextIdx >= 0 && nextIdx < lines.length) {
             ev.preventDefault();
+            this.stopPlay();
             const nextTr = rowEls[nextIdx];
             nextTr.focus();
             this.selectLine(lines[nextIdx], nextTr, host);
+            syncBar();
           }
         }
       });
@@ -274,10 +355,20 @@ export class OutlineView {
       rowEls.push(tr);
       tbody.append(tr);
     }
+    const hintRow = el('div', 'ol-script-head');
+    hintRow.append(el('p', 'hint', t(this.hooks.previewTalk ? 'outline.scriptHintEditor' : 'outline.scriptHint')));
+    if (!this.hooks.previewTalk && lines.length > 0) {
+      const startBtn = button(`▶ ${t('outline.play')}`, () => {
+        goTo(Math.max(0, lines.indexOf(this.selected)));
+        barPlay.click();
+      }, 'ol-start-play');
+      hintRow.append(startBtn);
+    }
     wrap.append(host, tbl);
-    body.append(el('p', 'hint', t(this.hooks.previewTalk ? 'outline.scriptHintEditor' : 'outline.scriptHint')), wrap);
+    body.append(hintRow, wrap);
     if (this.selected && lines.includes(this.selected)) {
       this.showTalk(this.selected, host);
+      syncBar();
     }
   }
 

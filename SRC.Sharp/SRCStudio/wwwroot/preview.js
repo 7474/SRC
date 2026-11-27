@@ -328,7 +328,17 @@ DataPreview.prototype.setupCompare = function (card, entry) {
     body.textContent = t('loading');
     try {
       const rows = this.result.kind === 'pilot' ? await comparePilot(entry, select.value) : await compareUnit(entry, select.value);
-      body.innerHTML = `<table class="dp-stats">${rows.map(r => `<tr><th>${esc(r.label)}</th><td>${esc(r.value)}</td><td class="dp-bar-cell">${r.percentile == null ? '-' : `<span class="dp-bar"><span style="width:${(100 - r.percentile).toFixed(0)}%"></span></span> ${t('compare.top', r.percentile.toFixed(0))}`}</td></tr>`).join('')}</table><p class="dp-none">${esc(rows.note ?? '')}</p>`;
+      const similarHtml = rows.similar?.length ? `
+        <div class="dp-similar">
+          <h4>${esc(t('compare.similar'))}</h4>
+          <ul class="dp-similar-list">${rows.similar.map(s => `
+            <li>
+              <span class="dp-sim-head"><strong>${esc(s.name)}</strong>${s.title ? ` <span class="dp-sim-title">${esc(s.title)}</span>` : ''}<span class="dp-sim-score">${esc(t('compare.similarity', s.similarity))}</span></span>
+              <span class="dp-sim-meta">${esc(s.summary)}</span>
+            </li>`).join('')}
+          </ul>
+        </div>` : '';
+      body.innerHTML = `<table class="dp-stats">${rows.map(r => `<tr><th>${esc(r.label)}</th><td>${esc(r.value)}</td><td class="dp-bar-cell">${r.percentile == null ? '-' : `<span class="dp-bar"><span style="width:${(100 - r.percentile).toFixed(0)}%"></span></span> ${t('compare.top', r.percentile.toFixed(0))}`}</td></tr>`).join('')}</table><p class="dp-none">${esc(rows.note ?? '')}</p>${similarHtml}`;
     } catch (e) {
       body.textContent = t('compare.failed', String(e.message ?? e));
     }
@@ -361,6 +371,54 @@ function header(entry) {
     <p>${esc(entry.nickname)}・${esc(entry.class)}・${t('preview.lines', entry.startLine, entry.endLine)}</p></div></header>`;
 }
 
+/** 武器の射程カバレッジ（1〜10マス＋。移動後攻撃可・最大攻撃力を横バーで可視化。7474/SRC#1713） */
+export function weaponRangeChart(weapons) {
+  const normal = (weapons ?? []).filter(w => !/Ｍ/.test(w.class ?? ''));
+  if (normal.length === 0) {
+    return '';
+  }
+  const parsed = normal.map(w => {
+    const m = String(w.range ?? '').match(/(\d+)\s*(?:[-〜~]\s*(\d+))?/);
+    if (!m) {
+      return null;
+    }
+    const min = Number(m[1]);
+    const max = m[2] ? Number(m[2]) : min;
+    const postMove = (min === 1 && max === 1) || /Ｐ/.test(w.class ?? '');
+    return { name: w.name, power: Number(w.power) || 0, min, max, postMove };
+  }).filter(Boolean);
+  if (parsed.length === 0) {
+    return '';
+  }
+  const maxRange = Math.min(10, Math.max(5, ...parsed.map(w => w.max)));
+  const hasOver = parsed.some(w => w.max > 10);
+  const topPower = Math.max(1, ...parsed.map(w => w.power));
+  const cells = [];
+  for (let r = 1; r <= maxRange; r++) {
+    cells.push({ label: String(r), hits: parsed.filter(w => w.min <= r && w.max >= r) });
+  }
+  if (hasOver) {
+    cells.push({ label: '11+', hits: parsed.filter(w => w.max > 10) });
+  }
+  const items = cells.map(c => {
+    if (c.hits.length === 0) {
+      return `<div class="dp-rc-cell none" title="${esc(`${t('preview.range')} ${c.label}: ${t('preview.rangeNone')}`)}"><div class="dp-rc-bar-wrap"></div><span class="dp-rc-label">${c.label}</span></div>`;
+    }
+    const best = Math.max(...c.hits.map(w => w.power));
+    const hasPost = c.hits.some(w => w.postMove);
+    const pct = Math.max(18, Math.round((best / topPower) * 100));
+    const tip = `${t('preview.range')} ${c.label}: ${c.hits.map(w => `${w.name}(${w.power}${w.postMove ? '/P' : ''})`).join(', ')}`;
+    return `<div class="dp-rc-cell ${hasPost ? 'post' : 'stat'}" title="${esc(tip)}"><div class="dp-rc-bar-wrap"><span class="dp-rc-bar" style="height:${pct}%"></span></div><span class="dp-rc-label">${c.label}</span></div>`;
+  }).join('');
+  return `<div class="dp-range-coverage">
+    <div class="dp-rc-head">
+      <span>${esc(t('preview.rangeCoverage'))}</span>
+      <span class="dp-rc-legend"><i class="post"></i>${esc(t('preview.rangePostMove'))}<i class="stat"></i>${esc(t('preview.rangeNormal'))}</span>
+    </div>
+    <div class="dp-rc-grid">${items}</div>
+  </div>`;
+}
+
 function unitCard(u) {
   const weapons = u.weapons.length === 0 ? `<p class="dp-none">${t('preview.none')}</p>` : `<table class="dp-weapons"><thead><tr>
       <th>${t('preview.weapon')}</th><th>${t('preview.power')}</th><th>${t('preview.range')}</th><th>${t('preview.hit')}</th>
@@ -370,7 +428,7 @@ function unitCard(u) {
   return header(u) + table([
     ['HP', u.hp], ['EN', u.en], [t('preview.armor'), u.armor], [t('preview.mobility'), u.mobility], [t('preview.speed'), u.speed],
     [t('preview.size'), u.size], [t('preview.transportation'), u.transportation], [t('preview.adaption'), u.adaption], [t('preview.exp'), u.exp],
-  ]) + tags(t('preview.features'), u.features) + `<h3>${t('preview.weapons')}</h3>` + weapons
+  ]) + tags(t('preview.features'), u.features) + `<h3>${t('preview.weapons')}</h3>` + weaponRangeChart(u.weapons) + weapons
     + tags(t('preview.abilities'), u.abilities.map(a => `${a.name}（${a.range}・${a.stock || '-'}）${a.class ? ' ' + a.class : ''}`));
 }
 

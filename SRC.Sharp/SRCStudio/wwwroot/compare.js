@@ -60,20 +60,76 @@ export function band(name, exp) {
 
 const isMap = w => /Ｍ/.test(w.class ?? '');
 
+/** 各次元の標準偏差で正規化したユークリッド距離が近い上位 top 件を返す（7474/SRC#1713） */
+export function findSimilar(targetName, targetVec, candidates, getVec, summarize, top = 3) {
+  const valid = candidates.filter(c => c && c.name && c.name !== targetName);
+  if (valid.length === 0 || targetVec.length === 0) {
+    return [];
+  }
+  const dims = targetVec.length;
+  const vecs = valid.map(c => getVec(c));
+  const scales = [];
+  for (let d = 0; d < dims; d++) {
+    const vals = vecs.map(v => v[d]).filter(x => Number.isFinite(x));
+    if (vals.length < 2) {
+      scales.push(1);
+      continue;
+    }
+    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+    const sd = Math.sqrt(vals.reduce((a, b) => a + (b - mean) ** 2, 0) / vals.length);
+    scales.push(sd > 1e-6 ? sd : 1);
+  }
+  const scored = [];
+  for (let i = 0; i < valid.length; i++) {
+    const v = vecs[i];
+    let sumSq = 0;
+    let count = 0;
+    for (let d = 0; d < dims; d++) {
+      if (Number.isFinite(targetVec[d]) && Number.isFinite(v[d])) {
+        const z = (targetVec[d] - v[d]) / scales[d];
+        sumSq += z * z;
+        count++;
+      }
+    }
+    if (count === 0) {
+      continue;
+    }
+    const rms = Math.sqrt(sumSq / count);
+    const similarity = Math.max(0, Math.min(99, Math.round(100 / (1 + rms * 0.85))));
+    scored.push({
+      name: valid[i].name,
+      title: valid[i].title ?? valid[i].work ?? '',
+      similarity,
+      summary: summarize(valid[i]),
+      dist: rms,
+    });
+  }
+  scored.sort((a, b) => a.dist - b.dist);
+  return scored.slice(0, top).map(({ dist, ...rest }) => rest);
+}
+
 export async function compareUnit(u, section) {
   const data = await set(section);
   const units = data.units ?? [];
   const column = f => units.map(f).filter(x => x != null);
   const maxPower = Math.max(0, ...u.weapons.filter(w => !isMap(w)).map(w => w.power));
-  const rows = [
+  const metrics = [
     ['HP', u.hp, x => x.hp],
     ['EN', u.en, x => x.en],
     ['装甲', u.armor, x => x.armor],
     ['運動性', u.mobility, x => x.mobility],
     ['移動力', u.speed, x => x.speed],
     ['最大攻撃力', maxPower, x => x.values?.['最大攻撃力']],
-  ].map(([label, value, f]) => ({ label, value, percentile: percentile(column(f), value) }));
+  ];
+  const rows = metrics.map(([label, value, f]) => ({ label, value, percentile: percentile(column(f), value) }));
   rows.note = `${section} の全ユニット ${units.length} 体と比べています`;
+  rows.similar = findSimilar(
+    u.name,
+    metrics.map(m => m[1]),
+    units,
+    x => metrics.map(m => m[2](x)),
+    x => `HP ${x.hp ?? '-'} / 装甲 ${x.armor ?? '-'} / 運動 ${x.mobility ?? '-'}${x.values?.['最大攻撃力'] ? ` / 攻撃 ${x.values['最大攻撃力']}` : ''}`,
+  );
   return rows;
 }
 
@@ -81,11 +137,19 @@ export async function comparePilot(p, section) {
   const data = await set(section);
   const b = band(p.name, p.exp);
   const pilots = (data.pilots ?? []).filter(x => x.band === b);
-  const rows = Object.entries(p.stats).concat([['SP', p.sp]]).map(([label, value]) => ({
+  const statEntries = Object.entries(p.stats).concat([['SP', p.sp]]);
+  const rows = statEntries.map(([label, value]) => ({
     label,
     value,
     percentile: percentile(pilots.map(x => label === 'SP' ? x.sp : x.stats?.[label]).filter(x => x != null), value),
   }));
   rows.note = `${section} の同じ帯（${b}）のパイロット ${pilots.length} 人と比べています`;
+  rows.similar = findSimilar(
+    p.name,
+    statEntries.map(e => e[1]),
+    pilots,
+    x => statEntries.map(([label]) => label === 'SP' ? x.sp : x.stats?.[label]),
+    x => statEntries.slice(0, 6).map(([label]) => `${label[0]}${x.stats?.[label] ?? '-'}`).join(' '),
+  );
   return rows;
 }

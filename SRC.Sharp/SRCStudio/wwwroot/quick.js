@@ -139,6 +139,75 @@ export class QuickBuilder {
     this.mapTiles = null;
   }
 
+  /** マップ作成タブで編集したマップを現在の話に反映する（7474/SRC#1714） */
+  async applyCustomMap(text) {
+    const error = await this.useMap('studio:custom', text);
+    if (error) {
+      this.status(t('quick.mapFailed', error), 'error');
+      return;
+    }
+    this.battle.spots = null;
+    this.saveDraft();
+    this.render();
+    this.status(t('quick.mapEdited'), 'info');
+  }
+
+  /** データビューアの「比べる」から渡された対戦カード（?matchup=JSON）を読み込む（7474/SRC#1715） */
+  async applyMatchupParam(raw) {
+    let payload;
+    try {
+      payload = JSON.parse(raw);
+    } catch (e) {
+      this.status(t('quick.matchupFailed', e?.message ?? e), 'error');
+      return;
+    }
+    const alliesIn = Array.isArray(payload?.allies) ? payload.allies : [];
+    const enemiesIn = Array.isArray(payload?.enemies) ? payload.enemies : [];
+    if (alliesIn.length === 0 && enemiesIn.length === 0) {
+      return;
+    }
+    this.titles = [];
+    this.battle = newBattle();
+    this.episodes = [this.battle];
+    this.mapTiles = null;
+    this.selected = null;
+    this.title = payload.title || t('quick.defaultTitle');
+    // 必要な作品を index.json から探して読み込む
+    const workKeys = [...alliesIn, ...enemiesIn].filter(u => u?.work);
+    if (workKeys.length > 0) {
+      try {
+        const index = await this.loadIndex();
+        const loaded = new Set();
+        for (const item of workKeys) {
+          const entry = (item.section
+            ? index.find(x => x.title === item.work && x.base?.includes(item.section))
+            : null) ?? index.find(x => x.title === item.work);
+          if (entry && !loaded.has(entry.path)) {
+            loaded.add(entry.path);
+            await this.addTitle(entry);
+          }
+        }
+      } catch (e) {
+        this.status(t('quick.indexFailed', e?.message ?? e), 'error');
+      }
+    }
+    const makeUnit = (u, x, y, defaultLevel) => ({
+      unit: u.unit ?? '',
+      pilot: u.pilot ?? '',
+      level: u.level ?? defaultLevel,
+      rank: u.rank ?? 0,
+      bossRank: u.bossRank ?? -1,
+      x,
+      y,
+    });
+    this.battle.allies = alliesIn.map((u, i) => makeUnit(u, 5, Math.min(13, 6 + i * 2), 20));
+    this.battle.enemies = enemiesIn.map((u, i) => makeUnit(u, 15, Math.min(13, 6 + i * 2), 20));
+    this.clampUnits();
+    this.saveDraft();
+    this.render();
+    this.status(t('quick.matchupLoaded', this.title), 'info');
+  }
+
   /** 場面のサンプルを使う。作品・ユニット・セリフがあれば、尋ねてから入れる */
   async applyScene(scene) {
     const response = await fetch(new URL(scene.map, scene.base));
@@ -788,8 +857,10 @@ export class QuickBuilder {
             }).join('')}</optgroup>` : ''}
             ${maps.length ? `<optgroup label="${esc(t('quick.folderMaps'))}">${maps.map(m => `<option value="${esc('folder:' + m)}" ${'folder:' + m === b.mapSource ? 'selected' : ''}>${esc(m)}</option>`).join('')}</optgroup>` : ''}
             ${b.mapSource?.startsWith('file:') ? `<option value="${esc(b.mapSource)}" selected>${esc(b.mapSource.slice(5))}</option>` : ''}
+            ${b.mapSource === 'studio:custom' ? `<option value="studio:custom" selected>${esc(t('quick.customMap'))}</option>` : ''}
           </select></label>
           <button type="button" class="q-map-file">${esc(t('quick.mapFile'))}</button>
+          ${this.host.editMap ? `<button type="button" class="q-edit-map">${esc(t('quick.editInMap'))}</button>` : ''}
           <input type="file" class="q-map-input" accept=".map" hidden>
           <span class="q-size" ${b.mapSource ? 'hidden' : ''}>
             <label class="q-field">${esc(t('map.width'))} <input class="q-width" type="number" min="${MIN_DRAG_SIZE}" max="50" value="${b.width}"></label>
@@ -1035,6 +1106,9 @@ export class QuickBuilder {
       }
     }));
     $('.q-map-file').addEventListener('click', () => $('.q-map-input').click());
+    $('.q-edit-map')?.addEventListener('click', () => {
+      this.host.editMap?.({ width: this.battle.width, height: this.battle.height, mapText: this.battle.mapText });
+    });
     $('.q-map-input').addEventListener('change', async ev => {
       const file = ev.target.files[0];
       if (!file) {

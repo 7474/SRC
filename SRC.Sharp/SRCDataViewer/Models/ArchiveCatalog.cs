@@ -18,6 +18,8 @@ namespace SRCDataViewer.Models
 
         /// <summary>viewer.json の analysisIndex（組の評価の一覧の URL）。無ければ null</summary>
         public string AnalysisIndex { get; private set; }
+        /// <summary>viewer.json の studioUrl（SRC#Studio の URL）。無ければ null</summary>
+        public string StudioUrl { get; private set; }
 
         private readonly SemaphoreSlim loadLock = new SemaphoreSlim(1, 1);
         private readonly Dictionary<string, Task<IReadOnlyList<ArchiveFile>>> files = new Dictionary<string, Task<IReadOnlyList<ArchiveFile>>>();
@@ -52,6 +54,7 @@ namespace SRCDataViewer.Models
                 }
                 Archives = archives;
                 AnalysisIndex = config?.AnalysisIndex;
+                StudioUrl = config?.StudioUrl;
                 Enabled = config?.ArchiveIndexes?.Any() ?? false;
                 loaded = true;
             }

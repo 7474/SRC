@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>Отправить в VS Code</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>Диаграмма рассеяния</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>Ось X</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>Ось Y</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>Нажмите на точку, чтобы добавить или убрать её из сравнения рядом (до 4).</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>Провести бой в SRC#Studio</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>Отправляет выбранные пары, разделённые на союзников и врагов, в быстрое создание SRC#Studio.</value>
+  </data>
 </root>
