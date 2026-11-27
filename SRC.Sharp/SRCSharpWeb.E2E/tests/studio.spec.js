@@ -863,6 +863,36 @@ test('素材の一覧: シナリオが参照する素材の不足・参照場所
   await expect(page.locator('#assets-readme-text')).toHaveValue(/## 必要な素材/);
 });
 
+test('シナリオの見通し: 出来事・台本・変数・気づいたことを出し、台本の行から会話の見た目を出す（7474/SRC#1692）', async ({ page }) => {
+  await open(page, 'outline');
+  await expect(page.locator('#outline-empty')).toBeVisible();
+  await page.locator('#scenario-input').setInputFiles(scenarioFolder());
+  await expect(page.locator('#outline-view .ol-summary')).toContainText('話 ');
+  // 出来事: 第 1 話の「全滅 敵」で次の話へ
+  await page.locator('#ol-tab-events').click();
+  await expect(page.locator('#outline-view .ol-table')).toContainText('敵が全滅したとき');
+  await expect(page.locator('#outline-view .ol-table')).toContainText('harbor.eve:');
+  // 台本: ソラのセリフを選ぶと、愛称（pilot.txt）と本文をメッセージウィンドウで出す
+  await page.locator('#ol-tab-script').click();
+  await page.locator('#ol-speaker').selectOption('ソラ');
+  const row = page.locator('#outline-view .ol-script tbody tr', { hasText: '今日の荷物' });
+  await row.click();
+  await expect(row).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('#outline-view .ol-talk')).toBeVisible();
+  await expect(page.locator('#outline-view .ol-talk .mw-speaker')).toContainText('ソラ');
+  await expect(page.locator('#outline-view .ol-talk .mw-lines')).toContainText('今日の荷物');
+  // 変数・部隊と登場人物
+  await page.locator('#ol-tab-variables').click();
+  await expect(page.locator('#outline-view .ol-table')).toContainText('港の評判');
+  await page.locator('#ol-tab-cast').click();
+  await expect(page.locator('#outline-view .ol-table').first()).toContainText('グスタフ');
+  // Markdown に書き出す（名前は 見通し.md。ヘッドレスの Chromium は日本語の名前を download にするので、中身だけを見る）
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#ol-export').click()]);
+  const md = fs.readFileSync(await download.path(), 'utf8');
+  expect(md).toContain('## 台本');
+  expect(md).toContain('## 出来事');
+});
+
 test('マップの自動接続: 描いた道・川・橋・海を自動でつなぎ、つなぎ直しを元に戻せる（7474/SRC#1663）', async ({ page }) => {
   await open(page);
   page.once('dialog', d => d.accept('auto.map'));

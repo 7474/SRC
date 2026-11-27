@@ -103,7 +103,7 @@ namespace SRCAuthoring.Templates
                 }
                 else
                 {
-                    lines.Add($"# {p}（Join で加わった。機体を決めて Unit・Pilot・Ride を書く）");
+                    lines.Add($"# {p}（Join などで加わった。機体を決めて Unit・Pilot・Ride を書く）");
                 }
             }
             lines.Add("");

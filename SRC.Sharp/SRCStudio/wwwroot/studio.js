@@ -1,6 +1,7 @@
 // SRC#Studio のスタンドアロン（index.html）。フォルダを開き、マップを選んでマップ作成ツールで編集し、保存する
-import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, autoConnectMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport, timelineBlocks, buildTimeline, insertTimelineMove, timelineScene } from './studio-core.js';
+import { loadWorkspace, findImage, imageNumbers, parseMap, serializeMap, autoConnectMap, studioCore, decodeText, previewData, findFile, parsePlacements, replacePlacementFileCoordinates, computeMoveRange, buildAssetReport, buildOutline, timelineBlocks, buildTimeline, insertTimelineMove, timelineScene } from './studio-core.js';
 import { AssetsView } from './assets.js';
+import { OutlineView } from './outline.js';
 import { DataPreview } from './preview.js';
 import { MapEditor, newMap } from './map-editor.js';
 import { QuickBuilder } from './quick.js';
@@ -10,6 +11,7 @@ import { basicData, canWriteFolders, download, fromFileList, pickFolder } from '
 import { language, t } from './i18n.js';
 
 const $ = s => document.querySelector(s);
+const TABS = ['quick', 'map', 'data', 'assets', 'outline'];
 const state = { app: null, scenario: null, roots: [], terrains: [], path: null, text: null, dirty: false, eventTexts: new Map(), dirtyEvents: new Map() };
 
 document.documentElement.lang = language;
@@ -207,14 +209,46 @@ async function renderAssets() {
   assetsView.setData(report, readme);
 }
 
+// ---- シナリオの見通し（7474/SRC#1692） ----
+
+const outlineView = new OutlineView($('#outline-view'), {
+  loadImage: loadDataImage,
+  onRefresh: () => renderOutline(),
+  onExport: async () => {
+    const md = await buildOutline(state.scenario, 'md');
+    download('見通し.md', new TextEncoder().encode(md));
+  },
+});
+let renderOutlineSeq = 0;
+
+async function renderOutline() {
+  const hasScenario = Boolean(state.scenario);
+  $('#outline-empty').hidden = hasScenario;
+  $('#outline-view').hidden = !hasScenario;
+  if (!hasScenario) {
+    outlineView.setData(null);
+    return;
+  }
+  const seq = ++renderOutlineSeq;
+  try {
+    const outline = await buildOutline(state.scenario, 'json');
+    if (seq === renderOutlineSeq) {
+      outlineView.setData(outline);
+    }
+  } catch (e) {
+    showMessage(t('outline.error', String(e?.message ?? e)));
+  }
+}
+
 function selectTab(tab) {
-  for (const name of ['quick', 'map', 'data', 'assets']) {
+  for (const name of TABS) {
     $(`#tab-${name}`).setAttribute('aria-selected', String(tab === name));
     $(`#tab-${name}`).tabIndex = tab === name ? 0 : -1;
   }
   $('#map-section').hidden = tab !== 'map';
   $('#data-section').hidden = tab !== 'data';
   $('#assets-section').hidden = tab !== 'assets';
+  $('#outline-section').hidden = tab !== 'outline';
   $('#quick-section').hidden = tab !== 'quick';
   $('#workspace').hidden = tab === 'quick';
   $('.files').hidden = tab !== 'map';
@@ -223,6 +257,9 @@ function selectTab(tab) {
   }
   if (tab === 'assets') {
     void renderAssets();
+  }
+  if (tab === 'outline') {
+    void renderOutline();
   }
   if (tab === 'quick') {
     quick.render();
@@ -238,9 +275,10 @@ $('#tab-quick').addEventListener('click', () => selectTab('quick'));
 $('#tab-map').addEventListener('click', () => selectTab('map'));
 $('#tab-data').addEventListener('click', () => selectTab('data'));
 $('#tab-assets').addEventListener('click', () => selectTab('assets'));
+$('#tab-outline').addEventListener('click', () => selectTab('outline'));
 // タブは左右の矢印キーでも移る
 $('.studio-tabs').addEventListener('keydown', ev => {
-  const tabs = ['quick', 'map', 'data', 'assets'];
+  const tabs = TABS;
   const current = tabs.findIndex(name => $(`#tab-${name}`).getAttribute('aria-selected') === 'true');
   const step = ev.key === 'ArrowRight' ? 1 : ev.key === 'ArrowLeft' ? -1 : 0;
   if (step) {
@@ -420,6 +458,9 @@ async function reloadWorkspace() {
   if (!$('#assets-section').hidden) {
     await renderAssets();
   }
+  if (!$('#outline-section').hidden) {
+    await renderOutline();
+  }
 }
 
 function showMessage(text, kind = 'warning') {
@@ -575,7 +616,7 @@ $('#save').hidden = !canWriteFolders();
   } catch {
     // localStorage を使えない
   }
-  selectTab(['quick', 'map', 'data', 'assets'].includes(tab) ? tab : 'quick');
+  selectTab(TABS.includes(tab) ? tab : 'quick');
   await quick.restoreDraft();
   $('#loading').hidden = true;
   document.body.dataset.ready = 'true';

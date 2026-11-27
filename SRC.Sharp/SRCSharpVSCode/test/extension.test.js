@@ -1,5 +1,6 @@
 // 拡張が有効になり、package.json のコマンドが登録され、.eve の言語が src-eve になることを確かめる（#1364）。
-// srcsharp（Language Server）が無い環境で動かすので、サーバーが要る機能はここでは確かめない
+// 最初の組は srcsharp（Language Server）が無くても動くものだけ。出来事のフォーム・名前を変える・見通しから会話のプレビューは、
+// 後の組で srcsharp.dll（SRCAuthoringTests を作るとできる。SRCSHARP_TEST_SERVER でも指せる）を dotnet で動かして確かめる（無ければ飛ばす）
 const assert = require('node:assert');
 const path = require('node:path');
 const vscode = require('vscode');
@@ -266,5 +267,169 @@ describe('SRC# Authoring', () => {
 
   it('データの規則のグループ（srcsharp.rules）の既定は src だけ', () => {
     assert.deepStrictEqual(vscode.workspace.getConfiguration('srcsharp').get('rules'), ['src']);
+  });
+
+  it('シナリオの見通しを SRC#Studio の画面で出し、台本の行から会話のプレビューを出す（7474/SRC#1692）', async function () {
+    this.timeout(60 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    await vscode.commands.executeCommand('srcsharp._showOutlineData', folder, {
+      scenarioRoot: folder,
+      episodes: [{
+        file: 'test.eve', title: 'test', joins: ['テスト'], launches: [], leaves: [], enemies: [], next: [], speakers: { 'システム': 1 },
+        events: [{ file: 'test.eve', line: 2, label: 'スタート', kind: 'start', when: '戦闘の始め', always: false, conditions: [], actions: ['加入・出撃: テスト（試作機）', '会話'], talkLines: 1 }],
+      }],
+      script: [{ episode: 'test', event: 'スタート', file: 'test.eve', line: 5, kind: 'talk', speaker: 'システム', text: '拡張のテスト' }],
+      findings: [{ file: 'test.eve', line: 2, message: 'テストの気づいたこと' }],
+      variables: [],
+    });
+    const wait = async (check, what) => {
+      let status;
+      for (let i = 0; i < 100; i++) {
+        status = await vscode.commands.executeCommand('srcsharp._outlineStatus');
+        assert.ok(!status?.error, `見通しの画面のエラー: ${status?.error}`);
+        if (status && check(status)) {
+          return status;
+        }
+        await new Promise((r) => setTimeout(r, 200));
+      }
+      assert.fail(`${what}: ${JSON.stringify(status)}`);
+    };
+    let status = await wait((s) => s.episodes === 1, '見通しが出ない');
+    assert.deepStrictEqual([status.events, status.script, status.findings, status.rows], [1, 1, 1, 1]);
+    // 台本の 1 行目を選ぶと、その行を開き、会話のプレビューを出す
+    await vscode.commands.executeCommand('srcsharp._outlineSelect', 'script', 0);
+    status = await wait((s) => s.talk, '台本の行から会話のプレビューを出さない');
+    assert.deepStrictEqual(status.talk, { file: 'test.eve', line: 5 });
+    assert.deepStrictEqual(status.selected, { file: 'test.eve', line: 5, speaker: 'システム' });
+    const opened = vscode.window.visibleTextEditors.find((e) => e.document.uri.fsPath === path.join(folder, 'test.eve'));
+    assert.ok(opened, '台本の行のファイルを開かない');
+    assert.strictEqual(opened.selection.active.line, 4);
+    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+  });
+});
+
+// srcsharp（Language Server と event-text）が要る機能。CI では先に SRCAuthoringTests を作るので、そこでできた srcsharp.dll を使う。
+// 無ければ（SRCSHARP_TEST_SERVER でも指せる）飛ばす
+describe('SRC# Authoring（srcsharp を使う）', () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const { execFileSync } = require('node:child_process');
+  const dll = process.env.SRCSHARP_TEST_SERVER || path.resolve(__dirname, '..', '..', 'SRCSharpTools', 'bin', 'Debug', 'net11.0', 'srcsharp.dll');
+  let dotnet;
+  try {
+    dotnet = fs.realpathSync(execFileSync(process.platform === 'win32' ? 'where' : 'which', ['dotnet']).toString().split(/\r?\n/)[0].trim());
+  } catch {
+    dotnet = [path.join(os.homedir(), '.dotnet', 'dotnet')].find((f) => fs.existsSync(f));
+  }
+  const available = fs.existsSync(dll) && dotnet;
+  let scenario;
+
+  before(async function () {
+    if (!available) {
+      // CI（SRCSHARP_TEST_REQUIRED）では飛ばさずに失敗にする
+      assert.ok(!process.env.SRCSHARP_TEST_REQUIRED, `srcsharp が見つからない: ${dll}・${dotnet}`);
+      this.skip();
+    }
+    const config = vscode.workspace.getConfiguration('srcsharp');
+    await config.update('serverPath', dotnet, vscode.ConfigurationTarget.Global);
+    await config.update('serverArgs', [dll], vscode.ConfigurationTarget.Global);
+    // フォームで書き込むシナリオ（テストのたびに作る）
+    scenario = fs.mkdtempSync(path.join(os.tmpdir(), 'srcsharp-form-'));
+    fs.mkdirSync(path.join(scenario, 'Data'));
+    fs.writeFileSync(path.join(scenario, '第1話.eve'), 'スタート:\r\nCreate 味方 試作機 0 テスト 1 1 1\r\nExit\r\n');
+  });
+
+  after(async () => {
+    await vscode.commands.executeCommand('srcsharp._eventFormAnswers', undefined);
+    if (scenario) {
+      await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+      fs.rmSync(scenario, { recursive: true, force: true });
+    }
+    if (available) {
+      const config = vscode.workspace.getConfiguration('srcsharp');
+      await config.update('serverPath', undefined, vscode.ConfigurationTarget.Global);
+      await config.update('serverArgs', undefined, vscode.ConfigurationTarget.Global);
+    }
+  });
+
+  it('出来事をフォームで足し、直す（7474/SRC#1692）', async function () {
+    this.timeout(120 * 1000);
+    const file = path.join(scenario, '第1話.eve');
+    const document = await vscode.workspace.openTextDocument(file);
+    const editor = await vscode.window.showTextDocument(document);
+    // きっかけ: ターン・3 ターン目・敵のフェイズ。会話: テスト「来たぞ」
+    await vscode.commands.executeCommand('srcsharp._eventFormAnswers', ['ターン', '3', '敵', 'テスト', '来たぞ', '（会話はここまで）']);
+    await vscode.commands.executeCommand('srcsharp.addEvent');
+    let text = document.getText();
+    assert.match(text, /^ターン 3 敵:$/m, text);
+    assert.match(text, /^Talk テスト\r?\n来たぞ\r?\nEnd$/m, text);
+    assert.match(text, /^Create 味方 試作機 0 テスト 1 1 1$/m, '元の行が残らない');
+    // 足した出来事にカーソルを置いて直す: 4 ターン目の味方のフェイズへ。会話はそのまま
+    const label = document.getText().split(/\r?\n/).findIndex((l) => l === 'ターン 3 敵:');
+    editor.selection = new vscode.Selection(label, 0, label, 0);
+    await vscode.commands.executeCommand('srcsharp._eventFormAnswers', ['ターン', '4', '味方', 'そのまま']);
+    await vscode.commands.executeCommand('srcsharp.editEvent');
+    text = document.getText();
+    assert.match(text, /^ターン 4 味方:$/m, text);
+    assert.doesNotMatch(text, /^ターン 3 敵:$/m, text);
+    assert.match(text, /^Talk テスト\r?\n来たぞ\r?\nEnd$/m, text);
+    // やめた（答えが尽きた）ときは書き込まない
+    await vscode.commands.executeCommand('srcsharp._eventFormAnswers', []);
+    await vscode.commands.executeCommand('srcsharp.addEvent');
+    assert.strictEqual(document.getText(), text);
+    await document.save();
+  });
+
+  it('シナリオの見通し（srcsharp outline）の台本の行から、SRCRender で描いた会話のプレビューを出す（7474/SRC#1692）', async function () {
+    this.timeout(120 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    await vscode.window.showTextDocument(await vscode.workspace.openTextDocument(path.join(folder, 'test.eve')));
+    await vscode.commands.executeCommand('srcsharp.showOutline');
+    let status;
+    for (let i = 0; i < 100 && !(status && status.script >= 1); i++) {
+      await new Promise((r) => setTimeout(r, 300));
+      status = await vscode.commands.executeCommand('srcsharp._outlineStatus');
+    }
+    assert.ok(status && status.episodes === 1 && status.script === 1, `見通しが出ない: ${JSON.stringify(status)}`);
+    await vscode.commands.executeCommand('srcsharp._outlineSelect', 'script', 0);
+    let talk;
+    for (let i = 0; i < 200 && !(talk && talk.rendered); i++) {
+      await new Promise((r) => setTimeout(r, 300));
+      talk = await vscode.commands.executeCommand('srcsharp._talkPreviewStatus');
+    }
+    assert.ok(talk && talk.rendered && !talk.error, `会話のプレビューが出ない: ${JSON.stringify(talk)}`);
+    assert.strictEqual(path.basename(talk.file ?? ''), 'test.eve');
+    assert.ok(talk.pages >= 1);
+    // 作った JSON はシナリオの .srcsharp に置く（後片付け）
+    fs.rmSync(path.join(folder, '.srcsharp'), { recursive: true, force: true });
+    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
+  });
+
+  it('名前を変える（F2）が、イベントとデータの全体を変える（7474/SRC#1692）', async function () {
+    this.timeout(120 * 1000);
+    const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    const uri = vscode.Uri.file(path.join(folder, 'test.eve'));
+    await vscode.window.showTextDocument(await vscode.workspace.openTextDocument(uri));
+    await vscode.commands.executeCommand('srcsharp.restartServer');
+    // 「Create 味方 試作機 0 テスト 1 1 1」の 試作機（2 行目の 10 文字目）
+    const position = new vscode.Position(2, 10);
+    let edit;
+    for (let i = 0; i < 120 && !(edit && edit.size > 0); i++) {
+      try {
+        edit = await vscode.commands.executeCommand('vscode.executeDocumentRenameProvider', uri, position, '新型機');
+      } catch {
+        edit = undefined;
+      }
+      if (!(edit && edit.size > 0)) {
+        await new Promise((r) => setTimeout(r, 500));
+      }
+    }
+    assert.ok(edit && edit.size > 0, 'Language Server が名前を変えない');
+    // 書き換えはせず、変える所だけを確かめる（テストのフォルダは変えない）
+    const files = edit.entries().map(([u, edits]) => [path.relative(folder, u.fsPath).replace(/\\/g, '/'), edits.map((e) => e.newText)]);
+    const byFile = Object.fromEntries(files);
+    assert.deepStrictEqual(byFile['test.eve'], ['新型機']);
+    assert.ok(byFile['Data/robot.txt']?.length >= 1 && byFile['Data/robot.txt'].every((x) => x === '新型機'), JSON.stringify(files));
+    await vscode.commands.executeCommand('workbench.action.closeAllEditors');
   });
 });

@@ -28,6 +28,7 @@ namespace SRCStudio
         private static readonly List<ImageIndex> imageRoots = new List<ImageIndex>();
         private static readonly List<AssetRoot> assetRoots = new List<AssetRoot>();
         private static readonly List<(string path, string text)> assetTargets = new List<(string path, string text)>();
+        private static readonly List<(string path, byte[] data)> outlineFiles = new List<(string path, byte[] data)>();
         private static readonly Dictionary<int, MapDocument> templates = new Dictionary<int, MapDocument>();
         private static int nextTemplate = 1;
 
@@ -483,6 +484,68 @@ namespace SRCStudio
                 default:
                     return report.ToJson();
             }
+        }
+
+        /// <summary>シナリオの見通し（7474/SRC#1692）の入力を空にする</summary>
+        [JSExport]
+        internal static void ClearOutlineFiles()
+        {
+            outlineFiles.Clear();
+        }
+
+        /// <summary>見通しに使うシナリオのファイル（*.eve と Data のファイル。シナリオのフォルダからの相対パス）を足す</summary>
+        [JSExport]
+        internal static void AddOutlineFile(string path, byte[] data)
+        {
+            outlineFiles.Add((path ?? "", data ?? Array.Empty<byte>()));
+        }
+
+        /// <summary>
+        /// シナリオの見通し（7474/SRC#1692）。足したファイルを WebAssembly の中のフォルダ（メモリ上）に置き、
+        /// srcsharp outline と同じ ScenarioOutline で解析する。format が md なら Markdown、ほかは JSON。
+        /// JSON には、台本の話す人の愛称と顔の画像（faces。足したデータの pilot.txt・non_pilot.txt から）を足す
+        /// </summary>
+        [JSExport]
+        internal static string BuildOutline(string name, string format)
+        {
+            var root = Path.Combine(Path.GetTempPath(), "srcstudio-outline");
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, true);
+            }
+            var safe = string.Concat((string.IsNullOrWhiteSpace(name) ? "scenario" : name).Select(c => Path.GetInvalidFileNameChars().Contains(c) ? '_' : c));
+            var dir = Path.Combine(root, safe);
+            Directory.CreateDirectory(dir);
+            foreach (var (path, data) in outlineFiles)
+            {
+                var rel = path.Replace('\\', '/').TrimStart('/');
+                if (rel.Length == 0 || rel.Split('/').Any(x => x == ".."))
+                {
+                    continue;
+                }
+                var full = Path.Combine(dir, rel);
+                Directory.CreateDirectory(Path.GetDirectoryName(full));
+                File.WriteAllBytes(full, data);
+            }
+            var outline = ScenarioOutline.Analyze(dir);
+            if (string.Equals(format, "md", StringComparison.OrdinalIgnoreCase) || string.Equals(format, "markdown", StringComparison.OrdinalIgnoreCase))
+            {
+                return outline.ToMarkdown();
+            }
+            var json = System.Text.Json.Nodes.JsonNode.Parse(outline.ToJson()).AsObject();
+            json["scenarioRoot"] = safe;
+            var catalog = PlacementUnitCatalog.LoadBytes(outlineFiles.Where(f => System.Text.RegularExpressions.Regex.IsMatch(f.path.Replace('\\', '/'), @"(^|/)data/(pilot|non_pilot)\.txt$", System.Text.RegularExpressions.RegexOptions.IgnoreCase)));
+            var faces = new System.Text.Json.Nodes.JsonObject();
+            foreach (var speaker in outline.Script.Select(l => l.Speaker).Where(x => !string.IsNullOrEmpty(x)).Distinct())
+            {
+                var face = catalog.FindFace(speaker);
+                if (face.HasValue)
+                {
+                    faces[speaker] = new System.Text.Json.Nodes.JsonObject { ["nickname"] = face.Value.nickname, ["bitmap"] = face.Value.bitmap };
+                }
+            }
+            json["faces"] = faces;
+            return json.ToJsonString(new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
         }
 
         private static void WriteInts(Utf8JsonWriter w, string name, int[] values)

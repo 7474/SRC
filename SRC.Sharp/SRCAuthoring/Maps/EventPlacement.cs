@@ -30,6 +30,7 @@ namespace SRCAuthoring.Maps
     {
         private readonly Dictionary<string, UnitAppearance> unitsByName = new Dictionary<string, UnitAppearance>(StringComparer.Ordinal);
         private readonly Dictionary<string, string> pilotCanonical = new Dictionary<string, string>(StringComparer.Ordinal);
+        private readonly Dictionary<string, (string nickname, string bitmap)> faces = new Dictionary<string, (string, string)>(StringComparer.Ordinal);
 
         public static readonly PlacementUnitCatalog Empty = new PlacementUnitCatalog();
 
@@ -94,6 +95,9 @@ namespace SRCAuthoring.Maps
                 case "pilot.txt":
                     src.PDList.Load(name, stream);
                     break;
+                case "non_pilot.txt":
+                    src.NPDList.Load(name, stream);
+                    break;
             }
         }
 
@@ -130,6 +134,21 @@ namespace SRCAuthoring.Maps
                     {
                         catalog.pilotCanonical[p.Nickname] = p.Name;
                     }
+                    // 愛称が「主人公」「ヒロイン」で始まると、遊ぶときに変数（主人公愛称 など）で決まる（PilotData.Nickname）。値が無いのでパイロットの名前で出す
+                    var nickname = p.Nickname ?? "";
+                    if ((nickname.StartsWith("主人公", StringComparison.Ordinal) || nickname.StartsWith("ヒロイン", StringComparison.Ordinal)) && nickname.EndsWith("愛称", StringComparison.Ordinal))
+                    {
+                        nickname = p.Name;
+                    }
+                    catalog.faces[p.Name] = (nickname, p.Bitmap0 ?? "");
+                }
+            }
+            // 会話の話す人は、パイロット → パイロット以外の人物（non_pilot.txt）の順に引く（SRCCore の Dialog と同じ）
+            foreach (var n in src.NPDList.Items)
+            {
+                if (!string.IsNullOrEmpty(n.Name) && !catalog.faces.ContainsKey(n.Name))
+                {
+                    catalog.faces[n.Name] = (n.Nickname0 ?? "", n.Bitmap0 ?? "");
                 }
             }
             return catalog;
@@ -142,6 +161,20 @@ namespace SRCAuthoring.Maps
                 return null;
             }
             return unitsByName.TryGetValue(name, out var u) ? u : null;
+        }
+
+        /// <summary>会話の話す人（パイロットかパイロット以外の人物）の愛称と顔の画像。無ければ null</summary>
+        public (string nickname, string bitmap)? FindFace(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+            if (faces.TryGetValue(name, out var face) || faces.TryGetValue(CanonicalPilot(name), out face))
+            {
+                return face;
+            }
+            return null;
         }
 
         public string CanonicalPilot(string name)

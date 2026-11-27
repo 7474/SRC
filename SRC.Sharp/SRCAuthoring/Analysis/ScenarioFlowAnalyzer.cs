@@ -1020,6 +1020,11 @@ namespace SRCAuthoring.Analysis
                 {
                     AddOnce(scanned.Joins, cmd.GetArg(2));
                 }
+                else if (cmd.Name == CmdType.ChangePartyCmd && cmd.ArgNum >= 3 && cmd.GetArg(3) == "味方")
+                {
+                    // 敵・中立から味方になる（ChangeParty パイロット 味方）
+                    AddOnce(scanned.Joins, cmd.GetArg(2));
+                }
                 else if (cmd.Name == CmdType.LeaveCmd)
                 {
                     for (var j = 2; j <= cmd.ArgNum; j++)

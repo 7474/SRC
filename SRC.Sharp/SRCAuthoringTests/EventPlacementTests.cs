@@ -145,6 +145,23 @@ namespace SRCAuthoring.Tests
             Assert.AreEqual("進入 主人公 5 6:", EventPlacementParser.ReplaceLineCoordinates("進入 主人公 12 3:", 5, 6));
         }
 
+        /// <summary>会話の話す人の愛称と顔（シナリオの見通しの台本。7474/SRC#1692）。パイロット → パイロット以外の人物の順</summary>
+        [TestMethod]
+        public void FindFace_LooksUpPilotsThenNonPilots()
+        {
+            var data = Path.Combine(SolutionDir(), "Content", "lantern", "Data", "ランタン");
+            var catalog = PlacementUnitCatalog.LoadBytes(new[]
+            {
+                ("Data/ランタン/pilot.txt", File.ReadAllBytes(Path.Combine(data, "pilot.txt"))),
+                ("Data/ランタン/non_pilot.txt", File.ReadAllBytes(Path.Combine(data, "non_pilot.txt"))),
+            });
+            // ソラの愛称は「主人公」（遊ぶときに変数で決まる）なので、名前で出す
+            Assert.AreEqual(("ソラ", "Lantern_Sora.bmp"), catalog.FindFace("ソラ"));
+            Assert.AreEqual(("マルタ町長", "Lantern_Marta.bmp"), catalog.FindFace("マルタ"));
+            Assert.IsNull(catalog.FindFace("だれでもない"));
+            Assert.IsNull(catalog.FindFace(""));
+        }
+
         [TestMethod]
         public void ParseForMap_LanternScenario_ResolvesUnitsAndCrossEpisodeLaunch()
         {
