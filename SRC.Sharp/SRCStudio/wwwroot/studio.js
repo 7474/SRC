@@ -722,7 +722,9 @@ document.addEventListener('keydown', ev => {
   state.app = await basicData();
   await reloadWorkspace();
   // はじめて開いた人は、かんたん作成から（?tab= か、前に開いていたタブ）
-  let tab = new URLSearchParams(location.search).get('tab');
+  const params = new URLSearchParams(location.search);
+  const matchup = params.get('matchup');
+  let tab = matchup ? 'quick' : params.get('tab');
   try {
     tab ??= localStorage.getItem('srcstudio.tab');
   } catch {
@@ -730,6 +732,16 @@ document.addEventListener('keydown', ev => {
   }
   selectTab(TABS.includes(tab) ? tab : 'quick');
   await quick.restoreDraft();
+  if (matchup) {
+    await quick.applyMatchupParam(matchup);
+    try {
+      const cleaned = new URL(location.href);
+      cleaned.searchParams.delete('matchup');
+      history.replaceState(null, '', cleaned.toString());
+    } catch {
+      // URL を書き換えられなくても続ける
+    }
+  }
   $('#loading').hidden = true;
   document.body.dataset.ready = 'true';
 })();

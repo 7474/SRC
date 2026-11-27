@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>Send to VS Code</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>Scatter plot</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>X axis</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>Y axis</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>Click a dot to add or remove it from the side-by-side comparison (up to 4).</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>Try a battle in SRC#Studio</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>Sends the selected pairs split into allies and enemies to SRC#Studio Quick create.</value>
+  </data>
 </root>

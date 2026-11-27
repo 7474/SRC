@@ -152,6 +152,62 @@ export class QuickBuilder {
     this.status(t('quick.mapEdited'), 'info');
   }
 
+  /** データビューアの「比べる」から渡された対戦カード（?matchup=JSON）を読み込む（7474/SRC#1715） */
+  async applyMatchupParam(raw) {
+    let payload;
+    try {
+      payload = JSON.parse(raw);
+    } catch (e) {
+      this.status(t('quick.matchupFailed', e?.message ?? e), 'error');
+      return;
+    }
+    const alliesIn = Array.isArray(payload?.allies) ? payload.allies : [];
+    const enemiesIn = Array.isArray(payload?.enemies) ? payload.enemies : [];
+    if (alliesIn.length === 0 && enemiesIn.length === 0) {
+      return;
+    }
+    this.titles = [];
+    this.battle = newBattle();
+    this.episodes = [this.battle];
+    this.mapTiles = null;
+    this.selected = null;
+    this.title = payload.title || t('quick.defaultTitle');
+    // 必要な作品を index.json から探して読み込む
+    const workKeys = [...alliesIn, ...enemiesIn].filter(u => u?.work);
+    if (workKeys.length > 0) {
+      try {
+        const index = await this.loadIndex();
+        const loaded = new Set();
+        for (const item of workKeys) {
+          const entry = (item.section
+            ? index.find(x => x.title === item.work && x.base?.includes(item.section))
+            : null) ?? index.find(x => x.title === item.work);
+          if (entry && !loaded.has(entry.path)) {
+            loaded.add(entry.path);
+            await this.addTitle(entry);
+          }
+        }
+      } catch (e) {
+        this.status(t('quick.indexFailed', e?.message ?? e), 'error');
+      }
+    }
+    const makeUnit = (u, x, y, defaultLevel) => ({
+      unit: u.unit ?? '',
+      pilot: u.pilot ?? '',
+      level: u.level ?? defaultLevel,
+      rank: u.rank ?? 0,
+      bossRank: u.bossRank ?? -1,
+      x,
+      y,
+    });
+    this.battle.allies = alliesIn.map((u, i) => makeUnit(u, 5, Math.min(13, 6 + i * 2), 20));
+    this.battle.enemies = enemiesIn.map((u, i) => makeUnit(u, 15, Math.min(13, 6 + i * 2), 20));
+    this.clampUnits();
+    this.saveDraft();
+    this.render();
+    this.status(t('quick.matchupLoaded', this.title), 'info');
+  }
+
   /** 場面のサンプルを使う。作品・ユニット・セリフがあれば、尋ねてから入れる */
   async applyScene(scene) {
     const response = await fetch(new URL(scene.map, scene.base));
