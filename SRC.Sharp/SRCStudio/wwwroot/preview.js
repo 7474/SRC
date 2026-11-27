@@ -22,13 +22,24 @@ export class DataPreview {
     this.selectedItemLine = null;
     this.cursorLine = null;
     this.messageView = 'pilot';
+    this.filterText = '';
     element.classList.add('data-preview');
     element.innerHTML = `
       <div class="dp-errors" hidden></div>
       <div class="dp-body">
-        <ul class="dp-list" role="listbox"></ul>
+        <div class="dp-sidebar">
+          <div class="dp-list-head" hidden>
+            <input type="search" class="dp-search" placeholder="${esc(t('preview.search'))}" aria-label="${esc(t('preview.search'))}">
+            <span class="dp-count"></span>
+          </div>
+          <ul class="dp-list" role="listbox"></ul>
+        </div>
         <article class="dp-card" aria-live="polite"></article>
       </div>`;
+    element.querySelector('.dp-search').addEventListener('input', ev => {
+      this.filterText = ev.target.value;
+      this.renderList();
+    });
   }
 
   /** プレビューを出す。line を含むデータがあればそれを、無ければ前に選んだもの（同じ名前）か最初のものを選ぶ */
@@ -68,13 +79,25 @@ export class DataPreview {
 
   renderList() {
     const list = this.element.querySelector('.dp-list');
+    const head = this.element.querySelector('.dp-list-head');
+    const count = this.element.querySelector('.dp-count');
     list.innerHTML = '';
-    for (const entry of this.result.entries) {
+    const entries = this.result?.entries ?? [];
+    const q = this.filterText.trim().toLowerCase();
+    const filtered = q ? entries.filter(e => `${e.name ?? ''} ${e.nickname ?? ''} ${e.class ?? ''}`.toLowerCase().includes(q)) : entries;
+    if (head) {
+      head.hidden = entries.length <= 1;
+    }
+    if (count) {
+      count.textContent = q ? t('preview.count', filtered.length, entries.length) : String(entries.length);
+    }
+    for (const entry of filtered) {
       const li = document.createElement('li');
       li.role = 'option';
       li.textContent = entry.name;
       li.dataset.name = entry.name;
       li.title = `${entry.startLine}${t('preview.line')}`;
+      li.setAttribute('aria-selected', String(this.selected != null && this.selected.name === entry.name));
       li.addEventListener('click', () => {
         this.selectedItemLine = Array.isArray(entry.items) ? entry.items[0]?.line ?? null : null;
         this.select(entry);
@@ -82,10 +105,10 @@ export class DataPreview {
       });
       list.append(li);
     }
-    if (this.result.entries.length === 0) {
+    if (filtered.length === 0) {
       const li = document.createElement('li');
       li.className = 'dp-empty';
-      li.textContent = this.result.kind ? t('preview.empty') : t('preview.notData');
+      li.textContent = entries.length > 0 ? t('quick.noTitles') : (this.result?.kind ? t('preview.empty') : t('preview.notData'));
       list.append(li);
     }
   }
@@ -141,34 +164,43 @@ DataPreview.prototype.setupTable = function (card, entry) {
     return;
   }
   const tableKey = `${this.result.kind}:${entry.name}`;
+  const makeOpenButton = () => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'dp-table-toggle';
+    button.textContent = t('table.edit');
+    button.addEventListener('click', () => button.replaceWith(openTable()));
+    return button;
+  };
   // 表で直している間は、直すたびにプレビューを作り直しても表を開いたままにする
   const openTable = () => {
     this.tableOpenFor = tableKey;
-    return renderTable({
+    const box = renderTable({
       statLines: hasStats ? statLines : null,
       statFields,
       rows,
     }, () => this.options.lines(), edits => this.options.editLines(edits));
+    const head = document.createElement('div');
+    head.className = 'dp-table-head';
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'dp-table-close';
+    closeBtn.textContent = t('table.close');
+    closeBtn.addEventListener('click', () => {
+      this.tableOpenFor = null;
+      box.replaceWith(makeOpenButton());
+    });
+    head.append(closeBtn);
+    box.prepend(head);
+    return box;
   };
   const anchor = card.querySelector('.dp-stats') ?? card.querySelector('.dp-weapons');
-  if (this.tableOpenFor === tableKey) {
-    if (anchor) {
-      anchor.before(openTable());
-    } else {
-      card.append(openTable());
-    }
-    return;
-  }
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'dp-table-toggle';
-  button.textContent = t('table.edit');
+  const node = this.tableOpenFor === tableKey ? openTable() : makeOpenButton();
   if (anchor) {
-    anchor.before(button);
+    anchor.before(node);
   } else {
-    card.append(button);
+    card.append(node);
   }
-  button.addEventListener('click', () => button.replaceWith(openTable()));
 };
 
 /** 能力値・地形適応の表（1 行）を作る。既存の .dp-edit とは別のクラスにする */

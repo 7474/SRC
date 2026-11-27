@@ -644,7 +644,9 @@ export class QuickBuilder {
             <td><button type="button" class="q-remove icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button></td>
           </tr>`).join('')}</tbody>
       </table>` : '';
-    const talkRows = scene => this.lineList(scene).map((line, i) => `
+    const talkRows = scene => {
+      const lines = this.lineList(scene);
+      return lines.map((line, i) => `
       <div class="q-line" data-scene="${scene}" data-index="${i}">
         <select class="q-speaker" aria-label="${esc(t('quick.speaker'))}">
           <option value="" ${line.speaker ? '' : 'selected'}>${esc(t('quick.narration'))}</option>
@@ -652,8 +654,13 @@ export class QuickBuilder {
           ${line.speaker && !speakers.includes(line.speaker) ? `<option selected>${esc(line.speaker)}</option>` : ''}
         </select>
         <textarea class="q-text" rows="2" aria-label="${esc(t('quick.text'))}" placeholder="${esc(t('quick.text'))}">${esc(line.text)}</textarea>
-        <button type="button" class="q-remove-line icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button>
+        <span class="q-line-actions">
+          <button type="button" class="q-line-up icon" aria-label="${esc(t('quick.moveUp'))}" title="${esc(t('quick.moveUp'))}" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button type="button" class="q-line-down icon" aria-label="${esc(t('quick.moveDown'))}" title="${esc(t('quick.moveDown'))}" ${i === lines.length - 1 ? 'disabled' : ''}>↓</button>
+          <button type="button" class="q-remove-line icon" aria-label="${esc(t('quick.remove'))}" title="${esc(t('quick.remove'))}">×</button>
+        </span>
       </div>`).join('');
+    };
     const triggerFields = (e, i) => {
       switch (e.trigger) {
         case 'turn':
@@ -726,14 +733,16 @@ export class QuickBuilder {
     const resetDisabled = this.hasContent() ? '' : 'disabled';
     this.root.innerHTML = `
       <p class="hint q-intro">${esc(t('quick.intro'))}</p>
-      <div class="q-toolbar">
-        <button type="button" class="q-reset danger" title="${esc(t('quick.resetHint'))}" ${resetDisabled}>${esc(t('quick.reset'))}</button>
+      <div class="q-top-bar">
+        <nav class="q-episodes" aria-label="${esc(t('quick.episodes'))}">
+          ${this.episodes.map((e, i) => `<button type="button" class="q-episode" data-index="${i}" aria-current="${e === b ? 'page' : 'false'}">${esc(t('quick.episode', i + 1))}</button>`).join('')}
+          <button type="button" class="q-add-episode">＋ ${esc(t('quick.addEpisode'))}</button>
+          ${this.episodes.length > 1 ? `<button type="button" class="q-remove-episode danger">${esc(t('quick.removeEpisode'))}</button>` : ''}
+        </nav>
+        <div class="q-toolbar">
+          <button type="button" class="q-reset danger" title="${esc(t('quick.resetHint'))}" ${resetDisabled}>${esc(t('quick.reset'))}</button>
+        </div>
       </div>
-      <nav class="q-episodes" aria-label="${esc(t('quick.episodes'))}">
-        ${this.episodes.map((e, i) => `<button type="button" class="q-episode" data-index="${i}" aria-current="${e === b ? 'page' : 'false'}">${esc(t('quick.episode', i + 1))}</button>`).join('')}
-        <button type="button" class="q-add-episode">＋ ${esc(t('quick.addEpisode'))}</button>
-        ${this.episodes.length > 1 ? `<button type="button" class="q-remove-episode danger">${esc(t('quick.removeEpisode'))}</button>` : ''}
-      </nav>
       ${this.episodes.length > 1 ? `<p class="hint q-episode-hint">${esc(t('quick.episodesHint'))}${carried.length ? ' ' + esc(t('quick.carried', carried.join('、'))) : ''}</p>` : ''}
       <details class="q-gallery" ${galleryOpen ? 'open' : ''}>
         <summary>${esc(t('quick.gallery'))}${scenes.length ? ` <span class="hint">${esc(t('quick.galleryCount', scenes.length))}</span>` : ''}</summary>
@@ -792,6 +801,7 @@ export class QuickBuilder {
         <p class="hint">${esc(t('quick.placeHint'))}</p>
         <p class="q-legend hint"><span class="q-key allies"></span>${esc(t('quick.allies'))}<span class="q-key enemies"></span>${esc(t('quick.enemies'))}<span class="q-key spot"></span>${esc(t('quick.spot'))}<span class="q-key boss"></span>${esc(t('quick.boss'))}<span class="q-key reinforce"></span>${esc(t('quick.reinforceKey'))}<span class="q-key goal"></span>${esc(t('quick.goalKey'))}</p>
         <div class="q-board"><canvas class="q-canvas"></canvas></div>
+        <div class="q-board-status hint">${esc(t('quick.hoverHint'))}</div>
       </section>
       <section class="q-step">
         <h2><span class="q-num">4</span>${esc(t('quick.stepTalk'))}</h2>
@@ -1042,11 +1052,49 @@ export class QuickBuilder {
       this.render();
     });
     const canvas = $('.q-canvas');
-    canvas.addEventListener('click', ev => {
+    const boardStatus = $('.q-board-status');
+    const cellFromEvent = ev => {
       const rect = canvas.getBoundingClientRect();
       const x = Math.floor((ev.clientX - rect.left) / (rect.width / this.battle.width)) + 1;
       const y = Math.floor((ev.clientY - rect.top) / (rect.height / this.battle.height)) + 1;
-      this.clickCell(x, y);
+      return x >= 1 && y >= 1 && x <= this.battle.width && y <= this.battle.height ? { x, y } : null;
+    };
+    canvas.addEventListener('click', ev => {
+      const pos = cellFromEvent(ev);
+      if (pos) {
+        this.clickCell(pos.x, pos.y);
+      }
+    });
+    canvas.addEventListener('mousemove', ev => {
+      if (!boardStatus) {
+        return;
+      }
+      const pos = cellFromEvent(ev);
+      if (!pos) {
+        boardStatus.textContent = t('quick.hoverHint');
+        return;
+      }
+      let text = `(${pos.x},${pos.y})`;
+      if (this.mapTiles) {
+        const id = this.mapTiles[((pos.y - 1) * this.battle.width + (pos.x - 1)) * 2];
+        const info = this.host.terrains().find(x => x.id === id);
+        if (info) {
+          text += ` ${info.name}`;
+        }
+      }
+      const hit = this.allUnits().find(u => u.unit.x === pos.x && u.unit.y === pos.y);
+      if (hit) {
+        const who = [hit.unit.unit, hit.unit.pilot].filter(Boolean).join(' / ');
+        if (who) {
+          text += ` — ${who}`;
+        }
+      }
+      boardStatus.textContent = text;
+    });
+    canvas.addEventListener('mouseleave', () => {
+      if (boardStatus) {
+        boardStatus.textContent = t('quick.hoverHint');
+      }
     });
 
     this.root.querySelectorAll('.q-add-line').forEach(button => button.addEventListener('click', () => {
@@ -1059,7 +1107,9 @@ export class QuickBuilder {
       this.root.querySelector(`.q-line[data-scene="${scene}"]:last-of-type .q-text`)?.focus();
     }));
     this.root.querySelectorAll('.q-line').forEach(div => {
-      const line = this.lineList(div.dataset.scene)[Number(div.dataset.index)];
+      const idx = Number(div.dataset.index);
+      const list = this.lineList(div.dataset.scene);
+      const line = list[idx];
       div.querySelector('.q-speaker').addEventListener('change', ev => {
         line.speaker = ev.target.value;
         this.saveDraft();
@@ -1068,8 +1118,22 @@ export class QuickBuilder {
         line.text = ev.target.value;
         this.saveDraft();
       });
+      div.querySelector('.q-line-up')?.addEventListener('click', () => {
+        if (idx > 0) {
+          [list[idx - 1], list[idx]] = [list[idx], list[idx - 1]];
+          this.saveDraft();
+          this.render();
+        }
+      });
+      div.querySelector('.q-line-down')?.addEventListener('click', () => {
+        if (idx < list.length - 1) {
+          [list[idx], list[idx + 1]] = [list[idx + 1], list[idx]];
+          this.saveDraft();
+          this.render();
+        }
+      });
       div.querySelector('.q-remove-line').addEventListener('click', () => {
-        this.lineList(div.dataset.scene).splice(Number(div.dataset.index), 1);
+        list.splice(idx, 1);
         this.saveDraft();
         this.render();
       });

@@ -17,6 +17,8 @@ export const CLASS_COLORS = { '陸': '#8db360', '屋内': '#b49a74', '月面': '
 export const PARTY_COLORS = { '味方': '#2f6fd6', '敵': '#d0393e', '中立': '#d99b00', 'ＮＰＣ': '#2d9d5c' };
 const TOOLS = ['pen', 'rect', 'fill', 'pick', 'copy', 'paste'];
 
+const TOOL_KEYS = { pen: 'B', rect: 'R', fill: 'G', pick: 'I', copy: 'C', paste: 'V' };
+
 export class MapEditor {
   constructor(element, options) {
     this.options = options;
@@ -56,14 +58,14 @@ export class MapEditor {
     e.innerHTML = `
       <div class="me-toolbar" role="toolbar">
         <span class="me-group me-tools"></span>
-        <span class="me-group">
-          <label><input type="radio" name="me-target" value="tiles" checked> ${t('map.targetTiles')}</label>
-          <label><input type="radio" name="me-target" value="layer"> ${t('map.targetLayer')}</label>
-          <label><input type="radio" name="me-target" value="placement"> ${t('map.targetPlacement')}</label>
+        <span class="me-group me-target-group">
+          <label class="me-seg"><input type="radio" name="me-target" value="tiles" checked><span>${t('map.targetTiles')}</span></label>
+          <label class="me-seg"><input type="radio" name="me-target" value="layer"><span>${t('map.targetLayer')}</span></label>
+          <label class="me-seg"><input type="radio" name="me-target" value="placement"><span>${t('map.targetPlacement')}</span></label>
           <button type="button" class="me-erase" title="${t('map.eraseLayerHint')}">${t('map.eraseLayer')}</button>
         </span>
         <span class="me-group">
-          <label title="${t('map.autoConnectHint')}"><input type="checkbox" class="me-auto-connect"> ${t('map.autoConnect')}</label>
+          <label class="me-check" title="${t('map.autoConnectHint')}"><input type="checkbox" class="me-auto-connect"> ${t('map.autoConnect')}</label>
           <button type="button" class="me-reconnect" title="${t('map.reconnectHint')}">${t('map.reconnect')}</button>
         </span>
         <span class="me-group">
@@ -71,11 +73,11 @@ export class MapEditor {
           <button type="button" class="me-redo" title="Ctrl+Y">${t('map.redo')}</button>
         </span>
         <span class="me-group">
-          <button type="button" class="me-zoom-out" aria-label="${t('map.zoomOut')}">−</button>
-          <span class="me-zoom-label">100%</span>
-          <button type="button" class="me-zoom-in" aria-label="${t('map.zoomIn')}">＋</button>
-          <label><input type="checkbox" class="me-grid" checked> ${t('map.grid')}</label>
-          <label><input type="checkbox" class="me-show-placements" checked> ${t('map.showPlacements')}</label>
+          <button type="button" class="me-zoom-out" aria-label="${t('map.zoomOut')}" title="${t('map.zoomOut')} (-)">−</button>
+          <button type="button" class="me-zoom-label" title="${t('map.zoomReset')} (0)">100%</button>
+          <button type="button" class="me-zoom-in" aria-label="${t('map.zoomIn')}" title="${t('map.zoomIn')} (+)">＋</button>
+          <label class="me-check"><input type="checkbox" class="me-grid" checked> ${t('map.grid')}</label>
+          <label class="me-check"><input type="checkbox" class="me-show-placements" checked> ${t('map.showPlacements')}</label>
         </span>
         <span class="me-group">
           <button type="button" class="me-resize">${t('map.resize')}</button>
@@ -85,7 +87,7 @@ export class MapEditor {
         <div class="me-canvas-wrap"><canvas class="me-canvas"></canvas></div>
         <div class="me-palette">
           <div class="me-terrain-pane">
-            <div class="me-current"><canvas width="${TILE}" height="${TILE}"></canvas><span></span></div>
+            <div class="me-current"><canvas width="${TILE}" height="${TILE}"></canvas><div class="me-current-info"><span></span><small class="me-current-meta"></small></div></div>
             <select class="me-class"></select>
             <input type="search" class="me-search" placeholder="${t('map.search')}">
             <ul class="me-terrains" role="listbox"></ul>
@@ -97,9 +99,9 @@ export class MapEditor {
                 <select class="me-puppet-block"><option value="">${t('map.puppet.none')}</option></select></label>
               <div class="me-puppet-body" hidden>
                 <div class="me-puppet-nav">
-                  <button type="button" class="me-puppet-prev" aria-label="${t('map.puppet.prev')}" title="${t('map.puppet.prev')}">◀</button>
+                  <button type="button" class="me-puppet-prev" aria-label="${t('map.puppet.prev')}" title="${t('map.puppet.prev')} (←)">◀</button>
                   <input type="range" class="me-puppet-range" min="0" max="0" value="0" aria-label="${t('map.puppet.step')}">
-                  <button type="button" class="me-puppet-next" aria-label="${t('map.puppet.next')}" title="${t('map.puppet.next')}">▶</button>
+                  <button type="button" class="me-puppet-next" aria-label="${t('map.puppet.next')}" title="${t('map.puppet.next')} (→)">▶</button>
                   <span class="me-puppet-pos"></span>
                   <button type="button" class="me-puppet-play" hidden>${t('map.puppet.play')}</button>
                 </div>
@@ -117,13 +119,17 @@ export class MapEditor {
               <span><i class="me-party-dot me-dot-event"></i>${t('map.legend.byEvent')}</span>
               <span><i class="me-party-dot me-dot-goal"></i>${t('map.legend.goal')}</span>
             </div>
+            <input type="search" class="me-pl-search me-static" placeholder="${t('map.placements.search')}" aria-label="${t('map.placements.search')}">
             <ul class="me-placements me-static" role="listbox"></ul>
             <p class="hint me-placements-empty" hidden>${t('map.placements.empty')}</p>
             <div class="me-placement-detail" hidden></div>
           </div>
         </div>
       </div>
-      <div class="me-status" aria-live="polite"></div>
+      <div class="me-status-bar">
+        <div class="me-status" aria-live="polite"></div>
+        <div class="me-map-size"></div>
+      </div>
       <dialog class="me-resize-dialog">
         <form method="dialog">
           <p>${t('map.resizeHint')}</p>
@@ -138,7 +144,7 @@ export class MapEditor {
       b.type = 'button';
       b.dataset.tool = tool;
       b.textContent = t(`map.tool.${tool}`);
-      b.title = t(`map.toolHint.${tool}`);
+      b.title = `${t(`map.toolHint.${tool}`)} (${TOOL_KEYS[tool]})`;
       b.addEventListener('click', () => this.setTool(tool));
       tools.append(b);
     }
@@ -155,6 +161,7 @@ export class MapEditor {
     e.querySelector('.me-redo').addEventListener('click', () => this.redo());
     e.querySelector('.me-zoom-in').addEventListener('click', () => this.setZoom(this.zoom * 2));
     e.querySelector('.me-zoom-out').addEventListener('click', () => this.setZoom(this.zoom / 2));
+    e.querySelector('.me-zoom-label').addEventListener('click', () => this.setZoom(1));
     e.querySelector('.me-grid').addEventListener('change', ev => { this.grid = ev.target.checked; this.render(); });
     e.querySelector('.me-show-placements').addEventListener('change', ev => { this.showPlacements = ev.target.checked; this.render(); });
     e.querySelector('.me-resize').addEventListener('click', () => this.openResize());
@@ -165,6 +172,13 @@ export class MapEditor {
     e.querySelector('.me-puppet-play').addEventListener('click', () => this.puppet && this.options.timeline?.play?.(this.puppet.file, this.puppet.line));
     e.querySelector('.me-class').addEventListener('change', () => this.renderTerrainList());
     e.querySelector('.me-search').addEventListener('input', () => this.renderTerrainList());
+    e.querySelector('.me-pl-search').addEventListener('input', () => this.renderPlacementList());
+    e.querySelector('.me-canvas-wrap').addEventListener('wheel', ev => {
+      if (ev.ctrlKey || ev.metaKey) {
+        ev.preventDefault();
+        this.setZoom(ev.deltaY < 0 ? this.zoom * 2 : this.zoom / 2);
+      }
+    }, { passive: false });
     this.canvas.addEventListener('contextmenu', ev => ev.preventDefault());
     this.canvas.addEventListener('pointerdown', ev => this.pointerDown(ev));
     this.canvas.addEventListener('pointermove', ev => this.pointerMove(ev));
@@ -234,7 +248,11 @@ export class MapEditor {
       const li = document.createElement('li');
       li.role = 'option';
       li.dataset.id = terrain.id;
-      li.textContent = `${terrain.id} ${terrain.name}`;
+      const swatch = document.createElement('i');
+      swatch.className = 'me-terrain-dot';
+      swatch.setAttribute('aria-hidden', 'true');
+      swatch.style.background = CLASS_COLORS[terrain.class] ?? '#999';
+      li.append(swatch, `${terrain.id} ${terrain.name}`);
       li.title = `${terrain.class}・${t('map.moveCost')} ${terrain.moveCost}・${t('map.hit')} ${terrain.hitMod}・${t('map.damage')} ${terrain.damageMod}${terrain.features.length ? '・' + terrain.features.join(' ') : ''}`;
       li.setAttribute('aria-selected', String(terrain.id === this.current.terrain));
       li.addEventListener('click', () => this.setCurrent(terrain.id, null));
@@ -278,13 +296,20 @@ export class MapEditor {
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, TILE, TILE);
     const { terrain, bitmap } = this.current;
+    const meta = this.element.querySelector('.me-current-meta');
     if (terrain === NO_LAYER) {
       this.element.querySelector('.me-current span').textContent = t('map.eraseLayer');
+      if (meta) {
+        meta.textContent = '';
+      }
       return;
     }
     this.drawTile(ctx, 0, 0, TILE, this.current);
     const info = this.terrainById.get(terrain);
     this.element.querySelector('.me-current span').textContent = `${terrain} ${info?.name ?? t('map.undefined')}（${bitmap}）`;
+    if (meta) {
+      meta.textContent = info ? `${info.class} · ${t('map.moveCost')}${info.moveCost} · ${t('map.hit')}${info.hitMod >= 0 ? '+' : ''}${info.hitMod} · ${t('map.damage')}${info.damageMod >= 0 ? '+' : ''}${info.damageMod}` : '';
+    }
   }
 
   // ---- 配置（7474/SRC#1653） ----
@@ -401,9 +426,20 @@ export class MapEditor {
   renderPlacementList() {
     const list = this.element.querySelector('.me-placements');
     const empty = this.element.querySelector('.me-placements-empty');
+    const search = this.element.querySelector('.me-pl-search');
+    const q = (search?.value ?? '').trim().toLowerCase();
     list.innerHTML = '';
     empty.hidden = this.placements.length > 0;
+    if (search) {
+      search.hidden = this.placements.length === 0;
+    }
     for (const item of this.placements) {
+      if (q) {
+        const hay = `${item.unit ?? ''} ${item.pilot ?? ''} ${item.party ?? ''} ${item.label ?? ''} ${item.command ?? ''} ${item.file ?? ''}`.toLowerCase();
+        if (!hay.includes(q)) {
+          continue;
+        }
+      }
       const li = document.createElement('li');
       li.role = 'option';
       li.dataset.id = item.id;
@@ -479,6 +515,10 @@ export class MapEditor {
     }
     const size = TILE * this.zoom;
     const { width, height } = this.map;
+    const sizeLabel = this.element.querySelector('.me-map-size');
+    if (sizeLabel) {
+      sizeLabel.textContent = t('map.sizeInfo', width, height);
+    }
     this.canvas.width = width * size;
     this.canvas.height = height * size;
     const ctx = this.ctx;
@@ -1078,9 +1118,44 @@ export class MapEditor {
     if (mod && ev.key.toLowerCase() === 'z' && !ev.shiftKey) {
       ev.preventDefault();
       this.undo();
-    } else if (mod && (ev.key.toLowerCase() === 'y' || (ev.key.toLowerCase() === 'z' && ev.shiftKey))) {
+      return;
+    }
+    if (mod && (ev.key.toLowerCase() === 'y' || (ev.key.toLowerCase() === 'z' && ev.shiftKey))) {
       ev.preventDefault();
       this.redo();
+      return;
+    }
+    if (mod || ev.altKey || /^(INPUT|SELECT|TEXTAREA)$/.test(ev.target?.tagName ?? '')) {
+      return;
+    }
+    const key = ev.key.toLowerCase();
+    if (this.target === 'placement' && this.puppet) {
+      if (ev.key === 'ArrowLeft') {
+        ev.preventDefault();
+        this.setPuppetIndex(this.puppet.index - 1);
+      } else if (ev.key === 'ArrowRight') {
+        ev.preventDefault();
+        this.setPuppetIndex(this.puppet.index + 1);
+      }
+      return;
+    }
+    if (this.target !== 'placement') {
+      const toolByKey = { b: 'pen', p: 'pen', r: 'rect', g: 'fill', f: 'fill', i: 'pick', c: 'copy', v: 'paste' };
+      if (toolByKey[key]) {
+        ev.preventDefault();
+        this.setTool(toolByKey[key]);
+        return;
+      }
+    }
+    if (ev.key === '+' || ev.key === '=') {
+      ev.preventDefault();
+      this.setZoom(this.zoom * 2);
+    } else if (ev.key === '-') {
+      ev.preventDefault();
+      this.setZoom(this.zoom / 2);
+    } else if (ev.key === '0') {
+      ev.preventDefault();
+      this.setZoom(1);
     }
   }
 

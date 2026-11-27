@@ -69,6 +69,7 @@ const preview = new DataPreview($('#preview'), {
     data.text = lines.join(eol);
     data.dirty = true;
     $('#save-data').disabled = false;
+    updateDirtyTabs();
     await renderData();
   },
   insertLines: async (afterLine, text) => {
@@ -84,6 +85,7 @@ const preview = new DataPreview($('#preview'), {
     }
     data.dirty = true;
     $('#save-data').disabled = false;
+    updateDirtyTabs();
     await renderData();
   },
 });
@@ -157,6 +159,7 @@ async function showData(path) {
   data.text = decodeText(await state.scenario.read(path));
   data.dirty = false;
   $('#save-data').disabled = true;
+  updateDirtyTabs();
   await renderData();
 }
 
@@ -181,6 +184,7 @@ $('#save-data').addEventListener('click', async () => {
   }
   data.dirty = false;
   $('#save-data').disabled = true;
+  updateDirtyTabs();
 });
 
 $('#data-files').addEventListener('change', ev => showData(ev.target.value));
@@ -190,6 +194,18 @@ $('#data-files').addEventListener('change', ev => showData(ev.target.value));
 const assetsView = new AssetsView($('#assets-view'), {
   onRefresh: () => renderAssets(),
   onMessage: (text, kind) => showMessage(text, kind),
+  loadImage: async (foundIn, foundPath) => {
+    const root = foundIn === 'scenario' ? state.scenario : foundIn === 'app' ? state.app : null;
+    if (!root || !foundPath) {
+      return null;
+    }
+    try {
+      const bytes = await root.read(foundPath);
+      return createImageBitmap(new Blob([bytes]));
+    } catch {
+      return null;
+    }
+  },
 });
 
 async function renderAssets() {
@@ -304,10 +320,21 @@ const quick = new QuickBuilder($('#quick-section'), {
   download,
 });
 
+function updateDirtyTabs() {
+  const mapDirty = state.dirty || state.dirtyEvents.size > 0;
+  $('#tab-map').dataset.dirty = mapDirty ? 'true' : '';
+  $('#tab-map').title = mapDirty ? t('studio.dirtyBadge') : '';
+  $('#tab-data').dataset.dirty = data.dirty ? 'true' : '';
+  $('#tab-data').title = data.dirty ? t('studio.dirtyBadge') : '';
+}
+
 function setDirty(dirty) {
   state.dirty = dirty;
   $('#save').disabled = !dirty || !state.path;
-  $('#file-name').textContent = (state.path ?? '') + (dirty ? ' *' : '');
+  const badge = $('#file-name');
+  badge.textContent = (state.path ?? '') + (dirty ? ' *' : '');
+  badge.classList.toggle('dirty', dirty);
+  updateDirtyTabs();
 }
 
 window.addEventListener('beforeunload', ev => {
@@ -428,6 +455,7 @@ function updateEventsUi() {
   btn.textContent = state.scenario?.write ? t('studio.saveEvents') : t('studio.downloadEvents');
   status.hidden = n === 0;
   status.textContent = n > 0 ? t('studio.eventsDirty', [...state.dirtyEvents.keys()].join(', ')) : '';
+  updateDirtyTabs();
 }
 
 /** 開いているフォルダから地形と画像を読み直す（画像を探す順はシナリオ → SRC 本体） */
@@ -435,6 +463,7 @@ async function reloadWorkspace() {
   state.roots = [state.scenario, state.app].filter(Boolean);
   $('#app-folder').textContent = t('studio.appFolder', state.app?.name === 'basic-data' ? t('studio.basicData') : state.app?.name ?? t('studio.none'));
   $('#scenario-folder').textContent = t('studio.scenarioFolder', state.scenario?.name ?? t('studio.none'));
+  $('#studio-intro').hidden = Boolean(state.scenario);
   const result = await loadWorkspace(state.roots);
   state.terrains = result.terrains;
   const messages = [];
@@ -463,11 +492,30 @@ async function reloadWorkspace() {
   }
 }
 
+let messageTimer;
+
 function showMessage(text, kind = 'warning') {
+  clearTimeout(messageTimer);
   const box = $('#message');
-  box.textContent = text;
+  box.innerHTML = '';
   box.className = text ? kind : '';
   box.hidden = !text;
+  if (!text) {
+    return;
+  }
+  const span = document.createElement('span');
+  span.className = 'message-text';
+  span.textContent = text;
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'message-close icon';
+  close.textContent = '×';
+  close.setAttribute('aria-label', t('studio.close'));
+  close.addEventListener('click', () => showMessage(''));
+  box.append(span, close);
+  if (kind === 'info') {
+    messageTimer = setTimeout(() => showMessage(''), 6000);
+  }
 }
 
 function renderMapList() {
@@ -478,6 +526,9 @@ function renderMapList() {
     const a = document.createElement('a');
     a.href = '#';
     a.textContent = path;
+    if (state.path === path) {
+      a.setAttribute('aria-current', 'page');
+    }
     a.addEventListener('click', ev => {
       ev.preventDefault();
       openMap(path);
@@ -505,6 +556,7 @@ async function openMap(path) {
   state.text = null;
   editor.setMap(map);
   setDirty(false);
+  renderMapList();
   showEditor();
   await refreshPlacements();
 }
@@ -523,6 +575,7 @@ $('#new-map').addEventListener('click', async () => {
   editor.setMap(map);
   state.text = await serializeMap(map);
   setDirty(true);
+  renderMapList();
   showEditor();
   await refreshPlacements();
 });
@@ -603,6 +656,25 @@ if (!canWriteFolders()) {
   showMessage(t('studio.readOnly'), 'info');
 }
 $('#save').hidden = !canWriteFolders();
+
+// Ctrl+S / Cmd+S で開いているタブの未保存変更を保存する
+document.addEventListener('keydown', ev => {
+  if (!(ev.ctrlKey || ev.metaKey) || ev.key.toLowerCase() !== 's' || ev.altKey) {
+    return;
+  }
+  if (!$('#map-section').hidden) {
+    if (state.dirty && state.path) {
+      ev.preventDefault();
+      (canWriteFolders() ? $('#save') : $('#download')).click();
+    } else if (state.dirtyEvents.size > 0) {
+      ev.preventDefault();
+      $('#save-events').click();
+    }
+  } else if (!$('#data-section').hidden && data.dirty) {
+    ev.preventDefault();
+    $('#save-data').click();
+  }
+});
 
 (async () => {
   $('#loading').hidden = false;
