@@ -369,3 +369,22 @@ main[hidden] { display: none; }
 .assets-readme-box { border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; margin: 8px 0 12px; }
 .assets-readme-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
 .assets-readme-box textarea { width: 100%; font-family: ui-monospace, monospace; font-size: 0.9em; }
+
+/* シナリオの見通し（7474/SRC#1692） */
+.ol-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 6px 0; }
+.ol-summary { color: var(--muted); }
+.ol-tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+.ol-tabs button[aria-selected="true"] { background: var(--selected); border-color: var(--accent); }
+.ol-filters { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0; }
+.ol-body { overflow-x: auto; }
+.ol-table { border-collapse: collapse; font-size: 0.9em; min-width: 100%; }
+.ol-table th, .ol-table td { border: 1px solid var(--border); padding: 3px 6px; text-align: left; vertical-align: top; }
+.ol-table th { position: sticky; top: 0; background: var(--bg); }
+.ol-script tbody tr { cursor: pointer; }
+.ol-script tbody tr:hover { background: var(--button-bg); }
+.ol-script tbody tr[aria-selected="true"] { background: var(--selected); }
+.ol-telop td { color: var(--muted); }
+.ol-talk { position: sticky; top: 0; z-index: 1; background: var(--bg); padding: 4px 0; }
+.ol-findings li { margin: 2px 0; }
+.ol-where { white-space: nowrap; font-size: 0.9em; }
+.ol-script td:nth-child(3) { white-space: nowrap; }

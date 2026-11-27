@@ -16,8 +16,9 @@ import { ScreenView } from './screen';
 import { installServer, resolveServer, serverCommand, ServerInfo, serverVersion } from './server';
 import { SettingsView } from './settings';
 import { TalkPreviewData, TalkPreviewPanel } from './talkPreview';
+import { OutlinePanel, ScenarioOutlineData } from './outline';
 import { SrcUriHandler } from './uriHandler';
-import { EventFormValue, eventForm } from './eventForm';
+import { EventFormValue, eventForm, setFormAnswers } from './eventForm';
 
 /** データに動かす規則のグループ（設定 srcsharp.rules）。空なら none */
 export function ruleGroups(): string[] {
@@ -276,6 +277,41 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     vscode.commands.registerCommand('srcsharp.previewTalk', (uri?: vscode.Uri, line?: number) => talkPreview.show(uri, line)),
     vscode.commands.registerCommand('srcsharp._talkPreviewStatus', () => talkPreview.getStatus()),
     vscode.commands.registerCommand('srcsharp._showTalkPreviewData', (data: TalkPreviewData) => talkPreview.showData(data)),
+  );
+
+  // シナリオの見通し（7474/SRC#1692）。srcsharp outline の JSON を SRC#Studio の画面で出す
+  const outlineAppArgs = (): string[] => {
+    const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
+    return appPath ? ['--app-path', appPath] : [];
+  };
+  const outlinePanel = new OutlinePanel(context, {
+    refresh: (root) => buildOutline(root),
+    exportMarkdown: async (root) => {
+      const report = path.join(root, '.srcsharp', '見通し.md');
+      const done = await run('outline', [root, '--output', report, ...outlineAppArgs()], root);
+      if (done !== undefined && fs.existsSync(report)) {
+        await vscode.commands.executeCommand('markdown.showPreviewToSide', vscode.Uri.file(report));
+      }
+    },
+    previewTalk: (uri, line) => talkPreview.show(uri, line),
+  });
+  const buildOutline = async (root: string): Promise<void> => {
+    const json = path.join(root, '.srcsharp', '見通し.json');
+    const done = await vscode.window.withProgress(
+      { location: vscode.ProgressLocation.Notification, title: 'SRC#: シナリオの見通しを作っています…' },
+      () => run('outline', [root, '--format', 'json', '--output', json, ...outlineAppArgs()], root));
+    if (done === undefined || !fs.existsSync(json)) {
+      return;
+    }
+    await outlinePanel.show(root, JSON.parse(fs.readFileSync(json, 'utf8')) as ScenarioOutlineData);
+  };
+  context.subscriptions.push(
+    outlinePanel,
+    // テスト用。package.json には出さない
+    vscode.commands.registerCommand('srcsharp._showOutlineData', (root: string, data: ScenarioOutlineData) => outlinePanel.show(root, data)),
+    vscode.commands.registerCommand('srcsharp._outlineStatus', () => outlinePanel.getStatus()),
+    vscode.commands.registerCommand('srcsharp._eventFormAnswers', (answers?: (string | undefined)[]) => setFormAnswers(answers)),
+    vscode.commands.registerCommand('srcsharp._outlineSelect', (section?: string, index?: number) => outlinePanel.select(section, index)),
   );
 
   // 素材の一覧（揃っているか。7474/SRC#1654）
@@ -699,7 +735,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       await editor.edit((b) => b.replace(range, text.replace(/\r?\n$/, '').replace(/\r?\n/g, eol)));
       editor.revealRange(new vscode.Range(match.start - 1, 0, match.start - 1, 0));
     }),
-    // シナリオの見通し（srcsharp outline。7474/SRC#1692）。話ごとの部隊と登場人物・出来事・変数・台本を Markdown で横に出す（行へのリンク付き）
+    // シナリオの見通し（srcsharp outline。7474/SRC#1692）。話ごとの部隊と登場人物・出来事・変数・台本を、SRC#Studio の見通しの画面で横に出す（行へ飛べる。
+    // 台本の行を選ぶと会話のプレビューを出す）。画面の「Markdown に書き出す」で .srcsharp/見通し.md にも書ける
     vscode.commands.registerCommand('srcsharp.showOutline', async () => {
       const editor = vscode.window.activeTextEditor;
       const file = editor?.document.uri.scheme === 'file' ? editor.document.uri.fsPath : undefined;
@@ -708,14 +745,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         vscode.window.showErrorMessage('SRC#: シナリオのフォルダを開いてください。');
         return;
       }
-      const appPath = vscode.workspace.getConfiguration('srcsharp').get<string>('appPath');
-      const report = path.join(dir, '.srcsharp', '見通し.md');
-      const done = await vscode.window.withProgress(
-        { location: vscode.ProgressLocation.Notification, title: 'SRC#: シナリオの見通しを作っています…' },
-        () => run('outline', [dir, '--output', report, ...(appPath ? ['--app-path', appPath] : [])], dir));
-      if (done !== undefined && fs.existsSync(report)) {
-        await vscode.commands.executeCommand('markdown.showPreviewToSide', vscode.Uri.file(report));
-      }
+      await buildOutline(dir);
     }),
     vscode.commands.registerCommand('srcsharp.balance', async () => {
       const dir = workspaceDir();

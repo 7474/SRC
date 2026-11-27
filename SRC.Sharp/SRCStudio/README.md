@@ -1,6 +1,6 @@
 # SRC#Studio
 
-データ・シナリオの作成支援の画面（判断は [docs/decisions/2026-11-14-authoring-environment.md](../../docs/decisions/2026-11-14-authoring-environment.md)）。かんたん作成（7474/SRC#1659。[docs/tools/quick-create.md](../../docs/tools/quick-create.md)）、マップ作成ツール（7474/SRC#1641。自動接続 #1663・イベントの配置 #1653・人形劇と場面の再生 #1694）、データのプレビュー（7474/SRC#1643。表で直す・比べる・戦闘メッセージ）、素材の一覧（7474/SRC#1654）を持つ。かんたん作成はスタンドアロンだけ（VS Code では F5 で遊ぶ）。
+データ・シナリオの作成支援の画面（判断は [docs/decisions/2026-11-14-authoring-environment.md](../../docs/decisions/2026-11-14-authoring-environment.md)）。かんたん作成（7474/SRC#1659。[docs/tools/quick-create.md](../../docs/tools/quick-create.md)）、マップ作成ツール（7474/SRC#1641。自動接続 #1663・イベントの配置 #1653・人形劇と場面の再生 #1694）、データのプレビュー（7474/SRC#1643。表で直す・比べる・戦闘メッセージ）、素材の一覧（7474/SRC#1654）、シナリオの見通し（7474/SRC#1692）を持つ。かんたん作成はスタンドアロンだけ（VS Code では F5 で遊ぶ）。
 
 作成環境の主は VS Code 拡張で、SRC#Studio はその中の画面であると同時に、VS Code を使わずに単独でも使える部品（[作成支援ツール](../../docs/tools/authoring.md) の「VS Code 拡張と、単独で使える部品」）。同じ画面を 2 か所で動かす。
 
@@ -19,6 +19,8 @@
 | `wwwroot/index.html`・`studio.js`・`folders.js` | スタンドアロン。フォルダを開き、マップを選んで編集し、保存する |
 | `wwwroot/preview.js` | データのプレビューの画面 |
 | `wwwroot/assets.js` | 素材の一覧（揃っているかの管理。7474/SRC#1654）の画面 |
+| `wwwroot/outline.js` | シナリオの見通し（7474/SRC#1692）の画面。`srcsharp outline` の JSON（`ScenarioOutline`）を、気づいたこと・部隊と登場人物・出来事・台本・変数の表にする。台本の行を選ぶと会話の見た目を出す（スタンドアロンは `message-window.js`、VS Code は拡張の会話のプレビュー） |
+| `wwwroot/vscode-outline.html`・`vscode-outline.js` | VS Code の Webview（シナリオの見通し。拡張の `src/outline.ts`）。拡張が `srcsharp outline --format json` の結果を送る（WebAssembly は使わない） |
 | `wwwroot/table-edit.js` | 表で直す（ユニット・パイロットの能力値・地形適応と、武器・アビリティの行を欄ごとに書き換える） |
 | `wwwroot/compare.js` | 比べる（7474/SRC-Data の Pages の評価の JSON の中で上位何 %） |
 | `wwwroot/vscode.html`・`vscode-boot.js`・`vscode.js` | VS Code の Webview（マップ作成ツール）。拡張とメッセージでやり取りする |
@@ -52,7 +54,7 @@ tools/studio_bundle.sh out/studio
 - `SRCAuthoringTests/MapDocumentTests.cs`・`MapAutoConnectTests.cs`: マップの読み書き（リポジトリの全てのマップが変わらない・SRCCore と同じに読める）・自動接続・地形データ・画像の探し方
 - `SRCRenderTests/MapChipVrtTests.cs`: `basic-data` のマップチップ一覧・描画画面（1x / 2x）・青ユニット枠との視認性（コントラスト・色覚特性）
 - `SRCAuthoringTests/EventTimelineTests.cs`: 人形劇（一手ずつの状態・空いたマスを探す規則・L 字の道筋・Move の差し込み・場面の再生のイベント）
-- `SRCSharpWeb.E2E/tests/studio.spec.js`: スタンドアロン（`?fs=input` で、フォルダの読み込みとダウンロードの道を通す）・自動接続とつなぎ直し・配置・人形劇と場面の再生（SRC#Web に渡すところまで）・データのプレビュー・表で直す・比べる・素材の一覧・かんたん作成（7474/SRC-Data の代わりを返す）。`web.spec.js` は SRC#Web の `?stored=`（と `eve`）
+- `SRCSharpWeb.E2E/tests/studio.spec.js`: スタンドアロン（`?fs=input` で、フォルダの読み込みとダウンロードの道を通す）・自動接続とつなぎ直し・配置・人形劇と場面の再生（SRC#Web に渡すところまで）・データのプレビュー・表で直す・比べる・素材の一覧・シナリオの見通し（台本の行から会話の見た目）・かんたん作成（7474/SRC-Data の代わりを返す）。`web.spec.js` は SRC#Web の `?stored=`（と `eve`）
 - `SRCAuthoringTests/QuickBattleTemplateTests.cs`・`CliTests.cs`: かんたん作成のイベント（作ったシナリオが lint を通り、最後まで遊べる）
-- `SRCSharpVSCode/test/extension.test.js`: VS Code でカスタムエディタが開き、画面の WebAssembly が地形とマップを読めること
+- `SRCSharpVSCode/test/extension.test.js`: VS Code でカスタムエディタが開き、画面の WebAssembly が地形とマップを読めること。シナリオの見通しの画面が出て、台本の行から会話のプレビューを出すこと（srcsharp があれば、`srcsharp outline` から SRCRender の画まで）
 

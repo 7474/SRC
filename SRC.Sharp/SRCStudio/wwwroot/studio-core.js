@@ -200,3 +200,24 @@ export async function buildAssetReport(roots, format = 'json') {
   return format === 'json' ? JSON.parse(out) : out;
 }
 
+
+/** 見通しに使うファイル（*.eve と Data のデータ） */
+export function isOutlineSource(path) {
+  const p = path.replace(/\\/g, '/');
+  return /\.eve$/i.test(p) || /(^|\/)data\/[^/]+\.txt$/i.test(p);
+}
+
+/**
+ * シナリオの見通し（7474/SRC#1692。srcsharp outline と同じ ScenarioOutline）。
+ * @param {{ name: string, files: string[], read: (path: string) => Promise<Uint8Array> }} scenario シナリオのフォルダ
+ * @param {'json'|'md'} format json は { episodes, script, findings, variables, faces }
+ */
+export async function buildOutline(scenario, format = 'json') {
+  const core = await studioCore();
+  core.ClearOutlineFiles();
+  for (const file of scenario.files.filter(isOutlineSource)) {
+    core.AddOutlineFile(file, await scenario.read(file));
+  }
+  const out = core.BuildOutline(scenario.name, format);
+  return format === 'json' ? JSON.parse(out) : out;
+}

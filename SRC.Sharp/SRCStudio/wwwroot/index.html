@@ -15,6 +15,7 @@
       <button type="button" role="tab" id="tab-map" aria-selected="false" aria-controls="map-section" data-t="studio.tabMap"></button>
       <button type="button" role="tab" id="tab-data" aria-selected="false" aria-controls="data-section" data-t="studio.tabData"></button>
       <button type="button" role="tab" id="tab-assets" aria-selected="false" aria-controls="assets-section" data-t="studio.tabAssets"></button>
+      <button type="button" role="tab" id="tab-outline" aria-selected="false" aria-controls="outline-section" data-t="studio.tabOutline"></button>
     </div>
   </header>
   <p id="loading" data-t="loading" hidden></p>
@@ -59,6 +60,14 @@
       <button type="button" class="primary" data-open="scenario" data-t="studio.openScenario"></button>
     </div>
     <div id="assets-view" hidden></div>
+  </section>
+  <section id="outline-section" role="tabpanel" aria-labelledby="tab-outline" hidden>
+    <p class="hint" data-t="studio.outlineHint"></p>
+    <div id="outline-empty" class="empty-state">
+      <p data-t="studio.outlineEmpty"></p>
+      <button type="button" class="primary" data-open="scenario" data-t="studio.openScenario"></button>
+    </div>
+    <div id="outline-view" hidden></div>
   </section>
   <main id="map-section" role="tabpanel" aria-labelledby="tab-map" hidden>
     <div id="map-empty" class="empty-state">
