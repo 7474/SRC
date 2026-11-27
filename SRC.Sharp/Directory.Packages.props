@@ -45,9 +45,9 @@
       .NET 11.0.0 の Mono の AOT コンパイラが SRC#Web の発行で落ちる（sgen-alloc.c:409。dotnet/runtime#136351、mono/SkiaSharp#5840）。
       修正（dotnet/runtime#136627）が入った .NET 11 のサービスの版に上げたら 4.157 以降にする（7474/SRC#1705。.github/dependabot.yml の ignore も消す）
     -->
-    <PackageVersion Include="SkiaSharp" Version="4.156.2" />
+    <PackageVersion Include="SkiaSharp" Version="4.156.3" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="4.156.2" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.156.2" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.156.3" />
     <PackageVersion Include="System.Collections.Specialized" Version="4.3.0" />
     <PackageVersion Include="System.Drawing.Common" Version="11.0.0" />
     <PackageVersion Include="System.Runtime.Caching" Version="11.0.0" />
