@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>VS Code로 보내기</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>산점도</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>가로축(X)</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>세로축(Y)</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>점을 클릭하면 나란히 비교 후보에 추가하거나 해제할 수 있습니다(최대 4개).</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>SRC#Studio에서 1전 시험하기</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>선택한 조합을 아군과 적으로 나누어 SRC#Studio 간편 작성으로 보냅니다.</value>
+  </data>
 </root>

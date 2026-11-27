@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>Надіслати до VS Code</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>Діаграма розсіювання</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>Вісь X</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>Вісь Y</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>Натисніть на точку, щоб додати або прибрати її з порівняння поруч (до 4).</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>Спробувати бій у SRC#Studio</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>Надсилає вибрані пари, поділені на союзників і ворогів, до швидкого створення SRC#Studio.</value>
+  </data>
 </root>

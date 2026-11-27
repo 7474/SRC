@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>Enviar para VS Code</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>Gráfico de dispersão</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>Eixo X</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>Eixo Y</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>Clique em um ponto para adicioná-lo ou removê-lo da comparação lado a lado (até 4).</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>Testar uma batalha no SRC#Studio</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>Envia os pares selecionados divididos em aliados e inimigos para a criação rápida do SRC#Studio.</value>
+  </data>
 </root>

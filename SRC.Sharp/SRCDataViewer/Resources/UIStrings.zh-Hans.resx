@@ -325,4 +325,22 @@
   <data name="SendToVsCode" xml:space="preserve">
     <value>发送到 VS Code</value>
   </data>
+  <data name="CompareScatter" xml:space="preserve">
+    <value>散点图</value>
+  </data>
+  <data name="CompareAxisX" xml:space="preserve">
+    <value>横轴（X）</value>
+  </data>
+  <data name="CompareAxisY" xml:space="preserve">
+    <value>纵轴（Y）</value>
+  </data>
+  <data name="CompareScatterHint" xml:space="preserve">
+    <value>点击散点可将其加入或移出并排比较候选（最多 4 项）。</value>
+  </data>
+  <data name="ComparePlayInStudio" xml:space="preserve">
+    <value>在 SRC#Studio 中试战一局</value>
+  </data>
+  <data name="ComparePlayInStudioHint" xml:space="preserve">
+    <value>将所选组合分为我方和敌方，发送到 SRC#Studio 的快速创建。</value>
+  </data>
 </root>
