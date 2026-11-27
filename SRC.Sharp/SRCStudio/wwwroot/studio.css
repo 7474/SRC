@@ -141,21 +141,21 @@ input[type="checkbox"], input[type="radio"] { padding: 0; accent-color: var(--ac
 
 /* ワークスペースバー */
 .workspace {
-  margin: 0 0 10px;
-  padding: 8px 10px;
+  margin: 0 0 8px;
+  padding: 6px 10px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
 .workspace > .hint { margin: 0 0 6px; font-size: 0.88em; }
-.workspace-bars { display: flex; flex-direction: column; gap: 6px; }
-.folders, .files { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
-.files { padding-top: 6px; border-top: 1px solid var(--border); }
+.workspace-bars { display: flex; flex-direction: column; gap: 5px; }
+.folders, .files { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.files { padding-top: 5px; border-top: 1px solid var(--border); }
 .folder-item { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .folder-badge, .file-badge {
   color: var(--muted);
-  font-size: 0.88em;
-  padding: 2px 8px;
+  font-size: 0.85em;
+  padding: 1px 7px;
   border-radius: 999px;
   background: var(--bg);
   border: 1px solid var(--border);
