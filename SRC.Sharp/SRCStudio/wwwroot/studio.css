@@ -196,15 +196,16 @@ input[type="checkbox"], input[type="radio"] { padding: 0; accent-color: var(--ac
   border-radius: var(--radius);
 }
 
-main { display: flex; gap: 14px; align-items: flex-start; }
+main { display: flex; gap: 10px; align-items: flex-start; }
 main[hidden] { display: none; }
 #maps-section {
-  width: 190px;
+  width: 155px;
+  box-sizing: border-box;
   flex: none;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 8px;
+  padding: 6px;
 }
 #maps-section h2 { margin: 0 0 6px; font-size: 0.88rem; color: var(--muted); }
 #maps { list-style: none; padding: 0; margin: 0; word-break: break-all; display: flex; flex-direction: column; gap: 2px; }
@@ -262,7 +263,7 @@ main[hidden] { display: none; }
   font-variant-numeric: tabular-nums;
   padding: 4px 6px;
 }
-.me-body { display: flex; gap: 12px; align-items: flex-start; }
+.me-body { display: flex; gap: 8px; align-items: flex-start; }
 .me-canvas-wrap {
   flex: 1;
   min-width: 0;
@@ -274,7 +275,8 @@ main[hidden] { display: none; }
 }
 .me-canvas { display: block; image-rendering: pixelated; cursor: crosshair; touch-action: none; }
 .me-palette {
-  width: 240px;
+  width: 220px;
+  box-sizing: border-box;
   flex: none;
   display: flex;
   flex-direction: column;
@@ -282,7 +284,7 @@ main[hidden] { display: none; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 8px;
+  padding: 6px;
 }
 .me-current {
   display: flex;
