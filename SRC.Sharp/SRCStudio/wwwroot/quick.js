@@ -139,6 +139,19 @@ export class QuickBuilder {
     this.mapTiles = null;
   }
 
+  /** マップ作成タブで編集したマップを現在の話に反映する（7474/SRC#1714） */
+  async applyCustomMap(text) {
+    const error = await this.useMap('studio:custom', text);
+    if (error) {
+      this.status(t('quick.mapFailed', error), 'error');
+      return;
+    }
+    this.battle.spots = null;
+    this.saveDraft();
+    this.render();
+    this.status(t('quick.mapEdited'), 'info');
+  }
+
   /** 場面のサンプルを使う。作品・ユニット・セリフがあれば、尋ねてから入れる */
   async applyScene(scene) {
     const response = await fetch(new URL(scene.map, scene.base));
@@ -788,8 +801,10 @@ export class QuickBuilder {
             }).join('')}</optgroup>` : ''}
             ${maps.length ? `<optgroup label="${esc(t('quick.folderMaps'))}">${maps.map(m => `<option value="${esc('folder:' + m)}" ${'folder:' + m === b.mapSource ? 'selected' : ''}>${esc(m)}</option>`).join('')}</optgroup>` : ''}
             ${b.mapSource?.startsWith('file:') ? `<option value="${esc(b.mapSource)}" selected>${esc(b.mapSource.slice(5))}</option>` : ''}
+            ${b.mapSource === 'studio:custom' ? `<option value="studio:custom" selected>${esc(t('quick.customMap'))}</option>` : ''}
           </select></label>
           <button type="button" class="q-map-file">${esc(t('quick.mapFile'))}</button>
+          ${this.host.editMap ? `<button type="button" class="q-edit-map">${esc(t('quick.editInMap'))}</button>` : ''}
           <input type="file" class="q-map-input" accept=".map" hidden>
           <span class="q-size" ${b.mapSource ? 'hidden' : ''}>
             <label class="q-field">${esc(t('map.width'))} <input class="q-width" type="number" min="${MIN_DRAG_SIZE}" max="50" value="${b.width}"></label>
@@ -1035,6 +1050,9 @@ export class QuickBuilder {
       }
     }));
     $('.q-map-file').addEventListener('click', () => $('.q-map-input').click());
+    $('.q-edit-map')?.addEventListener('click', () => {
+      this.host.editMap?.({ width: this.battle.width, height: this.battle.height, mapText: this.battle.mapText });
+    });
     $('.q-map-input').addEventListener('change', async ev => {
       const file = ev.target.files[0];
       if (!file) {
